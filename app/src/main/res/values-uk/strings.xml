@@ -747,4 +747,7 @@
     <string name="workout_label_distance">Відстань</string>
     <string name="workout_label_assistance">Допомога</string>
     <string name="workout_section_load">Навантаження і відстань</string>
+    <string name="program_use_program_desc">Використовує підходи і цільові значення, визначені в програмі</string>
+    <string name="program_use_challenge_desc">Використовує налаштування складності кожної вправи (якщо не задані, то значення з програми)</string>
+    <string name="program_use_previous_desc">Використовує значення з попереднього тренування (якщо записів немає, то значення з програми)</string>
 </resources>
