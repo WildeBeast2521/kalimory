@@ -22,12 +22,14 @@ import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
+import io.github.gonbei774.calisthenicsmemory.viewmodel.BackupResult
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CsvImportReport
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CsvType
 import io.github.gonbei774.calisthenicsmemory.viewmodel.parseCsvRecords
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -212,10 +214,14 @@ fun CsvDataManagementScreen(
                 isLoading = true
                 val backupSuccess = try {
                     withContext(Dispatchers.IO) {
-                        val jsonData = viewModel.exportData()
-                        context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-                            outputStream.write(jsonData.toByteArray())
+                        val exported = when (val result = viewModel.exportData()) {
+                            is BackupResult.Success -> result.value
+                            is BackupResult.Failure -> throw IOException(result.message, result.cause)
                         }
+                        BackupFileIo.writeUtf8(
+                            openStream = { context.contentResolver.openOutputStream(uri) },
+                            value = exported.json
+                        )
                         true
                     }
                 } catch (e: Exception) {

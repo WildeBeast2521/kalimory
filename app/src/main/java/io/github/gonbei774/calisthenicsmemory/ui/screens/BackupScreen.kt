@@ -23,10 +23,12 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import io.github.gonbei774.calisthenicsmemory.viewmodel.BackupData
+import io.github.gonbei774.calisthenicsmemory.viewmodel.BackupResult
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
+import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -43,7 +45,7 @@ fun BackupScreen(
     var showDataPreview by remember { mutableStateOf(false) }
     var showBackupConfirmation by remember { mutableStateOf(false) }
     var showImportWarning by remember { mutableStateOf(false) }
-    var pendingImportUri by remember { mutableStateOf<Uri?>(null) }
+    var pendingImportData by remember { mutableStateOf<BackupData?>(null) }
     var importFileName by remember { mutableStateOf<String?>(null) }
     var importGroupCount by remember { mutableStateOf(0) }
     var importExerciseCount by remember { mutableStateOf(0) }
@@ -54,23 +56,28 @@ fun BackupScreen(
     val exportLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/json")
     ) { uri: Uri? ->
-        uri?.let {
-            scope.launch {
-                isLoading = true
-                try {
-                    withContext(Dispatchers.IO) {
-                        val jsonData = viewModel.exportData()
-
-                        context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-                            outputStream.write(jsonData.toByteArray())
+        if (uri != null) scope.launch {
+            isLoading = true
+            try {
+                when (val result = viewModel.exportData()) {
+                    is BackupResult.Success -> {
+                        withContext(Dispatchers.IO) {
+                            BackupFileIo.writeUtf8(
+                                { context.contentResolver.openOutputStream(uri) },
+                                result.value.json
+                            )
                         }
+                        val summary = result.value.summary
+                        viewModel.showSnackbar(UiMessage.ExportComplete(summary.groups, summary.exercises, summary.records))
                     }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                    }
-                } finally {
-                    isLoading = false
+                    is BackupResult.Failure -> viewModel.showSnackbar(UiMessage.ExportError(result.message))
                 }
+            } catch (_: CancellationException) {
+                // Cancellation is not a failed export.
+            } catch (e: IOException) {
+                viewModel.showSnackbar(UiMessage.ExportError(e.message ?: ""))
+            } finally {
+                isLoading = false
             }
         }
     }
@@ -82,31 +89,29 @@ fun BackupScreen(
         if (uri != null) {
             scope.launch {
                 isLoading = true
-                val backupSuccess = try {
-                    withContext(Dispatchers.IO) {
-                        val jsonData = viewModel.exportData()
-                        context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-                            outputStream.write(jsonData.toByteArray())
-                        }
-                        true
-                    }
-                } catch (e: Exception) {
-                    android.util.Log.e("BackupScreen", "Backup before import failed", e)
-                    false
-                }
-
-                viewModel.showBackupResult(backupSuccess)
-
+                var success = false
                 try {
-                    withContext(Dispatchers.Main) {
-                        showImportWarning = true
+                    when (val result = viewModel.exportData()) {
+                        is BackupResult.Success -> {
+                            withContext(Dispatchers.IO) {
+                                BackupFileIo.writeUtf8(
+                                    { context.contentResolver.openOutputStream(uri) },
+                                    result.value.json
+                                )
+                            }
+                            success = true
+                            viewModel.showBackupResult(true)
+                            showImportWarning = true
+                        }
+                        is BackupResult.Failure -> viewModel.showBackupResult(false)
                     }
-                } catch (e: Exception) {
-                    android.util.Log.e("BackupScreen", "Import error after backup", e)
+                } catch (_: CancellationException) {
+                    // Keep the parsed payload and do not report cancellation as failure.
+                } catch (e: IOException) {
+                    viewModel.showBackupResult(false)
                 } finally {
-                    withContext(Dispatchers.Main) {
-                        isLoading = false
-                    }
+                    isLoading = false
+                    if (!success) showBackupConfirmation = true
                 }
             }
         } else {
@@ -114,66 +119,46 @@ fun BackupScreen(
         }
     }
 
-    // JSONインポート用ランチャー
+    // JSONインポート用ランチャー. The selected URI is read exactly once.
     val importLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
     ) { uri: Uri? ->
-        uri?.let {
-            scope.launch {
-                isLoading = true
-                try {
-                    withContext(Dispatchers.IO) {
-                        val fileName = context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                            val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
-                            cursor.moveToFirst()
-                            cursor.getString(nameIndex)
-                        } ?: "unknown.json"
-
-                        val maxSize = 50 * 1024 * 1024 // 50MB
-                        val jsonData = context.contentResolver.openInputStream(uri)?.use { inputStream ->
-                            val bytes = inputStream.readBytes()
-                            if (bytes.size > maxSize) {
-                                withContext(Dispatchers.Main) {
-                                    viewModel.showSnackbar(UiMessage.FileTooLarge(bytes.size / (1024 * 1024), 50))
-                                }
-                                return@withContext
-                            }
-                            bytes.decodeToString()
-                        } ?: ""
-
-                        if (jsonData.isNotEmpty()) {
-                            val fileType = viewModel.detectJsonFileType(jsonData)
-                            if (fileType == "share") {
-                                withContext(Dispatchers.Main) {
-                                    viewModel.showWrongFileTypeMessage(
-                                        detected = "share",
-                                        expected = "backup"
-                                    )
-                                }
-                                return@withContext
-                            }
-
-                            val json = Json { ignoreUnknownKeys = true }
-                            val backupData = json.decodeFromString<BackupData>(jsonData)
-
-                            withContext(Dispatchers.Main) {
-                                pendingImportUri = uri
-                                importFileName = fileName
-                                importGroupCount = backupData.groups.size
-                                importExerciseCount = backupData.exercises.size
-                                importRecordCount = backupData.records.size
-
-                                showDataPreview = true
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        android.util.Log.e("BackupScreen", "Failed to read import file", e)
-                    }
-                } finally {
-                    isLoading = false
+        if (uri != null) scope.launch {
+            isLoading = true
+            try {
+                val fileName = withContext(Dispatchers.IO) {
+                    context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                        val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                        if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
+                    } ?: "unknown.json"
                 }
+                val jsonData = withContext(Dispatchers.IO) {
+                    BackupFileIo.readUtf8(
+                        openStream = { context.contentResolver.openInputStream(uri) }
+                    )
+                }
+                if (viewModel.detectJsonFileType(jsonData) == "share") {
+                    viewModel.showWrongFileTypeMessage(detected = "share", expected = "backup")
+                } else when (val parsed = viewModel.parseBackupData(jsonData)) {
+                    is BackupResult.Success -> {
+                        val backupData = parsed.value
+                        pendingImportData = backupData
+                        importFileName = fileName
+                        importGroupCount = backupData.groups.size
+                        importExerciseCount = backupData.exercises.size
+                        importRecordCount = backupData.records.size
+                        showDataPreview = true
+                    }
+                    is BackupResult.Failure -> viewModel.showSnackbar(UiMessage.ImportError(parsed.message))
+                }
+            } catch (_: CancellationException) {
+                // Cancellation is not a failed import.
+            } catch (e: BackupSizeLimitException) {
+                viewModel.showSnackbar(UiMessage.FileTooLarge(51, 50))
+            } catch (e: IOException) {
+                viewModel.showSnackbar(UiMessage.ImportError(e.message ?: ""))
+            } finally {
+                isLoading = false
             }
         }
     }
@@ -377,7 +362,7 @@ fun BackupScreen(
         AlertDialog(
             onDismissRequest = {
                 showDataPreview = false
-                pendingImportUri = null
+                pendingImportData = null
             },
             title = {
                 Text(
@@ -520,7 +505,7 @@ fun BackupScreen(
                 TextButton(
                     onClick = {
                         showDataPreview = false
-                        pendingImportUri = null
+                        pendingImportData = null
                     }
                 ) {
                     Text(stringResource(R.string.cancel))
@@ -534,7 +519,7 @@ fun BackupScreen(
         AlertDialog(
             onDismissRequest = {
                 showImportWarning = false
-                pendingImportUri = null
+                pendingImportData = null
             },
             title = {
                 Text(
@@ -559,34 +544,26 @@ fun BackupScreen(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        pendingImportUri?.let { uri ->
+                        pendingImportData?.let { backupData ->
                             scope.launch {
                                 isLoading = true
                                 try {
-                                    withContext(Dispatchers.IO) {
-                                        val maxSize = 50 * 1024 * 1024 // 50MB
-                                        val jsonData = context.contentResolver.openInputStream(uri)?.use { inputStream ->
-                                            val bytes = inputStream.readBytes()
-                                            if (bytes.size > maxSize) {
-                                                withContext(Dispatchers.Main) {
-                                                    viewModel.showSnackbar(UiMessage.FileTooLarge(bytes.size / (1024 * 1024), 50))
-                                                }
-                                                return@withContext
-                                            }
-                                            bytes.decodeToString()
-                                        } ?: ""
-
-                                        if (jsonData.isNotEmpty()) {
-                                            viewModel.importData(jsonData)
+                                    when (val result = viewModel.importData(backupData)) {
+                                        is BackupResult.Success -> {
+                                            val summary = result.value
+                                            viewModel.showSnackbar(UiMessage.ImportComplete(summary.groups, summary.exercises, summary.records))
+                                            showImportWarning = false
+                                            pendingImportData = null
+                                        }
+                                        is BackupResult.Failure -> {
+                                            viewModel.showSnackbar(UiMessage.ImportError(result.message))
+                                            // Keep both the dialog and exact parsed payload for retry.
                                         }
                                     }
-                                } catch (e: Exception) {
-                                    withContext(Dispatchers.Main) {
-                                    }
+                                } catch (_: CancellationException) {
+                                    // Keep the payload; cancellation is not a failed restore.
                                 } finally {
                                     isLoading = false
-                                    showImportWarning = false
-                                    pendingImportUri = null
                                 }
                             }
                         }
@@ -605,7 +582,7 @@ fun BackupScreen(
                 TextButton(
                     onClick = {
                         showImportWarning = false
-                        pendingImportUri = null
+                        pendingImportData = null
                     }
                 ) {
                     Text(stringResource(R.string.cancel))
@@ -683,7 +660,7 @@ fun BackupScreen(
                 TextButton(
                     onClick = {
                         showBackupConfirmation = false
-                        pendingImportUri = null
+                        pendingImportData = null
                     }
                 ) {
                     Text(stringResource(R.string.cancel))
