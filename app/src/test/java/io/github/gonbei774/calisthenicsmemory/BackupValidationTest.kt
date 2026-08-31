@@ -99,6 +99,23 @@ class BackupValidationTest {
         )
     }
 
+    @Test fun `validates todo repeat days`() {
+        val base = valid()
+        listOf("x", "0", "8", "1,,2", "1,1").forEach { repeatDays ->
+            assertInvalid(
+                base.copy(todoTasks = listOf(base.todoTasks.first().copy(repeatDays = repeatDays))),
+                "repeat days"
+            )
+        }
+
+        val scheduled = base.copy(
+            todoTasks = listOf(base.todoTasks.first().copy(repeatDays = "1, 3,7"))
+        )
+        val result = service.parse(json.encodeToString(scheduled))
+        assertTrue("Expected valid repeat schedule, got $result", result is BackupResult.Success)
+        assertEquals(scheduled, (result as BackupResult.Success).value)
+    }
+
     @Test fun `accepts legacy defaults`() {
         val legacy = """{"version":1,"exportDate":"old","app":"CalisthenicsMemory","groups":[],"exercises":[],"records":[]}"""
         val result = service.parse(legacy)

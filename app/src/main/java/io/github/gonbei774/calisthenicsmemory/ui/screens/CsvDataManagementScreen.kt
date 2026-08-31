@@ -26,6 +26,7 @@ import io.github.gonbei774.calisthenicsmemory.viewmodel.BackupResult
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CsvImportReport
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CsvType
 import io.github.gonbei774.calisthenicsmemory.viewmodel.parseCsvRecords
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -224,6 +225,8 @@ fun CsvDataManagementScreen(
                         )
                         true
                     }
+                } catch (e: CancellationException) {
+                    throw e
                 } catch (e: Exception) {
                     android.util.Log.e("CsvDataManagementScreen", "Backup before import failed", e)
                     false

@@ -25,6 +25,7 @@ import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import io.github.gonbei774.calisthenicsmemory.viewmodel.BackupResult
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CommunityShareData
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CommunityShareImportReport
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -136,6 +137,8 @@ fun ShareHubScreen(
                         )
                         true
                     }
+                } catch (e: CancellationException) {
+                    throw e
                 } catch (e: Exception) {
                     android.util.Log.e("ShareHubScreen", "Backup before import failed", e)
                     false
