@@ -50,6 +50,27 @@ class BackupValidationTest {
         assertInvalid(valid().copy(exercises = valid().exercises + valid().exercises.first().copy(id = 20)), "Duplicate exercise name/type")
     }
 
+    @Test fun `rejects zero and negative ids in every entity collection`() {
+        val cases: List<Pair<String, (BackupData, Long) -> BackupData>> = listOf(
+            "group" to { data, id -> data.copy(groups = listOf(data.groups.first().copy(id = id))) },
+            "exercise" to { data, id -> data.copy(exercises = listOf(data.exercises.first().copy(id = id))) },
+            "record" to { data, id -> data.copy(records = listOf(data.records.first().copy(id = id))) },
+            "program" to { data, id -> data.copy(programs = listOf(data.programs.first().copy(id = id))) },
+            "program exercise" to { data, id -> data.copy(programExercises = listOf(data.programExercises.first().copy(id = id))) },
+            "program loop" to { data, id -> data.copy(programLoops = listOf(data.programLoops.first().copy(id = id))) },
+            "interval program" to { data, id -> data.copy(intervalPrograms = listOf(data.intervalPrograms.first().copy(id = id))) },
+            "interval program exercise" to { data, id -> data.copy(intervalProgramExercises = listOf(data.intervalProgramExercises.first().copy(id = id))) },
+            "interval record" to { data, id -> data.copy(intervalRecords = listOf(data.intervalRecords.first().copy(id = id))) },
+            "todo task" to { data, id -> data.copy(todoTasks = listOf(data.todoTasks.first().copy(id = id))) }
+        )
+
+        cases.forEach { (label, withId) ->
+            listOf(0L, -1L).forEach { id ->
+                assertInvalid(withId(valid(), id), "$label id must be positive")
+            }
+        }
+    }
+
     @Test fun `rejects every broken reference class`() {
         val base = valid()
         val cases = listOf(
