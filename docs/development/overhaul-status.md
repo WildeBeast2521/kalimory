@@ -4,9 +4,9 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Backup restorability and mutation atomicity, branch `work/backup-anomalies` (worktree `CalisthenicsMemory-worktrees/backup-anomalies`), based on master `956f19a`. The user chose "accept and warn" for anomalies the database can hold (2026-09-25). The pull request is opened after the checks below.
+No phase is in progress. The latest completed phase, backup restorability and mutation atomicity, merged through PR #4 (https://github.com/WildeBeast2521/CalisthenicsMemory/pull/4) as `c619f0a`. PR CI run 36129605040 passed both jobs, running 69 emulator tests. The post-merge `master` run 36130284869 also passed. The user chose "accept and warn" for anomalies the database can hold (2026-09-25).
 
-Commits on this branch:
+Commits merged by PR #4:
 
 - `b4fb7ab` fix: tolerate malformed todo repeat days when reading
 - `3220edd` fix: restore every backup the app can export
@@ -14,7 +14,7 @@ Commits on this branch:
 - `dba8969` fix: never replace an exercise on a duplicate insert
 - `4cdd0b5` style: use an int state holder for the import anomaly count
 
-Verification actually run on this branch:
+Verification actually run before merge:
 
 - `./gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug :app:compileDebugAndroidTestKotlin`: PASS (232 unit tests). Lint reports 15 unbaselined dependency-version warnings from existing build files; none comes from this branch.
 - `./gradlew connectedDebugAndroidTest` on AVD `floor_api29` (API 29, x86_64): 69 tests, 0 failures.
@@ -77,8 +77,7 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Push `work/backup-anomalies`, open a PR, read back CI (verify + emulator jobs), merge when green, fast-forward `master`.
-2. Then return to the plan (`docs/plans/2026-08-30-overhaul-bootstrap.md`). Candidates:
+1. Return to the plan (`docs/plans/2026-08-30-overhaul-bootstrap.md`). Candidates:
    - a user-facing screen for `UnsupportedDatabaseVersionException`;
    - a database corruption callback that preserves the file;
    - making todo tasks with a missing target visible so the user can delete them;
