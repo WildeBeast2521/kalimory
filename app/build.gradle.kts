@@ -84,6 +84,16 @@ android {
     lint {
         baseline = file("lint-baseline.xml")
     }
+
+    sourceSets {
+        // Exported Room schemas are MigrationTestHelper inputs.
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
 }
 
 dependencies {
