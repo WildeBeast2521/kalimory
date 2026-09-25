@@ -35,6 +35,17 @@ class WorkoutCheckpointStoreTest {
         assertEquals(WorkoutCheckpointStore.LoadResult.Found(later), store.load())
     }
 
+    @Test fun `interval context round trips`() {
+        val withInterval = checkpoint.copy(
+            interval = IntervalSessionContext(
+                programId = 7, programName = "Tabata", workSeconds = 20, restSeconds = 10, rounds = 8, roundRestSeconds = 60,
+                exercises = listOf(IntervalExerciseSnapshot(1, "Squat", null), IntervalExerciseSnapshot(2, "Push-up", "Chest")),
+            )
+        )
+        store.save(withInterval)
+        assertEquals(WorkoutCheckpointStore.LoadResult.Found(withInterval), store.load())
+    }
+
     @Test fun `a newer version is refused, not misread`() {
         store.save(checkpoint)
         file.writeText(file.readText().replace("\"version\":1", "\"version\":2"))

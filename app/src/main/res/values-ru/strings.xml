@@ -119,4 +119,9 @@
     <string name="db_continue">Продолжить</string>
     <string name="db_error_details">Подробности: %1$s</string>
     <string name="todo_missing_item">Этот элемент больше не существует. Проведите влево, чтобы удалить его.</string>
+    <string name="interval_resume_title">Продолжить тренировку?</string>
+    <string name="interval_resume_message">Эта интервальная тренировка была прервана. Продолжить с того же места?</string>
+    <string name="interval_resume_approximate">Телефон перезагружался, поэтому прошедшее время оценено приблизительно.</string>
+    <string name="interval_resume_confirm">Продолжить</string>
+    <string name="interval_resume_discard">Отменить</string>
 </resources>

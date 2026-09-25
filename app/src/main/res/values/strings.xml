@@ -819,4 +819,9 @@
     <string name="db_continue">Continue</string>
     <string name="db_error_details">Details: %1$s</string>
     <string name="todo_missing_item">This item no longer exists. Swipe left to remove it.</string>
+    <string name="interval_resume_title">Resume workout?</string>
+    <string name="interval_resume_message">This interval workout was interrupted. Continue where it left off?</string>
+    <string name="interval_resume_approximate">The phone restarted, so the time spent away is estimated.</string>
+    <string name="interval_resume_confirm">Resume</string>
+    <string name="interval_resume_discard">Discard</string>
 </resources>

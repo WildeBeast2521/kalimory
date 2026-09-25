@@ -815,4 +815,9 @@
     <string name="db_continue">Continuar</string>
     <string name="db_error_details">Detalles: %1$s</string>
     <string name="todo_missing_item">Este elemento ya no existe. Desliza hacia la izquierda para quitarlo.</string>
+    <string name="interval_resume_title">¿Reanudar el entrenamiento?</string>
+    <string name="interval_resume_message">Este entrenamiento por intervalos se interrumpió. ¿Continuar donde se quedó?</string>
+    <string name="interval_resume_approximate">El teléfono se reinició, así que el tiempo transcurrido es una estimación.</string>
+    <string name="interval_resume_confirm">Reanudar</string>
+    <string name="interval_resume_discard">Descartar</string>
 </resources>

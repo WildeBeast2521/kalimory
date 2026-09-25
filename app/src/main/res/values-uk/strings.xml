@@ -762,4 +762,9 @@
     <string name="db_continue">Продовжити</string>
     <string name="db_error_details">Подробиці: %1$s</string>
     <string name="todo_missing_item">Цей елемент більше не існує. Проведіть ліворуч, щоб видалити його.</string>
+    <string name="interval_resume_title">Продовжити тренування?</string>
+    <string name="interval_resume_message">Це інтервальне тренування було перервано. Продовжити з того самого місця?</string>
+    <string name="interval_resume_approximate">Телефон перезавантажувався, тому минулий час оцінено приблизно.</string>
+    <string name="interval_resume_confirm">Продовжити</string>
+    <string name="interval_resume_discard">Скасувати</string>
 </resources>

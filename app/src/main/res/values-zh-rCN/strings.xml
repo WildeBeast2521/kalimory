@@ -759,4 +759,9 @@
     <string name="db_continue">继续</string>
     <string name="db_error_details">详细信息：%1$s</string>
     <string name="todo_missing_item">此项目已不存在。向左滑动即可移除。</string>
+    <string name="interval_resume_title">继续训练？</string>
+    <string name="interval_resume_message">此间歇训练已中断。要从中断处继续吗？</string>
+    <string name="interval_resume_approximate">手机已重启，因此中断期间的时长为估算值。</string>
+    <string name="interval_resume_confirm">继续</string>
+    <string name="interval_resume_discard">放弃</string>
 </resources>

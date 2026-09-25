@@ -14,6 +14,8 @@ data class WorkoutCheckpoint(
     val savedAtWallMillis: Long,
     /** Settings.Global.BOOT_COUNT when saved, or null when unknown. */
     val bootCount: Int?,
+    /** What the interval screen needs to resume and record the workout; null for other flows. */
+    val interval: IntervalSessionContext? = null,
 ) {
     companion object {
         const val CURRENT_VERSION = 1

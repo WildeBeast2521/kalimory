@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.workout
 
+import kotlinx.serialization.Serializable
+
 enum class IntervalStepType { PREPARE, WORK, REST, ROUND_REST }
 
 /** One interval step. [round] is 1-based; [exerciseIndex] is the exercise that is running or just finished. */
@@ -53,3 +55,21 @@ object IntervalWorkoutPlan {
         IntervalStepType.ROUND_REST -> step.round to exerciseCount
     }
 }
+
+/**
+ * The interval program as it was when the workout started. A resumed workout uses
+ * this snapshot, so later edits to the program do not change it or its record.
+ */
+@Serializable
+data class IntervalSessionContext(
+    val programId: Long,
+    val programName: String,
+    val workSeconds: Int,
+    val restSeconds: Int,
+    val rounds: Int,
+    val roundRestSeconds: Int,
+    val exercises: List<IntervalExerciseSnapshot>,
+)
+
+@Serializable
+data class IntervalExerciseSnapshot(val exerciseId: Long, val name: String, val description: String?)
