@@ -803,4 +803,5 @@
     <string name="program_use_program_desc">Hace uso de los conjuntos y los valores previstos en el programa</string>
     <string name="program_use_challenge_desc">Aplica la configuración de cada ejercicio (si no se define, usa la del programa)</string>
     <string name="program_use_previous_desc">Aplica los valores de tu última sesión (si no hay historial, usa los del programa)</string>
+    <string name="import_anomalies_notice">Elementos que no coinciden con el formato de la app: %1$d. Se importarán sin cambios.</string>
 </resources>

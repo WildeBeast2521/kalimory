@@ -21,7 +21,9 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercises WHERE `group` IS NULL ORDER BY displayOrder ASC")
     suspend fun getUngroupedExercises(): List<Exercise>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    // ABORT, not REPLACE: replacing on the (name, type) unique index would delete the existing
+    // exercise and cascade-delete its training records and program entries.
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertExercise(exercise: Exercise): Long
 
     @Update
@@ -32,6 +34,16 @@ interface ExerciseDao {
 
     @Query("DELETE FROM exercises WHERE id = :id")
     suspend fun deleteExerciseById(id: Long)
+
+    @Query("DELETE FROM todo_tasks WHERE type = 'EXERCISE' AND referenceId = :exerciseId")
+    suspend fun deleteExerciseTodoTasks(exerciseId: Long)
+
+    /** Deletes the exercise (its records and program entries cascade) and its todo tasks together. */
+    @Transaction
+    suspend fun deleteExerciseAndTodoTasks(exercise: Exercise) {
+        deleteExercise(exercise)
+        deleteExerciseTodoTasks(exercise.id)
+    }
 
     @Query("DELETE FROM exercises")
     suspend fun deleteAll()

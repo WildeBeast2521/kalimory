@@ -747,4 +747,5 @@
     <string name="share_import_count_reused">%1$d riutilizzati</string>
     <string name="share_import_count_skipped">%1$d saltati</string>
 
+    <string name="import_anomalies_notice">Elementi che non corrispondono al formato dell\'app: %1$d. Verranno importati senza modifiche.</string>
 </resources>

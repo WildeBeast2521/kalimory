@@ -107,4 +107,5 @@
     <string name="delete_record_warning">Удалить запись \"%1$s\"?\n%2$s %3$s\n%4$d подходов</string>
     <string name="date">Дата</string>
     <string name="time">Время</string>
+    <string name="import_anomalies_notice">Элементы, не соответствующие формату приложения: %1$d. Они будут импортированы без изменений.</string>
 </resources>

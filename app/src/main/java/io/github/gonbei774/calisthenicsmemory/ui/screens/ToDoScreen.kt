@@ -1963,7 +1963,7 @@ fun SearchResultExerciseItem(
 @Composable
 private fun RepeatDaysLabel(repeatDays: String) {
     if (repeatDays.isEmpty()) return
-    val dayNumbers = repeatDays.split(",").map { it.trim().toInt() }
+    val dayNumbers = TodoTask.parseRepeatDays(repeatDays)
     val locale = java.util.Locale.getDefault()
     val dayNames = dayNumbers.map { dayNum ->
         java.time.DayOfWeek.of(dayNum).getDisplayName(java.time.format.TextStyle.SHORT, locale)
@@ -1987,7 +1987,7 @@ private fun RepeatDaysDialog(
     val locale = java.util.Locale.getDefault()
     var selectedDays by remember(currentRepeatDays) {
         val initial = if (currentRepeatDays.isEmpty()) emptySet()
-        else currentRepeatDays.split(",").map { it.trim().toInt() }.toSet()
+        else TodoTask.parseRepeatDays(currentRepeatDays).toSet()
         mutableStateOf(initial)
     }
 

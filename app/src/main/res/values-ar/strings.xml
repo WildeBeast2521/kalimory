@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="import_anomalies_notice">عناصر لا تطابق تنسيق التطبيق: %1$d. سيتم استيرادها دون تغيير.</string>
 </resources>

@@ -43,6 +43,23 @@ data class BackupSummary(
     val todoTasks: Int
 )
 
+/**
+ * A value the database can hold but that does not match what the app writes.
+ * Such rows are restored unchanged and reported rather than rejected, so every
+ * backup this app exports can be restored.
+ */
+enum class BackupAnomalyKind {
+    EXERCISE_MISSING_GROUP,
+    TODO_MISSING_TARGET,
+    TODO_UNKNOWN_TYPE,
+    TODO_INVALID_REPEAT_DAYS,
+    PROGRAM_EXERCISE_FOREIGN_LOOP,
+}
+
+data class BackupAnomaly(val kind: BackupAnomalyKind, val entityId: Long, val detail: String)
+
+data class ParsedBackup(val data: BackupData, val anomalies: List<BackupAnomaly>)
+
 data class ExportedBackup(
     val data: BackupData,
     val json: String,
@@ -66,7 +83,7 @@ class BackupService(
         BackupResult.Failure(BackupFailureKind.DATABASE, e.message ?: "Backup export failed", e)
     }
 
-    fun parse(value: String): BackupResult<BackupData> {
+    fun parse(value: String): BackupResult<ParsedBackup> {
         val data = try {
             json.decodeFromString<BackupData>(value)
         } catch (e: SerializationException) {
@@ -76,7 +93,7 @@ class BackupService(
         }
         return validate(data)?.let {
             BackupResult.Failure(BackupFailureKind.VALIDATION, it)
-        } ?: BackupResult.Success(data)
+        } ?: BackupResult.Success(ParsedBackup(data, anomalies(data)))
     }
 
     suspend fun restore(data: BackupData): BackupResult<BackupSummary> {
@@ -111,15 +128,12 @@ class BackupService(
         duplicateKey("group name", data.groups.map { it.name })?.let { return it }
         duplicateKey("exercise name/type", data.exercises.map { it.name to it.type })?.let { return it }
 
-        val groupNames = data.groups.mapTo(hashSetOf()) { it.name }
         val exerciseIds = data.exercises.mapTo(hashSetOf()) { it.id }
         val programIds = data.programs.mapTo(hashSetOf()) { it.id }
-        val loopById = data.programLoops.associateBy { it.id }
+        val loopIds = data.programLoops.mapTo(hashSetOf()) { it.id }
         val intervalProgramIds = data.intervalPrograms.mapTo(hashSetOf()) { it.id }
 
-        data.exercises.firstOrNull { it.group != null && it.group !in groupNames }?.let {
-            return "Exercise ${it.id} references missing group ${it.group}"
-        }
+        // These references are foreign keys in the database, so no exported backup can break them.
         data.records.firstOrNull { it.exerciseId !in exerciseIds }?.let {
             return "Record ${it.id} references missing exercise ${it.exerciseId}"
         }
@@ -129,31 +143,58 @@ class BackupService(
         data.programExercises.forEach {
             if (it.programId !in programIds) return "Program exercise ${it.id} references missing program ${it.programId}"
             if (it.exerciseId !in exerciseIds) return "Program exercise ${it.id} references missing exercise ${it.exerciseId}"
-            val loop = it.loopId?.let(loopById::get)
-            if (it.loopId != null && loop == null) return "Program exercise ${it.id} references missing loop ${it.loopId}"
-            if (loop != null && loop.programId != it.programId) return "Program exercise ${it.id} references a loop from another program"
+            if (it.loopId != null && it.loopId !in loopIds) return "Program exercise ${it.id} references missing loop ${it.loopId}"
         }
         data.intervalProgramExercises.forEach {
             if (it.programId !in intervalProgramIds) return "Interval program exercise ${it.id} references missing interval program ${it.programId}"
             if (it.exerciseId !in exerciseIds) return "Interval program exercise ${it.id} references missing exercise ${it.exerciseId}"
         }
-        data.todoTasks.forEach {
-            if (it.repeatDays.isNotEmpty()) {
-                val days = it.repeatDays.split(',').map { token -> token.trim().toIntOrNull() }
-                if (days.any { day -> day == null || day !in 1..7 } || days.distinct().size != days.size) {
-                    return "Todo task ${it.id} has invalid repeat days ${it.repeatDays}"
-                }
+        return null
+    }
+
+    /** Values without a database constraint that differ from what the app writes; restored unchanged. */
+    fun anomalies(data: BackupData): List<BackupAnomaly> {
+        val anomalies = mutableListOf<BackupAnomaly>()
+        val groupNames = data.groups.mapTo(hashSetOf()) { it.name }
+        val groupIds = data.groups.mapTo(hashSetOf()) { it.id }
+        val exerciseIds = data.exercises.mapTo(hashSetOf()) { it.id }
+        val programIds = data.programs.mapTo(hashSetOf()) { it.id }
+        val loopById = data.programLoops.associateBy { it.id }
+        val intervalProgramIds = data.intervalPrograms.mapTo(hashSetOf()) { it.id }
+
+        data.exercises.filter { it.group != null && it.group !in groupNames }.forEach {
+            anomalies += BackupAnomaly(BackupAnomalyKind.EXERCISE_MISSING_GROUP, it.id, "Exercise ${it.id} references missing group ${it.group}")
+        }
+        data.programExercises.forEach {
+            val loop = it.loopId?.let(loopById::get)
+            if (loop != null && loop.programId != it.programId) {
+                anomalies += BackupAnomaly(
+                    BackupAnomalyKind.PROGRAM_EXERCISE_FOREIGN_LOOP, it.id,
+                    "Program exercise ${it.id} in program ${it.programId} uses loop ${loop.id} of program ${loop.programId}",
+                )
             }
-            val valid = when (it.type) {
+        }
+        data.todoTasks.forEach {
+            if (!TodoTask.isValidRepeatDays(it.repeatDays)) {
+                anomalies += BackupAnomaly(BackupAnomalyKind.TODO_INVALID_REPEAT_DAYS, it.id, "Todo task ${it.id} has invalid repeat days ${it.repeatDays}")
+            }
+            val targetExists = when (it.type) {
                 TodoTask.TYPE_EXERCISE -> it.referenceId in exerciseIds
-                TodoTask.TYPE_GROUP -> data.groups.any { group -> group.id == it.referenceId }
+                TodoTask.TYPE_GROUP -> it.referenceId in groupIds
                 TodoTask.TYPE_PROGRAM -> it.referenceId in programIds
                 TodoTask.TYPE_INTERVAL -> it.referenceId in intervalProgramIds
-                else -> return "Todo task ${it.id} has unknown type ${it.type}"
+                else -> null
             }
-            if (!valid) return "Todo task ${it.id} references missing ${it.type.lowercase()} ${it.referenceId}"
+            when (targetExists) {
+                null -> anomalies += BackupAnomaly(BackupAnomalyKind.TODO_UNKNOWN_TYPE, it.id, "Todo task ${it.id} has unknown type ${it.type}")
+                false -> anomalies += BackupAnomaly(
+                    BackupAnomalyKind.TODO_MISSING_TARGET, it.id,
+                    "Todo task ${it.id} references missing ${it.type.lowercase()} ${it.referenceId}",
+                )
+                true -> Unit
+            }
         }
-        return null
+        return anomalies
     }
 
     private fun duplicateId(label: String, ids: List<Long>): String? {

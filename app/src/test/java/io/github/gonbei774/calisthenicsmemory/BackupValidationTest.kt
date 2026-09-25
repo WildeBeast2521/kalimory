@@ -71,10 +71,9 @@ class BackupValidationTest {
         }
     }
 
-    @Test fun `rejects every broken reference class`() {
+    @Test fun `rejects references the database enforces with foreign keys`() {
         val base = valid()
         val cases = listOf(
-            base.copy(exercises = listOf(base.exercises.first().copy(group = "Missing"))) to "missing group",
             base.copy(records = listOf(base.records.first().copy(exerciseId = 99))) to "missing exercise",
             base.copy(programLoops = listOf(base.programLoops.first().copy(programId = 99))) to "missing program",
             base.copy(programExercises = listOf(base.programExercises.first().copy(programId = 99, loopId = null))) to "missing program",
@@ -82,51 +81,63 @@ class BackupValidationTest {
             base.copy(programExercises = listOf(base.programExercises.first().copy(loopId = 99))) to "missing loop",
             base.copy(intervalProgramExercises = listOf(base.intervalProgramExercises.first().copy(programId = 99))) to "missing interval program",
             base.copy(intervalProgramExercises = listOf(base.intervalProgramExercises.first().copy(exerciseId = 99))) to "missing exercise",
-            base.copy(todoTasks = listOf(ExportTodoTask(10, "EXERCISE", 99, 0))) to "missing exercise",
-            base.copy(todoTasks = listOf(ExportTodoTask(10, "GROUP", 99, 0))) to "missing group",
-            base.copy(todoTasks = listOf(ExportTodoTask(10, "PROGRAM", 99, 0))) to "missing program",
-            base.copy(todoTasks = listOf(ExportTodoTask(10, "INTERVAL", 99, 0))) to "missing interval",
-            base.copy(todoTasks = listOf(ExportTodoTask(10, "UNKNOWN", 99, 0))) to "unknown type"
         )
         cases.forEach { (data, message) -> assertInvalid(data, message) }
     }
 
-    @Test fun `rejects a loop belonging to another program`() {
-        val base = valid()
-        assertInvalid(
-            base.copy(programExercises = listOf(base.programExercises.first().copy(programId = 14))),
-            "another program"
-        )
+    private fun assertAcceptedWith(data: BackupData, vararg expected: Pair<BackupAnomalyKind, Long>) {
+        val result = service.parse(json.encodeToString(data))
+        assertTrue("Expected success for $data, got $result", result is BackupResult.Success)
+        val parsed = (result as BackupResult.Success).value
+        assertEquals(data, parsed.data)
+        assertEquals(expected.toList(), parsed.anomalies.map { it.kind to it.entityId })
     }
 
-    @Test fun `validates todo repeat days`() {
+    @Test fun `accepts and reports values the database can hold without constraints`() {
         val base = valid()
+        val todo = base.todoTasks.first()
+        assertAcceptedWith(
+            base.copy(exercises = listOf(base.exercises.first().copy(group = "Missing"))),
+            BackupAnomalyKind.EXERCISE_MISSING_GROUP to 2L,
+        )
+        assertAcceptedWith(
+            base.copy(todoTasks = listOf(
+                ExportTodoTask(10, "EXERCISE", 99, 0), ExportTodoTask(11, "GROUP", 99, 1),
+                ExportTodoTask(12, "PROGRAM", 99, 2), ExportTodoTask(13, "INTERVAL", 99, 3),
+            )),
+            BackupAnomalyKind.TODO_MISSING_TARGET to 10L, BackupAnomalyKind.TODO_MISSING_TARGET to 11L,
+            BackupAnomalyKind.TODO_MISSING_TARGET to 12L, BackupAnomalyKind.TODO_MISSING_TARGET to 13L,
+        )
+        assertAcceptedWith(
+            base.copy(todoTasks = listOf(ExportTodoTask(10, "UNKNOWN", 99, 0))),
+            BackupAnomalyKind.TODO_UNKNOWN_TYPE to 10L,
+        )
+        // The loop belongs to program 4; the exercise is moved to program 14.
+        assertAcceptedWith(
+            base.copy(programExercises = listOf(base.programExercises.first().copy(programId = 14))),
+            BackupAnomalyKind.PROGRAM_EXERCISE_FOREIGN_LOOP to 6L,
+        )
         listOf("x", "0", "8", "1,,2", "1,1").forEach { repeatDays ->
-            assertInvalid(
-                base.copy(todoTasks = listOf(base.todoTasks.first().copy(repeatDays = repeatDays))),
-                "repeat days"
+            assertAcceptedWith(
+                base.copy(todoTasks = listOf(todo.copy(repeatDays = repeatDays))),
+                BackupAnomalyKind.TODO_INVALID_REPEAT_DAYS to 10L,
             )
         }
-
-        val scheduled = base.copy(
-            todoTasks = listOf(base.todoTasks.first().copy(repeatDays = "1, 3,7"))
-        )
-        val result = service.parse(json.encodeToString(scheduled))
-        assertTrue("Expected valid repeat schedule, got $result", result is BackupResult.Success)
-        assertEquals(scheduled, (result as BackupResult.Success).value)
+        assertAcceptedWith(base.copy(todoTasks = listOf(todo.copy(repeatDays = "1, 3,7"))))
     }
 
     @Test fun `accepts legacy defaults`() {
         val legacy = """{"version":1,"exportDate":"old","app":"CalisthenicsMemory","groups":[],"exercises":[],"records":[]}"""
         val result = service.parse(legacy)
         assertTrue(result is BackupResult.Success)
-        assertTrue((result as BackupResult.Success).value.programs.isEmpty())
-        assertTrue(result.value.todoTasks.isEmpty())
+        assertTrue((result as BackupResult.Success).value.data.programs.isEmpty())
+        assertTrue(result.value.data.todoTasks.isEmpty())
+        assertTrue(result.value.anomalies.isEmpty())
     }
 
     @Test fun `accepts a complete version 8 backup`() {
         val result = service.parse(json.encodeToString(valid()))
         assertTrue("Expected success, got $result", result is BackupResult.Success)
-        assertEquals(valid(), (result as BackupResult.Success).value)
+        assertEquals(ParsedBackup(valid(), emptyList()), (result as BackupResult.Success).value)
     }
 }

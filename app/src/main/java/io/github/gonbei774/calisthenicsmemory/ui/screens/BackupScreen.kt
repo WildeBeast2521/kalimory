@@ -50,6 +50,7 @@ fun BackupScreen(
     var importGroupCount by remember { mutableStateOf(0) }
     var importExerciseCount by remember { mutableStateOf(0) }
     var importRecordCount by remember { mutableStateOf(0) }
+    var importAnomalyCount by remember { mutableIntStateOf(0) }
     var isLoading by remember { mutableStateOf(false) }
 
     // JSONエクスポート用ランチャー
@@ -141,8 +142,9 @@ fun BackupScreen(
                     viewModel.showWrongFileTypeMessage(detected = "share", expected = "backup")
                 } else when (val parsed = viewModel.parseBackupData(jsonData)) {
                     is BackupResult.Success -> {
-                        val backupData = parsed.value
+                        val backupData = parsed.value.data
                         pendingImportData = backupData
+                        importAnomalyCount = parsed.value.anomalies.size
                         importFileName = fileName
                         importGroupCount = backupData.groups.size
                         importExerciseCount = backupData.exercises.size
@@ -475,6 +477,15 @@ fun BackupScreen(
                                 )
                             }
                         }
+                    }
+
+                    if (importAnomalyCount > 0) {
+                        Text(
+                            text = stringResource(R.string.import_anomalies_notice, importAnomalyCount),
+                            fontSize = 14.sp,
+                            color = Amber500,
+                            lineHeight = 20.sp
+                        )
                     }
 
                     Text(

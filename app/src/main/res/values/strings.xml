@@ -807,4 +807,5 @@
     <string name="share_import_errors">Errors (%1$d)</string>
     <string name="share_import_count_reused">%1$d reused</string>
     <string name="share_import_count_skipped">%1$d skipped</string>
+    <string name="import_anomalies_notice">Items that do not match what the app writes: %1$d. They will be imported unchanged.</string>
 </resources>
