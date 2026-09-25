@@ -4,7 +4,7 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Room schema and migration hardening, branch `work/room-schema-safety` (worktree `CalisthenicsMemory-worktrees/room-schema-safety`), based on master `6aa07a3`. Pull request against `master` open; merge only after CI is green on the PR.
+Room schema and migration hardening is complete. PR #2 (https://github.com/WildeBeast2521/CalisthenicsMemory/pull/2) merged into `master` as `0efcfb1` after its CI run 36123425188 passed both jobs. The post-merge `master` run 36124399180 also passed both jobs. No phase is in progress.
 
 | Phase | State |
 |:---|:---|
@@ -13,9 +13,9 @@ Room schema and migration hardening, branch `work/room-schema-safety` (worktree 
 | C — centralize migration registration | Done, self-reviewed |
 | D — repair and expand migration tests | Done, run on emulator |
 | E — semantic migration preservation | Done, run on emulator |
-| F — CI migration gate (emulator) | Workflow committed; first CI result pending on the PR |
+| F — CI migration gate (emulator) | Done; PR CI ran 63 instrumentation tests on an API 29 emulator and passed |
 
-## Completed commits on this branch
+## Commits merged by PR #2
 
 - `5301586` docs: declare supported database versions
 - `7ea6e1e` docs: tighten unsupported database recovery guidance
@@ -36,6 +36,7 @@ Room schema and migration hardening, branch `work/room-schema-safety` (worktree 
 - `./gradlew --no-daemon :app:connectedDebugAndroidTest` on AVD `floor_api29` (Android SDK built for x86_64, API 29), started with `-read-only -no-snapshot`: 63 tests, 0 failures, at `f0a3f06` sources.
 - `SCHEMA_BASE_REF=6aa07a3 scripts/check-room-schemas.sh --no-daemon`: PASS with schemas 9–21.
 - GitHub Actions run 36120561721 (workflow_dispatch at `248f9b2`): success, including the schema check with all 13 files.
+- GitHub Actions run 36123425188 (PR #2 at `2c940f2`): `Verify debug build` passed (schema check against the PR base, unit tests, lint, debug build, androidTest compilation); `Instrumentation tests (API 29 emulator)` passed, running 63 tests.
 - Negative checks: drift check fails on tampered identity hash, tampered field, committed modification or deletion, bad base ref; `MigrationRegistrationTest` fails without `MIGRATION_15_16`; `MigrationPathTest` from 9 fails when the 9→10 tie-break is reversed; before the header guard, opening a version 8 or 22 rollback-journal database changed header bytes 18, 19, 27, 95.
 - Each historical schema is byte-identical to the output of `scripts/recover-historical-room-schema.sh` for its introducing commit.
 
@@ -60,8 +61,10 @@ Room schema and migration hardening, branch `work/room-schema-safety` (worktree 
 
 ## Next task
 
-1. Read back the PR's CI result, including the new instrumentation job. Fix the workflow if the emulator job fails for environment reasons; do not weaken tests.
-2. Merge when CI is green, verify remote `master`, and fast-forward the primary checkout.
-3. Then choose the next phase from `docs/plans/2026-08-30-overhaul-bootstrap.md` and the ADRs. Candidates: a user-facing screen for `UnsupportedDatabaseVersionException`; a corruption handler that preserves the file instead of deleting it.
+1. Choose the next phase from `docs/plans/2026-08-30-overhaul-bootstrap.md` and the ADRs in `docs/architecture/`.
+2. Candidates from this phase's limitations:
+   - a user-facing screen for `UnsupportedDatabaseVersionException` instead of a start-up crash;
+   - a corruption callback that preserves the database file instead of deleting it.
+3. Start each on a new branch and worktree from `master`.
 
-Files likely involved next: `.github/workflows/android-ci.yml`, `app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt`, the app start-up path that calls `AppDatabase.getDatabase`.
+Files likely involved next: `app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt`, `app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/InstalledDatabaseVersion.kt`, the start-up path that calls `AppDatabase.getDatabase`.
