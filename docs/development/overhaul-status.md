@@ -4,18 +4,17 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 6, durable workout timer spike, branch `work/workout-state-machine`, based on master `eaa7dd9`. The PR follows these checks. The contract and remaining integration work are in `docs/development/workout-timer-spike.md`.
+Task 6 integration, branch `work/interval-reducer`, based on master `8085783`. The PR follows these checks.
 
-- `feat: add a pure workout state reducer`.
-- `feat: checkpoint workout timer state durably`.
+- `feat: drive the interval workout timer from the workout reducer`.
 - Verification:
-  - Full gate: PASS (264 unit tests, 27 of them in `workout`; no new lint findings).
-  - `connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.package=...workout` on `floor_api29`: 1 test, 0 failures.
-  - Mutation: starting the next countdown at the tick time instead of the deadline fails the late-tick test.
-- Not yet done:
-  - UI and service integration;
-  - the service-teardown check;
-  - the manual screen-off, process-kill, and reboot protocol.
+  - Gate PASS (269 unit tests, no new lint findings).
+  - `connectedDebugAndroidTest` on `floor_api29`: 78 tests, 0 failures.
+  - Manual timing on the installed app: screen-off run 36.4 s against 35 s, pause run 46.4 s against 45.3 s, both within detection latency. Stop-early progress matches the legacy rules.
+
+## Previous phase: Task 6 spike (merged)
+
+PR #10 merged as `8085783`; PR CI run 36160581697 and post-merge `master` run 36161423810 passed. It added the pure reducer, checkpoint, recovery, and atomic store.
 
 ## Previous phase: missing group rows (merged)
 
@@ -104,10 +103,10 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Integrate the spike into one execution flow, starting with the smallest: the interval execution screen or the start countdown.
-   - Drive it from `WorkoutReducer` and render from `remainingInStep`.
-   - Checkpoint on each accepted event, restore on start-up, and clear on finish or abandon.
-2. Make `WorkoutTimerService` an adapter and verify it releases its wake lock.
-3. Run and record the manual API 26+ protocol described in `docs/development/workout-timer-spike.md`.
+1. Interval checkpointing.
+   - Save a `WorkoutCheckpoint` with the program id on each accepted non-tick event, and clear it on finish, stop, or save.
+   - On opening the interval screen, or at start-up, offer to resume. Recover with `WorkoutRecovery` and show when the timing is approximate.
+   - Verify with `adb shell am kill` during a rest.
+2. Then move program and single-exercise execution onto the reducer, make `WorkoutTimerService` an adapter, and run the remaining reboot and clock-change protocol.
 
-Files likely involved next: `app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/IntervalExecutionScreen.kt`, `ui/components/program/ProgramIntervalComponents.kt`, `service/WorkoutTimerService.kt`, `workout/*`.
+Files likely involved next: `ui/screens/IntervalExecutionScreen.kt`, `workout/WorkoutCheckpoint.kt`, `workout/WorkoutCheckpointStore.kt`, `ui/screens/IntervalListScreen.kt`.

@@ -1,6 +1,6 @@
 # Durable workout timer spike (Task 6)
 
-Status: the pure core and the checkpoint layer are done. Nothing in the app uses them yet.
+Status: the pure core and the checkpoint layer are done. The interval screen runs on the reducer; it does not checkpoint yet.
 
 ## Problem
 
@@ -28,7 +28,7 @@ Tests: `WorkoutReducerTest` (16), `WorkoutTimerRecoveryTest` (6), and `WorkoutCh
 
 ## Not done yet (integration)
 
-- Drive one execution screen, starting with the interval screen or the start countdown, from the reducer. Render from `remainingInStep(clock.nowMillis())` on a display tick instead of counting.
+- Done for the interval screen (`IntervalWorkoutPlan` plus a 100 ms render tick). On the floor_api29 AVD, a 35 s program with the screen off for 12 s completed at 36.4 s (detection latency included), and a 10.3 s pause gave 46.4 s against 45.3 s expected. Still to move over: program and single-exercise execution.
 - Save a checkpoint on every accepted non-tick event, restore it on start-up, and clear it on finish or abandon.
 - Make `WorkoutTimerService` an adapter: it shows state and forwards user actions and never makes domain decisions. Verify it releases its wake lock on teardown.
 - Run the manual API 26+ protocol and record the results: screen off during a countdown, app in the background, process killed with `adb shell am kill`, device reboot, and a wall-clock change. For each, note the observed drift and the recovery timing.
