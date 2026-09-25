@@ -344,8 +344,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun deleteExercise(exercise: Exercise) {
         viewModelScope.launch {
             try {
-                exerciseDao.deleteExercise(exercise)
-                todoTaskDao.deleteByReference(TodoTask.TYPE_EXERCISE, exercise.id)
+                exerciseDao.deleteExerciseAndTodoTasks(exercise)
                 _snackbarMessage.value = UiMessage.ExerciseDeleted
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
@@ -495,17 +494,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             flushGroupOrder()
             try {
-                // 1. グループテーブルを更新
-                val group = groupDao.getGroupByName(oldName)
-                if (group != null) {
-                    groupDao.updateGroup(group.copy(name = newName))
-                }
-
-                // 2. 種目のgroupフィールドも更新
-                val affectedExercises = exercises.value.filter { it.group == oldName }
-                affectedExercises.forEach { exercise ->
-                    exerciseDao.updateExercise(exercise.copy(group = newName))
-                }
+                // グループと種目のgroupフィールドを1トランザクションで更新
+                groupDao.renameGroupAndExercises(oldName, newName)
 
                 _snackbarMessage.value = UiMessage.GroupRenamed
             } catch (e: Exception) {
@@ -518,20 +508,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             flushGroupOrder()
             try {
-                // ToDoの連動削除（グループ削除前にIDを取得）
-                val group = groupDao.getGroupByName(groupName)
-                if (group != null) {
-                    todoTaskDao.deleteByReference(TodoTask.TYPE_GROUP, group.id)
-                }
-
-                // 1. グループテーブルから削除
-                groupDao.deleteGroupByName(groupName)
-
-                // 2. 種目のgroupをnullに
-                val affectedExercises = exercises.value.filter { it.group == groupName }
-                affectedExercises.forEach { exercise ->
-                    exerciseDao.updateExercise(exercise.copy(group = null, sortOrder = 0))
-                }
+                // ToDo・グループ削除と種目のグループ解除を1トランザクションで実行
+                groupDao.deleteGroupAndUngroupExercises(groupName)
 
                 _snackbarMessage.value = UiMessage.GroupDeleted
             } catch (e: Exception) {

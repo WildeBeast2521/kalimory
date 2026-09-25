@@ -33,6 +33,16 @@ interface ExerciseDao {
     @Query("DELETE FROM exercises WHERE id = :id")
     suspend fun deleteExerciseById(id: Long)
 
+    @Query("DELETE FROM todo_tasks WHERE type = 'EXERCISE' AND referenceId = :exerciseId")
+    suspend fun deleteExerciseTodoTasks(exerciseId: Long)
+
+    /** Deletes the exercise (its records and program entries cascade) and its todo tasks together. */
+    @Transaction
+    suspend fun deleteExerciseAndTodoTasks(exercise: Exercise) {
+        deleteExercise(exercise)
+        deleteExerciseTodoTasks(exercise.id)
+    }
+
     @Query("DELETE FROM exercises")
     suspend fun deleteAll()
 
