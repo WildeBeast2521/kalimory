@@ -786,4 +786,9 @@
     <string name="db_continue">Weiter</string>
     <string name="db_error_details">Details: %1$s</string>
     <string name="todo_missing_item">Dieser Eintrag existiert nicht mehr. Nach links wischen, um ihn zu entfernen.</string>
+    <string name="interval_resume_title">Training fortsetzen?</string>
+    <string name="interval_resume_message">Dieses Intervalltraining wurde unterbrochen. An der Stelle fortsetzen, an der es aufgehört hat?</string>
+    <string name="interval_resume_approximate">Das Telefon wurde neu gestartet, daher ist die vergangene Zeit geschätzt.</string>
+    <string name="interval_resume_confirm">Fortsetzen</string>
+    <string name="interval_resume_discard">Verwerfen</string>
 </resources>

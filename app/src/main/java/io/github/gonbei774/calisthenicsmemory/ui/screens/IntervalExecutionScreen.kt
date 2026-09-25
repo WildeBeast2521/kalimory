@@ -40,7 +40,16 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.util.FlashController
 import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
+import io.github.gonbei774.calisthenicsmemory.workout.IntervalExerciseSnapshot
+import io.github.gonbei774.calisthenicsmemory.workout.IntervalSessionContext
 import io.github.gonbei774.calisthenicsmemory.workout.IntervalStepType
+import io.github.gonbei774.calisthenicsmemory.workout.RecoveredWorkout
+import io.github.gonbei774.calisthenicsmemory.workout.RecoveryTiming
+import io.github.gonbei774.calisthenicsmemory.workout.Transition
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutCheckpoint
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutCheckpointStore
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutRecovery
+import io.github.gonbei774.calisthenicsmemory.workout.currentBootCount
 import io.github.gonbei774.calisthenicsmemory.workout.IntervalWorkoutPlan
 import io.github.gonbei774.calisthenicsmemory.workout.MonotonicClock
 import io.github.gonbei774.calisthenicsmemory.workout.StepKind
@@ -50,9 +59,13 @@ import io.github.gonbei774.calisthenicsmemory.workout.WorkoutEvent
 import io.github.gonbei774.calisthenicsmemory.workout.WorkoutReducer
 import io.github.gonbei774.calisthenicsmemory.workout.WorkoutState
 import io.github.gonbei774.calisthenicsmemory.workout.WorkoutStatus
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
+import java.io.File
+import java.util.concurrent.Executors
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -86,6 +99,8 @@ private sealed class IntervalPhase {
         val isFullCompletion: Boolean
     ) : IntervalPhase()
 }
+
+private const val INTERVAL_CHECKPOINT_FILE = "interval-workout-checkpoint.json"
 
 /** Whole seconds shown for [remainingMillis]: 0.1 s left still shows 1. */
 private fun displaySeconds(remainingMillis: Long): Int = ((remainingMillis + 999) / 1_000).toInt()
@@ -123,6 +138,35 @@ fun IntervalExecutionScreen(
     var showExitDialog by remember { mutableStateOf(false) }
     var showUnsavedDialog by remember { mutableStateOf(false) }
 
+    // Checkpoint: survives process death. Writes run in order on one background thread,
+    // independent of composition, so a save is never cancelled half-way.
+    val checkpointStore = remember { WorkoutCheckpointStore(File(context.filesDir, INTERVAL_CHECKPOINT_FILE)) }
+    val checkpointWriter = remember { Executors.newSingleThreadExecutor() }
+    var sessionContext by remember { mutableStateOf<IntervalSessionContext?>(null) }
+    var pendingResume by remember { mutableStateOf<Pair<RecoveredWorkout, IntervalSessionContext>?>(null) }
+
+    fun saveCheckpoint(state: WorkoutState) {
+        val interval = sessionContext ?: return
+        val checkpoint = WorkoutCheckpoint(
+            state = state,
+            savedAtMonotonicMillis = clock.nowMillis(),
+            savedAtWallMillis = System.currentTimeMillis(),
+            bootCount = currentBootCount(context),
+            interval = interval
+        )
+        checkpointWriter.execute {
+            try {
+                checkpointStore.save(checkpoint)
+            } catch (e: java.io.IOException) {
+                android.util.Log.e("IntervalCheckpoint", "Could not save the interval checkpoint", e)
+            }
+        }
+    }
+
+    fun clearCheckpoint() {
+        checkpointWriter.execute { checkpointStore.clear() }
+    }
+
     // Load program data
     LaunchedEffect(programId) {
         val loadedProgram = viewModel.getIntervalProgramById(programId)
@@ -149,6 +193,16 @@ fun IntervalExecutionScreen(
             }
         exercises = resolved
         phase = IntervalPhase.Confirm(loadedProgram, resolved)
+
+        // Offer to resume a workout of this program that the system interrupted.
+        val saved = withContext(Dispatchers.IO) { checkpointStore.load() }
+        val checkpoint = (saved as? WorkoutCheckpointStore.LoadResult.Found)?.checkpoint
+        val interval = checkpoint?.interval
+        if (checkpoint != null && interval != null && interval.programId == programId) {
+            pendingResume = WorkoutRecovery.recover(
+                checkpoint, clock.nowMillis(), System.currentTimeMillis(), currentBootCount(context)
+            ) to interval
+        }
     }
 
     // Keep screen on
@@ -182,6 +236,8 @@ fun IntervalExecutionScreen(
             soundPlayer.release()
             flashController.turnOff()
             WorkoutTimerService.stopService(context)
+            // Queued checkpoint writes still finish; no new ones are accepted.
+            checkpointWriter.shutdown()
         }
     }
 
@@ -225,6 +281,7 @@ fun IntervalExecutionScreen(
                     val (completedRounds, completedExInLast) =
                         IntervalWorkoutPlan.progressWhenStopped(step, exercises.size)
                     workout = WorkoutReducer.reduce(caughtUp, WorkoutEvent.Abandon(now)).state
+                    clearCheckpoint()
 
                     phase = IntervalPhase.Complete(
                         completedRounds = completedRounds,
@@ -238,6 +295,71 @@ fun IntervalExecutionScreen(
             dismissButton = {
                 TextButton(onClick = { showExitDialog = false }) {
                     Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                }
+            }
+        )
+    }
+
+    // Resume dialog for a workout the system interrupted
+    pendingResume?.let { (recovered, interval) ->
+        AlertDialog(
+            onDismissRequest = {},
+            containerColor = appColors.cardBackground,
+            title = {
+                Text(
+                    stringResource(R.string.interval_resume_title),
+                    color = appColors.textPrimary,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(stringResource(R.string.interval_resume_message), color = appColors.textTertiary)
+                    if (recovered.timing != RecoveryTiming.EXACT) {
+                        Text(stringResource(R.string.interval_resume_approximate), color = appColors.textTertiary)
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    pendingResume = null
+                    program = IntervalProgram(
+                        id = interval.programId,
+                        name = interval.programName,
+                        workSeconds = interval.workSeconds,
+                        restSeconds = interval.restSeconds,
+                        rounds = interval.rounds,
+                        roundRestSeconds = interval.roundRestSeconds
+                    )
+                    exercises = interval.exercises.map { IntervalExerciseInfo(it.exerciseId, it.name, it.description) }
+                    sessionContext = interval
+                    val now = clock.nowMillis()
+                    val resumed = WorkoutReducer.reduce(recovered.state, WorkoutEvent.Tick(now)).state
+                    workout = resumed
+                    nowMillis = now
+                    // Countdowns that ended while the app was gone get no sound now.
+                    observedResultCount = resumed.results.size
+                    if (resumed.status == WorkoutStatus.FINISHED) {
+                        clearCheckpoint()
+                        phase = IntervalPhase.Complete(
+                            completedRounds = interval.rounds,
+                            completedExercisesInLastRound = interval.exercises.size,
+                            isFullCompletion = true
+                        )
+                    } else {
+                        saveCheckpoint(resumed)
+                        phase = IntervalPhase.Running
+                    }
+                }) {
+                    Text(stringResource(R.string.interval_resume_confirm), color = Orange600)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    pendingResume = null
+                    clearCheckpoint()
+                }) {
+                    Text(stringResource(R.string.interval_resume_discard), color = Red600)
                 }
             }
         )
@@ -302,6 +424,7 @@ fun IntervalExecutionScreen(
                 }
             }
             if (state.status == WorkoutStatus.FINISHED) {
+                clearCheckpoint()
                 phase = IntervalPhase.Complete(
                     completedRounds = program?.rounds ?: 0,
                     completedExercisesInLastRound = exercises.size,
@@ -328,8 +451,10 @@ fun IntervalExecutionScreen(
         val current = workout ?: return
         val now = clock.nowMillis()
         val event = if (current.timer is StepTimer.Paused) WorkoutEvent.Resume(now) else WorkoutEvent.Pause(now)
-        workout = WorkoutReducer.reduce(current, event).state
+        val transition = WorkoutReducer.reduce(current, event)
+        workout = transition.state
         nowMillis = now
+        if (transition is Transition.Accepted) saveCheckpoint(transition.state)
     }
 
     fun skipCurrentStep() {
@@ -339,6 +464,7 @@ fun IntervalExecutionScreen(
         workout = transition.state
         observedResultCount = transition.state.results.size
         nowMillis = now
+        if (transition is Transition.Accepted) saveCheckpoint(transition.state)
     }
 
     // Main content
@@ -363,9 +489,22 @@ fun IntervalExecutionScreen(
                         p.workSeconds, p.restSeconds, p.rounds, p.roundRestSeconds, currentPhase.exercises.size
                     )
                     val now = clock.nowMillis()
-                    workout = WorkoutReducer.reduce(WorkoutState(steps), WorkoutEvent.Start(now)).state
+                    val started = WorkoutReducer.reduce(WorkoutState(steps), WorkoutEvent.Start(now)).state
+                    workout = started
                     nowMillis = now
                     observedResultCount = 0
+                    sessionContext = IntervalSessionContext(
+                        programId = p.id,
+                        programName = p.name,
+                        workSeconds = p.workSeconds,
+                        restSeconds = p.restSeconds,
+                        rounds = p.rounds,
+                        roundRestSeconds = p.roundRestSeconds,
+                        exercises = currentPhase.exercises.map {
+                            IntervalExerciseSnapshot(it.exerciseId, it.name, it.description)
+                        }
+                    )
+                    saveCheckpoint(started)
                     phase = IntervalPhase.Running
                 },
                 onBack = onNavigateBack

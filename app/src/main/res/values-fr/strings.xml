@@ -756,4 +756,9 @@
     <string name="db_continue">Continuer</string>
     <string name="db_error_details">Détails : %1$s</string>
     <string name="todo_missing_item">Cet élément n\'existe plus. Balaie vers la gauche pour le retirer.</string>
+    <string name="interval_resume_title">Reprendre l\'entraînement ?</string>
+    <string name="interval_resume_message">Cet entraînement par intervalles a été interrompu. Reprendre là où il s\'est arrêté ?</string>
+    <string name="interval_resume_approximate">Le téléphone a redémarré, le temps écoulé est donc estimé.</string>
+    <string name="interval_resume_confirm">Reprendre</string>
+    <string name="interval_resume_discard">Abandonner</string>
 </resources>

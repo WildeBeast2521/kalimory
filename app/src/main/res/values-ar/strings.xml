@@ -12,4 +12,9 @@
     <string name="db_continue">متابعة</string>
     <string name="db_error_details">التفاصيل: %1$s</string>
     <string name="todo_missing_item">لم يعد هذا العنصر موجودًا. اسحب لليسار لإزالته.</string>
+    <string name="interval_resume_title">استئناف التمرين؟</string>
+    <string name="interval_resume_message">تمت مقاطعة تمرين الفترات هذا. هل تريد المتابعة من حيث توقف؟</string>
+    <string name="interval_resume_approximate">أُعيد تشغيل الهاتف، لذا فالوقت المنقضي تقديري.</string>
+    <string name="interval_resume_confirm">استئناف</string>
+    <string name="interval_resume_discard">تجاهل</string>
 </resources>
