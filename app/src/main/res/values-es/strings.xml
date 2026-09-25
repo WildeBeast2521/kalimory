@@ -804,4 +804,14 @@
     <string name="program_use_challenge_desc">Aplica la configuración de cada ejercicio (si no se define, usa la del programa)</string>
     <string name="program_use_previous_desc">Aplica los valores de tu última sesión (si no hay historial, usa los del programa)</string>
     <string name="import_anomalies_notice">Elementos que no coinciden con el formato de la app: %1$d. Se importarán sin cambios.</string>
+    <string name="db_unavailable_title">No se pudieron abrir tus datos de entrenamiento</string>
+    <string name="db_unavailable_unsupported">Esta base de datos (versión %1$d) se creó con una versión de la app que esta compilación no puede actualizar. No se cambió ni se eliminó nada.</string>
+    <string name="db_unavailable_open_failed">No se pudo abrir la base de datos. No se eliminó nada.</string>
+    <string name="db_unavailable_corruption_reported">La base de datos informó de daños anteriormente. Se guardó una copia de los archivos dañados. Es posible que algunos datos no se carguen.</string>
+    <string name="db_unavailable_export_hint">Exporta los archivos de la base de datos y guárdalos. No desinstales la app ni borres su almacenamiento: eso eliminaría los datos.</string>
+    <string name="db_export_files">Exportar archivos de la base de datos</string>
+    <string name="db_export_done">Archivos de la base de datos exportados.</string>
+    <string name="db_export_failed">Error al exportar: %1$s</string>
+    <string name="db_continue">Continuar</string>
+    <string name="db_error_details">Detalles: %1$s</string>
 </resources>

@@ -61,7 +61,21 @@ internal class CorruptionPreservingOpenHelperFactory(
 internal object DatabaseQuarantine {
     private val SIDECAR_SUFFIXES = listOf("", "-wal", "-shm", "-journal")
 
+    private const val ACKNOWLEDGED_MARKER = "ACKNOWLEDGED"
+
     fun directoryFor(database: File): File = File(database.parentFile, "${database.name}.corrupt")
+
+    /** True when a corruption copy exists that the user has not yet been told about. */
+    fun needsAttention(database: File): Boolean {
+        val directory = directoryFor(database)
+        return directory.isDirectory && !File(directory, ACKNOWLEDGED_MARKER).exists()
+    }
+
+    /** Records that the user saw the corruption notice. The copy itself is kept. */
+    fun acknowledge(database: File) {
+        val directory = directoryFor(database)
+        if (directory.isDirectory) File(directory, ACKNOWLEDGED_MARKER).createNewFile()
+    }
 
     /**
      * Copies [database] and its sidecar files into [directoryFor]. The first copy is

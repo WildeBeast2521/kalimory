@@ -748,4 +748,14 @@
     <string name="share_import_count_skipped">%1$d 已跳过</string>
 
     <string name="import_anomalies_notice">与应用格式不一致的项目：%1$d 个。将按原样导入。</string>
+    <string name="db_unavailable_title">无法打开你的训练数据</string>
+    <string name="db_unavailable_unsupported">此数据库（版本 %1$d）由当前版本无法升级的应用版本创建。未更改或删除任何内容。</string>
+    <string name="db_unavailable_open_failed">无法打开数据库。未删除任何内容。</string>
+    <string name="db_unavailable_corruption_reported">数据库此前报告了损坏。已保留损坏文件的副本。部分数据可能无法加载。</string>
+    <string name="db_unavailable_export_hint">请导出数据库文件并妥善保存。不要卸载应用或清除其存储，否则数据将丢失。</string>
+    <string name="db_export_files">导出数据库文件</string>
+    <string name="db_export_done">已导出数据库文件。</string>
+    <string name="db_export_failed">导出失败：%1$s</string>
+    <string name="db_continue">继续</string>
+    <string name="db_error_details">详细信息：%1$s</string>
 </resources>

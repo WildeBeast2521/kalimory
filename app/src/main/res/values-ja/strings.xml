@@ -815,4 +815,14 @@
     <string name="nav_uncheck_set">セットを未実行に戻す</string>
 
     <string name="import_anomalies_notice">アプリの形式と一致しない項目: %1$d 件。変更せずにインポートされます。</string>
+    <string name="db_unavailable_title">トレーニングデータを開けませんでした</string>
+    <string name="db_unavailable_unsupported">このデータベース（バージョン %1$d）は、このバージョンのアプリでは更新できない形式です。データは変更も削除もされていません。</string>
+    <string name="db_unavailable_open_failed">データベースを開けませんでした。データは削除されていません。</string>
+    <string name="db_unavailable_corruption_reported">以前にデータベースの破損が検出されました。破損したファイルのコピーを保存してあります。一部のデータを読み込めない場合があります。</string>
+    <string name="db_unavailable_export_hint">データベースファイルをエクスポートして保管してください。アプリのアンインストールやストレージの消去はしないでください。データが失われます。</string>
+    <string name="db_export_files">データベースファイルをエクスポート</string>
+    <string name="db_export_done">データベースファイルをエクスポートしました。</string>
+    <string name="db_export_failed">エクスポートに失敗しました: %1$s</string>
+    <string name="db_continue">続行</string>
+    <string name="db_error_details">詳細: %1$s</string>
 </resources>

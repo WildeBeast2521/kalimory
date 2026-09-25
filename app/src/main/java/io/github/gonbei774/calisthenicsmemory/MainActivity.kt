@@ -9,7 +9,11 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.AppLanguage
+import io.github.gonbei774.calisthenicsmemory.data.DatabaseQuarantine
+import io.github.gonbei774.calisthenicsmemory.data.DatabaseStartupCheck
+import io.github.gonbei774.calisthenicsmemory.data.DatabaseStartupState
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.data.AppTheme
 import io.github.gonbei774.calisthenicsmemory.data.LanguagePreferences
@@ -23,6 +27,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -59,6 +64,9 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.IntervalEditScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.IntervalExecutionScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.CommunityShareExportScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.BackupScreen
+import io.github.gonbei774.calisthenicsmemory.ui.screens.DatabaseUnavailableScreen
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import io.github.gonbei774.calisthenicsmemory.ui.screens.CsvDataManagementScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ShareHubScreen
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
@@ -97,14 +105,32 @@ class MainActivity : ComponentActivity() {
                 AppTheme.DARK -> true
             }
 
+            // Open the database before any screen uses it; failures show a recovery screen.
+            var startupState by remember { mutableStateOf<DatabaseStartupState?>(null) }
+            LaunchedEffect(Unit) {
+                startupState = withContext(Dispatchers.IO) { DatabaseStartupCheck.run(applicationContext) }
+            }
+
             CalisthenicsMemoryTheme(darkTheme = darkTheme) {
-                CalisthenicsMemoryApp(
-                    currentTheme = currentTheme,
-                    onThemeChange = { newTheme ->
-                        themePrefs.setTheme(newTheme)
-                        currentTheme = newTheme
+                when (val state = startupState) {
+                    null -> Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))
+                    DatabaseStartupState.Ready -> CalisthenicsMemoryApp(
+                        currentTheme = currentTheme,
+                        onThemeChange = { newTheme ->
+                            themePrefs.setTheme(newTheme)
+                            currentTheme = newTheme
+                        }
+                    )
+                    else -> Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+                        DatabaseUnavailableScreen(
+                            state = state,
+                            onContinue = {
+                                DatabaseQuarantine.acknowledge(getDatabasePath(AppDatabase.DATABASE_NAME))
+                                startupState = DatabaseStartupState.Ready
+                            }
+                        )
                     }
-                )
+                }
             }
         }
     }

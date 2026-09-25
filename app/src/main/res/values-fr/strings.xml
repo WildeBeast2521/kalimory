@@ -745,4 +745,14 @@
     <string name="exercise_type_dynamic_description">Par exemple : pompes, tractions… Comptées en répétitions.</string>
     <string name="exercise_type_isometric_description">Par exemple : planche, équerre… Comptées en temps.</string>
     <string name="import_anomalies_notice">Éléments ne correspondant pas au format de l\'application : %1$d. Ils seront importés tels quels.</string>
+    <string name="db_unavailable_title">Impossible d\'ouvrir tes données d\'entraînement</string>
+    <string name="db_unavailable_unsupported">Cette base de données (version %1$d) a été créée par une version de l\'application que cette version ne peut pas mettre à jour. Rien n\'a été modifié ni supprimé.</string>
+    <string name="db_unavailable_open_failed">Impossible d\'ouvrir la base de données. Rien n\'a été supprimé.</string>
+    <string name="db_unavailable_corruption_reported">La base de données a signalé des dommages auparavant. Une copie des fichiers endommagés a été conservée. Certaines données peuvent ne pas se charger.</string>
+    <string name="db_unavailable_export_hint">Exporte les fichiers de la base de données et conserve-les. Ne désinstalle pas l\'application et n\'efface pas son stockage : les données seraient perdues.</string>
+    <string name="db_export_files">Exporter les fichiers de la base de données</string>
+    <string name="db_export_done">Fichiers de la base de données exportés.</string>
+    <string name="db_export_failed">Échec de l\'exportation : %1$s</string>
+    <string name="db_continue">Continuer</string>
+    <string name="db_error_details">Détails : %1$s</string>
 </resources>
