@@ -50,7 +50,7 @@ fun BackupScreen(
     var importGroupCount by remember { mutableStateOf(0) }
     var importExerciseCount by remember { mutableStateOf(0) }
     var importRecordCount by remember { mutableStateOf(0) }
-    var importAnomalyCount by remember { mutableStateOf(0) }
+    var importAnomalyCount by remember { mutableIntStateOf(0) }
     var isLoading by remember { mutableStateOf(false) }
 
     // JSONエクスポート用ランチャー
