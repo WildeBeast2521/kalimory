@@ -4,15 +4,24 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Missing group rows, branch `work/restore-missing-groups`, based on master `c74e000`. The user chose "recreate group rows" (2026-09-25). The PR follows these checks.
+Task 6, durable workout timer spike, branch `work/workout-state-machine`, based on master `eaa7dd9`. The PR follows these checks. The contract and remaining integration work are in `docs/development/workout-timer-spike.md`.
 
-- `fix: recreate missing group rows so grouped exercises are listed`: exercises whose group name had no row were missing from every exercise list. Missing rows are now added at start-up and after a backup restore; the fix only inserts.
+- `feat: add a pure workout state reducer`.
+- `feat: checkpoint workout timer state durably`.
 - Verification:
-  - Full gate: PASS (237 unit tests, no new lint findings).
-  - `connectedDebugAndroidTest` on `floor_api29`: 77 tests, 0 failures. The startup test failed with the repair removed.
-  - Manual check in the installed app: a planted orphan-group exercise is listed under its group after launch.
+  - Full gate: PASS (264 unit tests, 27 of them in `workout`; no new lint findings).
+  - `connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.package=...workout` on `floor_api29`: 1 test, 0 failures.
+  - Mutation: starting the next countdown at the tick time instead of the deadline fails the late-tick test.
+- Not yet done:
+  - UI and service integration;
+  - the service-teardown check;
+  - the manual screen-off, process-kill, and reboot protocol.
 
-## Previous phase: share import atomicity and hidden todo tasks (merged)
+## Previous phase: missing group rows (merged)
+
+PR #9 merged as `eaa7dd9`; PR CI run 36156661163 (77 emulator tests) and post-merge `master` run 36157361490 passed. The user chose "recreate group rows" (2026-09-25).
+
+## Earlier phase: share import atomicity and hidden todo tasks (merged)
 
 PR #8 merged as `c74e000`; PR CI run 36149723855 (75 emulator tests) and post-merge `master` run 36150610815 passed.
 
@@ -95,9 +104,10 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Task 6 of `docs/plans/2026-08-30-overhaul-bootstrap.md`: the durable timer/workout state-machine spike.
-   - Survey the current timer code first: `service/`, `ui/screens/WorkoutScreen.kt`, `ProgramExecutionScreen.kt`, `IntervalExecutionScreen.kt`.
-   - Then write pure reducer tests before any implementation.
-2. Keep the spike isolated. It adds no DI framework, no networking, and no schema change.
+1. Integrate the spike into one execution flow, starting with the smallest: the interval execution screen or the start countdown.
+   - Drive it from `WorkoutReducer` and render from `remainingInStep`.
+   - Checkpoint on each accepted event, restore on start-up, and clear on finish or abandon.
+2. Make `WorkoutTimerService` an adapter and verify it releases its wake lock.
+3. Run and record the manual API 26+ protocol described in `docs/development/workout-timer-spike.md`.
 
-Files likely involved next: `app/src/main/java/io/github/gonbei774/calisthenicsmemory/service/*`, `ui/screens/WorkoutScreen.kt`, `ui/screens/ProgramExecutionScreen.kt`, `ui/screens/IntervalExecutionScreen.kt`.
+Files likely involved next: `app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/IntervalExecutionScreen.kt`, `ui/components/program/ProgramIntervalComponents.kt`, `service/WorkoutTimerService.kt`, `workout/*`.
