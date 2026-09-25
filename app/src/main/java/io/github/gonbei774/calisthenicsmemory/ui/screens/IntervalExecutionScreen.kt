@@ -43,7 +43,6 @@ import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import io.github.gonbei774.calisthenicsmemory.workout.IntervalExerciseSnapshot
 import io.github.gonbei774.calisthenicsmemory.workout.IntervalSessionContext
 import io.github.gonbei774.calisthenicsmemory.workout.IntervalStepType
-import io.github.gonbei774.calisthenicsmemory.workout.RecoveredWorkout
 import io.github.gonbei774.calisthenicsmemory.workout.RecoveryTiming
 import io.github.gonbei774.calisthenicsmemory.workout.Transition
 import io.github.gonbei774.calisthenicsmemory.workout.WorkoutCheckpoint
@@ -143,7 +142,9 @@ fun IntervalExecutionScreen(
     val checkpointStore = remember { WorkoutCheckpointStore(File(context.filesDir, INTERVAL_CHECKPOINT_FILE)) }
     val checkpointWriter = remember { Executors.newSingleThreadExecutor() }
     var sessionContext by remember { mutableStateOf<IntervalSessionContext?>(null) }
-    var pendingResume by remember { mutableStateOf<Pair<RecoveredWorkout, IntervalSessionContext>?>(null) }
+    // The checkpoint and how it will be timed; recovery itself runs when the user taps Resume,
+    // so time spent reading the dialog is not added to an estimate.
+    var pendingResume by remember { mutableStateOf<Pair<WorkoutCheckpoint, RecoveryTiming>?>(null) }
 
     fun saveCheckpoint(state: WorkoutState) {
         val interval = sessionContext ?: return
@@ -199,9 +200,10 @@ fun IntervalExecutionScreen(
         val checkpoint = (saved as? WorkoutCheckpointStore.LoadResult.Found)?.checkpoint
         val interval = checkpoint?.interval
         if (checkpoint != null && interval != null && interval.programId == programId) {
-            pendingResume = WorkoutRecovery.recover(
+            val timing = WorkoutRecovery.recover(
                 checkpoint, clock.nowMillis(), System.currentTimeMillis(), currentBootCount(context)
-            ) to interval
+            ).timing
+            pendingResume = checkpoint to timing
         }
     }
 
@@ -301,7 +303,8 @@ fun IntervalExecutionScreen(
     }
 
     // Resume dialog for a workout the system interrupted
-    pendingResume?.let { (recovered, interval) ->
+    pendingResume?.let { (checkpoint, timing) ->
+        val interval = checkpoint.interval ?: return@let
         AlertDialog(
             onDismissRequest = {},
             containerColor = appColors.cardBackground,
@@ -315,7 +318,7 @@ fun IntervalExecutionScreen(
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(stringResource(R.string.interval_resume_message), color = appColors.textTertiary)
-                    if (recovered.timing != RecoveryTiming.EXACT) {
+                    if (timing != RecoveryTiming.EXACT) {
                         Text(stringResource(R.string.interval_resume_approximate), color = appColors.textTertiary)
                     }
                 }
@@ -334,6 +337,9 @@ fun IntervalExecutionScreen(
                     exercises = interval.exercises.map { IntervalExerciseInfo(it.exerciseId, it.name, it.description) }
                     sessionContext = interval
                     val now = clock.nowMillis()
+                    val recovered = WorkoutRecovery.recover(
+                        checkpoint, now, System.currentTimeMillis(), currentBootCount(context)
+                    )
                     val resumed = WorkoutReducer.reduce(recovered.state, WorkoutEvent.Tick(now)).state
                     workout = resumed
                     nowMillis = now
