@@ -38,7 +38,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "bodyweight_trainer_database"
                 )
-                    .addMigrations(MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19, MIGRATION_19_20, MIGRATION_20_21)
+                    .addMigrations(*ALL_MIGRATIONS)
                     .build()
                 INSTANCE = instance
                 instance
@@ -371,5 +371,26 @@ abstract class AppDatabase : RoomDatabase() {
                 """)
             }
         }
+
+        // Oldest installed database version that can migrate to the current version.
+        // See docs/development/supported-database-versions.md.
+        const val OLDEST_SUPPORTED_VERSION = 9
+
+        // Every registered migration, in order. Declared after the migrations so they
+        // are initialized first. Production and migration tests both use this array.
+        val ALL_MIGRATIONS: Array<Migration> = arrayOf(
+            MIGRATION_9_10,
+            MIGRATION_10_11,
+            MIGRATION_11_12,
+            MIGRATION_12_13,
+            MIGRATION_13_14,
+            MIGRATION_14_15,
+            MIGRATION_15_16,
+            MIGRATION_16_17,
+            MIGRATION_17_18,
+            MIGRATION_18_19,
+            MIGRATION_19_20,
+            MIGRATION_20_21,
+        )
     }
 }
