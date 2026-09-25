@@ -49,11 +49,13 @@ jobs:
           PUSH_BEFORE_SHA: ${{ github.event.before }}
         run: |
           base="${PR_BASE_SHA:-$PUSH_BEFORE_SHA}"
-          if [ -n "$base" ] && [ "$base" != "0000000000000000000000000000000000000000" ] \
-              && git cat-file -e "$base^{commit}" 2>/dev/null; then
+          if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then
+            echo "No base commit for this event; skipping the committed-schema immutability comparison."
+          elif git cat-file -e "$base^{commit}" 2>/dev/null; then
             export SCHEMA_BASE_REF="$base"
           else
-            echo "No base commit available; skipping the committed-schema immutability comparison."
+            echo "error: base commit $base is missing from the checkout (history rewritten?)." >&2
+            exit 1
           fi
           scripts/check-room-schemas.sh --stacktrace
 

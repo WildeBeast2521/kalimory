@@ -21,7 +21,7 @@ The files are inputs to `MigrationTestHelper` (the `androidTest` source set adds
 - a file lacks an identity hash or entities, or contains an absolute local path;
 - the current schema's identity hash differs from the generated `AppDatabase_Impl`.
 
-With `SCHEMA_BASE_REF=<ref>`, it also fails when a schema committed at that ref was modified, deleted, or renamed. CI runs the script with the pull-request base (or the previous push) as the reference.
+With `SCHEMA_BASE_REF=<ref>`, it also fails when a schema committed at that ref was modified, deleted, renamed, or changed in type. CI runs the script with the pull-request base (or the previous push) as the reference.
 
 After a database version bump:
 
@@ -35,6 +35,6 @@ All files were generated with Room 2.6.1 (`androidx.room:room-compiler` through 
 
 | Version | Identity hash | Generated from |
 |---:|:---|:---|
-| 21 | `1bbf3e19ddbcd6f8c8928f6e4f01c8c2` | Commit `adb2d2c` sources; version 21 was introduced by `eeaa5ae4` |
+| 21 | `1bbf3e19ddbcd6f8c8928f6e4f01c8c2` | `eeaa5ae4` (introduced version 21). The later entity-source variants `107328b` and `20d2292`, and the current sources, generate byte-identical output. |
 
 Versions 9–20 will be recovered from the historical commits listed in `docs/development/supported-database-versions.md`. Each one is added to this table with its exact commit and any temporary build change needed to generate it.

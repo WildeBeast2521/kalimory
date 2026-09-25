@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Verifies the committed Room schemas under app/schemas:
 #   1. With SCHEMA_BASE_REF set, fails when any schema JSON committed at that
-#      ref was modified, deleted, or renamed since (new files are allowed).
+#      ref was modified, deleted, renamed, or changed in type since (new files are allowed).
 #   2. Regenerates the current schema and fails when the result differs from
 #      HEAD or adds a file.
 #   3. Validates every schema file and compares the current schema's identity
@@ -24,10 +24,10 @@ fail() {
 if [ -n "${SCHEMA_BASE_REF:-}" ]; then
     git rev-parse --verify --quiet "$SCHEMA_BASE_REF^{commit}" >/dev/null \
         || fail "SCHEMA_BASE_REF '$SCHEMA_BASE_REF' is not a commit in this checkout."
-    changed="$(git diff --name-only --diff-filter=MDR "$SCHEMA_BASE_REF...HEAD" -- "$schema_dir")"
+    changed="$(git diff --name-only --diff-filter=MDRT "$SCHEMA_BASE_REF...HEAD" -- "$schema_dir")"
     if [ -n "$changed" ]; then
         echo "$changed" >&2
-        fail "committed Room schemas were modified, deleted, or renamed since $SCHEMA_BASE_REF. Committed schemas are immutable."
+        fail "committed Room schemas were modified, deleted, renamed, or changed in type since $SCHEMA_BASE_REF. Committed schemas are immutable."
     fi
 fi
 
@@ -70,6 +70,7 @@ schema_dir = pathlib.Path(sys.argv[1])
 current_version = int(sys.argv[2])
 generated_database = pathlib.Path(sys.argv[3]).read_text(encoding="utf-8")
 errors = []
+invalid = set()
 
 paths = sorted(schema_dir.glob("*.json"))
 for path in paths:
@@ -83,6 +84,7 @@ for path in paths:
         database = json.loads(text)["database"]
     except (ValueError, KeyError) as error:
         errors.append(f"{path}: not a Room schema ({error})")
+        invalid.add(path)
         continue
     if str(database.get("version")) != path.stem:
         errors.append(f"{path}: database.version {database.get('version')} does not match the file name")
@@ -98,7 +100,7 @@ for path in paths:
 current_schema = schema_dir / f"{current_version}.json"
 if not current_schema.is_file():
     errors.append(f"missing schema for current database version {current_version}")
-else:
+elif current_schema not in invalid:
     current_hash = json.loads(current_schema.read_text(encoding="utf-8"))["database"].get("identityHash")
     if f"'{current_hash}'" not in generated_database:
         errors.append(f"{current_schema}: identityHash {current_hash} does not match the generated AppDatabase_Impl")
