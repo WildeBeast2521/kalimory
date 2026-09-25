@@ -118,4 +118,5 @@
     <string name="db_export_failed">Ошибка экспорта: %1$s</string>
     <string name="db_continue">Продолжить</string>
     <string name="db_error_details">Подробности: %1$s</string>
+    <string name="todo_missing_item">Этот элемент больше не существует. Проведите влево, чтобы удалить его.</string>
 </resources>

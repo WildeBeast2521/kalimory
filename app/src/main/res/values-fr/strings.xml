@@ -755,4 +755,5 @@
     <string name="db_export_failed">Échec de l\'exportation : %1$s</string>
     <string name="db_continue">Continuer</string>
     <string name="db_error_details">Détails : %1$s</string>
+    <string name="todo_missing_item">Cet élément n\'existe plus. Balaie vers la gauche pour le retirer.</string>
 </resources>

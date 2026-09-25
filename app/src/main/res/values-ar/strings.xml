@@ -11,4 +11,5 @@
     <string name="db_export_failed">فشل التصدير: %1$s</string>
     <string name="db_continue">متابعة</string>
     <string name="db_error_details">التفاصيل: %1$s</string>
+    <string name="todo_missing_item">لم يعد هذا العنصر موجودًا. اسحب لليسار لإزالته.</string>
 </resources>

@@ -814,4 +814,5 @@
     <string name="db_export_failed">Error al exportar: %1$s</string>
     <string name="db_continue">Continuar</string>
     <string name="db_error_details">Detalles: %1$s</string>
+    <string name="todo_missing_item">Este elemento ya no existe. Desliza hacia la izquierda para quitarlo.</string>
 </resources>
