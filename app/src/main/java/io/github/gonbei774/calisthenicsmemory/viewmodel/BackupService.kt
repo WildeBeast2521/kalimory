@@ -138,11 +138,8 @@ class BackupService(
             if (it.exerciseId !in exerciseIds) return "Interval program exercise ${it.id} references missing exercise ${it.exerciseId}"
         }
         data.todoTasks.forEach {
-            if (it.repeatDays.isNotEmpty()) {
-                val days = it.repeatDays.split(',').map { token -> token.trim().toIntOrNull() }
-                if (days.any { day -> day == null || day !in 1..7 } || days.distinct().size != days.size) {
-                    return "Todo task ${it.id} has invalid repeat days ${it.repeatDays}"
-                }
+            if (!TodoTask.isValidRepeatDays(it.repeatDays)) {
+                return "Todo task ${it.id} has invalid repeat days ${it.repeatDays}"
             }
             val valid = when (it.type) {
                 TodoTask.TYPE_EXERCISE -> it.referenceId in exerciseIds
