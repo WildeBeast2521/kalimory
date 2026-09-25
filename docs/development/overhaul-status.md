@@ -4,13 +4,17 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 6 integration, branch `work/interval-reducer`, based on master `8085783`. The PR follows these checks.
+Interval checkpoint and resume, branch `work/interval-checkpoint`, based on master `f1e3086`. The PR follows these checks.
 
-- `feat: drive the interval workout timer from the workout reducer`.
+- `feat: resume interval workouts after process death`.
 - Verification:
-  - Gate PASS (269 unit tests, no new lint findings).
+  - Gate PASS (270 unit tests, no new lint findings).
   - `connectedDebugAndroidTest` on `floor_api29`: 78 tests, 0 failures.
-  - Manual timing on the installed app: screen-off run 36.4 s against 35 s, pause run 46.4 s against 45.3 s, both within detection latency. Stop-early progress matches the legacy rules.
+  - Process-death runs with root `kill -9` on the same AVD: a running workout resumed on its true timeline, and a paused one resumed unchanged. Details are in `docs/development/workout-timer-spike.md`.
+
+## Previous phase: interval screen on the reducer (merged)
+
+PR #11 merged as `f1e3086`; PR CI run 36164763728 and post-merge `master` run 36165538007 passed.
 
 ## Previous phase: Task 6 spike (merged)
 
@@ -103,10 +107,9 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Interval checkpointing.
-   - Save a `WorkoutCheckpoint` with the program id on each accepted non-tick event, and clear it on finish, stop, or save.
-   - On opening the interval screen, or at start-up, offer to resume. Recover with `WorkoutRecovery` and show when the timing is approximate.
-   - Verify with `adb shell am kill` during a rest.
-2. Then move program and single-exercise execution onto the reducer, make `WorkoutTimerService` an adapter, and run the remaining reboot and clock-change protocol.
+1. Record the reboot and wall-clock-change runs for the interval resume (`adb reboot` mid-rest, and `date` changes as root on the AVD).
+2. Move program execution, then single-exercise execution, onto the reducer and checkpoints.
+   - The program screen's existing "Save & Exit" (`SavedWorkoutState`) must keep working until it is replaced.
+3. Make `WorkoutTimerService` an adapter, and verify it releases its wake lock.
 
-Files likely involved next: `ui/screens/IntervalExecutionScreen.kt`, `workout/WorkoutCheckpoint.kt`, `workout/WorkoutCheckpointStore.kt`, `ui/screens/IntervalListScreen.kt`.
+Files likely involved next: `ui/screens/ProgramExecutionScreen.kt`, `ui/components/program/*`, `data/SavedWorkoutState.kt`, `service/WorkoutTimerService.kt`.
