@@ -31,10 +31,17 @@ After a database version bump:
 
 ## Provenance
 
-All files were generated with Room 2.6.1 (`androidx.room:room-compiler` through KSP 2.0.21-1.0.28), Kotlin 2.0.21, AGP 8.13.0, and Gradle 8.13, with `./gradlew :app:kspDebugKotlin`.
+All files were generated with Room 2.6.1 (`androidx.room:room-compiler` through KSP 2.0.21-1.0.28), Kotlin 2.0.21, AGP 8.13.0, and Gradle 8.13, with `./gradlew :app:kspDebugKotlin`. Every historical commit below uses that same toolchain.
 
-| Version | Identity hash | Generated from |
-|---:|:---|:---|
-| 21 | `1bbf3e19ddbcd6f8c8928f6e4f01c8c2` | `eeaa5ae4` (introduced version 21). The later entity-source variants `107328b` and `20d2292`, and the current sources, generate byte-identical output. |
+Historical schemas were produced by `scripts/recover-historical-room-schema.sh <commit> <version> <output-dir>`. It checks out the commit in a disposable worktree and makes only two temporary changes there: `exportSchema = true` in `AppDatabase.kt`, and a `ksp { arg("room.schemaLocation", ...) }` block in `app/build.gradle.kts`. No other build change was needed for any version.
 
-Versions 9–20 will be recovered from the historical commits listed in `docs/development/supported-database-versions.md`. Each one is added to this table with its exact commit and any temporary build change needed to generate it.
+Each source commit is the commit that introduced the version. Across the full history of all refs, the entity classes and the `@Database` declaration have exactly one variant for each of versions 9–20, so every commit at a given version generates the same schema. Version 21 has three variants before this directory was added, plus the current sources with `exportSchema = true`; all generate the same file.
+
+| Version | Identity hash | Source commit | Release tags at this version |
+|---:|:---|:---|:---|
+| 9 | `752ba406a4d9425b9f74773bc987da5a` | `d60b3658` | v1.2.0–v1.6.0 |
+| 10 | `bfd7250df1bd016b85c3a7b2bfa8c877` | `435bdce8` | v1.7.0–v1.8.1.1 |
+| 11 | `25da03becfa05d260f4f9ddf408499e7` | `398769b4` | v1.9.0–v1.10.0 |
+| 12 | `5d273ac673bcf81967b17b7a840526a0` | `47173b86` | v1.11.0–v1.12.0 |
+| 13 | `632e0caf9aa9d0ba6ba13b86c819a78f` | `c0f434bd` | v1.13.0–v1.14.1 |
+| 21 | `1bbf3e19ddbcd6f8c8928f6e4f01c8c2` | `eeaa5ae4`; the later entity-source variants `107328b` and `20d2292`, and the current sources, generate byte-identical output | v1.19.0–v1.26.0 |
