@@ -4,16 +4,28 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Room schema and migration hardening is complete. PR #2 (https://github.com/WildeBeast2521/CalisthenicsMemory/pull/2) merged into `master` as `0efcfb1` after its CI run 36123425188 passed both jobs. The post-merge `master` run 36124399180 also passed both jobs. No phase is in progress.
+Backup restorability and mutation atomicity, branch `work/backup-anomalies` (worktree `CalisthenicsMemory-worktrees/backup-anomalies`), based on master `956f19a`. The user chose "accept and warn" for anomalies the database can hold (2026-09-25). The pull request is opened after the checks below.
 
-| Phase | State |
-|:---|:---|
-| A — export current Room schema | Done, externally reviewed and approved |
-| B — recover historical schemas 9–20 | Done, self-reviewed |
-| C — centralize migration registration | Done, self-reviewed |
-| D — repair and expand migration tests | Done, run on emulator |
-| E — semantic migration preservation | Done, run on emulator |
-| F — CI migration gate (emulator) | Done; PR CI ran 63 instrumentation tests on an API 29 emulator and passed |
+Commits on this branch:
+
+- `b4fb7ab` fix: tolerate malformed todo repeat days when reading
+- `3220edd` fix: restore every backup the app can export
+- `f86a2ba` fix: make group and exercise deletion and renaming atomic
+- `dba8969` fix: never replace an exercise on a duplicate insert
+- `4cdd0b5` style: use an int state holder for the import anomaly count
+
+Verification actually run on this branch:
+
+- `./gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug :app:compileDebugAndroidTestKotlin`: PASS (232 unit tests). Lint reports 15 unbaselined dependency-version warnings from existing build files; none comes from this branch.
+- `./gradlew connectedDebugAndroidTest` on AVD `floor_api29` (API 29, x86_64): 69 tests, 0 failures.
+- `SCHEMA_BASE_REF=origin/master scripts/check-room-schemas.sh`: PASS.
+- Red first: the duplicate-insert test failed before `dba8969` (no exception, history deleted). The old unit tests show that master rejected each anomaly class that is now accepted.
+
+The contract is documented in `docs/development/backup-validation.md`.
+
+## Previous phase: Room schema and migration hardening (merged)
+
+Room schema and migration hardening is complete. PR #2 merged into `master` as `0efcfb1`.
 
 ## Commits merged by PR #2
 
@@ -47,6 +59,10 @@ Room schema and migration hardening is complete. PR #2 (https://github.com/Wilde
 
 ## Known limitations
 
+- Share (community) import is not transactional; a failure midway leaves the rows imported so far.
+- Orphan and unknown-type todo tasks are kept but not shown on the ToDo screen, so the user cannot delete them there.
+- Exercises whose group name has no group row may not appear under any group in the exercise list; not yet verified.
+
 - An unsupported database still crashes the app at startup (now with `UnsupportedDatabaseVersionException` and no file changes). There is no user-facing recovery screen yet.
 - When a non-empty `-wal` or `-journal` exists, the header guard defers to Room; Room fails closed but SQLite may apply the pending journal.
 - A corrupt database file reaches SQLite's default error handler, which deletes the file. Not yet addressed.
@@ -61,10 +77,12 @@ Room schema and migration hardening is complete. PR #2 (https://github.com/Wilde
 
 ## Next task
 
-1. Choose the next phase from `docs/plans/2026-08-30-overhaul-bootstrap.md` and the ADRs in `docs/architecture/`.
-2. Candidates from this phase's limitations:
-   - a user-facing screen for `UnsupportedDatabaseVersionException` instead of a start-up crash;
-   - a corruption callback that preserves the database file instead of deleting it.
-3. Start each on a new branch and worktree from `master`.
+1. Push `work/backup-anomalies`, open a PR, read back CI (verify + emulator jobs), merge when green, fast-forward `master`.
+2. Then return to the plan (`docs/plans/2026-08-30-overhaul-bootstrap.md`). Candidates:
+   - a user-facing screen for `UnsupportedDatabaseVersionException`;
+   - a database corruption callback that preserves the file;
+   - making todo tasks with a missing target visible so the user can delete them;
+   - a transactional share import;
+   - Task 6 (durable timer/workout state-machine spike).
 
-Files likely involved next: `app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt`, `app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/InstalledDatabaseVersion.kt`, the start-up path that calls `AppDatabase.getDatabase`.
+Files likely involved next: `app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt`, `app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/ToDoScreen.kt`, `app/src/main/java/io/github/gonbei774/calisthenicsmemory/viewmodel/TrainingViewModel.kt` (`importCommunityShare`).
