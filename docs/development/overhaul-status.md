@@ -4,16 +4,18 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Database recovery screen, branch `work/database-recovery-screen`, based on master `583484a`. The PR follows these checks.
+Share import atomicity and hidden todo tasks, branch `work/atomic-share-import`, based on master `7420a28`. The PR follows these checks.
 
-- `feat: show a recovery screen when the database cannot be opened`: a startup check replaces the crash with a recovery screen that exports the raw database files as a zip.
+- `fix: import community shares in one transaction`: `CommunityShareImporter` runs the unchanged write logic in `withTransaction`. A failure injected by a SQL trigger on the last step left rows behind without the transaction, and leaves none with it.
+- `fix: show todo tasks whose target is missing so they can be removed`: the ToDo screen shows an "item no longer exists" card that can be swiped away.
 - Verification:
-  - `testDebugUnitTest lintDebug assembleDebug compileDebugAndroidTestKotlin`: PASS (236 unit tests, no new lint findings).
-  - `connectedDebugAndroidTest` on `floor_api29` (API 29): 73 tests, 0 failures.
-  - Manual run of the installed debug app on the same AVD:
-    - healthy database: home screen;
-    - planted version 8 database: recovery screen, file bytes unchanged, SAF export zip entry byte-identical;
-    - corrupt header: recovery screen with details, file kept, `.corrupt` copy written.
+  - `testDebugUnitTest lintDebug assembleDebug compileDebugAndroidTestKotlin`: PASS (237 unit tests, no new lint findings).
+  - `connectedDebugAndroidTest` on `floor_api29` (API 29): 75 tests, 0 failures.
+  - Manual check on the same AVD: planted orphan and unknown-type todo tasks appear, and swipe-delete removes only the orphan row.
+
+## Previous phase: database recovery screen (merged)
+
+PR #7 merged as `7420a28`; PR CI run 36143132719 (73 emulator tests) and post-merge `master` run 36143969836 passed. Unsupported, unopenable, or corruption-reported databases show `DatabaseUnavailableScreen`, which exports the raw files as a zip.
 
 ## Previous phase: corruption preservation (merged)
 
@@ -78,8 +80,6 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 - Corruption found after start-up (damaged pages first touched by a later query) can still crash that screen. The next start shows the recovery screen, because the `.corrupt` copy needs attention.
 - A recovery zip can only be restored manually. There is no in-app import for it.
-- Share (community) import is not transactional; a failure midway leaves the rows imported so far.
-- Orphan and unknown-type todo tasks are kept but not shown on the ToDo screen, so the user cannot delete them there.
 - Exercises whose group name has no group row may not appear under any group in the exercise list; not yet verified.
 - When a non-empty `-wal` or `-journal` exists, the header guard defers to Room; Room fails closed but SQLite may apply the pending journal.
 - Migrations 13→14, 14→15, and 18→19 drop and rebuild tables. They are safe because Room enables `foreign_keys` only in `onOpen`, after migrations; this is covered by the production-path tests.
@@ -93,9 +93,7 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Return to the plan (`docs/plans/2026-08-30-overhaul-bootstrap.md`). Candidates:
-   - making todo tasks with a missing target visible so the user can delete them;
-   - a transactional share import;
-   - Task 6 (durable timer/workout state-machine spike).
+1. Verify whether exercises whose group name has no group row appear in the exercise list (a known limitation). Fix it if they do not.
+2. Then Task 6 of `docs/plans/2026-08-30-overhaul-bootstrap.md`: the durable timer/workout state-machine spike, starting with pure reducer tests.
 
-Files likely involved next: `app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt`, `app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/ToDoScreen.kt`, `app/src/main/java/io/github/gonbei774/calisthenicsmemory/viewmodel/TrainingViewModel.kt` (`importCommunityShare`).
+Files likely involved next: `app/src/main/java/io/github/gonbei774/calisthenicsmemory/viewmodel/TrainingViewModel.kt` (hierarchical exercise list), `app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/CreateScreen.kt`, and the timer code under `service/` and `ui/screens/WorkoutScreen.kt`.
