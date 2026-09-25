@@ -4,13 +4,17 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Interval checkpoint and resume, branch `work/interval-checkpoint`, based on master `f1e3086`. The PR follows these checks.
+Interval resume timing, branch `work/interval-resume-timing`, based on master `a18b10b`. The PR follows these checks.
 
-- `feat: resume interval workouts after process death`.
+- `fix: time interval recovery from the Resume tap`: found during the reboot and clock-change protocol, which is now recorded in `docs/development/workout-timer-spike.md`.
 - Verification:
-  - Gate PASS (270 unit tests, no new lint findings).
+  - Gate PASS (270 unit tests).
   - `connectedDebugAndroidTest` on `floor_api29`: 78 tests, 0 failures.
-  - Process-death runs with root `kill -9` on the same AVD: a running workout resumed on its true timeline, and a paused one resumed unchanged. Details are in `docs/development/workout-timer-spike.md`.
+  - Reboot, same-boot clock change, and reboot plus clock change, all run on the same AVD.
+
+## Previous phase: interval checkpoint and resume (merged)
+
+PR #12 merged as `a18b10b`; PR CI run 36169050766 and post-merge `master` run 36169697792 passed.
 
 ## Previous phase: interval screen on the reducer (merged)
 
@@ -107,9 +111,8 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Record the reboot and wall-clock-change runs for the interval resume (`adb reboot` mid-rest, and `date` changes as root on the AVD).
-2. Move program execution, then single-exercise execution, onto the reducer and checkpoints.
+1. Move program execution, then single-exercise execution, onto the reducer and checkpoints.
    - The program screen's existing "Save & Exit" (`SavedWorkoutState`) must keep working until it is replaced.
-3. Make `WorkoutTimerService` an adapter, and verify it releases its wake lock.
+2. Make `WorkoutTimerService` an adapter, and verify it releases its wake lock.
 
 Files likely involved next: `ui/screens/ProgramExecutionScreen.kt`, `ui/components/program/*`, `data/SavedWorkoutState.kt`, `service/WorkoutTimerService.kt`.

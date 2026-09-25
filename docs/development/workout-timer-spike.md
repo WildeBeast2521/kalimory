@@ -32,6 +32,10 @@ Tests: `WorkoutReducerTest` (16), `WorkoutTimerRecoveryTest` (6), and `WorkoutCh
 - Done for the interval screen. It saves on start, pause, resume, and skip, and clears on finish, stop, or discard. Reopening the program offers Resume. On floor_api29:
   - After a `kill -9` at 13 s during a rest, resuming caught up to the true end at 35 s.
   - A paused workout killed for 37 s resumed with the same remaining time.
-  - Still to do: the reboot and wall-clock-change runs (approximate timing), and the other execution screens.
+  - Reboot mid-workout: the dialog notes the estimate, and the resumed remaining time was 61 s against 61-64 s from the wall clock.
+  - Same boot with the wall clock set back 1 h: recovery stays exact (95 s against 94-97 s).
+  - Reboot, then the clock set back 1 h: recovery assumes no time away and resumes from the last checkpoint. Checkpoints are saved only on start, pause, resume, and skip, so this can be well before the interruption.
+  - Recovery runs when Resume is tapped, so time spent reading the dialog is not counted.
+  - Still to do: the other execution screens.
 - Make `WorkoutTimerService` an adapter: it shows state and forwards user actions and never makes domain decisions. Verify it releases its wake lock on teardown.
 - Run the manual API 26+ protocol and record the results: screen off during a countdown, app in the background, process killed with `adb shell am kill`, device reboot, and a wall-clock change. For each, note the observed drift and the recovery timing.
