@@ -744,4 +744,5 @@
     <string name="share_import_count_skipped">%1$d ignorés</string>
     <string name="exercise_type_dynamic_description">Par exemple : pompes, tractions… Comptées en répétitions.</string>
     <string name="exercise_type_isometric_description">Par exemple : planche, équerre… Comptées en temps.</string>
+    <string name="import_anomalies_notice">Éléments ne correspondant pas au format de l\'application : %1$d. Ils seront importés tels quels.</string>
 </resources>

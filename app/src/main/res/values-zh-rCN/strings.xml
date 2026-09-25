@@ -747,4 +747,5 @@
     <string name="share_import_count_reused">%1$d 已复用</string>
     <string name="share_import_count_skipped">%1$d 已跳过</string>
 
+    <string name="import_anomalies_notice">与应用格式不一致的项目：%1$d 个。将按原样导入。</string>
 </resources>

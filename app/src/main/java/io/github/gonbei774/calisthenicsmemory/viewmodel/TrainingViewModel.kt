@@ -719,8 +719,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         backupService.export()
     }
 
-    /** Parse and fully validate a backup before the UI offers to overwrite data. */
-    fun parseBackupData(jsonString: String): BackupResult<BackupData> =
+    /** Parse and fully validate a backup, with its anomalies, before the UI offers to overwrite data. */
+    fun parseBackupData(jsonString: String): BackupResult<ParsedBackup> =
         backupService.parse(jsonString)
 
     /** Atomically replace all backup tables with an already parsed payload. */

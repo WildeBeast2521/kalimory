@@ -774,4 +774,5 @@
     <string name="set_now_badge">JETZT</string>
     <string name="set_done_label">FERTIG</string>
     <string name="set_complete_button">Satz %1$d abschließen</string>
+    <string name="import_anomalies_notice">Einträge, die nicht dem Format der App entsprechen: %1$d. Sie werden unverändert importiert.</string>
 </resources>

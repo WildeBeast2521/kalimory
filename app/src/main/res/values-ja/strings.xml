@@ -814,4 +814,5 @@
     <string name="nav_check_set">セットを完了にする</string>
     <string name="nav_uncheck_set">セットを未実行に戻す</string>
 
+    <string name="import_anomalies_notice">アプリの形式と一致しない項目: %1$d 件。変更せずにインポートされます。</string>
 </resources>
