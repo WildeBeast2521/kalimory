@@ -48,4 +48,7 @@ Each source commit is the commit that introduced the version. Across the full hi
 | 15 | `b340aa421ac21d622b125d7316bfd5b6` | `ae18ad88` | v1.16.0–v1.16.1 |
 | 16 | `106938b852a6cbbf6ae2075583776345` | `71ec3947` | v1.17.0–v1.17.1 |
 | 17 | `4f423212add6ddc932965e7142d1fb4c` | `c65da6a1` | none (development builds only) |
+| 18 | `c01abd135907abe7cbba5ceddc293e60` | `7ce99eeb` | none (development builds only) |
+| 19 | `7d43457ace0a10dca69f31f6acc5ebc2` | `6b37e094` | none (development builds only) |
+| 20 | `d166cf707234a33b8eb210119eb7429e` | `e6661266` | v1.18.0 |
 | 21 | `1bbf3e19ddbcd6f8c8928f6e4f01c8c2` | `eeaa5ae4`; the later entity-source variants `107328b` and `20d2292`, and the current sources, generate byte-identical output | v1.19.0–v1.26.0 |
