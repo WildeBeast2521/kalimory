@@ -4,7 +4,14 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-No phase is in progress. The latest completed phase, backup restorability and mutation atomicity, merged through PR #4 (https://github.com/WildeBeast2521/CalisthenicsMemory/pull/4) as `c619f0a`. PR CI run 36129605040 passed both jobs, running 69 emulator tests. The post-merge `master` run 36130284869 also passed. The user chose "accept and warn" for anomalies the database can hold (2026-09-25).
+Corruption preservation, branch `work/corruption-preservation`, based on master `5519fe5`. The user chose "copy aside, keep live" (2026-09-25). The PR follows these checks.
+
+- `fix: keep the database when SQLite reports corruption`: Room's default `onCorruption` deleted the database. On the emulator, a database with a damaged header was silently replaced by an empty one. Now the files are copied once to `<name>.corrupt` and the live file is kept.
+- Verification: `testDebugUnitTest lintDebug assembleDebug compileDebugAndroidTestKotlin` PASS (234 unit tests, no new lint findings). `connectedDebugAndroidTest` on `floor_api29` (API 29): 70 tests, 0 failures. `CorruptDatabaseTest` failed before the fix.
+
+## Previous phase: backup restorability and mutation atomicity (merged)
+
+PR #4 merged as `c619f0a`; PR CI run 36129605040 and post-merge `master` run 36130284869 passed. The user chose "accept and warn" for anomalies the database can hold (2026-09-25).
 
 Commits merged by PR #4:
 
@@ -59,6 +66,8 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Known limitations
 
+- A corrupt database still makes queries that touch the damaged pages fail, which may crash the app. There is no in-app recovery or export for the `<name>.corrupt` copy yet.
+
 - Share (community) import is not transactional; a failure midway leaves the rows imported so far.
 - Orphan and unknown-type todo tasks are kept but not shown on the ToDo screen, so the user cannot delete them there.
 - Exercises whose group name has no group row may not appear under any group in the exercise list; not yet verified.
@@ -79,7 +88,7 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 1. Return to the plan (`docs/plans/2026-08-30-overhaul-bootstrap.md`). Candidates:
    - a user-facing screen for `UnsupportedDatabaseVersionException`;
-   - a database corruption callback that preserves the file;
+   - a user-reachable export of the raw database, and of the `.corrupt` copy, for manual recovery;
    - making todo tasks with a missing target visible so the user can delete them;
    - a transactional share import;
    - Task 6 (durable timer/workout state-machine spike).
