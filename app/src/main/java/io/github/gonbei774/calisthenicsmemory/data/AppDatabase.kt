@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 @Database(
     entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class],
     version = 21,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -33,16 +33,27 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "bodyweight_trainer_database"
-                )
-                    .addMigrations(MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19, MIGRATION_19_20, MIGRATION_20_21)
-                    .build()
+                val instance = build(context, DATABASE_NAME)
                 INSTANCE = instance
                 instance
             }
+        }
+
+        const val DATABASE_NAME = "bodyweight_trainer_database"
+
+        // Must equal the version in @Database; MigrationRegistrationTest checks it against the schemas.
+        const val CURRENT_VERSION = 21
+
+        // The production configuration. Migration tests open their databases through it.
+        // Unsupported installed versions are refused before Room can modify the file.
+        internal fun build(context: Context, name: String): AppDatabase {
+            InstalledDatabaseVersion.requireSupported(
+                context.applicationContext.getDatabasePath(name),
+                OLDEST_SUPPORTED_VERSION..CURRENT_VERSION,
+            )
+            return Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, name)
+                .addMigrations(*ALL_MIGRATIONS)
+                .build()
         }
 
         // マイグレーション 9 → 10: displayOrder, restInterval, repDuration を追加
@@ -371,5 +382,26 @@ abstract class AppDatabase : RoomDatabase() {
                 """)
             }
         }
+
+        // Oldest installed database version that can migrate to the current version.
+        // See docs/development/supported-database-versions.md.
+        const val OLDEST_SUPPORTED_VERSION = 9
+
+        // Every registered migration, in order. Declared after the migrations so they
+        // are initialized first. Production and migration tests both use this array.
+        val ALL_MIGRATIONS: Array<Migration> = arrayOf(
+            MIGRATION_9_10,
+            MIGRATION_10_11,
+            MIGRATION_11_12,
+            MIGRATION_12_13,
+            MIGRATION_13_14,
+            MIGRATION_14_15,
+            MIGRATION_15_16,
+            MIGRATION_16_17,
+            MIGRATION_17_18,
+            MIGRATION_18_19,
+            MIGRATION_19_20,
+            MIGRATION_20_21,
+        )
     }
 }
