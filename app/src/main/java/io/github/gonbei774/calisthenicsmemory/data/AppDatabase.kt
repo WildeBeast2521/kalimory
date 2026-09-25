@@ -45,7 +45,8 @@ abstract class AppDatabase : RoomDatabase() {
         const val CURRENT_VERSION = 21
 
         // The production configuration. Migration tests open their databases through it.
-        // Unsupported installed versions are refused before Room can modify the file.
+        // Unsupported installed versions are refused before Room can modify the file, and
+        // SQLite corruption keeps the file instead of deleting it.
         internal fun build(context: Context, name: String): AppDatabase {
             InstalledDatabaseVersion.requireSupported(
                 context.applicationContext.getDatabasePath(name),
@@ -53,6 +54,7 @@ abstract class AppDatabase : RoomDatabase() {
             )
             return Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, name)
                 .addMigrations(*ALL_MIGRATIONS)
+                .openHelperFactory(CorruptionPreservingOpenHelperFactory())
                 .build()
         }
 
