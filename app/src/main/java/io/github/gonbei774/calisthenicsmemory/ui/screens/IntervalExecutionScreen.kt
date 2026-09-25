@@ -40,6 +40,16 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.util.FlashController
 import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
+import io.github.gonbei774.calisthenicsmemory.workout.IntervalStepType
+import io.github.gonbei774.calisthenicsmemory.workout.IntervalWorkoutPlan
+import io.github.gonbei774.calisthenicsmemory.workout.MonotonicClock
+import io.github.gonbei774.calisthenicsmemory.workout.StepKind
+import io.github.gonbei774.calisthenicsmemory.workout.StepOutcome
+import io.github.gonbei774.calisthenicsmemory.workout.StepTimer
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutEvent
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutReducer
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutState
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutStatus
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONArray
@@ -67,21 +77,8 @@ private sealed class IntervalPhase {
         val exercises: List<IntervalExerciseInfo>
     ) : IntervalPhase()
 
-    object Prepare : IntervalPhase()
-
-    data class Work(
-        val round: Int,           // 1-based
-        val exerciseIndex: Int    // 0-based
-    ) : IntervalPhase()
-
-    data class Rest(
-        val round: Int,
-        val exerciseIndex: Int    // the exercise that just finished
-    ) : IntervalPhase()
-
-    data class RoundRest(
-        val completedRound: Int   // 1-based, the round that just finished
-    ) : IntervalPhase()
+    /** Prepare, work, rest, and round rest; the timer itself lives in a [WorkoutState]. */
+    object Running : IntervalPhase()
 
     data class Complete(
         val completedRounds: Int,
@@ -89,6 +86,9 @@ private sealed class IntervalPhase {
         val isFullCompletion: Boolean
     ) : IntervalPhase()
 }
+
+/** Whole seconds shown for [remainingMillis]: 0.1 s left still shows 1. */
+private fun displaySeconds(remainingMillis: Long): Int = ((remainingMillis + 999) / 1_000).toInt()
 
 @Composable
 fun IntervalExecutionScreen(
@@ -115,7 +115,11 @@ fun IntervalExecutionScreen(
     var phase by remember { mutableStateOf<IntervalPhase>(IntervalPhase.Loading) }
     var program by remember { mutableStateOf<IntervalProgram?>(null) }
     var exercises by remember { mutableStateOf<List<IntervalExerciseInfo>>(emptyList()) }
-    var isPaused by remember { mutableStateOf(false) }
+    // Timer truth: a WorkoutState driven by WorkoutReducer, rendered from the monotonic clock.
+    val clock = remember { MonotonicClock.SYSTEM }
+    var workout by remember { mutableStateOf<WorkoutState?>(null) }
+    var nowMillis by remember { mutableLongStateOf(0L) }
+    var observedResultCount by remember { mutableIntStateOf(0) }
     var showExitDialog by remember { mutableStateOf(false) }
     var showUnsavedDialog by remember { mutableStateOf(false) }
 
@@ -151,16 +155,10 @@ fun IntervalExecutionScreen(
     LaunchedEffect(phase, isKeepScreenOnEnabled) {
         val window = (view.context as? android.app.Activity)?.window
         if (isKeepScreenOnEnabled) {
-            when (phase) {
-                is IntervalPhase.Prepare,
-                is IntervalPhase.Work,
-                is IntervalPhase.Rest,
-                is IntervalPhase.RoundRest -> {
-                    window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                }
-                else -> {
-                    window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                }
+            if (phase is IntervalPhase.Running) {
+                window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            } else {
+                window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
         } else {
             window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -169,12 +167,10 @@ fun IntervalExecutionScreen(
 
     // Foreground service
     LaunchedEffect(phase) {
-        when (phase) {
-            is IntervalPhase.Prepare,
-            is IntervalPhase.Work,
-            is IntervalPhase.Rest,
-            is IntervalPhase.RoundRest -> WorkoutTimerService.startService(context)
-            else -> WorkoutTimerService.stopService(context)
+        if (phase is IntervalPhase.Running) {
+            WorkoutTimerService.startService(context)
+        } else {
+            WorkoutTimerService.stopService(context)
         }
     }
 
@@ -190,10 +186,7 @@ fun IntervalExecutionScreen(
     }
 
     // Back gesture: show exit dialog during active phases, unsaved dialog on complete
-    val isActivePhase = phase is IntervalPhase.Prepare ||
-            phase is IntervalPhase.Work ||
-            phase is IntervalPhase.Rest ||
-            phase is IntervalPhase.RoundRest
+    val isActivePhase = phase is IntervalPhase.Running
     val isCompletePhase = phase is IntervalPhase.Complete
     BackHandler(enabled = isActivePhase || isCompletePhase) {
         if (isCompletePhase) {
@@ -224,24 +217,14 @@ fun IntervalExecutionScreen(
             confirmButton = {
                 TextButton(onClick = {
                     showExitDialog = false
-                    val p = program ?: return@TextButton
-                    val currentPhase = phase
-
-                    val (completedRounds, completedExInLast) = when (currentPhase) {
-                        is IntervalPhase.Work -> Pair(
-                            currentPhase.round - 1,
-                            currentPhase.exerciseIndex
-                        )
-                        is IntervalPhase.Rest -> Pair(
-                            currentPhase.round - 1,
-                            currentPhase.exerciseIndex + 1
-                        )
-                        is IntervalPhase.RoundRest -> Pair(
-                            currentPhase.completedRound,
-                            exercises.size
-                        )
-                        else -> Pair(0, 0)
-                    }
+                    val current = workout ?: return@TextButton
+                    // Catch up first, so a countdown that already ended counts as done.
+                    val now = clock.nowMillis()
+                    val caughtUp = WorkoutReducer.reduce(current, WorkoutEvent.Tick(now)).state
+                    val step = IntervalWorkoutPlan.describe(caughtUp.currentStep, exercises.size)
+                    val (completedRounds, completedExInLast) =
+                        IntervalWorkoutPlan.progressWhenStopped(step, exercises.size)
+                    workout = WorkoutReducer.reduce(caughtUp, WorkoutEvent.Abandon(now)).state
 
                     phase = IntervalPhase.Complete(
                         completedRounds = completedRounds,
@@ -294,43 +277,68 @@ fun IntervalExecutionScreen(
         )
     }
 
-    // Advance to next phase
-    fun advanceFromWork(round: Int, exerciseIndex: Int) {
-        val p = program ?: return
-        val isLastExercise = exerciseIndex == exercises.size - 1
-        val isLastRound = round == p.rounds
+    // Render ticks: time comes from the clock, so a late or skipped tick adds no drift.
+    LaunchedEffect(phase) {
+        if (phase !is IntervalPhase.Running) return@LaunchedEffect
+        var lastStepIndex = -1
+        var lastShownSeconds = -1
+        while (true) {
+            val now = clock.nowMillis()
+            val state = WorkoutReducer.reduce(workout ?: break, WorkoutEvent.Tick(now)).state
+            workout = state
+            nowMillis = now
 
-        when {
-            isLastExercise && isLastRound -> {
+            // Cue for countdowns that ended by themselves since the last tick.
+            val finished = state.results.drop(observedResultCount).lastOrNull { it.outcome == StepOutcome.COMPLETED }
+            observedResultCount = state.results.size
+            if (finished != null) {
+                val finishedStep = IntervalWorkoutPlan.describe(state.steps[finished.stepIndex], exercises.size)
+                if (finishedStep.type == IntervalStepType.WORK) {
+                    if (isFlashEnabled) launch { flashController.flashSetComplete() }
+                    soundPlayer.playSetComplete()
+                } else {
+                    soundPlayer.playStartCue()
+                    if (isFlashEnabled) launch { flashController.flashComplete() }
+                }
+            }
+            if (state.status == WorkoutStatus.FINISHED) {
                 phase = IntervalPhase.Complete(
-                    completedRounds = p.rounds,
+                    completedRounds = program?.rounds ?: 0,
                     completedExercisesInLastRound = exercises.size,
                     isFullCompletion = true
                 )
+                break
             }
-            isLastExercise -> {
-                if (p.roundRestSeconds > 0) {
-                    phase = IntervalPhase.RoundRest(completedRound = round)
-                } else {
-                    phase = IntervalPhase.Work(round = round + 1, exerciseIndex = 0)
-                }
+
+            // Beep as the display reaches 3, 2, and 1 within a step.
+            val shown = displaySeconds(state.remainingInStep(now) ?: 0)
+            if (state.stepIndex == lastStepIndex && shown != lastShownSeconds && shown in 1..3 &&
+                state.timer is StepTimer.Running
+            ) {
+                soundPlayer.playBeep()
+                if (isFlashEnabled) launch { flashController.flashShort() }
             }
-            else -> {
-                if (p.restSeconds > 0) {
-                    phase = IntervalPhase.Rest(round = round, exerciseIndex = exerciseIndex)
-                } else {
-                    phase = IntervalPhase.Work(round = round, exerciseIndex = exerciseIndex + 1)
-                }
-            }
+            lastStepIndex = state.stepIndex
+            lastShownSeconds = shown
+            delay(100L)
         }
     }
 
-    fun advanceFromRest(round: Int, exerciseIndex: Int) {
-        phase = IntervalPhase.Work(round = round, exerciseIndex = exerciseIndex + 1)
+    fun togglePause() {
+        val current = workout ?: return
+        val now = clock.nowMillis()
+        val event = if (current.timer is StepTimer.Paused) WorkoutEvent.Resume(now) else WorkoutEvent.Pause(now)
+        workout = WorkoutReducer.reduce(current, event).state
+        nowMillis = now
     }
 
-    fun advanceFromRoundRest(completedRound: Int) {
-        phase = IntervalPhase.Work(round = completedRound + 1, exerciseIndex = 0)
+    fun skipCurrentStep() {
+        val current = workout ?: return
+        val now = clock.nowMillis()
+        val transition = WorkoutReducer.reduce(current, WorkoutEvent.SkipStep(now, current.stepIndex))
+        workout = transition.state
+        observedResultCount = transition.state.results.size
+        nowMillis = now
     }
 
     // Main content
@@ -350,118 +358,106 @@ fun IntervalExecutionScreen(
                 exercises = currentPhase.exercises,
                 appColors = appColors,
                 onStart = {
-                    isPaused = false
-                    phase = IntervalPhase.Prepare
+                    val p = currentPhase.program
+                    val steps = IntervalWorkoutPlan.build(
+                        p.workSeconds, p.restSeconds, p.rounds, p.roundRestSeconds, currentPhase.exercises.size
+                    )
+                    val now = clock.nowMillis()
+                    workout = WorkoutReducer.reduce(WorkoutState(steps), WorkoutEvent.Start(now)).state
+                    nowMillis = now
+                    observedResultCount = 0
+                    phase = IntervalPhase.Running
                 },
                 onBack = onNavigateBack
             )
         }
 
-        is IntervalPhase.Prepare -> {
-            IntervalPrepareContent(
-                exercises = exercises,
-                soundPlayer = soundPlayer,
-                flashController = flashController,
-                isFlashEnabled = isFlashEnabled,
-                appColors = appColors,
-                onFinish = {
-                    phase = IntervalPhase.Work(round = 1, exerciseIndex = 0)
+        is IntervalPhase.Running -> {
+            val state = workout ?: return
+            val step = IntervalWorkoutPlan.describe(state.currentStep, exercises.size)
+            val remainingSeconds = displaySeconds(state.remainingInStep(nowMillis) ?: 0)
+            val totalSeconds = displaySeconds((state.currentStep.kind as StepKind.Countdown).durationMillis)
+            val isPaused = state.timer is StepTimer.Paused
+            when (step.type) {
+                IntervalStepType.PREPARE -> IntervalPrepareContent(
+                    exercises = exercises,
+                    remainingSeconds = remainingSeconds,
+                    totalSeconds = totalSeconds,
+                    isPaused = isPaused,
+                    onPauseToggle = ::togglePause,
+                    appColors = appColors
+                )
+                IntervalStepType.WORK -> IntervalTimerContent(
+                    program = program!!,
+                    exercises = exercises,
+                    round = step.round,
+                    exerciseIndex = step.exerciseIndex,
+                    remainingSeconds = remainingSeconds,
+                    totalSeconds = totalSeconds,
+                    phaseColor = Orange600,
+                    phaseLabel = stringResource(R.string.interval_work_label),
+                    exerciseName = exercises[step.exerciseIndex].name,
+                    nextPreview = null,
+                    isPaused = isPaused,
+                    onPauseToggle = ::togglePause,
+                    onStop = { showExitDialog = true },
+                    onSkip = null,
+                    appColors = appColors
+                )
+                IntervalStepType.REST -> {
+                    val nextExercise = exercises.getOrNull(step.exerciseIndex + 1)
+                    IntervalTimerContent(
+                        program = program!!,
+                        exercises = exercises,
+                        round = step.round,
+                        exerciseIndex = step.exerciseIndex,
+                        remainingSeconds = remainingSeconds,
+                        totalSeconds = totalSeconds,
+                        phaseColor = Cyan600,
+                        phaseLabel = stringResource(R.string.interval_rest_label),
+                        exerciseName = null,
+                        nextPreview = nextExercise?.let {
+                            NextPreviewInfo(
+                                label = stringResource(R.string.interval_next),
+                                exerciseName = it.name,
+                                description = it.description
+                            )
+                        },
+                        isPaused = isPaused,
+                        onPauseToggle = ::togglePause,
+                        onStop = null,
+                        onSkip = ::skipCurrentStep,
+                        appColors = appColors
+                    )
                 }
-            )
-        }
-
-        is IntervalPhase.Work -> {
-            IntervalTimerContent(
-                program = program!!,
-                exercises = exercises,
-                round = currentPhase.round,
-                exerciseIndex = currentPhase.exerciseIndex,
-                totalSeconds = program!!.workSeconds,
-                phaseColor = Orange600,
-                phaseLabel = stringResource(R.string.interval_work_label),
-                exerciseName = exercises[currentPhase.exerciseIndex].name,
-                nextPreview = null,
-                isPaused = isPaused,
-                onPauseToggle = { isPaused = !isPaused },
-                onStop = { showExitDialog = true },
-                onSkip = null,
-                onTimerFinish = {
-                    advanceFromWork(currentPhase.round, currentPhase.exerciseIndex)
-                },
-                soundPlayer = soundPlayer,
-                flashController = flashController,
-                isFlashEnabled = isFlashEnabled,
-                appColors = appColors,
-                isWorkPhase = true
-            )
-        }
-
-        is IntervalPhase.Rest -> {
-            val nextExercise = exercises.getOrNull(currentPhase.exerciseIndex + 1)
-            IntervalTimerContent(
-                program = program!!,
-                exercises = exercises,
-                round = currentPhase.round,
-                exerciseIndex = currentPhase.exerciseIndex,
-                totalSeconds = program!!.restSeconds,
-                phaseColor = Cyan600,
-                phaseLabel = stringResource(R.string.interval_rest_label),
-                exerciseName = null,
-                nextPreview = nextExercise?.let {
-                    NextPreviewInfo(
-                        label = stringResource(R.string.interval_next),
-                        exerciseName = it.name,
-                        description = it.description
+                IntervalStepType.ROUND_REST -> {
+                    val firstExercise = exercises.firstOrNull()
+                    IntervalTimerContent(
+                        program = program!!,
+                        exercises = exercises,
+                        round = step.round,
+                        exerciseIndex = step.exerciseIndex,
+                        remainingSeconds = remainingSeconds,
+                        totalSeconds = totalSeconds,
+                        phaseColor = Purple600,
+                        phaseLabel = stringResource(R.string.interval_round_rest_label),
+                        exerciseName = null,
+                        nextPreview = firstExercise?.let {
+                            NextPreviewInfo(
+                                label = stringResource(R.string.interval_next_round),
+                                exerciseName = it.name,
+                                description = it.description
+                            )
+                        },
+                        roundCompleteMessage = stringResource(R.string.interval_round_complete_format, step.round),
+                        isPaused = isPaused,
+                        onPauseToggle = ::togglePause,
+                        onStop = null,
+                        onSkip = ::skipCurrentStep,
+                        appColors = appColors
                     )
-                },
-                isPaused = isPaused,
-                onPauseToggle = { isPaused = !isPaused },
-                onStop = null,
-                onSkip = { advanceFromRest(currentPhase.round, currentPhase.exerciseIndex) },
-                onTimerFinish = {
-                    advanceFromRest(currentPhase.round, currentPhase.exerciseIndex)
-                },
-                soundPlayer = soundPlayer,
-                flashController = flashController,
-                isFlashEnabled = isFlashEnabled,
-                appColors = appColors
-            )
-        }
-
-        is IntervalPhase.RoundRest -> {
-            val firstExercise = exercises.firstOrNull()
-            IntervalTimerContent(
-                program = program!!,
-                exercises = exercises,
-                round = currentPhase.completedRound,
-                exerciseIndex = exercises.size - 1,
-                totalSeconds = program!!.roundRestSeconds,
-                phaseColor = Purple600,
-                phaseLabel = stringResource(R.string.interval_round_rest_label),
-                exerciseName = null,
-                nextPreview = firstExercise?.let {
-                    NextPreviewInfo(
-                        label = stringResource(R.string.interval_next_round),
-                        exerciseName = it.name,
-                        description = it.description
-                    )
-                },
-                roundCompleteMessage = stringResource(
-                    R.string.interval_round_complete_format,
-                    currentPhase.completedRound
-                ),
-                isPaused = isPaused,
-                onPauseToggle = { isPaused = !isPaused },
-                onStop = null,
-                onSkip = { advanceFromRoundRest(currentPhase.completedRound) },
-                onTimerFinish = {
-                    advanceFromRoundRest(currentPhase.completedRound)
-                },
-                soundPlayer = soundPlayer,
-                flashController = flashController,
-                isFlashEnabled = isFlashEnabled,
-                appColors = appColors
-            )
+                }
+            }
         }
 
         is IntervalPhase.Complete -> {
@@ -743,43 +739,14 @@ private fun ConfirmSettingRow(
 @Composable
 private fun IntervalPrepareContent(
     exercises: List<IntervalExerciseInfo>,
-    soundPlayer: SoundPlayer,
-    flashController: FlashController,
-    isFlashEnabled: Boolean,
-    appColors: AppColors,
-    onFinish: () -> Unit
+    remainingSeconds: Int,
+    totalSeconds: Int,
+    isPaused: Boolean,
+    onPauseToggle: () -> Unit,
+    appColors: AppColors
 ) {
-    val scope = rememberCoroutineScope()
-    val totalSeconds = 5
-    var remainingSeconds by remember { mutableIntStateOf(totalSeconds) }
-    var isPaused by remember { mutableStateOf(false) }
     val progress = remainingSeconds.toFloat() / totalSeconds
     val firstExercise = exercises.firstOrNull()
-
-    LaunchedEffect(isPaused) {
-        while (remainingSeconds > 0) {
-            if (isPaused) {
-                delay(100L)
-                continue
-            }
-            delay(1000L)
-            if (isPaused) continue
-            remainingSeconds--
-            if (remainingSeconds in 1..3) {
-                soundPlayer.playBeep()
-                if (isFlashEnabled) {
-                    scope.launch { flashController.flashShort() }
-                }
-            }
-        }
-        // Prepare complete: single beep like rest completion
-        soundPlayer.playStartCue()
-        if (isFlashEnabled) {
-            scope.launch { flashController.flashComplete() }
-        }
-        delay(300L)
-        onFinish()
-    }
 
     Column(
         modifier = Modifier
@@ -806,7 +773,7 @@ private fun IntervalPrepareContent(
                 .clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
-                ) { isPaused = !isPaused }
+                ) { onPauseToggle() }
         ) {
             Canvas(modifier = Modifier.size(240.dp)) {
                 drawArc(
@@ -900,6 +867,7 @@ private fun IntervalTimerContent(
     exercises: List<IntervalExerciseInfo>,
     round: Int,
     exerciseIndex: Int,
+    remainingSeconds: Int,
     totalSeconds: Int,
     phaseColor: Color,
     phaseLabel: String,
@@ -909,52 +877,10 @@ private fun IntervalTimerContent(
     onPauseToggle: () -> Unit,
     onStop: (() -> Unit)?,
     onSkip: (() -> Unit)?,
-    onTimerFinish: () -> Unit,
-    soundPlayer: SoundPlayer,
-    flashController: FlashController,
-    isFlashEnabled: Boolean,
     appColors: AppColors,
-    isWorkPhase: Boolean = false,
     roundCompleteMessage: String? = null
 ) {
-    var remainingSeconds by remember(round, exerciseIndex, phaseLabel) {
-        mutableIntStateOf(totalSeconds)
-    }
     val progress = if (totalSeconds > 0) remainingSeconds.toFloat() / totalSeconds else 0f
-
-    // Timer countdown
-    LaunchedEffect(round, exerciseIndex, phaseLabel, isPaused) {
-        while (remainingSeconds > 0 && !isPaused) {
-            delay(1000L)
-            if (!isPaused) {
-                remainingSeconds--
-                // Beep at 3, 2, 1
-                if (remainingSeconds in 1..3) {
-                    soundPlayer.playBeep()
-                    if (isFlashEnabled) {
-                        launch { flashController.flashShort() }
-                    }
-                }
-            }
-        }
-        if (remainingSeconds <= 0) {
-            if (isWorkPhase) {
-                // Work complete: triple beep pattern (ピピピ×3) + long flash
-                if (isFlashEnabled) {
-                    launch { flashController.flashSetComplete() }
-                }
-                soundPlayer.playSetComplete()
-            } else {
-                // Rest/RoundRest complete: single beep + short flash
-                soundPlayer.playStartCue()
-                if (isFlashEnabled) {
-                    launch { flashController.flashComplete() }
-                }
-                delay(300L)
-            }
-            onTimerFinish()
-        }
-    }
 
     Column(
         modifier = Modifier
