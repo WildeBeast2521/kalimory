@@ -8,6 +8,8 @@ import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.DatabaseQuarantine
 import io.github.gonbei774.calisthenicsmemory.data.DatabaseStartupCheck
 import io.github.gonbei774.calisthenicsmemory.data.DatabaseStartupState
+import io.github.gonbei774.calisthenicsmemory.data.Exercise
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
@@ -47,6 +49,16 @@ class DatabaseStartupCheckTest {
         assertEquals(DatabaseStartupState.Ready, check())
         closeOpened()
         assertEquals(DatabaseStartupState.Ready, check())
+    }
+
+    @Test
+    fun startupAddsGroupRowsThatExercisesNeed() = runBlocking {
+        assertEquals(DatabaseStartupState.Ready, check())
+        opened.single().exerciseDao().insertExercise(Exercise(name = "Squat", type = "Dynamic", group = "Legs"))
+        closeOpened()
+
+        assertEquals(DatabaseStartupState.Ready, check())
+        assertEquals(listOf("Legs"), opened.single().exerciseGroupDao().getAllGroupsSync().map { it.name })
     }
 
     @Test

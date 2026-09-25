@@ -14,6 +14,7 @@ import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
 import io.github.gonbei774.calisthenicsmemory.data.ProgramLoop
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
+import io.github.gonbei774.calisthenicsmemory.data.restoreMissingGroups
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -703,7 +704,12 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
 
     /** Atomically replace all backup tables with an already parsed payload. */
     suspend fun importData(backupData: BackupData): BackupResult<BackupSummary> =
-        withContext(Dispatchers.IO) { backupService.restore(backupData) }
+        withContext(Dispatchers.IO) {
+            backupService.restore(backupData).also {
+                // Restored exercises may name groups the backup lacks; give them rows so they are listed.
+                if (it is BackupResult.Success) restoreMissingGroups(database)
+            }
+        }
 
     // ========================================
     // CSV エクスポート・インポート機能

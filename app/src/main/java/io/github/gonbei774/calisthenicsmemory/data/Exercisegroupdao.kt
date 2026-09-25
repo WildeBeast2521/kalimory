@@ -49,6 +49,32 @@ interface ExerciseGroupDao {
         moveExercisesToGroup(oldName, newName)
     }
 
+    @Query(
+        "SELECT DISTINCT `group` FROM exercises WHERE `group` IS NOT NULL " +
+            "AND `group` NOT IN (SELECT name FROM exercise_groups) ORDER BY `group`"
+    )
+    fun groupNamesWithoutRow(): List<String>
+
+    @Query("SELECT COALESCE(MAX(displayOrder), -1) FROM exercise_groups")
+    fun maxGroupDisplayOrder(): Int
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertGroupBlocking(group: ExerciseGroup): Long
+
+    /**
+     * Adds a group row for every group name that exercises use but exercise_groups lacks,
+     * placed after the existing groups in name order. Without the row those exercises are
+     * missing from every exercise list. Only inserts; returns the number of groups added.
+     * Call from a background thread; callers treat a failure as non-fatal.
+     */
+    @Transaction
+    fun restoreMissingGroups(): Int {
+        val names = groupNamesWithoutRow()
+        var next = maxGroupDisplayOrder() + 1
+        names.forEach { insertGroupBlocking(ExerciseGroup(name = it, displayOrder = next++)) }
+        return names.size
+    }
+
     /** Deletes the group and its todo tasks and ungroups its exercises, or nothing on failure. */
     @Transaction
     suspend fun deleteGroupAndUngroupExercises(name: String) {
