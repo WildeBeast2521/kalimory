@@ -748,4 +748,14 @@
     <string name="share_import_count_skipped">%1$d saltati</string>
 
     <string name="import_anomalies_notice">Elementi che non corrispondono al formato dell\'app: %1$d. Verranno importati senza modifiche.</string>
+    <string name="db_unavailable_title">Impossibile aprire i tuoi dati di allenamento</string>
+    <string name="db_unavailable_unsupported">Questo database (versione %1$d) è stato creato da una versione dell\'app che questa build non può aggiornare. Nulla è stato modificato o eliminato.</string>
+    <string name="db_unavailable_open_failed">Impossibile aprire il database. Nulla è stato eliminato.</string>
+    <string name="db_unavailable_corruption_reported">Il database ha segnalato danni in precedenza. È stata conservata una copia dei file danneggiati. Alcuni dati potrebbero non caricarsi.</string>
+    <string name="db_unavailable_export_hint">Esporta i file del database e conservali. Non disinstallare l\'app e non cancellarne i dati: andrebbero persi.</string>
+    <string name="db_export_files">Esporta i file del database</string>
+    <string name="db_export_done">File del database esportati.</string>
+    <string name="db_export_failed">Esportazione non riuscita: %1$s</string>
+    <string name="db_continue">Continua</string>
+    <string name="db_error_details">Dettagli: %1$s</string>
 </resources>

@@ -1,0 +1,70 @@
+package io.github.gonbei774.calisthenicsmemory.data
+
+import android.content.Context
+import android.util.Log
+import java.io.File
+import java.io.OutputStream
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
+
+/** Result of opening the database before any screen uses it. */
+sealed interface DatabaseStartupState {
+    data object Ready : DatabaseStartupState
+    data class Unsupported(val installedVersion: Int) : DatabaseStartupState
+    data class OpenFailed(val details: String) : DatabaseStartupState
+    /** The database opens, but SQLite reported corruption earlier and a copy was set aside. */
+    data object CorruptionReported : DatabaseStartupState
+}
+
+/**
+ * Opens the database once at start-up, so a database that cannot be used leads to a
+ * recovery screen instead of a crash inside a screen. Runs migrations like any first
+ * open; never deletes or rewrites files itself.
+ */
+internal object DatabaseStartupCheck {
+    fun run(
+        context: Context,
+        name: String = AppDatabase.DATABASE_NAME,
+        open: () -> AppDatabase = { AppDatabase.getDatabase(context) },
+    ): DatabaseStartupState {
+        val state = try {
+            open().openHelper.writableDatabase
+                .query("SELECT COUNT(*) FROM sqlite_master")
+                .use { it.moveToFirst() }
+            DatabaseStartupState.Ready
+        } catch (e: UnsupportedDatabaseVersionException) {
+            DatabaseStartupState.Unsupported(e.installedVersion)
+        } catch (e: Exception) {
+            Log.e("CalisthenicsMemoryDb", "The database could not be opened", e)
+            DatabaseStartupState.OpenFailed(e.toString())
+        }
+        if (state == DatabaseStartupState.Ready && DatabaseQuarantine.needsAttention(context.getDatabasePath(name))) {
+            return DatabaseStartupState.CorruptionReported
+        }
+        return state
+    }
+}
+
+/** Collects the raw database files, and any corruption copy, for a user-initiated export. */
+internal object DatabaseFileExport {
+    private val SIDECAR_SUFFIXES = listOf("", "-wal", "-shm", "-journal")
+
+    /** Zip entry name to file, for the database, its sidecars, and the corruption copy. */
+    fun entries(database: File): List<Pair<String, File>> {
+        val live = SIDECAR_SUFFIXES.map { File(database.path + it) }.filter { it.isFile }.map { it.name to it }
+        val quarantine = DatabaseQuarantine.directoryFor(database)
+        val copies = quarantine.listFiles().orEmpty().filter { it.isFile }.sortedBy { it.name }
+            .map { "${quarantine.name}/${it.name}" to it }
+        return live + copies
+    }
+
+    fun writeZip(entries: List<Pair<String, File>>, output: OutputStream) {
+        ZipOutputStream(output).use { zip ->
+            for ((name, file) in entries) {
+                zip.putNextEntry(ZipEntry(name))
+                file.inputStream().use { it.copyTo(zip) }
+                zip.closeEntry()
+            }
+        }
+    }
+}

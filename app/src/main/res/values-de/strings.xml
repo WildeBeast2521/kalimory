@@ -775,4 +775,14 @@
     <string name="set_done_label">FERTIG</string>
     <string name="set_complete_button">Satz %1$d abschließen</string>
     <string name="import_anomalies_notice">Einträge, die nicht dem Format der App entsprechen: %1$d. Sie werden unverändert importiert.</string>
+    <string name="db_unavailable_title">Deine Trainingsdaten konnten nicht geöffnet werden</string>
+    <string name="db_unavailable_unsupported">Diese Datenbank (Version %1$d) stammt aus einer App-Version, die dieser Build nicht aktualisieren kann. Es wurde nichts geändert oder gelöscht.</string>
+    <string name="db_unavailable_open_failed">Die Datenbank konnte nicht geöffnet werden. Es wurde nichts gelöscht.</string>
+    <string name="db_unavailable_corruption_reported">Die Datenbank hat zuvor eine Beschädigung gemeldet. Eine Kopie der beschädigten Dateien wurde aufbewahrt. Einige Daten lassen sich eventuell nicht laden.</string>
+    <string name="db_unavailable_export_hint">Exportiere die Datenbankdateien und bewahre sie sicher auf. Deinstalliere die App nicht und lösche nicht ihren Speicher, sonst gehen die Daten verloren.</string>
+    <string name="db_export_files">Datenbankdateien exportieren</string>
+    <string name="db_export_done">Datenbankdateien exportiert.</string>
+    <string name="db_export_failed">Export fehlgeschlagen: %1$s</string>
+    <string name="db_continue">Weiter</string>
+    <string name="db_error_details">Details: %1$s</string>
 </resources>

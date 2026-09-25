@@ -751,4 +751,14 @@
     <string name="program_use_challenge_desc">Використовує налаштування складності кожної вправи (якщо не задані, то значення з програми)</string>
     <string name="program_use_previous_desc">Використовує значення з попереднього тренування (якщо записів немає, то значення з програми)</string>
     <string name="import_anomalies_notice">Елементи, що не відповідають формату застосунку: %1$d. Їх буде імпортовано без змін.</string>
+    <string name="db_unavailable_title">Не вдалося відкрити дані тренувань</string>
+    <string name="db_unavailable_unsupported">Цю базу даних (версія %1$d) створено версією застосунку, яку ця збірка не може оновити. Нічого не змінено й не видалено.</string>
+    <string name="db_unavailable_open_failed">Не вдалося відкрити базу даних. Нічого не видалено.</string>
+    <string name="db_unavailable_corruption_reported">Раніше база даних повідомила про пошкодження. Копію пошкоджених файлів збережено. Деякі дані можуть не завантажитися.</string>
+    <string name="db_unavailable_export_hint">Експортуйте файли бази даних і збережіть їх. Не видаляйте застосунок і не очищайте його сховище: дані буде втрачено.</string>
+    <string name="db_export_files">Експортувати файли бази даних</string>
+    <string name="db_export_done">Файли бази даних експортовано.</string>
+    <string name="db_export_failed">Помилка експорту: %1$s</string>
+    <string name="db_continue">Продовжити</string>
+    <string name="db_error_details">Подробиці: %1$s</string>
 </resources>

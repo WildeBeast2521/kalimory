@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="import_anomalies_notice">عناصر لا تطابق تنسيق التطبيق: %1$d. سيتم استيرادها دون تغيير.</string>
+    <string name="db_unavailable_title">تعذّر فتح بيانات التمرين</string>
+    <string name="db_unavailable_unsupported">أُنشئت قاعدة البيانات هذه (الإصدار %1$d) بإصدار من التطبيق لا يستطيع هذا الإصدار ترقيته. لم يُغيَّر أو يُحذف أي شيء.</string>
+    <string name="db_unavailable_open_failed">تعذّر فتح قاعدة البيانات. لم يُحذف أي شيء.</string>
+    <string name="db_unavailable_corruption_reported">أبلغت قاعدة البيانات سابقًا عن تلف. تم الاحتفاظ بنسخة من الملفات التالفة. قد يتعذّر تحميل بعض البيانات.</string>
+    <string name="db_unavailable_export_hint">صدّر ملفات قاعدة البيانات واحتفظ بها. لا تُلغِ تثبيت التطبيق ولا تمسح مساحة تخزينه، فذلك يمحو البيانات.</string>
+    <string name="db_export_files">تصدير ملفات قاعدة البيانات</string>
+    <string name="db_export_done">تم تصدير ملفات قاعدة البيانات.</string>
+    <string name="db_export_failed">فشل التصدير: %1$s</string>
+    <string name="db_continue">متابعة</string>
+    <string name="db_error_details">التفاصيل: %1$s</string>
 </resources>

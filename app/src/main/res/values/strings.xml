@@ -808,4 +808,14 @@
     <string name="share_import_count_reused">%1$d reused</string>
     <string name="share_import_count_skipped">%1$d skipped</string>
     <string name="import_anomalies_notice">Items that do not match what the app writes: %1$d. They will be imported unchanged.</string>
+    <string name="db_unavailable_title">Your training data could not be opened</string>
+    <string name="db_unavailable_unsupported">This database (version %1$d) was created by an app version this build cannot upgrade. Nothing was changed or deleted.</string>
+    <string name="db_unavailable_open_failed">The database could not be opened. Nothing was deleted.</string>
+    <string name="db_unavailable_corruption_reported">The database reported damage earlier. A copy of the damaged files was kept. Some data may fail to load.</string>
+    <string name="db_unavailable_export_hint">Export the database files and keep them safe. Do not uninstall the app or clear its storage: that would erase the data.</string>
+    <string name="db_export_files">Export database files</string>
+    <string name="db_export_done">Database files exported.</string>
+    <string name="db_export_failed">Export failed: %1$s</string>
+    <string name="db_continue">Continue</string>
+    <string name="db_error_details">Details: %1$s</string>
 </resources>

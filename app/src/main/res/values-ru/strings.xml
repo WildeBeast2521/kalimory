@@ -108,4 +108,14 @@
     <string name="date">Дата</string>
     <string name="time">Время</string>
     <string name="import_anomalies_notice">Элементы, не соответствующие формату приложения: %1$d. Они будут импортированы без изменений.</string>
+    <string name="db_unavailable_title">Не удалось открыть данные тренировок</string>
+    <string name="db_unavailable_unsupported">Эта база данных (версия %1$d) создана версией приложения, которую эта сборка не может обновить. Ничего не изменено и не удалено.</string>
+    <string name="db_unavailable_open_failed">Не удалось открыть базу данных. Ничего не удалено.</string>
+    <string name="db_unavailable_corruption_reported">Ранее база данных сообщила о повреждении. Копия повреждённых файлов сохранена. Некоторые данные могут не загрузиться.</string>
+    <string name="db_unavailable_export_hint">Экспортируйте файлы базы данных и сохраните их. Не удаляйте приложение и не очищайте его хранилище: данные будут потеряны.</string>
+    <string name="db_export_files">Экспортировать файлы базы данных</string>
+    <string name="db_export_done">Файлы базы данных экспортированы.</string>
+    <string name="db_export_failed">Ошибка экспорта: %1$s</string>
+    <string name="db_continue">Продолжить</string>
+    <string name="db_error_details">Подробности: %1$s</string>
 </resources>
