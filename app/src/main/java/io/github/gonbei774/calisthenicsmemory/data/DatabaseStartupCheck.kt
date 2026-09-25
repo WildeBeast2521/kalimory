@@ -19,7 +19,7 @@ sealed interface DatabaseStartupState {
 /**
  * Opens the database once at start-up, so a database that cannot be used leads to a
  * recovery screen instead of a crash inside a screen. Runs migrations like any first
- * open; never deletes or rewrites files itself.
+ * open and adds group rows that exercises reference but lack; never deletes data.
  */
 internal object DatabaseStartupCheck {
     fun run(
@@ -28,9 +28,11 @@ internal object DatabaseStartupCheck {
         open: () -> AppDatabase = { AppDatabase.getDatabase(context) },
     ): DatabaseStartupState {
         val state = try {
-            open().openHelper.writableDatabase
+            val database = open()
+            database.openHelper.writableDatabase
                 .query("SELECT COUNT(*) FROM sqlite_master")
                 .use { it.moveToFirst() }
+            restoreMissingGroups(database)
             DatabaseStartupState.Ready
         } catch (e: UnsupportedDatabaseVersionException) {
             DatabaseStartupState.Unsupported(e.installedVersion)
@@ -42,6 +44,16 @@ internal object DatabaseStartupCheck {
             return DatabaseStartupState.CorruptionReported
         }
         return state
+    }
+}
+
+/** Adds missing group rows; a failure is logged and never blocks the caller. */
+internal fun restoreMissingGroups(database: AppDatabase) {
+    try {
+        val restored = database.exerciseGroupDao().restoreMissingGroups()
+        if (restored > 0) Log.w("CalisthenicsMemoryDb", "Added $restored missing group rows used by exercises")
+    } catch (e: Exception) {
+        Log.e("CalisthenicsMemoryDb", "Could not add missing group rows", e)
     }
 }
 
