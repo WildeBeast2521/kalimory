@@ -4,14 +4,17 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Share import atomicity and hidden todo tasks, branch `work/atomic-share-import`, based on master `7420a28`. The PR follows these checks.
+Missing group rows, branch `work/restore-missing-groups`, based on master `c74e000`. The user chose "recreate group rows" (2026-09-25). The PR follows these checks.
 
-- `fix: import community shares in one transaction`: `CommunityShareImporter` runs the unchanged write logic in `withTransaction`. A failure injected by a SQL trigger on the last step left rows behind without the transaction, and leaves none with it.
-- `fix: show todo tasks whose target is missing so they can be removed`: the ToDo screen shows an "item no longer exists" card that can be swiped away.
+- `fix: recreate missing group rows so grouped exercises are listed`: exercises whose group name had no row were missing from every exercise list. Missing rows are now added at start-up and after a backup restore; the fix only inserts.
 - Verification:
-  - `testDebugUnitTest lintDebug assembleDebug compileDebugAndroidTestKotlin`: PASS (237 unit tests, no new lint findings).
-  - `connectedDebugAndroidTest` on `floor_api29` (API 29): 75 tests, 0 failures.
-  - Manual check on the same AVD: planted orphan and unknown-type todo tasks appear, and swipe-delete removes only the orphan row.
+  - Full gate: PASS (237 unit tests, no new lint findings).
+  - `connectedDebugAndroidTest` on `floor_api29`: 77 tests, 0 failures. The startup test failed with the repair removed.
+  - Manual check in the installed app: a planted orphan-group exercise is listed under its group after launch.
+
+## Previous phase: share import atomicity and hidden todo tasks (merged)
+
+PR #8 merged as `c74e000`; PR CI run 36149723855 (75 emulator tests) and post-merge `master` run 36150610815 passed.
 
 ## Previous phase: database recovery screen (merged)
 
@@ -80,7 +83,6 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 - Corruption found after start-up (damaged pages first touched by a later query) can still crash that screen. The next start shows the recovery screen, because the `.corrupt` copy needs attention.
 - A recovery zip can only be restored manually. There is no in-app import for it.
-- Exercises whose group name has no group row may not appear under any group in the exercise list; not yet verified.
 - When a non-empty `-wal` or `-journal` exists, the header guard defers to Room; Room fails closed but SQLite may apply the pending journal.
 - Migrations 13→14, 14→15, and 18→19 drop and rebuild tables. They are safe because Room enables `foreign_keys` only in `onOpen`, after migrations; this is covered by the production-path tests.
 - The schema check's base comparison is skipped for `workflow_dispatch` runs.
@@ -93,7 +95,9 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Verify whether exercises whose group name has no group row appear in the exercise list (a known limitation). Fix it if they do not.
-2. Then Task 6 of `docs/plans/2026-08-30-overhaul-bootstrap.md`: the durable timer/workout state-machine spike, starting with pure reducer tests.
+1. Task 6 of `docs/plans/2026-08-30-overhaul-bootstrap.md`: the durable timer/workout state-machine spike.
+   - Survey the current timer code first: `service/`, `ui/screens/WorkoutScreen.kt`, `ProgramExecutionScreen.kt`, `IntervalExecutionScreen.kt`.
+   - Then write pure reducer tests before any implementation.
+2. Keep the spike isolated. It adds no DI framework, no networking, and no schema change.
 
-Files likely involved next: `app/src/main/java/io/github/gonbei774/calisthenicsmemory/viewmodel/TrainingViewModel.kt` (hierarchical exercise list), `app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/CreateScreen.kt`, and the timer code under `service/` and `ui/screens/WorkoutScreen.kt`.
+Files likely involved next: `app/src/main/java/io/github/gonbei774/calisthenicsmemory/service/*`, `ui/screens/WorkoutScreen.kt`, `ui/screens/ProgramExecutionScreen.kt`, `ui/screens/IntervalExecutionScreen.kt`.

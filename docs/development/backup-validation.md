@@ -19,7 +19,7 @@ The database can hold these values, and older versions or interrupted operations
 
 | `BackupAnomalyKind` | Meaning |
 |:---|:---|
-| `EXERCISE_MISSING_GROUP` | An exercise's group name has no group row. |
+| `EXERCISE_MISSING_GROUP` | An exercise's group name has no group row. After the restore, and at every start-up, `ExerciseGroupDao.restoreMissingGroups` adds the missing group row so the exercise is listed again. |
 | `TODO_MISSING_TARGET` | A todo task's exercise, group, program, or interval program is missing. |
 | `TODO_UNKNOWN_TYPE` | A todo task type the app does not know. |
 | `TODO_INVALID_REPEAT_DAYS` | `repeatDays` is not empty or distinct day numbers 1–7. Readers skip the malformed tokens (`TodoTask.parseRepeatDays`). |
