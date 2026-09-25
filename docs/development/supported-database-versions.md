@@ -20,6 +20,10 @@ Neither destructive migration fallback nor destructive downgrade fallback is per
 
 This policy concerns the installed Room database schema version only. It is separate from the JSON backup format and its versions v1–v8; a JSON backup version does not establish support for the correspondingly numbered Room database version.
 
+## Corrupt databases
+
+SQLite's default corruption handling deletes the database file. `AppDatabase.build` replaces it with `CorruptionPreservingOpenHelperFactory`: on a corruption report, the database and its `-wal`, `-shm`, and `-journal` files are copied once into `<name>.corrupt` next to the database, and the live file is kept. The error still reaches the caller. The first copy is never overwritten. Recovering from a corrupt database needs manual assistance. The copy is in app-private storage, and the app cannot export it yet.
+
 ## Rationale
 
 Support begins at version 9 because it is the earliest source in the contiguous migration chain registered by `AppDatabase`. The audited schema-version provenance is:
