@@ -785,4 +785,5 @@
     <string name="db_export_failed">Export fehlgeschlagen: %1$s</string>
     <string name="db_continue">Weiter</string>
     <string name="db_error_details">Details: %1$s</string>
+    <string name="todo_missing_item">Dieser Eintrag existiert nicht mehr. Nach links wischen, um ihn zu entfernen.</string>
 </resources>

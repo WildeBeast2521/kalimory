@@ -6,7 +6,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class TodoRepeatDaysTest {
+class TodoTaskTest {
     private fun task(repeatDays: String) = TodoTask(id = 1, referenceId = 1, sortOrder = 0, repeatDays = repeatDays)
 
     @Test fun `parses well-formed schedules`() {
@@ -29,5 +29,15 @@ class TodoRepeatDaysTest {
         for (bad in listOf("x", "0", "8", "1,,2", "1,1", " ")) {
             assertFalse(bad, TodoTask.isValidRepeatDays(bad))
         }
+    }
+
+    @Test fun `reports whether the referenced item exists`() {
+        val ids = setOf(1L)
+        fun has(type: String, id: Long) = TodoTask(1, type, id, 0).hasTarget(ids, ids, ids, ids)
+        for (type in listOf(TodoTask.TYPE_EXERCISE, TodoTask.TYPE_GROUP, TodoTask.TYPE_PROGRAM, TodoTask.TYPE_INTERVAL)) {
+            assertEquals(type, true, has(type, 1))
+            assertEquals(type, false, has(type, 2))
+        }
+        assertEquals(null, has("RETIRED_TYPE", 1))
     }
 }

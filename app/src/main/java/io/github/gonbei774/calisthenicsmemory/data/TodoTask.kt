@@ -36,4 +36,18 @@ data class TodoTask(
     fun isRepeating(): Boolean = repeatDays.isNotEmpty()
 
     fun getRepeatDayNumbers(): List<Int> = parseRepeatDays(repeatDays)
+
+    /** Whether the referenced item exists, or null when [type] is not a known task type. */
+    fun hasTarget(
+        exerciseIds: Set<Long>,
+        groupIds: Set<Long>,
+        programIds: Set<Long>,
+        intervalProgramIds: Set<Long>,
+    ): Boolean? = when (type) {
+        TYPE_EXERCISE -> referenceId in exerciseIds
+        TYPE_GROUP -> referenceId in groupIds
+        TYPE_PROGRAM -> referenceId in programIds
+        TYPE_INTERVAL -> referenceId in intervalProgramIds
+        else -> null
+    }
 }

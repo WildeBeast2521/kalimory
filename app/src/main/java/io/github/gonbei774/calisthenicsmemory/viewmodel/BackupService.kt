@@ -178,14 +178,8 @@ class BackupService(
             if (!TodoTask.isValidRepeatDays(it.repeatDays)) {
                 anomalies += BackupAnomaly(BackupAnomalyKind.TODO_INVALID_REPEAT_DAYS, it.id, "Todo task ${it.id} has invalid repeat days ${it.repeatDays}")
             }
-            val targetExists = when (it.type) {
-                TodoTask.TYPE_EXERCISE -> it.referenceId in exerciseIds
-                TodoTask.TYPE_GROUP -> it.referenceId in groupIds
-                TodoTask.TYPE_PROGRAM -> it.referenceId in programIds
-                TodoTask.TYPE_INTERVAL -> it.referenceId in intervalProgramIds
-                else -> null
-            }
-            when (targetExists) {
+            val todo = TodoTask(it.id, it.type, it.referenceId, it.sortOrder, it.repeatDays, it.lastCompletedDate)
+            when (todo.hasTarget(exerciseIds, groupIds, programIds, intervalProgramIds)) {
                 null -> anomalies += BackupAnomaly(BackupAnomalyKind.TODO_UNKNOWN_TYPE, it.id, "Todo task ${it.id} has unknown type ${it.type}")
                 false -> anomalies += BackupAnomaly(
                     BackupAnomalyKind.TODO_MISSING_TARGET, it.id,

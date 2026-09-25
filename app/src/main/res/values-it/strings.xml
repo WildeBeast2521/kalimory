@@ -758,4 +758,5 @@
     <string name="db_export_failed">Esportazione non riuscita: %1$s</string>
     <string name="db_continue">Continua</string>
     <string name="db_error_details">Dettagli: %1$s</string>
+    <string name="todo_missing_item">Questo elemento non esiste più. Scorri a sinistra per rimuoverlo.</string>
 </resources>

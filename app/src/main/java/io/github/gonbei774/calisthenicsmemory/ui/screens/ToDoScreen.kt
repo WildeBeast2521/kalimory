@@ -445,6 +445,17 @@ private fun ActiveTaskContent(
     onLongClick: () -> Unit
 ) {
     val appColors = LocalAppColors.current
+    if (task.hasTarget(exerciseMap.keys, groupMap.keys, programMap.keys, intervalProgramMap.keys) != true) {
+        UnavailableTaskCard(isDragging = isDragging, elevation = elevation) {
+            Icon(
+                Icons.Default.Menu,
+                contentDescription = stringResource(R.string.todo_drag_to_reorder),
+                tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                modifier = Modifier.size(24.dp).then(dragHandleModifier)
+            )
+        }
+        return
+    }
     when (task.type) {
         TodoTask.TYPE_EXERCISE -> {
             val exercise = exerciseMap[task.referenceId]
@@ -585,6 +596,10 @@ private fun InactiveTaskContent(
     onLongClick: () -> Unit
 ) {
     val appColors = LocalAppColors.current
+    if (task.hasTarget(exerciseMap.keys, groupMap.keys, programMap.keys, intervalProgramMap.keys) != true) {
+        UnavailableTaskCard(isDragging = false, elevation = 0.dp)
+        return
+    }
     when (task.type) {
             TodoTask.TYPE_EXERCISE -> {
                 val exercise = exerciseMap[task.referenceId]
@@ -991,6 +1006,40 @@ private fun ExerciseTaskCard(
                     Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = appColors.textPrimary)
                 }
             }
+        }
+    }
+}
+
+/**
+ * A task whose exercise, group, or program no longer exists, or whose type this app
+ * does not know. Shown so the user can still swipe it away; the row itself is kept.
+ */
+@Composable
+private fun UnavailableTaskCard(
+    isDragging: Boolean,
+    elevation: androidx.compose.ui.unit.Dp,
+    dragHandle: (@Composable () -> Unit)? = null
+) {
+    val appColors = LocalAppColors.current
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isDragging) appColors.cardBackgroundSecondary.copy(alpha = 0.9f) else appColors.cardBackground
+        ),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = elevation)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            dragHandle?.invoke()
+            Text(
+                text = stringResource(R.string.todo_missing_item),
+                fontSize = 14.sp,
+                color = appColors.textSecondary
+            )
         }
     }
 }

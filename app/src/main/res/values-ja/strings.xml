@@ -825,4 +825,5 @@
     <string name="db_export_failed">エクスポートに失敗しました: %1$s</string>
     <string name="db_continue">続行</string>
     <string name="db_error_details">詳細: %1$s</string>
+    <string name="todo_missing_item">この項目は存在しません。左にスワイプして削除してください。</string>
 </resources>

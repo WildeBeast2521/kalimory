@@ -758,4 +758,5 @@
     <string name="db_export_failed">导出失败：%1$s</string>
     <string name="db_continue">继续</string>
     <string name="db_error_details">详细信息：%1$s</string>
+    <string name="todo_missing_item">此项目已不存在。向左滑动即可移除。</string>
 </resources>

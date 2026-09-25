@@ -761,4 +761,5 @@
     <string name="db_export_failed">Помилка експорту: %1$s</string>
     <string name="db_continue">Продовжити</string>
     <string name="db_error_details">Подробиці: %1$s</string>
+    <string name="todo_missing_item">Цей елемент більше не існує. Проведіть ліворуч, щоб видалити його.</string>
 </resources>
