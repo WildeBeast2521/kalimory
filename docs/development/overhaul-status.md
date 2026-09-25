@@ -4,10 +4,20 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Corruption preservation, branch `work/corruption-preservation`, based on master `5519fe5`. The user chose "copy aside, keep live" (2026-09-25). The PR follows these checks.
+Database recovery screen, branch `work/database-recovery-screen`, based on master `583484a`. The PR follows these checks.
 
-- `fix: keep the database when SQLite reports corruption`: Room's default `onCorruption` deleted the database. On the emulator, a database with a damaged header was silently replaced by an empty one. Now the files are copied once to `<name>.corrupt` and the live file is kept.
-- Verification: `testDebugUnitTest lintDebug assembleDebug compileDebugAndroidTestKotlin` PASS (234 unit tests, no new lint findings). `connectedDebugAndroidTest` on `floor_api29` (API 29): 70 tests, 0 failures. `CorruptDatabaseTest` failed before the fix.
+- `feat: show a recovery screen when the database cannot be opened`: a startup check replaces the crash with a recovery screen that exports the raw database files as a zip.
+- Verification:
+  - `testDebugUnitTest lintDebug assembleDebug compileDebugAndroidTestKotlin`: PASS (236 unit tests, no new lint findings).
+  - `connectedDebugAndroidTest` on `floor_api29` (API 29): 73 tests, 0 failures.
+  - Manual run of the installed debug app on the same AVD:
+    - healthy database: home screen;
+    - planted version 8 database: recovery screen, file bytes unchanged, SAF export zip entry byte-identical;
+    - corrupt header: recovery screen with details, file kept, `.corrupt` copy written.
+
+## Previous phase: corruption preservation (merged)
+
+PR #6 merged as `583484a`. PR CI run 36139303039 (70 emulator tests) and post-merge `master` run 36140056456 passed. The user chose "copy aside, keep live" (2026-09-25). Room's default `onCorruption` deleted the database; now the files are copied once to `<name>.corrupt` and the live file is kept.
 
 ## Previous phase: backup restorability and mutation atomicity (merged)
 
@@ -66,15 +76,12 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Known limitations
 
-- A corrupt database still makes queries that touch the damaged pages fail, which may crash the app. There is no in-app recovery or export for the `<name>.corrupt` copy yet.
-
+- Corruption found after start-up (damaged pages first touched by a later query) can still crash that screen. The next start shows the recovery screen, because the `.corrupt` copy needs attention.
+- A recovery zip can only be restored manually. There is no in-app import for it.
 - Share (community) import is not transactional; a failure midway leaves the rows imported so far.
 - Orphan and unknown-type todo tasks are kept but not shown on the ToDo screen, so the user cannot delete them there.
 - Exercises whose group name has no group row may not appear under any group in the exercise list; not yet verified.
-
-- An unsupported database still crashes the app at startup (now with `UnsupportedDatabaseVersionException` and no file changes). There is no user-facing recovery screen yet.
 - When a non-empty `-wal` or `-journal` exists, the header guard defers to Room; Room fails closed but SQLite may apply the pending journal.
-- A corrupt database file reaches SQLite's default error handler, which deletes the file. Not yet addressed.
 - Migrations 13→14, 14→15, and 18→19 drop and rebuild tables. They are safe because Room enables `foreign_keys` only in `onOpen`, after migrations; this is covered by the production-path tests.
 - The schema check's base comparison is skipped for `workflow_dispatch` runs.
 - GitHub branch protection is unavailable on the private free plan; merge gate is reviewed PR plus green CI.
@@ -87,8 +94,6 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 ## Next task
 
 1. Return to the plan (`docs/plans/2026-08-30-overhaul-bootstrap.md`). Candidates:
-   - a user-facing screen for `UnsupportedDatabaseVersionException`;
-   - a user-reachable export of the raw database, and of the `.corrupt` copy, for manual recovery;
    - making todo tasks with a missing target visible so the user can delete them;
    - a transactional share import;
    - Task 6 (durable timer/workout state-machine spike).
