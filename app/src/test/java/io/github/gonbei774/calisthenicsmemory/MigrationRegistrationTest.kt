@@ -25,6 +25,10 @@ class MigrationRegistrationTest {
         assertEquals(9, AppDatabase.OLDEST_SUPPORTED_VERSION)
     }
 
+    @Test fun `current version constant matches the newest committed schema`() {
+        assertEquals(committedSchemaVersions().last(), AppDatabase.CURRENT_VERSION)
+    }
+
     @Test fun `committed schemas cover exactly the supported versions`() {
         val versions = committedSchemaVersions()
         assertEquals((AppDatabase.OLDEST_SUPPORTED_VERSION..versions.last()).toList(), versions)

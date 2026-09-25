@@ -33,16 +33,27 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "bodyweight_trainer_database"
-                )
-                    .addMigrations(*ALL_MIGRATIONS)
-                    .build()
+                val instance = build(context, DATABASE_NAME)
                 INSTANCE = instance
                 instance
             }
+        }
+
+        const val DATABASE_NAME = "bodyweight_trainer_database"
+
+        // Must equal the version in @Database; MigrationRegistrationTest checks it against the schemas.
+        const val CURRENT_VERSION = 21
+
+        // The production configuration. Migration tests open their databases through it.
+        // Unsupported installed versions are refused before Room can modify the file.
+        internal fun build(context: Context, name: String): AppDatabase {
+            InstalledDatabaseVersion.requireSupported(
+                context.applicationContext.getDatabasePath(name),
+                OLDEST_SUPPORTED_VERSION..CURRENT_VERSION,
+            )
+            return Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, name)
+                .addMigrations(*ALL_MIGRATIONS)
+                .build()
         }
 
         // マイグレーション 9 → 10: displayOrder, restInterval, repDuration を追加
