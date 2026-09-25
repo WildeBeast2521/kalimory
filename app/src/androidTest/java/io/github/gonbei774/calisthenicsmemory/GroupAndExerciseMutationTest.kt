@@ -101,4 +101,13 @@ class GroupAndExerciseMutationTest {
         assertEquals(emptyList<TrainingRecord>(), after.records)
         assertEquals(initial.todoTasks.filterNot { it.id == 3L }, after.todoTasks)
     }
+
+    @Test
+    fun insertingADuplicateExerciseKeepsTheExistingOneAndItsHistory() {
+        // Same name and type as exercise 3, which has a training record.
+        assertThrows(SQLiteConstraintException::class.java) {
+            runBlocking { database.exerciseDao().insertExercise(Exercise(name = "Pull-up", type = "Dynamic")) }
+        }
+        assertEquals(initial, snapshot())
+    }
 }

@@ -21,7 +21,9 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercises WHERE `group` IS NULL ORDER BY displayOrder ASC")
     suspend fun getUngroupedExercises(): List<Exercise>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    // ABORT, not REPLACE: replacing on the (name, type) unique index would delete the existing
+    // exercise and cascade-delete its training records and program entries.
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertExercise(exercise: Exercise): Long
 
     @Update
