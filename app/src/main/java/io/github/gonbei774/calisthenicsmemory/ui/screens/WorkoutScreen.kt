@@ -76,8 +76,13 @@ import kotlinx.coroutines.isActive
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import kotlinx.serialization.Serializable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.util.concurrent.Executors
 
-// ワークアウトセットのデータ
+// ワークアウトセットのデータ（チェックポイントに保存するためシリアライズ可能）
+@Serializable
 data class WorkoutSet(
     val setNumber: Int,
     val side: String?, // "Right" or "Left" or null (Bilateral)
@@ -176,6 +181,52 @@ fun WorkoutScreen(
     // ナビゲーションシート表示状態
     var showNavigationSheet by remember { mutableStateOf(false) }
 
+    // 自動チェックポイント（プロセス終了後の再開用）。書き込みは1本のバックグラウンドスレッドで順番に行う。
+    val checkpointFile = remember { SingleSessionCheckpoint.file(context.filesDir) }
+    val checkpointWriter = remember { Executors.newSingleThreadExecutor() }
+    var pendingResume by remember { mutableStateOf<Pair<SingleSessionCheckpoint, Exercise>?>(null) }
+    var resumeChecked by remember { mutableStateOf(false) }
+    // 再開したワークアウトがToDoから始まっていた場合、記録保存時にToDoを完了する
+    var resumedFromToDo by remember { mutableStateOf(false) }
+
+    fun clearCheckpoint() {
+        checkpointWriter.execute { checkpointFile.clear() }
+    }
+
+    // 開始前の画面を開いたときに一度だけ、中断されたワークアウトの再開を提案
+    LaunchedEffect(exercises) {
+        if (resumeChecked || exercises.isEmpty()) return@LaunchedEffect
+        resumeChecked = true
+        val notStarted = currentStep is WorkoutStep.ModeSelection ||
+            currentStep is WorkoutStep.ExerciseSelection || currentStep is WorkoutStep.Settings
+        if (!notStarted) return@LaunchedEffect
+        val checkpoint = withContext(Dispatchers.IO) { checkpointFile.load() } ?: return@LaunchedEffect
+        val exercise = exercises.find { it.id == checkpoint.exerciseId } ?: return@LaunchedEffect
+        pendingResume = checkpoint to exercise
+    }
+
+    // 開始後のステップが変わるたびにチェックポイントを保存（確認画面では未保存のセットを守る）
+    LaunchedEffect(currentStep) {
+        val step = currentStep
+        val (stepSession, index, atConfirmation) = when (step) {
+            is WorkoutStep.StartInterval -> Triple(step.session, step.currentSetIndex, false)
+            is WorkoutStep.Executing -> Triple(step.session, step.currentSetIndex, false)
+            is WorkoutStep.Interval -> Triple(step.session, step.currentSetIndex, false)
+            is WorkoutStep.Confirmation -> Triple(step.session, 0, true)
+            else -> return@LaunchedEffect
+        }
+        val checkpoint = SingleSessionCheckpoint.of(
+            stepSession, index, atConfirmation, fromToDo || resumedFromToDo, System.currentTimeMillis()
+        )
+        checkpointWriter.execute {
+            try {
+                checkpointFile.save(checkpoint)
+            } catch (e: java.io.IOException) {
+                android.util.Log.e("SingleCheckpoint", "Could not save the workout checkpoint", e)
+            }
+        }
+    }
+
     // 戻るボタンのハンドリング
     BackHandler {
         when (currentStep) {
@@ -227,6 +278,8 @@ fun WorkoutScreen(
             soundPlayer.release()
             flashController.turnOff()
             WorkoutTimerService.stopService(context)
+            // 残っている書き込みは完了させる
+            checkpointWriter.shutdown()
         }
     }
 
@@ -581,8 +634,9 @@ fun WorkoutScreen(
                         session = step.session,
                         onConfirm = { finalSession ->
                             saveWorkoutRecords(viewModel, finalSession, workoutModeComment)
+                            clearCheckpoint()
                             // Delete todo task if from ToDo
-                            if (fromToDo) {
+                            if (fromToDo || resumedFromToDo) {
                                 viewModel.completeTodoTaskByReference(TodoTask.TYPE_EXERCISE, finalSession.exercise.id)
                             }
                             onNavigateBack()
@@ -603,6 +657,39 @@ fun WorkoutScreen(
         }
     }
 
+    // 中断されたワークアウトの再開ダイアログ
+    pendingResume?.let { (checkpoint, exercise) ->
+        AlertDialog(
+            onDismissRequest = {},
+            title = { Text(stringResource(R.string.interval_resume_title)) },
+            text = { Text(exercise.name + "\n\n" + stringResource(R.string.program_resume_message)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    pendingResume = null
+                    val session = checkpoint.toSession(exercise)
+                    selectedExercise = exercise
+                    resumedFromToDo = checkpoint.fromToDo
+                    val index = checkpoint.currentSetIndex.coerceIn(0, session.sets.size - 1)
+                    currentStep = when {
+                        checkpoint.atConfirmation -> WorkoutStep.Confirmation(session)
+                        session.startInterval > 0 -> WorkoutStep.StartInterval(session, index)
+                        else -> WorkoutStep.Executing(session, index)
+                    }
+                }) {
+                    Text(stringResource(R.string.interval_resume_confirm))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    pendingResume = null
+                    clearCheckpoint()
+                }) {
+                    Text(stringResource(R.string.interval_resume_discard))
+                }
+            }
+        )
+    }
+
     // 中断確認ダイアログ
     if (showExitConfirmDialog) {
         AlertDialog(
@@ -613,6 +700,7 @@ fun WorkoutScreen(
                 TextButton(
                     onClick = {
                         showExitConfirmDialog = false
+                        clearCheckpoint()
                         onNavigateBack()
                     }
                 ) {
