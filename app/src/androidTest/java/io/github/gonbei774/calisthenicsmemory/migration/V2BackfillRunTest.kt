@@ -72,6 +72,10 @@ class V2BackfillRunTest {
         assertEquals(0, second.sessionsCreated)
         assertEquals(1, dao.sessionsNewestFirst().size)
 
-        assertEquals(legacy, database.backupDao().snapshot())
+        // The legacy tables are unchanged (the snapshot now also carries the v2 rows).
+        assertEquals(
+            legacy,
+            database.backupDao().snapshot().copy(workoutSessions = emptyList(), sessionExercises = emptyList(), setEntries = emptyList()),
+        )
     }
 }
