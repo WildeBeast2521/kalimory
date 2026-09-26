@@ -4,12 +4,11 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 7, slice 4: v2 in the JSON backup (format 9), branch `work/v2-backup`, based on master `53061da`. The PR follows these checks.
+Task 7 is closed. The storage layer is complete; see `docs/development/v2-workout-history.md` for the gate check and the backfill timing decision (it runs at the Task 8 cutover, not before). Branch `work/task7-close` (documentation only), based on master `6404b91`.
 
-- `feat: back up and restore v2 workout history (format 9)`.
-- Verification:
-  - Gate PASS (297 unit tests).
-  - `connectedDebugAndroidTest` on `floor_api29`: 94 tests, 0 failures.
+## Previous phase: v2 in the JSON backup, Task 7 slice 4 (merged)
+
+PR #22 merged as `6404b91`: backup format 9.
 
 ## Previous phase: compatibility reader, Task 7 slice 3 (merged)
 
@@ -146,9 +145,13 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-Task 7 remaining.
-1. Decide when `V2Backfill` runs. For example: once at start-up after upgrading to database 23, recording the report, with a way to see the report (and its anomaly list) in Settings or the backup screen. Idempotency makes a rerun safe.
-2. The Task 7 acceptance gate needs "valid new sessions round trip through Room and backup": done by `BackupRoundTripTest`.
-3. The Task 7 gate is otherwise met. The first v2 write path, and routing the history UI through `CompatibilityHistory` behind a flag, belong to Task 8 in `docs/plans/2026-08-30-overhaul-bootstrap.md`.
+Task 8: the unified workout UX behind a reversible flag. This is the first user-visible phase. Plan it in slices before coding:
+1. A local feature flag, off by default, and the four destinations (Today, Train, Progress, Library) as a navigation shell. With the flag on, they reuse existing screens; with it off, the current home screen is unchanged.
+2. A v2 repository and write path for one source type (ad-hoc/single first), behind the flag, with the backfill and dual-read comparison at cutover.
+3. Progress reading `CompatibilityHistory`.
+4. Program and interval sources.
+5. Compose tests: `PrimaryNavigationTest`, `UnifiedWorkoutFlowTest`.
 
-Files likely involved next: `data/DatabaseStartupCheck.kt` or a new start-up step, `data/v2/V2Backfill.kt`, and a place to show the report.
+Product decisions such as navigation style and what Today shows should be confirmed with the user before the UI slice.
+
+Files likely involved next: `MainActivity.kt`, `ui/navigation/`, `ui/screens/today|train|progress|library/`.
