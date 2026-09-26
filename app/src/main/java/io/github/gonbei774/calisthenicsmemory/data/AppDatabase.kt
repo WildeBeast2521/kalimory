@@ -5,14 +5,21 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import io.github.gonbei774.calisthenicsmemory.data.v2.SessionExerciseEntity
+import io.github.gonbei774.calisthenicsmemory.data.v2.SetEntryEntity
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSessionDao
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSessionEntity
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutTypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class],
-    version = 21,
+    entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class, WorkoutSessionEntity::class, SessionExerciseEntity::class, SetEntryEntity::class],
+    version = 22,
     exportSchema = true
 )
+@TypeConverters(WorkoutTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun exerciseDao(): ExerciseDao
@@ -26,6 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun intervalProgramExerciseDao(): IntervalProgramExerciseDao
     abstract fun intervalRecordDao(): IntervalRecordDao
     abstract fun backupDao(): BackupDao
+    abstract fun workoutSessionDao(): WorkoutSessionDao
 
     companion object {
         @Volatile
@@ -42,7 +50,7 @@ abstract class AppDatabase : RoomDatabase() {
         const val DATABASE_NAME = "bodyweight_trainer_database"
 
         // Must equal the version in @Database; MigrationRegistrationTest checks it against the schemas.
-        const val CURRENT_VERSION = 21
+        const val CURRENT_VERSION = 22
 
         // The production configuration. Migration tests open their databases through it.
         // Unsupported installed versions are refused before Room can modify the file, and
@@ -385,6 +393,27 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // マイグレーション 21 → 22: v2 ワークアウト履歴テーブルを追加（既存テーブルは変更しない、ADR 0002/0003）
+        val MIGRATION_21_22 = object : Migration(21, 22) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                MIGRATION_21_22_SQL.forEach(database::execSQL)
+            }
+        }
+
+        // Copied from the Room-generated schema 22 (app/schemas/.../22.json).
+        private val MIGRATION_21_22_SQL = listOf(
+            "CREATE TABLE IF NOT EXISTS `workout_sessions` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `status` TEXT NOT NULL, `sourceType` TEXT NOT NULL, `sourceTemplateId` INTEGER, `sourceNameSnapshot` TEXT, `startedAtEpochMillis` INTEGER NOT NULL, `endedAtEpochMillis` INTEGER, `updatedAtEpochMillis` INTEGER NOT NULL, `timePrecision` TEXT NOT NULL, `comment` TEXT)",
+            "CREATE INDEX IF NOT EXISTS `index_workout_sessions_startedAtEpochMillis` ON `workout_sessions` (`startedAtEpochMillis`)",
+            "CREATE INDEX IF NOT EXISTS `index_workout_sessions_status` ON `workout_sessions` (`status`)",
+            "CREATE TABLE IF NOT EXISTS `session_exercises` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `workoutSessionId` INTEGER NOT NULL, `orderIndex` INTEGER NOT NULL, `exerciseId` INTEGER, `groupId` INTEGER, `sourceProgramExerciseId` INTEGER, `exerciseNameSnapshot` TEXT NOT NULL, `exerciseKindSnapshot` TEXT NOT NULL, `lateralitySnapshot` TEXT NOT NULL, `groupNameSnapshot` TEXT, `targetSets` INTEGER, `targetRepetitions` INTEGER, `targetDurationMillis` INTEGER, FOREIGN KEY(`workoutSessionId`) REFERENCES `workout_sessions`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`exerciseId`) REFERENCES `exercises`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL , FOREIGN KEY(`groupId`) REFERENCES `exercise_groups`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+            "CREATE UNIQUE INDEX IF NOT EXISTS `index_session_exercises_workoutSessionId_orderIndex` ON `session_exercises` (`workoutSessionId`, `orderIndex`)",
+            "CREATE INDEX IF NOT EXISTS `index_session_exercises_exerciseId` ON `session_exercises` (`exerciseId`)",
+            "CREATE INDEX IF NOT EXISTS `index_session_exercises_groupId` ON `session_exercises` (`groupId`)",
+            "CREATE TABLE IF NOT EXISTS `set_entries` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sessionExerciseId` INTEGER NOT NULL, `orderIndex` INTEGER NOT NULL, `setNumber` INTEGER NOT NULL, `roundNumber` INTEGER, `status` TEXT NOT NULL, `side` TEXT NOT NULL, `repetitions` INTEGER, `durationMillis` INTEGER, `distanceCm` INTEGER, `addedWeightGrams` INTEGER, `assistanceGrams` INTEGER, `targetRepetitions` INTEGER, `targetDurationMillis` INTEGER, `startedAtEpochMillis` INTEGER, `completedAtEpochMillis` INTEGER, `timePrecision` TEXT NOT NULL, `comment` TEXT, `legacyTrainingRecordId` INTEGER, FOREIGN KEY(`sessionExerciseId`) REFERENCES `session_exercises`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+            "CREATE UNIQUE INDEX IF NOT EXISTS `index_set_entries_sessionExerciseId_orderIndex` ON `set_entries` (`sessionExerciseId`, `orderIndex`)",
+            "CREATE UNIQUE INDEX IF NOT EXISTS `index_set_entries_legacyTrainingRecordId` ON `set_entries` (`legacyTrainingRecordId`)",
+        )
+
         // Oldest installed database version that can migrate to the current version.
         // See docs/development/supported-database-versions.md.
         const val OLDEST_SUPPORTED_VERSION = 9
@@ -404,6 +433,7 @@ abstract class AppDatabase : RoomDatabase() {
             MIGRATION_18_19,
             MIGRATION_19_20,
             MIGRATION_20_21,
+            MIGRATION_21_22,
         )
     }
 }
