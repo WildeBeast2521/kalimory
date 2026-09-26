@@ -409,7 +409,8 @@ fun ProgramExecutionScreen(
             val savedComment = savedState.getComment()
             val savedSetIndex = savedState.getCurrentSetIndex()
 
-            if (savedSets != null && savedSets.size == allSets.size) {
+            // An empty set list has no index to resume at (coerceIn(0, -1) would throw).
+            if (savedSets != null && savedSets.isNotEmpty() && savedSets.size == allSets.size) {
                 // 保存されたセット状態を適用
                 val newSession = ProgramExecutionSession(
                     program = prog,
@@ -554,7 +555,8 @@ fun ProgramExecutionScreen(
     // 戻るボタンのハンドリング
     BackHandler {
         when (currentStep) {
-            is ProgramExecutionStep.Confirm -> onNavigateBack()
+            // Nothing has started yet; with no step (e.g. a program without exercises) there is nothing to confirm.
+            null, is ProgramExecutionStep.Confirm -> onNavigateBack()
             else -> {
                 // 実行中・完了画面は確認ダイアログを表示
                 showExitConfirmDialog = true
