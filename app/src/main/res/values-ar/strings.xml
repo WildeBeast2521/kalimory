@@ -23,4 +23,11 @@
     <string name="nav_train">تمرين</string>
     <string name="nav_progress">التقدم</string>
     <string name="nav_library">المكتبة</string>
+    <!-- Today -->
+    <string name="today_resume_title">تابع من حيث توقفت</string>
+    <string name="today_saved_for_later">محفوظ لوقت لاحق</string>
+    <string name="today_kind_program">برنامج</string>
+    <string name="today_due_title">مستحق اليوم</string>
+    <string name="today_due_none">لا شيء مستحق اليوم</string>
+    <string name="today_all_todos">كل المهام</string>
 </resources>

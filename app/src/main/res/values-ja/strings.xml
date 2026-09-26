@@ -836,4 +836,11 @@
     <string name="nav_train">トレーニング</string>
     <string name="nav_progress">進捗</string>
     <string name="nav_library">ライブラリ</string>
+    <!-- Today -->
+    <string name="today_resume_title">中断したところから再開</string>
+    <string name="today_saved_for_later">後で再開するために保存済み</string>
+    <string name="today_kind_program">プログラム</string>
+    <string name="today_due_title">今日の予定</string>
+    <string name="today_due_none">今日の予定はありません</string>
+    <string name="today_all_todos">すべてのTo Do</string>
 </resources>

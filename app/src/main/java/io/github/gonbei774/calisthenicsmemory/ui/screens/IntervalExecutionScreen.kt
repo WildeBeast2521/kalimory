@@ -99,7 +99,7 @@ private sealed class IntervalPhase {
     ) : IntervalPhase()
 }
 
-private const val INTERVAL_CHECKPOINT_FILE = "interval-workout-checkpoint.json"
+internal const val INTERVAL_CHECKPOINT_FILE = "interval-workout-checkpoint.json"
 
 /** Whole seconds shown for [remainingMillis]: 0.1 s left still shows 1. */
 private fun displaySeconds(remainingMillis: Long): Int = ((remainingMillis + 999) / 1_000).toInt()

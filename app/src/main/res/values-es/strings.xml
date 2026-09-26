@@ -825,4 +825,11 @@
     <string name="nav_train">Entrenar</string>
     <string name="nav_progress">Progreso</string>
     <string name="nav_library">Biblioteca</string>
+    <!-- Today -->
+    <string name="today_resume_title">Continúa donde lo dejaste</string>
+    <string name="today_saved_for_later">Guardado para más tarde</string>
+    <string name="today_kind_program">Programa</string>
+    <string name="today_due_title">Para hoy</string>
+    <string name="today_due_none">Nada para hoy</string>
+    <string name="today_all_todos">Todas las tareas</string>
 </resources>

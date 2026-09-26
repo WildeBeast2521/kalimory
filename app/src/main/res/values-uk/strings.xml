@@ -772,4 +772,11 @@
     <string name="nav_train">Тренування</string>
     <string name="nav_progress">Прогрес</string>
     <string name="nav_library">Бібліотека</string>
+    <!-- Today -->
+    <string name="today_resume_title">Продовжити з того ж місця</string>
+    <string name="today_saved_for_later">Збережено на потім</string>
+    <string name="today_kind_program">Програма</string>
+    <string name="today_due_title">На сьогодні</string>
+    <string name="today_due_none">На сьогодні нічого немає</string>
+    <string name="today_all_todos">Усі завдання</string>
 </resources>

@@ -51,6 +51,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBar
 import io.github.gonbei774.calisthenicsmemory.ui.screens.library.LibraryScreen
+import io.github.gonbei774.calisthenicsmemory.ui.screens.today.ResumableWorkout
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.TodayScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.TrainScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.RecordScreen
@@ -297,6 +298,30 @@ fun CalisthenicsMemoryApp(
                     when (primaryDestination) {
                         PrimaryDestination.TODAY -> TodayScreen(
                             viewModel = viewModel,
+                            onResume = { workout ->
+                                currentScreen = when (workout) {
+                                    // The single-workout screen offers its checkpoint whenever it opens.
+                                    is ResumableWorkout.Single -> Screen.Workout(fromToday = true)
+                                    is ResumableWorkout.Program -> Screen.ProgramExecution(
+                                        workout.programId,
+                                        resumeSavedState = workout.savedByUser,
+                                        fromToday = true
+                                    )
+                                    is ResumableWorkout.Interval -> Screen.IntervalExecution(workout.programId, fromToday = true)
+                                }
+                            },
+                            onOpenTask = { task ->
+                                currentScreen = when (task.type) {
+                                    TodoTask.TYPE_EXERCISE ->
+                                        Screen.Workout(exerciseId = task.referenceId, fromToDo = true, fromToday = true)
+                                    TodoTask.TYPE_PROGRAM ->
+                                        Screen.ProgramExecution(task.referenceId, fromToDo = true, fromToday = true)
+                                    TodoTask.TYPE_INTERVAL ->
+                                        Screen.IntervalExecution(task.referenceId, fromToDo = true, fromToday = true)
+                                    // A group needs an exercise chosen first, which the To Do screen offers.
+                                    else -> Screen.ToDo
+                                }
+                            },
                             onOpenToDo = { currentScreen = Screen.ToDo },
                             onOpenHistory = { primaryDestination = PrimaryDestination.PROGRESS },
                             onOpenSettings = { currentScreen = Screen.Settings }
@@ -380,7 +405,7 @@ fun CalisthenicsMemoryApp(
                 }
                 is Screen.Workout -> {
                     val workoutScreen = currentScreen as Screen.Workout
-                    val backDestination = if (workoutScreen.fromToDo) Screen.ToDo else Screen.Home
+                    val backDestination = if (workoutScreen.fromToDo && !workoutScreen.fromToday) Screen.ToDo else Screen.Home
                     BackHandler { currentScreen = backDestination }
                     WorkoutScreen(
                         viewModel = viewModel,
@@ -417,7 +442,11 @@ fun CalisthenicsMemoryApp(
                 }
                 is Screen.ProgramExecution -> {
                     val execScreen = currentScreen as Screen.ProgramExecution
-                    val backDestination = if (execScreen.fromToDo) Screen.ToDo else Screen.ProgramList
+                    val backDestination = when {
+                        execScreen.fromToday -> Screen.Home
+                        execScreen.fromToDo -> Screen.ToDo
+                        else -> Screen.ProgramList
+                    }
                     BackHandler { currentScreen = backDestination }
                     ProgramExecutionScreen(
                         viewModel = viewModel,
@@ -455,7 +484,11 @@ fun CalisthenicsMemoryApp(
                 }
                 is Screen.IntervalExecution -> {
                     val execScreen = currentScreen as Screen.IntervalExecution
-                    val backDestination = if (execScreen.fromToDo) Screen.ToDo else Screen.IntervalList
+                    val backDestination = when {
+                        execScreen.fromToday -> Screen.Home
+                        execScreen.fromToDo -> Screen.ToDo
+                        else -> Screen.IntervalList
+                    }
                     BackHandler { currentScreen = backDestination }
                     IntervalExecutionScreen(
                         viewModel = viewModel,
@@ -510,13 +543,19 @@ sealed class Screen {
     object Settings : Screen()
     object Licenses : Screen()
     data class Record(val exerciseId: Long? = null, val fromToDo: Boolean = false) : Screen()
-    data class Workout(val exerciseId: Long? = null, val fromToDo: Boolean = false) : Screen()
+    // fromToday: opened from the Today destination, so back returns there.
+    data class Workout(val exerciseId: Long? = null, val fromToDo: Boolean = false, val fromToday: Boolean = false) : Screen()
     object ProgramList : Screen()
     data class ProgramEdit(val programId: Long?) : Screen()
-    data class ProgramExecution(val programId: Long, val resumeSavedState: Boolean = false, val fromToDo: Boolean = false) : Screen()
+    data class ProgramExecution(
+        val programId: Long,
+        val resumeSavedState: Boolean = false,
+        val fromToDo: Boolean = false,
+        val fromToday: Boolean = false
+    ) : Screen()
     object IntervalList : Screen()
     data class IntervalEdit(val programId: Long?) : Screen()
-    data class IntervalExecution(val programId: Long, val fromToDo: Boolean = false) : Screen()
+    data class IntervalExecution(val programId: Long, val fromToDo: Boolean = false, val fromToday: Boolean = false) : Screen()
     object CommunityShareExport : Screen()
     object Backup : Screen()
     object CsvDataManagement : Screen()
@@ -543,6 +582,7 @@ private val ScreenSaver = mapSaver(
                     put("type", "Workout")
                     put("exerciseId", screen.exerciseId ?: -1L)
                     put("fromToDo", screen.fromToDo)
+                    put("fromToday", screen.fromToday)
                 }
                 is Screen.ProgramEdit -> {
                     put("type", "ProgramEdit")
@@ -553,6 +593,7 @@ private val ScreenSaver = mapSaver(
                     put("programId", screen.programId)
                     put("resumeSavedState", screen.resumeSavedState)
                     put("fromToDo", screen.fromToDo)
+                    put("fromToday", screen.fromToday)
                 }
                 is Screen.IntervalEdit -> {
                     put("type", "IntervalEdit")
@@ -562,6 +603,7 @@ private val ScreenSaver = mapSaver(
                     put("type", "IntervalExecution")
                     put("programId", screen.programId)
                     put("fromToDo", screen.fromToDo)
+                    put("fromToday", screen.fromToday)
                 }
                 Screen.CommunityShareExport -> put("type", "CommunityShareExport")
                 Screen.Backup -> put("type", "Backup")
@@ -584,7 +626,8 @@ private val ScreenSaver = mapSaver(
             )
             "Workout" -> Screen.Workout(
                 exerciseId = (map["exerciseId"] as Long).takeIf { it != -1L },
-                fromToDo = map["fromToDo"] as Boolean
+                fromToDo = map["fromToDo"] as Boolean,
+                fromToday = map["fromToday"] as? Boolean ?: false
             )
             "ProgramEdit" -> Screen.ProgramEdit(
                 programId = (map["programId"] as Long).takeIf { it != -1L }
@@ -592,14 +635,16 @@ private val ScreenSaver = mapSaver(
             "ProgramExecution" -> Screen.ProgramExecution(
                 programId = map["programId"] as Long,
                 resumeSavedState = map["resumeSavedState"] as Boolean,
-                fromToDo = map["fromToDo"] as Boolean
+                fromToDo = map["fromToDo"] as Boolean,
+                fromToday = map["fromToday"] as? Boolean ?: false
             )
             "IntervalEdit" -> Screen.IntervalEdit(
                 programId = (map["programId"] as Long).takeIf { it != -1L }
             )
             "IntervalExecution" -> Screen.IntervalExecution(
                 programId = map["programId"] as Long,
-                fromToDo = map["fromToDo"] as Boolean
+                fromToDo = map["fromToDo"] as Boolean,
+                fromToday = map["fromToday"] as? Boolean ?: false
             )
             "CommunityShareExport" -> Screen.CommunityShareExport
             "Backup" -> Screen.Backup

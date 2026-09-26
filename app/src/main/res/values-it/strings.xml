@@ -769,4 +769,11 @@
     <string name="nav_train">Allenamento</string>
     <string name="nav_progress">Progressi</string>
     <string name="nav_library">Libreria</string>
+    <!-- Today -->
+    <string name="today_resume_title">Riprendi da dove avevi lasciato</string>
+    <string name="today_saved_for_later">Salvato per dopo</string>
+    <string name="today_kind_program">Programma</string>
+    <string name="today_due_title">In programma oggi</string>
+    <string name="today_due_none">Niente in programma oggi</string>
+    <string name="today_all_todos">Tutte le attività</string>
 </resources>

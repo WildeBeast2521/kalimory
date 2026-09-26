@@ -769,4 +769,11 @@
     <string name="nav_train">训练</string>
     <string name="nav_progress">进度</string>
     <string name="nav_library">资料库</string>
+    <!-- Today -->
+    <string name="today_resume_title">从上次中断处继续</string>
+    <string name="today_saved_for_later">已保存稍后继续</string>
+    <string name="today_kind_program">计划</string>
+    <string name="today_due_title">今日待办</string>
+    <string name="today_due_none">今天没有待办</string>
+    <string name="today_all_todos">全部待办</string>
 </resources>
