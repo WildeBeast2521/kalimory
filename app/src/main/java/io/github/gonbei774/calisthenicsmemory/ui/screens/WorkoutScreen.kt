@@ -67,6 +67,8 @@ import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
 import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
 import io.github.gonbei774.calisthenicsmemory.service.WorkoutTimerService
 import io.github.gonbei774.calisthenicsmemory.ui.components.single.*
+import io.github.gonbei774.calisthenicsmemory.ui.components.countdownSeconds
+import io.github.gonbei774.calisthenicsmemory.ui.components.rememberStepStopwatch
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Job
@@ -1677,34 +1679,39 @@ fun StartIntervalStep(
     onSkip: () -> Unit
 ) {
     val appColors = LocalAppColors.current
-    var remainingTime by remember { mutableIntStateOf(session.startInterval) }
     var isPaused by remember { mutableStateOf(false) }
-    val progress = if (session.startInterval > 0) remainingTime.toFloat() / session.startInterval else 0f
+    val totalMillis = session.startInterval * 1_000L
 
-    LaunchedEffect(isPaused, isNavigationOpen) {
-        while (remainingTime > 0) {
-            if (isPaused || isNavigationOpen) {
-                delay(100L)
-                continue
-            }
-            delay(1000L)
-            if (isPaused || isNavigationOpen) continue
-            remainingTime--
-            if (remainingTime <= 3 && remainingTime > 0) {
+    // 残り時間はモノトニッククロックから計算（一時停止中は進まず、端数も保持）
+    var lastShown by remember { mutableIntStateOf(session.startInterval) }
+    var finished by remember { mutableStateOf(false) }
+    val stopwatch = rememberStepStopwatch(paused = isPaused || isNavigationOpen) { sw ->
+        if (finished) return@rememberStepStopwatch
+        val shown = countdownSeconds(totalMillis - sw.elapsedMillis)
+        if (shown < lastShown) {
+            lastShown = shown
+            if (shown in 1..3) {
                 soundPlayer.playBeep()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
             }
         }
-        // カウントダウン完了
-        soundPlayer.playStartCue()
-        if (isFlashEnabled) {
-            launch { flashController.flashComplete() }
+        if (shown <= 0) {
+            finished = true
+            soundPlayer.playStartCue()
+            if (isFlashEnabled) {
+                launch { flashController.flashComplete() }
+            }
+            launch {
+                delay(300L)
+                onIntervalComplete()
+            }
         }
-        delay(300L)
-        onIntervalComplete()
     }
+    val remainingTime = countdownSeconds(totalMillis - stopwatch.elapsedMillis)
+    val progress = if (session.startInterval > 0) remainingTime.toFloat() / session.startInterval else 0f
+
 
     Column(
         modifier = Modifier
@@ -2070,30 +2077,40 @@ fun IntervalStep(
 ) {
     val appColors = LocalAppColors.current
     var isRunning by remember { mutableStateOf(true) }
-    var remainingTime by remember { mutableIntStateOf(session.intervalDuration) }
-    val progress = if (session.intervalDuration > 0) remainingTime.toFloat() / session.intervalDuration else 0f
 
-    LaunchedEffect(isRunning, isNavigationOpen) {
-        while (remainingTime > 0 && isRunning && !isNavigationOpen) {
-            delay(1000L)
-            remainingTime--
-            if (remainingTime <= 3 && remainingTime > 0) {
+    // 残り時間はモノトニッククロックから計算。±10秒は extraMillis で調整する
+    var extraMillis by remember { mutableLongStateOf(0L) }
+    var lastShown by remember { mutableIntStateOf(session.intervalDuration) }
+    var finished by remember { mutableStateOf(false) }
+    val stopwatch = rememberStepStopwatch(paused = !isRunning || isNavigationOpen) { sw ->
+        if (finished) return@rememberStepStopwatch
+        val shown = countdownSeconds(session.intervalDuration * 1_000L + extraMillis - sw.elapsedMillis)
+        if (shown < lastShown) {
+            lastShown = shown
+            if (shown in 1..3) {
                 soundPlayer.playBeep()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
             }
         }
-        if (remainingTime == 0) {
-            // インターバル完了
+        // 一時停止中に -10 で 0 になった場合は、従来どおり再開後に完了する
+        if (shown <= 0 && !sw.isPaused) {
+            finished = true
             soundPlayer.playStartCue()
             if (isFlashEnabled) {
                 launch { flashController.flashComplete() }
             }
-            delay(300L)
-            onIntervalComplete()
+            launch {
+                delay(300L)
+                onIntervalComplete()
+            }
         }
     }
+    val remainingMillis = session.intervalDuration * 1_000L + extraMillis - stopwatch.elapsedMillis
+    val remainingTime = countdownSeconds(remainingMillis)
+    val progress = if (session.intervalDuration > 0) remainingTime.toFloat() / session.intervalDuration else 0f
+
 
     val nextSet = session.sets.getOrNull(nextSetIndex)
 
@@ -2140,7 +2157,8 @@ fun IntervalStep(
             IconButton(
                 onClick = {
                     // 今回のインターバルのみ短縮（次回以降は影響しない）
-                    remainingTime = (remainingTime - 10).coerceAtLeast(0)
+                    extraMillis -= minOf(10_000L, remainingMillis.coerceAtLeast(0))
+                    lastShown = countdownSeconds(session.intervalDuration * 1_000L + extraMillis - stopwatch.elapsedMillis)
                 },
                 modifier = Modifier
                     .size(48.dp)
@@ -2210,7 +2228,8 @@ fun IntervalStep(
             IconButton(
                 onClick = {
                     // 今回のインターバルのみ延長（次回以降は影響しない）
-                    remainingTime += 10
+                    extraMillis += 10_000L
+                    lastShown = countdownSeconds(session.intervalDuration * 1_000L + extraMillis - stopwatch.elapsedMillis)
                 },
                 modifier = Modifier
                     .size(48.dp)
