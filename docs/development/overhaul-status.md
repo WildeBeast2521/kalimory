@@ -4,13 +4,17 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Interval resume timing, branch `work/interval-resume-timing`, based on master `a18b10b`. The PR follows these checks.
+Program execution timers, branch `work/program-step-clock`, based on master `aa4bd46`. The PR follows these checks.
 
-- `fix: time interval recovery from the Resume tap`: found during the reboot and clock-change protocol, which is now recorded in `docs/development/workout-timer-spike.md`.
+- `feat: time program sets and rests from the monotonic clock`.
 - Verification:
-  - Gate PASS (270 unit tests).
+  - Gate PASS (275 unit tests).
   - `connectedDebugAndroidTest` on `floor_api29`: 78 tests, 0 failures.
-  - Reboot, same-boot clock change, and reboot plus clock change, all run on the same AVD.
+  - Screen-on and screen-off auto-program runs, recorded in `docs/development/workout-timer-spike.md`.
+
+## Previous phase: interval resume timing (merged)
+
+PR #13 merged as `aa4bd46`; the reboot and clock-change protocol is recorded in `docs/development/workout-timer-spike.md`.
 
 ## Previous phase: interval checkpoint and resume (merged)
 
@@ -111,8 +115,8 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Move program execution, then single-exercise execution, onto the reducer and checkpoints.
-   - The program screen's existing "Save & Exit" (`SavedWorkoutState`) must keep working until it is replaced.
-2. Make `WorkoutTimerService` an adapter, and verify it releases its wake lock.
+1. Move single-exercise execution (`ui/screens/WorkoutScreen.kt`, `ui/components/single/SingleExecutingComponents.kt`) onto `StepStopwatch`, the same way as the program components.
+2. Automatic program checkpoints and resume, compatible with the existing "Save & Exit" (`SavedWorkoutState`).
+3. Make `WorkoutTimerService` an adapter, and verify it releases its wake lock.
 
-Files likely involved next: `ui/screens/ProgramExecutionScreen.kt`, `ui/components/program/*`, `data/SavedWorkoutState.kt`, `service/WorkoutTimerService.kt`.
+Files likely involved next: `ui/components/single/*`, `ui/screens/WorkoutScreen.kt`, `ui/screens/ProgramExecutionScreen.kt`, `data/SavedWorkoutState.kt`, `service/WorkoutTimerService.kt`.
