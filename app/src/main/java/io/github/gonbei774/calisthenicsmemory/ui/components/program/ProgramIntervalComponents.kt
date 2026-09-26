@@ -26,6 +26,8 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import io.github.gonbei774.calisthenicsmemory.util.FlashController
 import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
+import io.github.gonbei774.calisthenicsmemory.ui.components.countdownSeconds
+import io.github.gonbei774.calisthenicsmemory.ui.components.rememberStepStopwatch
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -46,34 +48,40 @@ internal fun ProgramStartIntervalStep(
     val currentSet = session.sets[currentSetIndex]
     val (_, exercise) = session.exercises[currentSet.exerciseIndex]
 
-    var remainingTime by remember { mutableIntStateOf(startCountdownSeconds) }
     var isPaused by remember { mutableStateOf(false) }
-    val progress = remainingTime.toFloat() / startCountdownSeconds
     val effectivelyPaused = isPaused || isNavigationOpen
+    val totalMillis = startCountdownSeconds * 1_000L
 
-    LaunchedEffect(currentSetIndex, isNavigationOpen, isPaused) {
-        while (remainingTime > 0) {
-            if (effectivelyPaused) {
-                delay(100L)
-                continue
-            }
-            delay(1000L)
-            if (effectivelyPaused) continue
-            remainingTime--
-            if (remainingTime <= 3 && remainingTime > 0) {
+    // 残り時間はモノトニッククロックから計算（一時停止中は進まず、端数も保持）
+    var lastShown by remember { mutableIntStateOf(startCountdownSeconds) }
+    var finished by remember { mutableStateOf(false) }
+    val stopwatch = rememberStepStopwatch(paused = effectivelyPaused) { sw ->
+        if (finished) return@rememberStepStopwatch
+        val shown = countdownSeconds(totalMillis - sw.elapsedMillis)
+        if (shown < lastShown) {
+            lastShown = shown
+            if (shown in 1..3) {
                 soundPlayer.playBeep()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
             }
         }
-        soundPlayer.playStartCue()
-        if (isFlashEnabled) {
-            launch { flashController.flashComplete() }
+        if (shown <= 0) {
+            finished = true
+            soundPlayer.playStartCue()
+            if (isFlashEnabled) {
+                launch { flashController.flashComplete() }
+            }
+            launch {
+                delay(300L)
+                onComplete()
+            }
         }
-        delay(300L)
-        onComplete()
     }
+    val remainingTime = countdownSeconds(totalMillis - stopwatch.elapsedMillis)
+    val progress = remainingTime.toFloat() / startCountdownSeconds
+
 
     Column(
         modifier = Modifier
@@ -202,36 +210,46 @@ internal fun ProgramIntervalStep(
     val totalInterval = currentSet.intervalSeconds + currentSet.loopRestAfterSeconds
     val hasLoopRest = currentSet.loopRestAfterSeconds > 0
 
-    var remainingTime by remember { mutableIntStateOf(totalInterval) }
     var isRunning by remember { mutableStateOf(true) }
-    val progress = if (totalInterval > 0) {
-        remainingTime.toFloat() / totalInterval
-    } else 0f
 
     // ナビゲーション表示中は強制的に一時停止
     val effectivelyRunning = isRunning && !isNavigationOpen
 
-    LaunchedEffect(currentSetIndex, isNavigationOpen, isRunning) {
-        while (remainingTime > 0 && effectivelyRunning) {
-            delay(1000L)
-            if (!effectivelyRunning) break
-            remainingTime--
-            if (remainingTime <= 3 && remainingTime > 0) {
+    // 残り時間はモノトニッククロックから計算。±10秒は extraMillis で調整する
+    var extraMillis by remember { mutableLongStateOf(0L) }
+    var lastShown by remember { mutableIntStateOf(totalInterval) }
+    var finished by remember { mutableStateOf(false) }
+    val stopwatch = rememberStepStopwatch(paused = !effectivelyRunning) { sw ->
+        if (finished) return@rememberStepStopwatch
+        val shown = countdownSeconds(totalInterval * 1_000L + extraMillis - sw.elapsedMillis)
+        if (shown < lastShown) {
+            lastShown = shown
+            if (shown in 1..3) {
                 soundPlayer.playBeep()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
             }
         }
-        if (remainingTime == 0) {
+        // 一時停止中に -10 で 0 になった場合は、従来どおり再開後に完了する
+        if (shown <= 0 && !sw.isPaused) {
+            finished = true
             soundPlayer.playStartCue()
             if (isFlashEnabled) {
                 launch { flashController.flashComplete() }
             }
-            delay(300L)
-            onComplete()
+            launch {
+                delay(300L)
+                onComplete()
+            }
         }
     }
+    val remainingMillis = totalInterval * 1_000L + extraMillis - stopwatch.elapsedMillis
+    val remainingTime = countdownSeconds(remainingMillis)
+    val progress = if (totalInterval > 0) {
+        remainingTime.toFloat() / totalInterval
+    } else 0f
+
 
     Column(
         modifier = Modifier
@@ -283,7 +301,10 @@ internal fun ProgramIntervalStep(
                 verticalAlignment = Alignment.Bottom
             ) {
                 IconButton(
-                    onClick = { remainingTime = (remainingTime - 10).coerceAtLeast(0) },
+                    onClick = {
+                        extraMillis -= minOf(10_000L, remainingMillis.coerceAtLeast(0))
+                        lastShown = countdownSeconds(totalInterval * 1_000L + extraMillis - stopwatch.elapsedMillis)
+                    },
                     modifier = Modifier
                         .size(48.dp)
                         .offset(y = (-20).dp)
@@ -350,7 +371,10 @@ internal fun ProgramIntervalStep(
                 }
 
                 IconButton(
-                    onClick = { remainingTime += 10 },
+                    onClick = {
+                        extraMillis += 10_000L
+                        lastShown = countdownSeconds(totalInterval * 1_000L + extraMillis - stopwatch.elapsedMillis)
+                    },
                     modifier = Modifier
                         .size(48.dp)
                         .offset(y = (-20).dp)
