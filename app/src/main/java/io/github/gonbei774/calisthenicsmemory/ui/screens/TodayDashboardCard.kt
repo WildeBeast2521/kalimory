@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
-import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
@@ -32,7 +32,7 @@ import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TodayDashboardCard(
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     exercises: List<Exercise>,
     onNavigateToView: () -> Unit,
     viewModel: TrainingViewModel = viewModel()
@@ -132,7 +132,7 @@ fun TodayDashboardCard(
  * - Isometric: 35s/32s/30s
  */
 fun formatRecordsForClipboard(
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     exercises: List<Exercise>
 ): String {
     if (records.isEmpty()) return ""
@@ -185,7 +185,7 @@ fun formatRecordsForClipboard(
  * - Set count: Green400
  */
 fun formatRecordsForDisplay(
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     exercises: List<Exercise>,
     textPrimaryColor: Color = Color.White
 ): AnnotatedString {

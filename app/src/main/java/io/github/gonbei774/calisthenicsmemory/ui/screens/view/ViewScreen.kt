@@ -34,7 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
-import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySource
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
@@ -53,8 +54,12 @@ data class SessionInfo(
     val date: String,
     val time: String,
     val comment: String,
-    val records: List<TrainingRecord>
-)
+    val records: List<HistorySet>,
+    val source: HistorySource = HistorySource.LEGACY
+) {
+    /** Only legacy sessions can be edited or deleted here; v2 sets are read-only until v2 editing exists. */
+    val isEditable: Boolean get() = source == HistorySource.LEGACY
+}
 
 // 統一リスト用sealed class
 sealed class RecordItem(val date: String, val time: String) {
@@ -69,7 +74,7 @@ fun ViewScreen(
 ) {
     val appColors = LocalAppColors.current
     val exercises by viewModel.exercises.collectAsState()
-    val records by viewModel.records.collectAsState()
+    val records by viewModel.history.collectAsState()
     val intervalRecords by viewModel.intervalRecords.collectAsState()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
 
@@ -90,7 +95,7 @@ fun ViewScreen(
 
     // 既存の状態変数
     var showDeleteDialog by remember { mutableStateOf<SessionInfo?>(null) }
-    var editingRecord by remember { mutableStateOf<TrainingRecord?>(null) }
+    var editingRecord by remember { mutableStateOf<HistorySet?>(null) }
     var editValue by remember { mutableStateOf("") }
     var editValueRight by remember { mutableStateOf("") }
     var editValueLeft by remember { mutableStateOf("") }
@@ -102,7 +107,7 @@ fun ViewScreen(
     // 一覧モード用のセッションデータ
     val sessions = remember(records, exercises) {
         records
-            .groupBy { "${it.exerciseId}-${it.date}-${it.time}" }
+            .groupBy { "${it.source}-${it.exerciseId}-${it.date}-${it.time}" }
             .map { (_, sessionRecords) ->
                 val first = sessionRecords.first()
                 SessionInfo(
@@ -110,7 +115,8 @@ fun ViewScreen(
                     date = first.date,
                     time = first.time,
                     comment = first.comment,
-                    records = sessionRecords.sortedBy { it.setNumber }
+                    records = sessionRecords.sortedBy { it.setNumber },
+                    source = first.source
                 )
             }
             .sortedWith(
@@ -341,7 +347,8 @@ fun ViewScreen(
                             onExerciseClick = { exercise ->
                                 selectedExerciseFilter = exercise
                             },
-                            onRecordClick = { record ->
+                            onRecordClick = onRecordClick@{ record ->
+                                if (record.source != HistorySource.LEGACY) return@onRecordClick
                                 editingRecord = record
                                 if (record.valueLeft != null) {
                                     // Unilateral
@@ -353,10 +360,10 @@ fun ViewScreen(
                                 }
                             },
                             onSessionLongPress = { session ->
-                                showSessionEditDialog = session
+                                if (session.isEditable) showSessionEditDialog = session
                             },
                             onDeleteClick = { session ->
-                                showDeleteDialog = session
+                                if (session.isEditable) showDeleteDialog = session
                             },
                             onIntervalEditClick = { record ->
                                 showIntervalEditDialog = record
@@ -541,12 +548,9 @@ fun ViewScreen(
                             val newValueLeft = editValueLeft.toIntOrNull()
 
                             if (newValueRight != null && newValueRight >= 0) {
-                                viewModel.updateRecord(
-                                    record.copy(
-                                        valueRight = newValueRight,
-                                        valueLeft = newValueLeft
-                                    )
-                                )
+                                record.toLegacyRecord()?.let {
+                                    viewModel.updateRecord(it.copy(valueRight = newValueRight, valueLeft = newValueLeft))
+                                }
                                 editingRecord = null
                                 editValueRight = ""
                                 editValueLeft = ""
@@ -555,7 +559,7 @@ fun ViewScreen(
                             // Bilateral: 従来通り
                             editValue.toIntOrNull()?.let { newValue ->
                                 if (newValue >= 0) {
-                                    viewModel.updateRecord(record.copy(valueRight = newValue))
+                                    record.toLegacyRecord()?.let { viewModel.updateRecord(it.copy(valueRight = newValue)) }
                                     editingRecord = null
                                     editValue = ""
                                 }
@@ -616,8 +620,9 @@ fun ViewScreen(
             onDismiss = { showSessionEditDialog = null },
             onConfirm = { newDate, newTime, newComment, newDistancesCm, newWeightsG, newAssistancesG ->
                 session.records.forEachIndexed { index, record ->
+                    val legacy = record.toLegacyRecord() ?: return@forEachIndexed
                     viewModel.updateRecord(
-                        record.copy(
+                        legacy.copy(
                             date = newDate,
                             time = newTime,
                             comment = newComment,
@@ -981,7 +986,7 @@ fun FilterTextItem(
 @Composable
 fun ChallengeView(
     exercises: List<Exercise>,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     selectedExerciseFilter: Exercise?,
     selectedPeriod: Period?,
     onExerciseClick: (Exercise) -> Unit
@@ -1116,7 +1121,7 @@ enum class ChallengeResult {
 @Composable
 fun ChallengeExerciseCard(
     exercise: Exercise,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     selectedPeriod: Period?,
     isSelected: Boolean,
     onClick: () -> Unit
@@ -1273,7 +1278,7 @@ fun ChallengeExerciseCard(
 // 実績の合計値を計算（上位N個の合計）
 fun calculateActualTotal(
     exercise: Exercise,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     period: Period? = null
 ): Int {
     val targetSets = exercise.targetSets ?: return 0
@@ -1342,7 +1347,7 @@ data class ClearDayData(
 // 1セッションの達成率を計算（calculateChallengeStatus と同じロジック）
 private fun sessionAchievementRate(
     exercise: Exercise,
-    sessionRecords: List<TrainingRecord>,
+    sessionRecords: List<HistorySet>,
     targetSets: Int,
     targetTotal: Int
 ): Int {
@@ -1374,7 +1379,7 @@ private fun sessionAchievementRate(
 // 期間内の日単位クリア状況を計算
 fun calculateClearDays(
     exercise: Exercise,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     period: Period?
 ): ClearDayData {
     val targetSets = exercise.targetSets
@@ -1458,7 +1463,7 @@ fun ChallengeHeatStrip(data: ClearDayData) {
 // 課題ステータス計算関数
 fun calculateChallengeStatus(
     exercise: Exercise,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     period: Period? = null
 ): ChallengeStatus {
     val targetSets = exercise.targetSets ?: return ChallengeStatus(
