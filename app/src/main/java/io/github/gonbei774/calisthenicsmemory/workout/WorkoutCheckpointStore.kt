@@ -30,13 +30,7 @@ class WorkoutCheckpointStore(private val file: File) {
 
     @Throws(IOException::class)
     fun save(checkpoint: WorkoutCheckpoint) {
-        val temporary = File(file.path + ".tmp")
-        FileOutputStream(temporary).use { output ->
-            output.write(json.encodeToString(checkpoint).toByteArray(Charsets.UTF_8))
-            output.flush()
-            output.fd.sync()
-        }
-        Files.move(temporary.toPath(), file.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
+        file.writeTextAtomically(json.encodeToString(checkpoint))
     }
 
     fun load(): LoadResult {
@@ -60,4 +54,19 @@ class WorkoutCheckpointStore(private val file: File) {
     fun clear() {
         file.delete()
     }
+}
+
+/**
+ * Replaces this file with [text]: writes a temporary file, syncs it, and renames it
+ * over the old one, so a crash leaves either the old or the new content, never a mix.
+ */
+@Throws(IOException::class)
+fun File.writeTextAtomically(text: String) {
+    val temporary = File(path + ".tmp")
+    FileOutputStream(temporary).use { output ->
+        output.write(text.toByteArray(Charsets.UTF_8))
+        output.flush()
+        output.fd.sync()
+    }
+    Files.move(temporary.toPath(), toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
 }

@@ -791,4 +791,5 @@
     <string name="interval_resume_approximate">Das Telefon wurde neu gestartet, daher ist die vergangene Zeit geschätzt.</string>
     <string name="interval_resume_confirm">Fortsetzen</string>
     <string name="interval_resume_discard">Verwerfen</string>
+    <string name="program_resume_message">Dieses Training wurde unterbrochen. An der Stelle fortsetzen, an der es aufgehört hat? Der laufende Satz beginnt von vorn.</string>
 </resources>

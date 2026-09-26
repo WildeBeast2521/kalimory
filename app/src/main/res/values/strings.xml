@@ -824,4 +824,5 @@
     <string name="interval_resume_approximate">The phone restarted, so the time spent away is estimated.</string>
     <string name="interval_resume_confirm">Resume</string>
     <string name="interval_resume_discard">Discard</string>
+    <string name="program_resume_message">This workout was interrupted. Continue where it left off? The set that was in progress starts again.</string>
 </resources>

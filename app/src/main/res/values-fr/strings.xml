@@ -761,4 +761,5 @@
     <string name="interval_resume_approximate">Le téléphone a redémarré, le temps écoulé est donc estimé.</string>
     <string name="interval_resume_confirm">Reprendre</string>
     <string name="interval_resume_discard">Abandonner</string>
+    <string name="program_resume_message">Cet entraînement a été interrompu. Reprendre là où il s\'est arrêté ? La série en cours recommence.</string>
 </resources>

@@ -764,4 +764,5 @@
     <string name="interval_resume_approximate">Il telefono è stato riavviato, quindi il tempo trascorso è stimato.</string>
     <string name="interval_resume_confirm">Riprendi</string>
     <string name="interval_resume_discard">Scarta</string>
+    <string name="program_resume_message">Questo allenamento è stato interrotto. Riprendere da dove si era fermato? La serie in corso ricomincia.</string>
 </resources>
