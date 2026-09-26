@@ -1,6 +1,6 @@
 # Durable workout timer spike (Task 6)
 
-Status: the pure core and the checkpoint layer are done. The interval screen runs on the reducer and resumes after process death.
+Status: Task 6 is complete. The interval screen runs on the reducer. Program and single-exercise execution time sets and rests with `StepStopwatch`. All three modes resume after process death, and the timer service releases its wake lock.
 
 ## Problem
 
@@ -26,7 +26,7 @@ Workout, program, and interval timers keep time in Compose `LaunchedEffect` loop
 
 Tests: `WorkoutReducerTest` (16), `WorkoutTimerRecoveryTest` (6), and `WorkoutCheckpointStoreTest` (5) on the JVM, plus `WorkoutCheckpointDeviceTest` on a device.
 
-## Not done yet (integration)
+## Integration
 
 - Done for the interval screen (`IntervalWorkoutPlan` plus a 100 ms render tick). On the floor_api29 AVD, a 35 s program with the screen off for 12 s completed at 36.4 s (detection latency included), and a 10.3 s pause gave 46.4 s against 45.3 s expected. Still to move over: program and single-exercise execution.
 - Done for the interval screen. It saves on start, pause, resume, and skip, and clears on finish, stop, or discard. Reopening the program offers Resume. On floor_api29:
@@ -40,6 +40,11 @@ Tests: `WorkoutReducerTest` (16), `WorkoutTimerRecoveryTest` (6), and `WorkoutCh
 - Single-exercise execution uses `StepStopwatch` too. On floor_api29 its 35 s auto run completed at 36.8 s with the screen on and 37.7 s with the screen off from 8 s to 21 s. No `delay(1000)` counting loop remains in the execution screens, apart from the unused `WorkoutScreen.ExecutingStep`.
 - Program sessions checkpoint automatically (`ProgramSessionCheckpoint`), separately from the user's "Save & Exit" slot. Resume restarts the interrupted set, or returns to the result screen. Verified on floor_api29 with kills during a set and on the result screen.
 - Single-exercise sessions checkpoint automatically too (`SingleSessionCheckpoint`), and are offered for resume when the Workout screen opens. Verified on floor_api29 with kills during a set and on the confirmation screen.
-- Still to do: the service adapter.
+- `WorkoutTimerService` keeps no workout state or decisions. It holds a foreground notification and a wake lock while a timer runs. The lock was reference-counted, and every step change started the service again, so it stayed held after workouts ended. It is now held once and released by stop, destroy, or task removal. This is guarded by `WorkoutTimerServiceTest`.
+
+## Remaining notes
+
+- The notification shows a fixed text. Showing the live step and remaining time is optional polish, not part of Task 6.
+- `util/WakeLockManager.kt` and `WorkoutScreen.ExecutingStep` are unused. They were left unchanged; removing them needs a separate cleanup change.
 - Make `WorkoutTimerService` an adapter: it shows state and forwards user actions and never makes domain decisions. Verify it releases its wake lock on teardown.
 - Run the manual API 26+ protocol and record the results: screen off during a countdown, app in the background, process killed with `adb shell am kill`, device reboot, and a wall-clock change. For each, note the observed drift and the recovery timing.
