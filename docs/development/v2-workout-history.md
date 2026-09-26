@@ -19,7 +19,7 @@ Status: Task 7 is complete for the storage layer. Nothing in the app writes or r
 - Valid new sessions round trip through Room and backup. **Met.**
 - Snapshots survive source edits and deletion. **Met:** exercise and group links become null, and name and group snapshots remain.
 - Malformed and ambiguous legacy records are reported, not guessed. **Met.**
-- Before v2 writes are enabled, the legacy UI reads legacy and v2-only sessions through the tested compatibility path, including with the feature flag off. **Partly met.** The reader and its test exist. There is no feature flag or v2 write yet, so the "flag off" half is verified in Task 8, when the flag is introduced.
+- Before v2 writes are enabled, the legacy UI reads legacy and v2-only sessions through the tested compatibility path, including with the feature flag off. **Partly met.** The reader and its test exist. There is no feature flag or v2 write yet, so the "flag off" half is verified in Task 8, when the flag is introduced. *Superseded by ADR 0004: there is no feature flag. The compatibility reader remains the tested path for reading legacy and v2 history together.*
 
 ## When the backfill runs (decision)
 

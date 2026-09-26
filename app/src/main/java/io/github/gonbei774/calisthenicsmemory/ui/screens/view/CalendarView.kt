@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -323,6 +324,7 @@ private fun MonthGrid(
         )
 
         // 曜日ヘッダー
+        val locale = LocalConfiguration.current.locales[0]
         Row(modifier = Modifier.fillMaxWidth()) {
             val daysOfWeek = listOf(
                 DayOfWeek.SUNDAY, DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
@@ -330,7 +332,7 @@ private fun MonthGrid(
             )
             daysOfWeek.forEach { day ->
                 Text(
-                    text = day.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                    text = day.getDisplayName(TextStyle.SHORT, locale),
                     fontSize = 12.sp,
                     color = appColors.textTertiary,
                     textAlign = TextAlign.Center,
@@ -558,7 +560,7 @@ private fun WeekDayCell(
     appColors: AppColors,
     modifier: Modifier = Modifier
 ) {
-    val locale = Locale.getDefault()
+    val locale = LocalConfiguration.current.locales[0]
     val dayOfWeekText = date.dayOfWeek.getDisplayName(TextStyle.SHORT, locale)
     val shape = RoundedCornerShape(8.dp)
 

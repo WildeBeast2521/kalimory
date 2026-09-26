@@ -2013,7 +2013,7 @@ fun SearchResultExerciseItem(
 private fun RepeatDaysLabel(repeatDays: String) {
     if (repeatDays.isEmpty()) return
     val dayNumbers = TodoTask.parseRepeatDays(repeatDays)
-    val locale = java.util.Locale.getDefault()
+    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
     val dayNames = dayNumbers.map { dayNum ->
         java.time.DayOfWeek.of(dayNum).getDisplayName(java.time.format.TextStyle.SHORT, locale)
     }
@@ -2033,7 +2033,7 @@ private fun RepeatDaysDialog(
     onDismiss: () -> Unit
 ) {
     val appColors = LocalAppColors.current
-    val locale = java.util.Locale.getDefault()
+    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
     var selectedDays by remember(currentRepeatDays) {
         val initial = if (currentRepeatDays.isEmpty()) emptySet()
         else TodoTask.parseRepeatDays(currentRepeatDays).toSet()
