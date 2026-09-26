@@ -38,6 +38,25 @@ interface WorkoutSessionDao {
     @Query("SELECT DISTINCT legacyTrainingRecordId FROM set_entries WHERE legacyTrainingRecordId IS NOT NULL")
     suspend fun legacyTrainingRecordIds(): List<Long>
 
+    /**
+     * Completed v2 sets that are not copies of legacy records and whose exercise still
+     * exists, for [CompatibilityHistory].
+     */
+    @Query(
+        """
+        SELECT t.id AS setEntryId, t.sessionExerciseId, e.exerciseId, e.exerciseKindSnapshot, t.setNumber,
+               t.orderIndex, t.side, t.repetitions, t.durationMillis, t.distanceCm, t.addedWeightGrams,
+               t.assistanceGrams, t.completedAtEpochMillis, s.startedAtEpochMillis AS sessionStartedAtEpochMillis,
+               s.comment AS sessionComment
+        FROM set_entries t
+        JOIN session_exercises e ON e.id = t.sessionExerciseId
+        JOIN workout_sessions s ON s.id = e.workoutSessionId
+        WHERE t.legacyTrainingRecordId IS NULL AND t.status = 'COMPLETED' AND e.exerciseId IS NOT NULL
+        ORDER BY s.startedAtEpochMillis, e.orderIndex, t.orderIndex
+        """
+    )
+    suspend fun v2OnlyHistoryRows(): List<V2HistoryRow>
+
     /** Reads one workout consistently. */
     @Transaction
     suspend fun sessionGraph(id: Long): WorkoutSessionGraph? {
