@@ -35,7 +35,6 @@ val Typography = Typography(
     labelMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        color = Slate400
+        fontSize = 12.sp
     )
 )
