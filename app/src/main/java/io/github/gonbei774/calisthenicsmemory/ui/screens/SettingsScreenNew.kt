@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -121,7 +122,7 @@ fun SettingsScreenNew(
                 var showLanguageDialog by remember { mutableStateOf(false) }
 
                 // 現在のシステム言語を取得
-                val currentLocale = Locale.getDefault().language
+                val currentLocale = LocalConfiguration.current.locales[0].language
 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
