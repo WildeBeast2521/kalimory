@@ -87,6 +87,14 @@ class WorkoutTimerService : Service() {
         releaseWakeLock()
     }
 
+    // Swiping the app away ends the workout screen; the checkpoint lets it resume later.
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        releaseWakeLock()
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
+        super.onTaskRemoved(rootIntent)
+    }
+
     private fun createNotificationChannel() {
         val channel = NotificationChannel(
             CHANNEL_ID,
@@ -126,9 +134,14 @@ class WorkoutTimerService : Service() {
             wakeLock = powerManager.newWakeLock(
                 PowerManager.PARTIAL_WAKE_LOCK,
                 "CalisthenicsMemory::WorkoutTimerService"
-            )
+            ).apply {
+                // Screens send ACTION_START on every step change. A reference-counted lock
+                // would need one release per start and outlive the workout; this one is
+                // held once and released by a single release().
+                setReferenceCounted(false)
+            }
         }
-        wakeLock?.acquire(60 * 60 * 1000L) // Max 1 hour
+        wakeLock?.acquire(60 * 60 * 1000L) // Max 1 hour; renewed by each start
     }
 
     private fun releaseWakeLock() {
