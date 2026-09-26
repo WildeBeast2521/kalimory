@@ -37,6 +37,10 @@ data class TodoTask(
 
     fun getRepeatDayNumbers(): List<Int> = parseRepeatDays(repeatDays)
 
+    /** One-off tasks are always due; a repeating task is due on its days until it is completed that day. */
+    fun isDueOn(date: java.time.LocalDate): Boolean =
+        !isRepeating() || (date.dayOfWeek.value in getRepeatDayNumbers() && lastCompletedDate != date.toString())
+
     /** Whether the referenced item exists, or null when [type] is not a known task type. */
     fun hasTarget(
         exerciseIds: Set<Long>,

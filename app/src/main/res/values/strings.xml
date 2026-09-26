@@ -829,4 +829,11 @@
     <string name="nav_train">Train</string>
     <string name="nav_progress">Progress</string>
     <string name="nav_library">Library</string>
+    <!-- Today -->
+    <string name="today_resume_title">Continue where you left off</string>
+    <string name="today_saved_for_later">Saved for later</string>
+    <string name="today_kind_program">Program</string>
+    <string name="today_due_title">Due today</string>
+    <string name="today_due_none">Nothing due today</string>
+    <string name="today_all_todos">All to-dos</string>
 </resources>

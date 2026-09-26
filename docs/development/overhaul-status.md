@@ -4,18 +4,26 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8, slice 2: Expressive theme and the four primary destinations. Branch `work/primary-destinations`, based on master `44f03b8`.
+Task 8, slice 3: Today leads with resume and due to-dos (ADR 0004). Branch `work/today-resume`, based on master `e3d1f27`.
 
-- `CalisthenicsMemoryTheme` uses `MaterialExpressiveTheme` with the expressive motion scheme. The color schemes now define the surface-container, container and outline roles in the app's Slate and Blue palette instead of the baseline purple defaults.
-- The `labelMedium` style no longer hard-codes `Slate400`. That color overrode component content colors, which made navigation labels about 2.4:1 contrast in the light theme.
-- The home screen is replaced by Today, Train, Progress and Library behind a `ShortNavigationBar`. Screens:
-  - Today: settings, To Do, and today's summary. Its "View all records" link opens Progress.
-  - Train: workout, programs, intervals, and manual recording.
-  - Progress: the existing records view, without a back arrow.
-  - Library: exercises, programs, intervals, and settings.
-- Secondary screens hide the bar, and back returns to the destination that opened them. Back from a destination other than Today returns to Today. The selected destination survives activity recreation.
-- The Program and Interval lists now return to the opening destination instead of the Workout screen.
-- `PrimaryNavigationTest` covers switching, back, secondary screens and recreation. A negative check was run: with the destination back handler disabled, the back test fails.
+- "Continue where you left off" lists every workout that can be resumed, newest first. There are four sources: the single-session checkpoint, the program checkpoint, the program "Save & Exit" slot, and the interval checkpoint (`ui/screens/today/ResumableWorkout.kt`).
+  - Tapping an entry opens the owning screen, which runs its existing resume dialog. Today never resumes or discards anything itself.
+  - Entries whose exercise or program was deleted are hidden. Their saved data is not touched.
+- "Due today" lists the to-dos due today, using the To Do screen's rule, now `TodoTask.isDueOn`. Tapping one works as follows:
+  - Exercise: opens its workout.
+  - Program or interval: opens that screen.
+  - Group: opens the To Do screen, because an exercise must be chosen first.
+
+  In every case, back returns to Today (the new `fromToday` route flag).
+- Fixes to older program-screen bugs that Today makes easier to reach:
+  - Back did nothing while no step was loaded, for example on a program without exercises.
+  - Resuming a "Save & Exit" state with no sets would call `coerceIn(0, -1)` and crash.
+
+Known limitation: if a program's set count changed after it was interrupted, its screen does not offer the resume, but Today keeps listing it until that program is run again.
+
+## Previous phase: primary destinations (merged)
+
+PR #25 merged as `e3d1f27`.
 
 ## Previous phase: Material 3 Expressive dependency (merged)
 
@@ -164,9 +172,8 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Today: a resume card for any interrupted workout, listed first, then today's to-dos inline (ADR 0004). The sources are the single-session checkpoint, the program checkpoint, the program "Save & Exit" state, and the interval checkpoint. The card opens the owning screen, which already runs its tested resume dialog.
-2. Add the v2 repository and the ad-hoc workout write path, with the backfill and dual-read comparison at cutover.
-3. Make Progress read `CompatibilityHistory`.
-4. Move program and interval workouts onto sessions, then add `UnifiedWorkoutFlowTest`.
+1. Add the v2 repository and the ad-hoc (single) workout write path to `workout_sessions`, with the one-time backfill and dual-read comparison at cutover (see `docs/development/v2-workout-history.md`).
+2. Make Progress read `CompatibilityHistory`.
+3. Move program and interval workouts onto sessions, then add `UnifiedWorkoutFlowTest`.
 
-Files likely involved next: `ui/screens/today/TodayScreen.kt`, `data/SavedWorkoutState.kt`, `data/ProgramSessionCheckpoint.kt`, `ui/screens/WorkoutSessionCheckpoint.kt`, `workout/WorkoutCheckpointStore.kt`.
+Files likely involved next: `data/v2/`, `viewmodel/TrainingViewModel.kt`, `ui/screens/WorkoutScreen.kt`.
