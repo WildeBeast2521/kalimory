@@ -113,7 +113,6 @@
     <string name="exercise_type_dynamic_description">e.g. Push-ups, Pull-ups. Recorded by reps.</string>
     <string name="exercise_type_isometric_description">e.g. Plank, L-sit. Recorded by hold time.</string>
     <!-- View Screen -->
-    <string name="view_records">View Records</string>
     <string name="list">List</string>
     <string name="graph">Graph</string>
     <string name="challenge">Challenge</string>
@@ -825,4 +824,9 @@
     <string name="interval_resume_confirm">Resume</string>
     <string name="interval_resume_discard">Discard</string>
     <string name="program_resume_message">This workout was interrupted. Continue where it left off? The set that was in progress starts again.</string>
+    <!-- Primary navigation -->
+    <string name="nav_today">Today</string>
+    <string name="nav_train">Train</string>
+    <string name="nav_progress">Progress</string>
+    <string name="nav_library">Library</string>
 </resources>

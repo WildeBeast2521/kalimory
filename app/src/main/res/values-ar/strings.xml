@@ -18,4 +18,9 @@
     <string name="interval_resume_confirm">استئناف</string>
     <string name="interval_resume_discard">تجاهل</string>
     <string name="program_resume_message">تمت مقاطعة هذا التمرين. هل تريد المتابعة من حيث توقف؟ ستبدأ المجموعة التي كانت جارية من جديد.</string>
+    <!-- Primary navigation -->
+    <string name="nav_today">اليوم</string>
+    <string name="nav_train">تمرين</string>
+    <string name="nav_progress">التقدم</string>
+    <string name="nav_library">المكتبة</string>
 </resources>

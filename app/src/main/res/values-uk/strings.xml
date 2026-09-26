@@ -172,7 +172,6 @@
     <string name="discard_result_title">Відхилити результати?</string>
     <string name="discard_result_message">Результати тренування не будуть збережені.</string>
     <string name="discard_result_confirm">Відхилити</string>
-    <string name="view_records">Перегляд записів</string>
     <string name="no_records_for_exercise">Немає записів для цієї вправи</string>
     <string name="character_count">%1$d/%2$d</string>
     <string name="no_records_yet">Записів ще немає</string>
@@ -768,4 +767,9 @@
     <string name="interval_resume_confirm">Продовжити</string>
     <string name="interval_resume_discard">Скасувати</string>
     <string name="program_resume_message">Це тренування було перервано. Продовжити з того самого місця? Незавершений підхід почнеться знову.</string>
+    <!-- Primary navigation -->
+    <string name="nav_today">Сьогодні</string>
+    <string name="nav_train">Тренування</string>
+    <string name="nav_progress">Прогрес</string>
+    <string name="nav_library">Бібліотека</string>
 </resources>

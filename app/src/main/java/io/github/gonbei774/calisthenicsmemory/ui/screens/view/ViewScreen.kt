@@ -25,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import io.github.gonbei774.calisthenicsmemory.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -64,7 +66,6 @@ sealed class RecordItem(val date: String, val time: String) {
 @Composable
 fun ViewScreen(
     viewModel: TrainingViewModel,
-    onNavigateBack: () -> Unit
 ) {
     val appColors = LocalAppColors.current
     val exercises by viewModel.exercises.collectAsState()
@@ -187,15 +188,10 @@ fun ViewScreen(
                         .padding(horizontal = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back),
-                            tint = Color.White
-                        )
-                    }
+                    Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = stringResource(R.string.view_records),
+                        text = stringResource(R.string.nav_progress),
+                        modifier = Modifier.semantics { heading() },
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White

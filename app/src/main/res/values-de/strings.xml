@@ -98,7 +98,6 @@
     <string name="dynamic_type">Wiederholungen</string>
     <string name="isometric_type">Zeit</string>
     <!-- View Screen -->
-    <string name="view_records">Aufzeichnungen ansehen</string>
     <string name="list">Liste</string>
     <string name="graph">Diagramm</string>
     <string name="challenge">Herausforderung</string>
@@ -792,4 +791,9 @@
     <string name="interval_resume_confirm">Fortsetzen</string>
     <string name="interval_resume_discard">Verwerfen</string>
     <string name="program_resume_message">Dieses Training wurde unterbrochen. An der Stelle fortsetzen, an der es aufgehört hat? Der laufende Satz beginnt von vorn.</string>
+    <!-- Primary navigation -->
+    <string name="nav_today">Heute</string>
+    <string name="nav_train">Training</string>
+    <string name="nav_progress">Fortschritt</string>
+    <string name="nav_library">Bibliothek</string>
 </resources>

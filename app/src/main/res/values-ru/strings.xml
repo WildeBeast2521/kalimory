@@ -94,7 +94,6 @@
     <string name="exercise_type_isometric">Статическое</string>
     <string name="exercise_type_dynamic_description">пример: Отжимания, Подтягивания. Учёт по повторениям</string>
     <string name="exercise_type_isometric_description">пример: Планка, L-приседания. Учёт по времени удержания.</string>
-    <string name="view_records">Просмотр записей</string>
     <string name="list">Список</string>
     <string name="graph">График</string>
     <string name="challenge">Челлендж</string>
@@ -125,4 +124,9 @@
     <string name="interval_resume_confirm">Продолжить</string>
     <string name="interval_resume_discard">Отменить</string>
     <string name="program_resume_message">Эта тренировка была прервана. Продолжить с того же места? Незавершённый подход начнётся заново.</string>
+    <!-- Primary navigation -->
+    <string name="nav_today">Сегодня</string>
+    <string name="nav_train">Тренировка</string>
+    <string name="nav_progress">Прогресс</string>
+    <string name="nav_library">Библиотека</string>
 </resources>
