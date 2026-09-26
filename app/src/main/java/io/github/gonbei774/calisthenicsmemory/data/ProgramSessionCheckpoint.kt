@@ -1,13 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.data
 
-import io.github.gonbei774.calisthenicsmemory.workout.writeTextAtomically
+import io.github.gonbei774.calisthenicsmemory.workout.JsonCheckpointFile
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.int
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import java.io.File
 import java.io.IOException
 
@@ -32,34 +26,16 @@ data class ProgramSessionCheckpoint(
     }
 }
 
-class ProgramSessionCheckpointStore(private val file: File) {
-    private val json = Json { encodeDefaults = true }
+class ProgramSessionCheckpointStore(file: File) {
+    private val checkpoint = JsonCheckpointFile(file, ProgramSessionCheckpoint.serializer(), ProgramSessionCheckpoint.CURRENT_VERSION)
 
     @Throws(IOException::class)
-    fun save(checkpoint: ProgramSessionCheckpoint) {
-        file.writeTextAtomically(json.encodeToString(checkpoint))
-    }
+    fun save(value: ProgramSessionCheckpoint) = checkpoint.save(value)
 
     /** The checkpoint, or null when there is none or it cannot be used; an unusable file is left in place. */
-    fun load(): ProgramSessionCheckpoint? {
-        if (!file.isFile) return null
-        return try {
-            val text = file.readText(Charsets.UTF_8)
-            val version = json.parseToJsonElement(text).jsonObject["version"]?.jsonPrimitive?.int
-            if (version != ProgramSessionCheckpoint.CURRENT_VERSION) return null
-            json.decodeFromString<ProgramSessionCheckpoint>(text)
-        } catch (e: IOException) {
-            null
-        } catch (e: SerializationException) {
-            null
-        } catch (e: IllegalArgumentException) {
-            null
-        }
-    }
+    fun load(): ProgramSessionCheckpoint? = checkpoint.load()
 
-    fun clear() {
-        file.delete()
-    }
+    fun clear() = checkpoint.clear()
 
     companion object {
         const val FILE_NAME = "program-session-checkpoint.json"
