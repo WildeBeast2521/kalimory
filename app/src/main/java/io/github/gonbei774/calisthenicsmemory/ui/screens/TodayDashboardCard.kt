@@ -1,7 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -9,12 +8,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
@@ -22,115 +18,16 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.gonbei774.calisthenicsmemory.R
-import io.github.gonbei774.calisthenicsmemory.Screen
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
-import java.time.LocalDate
-
-@Composable
-fun HomeScreen(
-    onNavigate: (Screen) -> Unit,
-    viewModel: TrainingViewModel = viewModel()
-) {
-    val appColors = LocalAppColors.current
-    val exercises by viewModel.exercises.collectAsState()
-    val records by viewModel.records.collectAsState()
-
-    // Filter today's records
-    val todayDate = LocalDate.now().toString()
-    val todayRecords = remember(records, todayDate) {
-        records.filter { it.date == todayDate }
-    }
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Title
-            Text(
-                text = "Calisthenics Memory",
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(64.dp))
-
-            // To Do Button
-            MainButton(
-                text = stringResource(R.string.todo_title),
-                color = appColors.cardBackground,
-                onClick = { onNavigate(Screen.ToDo) }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Record Button (solid color)
-            MainButton(
-                text = stringResource(R.string.home_record),
-                color = appColors.cardBackground,
-                onClick = { onNavigate(Screen.Record()) }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Workout Button (solid color)
-            MainButton(
-                text = stringResource(R.string.home_workout),
-                color = appColors.cardBackground,
-                onClick = { onNavigate(Screen.Workout()) }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Create Button (solid color)
-            MainButton(
-                text = stringResource(R.string.home_create),
-                color = appColors.cardBackground,
-                onClick = { onNavigate(Screen.Create) }
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Dashboard Card
-            TodayDashboardCard(
-                records = todayRecords,
-                exercises = exercises,
-                onNavigateToView = { onNavigate(Screen.View) }
-            )
-        }
-
-        // Settings Icon Button (bottom-right)
-        IconButton(
-            onClick = { onNavigate(Screen.Settings) },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = stringResource(R.string.settings),
-                tint = appColors.textSecondary,
-                modifier = Modifier.size(28.dp)
-            )
-        }
-    }
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -321,48 +218,6 @@ fun formatRecordsForDisplay(
             if (index < recordsByExercise.size - 1) {
                 append("\n")
             }
-        }
-    }
-}
-
-@Composable
-fun MainButton(
-    text: String,
-    gradient: Brush? = null,
-    color: Color? = null,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val appColors = LocalAppColors.current
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(64.dp),
-        shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = color ?: Color.Transparent
-        ),
-        contentPadding = PaddingValues(0.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .then(
-                    if (gradient != null) {
-                        Modifier.background(gradient)
-                    } else {
-                        Modifier
-                    }
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = text,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary
-            )
         }
     }
 }

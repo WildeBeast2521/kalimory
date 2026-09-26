@@ -100,7 +100,6 @@
     <string name="exercise_type_dynamic">Dinamico</string>
     <string name="exercise_type_isometric">Isometrico</string>
     <!-- View Screen -->
-    <string name="view_records">Visualizza Registrazioni</string>
     <string name="list">Elenco</string>
     <string name="graph">Grafico</string>
     <string name="challenge">Obiettivo</string>
@@ -765,4 +764,9 @@
     <string name="interval_resume_confirm">Riprendi</string>
     <string name="interval_resume_discard">Scarta</string>
     <string name="program_resume_message">Questo allenamento è stato interrotto. Riprendere da dove si era fermato? La serie in corso ricomincia.</string>
+    <!-- Primary navigation -->
+    <string name="nav_today">Oggi</string>
+    <string name="nav_train">Allenamento</string>
+    <string name="nav_progress">Progressi</string>
+    <string name="nav_library">Libreria</string>
 </resources>

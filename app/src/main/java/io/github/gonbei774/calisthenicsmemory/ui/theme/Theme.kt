@@ -1,7 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialExpressiveTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -22,7 +24,20 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = Color.White,
     onSurface = Color.White,
     error = Red600,
-    onError = Color.White
+    onError = Color.White,
+    primaryContainer = Blue900,
+    onPrimaryContainer = Blue100,
+    secondaryContainer = Blue900,
+    onSecondaryContainer = Blue100,
+    surfaceVariant = Slate700,
+    onSurfaceVariant = Slate300,
+    surfaceContainerLowest = Slate900,
+    surfaceContainerLow = Slate800,
+    surfaceContainer = Slate800,
+    surfaceContainerHigh = Slate750,
+    surfaceContainerHighest = Slate700,
+    outline = Slate600,
+    outlineVariant = Slate700
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -37,7 +52,20 @@ private val LightColorScheme = lightColorScheme(
     onBackground = Slate800,
     onSurface = Slate800,
     error = Red600,
-    onError = Color.White
+    onError = Color.White,
+    primaryContainer = Blue100,
+    onPrimaryContainer = Blue800,
+    secondaryContainer = Blue100,
+    onSecondaryContainer = Blue800,
+    surfaceVariant = Slate100,
+    onSurfaceVariant = Slate600,
+    surfaceContainerLowest = Color.White,
+    surfaceContainerLow = Slate50,
+    surfaceContainer = Slate100,
+    surfaceContainerHigh = Slate100,
+    surfaceContainerHighest = Slate200,
+    outline = Slate300,
+    outlineVariant = Slate200
 )
 
 @Immutable
@@ -106,6 +134,7 @@ private val LightAppColors = AppColors(
 
 val LocalAppColors = staticCompositionLocalOf { DarkAppColors }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun CalisthenicsMemoryTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -115,8 +144,9 @@ fun CalisthenicsMemoryTheme(
     val appColors = if (darkTheme) DarkAppColors else LightAppColors
 
     CompositionLocalProvider(LocalAppColors provides appColors) {
-        MaterialTheme(
+        MaterialExpressiveTheme(
             colorScheme = colorScheme,
+            motionScheme = MotionScheme.expressive(),
             typography = Typography,
             content = content
         )

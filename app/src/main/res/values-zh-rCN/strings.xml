@@ -100,7 +100,6 @@
     <string name="exercise_type_dynamic">动态</string>
     <string name="exercise_type_isometric">静态</string>
     <!-- View Screen -->
-    <string name="view_records">查看记录</string>
     <string name="list">列表</string>
     <string name="graph">图表</string>
     <string name="challenge">挑战</string>
@@ -765,4 +764,9 @@
     <string name="interval_resume_confirm">继续</string>
     <string name="interval_resume_discard">放弃</string>
     <string name="program_resume_message">此训练已中断。要从中断处继续吗？进行中的那一组将重新开始。</string>
+    <!-- Primary navigation -->
+    <string name="nav_today">今天</string>
+    <string name="nav_train">训练</string>
+    <string name="nav_progress">进度</string>
+    <string name="nav_library">资料库</string>
 </resources>

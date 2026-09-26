@@ -48,7 +48,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
-import io.github.gonbei774.calisthenicsmemory.ui.screens.HomeScreen
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBar
+import io.github.gonbei774.calisthenicsmemory.ui.screens.library.LibraryScreen
+import io.github.gonbei774.calisthenicsmemory.ui.screens.today.TodayScreen
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.TrainScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.RecordScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.CreateScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.SettingsScreenNew
@@ -232,6 +236,8 @@ fun CalisthenicsMemoryApp(
 ) {
     val viewModel: TrainingViewModel = viewModel()
     var currentScreen by rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.Home) }
+    // Screen.Home shows this destination, so "back to Home" returns to the tab the user came from.
+    var primaryDestination by rememberSaveable { mutableStateOf(PrimaryDestination.TODAY) }
     val snackbarHostState = remember { SnackbarHostState() }
     val appColors = LocalAppColors.current
 
@@ -251,11 +257,22 @@ fun CalisthenicsMemoryApp(
         }
     }
 
+    val showPrimaryNavigation = currentScreen is Screen.Home
     Scaffold(
+        bottomBar = {
+            if (showPrimaryNavigation) {
+                PrimaryNavigationBar(
+                    selected = primaryDestination,
+                    onSelect = { primaryDestination = it }
+                )
+            }
+        },
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding())
+                // The navigation bar already clears the system bar when shown.
+                modifier = if (showPrimaryNavigation) Modifier else
+                    Modifier.padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding())
             )
         }
     ) { paddingValues ->
@@ -273,9 +290,32 @@ fun CalisthenicsMemoryApp(
                 .padding(paddingValues)
         ) {
             when (currentScreen) {
-                is Screen.Home -> HomeScreen(
-                    onNavigate = { screen -> currentScreen = screen }
-                )
+                is Screen.Home -> {
+                    BackHandler(enabled = primaryDestination != PrimaryDestination.TODAY) {
+                        primaryDestination = PrimaryDestination.TODAY
+                    }
+                    when (primaryDestination) {
+                        PrimaryDestination.TODAY -> TodayScreen(
+                            viewModel = viewModel,
+                            onOpenToDo = { currentScreen = Screen.ToDo },
+                            onOpenHistory = { primaryDestination = PrimaryDestination.PROGRESS },
+                            onOpenSettings = { currentScreen = Screen.Settings }
+                        )
+                        PrimaryDestination.TRAIN -> TrainScreen(
+                            onStartWorkout = { currentScreen = Screen.Workout() },
+                            onRecordManually = { currentScreen = Screen.Record() },
+                            onOpenPrograms = { currentScreen = Screen.ProgramList },
+                            onOpenIntervals = { currentScreen = Screen.IntervalList }
+                        )
+                        PrimaryDestination.PROGRESS -> ViewScreen(viewModel = viewModel)
+                        PrimaryDestination.LIBRARY -> LibraryScreen(
+                            onOpenExercises = { currentScreen = Screen.Create },
+                            onOpenPrograms = { currentScreen = Screen.ProgramList },
+                            onOpenIntervals = { currentScreen = Screen.IntervalList },
+                            onOpenSettings = { currentScreen = Screen.Settings }
+                        )
+                    }
+                }
                 is Screen.ToDo -> {
                     BackHandler { currentScreen = Screen.Home }
                     ToDoScreen(
@@ -338,13 +378,6 @@ fun CalisthenicsMemoryApp(
                         fromToDo = recordScreen.fromToDo
                     )
                 }
-                is Screen.View -> {
-                    BackHandler { currentScreen = Screen.Home }
-                    ViewScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.Home }
-                    )
-                }
                 is Screen.Workout -> {
                     val workoutScreen = currentScreen as Screen.Workout
                     val backDestination = if (workoutScreen.fromToDo) Screen.ToDo else Screen.Home
@@ -359,10 +392,10 @@ fun CalisthenicsMemoryApp(
                     )
                 }
                 is Screen.ProgramList -> {
-                    BackHandler { currentScreen = Screen.Workout() }
+                    BackHandler { currentScreen = Screen.Home }
                     ProgramListScreen(
                         viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.Workout() },
+                        onNavigateBack = { currentScreen = Screen.Home },
                         onNavigateToEdit = { programId -> currentScreen = Screen.ProgramEdit(programId) },
                         onNavigateToExecute = { programId ->
                             currentScreen = Screen.ProgramExecution(programId)
@@ -400,10 +433,10 @@ fun CalisthenicsMemoryApp(
                     )
                 }
                 is Screen.IntervalList -> {
-                    BackHandler { currentScreen = Screen.Workout() }
+                    BackHandler { currentScreen = Screen.Home }
                     IntervalListScreen(
                         viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.Workout() },
+                        onNavigateBack = { currentScreen = Screen.Home },
                         onNavigateToEdit = { programId -> currentScreen = Screen.IntervalEdit(programId) },
                         onNavigateToExecute = { programId ->
                             currentScreen = Screen.IntervalExecution(programId)
@@ -477,7 +510,6 @@ sealed class Screen {
     object Settings : Screen()
     object Licenses : Screen()
     data class Record(val exerciseId: Long? = null, val fromToDo: Boolean = false) : Screen()
-    object View : Screen()
     data class Workout(val exerciseId: Long? = null, val fromToDo: Boolean = false) : Screen()
     object ProgramList : Screen()
     data class ProgramEdit(val programId: Long?) : Screen()
@@ -500,7 +532,6 @@ private val ScreenSaver = mapSaver(
                 Screen.Create -> put("type", "Create")
                 Screen.Settings -> put("type", "Settings")
                 Screen.Licenses -> put("type", "Licenses")
-                Screen.View -> put("type", "View")
                 Screen.ProgramList -> put("type", "ProgramList")
                 Screen.IntervalList -> put("type", "IntervalList")
                 is Screen.Record -> {
@@ -545,7 +576,6 @@ private val ScreenSaver = mapSaver(
             "Create" -> Screen.Create
             "Settings" -> Screen.Settings
             "Licenses" -> Screen.Licenses
-            "View" -> Screen.View
             "ProgramList" -> Screen.ProgramList
             "IntervalList" -> Screen.IntervalList
             "Record" -> Screen.Record(

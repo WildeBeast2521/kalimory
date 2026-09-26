@@ -112,7 +112,6 @@
     <string name="exercise_type_dynamic_description">例：腕立て伏せ、懸垂など。回数で記録します。</string>
     <string name="exercise_type_isometric_description">例：プランク、Lシットなど。保持時間で記録します。</string>
     <!-- View Screen -->
-    <string name="view_records">記録閲覧</string>
     <string name="list">一覧</string>
     <string name="graph">グラフ</string>
     <string name="challenge">課題</string>
@@ -832,4 +831,9 @@
     <string name="interval_resume_confirm">再開</string>
     <string name="interval_resume_discard">破棄</string>
     <string name="program_resume_message">このワークアウトは中断されました。続きから再開しますか？実行中だったセットは最初からやり直します。</string>
+    <!-- Primary navigation -->
+    <string name="nav_today">今日</string>
+    <string name="nav_train">トレーニング</string>
+    <string name="nav_progress">進捗</string>
+    <string name="nav_library">ライブラリ</string>
 </resources>

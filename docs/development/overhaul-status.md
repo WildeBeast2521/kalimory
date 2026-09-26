@@ -4,7 +4,22 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8 (visible overhaul) has started. Slice 1 adopts Material 3 Expressive. Branch `work/compose-expressive`, based on master `d4914b4`. The decisions are recorded in ADR 0004: no feature flag, Material 3 Expressive pinned at `1.5.0-alpha18`, bottom-bar navigation, and Today showing resume and to-dos first.
+Task 8, slice 2: Expressive theme and the four primary destinations. Branch `work/primary-destinations`, based on master `44f03b8`.
+
+- `CalisthenicsMemoryTheme` uses `MaterialExpressiveTheme` with the expressive motion scheme. The color schemes now define the surface-container, container and outline roles in the app's Slate and Blue palette instead of the baseline purple defaults.
+- The `labelMedium` style no longer hard-codes `Slate400`. That color overrode component content colors, which made navigation labels about 2.4:1 contrast in the light theme.
+- The home screen is replaced by Today, Train, Progress and Library behind a `ShortNavigationBar`. Screens:
+  - Today: settings, To Do, and today's summary. Its "View all records" link opens Progress.
+  - Train: workout, programs, intervals, and manual recording.
+  - Progress: the existing records view, without a back arrow.
+  - Library: exercises, programs, intervals, and settings.
+- Secondary screens hide the bar, and back returns to the destination that opened them. Back from a destination other than Today returns to Today. The selected destination survives activity recreation.
+- The Program and Interval lists now return to the opening destination instead of the Workout screen.
+- `PrimaryNavigationTest` covers switching, back, secondary screens and recreation. A negative check was run: with the destination back handler disabled, the back test fails.
+
+## Previous phase: Material 3 Expressive dependency (merged)
+
+PR #24 merged as `44f03b8`.
 
 ## Previous phase: Task 7 closed (merged)
 
@@ -149,11 +164,9 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-Task 8, following ADR 0004 (there is no feature flag; the new UI replaces screens directly and legacy screens stay reachable until parity):
-1. Switch the theme to `MaterialExpressiveTheme`, and add the four destinations (Today, Train, Progress, Library) with a bottom bar and state restoration. At first they reuse existing screens.
+1. Today: a resume card for any interrupted workout, listed first, then today's to-dos inline (ADR 0004). The sources are the single-session checkpoint, the program checkpoint, the program "Save & Exit" state, and the interval checkpoint. The card opens the owning screen, which already runs its tested resume dialog.
 2. Add the v2 repository and the ad-hoc workout write path, with the backfill and dual-read comparison at cutover.
 3. Make Progress read `CompatibilityHistory`.
-4. Move program and interval workouts onto sessions.
-5. Add Compose tests: `PrimaryNavigationTest` and `UnifiedWorkoutFlowTest`.
+4. Move program and interval workouts onto sessions, then add `UnifiedWorkoutFlowTest`.
 
-Files likely involved next: `MainActivity.kt`, `ui/theme/Theme.kt`, `ui/navigation/`, `ui/screens/today|train|progress|library/`.
+Files likely involved next: `ui/screens/today/TodayScreen.kt`, `data/SavedWorkoutState.kt`, `data/ProgramSessionCheckpoint.kt`, `ui/screens/WorkoutSessionCheckpoint.kt`, `workout/WorkoutCheckpointStore.kt`.
