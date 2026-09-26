@@ -4,13 +4,17 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Single-exercise checkpoint and resume, branch `work/single-checkpoint`, based on master `d1cbb29`. The PR follows these checks.
+Timer service wake lock, branch `work/timer-service-wakelock`, based on master `9eef2af`. This completes Task 6. The PR follows these checks.
 
-- `feat: resume single-exercise workouts after process death`.
+- `fix: release the workout wake lock when the workout ends`: reproduced as a lock that stayed held after workouts.
 - Verification:
   - Gate PASS (281 unit tests).
-  - `connectedDebugAndroidTest` on `floor_api29`: 78 tests, 0 failures.
-  - Kill during a set and kill on the confirmation screen, both followed by resume and record, on the same AVD.
+  - `connectedDebugAndroidTest` on `floor_api29`: 79 tests, 0 failures, including the new `WorkoutTimerServiceTest`, which failed on the old code.
+  - Manual checks with `dumpsys power` after a finished workout and after swiping the task away.
+
+## Previous phase: single-exercise checkpoint and resume (merged)
+
+PR #17 merged as `9eef2af`.
 
 ## Previous phase: program checkpoint and resume (merged)
 
@@ -127,10 +131,9 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Make `WorkoutTimerService` an adapter.
-   - It shows the current step and remaining time from the reducer state, and relays pause and resume. It holds no domain logic.
-   - Verify that it releases its wake lock when stopped and when the task is removed.
-   - Record the result, then close Task 6 in `docs/development/workout-timer-spike.md`.
-2. Then Task 7 of `docs/plans/2026-08-30-overhaul-bootstrap.md`: the v2 workout schema and conservative backfill. Read ADRs 0002 and 0003 first.
+1. Task 7 of `docs/plans/2026-08-30-overhaul-bootstrap.md`: the v2 workout schema (`WorkoutSession`, `SessionExercise`, `SetEntry`) and a conservative backfill.
+   - Read ADRs 0002 and 0003 first.
+   - Plan the additive Room migration 21→22. It needs its exported schema and tests in the existing migration matrix, and must keep every legacy table and reader.
+2. Optional cleanup: remove the unused `WakeLockManager` and `WorkoutScreen.ExecutingStep`.
 
-Files likely involved next: `service/WorkoutTimerService.kt`, `util/WakeLockManager.kt`, `AndroidManifest.xml`.
+Files likely involved next: `docs/architecture/0002-additive-v2-domain-model.md`, `docs/architecture/0003-migration-sequencing.md`, `data/AppDatabase.kt`, `app/schemas/`, `app/src/androidTest/.../migration/`.
