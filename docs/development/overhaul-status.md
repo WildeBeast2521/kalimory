@@ -4,13 +4,17 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Program checkpoint and resume, branch `work/program-checkpoint`, based on master `de51f90`. The PR follows these checks.
+Single-exercise checkpoint and resume, branch `work/single-checkpoint`, based on master `d1cbb29`. The PR follows these checks.
 
-- `feat: resume program workouts after process death`.
+- `feat: resume single-exercise workouts after process death`.
 - Verification:
-  - Gate PASS (278 unit tests).
+  - Gate PASS (281 unit tests).
   - `connectedDebugAndroidTest` on `floor_api29`: 78 tests, 0 failures.
-  - Kill during a set and kill on the result screen, both followed by resume, plus record and exit clearing, all on the same AVD.
+  - Kill during a set and kill on the confirmation screen, both followed by resume and record, on the same AVD.
+
+## Previous phase: program checkpoint and resume (merged)
+
+PR #16 merged as `d1cbb29`.
 
 ## Previous phase: single-exercise execution timers (merged)
 
@@ -123,7 +127,10 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Automatic single-exercise checkpoints and resume, in the same way as `ProgramSessionCheckpoint`. Check how single-exercise "Save & Exit" works first.
-2. Make `WorkoutTimerService` an adapter, and verify it releases its wake lock.
+1. Make `WorkoutTimerService` an adapter.
+   - It shows the current step and remaining time from the reducer state, and relays pause and resume. It holds no domain logic.
+   - Verify that it releases its wake lock when stopped and when the task is removed.
+   - Record the result, then close Task 6 in `docs/development/workout-timer-spike.md`.
+2. Then Task 7 of `docs/plans/2026-08-30-overhaul-bootstrap.md`: the v2 workout schema and conservative backfill. Read ADRs 0002 and 0003 first.
 
-Files likely involved next: `ui/components/single/*`, `ui/screens/WorkoutScreen.kt`, `ui/screens/ProgramExecutionScreen.kt`, `data/SavedWorkoutState.kt`, `service/WorkoutTimerService.kt`.
+Files likely involved next: `service/WorkoutTimerService.kt`, `util/WakeLockManager.kt`, `AndroidManifest.xml`.
