@@ -16,6 +16,8 @@ import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
 import io.github.gonbei774.calisthenicsmemory.data.restoreMissingGroups
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
+import io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
+import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +34,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -217,6 +220,17 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
 
     // Training Records
     val records: StateFlow<List<TrainingRecord>> = recordDao.getAllRecords()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyList()
+        )
+
+    // History screens read legacy records plus v2-only workouts, each set once (ADR 0003, stage 4).
+    val history: StateFlow<List<HistorySet>> = combine(
+        recordDao.getAllRecords(),
+        database.workoutSessionDao().observeV2OnlyHistoryRows()
+    ) { legacy, v2 -> CompatibilityHistory.merge(legacy, v2, ZoneId.systemDefault()) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,

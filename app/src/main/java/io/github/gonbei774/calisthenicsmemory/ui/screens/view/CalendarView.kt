@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
-import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import org.json.JSONArray
 import java.time.DayOfWeek
@@ -781,7 +781,7 @@ private fun IntervalSummaryRow(
     }
 }
 
-private fun calcSessionScore(record: TrainingRecord, levelMap: Map<Long, Int>): Double {
+private fun calcSessionScore(record: HistorySet, levelMap: Map<Long, Int>): Double {
     val lv = (levelMap[record.exerciseId] ?: 0).coerceAtLeast(1)
     val base = record.valueRight + (record.valueLeft ?: 0)
     return base * Math.pow(1.3, (lv - 1).toDouble())

@@ -27,7 +27,15 @@ data class HistorySet(
     val distanceCm: Int?,
     val weightG: Int?,
     val assistanceG: Int?,
-)
+) {
+    /** The legacy row behind this set, for legacy edit and delete actions; null for v2-only sets. */
+    fun toLegacyRecord(): TrainingRecord? = legacyRecordId?.takeIf { source == HistorySource.LEGACY }?.let {
+        TrainingRecord(
+            id = it, exerciseId = exerciseId, valueRight = valueRight, valueLeft = valueLeft, setNumber = setNumber,
+            date = date, time = time, comment = comment, distanceCm = distanceCm, weightG = weightG, assistanceG = assistanceG,
+        )
+    }
+}
 
 /** A completed v2 set that no legacy record backs, joined with its session and exercise. */
 data class V2HistoryRow(

@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
-import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import org.json.JSONArray
 import java.time.LocalDate
@@ -41,7 +41,7 @@ fun RecordListView(
     exercises: List<Exercise>,
     selectedExerciseFilter: Exercise?,
     onExerciseClick: (Exercise) -> Unit,
-    onRecordClick: (TrainingRecord) -> Unit,
+    onRecordClick: (HistorySet) -> Unit,
     onSessionLongPress: (SessionInfo) -> Unit,
     onDeleteClick: (SessionInfo) -> Unit,
     onIntervalEditClick: (IntervalRecord) -> Unit,
@@ -125,7 +125,7 @@ fun SessionCard(
     exercise: Exercise?,
     isSelected: Boolean,
     onExerciseClick: (Exercise) -> Unit,
-    onRecordClick: (TrainingRecord) -> Unit,
+    onRecordClick: (HistorySet) -> Unit,
     onSessionLongPress: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
@@ -166,7 +166,8 @@ fun SessionCard(
                     )
                 }
 
-                Box {
+                // v2 sessions are read-only here, so they get no edit/delete menu.
+                if (session.isEditable) Box {
                     var menuExpanded by remember { mutableStateOf(false) }
                     IconButton(onClick = { menuExpanded = true }) {
                         Icon(

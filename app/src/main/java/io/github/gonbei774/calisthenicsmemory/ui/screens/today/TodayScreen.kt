@@ -64,7 +64,7 @@ fun TodayScreen(
     val programs by viewModel.programs.collectAsState()
     val intervalPrograms by viewModel.intervalPrograms.collectAsState()
     val todoTasks by viewModel.todoTasks.collectAsState()
-    val records by viewModel.records.collectAsState()
+    val records by viewModel.history.collectAsState()
     val today = remember { LocalDate.now() }
     val todayRecords = remember(records, today) { records.filter { it.date == today.toString() } }
 

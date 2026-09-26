@@ -58,4 +58,13 @@ class CompatibilityHistoryTest {
         val merged = CompatibilityHistory.merge(legacy, listOf(row(9, reps = 3)), zone)
         assertEquals(listOf(HistorySource.LEGACY, HistorySource.V2, HistorySource.LEGACY), merged.map { it.source })
     }
+
+    @Test fun `legacy rows convert back to the exact record for edits`() {
+        val legacy = TrainingRecord(7, 1, 12, 11, 2, "2024-12-31", "18:00", "old", 100, 200, 300)
+        assertEquals(legacy, CompatibilityHistory.merge(listOf(legacy), emptyList(), zone).single().toLegacyRecord())
+    }
+
+    @Test fun `v2 rows have no legacy record to edit`() {
+        assertEquals(null, CompatibilityHistory.merge(emptyList(), listOf(row(1, reps = 5)), zone).single().toLegacyRecord())
+    }
 }

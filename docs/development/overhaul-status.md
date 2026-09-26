@@ -4,22 +4,26 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8, slice 3: Today leads with resume and due to-dos (ADR 0004). Branch `work/today-resume`, based on master `e3d1f27`.
+Task 8, slice 4: history screens read the compatibility path (ADR 0003, stage 4, done before any v2 write). Branch `work/history-compat-read`, based on master `dc660cc`.
 
-- "Continue where you left off" lists every workout that can be resumed, newest first. There are four sources: the single-session checkpoint, the program checkpoint, the program "Save & Exit" slot, and the interval checkpoint (`ui/screens/today/ResumableWorkout.kt`).
-  - Tapping an entry opens the owning screen, which runs its existing resume dialog. Today never resumes or discards anything itself.
-  - Entries whose exercise or program was deleted are hidden. Their saved data is not touched.
-- "Due today" lists the to-dos due today, using the To Do screen's rule, now `TodoTask.isDueOn`. Tapping one works as follows:
-  - Exercise: opens its workout.
-  - Program or interval: opens that screen.
-  - Group: opens the To Do screen, because an exercise must be chosen first.
+- `TrainingViewModel.history` combines `training_records` with `WorkoutSessionDao.observeV2OnlyHistoryRows()` through `CompatibilityHistory.merge`, in the device zone.
+- These screens now read `HistorySet` instead of `TrainingRecord`: Progress (calendar, list, graph, challenge) and Today's summary.
+- Legacy and v2 sets never share a session row.
+- v2 sessions are read-only: they have no edit or delete menu, and tapping a set does nothing. Legacy edits convert back through `HistorySet.toLegacyRecord()`.
+- Still reading legacy records only:
+  - the view model's own uses of `records` (duplicate check, previous-value prefill);
+  - `hasRecordOnDate` for to-do group completion;
+  - CSV export.
 
-  In every case, back returns to Today (the new `fromToday` route flag).
-- Fixes to older program-screen bugs that Today makes easier to reach:
-  - Back did nothing while no step was loaded, for example on a program without exercises.
-  - Resuming a "Save & Exit" state with no sets would call `coerceIn(0, -1)` and crash.
+  These move when v2 writes begin, since only then can v2-only sets exist.
+- Verification:
+  - `ProgressHistoryTest` inserts a legacy record and a v2-only session and checks both appear, with only the legacy one editable.
+  - Two negative checks: showing the menu for v2 sessions, and filtering Progress to legacy rows, each make it fail.
+  - A manual legacy edit on the emulator updated exactly the edited row.
 
-Known limitation: if a program's set count changed after it was interrupted, its screen does not offer the resume, but Today keeps listing it until that program is run again.
+## Previous phase: Today resume and due to-dos (merged)
+
+PR #26 merged as `dc660cc`.
 
 ## Previous phase: primary destinations (merged)
 
@@ -172,8 +176,8 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Add the v2 repository and the ad-hoc (single) workout write path to `workout_sessions`, with the one-time backfill and dual-read comparison at cutover (see `docs/development/v2-workout-history.md`).
-2. Make Progress read `CompatibilityHistory`.
+1. Move the remaining legacy-only readers (duplicate check, previous-value prefill, `hasRecordOnDate`, CSV export) to history that includes v2, or document why each must stay legacy.
+2. Then add the single-workout v2 write path, with the one-time backfill and dual-read comparison at cutover (`docs/development/v2-workout-history.md`). v2 editing in Progress is needed before v2 becomes the only write path.
 3. Move program and interval workouts onto sessions, then add `UnifiedWorkoutFlowTest`.
 
-Files likely involved next: `data/v2/`, `viewmodel/TrainingViewModel.kt`, `ui/screens/WorkoutScreen.kt`.
+Files likely involved next: `viewmodel/TrainingViewModel.kt`, `util/CsvUtils.kt` (or equivalent), `data/v2/`.

@@ -30,7 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
-import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import java.time.LocalDate
@@ -101,7 +101,7 @@ data class Statistics(
 @Composable
 fun GraphView(
     exercises: List<Exercise>,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     selectedExerciseFilter: Exercise?,
     selectedPeriod: Period?
 ) {
@@ -399,7 +399,7 @@ fun GraphView(
 // グラフデータ準備関数
 fun prepareGraphData(
     exercise: Exercise,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     period: Period?,
     graphType: GraphType,
     unit: String
@@ -512,7 +512,7 @@ fun prepareGraphData(
 // ボリュームデータ準備関数
 fun prepareVolumeData(
     exercise: Exercise,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     period: Period?
 ): List<VolumeDataPoint> {
     // 荷重トラッキングが無効な場合は空リスト
@@ -591,7 +591,7 @@ fun prepareVolumeData(
 // アシストデータ準備関数
 fun prepareAssistanceData(
     exercise: Exercise,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     period: Period?
 ): List<AssistanceDataPoint> {
     // アシストトラッキングが無効な場合は空リスト
@@ -656,7 +656,7 @@ fun prepareAssistanceData(
 // 最大重量データ準備関数
 fun prepareWeightData(
     exercise: Exercise,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     period: Period?
 ): List<WeightDataPoint> {
     // 荷重トラッキングが無効な場合は空リスト
@@ -2243,7 +2243,7 @@ fun StatItemDual(
 // 統計計算関数
 fun calculateStatistics(
     exercise: Exercise,
-    records: List<TrainingRecord>,
+    records: List<HistorySet>,
     period: Period?
 ): Statistics {
     val exerciseRecords = records.filter { it.exerciseId == exercise.id }
