@@ -4,13 +4,17 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Single-exercise execution timers, branch `work/single-step-clock`, based on master `7d250b0`. The PR follows these checks.
+Program checkpoint and resume, branch `work/program-checkpoint`, based on master `de51f90`. The PR follows these checks.
 
-- `feat: time single-exercise sets and rests from the monotonic clock`.
+- `feat: resume program workouts after process death`.
 - Verification:
-  - Gate PASS (275 unit tests).
+  - Gate PASS (278 unit tests).
   - `connectedDebugAndroidTest` on `floor_api29`: 78 tests, 0 failures.
-  - Screen-on and screen-off auto runs, recorded in `docs/development/workout-timer-spike.md`.
+  - Kill during a set and kill on the result screen, both followed by resume, plus record and exit clearing, all on the same AVD.
+
+## Previous phase: single-exercise execution timers (merged)
+
+PR #15 merged as `de51f90`.
 
 ## Previous phase: program execution timers (merged)
 
@@ -119,7 +123,7 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Automatic program and single-exercise checkpoints and resume, compatible with the existing "Save & Exit" (`SavedWorkoutState`).
+1. Automatic single-exercise checkpoints and resume, in the same way as `ProgramSessionCheckpoint`. Check how single-exercise "Save & Exit" works first.
 2. Make `WorkoutTimerService` an adapter, and verify it releases its wake lock.
 
 Files likely involved next: `ui/components/single/*`, `ui/screens/WorkoutScreen.kt`, `ui/screens/ProgramExecutionScreen.kt`, `data/SavedWorkoutState.kt`, `service/WorkoutTimerService.kt`.
