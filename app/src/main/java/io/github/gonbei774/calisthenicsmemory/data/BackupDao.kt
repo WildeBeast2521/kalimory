@@ -5,6 +5,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import io.github.gonbei774.calisthenicsmemory.data.v2.SessionExerciseEntity
+import io.github.gonbei774.calisthenicsmemory.data.v2.SetEntryEntity
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSessionEntity
 
 data class BackupSnapshot(
     val groups: List<ExerciseGroup>,
@@ -16,7 +19,10 @@ data class BackupSnapshot(
     val intervalPrograms: List<IntervalProgram>,
     val intervalProgramExercises: List<IntervalProgramExercise>,
     val intervalRecords: List<IntervalRecord>,
-    val todoTasks: List<TodoTask>
+    val todoTasks: List<TodoTask>,
+    val workoutSessions: List<WorkoutSessionEntity> = emptyList(),
+    val sessionExercises: List<SessionExerciseEntity> = emptyList(),
+    val setEntries: List<SetEntryEntity> = emptyList(),
 )
 
 @Dao
@@ -52,10 +58,38 @@ interface BackupDao {
     suspend fun todoTasks(): List<TodoTask>
 
     @Transaction
+    @Query("SELECT * FROM workout_sessions ORDER BY id")
+    suspend fun workoutSessions(): List<WorkoutSessionEntity>
+
+    @Query("SELECT * FROM session_exercises ORDER BY id")
+    suspend fun sessionExercises(): List<SessionExerciseEntity>
+
+    @Query("SELECT * FROM set_entries ORDER BY id")
+    suspend fun setEntries(): List<SetEntryEntity>
+
     suspend fun snapshot(): BackupSnapshot = BackupSnapshot(
         groups(), exercises(), records(), programs(), programExercises(), programLoops(),
-        intervalPrograms(), intervalProgramExercises(), intervalRecords(), todoTasks()
+        intervalPrograms(), intervalProgramExercises(), intervalRecords(), todoTasks(),
+        workoutSessions(), sessionExercises(), setEntries(),
     )
+
+    @Query("DELETE FROM set_entries")
+    suspend fun deleteSetEntries()
+
+    @Query("DELETE FROM session_exercises")
+    suspend fun deleteSessionExercises()
+
+    @Query("DELETE FROM workout_sessions")
+    suspend fun deleteWorkoutSessions()
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertWorkoutSessions(items: List<WorkoutSessionEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertSessionExercises(items: List<SessionExerciseEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertSetEntries(items: List<SetEntryEntity>)
 
     @Query("DELETE FROM todo_tasks")
     suspend fun deleteTodoTasks()
@@ -120,6 +154,9 @@ interface BackupDao {
     @Transaction
     suspend fun replaceAll(snapshot: BackupSnapshot) {
         // Children first. Keep this explicit so any failed insert rolls the whole transaction back.
+        deleteSetEntries()
+        deleteSessionExercises()
+        deleteWorkoutSessions()
         deleteTodoTasks()
         deleteRecords()
         deleteProgramExercises()
@@ -142,5 +179,9 @@ interface BackupDao {
         insertRecords(snapshot.records)
         insertIntervalRecords(snapshot.intervalRecords)
         insertTodoTasks(snapshot.todoTasks)
+        // v2 history last: it references exercises and groups.
+        insertWorkoutSessions(snapshot.workoutSessions)
+        insertSessionExercises(snapshot.sessionExercises)
+        insertSetEntries(snapshot.setEntries)
     }
 }

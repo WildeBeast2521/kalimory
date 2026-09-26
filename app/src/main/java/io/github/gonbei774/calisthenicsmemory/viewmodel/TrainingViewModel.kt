@@ -51,7 +51,10 @@ data class BackupData(
     val intervalPrograms: List<ExportIntervalProgram> = emptyList(),              // v7で追加
     val intervalProgramExercises: List<ExportIntervalProgramExercise> = emptyList(), // v7で追加
     val intervalRecords: List<ExportIntervalRecord> = emptyList(),                 // v7で追加
-    val todoTasks: List<ExportTodoTask> = emptyList()                             // v8で追加
+    val todoTasks: List<ExportTodoTask> = emptyList(),                            // v8で追加
+    val workoutSessions: List<ExportWorkoutSession> = emptyList(),                // v9で追加（v2 履歴）
+    val sessionExercises: List<ExportSessionExercise> = emptyList(),              // v9で追加
+    val setEntries: List<ExportSetEntry> = emptyList()                            // v9で追加
 )
 
 @Serializable

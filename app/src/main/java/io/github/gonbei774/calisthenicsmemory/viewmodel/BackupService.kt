@@ -40,7 +40,9 @@ data class BackupSummary(
     val intervalPrograms: Int,
     val intervalProgramExercises: Int,
     val intervalRecords: Int,
-    val todoTasks: Int
+    val todoTasks: Int,
+    val workoutSessions: Int = 0,
+    val setEntries: Int = 0,
 )
 
 /**
@@ -54,6 +56,13 @@ enum class BackupAnomalyKind {
     TODO_UNKNOWN_TYPE,
     TODO_INVALID_REPEAT_DAYS,
     PROGRAM_EXERCISE_FOREIGN_LOOP,
+    /** A v2 set entry has a negative metric or target; the app never writes one. */
+    V2_NEGATIVE_VALUE,
+    /**
+     * A v2 set entry names a legacy training record the backup does not contain. The
+     * compatibility history hides such entries as copies, so the set would not show.
+     */
+    V2_LEGACY_RECORD_MISSING,
 }
 
 data class BackupAnomaly(val kind: BackupAnomalyKind, val entityId: Long, val detail: String)
@@ -149,6 +158,33 @@ class BackupService(
             if (it.programId !in intervalProgramIds) return "Interval program exercise ${it.id} references missing interval program ${it.programId}"
             if (it.exerciseId !in exerciseIds) return "Interval program exercise ${it.id} references missing exercise ${it.exerciseId}"
         }
+        return validateV2(data, exerciseIds)
+    }
+
+    /** v2 history (format 9): ids, codes, foreign keys, and unique keys the database enforces. */
+    private fun validateV2(data: BackupData, exerciseIds: Set<Long>): String? {
+        duplicateId("workout session", data.workoutSessions.map { it.id })?.let { return it }
+        duplicateId("session exercise", data.sessionExercises.map { it.id })?.let { return it }
+        duplicateId("set entry", data.setEntries.map { it.id })?.let { return it }
+        unknownV2Code(data)?.let { return it }
+
+        val groupIds = data.groups.mapTo(hashSetOf()) { it.id }
+        val sessionIds = data.workoutSessions.mapTo(hashSetOf()) { it.id }
+        val sessionExerciseIds = data.sessionExercises.mapTo(hashSetOf()) { it.id }
+        data.sessionExercises.forEach {
+            if (it.workoutSessionId !in sessionIds) return "Session exercise ${it.id} references missing workout session ${it.workoutSessionId}"
+            if (it.exerciseId != null && it.exerciseId !in exerciseIds) return "Session exercise ${it.id} references missing exercise ${it.exerciseId}"
+            if (it.groupId != null && it.groupId !in groupIds) return "Session exercise ${it.id} references missing group ${it.groupId}"
+        }
+        data.setEntries.firstOrNull { it.sessionExerciseId !in sessionExerciseIds }?.let {
+            return "Set entry ${it.id} references missing session exercise ${it.sessionExerciseId}"
+        }
+        duplicateKey("session exercise order", data.sessionExercises.map { it.workoutSessionId to it.orderIndex })?.let { return it }
+        duplicateKey("set entry order", data.setEntries.map { it.sessionExerciseId to it.orderIndex })?.let { return it }
+        duplicateKey(
+            "set entry legacy record and side",
+            data.setEntries.filter { it.legacyTrainingRecordId != null }.map { it.legacyTrainingRecordId to it.side },
+        )?.let { return it }
         return null
     }
 
@@ -171,6 +207,22 @@ class BackupService(
                 anomalies += BackupAnomaly(
                     BackupAnomalyKind.PROGRAM_EXERCISE_FOREIGN_LOOP, it.id,
                     "Program exercise ${it.id} in program ${it.programId} uses loop ${loop.id} of program ${loop.programId}",
+                )
+            }
+        }
+        val recordIds = data.records.mapTo(hashSetOf()) { it.id }
+        data.setEntries.forEach {
+            val values = listOfNotNull(
+                it.repetitions?.toLong(), it.durationMillis, it.distanceCm?.toLong(), it.addedWeightGrams?.toLong(),
+                it.assistanceGrams?.toLong(), it.targetRepetitions?.toLong(), it.targetDurationMillis,
+            )
+            if (values.any { v -> v < 0 }) {
+                anomalies += BackupAnomaly(BackupAnomalyKind.V2_NEGATIVE_VALUE, it.id, "Set entry ${it.id} has a negative value")
+            }
+            if (it.legacyTrainingRecordId != null && it.legacyTrainingRecordId !in recordIds) {
+                anomalies += BackupAnomaly(
+                    BackupAnomalyKind.V2_LEGACY_RECORD_MISSING, it.id,
+                    "Set entry ${it.id} is linked to missing legacy record ${it.legacyTrainingRecordId}",
                 )
             }
         }
@@ -204,7 +256,7 @@ class BackupService(
     companion object {
         const val APP_NAME = "CalisthenicsMemory"
         const val MIN_VERSION = 1
-        const val CURRENT_VERSION = 8
+        const val CURRENT_VERSION = 9
     }
 }
 
@@ -221,7 +273,10 @@ private fun BackupSnapshot.toBackupData(exportDate: String) = BackupData(
     intervalPrograms = intervalPrograms.map { ExportIntervalProgram(it.id, it.name, it.workSeconds, it.restSeconds, it.rounds, it.roundRestSeconds) },
     intervalProgramExercises = intervalProgramExercises.map { ExportIntervalProgramExercise(it.id, it.programId, it.exerciseId, it.sortOrder) },
     intervalRecords = intervalRecords.map { ExportIntervalRecord(it.id, it.programName, it.date, it.time, it.workSeconds, it.restSeconds, it.rounds, it.roundRestSeconds, it.completedRounds, it.completedExercisesInLastRound, it.exercisesJson, it.comment) },
-    todoTasks = todoTasks.map { ExportTodoTask(it.id, it.type, it.referenceId, it.sortOrder, it.repeatDays, it.lastCompletedDate) }
+    todoTasks = todoTasks.map { ExportTodoTask(it.id, it.type, it.referenceId, it.sortOrder, it.repeatDays, it.lastCompletedDate) },
+    workoutSessions = workoutSessions.map { it.toExport() },
+    sessionExercises = sessionExercises.map { it.toExport() },
+    setEntries = setEntries.map { it.toExport() },
 )
 
 private fun BackupData.toSnapshot() = BackupSnapshot(
@@ -234,11 +289,14 @@ private fun BackupData.toSnapshot() = BackupSnapshot(
     intervalPrograms.map { IntervalProgram(it.id, it.name, it.workSeconds, it.restSeconds, it.rounds, it.roundRestSeconds) },
     intervalProgramExercises.map { IntervalProgramExercise(it.id, it.programId, it.exerciseId, it.sortOrder) },
     intervalRecords.map { IntervalRecord(it.id, it.programName, it.date, it.time, it.workSeconds, it.restSeconds, it.rounds, it.roundRestSeconds, it.completedRounds, it.completedExercisesInLastRound, it.exercisesJson, it.comment) },
-    todoTasks.map { TodoTask(it.id, it.type, it.referenceId, it.sortOrder, it.repeatDays, it.lastCompletedDate) }
+    todoTasks.map { TodoTask(it.id, it.type, it.referenceId, it.sortOrder, it.repeatDays, it.lastCompletedDate) },
+    workoutSessions.map { it.toEntity() },
+    sessionExercises.map { it.toEntity() },
+    setEntries.map { it.toEntity() },
 )
 
 private fun BackupData.summary() = BackupSummary(
     groups.size, exercises.size, records.size, programs.size, programExercises.size,
     programLoops.size, intervalPrograms.size, intervalProgramExercises.size,
-    intervalRecords.size, todoTasks.size
+    intervalRecords.size, todoTasks.size, workoutSessions.size, setEntries.size
 )

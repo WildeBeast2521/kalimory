@@ -140,4 +140,61 @@ class BackupValidationTest {
         assertTrue("Expected success, got $result", result is BackupResult.Success)
         assertEquals(ParsedBackup(valid(), emptyList()), (result as BackupResult.Success).value)
     }
+
+    // ----- v2 history (format 9) -----
+
+    private fun validV9() = valid().copy(
+        version = 9,
+        workoutSessions = listOf(ExportWorkoutSession(20, "COMPLETED", "AD_HOC", startedAtEpochMillis = 1_000, updatedAtEpochMillis = 2_000, timePrecision = "EXACT")),
+        sessionExercises = listOf(
+            ExportSessionExercise(21, 20, 0, exerciseId = 2, groupId = 1, exerciseNameSnapshot = "Pull-up", exerciseKindSnapshot = "DYNAMIC", lateralitySnapshot = "BILATERAL"),
+        ),
+        setEntries = listOf(
+            ExportSetEntry(22, 21, 0, 1, status = "COMPLETED", side = "BILATERAL", repetitions = 8, timePrecision = "EXACT", legacyTrainingRecordId = 3),
+            ExportSetEntry(23, 21, 1, 2, status = "SKIPPED", side = "BILATERAL", timePrecision = "EXACT"),
+        ),
+    )
+
+    @Test fun `accepts a complete version 9 backup with v2 history`() {
+        val result = service.parse(json.encodeToString(validV9()))
+        assertTrue("Expected success, got $result", result is BackupResult.Success)
+        assertEquals(ParsedBackup(validV9(), emptyList()), (result as BackupResult.Success).value)
+    }
+
+    @Test fun `rejects v2 history the database would refuse`() {
+        val base = validV9()
+        val exercise = base.sessionExercises.first()
+        val set = base.setEntries.first()
+        val cases = listOf(
+            base.copy(workoutSessions = base.workoutSessions + base.workoutSessions.first()) to "Duplicate workout session id",
+            base.copy(setEntries = listOf(set.copy(id = 0))) to "set entry id must be positive",
+            base.copy(workoutSessions = listOf(base.workoutSessions.first().copy(status = "DONE"))) to "unknown code DONE",
+            base.copy(sessionExercises = listOf(exercise.copy(exerciseKindSnapshot = "Dynamic"))) to "unknown code Dynamic",
+            base.copy(setEntries = listOf(set.copy(side = "BOTH"))) to "unknown code BOTH",
+            base.copy(sessionExercises = listOf(exercise.copy(workoutSessionId = 99))) to "missing workout session",
+            base.copy(sessionExercises = listOf(exercise.copy(exerciseId = 99))) to "missing exercise",
+            base.copy(sessionExercises = listOf(exercise.copy(groupId = 99))) to "missing group",
+            base.copy(setEntries = listOf(set.copy(sessionExerciseId = 99))) to "missing session exercise",
+            base.copy(sessionExercises = listOf(exercise, exercise.copy(id = 24))) to "Duplicate session exercise order",
+            base.copy(setEntries = listOf(set, set.copy(id = 24))) to "Duplicate set entry order",
+            base.copy(setEntries = listOf(set, set.copy(id = 24, orderIndex = 5))) to "Duplicate set entry legacy record and side",
+        )
+        cases.forEach { (data, message) -> assertInvalid(data, message) }
+    }
+
+    @Test fun `accepts and reports v2 values the database can hold but the app never writes`() {
+        val base = validV9()
+        val set = base.setEntries.first()
+        assertAcceptedWith(
+            base.copy(setEntries = listOf(set.copy(repetitions = -1), set.copy(id = 24, orderIndex = 1, legacyTrainingRecordId = 99, side = "LEFT"))),
+            BackupAnomalyKind.V2_NEGATIVE_VALUE to 22L,
+            BackupAnomalyKind.V2_LEGACY_RECORD_MISSING to 24L,
+        )
+    }
+
+    @Test fun `a v2 exercise whose library links are null is valid`() {
+        val base = validV9()
+        val detached = base.copy(sessionExercises = listOf(base.sessionExercises.first().copy(exerciseId = null, groupId = null)))
+        assertAcceptedWith(detached)
+    }
 }

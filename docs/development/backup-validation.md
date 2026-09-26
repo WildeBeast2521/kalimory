@@ -6,10 +6,17 @@ Rule: every JSON backup this app exports must restore on this app. Import follow
 
 ## Rejected (the database itself could not hold them)
 
-- Wrong `app` or a backup version outside 1–8.
+- Wrong `app` or a backup version outside 1–9.
 - Non-positive or duplicate ids in any collection.
 - A duplicate group name or a duplicate exercise name/type pair (unique indexes).
 - References backed by foreign keys: a record, program exercise, or interval program exercise pointing at a missing exercise or program; a program loop pointing at a missing program; a program exercise pointing at a missing loop.
+- v2 history (format 9):
+  - non-positive or duplicate ids;
+  - an enum code no version of the app defines;
+  - a session exercise whose session is missing, or whose non-null exercise or group link is missing;
+  - a set entry whose session exercise is missing;
+  - a duplicate order within a session or session exercise;
+  - a duplicate legacy record and side pair.
 
 A rejected backup is never written; current data is untouched.
 
@@ -24,9 +31,15 @@ The database can hold these values, and older versions or interrupted operations
 | `TODO_UNKNOWN_TYPE` | A todo task type the app does not know. |
 | `TODO_INVALID_REPEAT_DAYS` | `repeatDays` is not empty or distinct day numbers 1–7. Readers skip the malformed tokens (`TodoTask.parseRepeatDays`). |
 | `PROGRAM_EXERCISE_FOREIGN_LOOP` | A program exercise uses a loop that belongs to another program. |
+| `V2_NEGATIVE_VALUE` | A v2 set entry has a negative metric or target. The app never writes one; Room cannot declare a CHECK constraint. |
+| `V2_LEGACY_RECORD_MISSING` | A v2 set entry is linked to a legacy record that is not in the backup. The compatibility history treats linked entries as copies, so this set would not show. |
 
 `BackupRoundTripTest` exports a database that holds each anomaly, restores the backup, and compares the two snapshots.
 
 ## Preventing new anomalies
 
 Group rename and delete and exercise delete each run as one Room transaction (`ExerciseGroupDao.renameGroupAndExercises`, `ExerciseGroupDao.deleteGroupAndUngroupExercises`, `ExerciseDao.deleteExerciseAndTodoTasks`). `ExerciseDao.insertExercise` aborts on a duplicate name and type. It no longer replaces the existing row, which had cascade-deleted that row's history.
+
+## Format 9: v2 workout history
+
+Format 9 adds `workoutSessions`, `sessionExercises`, and `setEntries`. Enum values are written as their stable database codes. Export reads the v2 tables in the same transaction as the legacy tables. Restore replaces them in the same transaction, clearing v2 first and inserting it last. Restoring a format 1–8 backup therefore also removes v2 history, which matches the "overwrite all data" warning. Older app versions reject format 9 files as an unsupported version rather than silently dropping the v2 data.

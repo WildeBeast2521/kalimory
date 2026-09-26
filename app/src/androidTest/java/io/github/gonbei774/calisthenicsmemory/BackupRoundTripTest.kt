@@ -91,4 +91,69 @@ class BackupRoundTripTest {
         assertTrue("restore: $restored", restored is BackupResult.Success)
         assertEquals(anomalous, target.backupDao().snapshot())
     }
+
+    private val v2History = anomalous.copy(
+        workoutSessions = listOf(
+            io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSessionEntity(
+                id = 5, status = io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSessionStatus.COMPLETED,
+                sourceType = io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSourceType.PROGRAM_TEMPLATE,
+                sourceTemplateId = 2, sourceNameSnapshot = "B", startedAtEpochMillis = 1_000, endedAtEpochMillis = 9_000,
+                updatedAtEpochMillis = 9_000, timePrecision = io.github.gonbei774.calisthenicsmemory.data.v2.TimePrecision.EXACT, comment = "c",
+            )
+        ),
+        sessionExercises = listOf(
+            io.github.gonbei774.calisthenicsmemory.data.v2.SessionExerciseEntity(
+                id = 6, workoutSessionId = 5, orderIndex = 0, exerciseId = 2, groupId = 1, sourceProgramExerciseId = 1,
+                exerciseNameSnapshot = "Squat", exerciseKindSnapshot = io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind.DYNAMIC,
+                lateralitySnapshot = io.github.gonbei774.calisthenicsmemory.data.v2.Laterality.UNILATERAL, groupNameSnapshot = "Deleted group",
+                targetSets = 3, targetRepetitions = 10, targetDurationMillis = null,
+            )
+        ),
+        setEntries = listOf(
+            io.github.gonbei774.calisthenicsmemory.data.v2.SetEntryEntity(
+                id = 7, sessionExerciseId = 6, orderIndex = 0, setNumber = 1, roundNumber = 2,
+                status = io.github.gonbei774.calisthenicsmemory.data.v2.SetEntryStatus.COMPLETED,
+                side = io.github.gonbei774.calisthenicsmemory.data.v2.BodySide.RIGHT, repetitions = 9, durationMillis = null, distanceCm = 12,
+                addedWeightGrams = 3_000, assistanceGrams = null, targetRepetitions = 10, targetDurationMillis = null,
+                startedAtEpochMillis = 2_000, completedAtEpochMillis = 3_000,
+                timePrecision = io.github.gonbei774.calisthenicsmemory.data.v2.TimePrecision.EXACT, comment = "set",
+                legacyTrainingRecordId = null,
+            ),
+            io.github.gonbei774.calisthenicsmemory.data.v2.SetEntryEntity(
+                id = 8, sessionExerciseId = 6, orderIndex = 1, setNumber = 1,
+                status = io.github.gonbei774.calisthenicsmemory.data.v2.SetEntryStatus.SKIPPED,
+                side = io.github.gonbei774.calisthenicsmemory.data.v2.BodySide.LEFT,
+                timePrecision = io.github.gonbei774.calisthenicsmemory.data.v2.TimePrecision.MINUTE,
+            ),
+        ),
+    )
+
+    @Test
+    fun v2HistoryRestoresExactlyAlongsideLegacyData() = runBlocking {
+        source.backupDao().replaceAll(v2History)
+
+        val exported = BackupService(source.backupDao()).export()
+        val json = (exported as BackupResult.Success).value.json
+        assertTrue(json.contains("\"version\":9"))
+        val parsed = BackupService(target.backupDao()).parse(json)
+        assertTrue("parse: $parsed", parsed is BackupResult.Success)
+        val restored = BackupService(target.backupDao()).restore((parsed as BackupResult.Success).value.data)
+        assertTrue("restore: $restored", restored is BackupResult.Success)
+        assertEquals(1, (restored as BackupResult.Success).value.workoutSessions)
+        assertEquals(2, restored.value.setEntries)
+
+        assertEquals(v2History, target.backupDao().snapshot())
+    }
+
+    @Test
+    fun restoringAnOlderBackupReplacesV2HistoryToo() = runBlocking {
+        target.backupDao().replaceAll(v2History)
+        val service = BackupService(target.backupDao())
+        val version8 = (BackupService(source.backupDao()).export() as BackupResult.Success).value.data.copy(version = 8)
+
+        val restored = service.restore(version8)
+        assertTrue("restore: $restored", restored is BackupResult.Success)
+        assertTrue(target.backupDao().snapshot().workoutSessions.isEmpty())
+        assertTrue(target.backupDao().snapshot().setEntries.isEmpty())
+    }
 }

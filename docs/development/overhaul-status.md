@@ -4,13 +4,16 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 7, slice 3: compatibility reader, branch `work/v2-compat-reader`, based on master `b808a24`. The PR follows these checks.
+Task 7, slice 4: v2 in the JSON backup (format 9), branch `work/v2-backup`, based on master `53061da`. The PR follows these checks.
 
-- `feat: add the v2 compatibility history reader`: `CompatibilityHistory`, with `V2CompatibilityReadTest`.
+- `feat: back up and restore v2 workout history (format 9)`.
 - Verification:
-  - Gate PASS (293 unit tests).
-  - `connectedDebugAndroidTest` on `floor_api29`: 92 tests, 0 failures.
-  - A mutation without the legacy-link filter fails the test.
+  - Gate PASS (297 unit tests).
+  - `connectedDebugAndroidTest` on `floor_api29`: 94 tests, 0 failures.
+
+## Previous phase: compatibility reader, Task 7 slice 3 (merged)
+
+PR #21 merged as `53061da`.
 
 ## Previous phase: conservative backfill, Task 7 slice 2 (merged)
 
@@ -143,14 +146,9 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-Task 7, slice 4: v2 in JSON backup (backup format 9).
-- Export `workout_sessions`, `session_exercises`, and `set_entries` with their stable codes.
-- Import versions 1–9. Validation rules for v2 go in `docs/development/backup-validation.md`, keeping the "every exported backup restores" rule.
-- `BackupDao.replaceAll` and `snapshot` include the v2 tables, in one transaction.
-- Round-trip tests.
+Task 7 remaining.
+1. Decide when `V2Backfill` runs. For example: once at start-up after upgrading to database 23, recording the report, with a way to see the report (and its anomaly list) in Settings or the backup screen. Idempotency makes a rerun safe.
+2. The Task 7 acceptance gate needs "valid new sessions round trip through Room and backup": done by `BackupRoundTripTest`.
+3. The Task 7 gate is otherwise met. The first v2 write path, and routing the history UI through `CompatibilityHistory` behind a flag, belong to Task 8 in `docs/plans/2026-08-30-overhaul-bootstrap.md`.
 
-After that:
-- decide when `V2Backfill` runs and where its report is shown;
-- the first v2 write path, behind a flag, together with the history UI reading `CompatibilityHistory`.
-
-Files likely involved next: `data/BackupDao.kt`, `viewmodel/BackupService.kt`, `viewmodel/TrainingViewModel.kt` (`BackupData` and the export types), `docs/development/backup-validation.md`.
+Files likely involved next: `data/DatabaseStartupCheck.kt` or a new start-up step, `data/v2/V2Backfill.kt`, and a place to show the report.
