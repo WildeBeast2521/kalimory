@@ -40,4 +40,16 @@ class TodoTaskTest {
         }
         assertEquals(null, has("RETIRED_TYPE", 1))
     }
+
+    @Test fun `due today follows the schedule and today's completion`() {
+        val wednesday = java.time.LocalDate.of(2026, 9, 23)
+        assertTrue(task("").isDueOn(wednesday))
+        assertTrue(task("").copy(lastCompletedDate = "2026-09-23").isDueOn(wednesday))
+        assertTrue(task("1,3").isDueOn(wednesday))
+        assertFalse(task("1,3").copy(lastCompletedDate = "2026-09-23").isDueOn(wednesday))
+        assertTrue(task("1,3").copy(lastCompletedDate = "2026-09-21").isDueOn(wednesday))
+        assertFalse(task("1,2").isDueOn(wednesday))
+        // A schedule with no valid day is never due, as before.
+        assertFalse(task("x").isDueOn(wednesday))
+    }
 }

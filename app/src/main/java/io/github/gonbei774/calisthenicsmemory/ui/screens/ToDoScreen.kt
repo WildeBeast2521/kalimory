@@ -189,21 +189,9 @@ fun ToDoScreen(
     ) { paddingValues ->
         // Split tasks into active and inactive
         val today = remember { java.time.LocalDate.now() }
-        val todayDayNumber = remember { today.dayOfWeek.value }
-        val todayStr = remember { today.toString() }
 
-        val activeTasks = remember(todoTasks, todayDayNumber, todayStr) {
-            todoTasks.filter { task ->
-                if (!task.isRepeating()) true
-                else todayDayNumber in task.getRepeatDayNumbers() && task.lastCompletedDate != todayStr
-            }
-        }
-        val inactiveTasks = remember(todoTasks, todayDayNumber, todayStr) {
-            todoTasks.filter { task ->
-                task.isRepeating() &&
-                    (todayDayNumber !in task.getRepeatDayNumbers() || task.lastCompletedDate == todayStr)
-            }
-        }
+        val activeTasks = remember(todoTasks, today) { todoTasks.filter { it.isDueOn(today) } }
+        val inactiveTasks = remember(todoTasks, today) { todoTasks.filterNot { it.isDueOn(today) } }
 
         if (todoTasks.isEmpty()) {
             // Empty state
