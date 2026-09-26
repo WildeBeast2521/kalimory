@@ -4,14 +4,18 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 7, slice 1: additive v2 workout tables, branch `work/v2-schema`, based on master `a15647a`. The PR follows these checks.
+Task 7, slice 2: conservative backfill, branch `work/v2-backfill`, based on master `10d7d35`. The PR follows these checks.
 
-- `feat: add additive v2 workout session tables`: database version 22, with `workout_sessions`, `session_exercises`, and `set_entries`.
+- `fix: allow one v2 set entry per side of a legacy record`: database 23 changes the unique index on the legacy link to include the side.
+- `feat: backfill legacy records into v2 sessions conservatively`: `V2Backfill` and `V2MigrationReport`. Nothing calls them automatically yet.
 - Verification:
-  - Gate PASS (283 unit tests).
-  - `connectedDebugAndroidTest` on `floor_api29`: 87 tests, 0 failures, including 21→22 schema validation and `V2SchemaTest`.
-  - `scripts/check-room-schemas.sh` against `origin/master`: PASS with schemas 9–22.
-- Nothing writes the v2 tables yet. JSON backup does not include them yet.
+  - Gate PASS (289 unit tests).
+  - `connectedDebugAndroidTest` on `floor_api29`: 91 tests, 0 failures.
+  - Schema check against `origin/master`: PASS (9–23).
+
+## Previous phase: v2 tables, Task 7 slice 1 (merged)
+
+PR #19 merged as `10d7d35`: database 22 with `workout_sessions`, `session_exercises`, and `set_entries`.
 
 ## Previous phase: timer service wake lock, completing Task 6 (merged)
 
@@ -136,12 +140,10 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-Task 7, slice 2: conservative legacy backfill.
-- Build a pure `V2Backfill` from legacy `training_records` and `exercises` into v2 sessions, with a structured `V2MigrationReport` of counts and reasons.
-- The timezone policy is explicit: the device zone at conversion, with times marked `MINUTE`.
-- Never invent seconds, durations, or session grouping. Start with one session per exercise and date, ordered by time and set number, and only if that rule is documented and tested. Otherwise use one session per record.
-- Records it cannot convert (unparseable date or time, missing exercise, negative values) stay on the legacy path and are counted in the report.
-- `legacyTrainingRecordId` makes a rerun idempotent.
-- Then: the compatibility reader (`V2CompatibilityReadTest`), and v2 in JSON export and import (backup format 9).
+Task 7, slice 3: compatibility reader.
+- A history reader that returns legacy sessions (training records not yet converted) and v2 sessions without showing any workout twice. `legacyTrainingRecordId` marks converted records.
+- `V2CompatibilityReadTest` proves that a workout written only to v2 stays visible through the legacy history path.
+- Then decide when to run `V2Backfill`, for example once after upgrade with the report kept. Show the report somewhere.
+- Then v2 in JSON export and import.
 
-Files likely involved next: `data/v2/V2Backfill.kt`, `data/v2/V2MigrationReport.kt`, `app/src/test/.../data/v2/V2BackfillTest.kt`.
+Files likely involved next: `data/v2/*`, `viewmodel/TrainingViewModel.kt` (history flows), `ui/screens/view/*`.
