@@ -147,5 +147,7 @@ class V2SchemaTest {
         assertThrows(SQLiteConstraintException::class.java) { runBlocking { dao.insertSetEntries(listOf(set(0, null))) } }
         runBlocking { dao.insertSetEntries(listOf(set(5, 42))) }
         assertThrows(SQLiteConstraintException::class.java) { runBlocking { dao.insertSetEntries(listOf(set(6, 42))) } }
+        // The other side of the same legacy record is allowed (schema 23).
+        runBlocking { dao.insertSetEntries(listOf(set(7, 42).copy(side = BodySide.RIGHT))) }
     }
 }

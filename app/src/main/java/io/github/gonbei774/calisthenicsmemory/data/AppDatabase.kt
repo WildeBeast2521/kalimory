@@ -16,7 +16,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class, WorkoutSessionEntity::class, SessionExerciseEntity::class, SetEntryEntity::class],
-    version = 22,
+    version = 23,
     exportSchema = true
 )
 @TypeConverters(WorkoutTypeConverters::class)
@@ -50,7 +50,7 @@ abstract class AppDatabase : RoomDatabase() {
         const val DATABASE_NAME = "bodyweight_trainer_database"
 
         // Must equal the version in @Database; MigrationRegistrationTest checks it against the schemas.
-        const val CURRENT_VERSION = 22
+        const val CURRENT_VERSION = 23
 
         // The production configuration. Migration tests open their databases through it.
         // Unsupported installed versions are refused before Room can modify the file, and
@@ -414,6 +414,18 @@ abstract class AppDatabase : RoomDatabase() {
             "CREATE UNIQUE INDEX IF NOT EXISTS `index_set_entries_legacyTrainingRecordId` ON `set_entries` (`legacyTrainingRecordId`)",
         )
 
+        // マイグレーション 22 → 23: set_entries の legacyTrainingRecordId 一意制約を side 込みに変更
+        // （片側種目の旧レコード1件は左右2件の SetEntry になるため）
+        val MIGRATION_22_23 = object : Migration(22, 23) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("DROP INDEX IF EXISTS `index_set_entries_legacyTrainingRecordId`")
+                database.execSQL(
+                    "CREATE UNIQUE INDEX IF NOT EXISTS `index_set_entries_legacyTrainingRecordId_side` " +
+                        "ON `set_entries` (`legacyTrainingRecordId`, `side`)"
+                )
+            }
+        }
+
         // Oldest installed database version that can migrate to the current version.
         // See docs/development/supported-database-versions.md.
         const val OLDEST_SUPPORTED_VERSION = 9
@@ -434,6 +446,7 @@ abstract class AppDatabase : RoomDatabase() {
             MIGRATION_19_20,
             MIGRATION_20_21,
             MIGRATION_21_22,
+            MIGRATION_22_23,
         )
     }
 }

@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey
 /**
  * One set attempt. Metrics are typed columns with units in their names; null means
  * not recorded, and a skip is [status], never a magic value. [legacyTrainingRecordId]
- * marks entries converted from a legacy record and keeps the conversion idempotent.
+ * marks entries converted from a legacy record (one per side) and keeps the conversion
+ * idempotent.
  * Values must not be negative; Room cannot declare CHECK constraints, so the write
  * path enforces this.
  */
@@ -24,7 +25,8 @@ import androidx.room.PrimaryKey
     ],
     indices = [
         Index(value = ["sessionExerciseId", "orderIndex"], unique = true),
-        Index(value = ["legacyTrainingRecordId"], unique = true),
+        // One legacy record holds both sides of a unilateral set, so it maps to one entry per side.
+        Index(value = ["legacyTrainingRecordId", "side"], unique = true),
     ],
 )
 data class SetEntryEntity(
