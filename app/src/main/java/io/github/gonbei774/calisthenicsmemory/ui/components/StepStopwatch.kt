@@ -65,15 +65,17 @@ fun countdownSeconds(remainingMillis: Long): Int = ((remainingMillis.coerceAtLea
  * A [StepStopwatch] that follows [paused] and refreshes every 100 ms while in the
  * composition. [onTick] runs in the ticking coroutine after every refresh, so sounds
  * and automatic completion keep working while the screen is off and nothing
- * recomposes. Callers reset the stopwatch by placing it under a `key(...)`.
+ * recomposes. The stopwatch restarts when [key] changes or when the caller is
+ * placed under a new `key(...)`.
  */
 @Composable
 fun rememberStepStopwatch(
     paused: Boolean,
+    key: Any? = null,
     clock: MonotonicClock = MonotonicClock.SYSTEM,
     onTick: CoroutineScope.(StepStopwatch) -> Unit = {},
 ): StepStopwatch {
-    val stopwatch = remember { StepStopwatch(clock, startPaused = paused) }
+    val stopwatch = remember(key) { StepStopwatch(clock, startPaused = paused) }
     val currentOnTick by rememberUpdatedState(onTick)
     LaunchedEffect(stopwatch, paused) { stopwatch.setPaused(paused) }
     LaunchedEffect(stopwatch) {
