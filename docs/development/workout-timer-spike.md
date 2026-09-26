@@ -36,6 +36,7 @@ Tests: `WorkoutReducerTest` (16), `WorkoutTimerRecoveryTest` (6), and `WorkoutCh
   - Same boot with the wall clock set back 1 h: recovery stays exact (95 s against 94-97 s).
   - Reboot, then the clock set back 1 h: recovery assumes no time away and resumes from the last checkpoint. Checkpoints are saved only on start, pause, resume, and skip, so this can be well before the interruption.
   - Recovery runs when Resume is tapped, so time spent reading the dialog is not counted.
-  - Still to do: the other execution screens.
+- Program execution now times its start countdown, rests, holds, and rep timers with `StepStopwatch`, so there is no drift and pause is exact. On floor_api29 the 35 s auto program completed at 37.1 s with the screen on and 38.0 s with the screen off from 8 s to 21 s. Program sessions still rely on the manual "Save & Exit" (`SavedWorkoutState`) rather than automatic checkpoints.
+- Still to do: single-exercise execution (`WorkoutScreen`, `ui/components/single/*`), automatic program checkpoints, and the service adapter.
 - Make `WorkoutTimerService` an adapter: it shows state and forwards user actions and never makes domain decisions. Verify it releases its wake lock on teardown.
 - Run the manual API 26+ protocol and record the results: screen off during a countdown, app in the background, process killed with `adb shell am kill`, device reboot, and a wall-clock change. For each, note the observed drift and the recovery timing.

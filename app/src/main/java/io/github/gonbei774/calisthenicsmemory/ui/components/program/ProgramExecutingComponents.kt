@@ -29,6 +29,7 @@ import io.github.gonbei774.calisthenicsmemory.util.FlashController
 import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
+import io.github.gonbei774.calisthenicsmemory.ui.components.rememberStepStopwatch
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -52,15 +53,38 @@ internal fun ProgramExecutingStepDynamicManual(
     val (pe, exercise) = session.exercises[currentSet.exerciseIndex]
 
     // 状態管理
-    var elapsedTime by remember(currentSetIndex) { mutableIntStateOf(0) }
     var isPaused by remember(currentSetIndex) { mutableStateOf(false) }
-    var currentCount by remember(currentSetIndex) { mutableIntStateOf(0) }
 
     // ナビゲーション表示中は強制的に一時停止
     val effectivelyPaused = isPaused || isNavigationOpen
 
     // 1レップの秒数（種目設定があればそれを使用、なければ5秒）
     val repDuration = (exercise.repDuration ?: 5).coerceAtLeast(1)
+
+    // 経過時間はモノトニッククロックから計算（一時停止中は進まず、端数も保持）
+    var announcedCount by remember(currentSetIndex) { mutableIntStateOf(0) }
+    val stopwatch = rememberStepStopwatch(paused = effectivelyPaused) { sw ->
+        val count = sw.elapsedSeconds / repDuration
+        if (count > announcedCount) {
+            val reachedTarget = announcedCount < currentSet.targetValue && count >= currentSet.targetValue
+            announcedCount = count
+            if (reachedTarget) {
+                // 目標達成の音（1回だけ）
+                if (isFlashEnabled) {
+                    launch { flashController.flashSetComplete() }
+                }
+                soundPlayer.playSetComplete()
+            } else if (isCountSoundEnabled) {
+                // 途中のレップは短いビープ（設定ONの場合のみ）
+                soundPlayer.playBeep()
+                if (isFlashEnabled) {
+                    launch { flashController.flashShort() }
+                }
+            }
+        }
+    }
+    val elapsedTime = stopwatch.elapsedSeconds
+    val currentCount = elapsedTime / repDuration
 
     // 記録するレップ数（自動カウント）
     val recordValue = currentCount
@@ -71,39 +95,6 @@ internal fun ProgramExecutingStepDynamicManual(
     // タイマー完了フラグ
     val isTimerComplete = currentCount >= currentSet.targetValue
 
-    // タイマー処理（自動遷移なし、目標到達後も計数継続）
-    LaunchedEffect(currentSetIndex, isNavigationOpen, isPaused) {
-        while (true) {
-            if (!effectivelyPaused) {
-                delay(1000L)
-                elapsedTime++
-
-                // レップカウント
-                if (elapsedTime % repDuration == 0) {
-                    currentCount++
-
-                    // 音とフラッシュ
-                    if (currentCount == currentSet.targetValue) {
-                        // 目標達成の音（1回だけ）
-                        if (isFlashEnabled) {
-                            launch { flashController.flashSetComplete() }
-                        }
-                        soundPlayer.playSetComplete()
-                    } else {
-                        // 途中のレップは短いビープ（設定ONの場合のみ）
-                        if (isCountSoundEnabled) {
-                            soundPlayer.playBeep()
-                            if (isFlashEnabled) {
-                                launch { flashController.flashShort() }
-                            }
-                        }
-                    }
-                }
-            } else {
-                delay(100L)  // 一時停止中は短い間隔でチェック
-            }
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -272,11 +263,39 @@ internal fun ProgramExecutingStepIsometricManual(
     val (pe, exercise) = session.exercises[currentSet.exerciseIndex]
 
     // 状態管理
-    var elapsedTime by remember(currentSetIndex) { mutableIntStateOf(0) }
     var isPaused by remember(currentSetIndex) { mutableStateOf(false) }
 
     // ナビゲーション表示中は強制的に一時停止
     val effectivelyPaused = isPaused || isNavigationOpen
+
+    // 経過時間はモノトニッククロックから計算（一時停止中は進まず、端数も保持）
+    var announcedSecond by remember(currentSetIndex) { mutableIntStateOf(0) }
+    // 目標達成時のビープを一度だけ鳴らすためのフラグ
+    var hasPlayedCompletionBeep by remember(currentSetIndex) { mutableStateOf(false) }
+    val stopwatch = rememberStepStopwatch(paused = effectivelyPaused) { sw ->
+        val second = sw.elapsedSeconds
+        if (second <= announcedSecond) return@rememberStepStopwatch
+        // 一定間隔ごとにビープ音（目標達成前のみ、設定ONの場合）
+        if (isIntervalSoundEnabled && intervalSeconds > 0) {
+            val lastMultiple = second / intervalSeconds * intervalSeconds
+            if (lastMultiple > announcedSecond && lastMultiple < currentSet.targetValue) {
+                soundPlayer.playBeep()
+                if (isFlashEnabled) {
+                    launch { flashController.flashShort() }
+                }
+            }
+        }
+        announcedSecond = second
+        // 目標時間達成時に終了アラーム（1回だけ）
+        if (second >= currentSet.targetValue && !hasPlayedCompletionBeep) {
+            hasPlayedCompletionBeep = true
+            if (isFlashEnabled) {
+                launch { flashController.flashSetComplete() }
+            }
+            soundPlayer.playSetComplete()
+        }
+    }
+    val elapsedTime = stopwatch.elapsedSeconds
 
     // 記録する値（経過時間）
     val recordValue = elapsedTime
@@ -295,38 +314,7 @@ internal fun ProgramExecutingStepIsometricManual(
     // 色（一時停止中=グレー、完了=緑、実行中=オレンジ）
     val activeColor = if (isTimerComplete) Green600 else Orange600
 
-    // 目標達成時のビープを一度だけ鳴らすためのフラグ
-    var hasPlayedCompletionBeep by remember(currentSetIndex) { mutableStateOf(false) }
 
-    // タイマー処理
-    LaunchedEffect(currentSetIndex, isNavigationOpen, isPaused) {
-        while (true) {
-            if (!effectivelyPaused) {
-                delay(1000L)
-                elapsedTime++
-
-                // 一定間隔ごとにビープ音（目標達成前のみ、設定ONの場合）
-                if (isIntervalSoundEnabled && intervalSeconds > 0 && elapsedTime > 0 && elapsedTime % intervalSeconds == 0 && elapsedTime < currentSet.targetValue) {
-                    soundPlayer.playBeep()
-                    if (isFlashEnabled) {
-                        launch { flashController.flashShort() }
-                    }
-                }
-
-                // 目標時間達成時に終了アラーム
-                if (elapsedTime >= currentSet.targetValue && !hasPlayedCompletionBeep) {
-                    hasPlayedCompletionBeep = true
-                    // 目標達成時のビープ（3回連続を2セット）
-                    if (isFlashEnabled) {
-                        launch { flashController.flashSetComplete() }
-                    }
-                    soundPlayer.playSetComplete()
-                }
-            } else {
-                delay(100L)  // 一時停止中または目標達成後は短い間隔でチェック
-            }
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -505,11 +493,41 @@ internal fun ProgramExecutingStepIsometricAuto(
     val (pe, exercise) = session.exercises[currentSet.exerciseIndex]
 
     // 状態管理
-    var elapsedTime by remember(currentSetIndex) { mutableIntStateOf(0) }
     var isPaused by remember(currentSetIndex) { mutableStateOf(false) }
 
     // ナビゲーション表示中は強制的に一時停止
     val effectivelyPaused = isPaused || isNavigationOpen
+
+    // 経過時間はモノトニッククロックから計算（一時停止中は進まず、端数も保持）
+    var announcedSecond by remember(currentSetIndex) { mutableIntStateOf(0) }
+    var finished by remember(currentSetIndex) { mutableStateOf(false) }
+    val stopwatch = rememberStepStopwatch(paused = effectivelyPaused) { sw ->
+        if (finished) return@rememberStepStopwatch
+        val second = sw.elapsedSeconds
+        if (second <= announcedSecond) return@rememberStepStopwatch
+        // 一定間隔ごとにビープ音（目標達成前のみ、設定ONの場合）
+        if (isIntervalSoundEnabled && intervalSeconds > 0) {
+            val lastMultiple = second / intervalSeconds * intervalSeconds
+            if (lastMultiple > announcedSecond && lastMultiple < currentSet.targetValue) {
+                soundPlayer.playBeep()
+                if (isFlashEnabled) {
+                    launch { flashController.flashShort() }
+                }
+            }
+        }
+        announcedSecond = second
+        // 目標時間達成時に終了アラーム + 自動遷移
+        if (second >= currentSet.targetValue) {
+            finished = true
+            if (isFlashEnabled) {
+                launch { flashController.flashSetComplete() }
+            }
+            soundPlayer.playSetComplete()
+            onSetComplete(currentSet.targetValue)
+        }
+    }
+    // 目標到達で停止（従来どおり目標値を超えて数えない）
+    val elapsedTime = stopwatch.elapsedSeconds.coerceAtMost(currentSet.targetValue)
 
     // 記録する値（経過時間）
     val recordValue = elapsedTime
@@ -525,35 +543,6 @@ internal fun ProgramExecutingStepIsometricAuto(
     // 色（一時停止中=グレー、実行中=オレンジ）
     val activeColor = Orange600
 
-    // タイマー処理
-    LaunchedEffect(currentSetIndex, isNavigationOpen, isPaused) {
-        while (true) {
-            if (!effectivelyPaused && elapsedTime < currentSet.targetValue) {
-                delay(1000L)
-                elapsedTime++
-
-                // 一定間隔ごとにビープ音（目標達成前のみ、設定ONの場合）
-                if (isIntervalSoundEnabled && intervalSeconds > 0 && elapsedTime > 0 && elapsedTime % intervalSeconds == 0 && elapsedTime < currentSet.targetValue) {
-                    soundPlayer.playBeep()
-                    if (isFlashEnabled) {
-                        launch { flashController.flashShort() }
-                    }
-                }
-
-                // 目標時間達成時に終了アラーム + 自動遷移
-                if (elapsedTime >= currentSet.targetValue) {
-                    if (isFlashEnabled) {
-                        launch { flashController.flashSetComplete() }
-                    }
-                    soundPlayer.playSetComplete()
-                    onSetComplete(elapsedTime)
-                    return@LaunchedEffect
-                }
-            } else {
-                delay(100L)
-            }
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -699,15 +688,41 @@ internal fun ProgramExecutingStepDynamicAuto(
     val (pe, exercise) = session.exercises[currentSet.exerciseIndex]
 
     // 状態管理
-    var elapsedTime by remember(currentSetIndex) { mutableIntStateOf(0) }
     var isPaused by remember(currentSetIndex) { mutableStateOf(false) }
-    var currentCount by remember(currentSetIndex) { mutableIntStateOf(0) }
 
     // ナビゲーション表示中は強制的に一時停止
     val effectivelyPaused = isPaused || isNavigationOpen
 
     // 1レップの秒数（種目設定があればそれを使用、なければ5秒）
     val repDuration = (exercise.repDuration ?: 5).coerceAtLeast(1)
+
+    // 経過時間はモノトニッククロックから計算（一時停止中は進まず、端数も保持）
+    var announcedCount by remember(currentSetIndex) { mutableIntStateOf(0) }
+    var finished by remember(currentSetIndex) { mutableStateOf(false) }
+    val stopwatch = rememberStepStopwatch(paused = effectivelyPaused) { sw ->
+        if (finished) return@rememberStepStopwatch
+        val count = sw.elapsedSeconds / repDuration
+        if (count > announcedCount) {
+            announcedCount = count
+            // 目標達成時に自動遷移
+            if (count >= currentSet.targetValue) {
+                finished = true
+                if (isFlashEnabled) {
+                    launch { flashController.flashSetComplete() }
+                }
+                soundPlayer.playSetComplete()
+                onSetComplete(maxOf(currentSet.targetValue, 1))
+            } else if (isCountSoundEnabled) {
+                // 途中のレップは短いビープ（設定ONの場合のみ）
+                soundPlayer.playBeep()
+                if (isFlashEnabled) {
+                    launch { flashController.flashShort() }
+                }
+            }
+        }
+    }
+    val elapsedTime = stopwatch.elapsedSeconds
+    val currentCount = elapsedTime / repDuration
 
     // 記録するレップ数（自動カウント）
     val recordValue = currentCount
@@ -718,40 +733,6 @@ internal fun ProgramExecutingStepDynamicAuto(
     // タイマー完了フラグ
     val isTimerComplete = currentCount >= currentSet.targetValue
 
-    // タイマー処理
-    LaunchedEffect(currentSetIndex, isNavigationOpen, isPaused) {
-        while (true) {
-            if (!effectivelyPaused) {
-                delay(1000L)
-                elapsedTime++
-
-                // レップカウント
-                if (elapsedTime % repDuration == 0) {
-                    currentCount++
-
-                    // 目標達成時に自動遷移
-                    if (currentCount >= currentSet.targetValue) {
-                        if (isFlashEnabled) {
-                            launch { flashController.flashSetComplete() }
-                        }
-                        soundPlayer.playSetComplete()
-                        onSetComplete(currentCount)
-                        return@LaunchedEffect
-                    } else {
-                        // 途中のレップは短いビープ（設定ONの場合のみ）
-                        if (isCountSoundEnabled) {
-                            soundPlayer.playBeep()
-                            if (isFlashEnabled) {
-                                launch { flashController.flashShort() }
-                            }
-                        }
-                    }
-                }
-            } else {
-                delay(100L)
-            }
-        }
-    }
 
     Column(
         modifier = Modifier
