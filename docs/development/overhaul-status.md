@@ -4,14 +4,17 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 7, slice 2: conservative backfill, branch `work/v2-backfill`, based on master `10d7d35`. The PR follows these checks.
+Task 7, slice 3: compatibility reader, branch `work/v2-compat-reader`, based on master `b808a24`. The PR follows these checks.
 
-- `fix: allow one v2 set entry per side of a legacy record`: database 23 changes the unique index on the legacy link to include the side.
-- `feat: backfill legacy records into v2 sessions conservatively`: `V2Backfill` and `V2MigrationReport`. Nothing calls them automatically yet.
+- `feat: add the v2 compatibility history reader`: `CompatibilityHistory`, with `V2CompatibilityReadTest`.
 - Verification:
-  - Gate PASS (289 unit tests).
-  - `connectedDebugAndroidTest` on `floor_api29`: 91 tests, 0 failures.
-  - Schema check against `origin/master`: PASS (9–23).
+  - Gate PASS (293 unit tests).
+  - `connectedDebugAndroidTest` on `floor_api29`: 92 tests, 0 failures.
+  - A mutation without the legacy-link filter fails the test.
+
+## Previous phase: conservative backfill, Task 7 slice 2 (merged)
+
+PR #20 merged as `b808a24`: database 23 and `V2Backfill`.
 
 ## Previous phase: v2 tables, Task 7 slice 1 (merged)
 
@@ -140,10 +143,14 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-Task 7, slice 3: compatibility reader.
-- A history reader that returns legacy sessions (training records not yet converted) and v2 sessions without showing any workout twice. `legacyTrainingRecordId` marks converted records.
-- `V2CompatibilityReadTest` proves that a workout written only to v2 stays visible through the legacy history path.
-- Then decide when to run `V2Backfill`, for example once after upgrade with the report kept. Show the report somewhere.
-- Then v2 in JSON export and import.
+Task 7, slice 4: v2 in JSON backup (backup format 9).
+- Export `workout_sessions`, `session_exercises`, and `set_entries` with their stable codes.
+- Import versions 1–9. Validation rules for v2 go in `docs/development/backup-validation.md`, keeping the "every exported backup restores" rule.
+- `BackupDao.replaceAll` and `snapshot` include the v2 tables, in one transaction.
+- Round-trip tests.
 
-Files likely involved next: `data/v2/*`, `viewmodel/TrainingViewModel.kt` (history flows), `ui/screens/view/*`.
+After that:
+- decide when `V2Backfill` runs and where its report is shown;
+- the first v2 write path, behind a flag, together with the history UI reading `CompatibilityHistory`.
+
+Files likely involved next: `data/BackupDao.kt`, `viewmodel/BackupService.kt`, `viewmodel/TrainingViewModel.kt` (`BackupData` and the export types), `docs/development/backup-validation.md`.
