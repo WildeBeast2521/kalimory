@@ -2,13 +2,13 @@
 
 ## Decision
 
-The current Room database version is **22**. The supported installed Room database source versions are exactly **9 through 22**, inclusive.
+The current Room database version is **23**. The supported installed Room database source versions are exactly **9 through 23**, inclusive.
 
-`app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt` declares version 22 and registers the contiguous path (`AppDatabase.ALL_MIGRATIONS`):
+`app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt` declares version 23 and registers the contiguous path (`AppDatabase.ALL_MIGRATIONS`):
 
-`MIGRATION_9_10` → `MIGRATION_10_11` → `MIGRATION_11_12` → `MIGRATION_12_13` → `MIGRATION_13_14` → `MIGRATION_14_15` → `MIGRATION_15_16` → `MIGRATION_16_17` → `MIGRATION_17_18` → `MIGRATION_18_19` → `MIGRATION_19_20` → `MIGRATION_20_21` → `MIGRATION_21_22`.
+`MIGRATION_9_10` → `MIGRATION_10_11` → `MIGRATION_11_12` → `MIGRATION_12_13` → `MIGRATION_13_14` → `MIGRATION_14_15` → `MIGRATION_15_16` → `MIGRATION_16_17` → `MIGRATION_17_18` → `MIGRATION_18_19` → `MIGRATION_19_20` → `MIGRATION_20_21` → `MIGRATION_21_22` → `MIGRATION_22_23`.
 
-Version 22 only adds the v2 workout tables (`workout_sessions`, `session_exercises`, `set_entries`; ADR 0002). Every table from version 21 is unchanged, as the committed schemas `21.json` and `22.json` show.
+Version 22 only adds the v2 workout tables (`workout_sessions`, `session_exercises`, `set_entries`; ADR 0002). Every table from version 21 is unchanged, as the committed schemas `21.json` and `22.json` show. Version 23 only replaces the unique index on `set_entries.legacyTrainingRecordId` with one on `(legacyTrainingRecordId, side)`. One legacy unilateral record holds both sides, so it converts to one entry per side.
 
 The following installed databases are unsupported and must fail closed:
 
@@ -18,7 +18,7 @@ The following installed databases are unsupported and must fail closed:
 
 Neither destructive migration fallback nor destructive downgrade fallback is permitted.
 
-`AppDatabase.build` enforces this before Room opens the file: `InstalledDatabaseVersion` reads `user_version` from the SQLite header and throws `UnsupportedDatabaseVersionException` for a version outside 9–22, leaving the database and its journal files byte-identical. Without this check, Room's switch to WAL mode rewrites header bytes of a rollback-journal database before the missing migration is detected. When a non-empty `-wal` or `-journal` file exists, the header alone is not authoritative; the check then defers to Room, which still fails closed without migrating, although SQLite may apply the pending journal to the main file.
+`AppDatabase.build` enforces this before Room opens the file: `InstalledDatabaseVersion` reads `user_version` from the SQLite header and throws `UnsupportedDatabaseVersionException` for a version outside 9–23, leaving the database and its journal files byte-identical. Without this check, Room's switch to WAL mode rewrites header bytes of a rollback-journal database before the missing migration is detected. When a non-empty `-wal` or `-journal` file exists, the header alone is not authoritative; the check then defers to Room, which still fails closed without migrating, although SQLite may apply the pending journal to the main file.
 
 This policy concerns the installed Room database schema version only. It is separate from the JSON backup format and its versions v1–v8; a JSON backup version does not establish support for the correspondingly numbered Room database version.
 
@@ -45,11 +45,12 @@ Support begins at version 9 because it is the earliest source in the contiguous 
 | 19 | `6b37e094` |
 | 20 | `e6661266` |
 | 21 | `eeaa5ae4` |
-| 22 | this change (current): additive v2 workout tables |
+| 22 | `bd8f3e9`: additive v2 workout tables |
+| 23 | this change (current): per-side unique legacy link on `set_entries` |
 
 ## Required evidence
 
-This declaration owns the migration fixture and matrix coverage for every supported source version 9–22 through the current version 22. Coverage must use representative historical database fixtures and validate each complete registered path, not merely individual migration constants.
+This declaration owns the migration fixture and matrix coverage for every supported source version 9–23 through the current version 23. Coverage must use representative historical database fixtures and validate each complete registered path, not merely individual migration constants.
 
 The table above records provenance, not a claim that migration tests currently pass.
 

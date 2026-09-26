@@ -35,6 +35,9 @@ interface WorkoutSessionDao {
     @Query("SELECT * FROM set_entries WHERE sessionExerciseId = :sessionExerciseId ORDER BY orderIndex")
     suspend fun setEntries(sessionExerciseId: Long): List<SetEntryEntity>
 
+    @Query("SELECT DISTINCT legacyTrainingRecordId FROM set_entries WHERE legacyTrainingRecordId IS NOT NULL")
+    suspend fun legacyTrainingRecordIds(): List<Long>
+
     /** Reads one workout consistently. */
     @Transaction
     suspend fun sessionGraph(id: Long): WorkoutSessionGraph? {
