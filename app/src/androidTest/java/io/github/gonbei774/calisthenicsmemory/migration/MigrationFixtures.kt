@@ -38,6 +38,9 @@ object MigrationFixtures {
             if (version >= 18) add("interval_programs")
             if (version >= 18) add("interval_program_exercises")
             if (version >= 18) add("interval_records")
+            if (version >= 22) add("workout_sessions")
+            if (version >= 22) add("session_exercises")
+            if (version >= 22) add("set_entries")
         }
     }
 
