@@ -831,4 +831,5 @@
     <string name="interval_resume_approximate">端末が再起動したため、中断中の経過時間は推定値です。</string>
     <string name="interval_resume_confirm">再開</string>
     <string name="interval_resume_discard">破棄</string>
+    <string name="program_resume_message">このワークアウトは中断されました。続きから再開しますか？実行中だったセットは最初からやり直します。</string>
 </resources>

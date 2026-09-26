@@ -17,4 +17,5 @@
     <string name="interval_resume_approximate">أُعيد تشغيل الهاتف، لذا فالوقت المنقضي تقديري.</string>
     <string name="interval_resume_confirm">استئناف</string>
     <string name="interval_resume_discard">تجاهل</string>
+    <string name="program_resume_message">تمت مقاطعة هذا التمرين. هل تريد المتابعة من حيث توقف؟ ستبدأ المجموعة التي كانت جارية من جديد.</string>
 </resources>

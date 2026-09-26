@@ -764,4 +764,5 @@
     <string name="interval_resume_approximate">手机已重启，因此中断期间的时长为估算值。</string>
     <string name="interval_resume_confirm">继续</string>
     <string name="interval_resume_discard">放弃</string>
+    <string name="program_resume_message">此训练已中断。要从中断处继续吗？进行中的那一组将重新开始。</string>
 </resources>

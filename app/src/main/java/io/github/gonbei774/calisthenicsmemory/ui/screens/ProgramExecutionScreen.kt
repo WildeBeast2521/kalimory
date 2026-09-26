@@ -63,6 +63,12 @@ import io.github.gonbei774.calisthenicsmemory.util.saveProgramResults
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import kotlinx.coroutines.launch
 import io.github.gonbei774.calisthenicsmemory.data.ProgramLoop
+import io.github.gonbei774.calisthenicsmemory.data.ProgramSessionCheckpoint
+import io.github.gonbei774.calisthenicsmemory.data.ProgramSessionCheckpointStore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.util.concurrent.Executors
 
 // ループ実行時に使用するsealed class
 private sealed class ExecutionItem {
@@ -111,6 +117,18 @@ fun ProgramExecutionScreen(
 
     // 設定（LaunchedEffect内で使用するため先に宣言）
     val workoutPreferences = remember { WorkoutPreferences(context) }
+
+    // 自動チェックポイント（プロセス終了後の再開用）。Save & Exit とは別の保存先。
+    // 書き込みは1本のバックグラウンドスレッドで順番に行い、画面の破棄では中断されない。
+    val checkpointStore = remember {
+        ProgramSessionCheckpointStore(File(context.filesDir, ProgramSessionCheckpointStore.FILE_NAME))
+    }
+    val checkpointWriter = remember { Executors.newSingleThreadExecutor() }
+    var pendingResume by remember { mutableStateOf<ProgramSessionCheckpoint?>(null) }
+
+    fun clearCheckpoint() {
+        checkpointWriter.execute { checkpointStore.clear() }
+    }
 
     // プログラムと種目がロードされたらセッションを構築
     LaunchedEffect(program, programExercises, programLoops, exercises) {
@@ -425,6 +443,40 @@ fun ProgramExecutionScreen(
         )
         session = newSession
         currentStep = ProgramExecutionStep.Confirm(newSession)
+
+        // 中断されたワークアウト（同じプログラム・同じセット構成）があれば再開を提案
+        val interrupted = withContext(Dispatchers.IO) { checkpointStore.load() }
+        if (interrupted != null && interrupted.programId == programId && interrupted.sets.size == allSets.size) {
+            pendingResume = interrupted
+        }
+    }
+
+    // 開始後のステップが変わるたびにチェックポイントを保存（結果画面では記録前のセットを守る）
+    LaunchedEffect(currentStep) {
+        val step = currentStep
+        val (stepSession, index, atResult) = when (step) {
+            is ProgramExecutionStep.StartInterval -> Triple(step.session, step.currentSetIndex, false)
+            is ProgramExecutionStep.Executing -> Triple(step.session, step.currentSetIndex, false)
+            is ProgramExecutionStep.Interval -> Triple(step.session, step.currentSetIndex + 1, false)
+            is ProgramExecutionStep.Result -> Triple(step.session, 0, true)
+            else -> return@LaunchedEffect
+        }
+        val checkpoint = ProgramSessionCheckpoint(
+            programId = programId,
+            currentSetIndex = index.coerceIn(0, (stepSession.sets.size - 1).coerceAtLeast(0)),
+            atResult = atResult,
+            // copy() snapshots the mutable set fields as they are now
+            sets = stepSession.sets.map { it.copy() },
+            comment = stepSession.comment,
+            savedAtWallMillis = System.currentTimeMillis()
+        )
+        checkpointWriter.execute {
+            try {
+                checkpointStore.save(checkpoint)
+            } catch (e: java.io.IOException) {
+                android.util.Log.e("ProgramCheckpoint", "Could not save the program checkpoint", e)
+            }
+        }
     }
 
     // 効果音・フラッシュ
@@ -477,6 +529,8 @@ fun ProgramExecutionScreen(
             soundPlayer.release()
             flashController.turnOff()
             WorkoutTimerService.stopService(context)
+            // 残っている書き込みは完了させる
+            checkpointWriter.shutdown()
         }
     }
 
@@ -508,6 +562,39 @@ fun ProgramExecutionScreen(
         }
     }
 
+    // 中断されたワークアウトの再開ダイアログ
+    pendingResume?.let { checkpoint ->
+        AlertDialog(
+            onDismissRequest = {},
+            title = { Text(stringResource(R.string.interval_resume_title)) },
+            text = { Text(stringResource(R.string.program_resume_message)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    pendingResume = null
+                    val base = session ?: return@TextButton
+                    val resumed = base.copy(sets = checkpoint.sets.toMutableList(), comment = checkpoint.comment)
+                    session = resumed
+                    val index = checkpoint.currentSetIndex.coerceIn(0, resumed.sets.size - 1)
+                    currentStep = when {
+                        checkpoint.atResult -> ProgramExecutionStep.Result(resumed)
+                        workoutPreferences.getStartCountdown() > 0 -> ProgramExecutionStep.StartInterval(resumed, index)
+                        else -> ProgramExecutionStep.Executing(resumed, index)
+                    }
+                }) {
+                    Text(stringResource(R.string.interval_resume_confirm))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    pendingResume = null
+                    clearCheckpoint()
+                }) {
+                    Text(stringResource(R.string.interval_resume_discard))
+                }
+            }
+        )
+    }
+
     // 中断確認ダイアログ
     if (showExitConfirmDialog) {
         AlertDialog(
@@ -518,6 +605,7 @@ fun ProgramExecutionScreen(
                 TextButton(
                     onClick = {
                         showExitConfirmDialog = false
+                        clearCheckpoint()
                         onNavigateBack()
                     }
                 ) {
@@ -553,6 +641,7 @@ fun ProgramExecutionScreen(
                             )
                         }
                         pendingSaveSession = null
+                        clearCheckpoint()
                         onNavigateBack()
                     }
                 ) {
@@ -1537,6 +1626,7 @@ fun ProgramExecutionScreen(
                             onSave = {
                                 scope.launch {
                                     saveProgramResults(viewModel, step.session)
+                                    clearCheckpoint()
                                     onComplete()
                                 }
                             }
@@ -1877,6 +1967,7 @@ fun ProgramExecutionScreen(
                         comment = navSession.comment
                     )
                     showNavigationSheet = false
+                    clearCheckpoint()
                     onNavigateBack()
                 }
             },

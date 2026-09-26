@@ -820,4 +820,5 @@
     <string name="interval_resume_approximate">El teléfono se reinició, así que el tiempo transcurrido es una estimación.</string>
     <string name="interval_resume_confirm">Reanudar</string>
     <string name="interval_resume_discard">Descartar</string>
+    <string name="program_resume_message">Este entrenamiento se interrumpió. ¿Continuar donde se quedó? La serie que estaba en curso vuelve a empezar.</string>
 </resources>

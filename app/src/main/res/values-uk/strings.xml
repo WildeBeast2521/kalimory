@@ -767,4 +767,5 @@
     <string name="interval_resume_approximate">Телефон перезавантажувався, тому минулий час оцінено приблизно.</string>
     <string name="interval_resume_confirm">Продовжити</string>
     <string name="interval_resume_discard">Скасувати</string>
+    <string name="program_resume_message">Це тренування було перервано. Продовжити з того самого місця? Незавершений підхід почнеться знову.</string>
 </resources>
