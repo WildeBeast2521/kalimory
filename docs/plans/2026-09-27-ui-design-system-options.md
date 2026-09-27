@@ -1,6 +1,6 @@
 # UI design system: options and recommendation
 
-- **Status:** Proposal for the owner to decide. It reopens ADR 0004 decision 2. No visual work starts until a decision is recorded.
+- **Status:** Decided on 2026-09-27 (ADR 0004, decision 5). The owner chose Jetpack Compose, with the app's own calm, focused design language on Material 3 Expressive at the latest versions available. That is option A's component base, with option B's own design system on top.
 - **Date:** 2026-09-27
 
 ## Goal
