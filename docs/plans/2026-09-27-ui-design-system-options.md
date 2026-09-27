@@ -14,6 +14,47 @@ The owner wants the app to look premium and to perform as well as possible. An e
 5. **License and distribution:** GPL-3.0-compatible, F-Droid-friendly, and no proprietary or network dependencies (ADR 0001).
 6. **Fit:** works offline, in 10 languages including Arabic (right-to-left), from Android 8 (API 26).
 
+## Owner answers so far
+
+- **Mood:** calm and focused.
+- **Font:** bundle an open-license font.
+- **Dynamic colour:** a toggle. On, the app follows the wallpaper colours and accent; off, it uses its own palette.
+- **Technology:** the owner asked for a from-scratch evaluation of every realistic UI technology, as if the app had no UI yet, before choosing. That evaluation is the next section. The component options further down (A–E) assume Compose.
+
+## UI technology from scratch
+
+There are two separate choices:
+- the **UI technology**: how screens are built and drawn;
+- the **design language**: how the app looks.
+
+Material, for example, is a design language, and it exists for most technologies. The owner's goals are a premium look, the best performance, accessibility, and one maintainer, under the constraints of offline use, no telemetry, GPL-3.0 and F-Droid.
+
+One fact dominates the comparison. The parts that make this app trustworthy are native Kotlin, and all of them stay whatever draws the screens:
+- the Room database with 16 versions of migration history and tests;
+- the backup and restore code;
+- the workout timer service with its wake lock and notifications;
+- the checkpoints that survive process death;
+- the v2 history.
+
+A non-Kotlin UI must reach all of it through a bridge, or duplicate it in another language.
+
+| Technology | How it draws | Look ceiling | Performance | Accessibility | Fit with the existing Kotlin core | F-Droid and license | Cost for one maintainer |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| **Jetpack Compose** (Kotlin) | Native Android UI toolkit | High: any design language, including fully custom | Native. Baseline Profiles give fast start and smooth frames | Android accessibility built in (TalkBack, font scale, right-to-left) | Direct: same language and process, no bridge | Apache-2.0; standard Gradle build | Lowest: the app already uses it |
+| **Android Views + XML** (Kotlin) | Older native toolkit | High, with more effort for motion and custom drawing | Native | Built in | Direct | Apache-2.0 | High: a step backwards; Google's own new work targets Compose |
+| **Flutter** (Dart) | Its own rendering engine (Impeller) paints every pixel | Very high: pixel-level control, strong motion | Very good once warm; adds the engine to the APK (several MB) and to cold start | Good, but its own semantics layer must be tested on Android | Poor: the core stays Kotlin behind platform channels, or is rewritten in Dart (database, migrations, service) | BSD license; F-Droid builds Flutter apps and has build templates | Very high: a full UI rewrite plus a bridge or a second data layer |
+| **React Native** (JavaScript/TypeScript) | Native widgets driven from JavaScript (Hermes engine) | High, with libraries for animation | Good on the New Architecture; the JavaScript runtime adds size and start-up work | Uses native accessibility | Poor: native modules for every core feature | MIT. F-Droid needs Hermes built to match exactly; some apps manage (Joplin, Mattermost) | Very high, plus a large npm dependency tree to audit in a privacy app |
+| **Compose Multiplatform** (Kotlin) | Compose, also targeting iOS and desktop | Same as Compose | Same on Android | Same on Android | Direct | Apache-2.0 | Only worth it if iOS or desktop is wanted, which ADR 0001 does not ask for |
+| **Web in a WebView** (Capacitor, Ionic) | HTML and CSS inside a browser view | High for layout, weaker for native motion and gestures | Weakest: WebView start-up and memory, and scrolling that is not native | Web accessibility, mapped imperfectly to TalkBack | Poor: the same bridge problem as React Native | MIT. Workable offline, but the web toolchain and dependencies are heavy | Very high |
+
+### Conclusion
+
+**Jetpack Compose is the best technology for this app.** It matches the others' look ceiling, including a fully bespoke design language. It has the best performance and accessibility on Android, and it is the only option that keeps the tested Kotlin core without a bridge or a rewrite.
+
+Flutter is the only credible alternative for pure visual ambition. But its visual advantage over Compose is small, and it would mean rewriting the UI, and either duplicating the data layer or bridging to it, in a project whose priority is data safety.
+
+The real design decision is therefore the **design language and component base within Compose**, which options A–E below cover. The recommendation stays **B**: stable Material 3 components for behaviour and accessibility, with the app's own calm, focused design language on top. The owner's answers (calm mood, bundled font, dynamic-colour toggle) already fit B.
+
 ## Current state (measured)
 
 - **Components:** Compose with Material 3. `material3` is pinned to `1.5.0-alpha18` for the Expressive APIs (ADR 0004). That pin pulls Compose core to `1.11.0-beta02`.
@@ -144,7 +185,7 @@ If the owner still prefers A, the price is the AGP 9 and compileSdk 37 upgrade n
 
 ## Decisions needed from the owner
 
-1. **Option:** A (Expressive alpha), B (stable Material 3 plus own design system, recommended), or C (fully custom).
-2. **Mood:** for example calm and focused, bold and energetic, or minimal monochrome.
-3. **Font:** bundle an open-license font for character and large numbers, or keep the system font (no APK cost).
-4. **Dynamic colour:** use the phone's wallpaper colours when available, or always use the app's own palette.
+1. **UI technology:** Jetpack Compose (recommended) or another technology from the table above.
+2. **Component base within Compose:** A (Expressive alpha), B (stable Material 3 plus own design system, recommended), or C (fully custom).
+
+Mood, font and dynamic colour are answered (see "Owner answers so far").
