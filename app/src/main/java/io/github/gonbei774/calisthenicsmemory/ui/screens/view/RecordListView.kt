@@ -44,8 +44,8 @@ fun RecordListView(
     onRecordClick: (HistorySet) -> Unit,
     onSessionLongPress: (SessionInfo) -> Unit,
     onDeleteClick: (SessionInfo) -> Unit,
-    onIntervalEditClick: (IntervalRecord) -> Unit,
-    onIntervalDeleteClick: (IntervalRecord) -> Unit
+    onIntervalEditClick: (RecordItem.Interval) -> Unit,
+    onIntervalDeleteClick: (RecordItem.Interval) -> Unit
 ) {
     val appColors = LocalAppColors.current
     if (items.isEmpty() && selectedExerciseFilter == null) {
@@ -87,7 +87,7 @@ fun RecordListView(
                     key = { item ->
                         when (item) {
                             is RecordItem.Session -> "s-${item.session.exerciseId}-${item.session.date}-${item.session.time}"
-                            is RecordItem.Interval -> "i-${item.record.id}"
+                            is RecordItem.Interval -> item.v2SessionId?.let { "iv-$it" } ?: "i-${item.record.id}"
                         }
                     }
                 ) { item ->
@@ -108,8 +108,8 @@ fun RecordListView(
                         is RecordItem.Interval -> {
                             IntervalRecordCard(
                                 record = item.record,
-                                onEditClick = { onIntervalEditClick(item.record) },
-                                onDeleteClick = { onIntervalDeleteClick(item.record) }
+                                onEditClick = { onIntervalEditClick(item) },
+                                onDeleteClick = { onIntervalDeleteClick(item) }
                             )
                         }
                     }

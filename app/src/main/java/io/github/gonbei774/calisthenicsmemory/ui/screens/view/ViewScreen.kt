@@ -61,7 +61,8 @@ data class SessionInfo(
 // 統一リスト用sealed class
 sealed class RecordItem(val date: String, val time: String) {
     data class Session(val session: SessionInfo) : RecordItem(session.date, session.time)
-    data class Interval(val record: IntervalRecord) : RecordItem(record.date, record.time)
+    // v2SessionId is set for a v2 interval workout; edits and deletes then go to that session.
+    data class Interval(val record: IntervalRecord, val v2SessionId: Long? = null) : RecordItem(record.date, record.time)
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -72,7 +73,7 @@ fun ViewScreen(
     val appColors = LocalAppColors.current
     val exercises by viewModel.exercises.collectAsState()
     val records by viewModel.history.collectAsState()
-    val intervalRecords by viewModel.intervalRecords.collectAsState()
+    val intervalRecords by viewModel.intervalHistory.collectAsState()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
 
     // ViewModeの状態（HorizontalPager用）
@@ -98,8 +99,8 @@ fun ViewScreen(
     var editValueLeft by remember { mutableStateOf("") }
     var showSessionEditDialog by remember { mutableStateOf<SessionInfo?>(null) }
     var showContextMenu by remember { mutableStateOf<SessionInfo?>(null) }
-    var showIntervalDeleteDialog by remember { mutableStateOf<IntervalRecord?>(null) }
-    var showIntervalEditDialog by remember { mutableStateOf<IntervalRecord?>(null) }
+    var showIntervalDeleteDialog by remember { mutableStateOf<RecordItem.Interval?>(null) }
+    var showIntervalEditDialog by remember { mutableStateOf<RecordItem.Interval?>(null) }
 
     // 一覧モード用のセッションデータ
     val sessions = remember(records, exercises) {
@@ -156,9 +157,9 @@ fun ViewScreen(
         } else if (selectedPeriod != null) {
             val today = java.time.LocalDate.now()
             val cutoffDate = today.minusDays(selectedPeriod!!.days.toLong() - 1)
-            intervalRecords.filter { record ->
+            intervalRecords.filter { item ->
                 try {
-                    val recordDate = java.time.LocalDate.parse(record.date)
+                    val recordDate = java.time.LocalDate.parse(item.record.date)
                     recordDate >= cutoffDate && recordDate <= today
                 } catch (e: Exception) { false }
             }
@@ -170,7 +171,7 @@ fun ViewScreen(
     // 統一リスト（セッション＋インターバル記録を日付順で混在）
     val filteredItems = remember(filteredSessions, filteredIntervalRecords) {
         val sessionItems = filteredSessions.map { RecordItem.Session(it) }
-        val intervalItems = filteredIntervalRecords.map { RecordItem.Interval(it) }
+        val intervalItems = filteredIntervalRecords.map { RecordItem.Interval(it.record, it.v2SessionId) }
         (sessionItems + intervalItems).sortedWith(
             compareByDescending<RecordItem> { it.date }
                 .thenByDescending { it.time }
@@ -415,7 +416,8 @@ fun ViewScreen(
     }
 
     // Interval delete dialog
-    showIntervalDeleteDialog?.let { record ->
+    showIntervalDeleteDialog?.let { item ->
+        val record = item.record
         AlertDialog(
             onDismissRequest = { showIntervalDeleteDialog = null },
             containerColor = appColors.cardBackground,
@@ -438,7 +440,9 @@ fun ViewScreen(
             },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.deleteIntervalRecord(record.id)
+                    val sessionId = item.v2SessionId
+                    if (sessionId != null) viewModel.deleteV2IntervalSession(sessionId)
+                    else viewModel.deleteIntervalRecord(record.id)
                     showIntervalDeleteDialog = null
                 }) {
                     Text(stringResource(R.string.delete), color = Red600)
@@ -453,13 +457,18 @@ fun ViewScreen(
     }
 
     // Interval edit dialog
-    showIntervalEditDialog?.let { record ->
+    showIntervalEditDialog?.let { item ->
         IntervalRecordEditDialog(
-            record = record,
+            record = item.record,
             appColors = appColors,
             onDismiss = { showIntervalEditDialog = null },
             onConfirm = { updatedRecord ->
-                viewModel.updateIntervalRecordAsync(updatedRecord)
+                val sessionId = item.v2SessionId
+                if (sessionId != null) {
+                    viewModel.updateV2IntervalSession(sessionId, updatedRecord.date, updatedRecord.time, updatedRecord.comment.orEmpty())
+                } else {
+                    viewModel.updateIntervalRecordAsync(updatedRecord)
+                }
                 showIntervalEditDialog = null
             }
         )

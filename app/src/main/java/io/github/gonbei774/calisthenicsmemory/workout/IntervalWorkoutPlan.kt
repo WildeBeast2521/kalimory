@@ -69,6 +69,8 @@ data class IntervalSessionContext(
     val rounds: Int,
     val roundRestSeconds: Int,
     val exercises: List<IntervalExerciseSnapshot>,
+    /** When the workout started (wall clock); absent in checkpoints written before it was recorded. */
+    val startedAtWallMillis: Long? = null,
 )
 
 @Serializable

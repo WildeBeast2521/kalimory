@@ -70,7 +70,17 @@ A finished program run is saved as one v2 session through `ProgramWorkoutWriter`
 
 The history merge now groups a v2 set's sides by occurrence, round and set number. It numbers the displayed sets of an exercise 1..n per workout, in execution order across rounds and repeated occurrences, which is how the legacy save numbered them. Before this change, loop rounds that repeat a set number would have collapsed into one row.
 
-No workout flow writes `training_records` any more, and `addTrainingRecords`, `addTrainingRecordsUnilateral` and `notifyProgramSetsRecorded` are removed. The remaining legacy writers are the CSV record import and the history editor for legacy rows. Interval workouts still write `interval_records`, their own legacy table.
+No workout flow writes `training_records` any more, and `addTrainingRecords`, `addTrainingRecordsUnilateral` and `notifyProgramSetsRecorded` are removed. The remaining legacy writers are the CSV record import and the history editor for legacy rows. 
+
+## Write path: interval workouts (Task 8)
+
+A finished or stopped interval workout is saved as one v2 `INTERVAL_TEMPLATE` session through `IntervalWorkoutWriter`, and nothing is written to `interval_records` any more.
+- **Session:** carries the program id and name, and the work, rest, rounds and round-rest settings (database 24).
+- **Exercises:** each program exercise becomes an occurrence. An exercise deleted since the start keeps only its snapshot.
+- **Sets:** each work interval done is a COMPLETED set with its round. Interval mode records neither reps nor hold time, so the sets have no metric and no time; the work length is only a target.
+- **Start:** the wall-clock start is kept in the interval checkpoint's `IntervalSessionContext`.
+
+`IntervalHistory` merges legacy `interval_records` with v2 interval sessions in the `IntervalRecord` shape the screens already show. The rounds done and the exercises done in the last round are derived from the completed sets: a full run reads as (rounds, all exercises), as the legacy record stored it. Edits and deletes of a v2 interval workout go to its session. Interval sessions are excluded from the per-set history, the latest-session prefill and the per-day check, as legacy interval records were never training records.
 
 ## Backfill timing (revised)
 

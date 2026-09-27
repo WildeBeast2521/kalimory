@@ -47,6 +47,10 @@ interface WorkoutSessionDao {
     @Query("DELETE FROM session_exercises WHERE id IN (:ids)")
     suspend fun deleteSessionExercises(ids: List<Long>)
 
+    /** Deletes whole workouts; their exercises and sets cascade. */
+    @Query("DELETE FROM workout_sessions WHERE id IN (:ids)")
+    suspend fun deleteSessions(ids: List<Long>)
+
     /** Deletes those of [ids] that no longer have any exercise. */
     @Query(
         "DELETE FROM workout_sessions WHERE id IN (:ids) " +
@@ -81,6 +85,7 @@ interface WorkoutSessionDao {
         JOIN session_exercises e ON e.id = t.sessionExerciseId
         JOIN workout_sessions s ON s.id = e.workoutSessionId
         WHERE t.legacyTrainingRecordId IS NULL AND t.status = 'COMPLETED' AND e.exerciseId IS NOT NULL
+          AND s.sourceType <> 'INTERVAL_TEMPLATE'
         ORDER BY s.startedAtEpochMillis, e.orderIndex, t.orderIndex
         """
     )
@@ -98,10 +103,27 @@ interface WorkoutSessionDao {
         JOIN session_exercises e ON e.id = t.sessionExerciseId
         JOIN workout_sessions s ON s.id = e.workoutSessionId
         WHERE t.legacyTrainingRecordId IS NULL AND t.status = 'COMPLETED' AND e.exerciseId IS NOT NULL
+          AND s.sourceType <> 'INTERVAL_TEMPLATE'
         ORDER BY s.startedAtEpochMillis, e.orderIndex, t.orderIndex
         """
     )
     fun observeV2OnlyHistoryRows(): Flow<List<V2HistoryRow>>
+
+    /** Interval workouts with their exercises and sets, for [IntervalHistory]; re-emitted on change. */
+    @Query(
+        """
+        SELECT s.id AS sessionId, s.sourceNameSnapshot AS programName, s.startedAtEpochMillis, s.comment,
+               s.intervalWorkSeconds AS workSeconds, s.intervalRestSeconds AS restSeconds, s.intervalRounds AS rounds,
+               s.intervalRoundRestSeconds AS roundRestSeconds, e.orderIndex AS exerciseOrderIndex,
+               e.exerciseNameSnapshot AS exerciseName, t.roundNumber, t.status
+        FROM workout_sessions s
+        LEFT JOIN session_exercises e ON e.workoutSessionId = s.id
+        LEFT JOIN set_entries t ON t.sessionExerciseId = e.id
+        WHERE s.sourceType = 'INTERVAL_TEMPLATE'
+        ORDER BY s.startedAtEpochMillis DESC, s.id, e.orderIndex, t.orderIndex
+        """
+    )
+    fun observeIntervalSessionRows(): Flow<List<IntervalSessionRow>>
 
     /** The v2-only rows of [exerciseId] in the newest session that has any, for previous-value prefill. */
     @Query(
@@ -115,11 +137,13 @@ interface WorkoutSessionDao {
         JOIN session_exercises e ON e.id = t.sessionExerciseId
         JOIN workout_sessions s ON s.id = e.workoutSessionId
         WHERE t.legacyTrainingRecordId IS NULL AND t.status = 'COMPLETED' AND e.exerciseId = :exerciseId
+          AND s.sourceType <> 'INTERVAL_TEMPLATE'
           AND s.id = (
             SELECT s2.id FROM set_entries t2
             JOIN session_exercises e2 ON e2.id = t2.sessionExerciseId
             JOIN workout_sessions s2 ON s2.id = e2.workoutSessionId
             WHERE t2.legacyTrainingRecordId IS NULL AND t2.status = 'COMPLETED' AND e2.exerciseId = :exerciseId
+              AND s2.sourceType <> 'INTERVAL_TEMPLATE'
             ORDER BY s2.startedAtEpochMillis DESC, s2.id DESC
             LIMIT 1
           )
@@ -136,6 +160,7 @@ interface WorkoutSessionDao {
             JOIN session_exercises e ON e.id = t.sessionExerciseId
             JOIN workout_sessions s ON s.id = e.workoutSessionId
             WHERE t.legacyTrainingRecordId IS NULL AND t.status = 'COMPLETED' AND e.exerciseId = :exerciseId
+              AND s.sourceType <> 'INTERVAL_TEMPLATE'
               AND s.startedAtEpochMillis >= :startMillis AND s.startedAtEpochMillis < :endMillis
         )
         """

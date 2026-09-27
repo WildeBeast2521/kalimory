@@ -18,6 +18,10 @@ import io.github.gonbei774.calisthenicsmemory.data.restoreMissingGroups
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalHistory
+import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalHistoryItem
+import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalRun
+import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.ManualWorkout
 import io.github.gonbei774.calisthenicsmemory.data.v2.ManualWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramRun
@@ -1933,20 +1937,35 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     // IntervalRecord 操作
     // ========================================
 
-    val intervalRecords: StateFlow<List<IntervalRecord>> = intervalRecordDao.getAllRecords()
+    // Interval history screens read legacy interval records plus v2 interval workouts, each once.
+    val intervalHistory: StateFlow<List<IntervalHistoryItem>> = combine(
+        intervalRecordDao.getAllRecords(),
+        database.workoutSessionDao().observeIntervalSessionRows()
+    ) { legacy, v2 -> IntervalHistory.merge(legacy, v2, ZoneId.systemDefault()) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
             initialValue = emptyList()
         )
 
-    suspend fun saveIntervalRecord(record: IntervalRecord): Long? {
-        return try {
-            intervalRecordDao.insert(record)
+    /** Saves a finished or stopped interval workout as one v2 session. */
+    suspend fun recordIntervalWorkout(run: IntervalRun) {
+        try {
+            IntervalWorkoutWriter.write(database, run)
         } catch (e: Exception) {
             _snackbarMessage.value = UiMessage.ErrorOccurred
-            null
         }
+    }
+
+    fun updateV2IntervalSession(sessionId: Long, date: String, time: String, comment: String) =
+        editV2(UiMessage.RecordUpdated) {
+            V2HistoryEditor.updateSession(
+                database, sessionId, date, time, comment, ZoneId.systemDefault(), System.currentTimeMillis()
+            )
+        }
+
+    fun deleteV2IntervalSession(sessionId: Long) = editV2(UiMessage.RecordDeleted) {
+        V2HistoryEditor.deleteSession(database, sessionId)
     }
 
     suspend fun updateIntervalRecord(record: IntervalRecord) {
