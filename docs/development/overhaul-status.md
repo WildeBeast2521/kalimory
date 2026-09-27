@@ -4,30 +4,25 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8, slice 6: v2 history can be edited and deleted in Progress. Branch `work/v2-history-edit`, based on master `59a7c09`.
+Task 8, slice 7: single-exercise workouts are saved as v2 sessions. Branch `work/v2-single-write`, based on master `c2d0402`.
 
-`data/v2/V2HistoryEditor.kt` handles three actions. Each runs as one transaction and refuses legacy sets and negative values:
-- **Set value:** written to each side's entry, as repetitions or whole seconds. An isometric value whose whole seconds did not change keeps its milliseconds.
-- **Session edit:**
-  - A new date or time moves the whole v2 workout. Every set time shifts by the same amount, and the time becomes MINUTE precision because a minute was entered.
-  - The comment becomes the workout comment.
-  - The distance, weight and assistance values apply to the displayed sets, on both sides.
-- **Delete:** removes the exercise occurrence with all its sets, skipped ones included, then the workout once it has no exercise left.
+See "Write path: single-exercise workouts" and "Backfill timing (revised)" in `docs/development/v2-workout-history.md`.
 
-Progress offers the same actions for legacy and v2 sessions. `HistorySet` now carries its `sessionExerciseId`.
-
-Group to-do auto-completion now also counts v2 sets. The delete-exercise warning still counts legacy records only, on purpose: those are what the delete removes, while v2 sets survive it (the exercise link becomes null) but drop out of the history screens.
-
-Tests:
-- `V2HistoryEditorTest`: 6 tests.
-- `ProgressHistoryTest`: now deletes a v2 workout through the UI and checks the legacy one stays.
-- Manual: a v2 set edited from 37 to 40 in Progress on the emulator changed only `set_entries`.
+Verification:
+- `SingleWorkoutWriterTest` (JVM, 6 tests): the mapping.
+- `SingleWorkoutWriteTest` (database, 2 tests): the write, and how history shows it.
+- The checkpoint round trip and an old checkpoint without a start time.
+- A real workout on the emulator: 4 sets, one completed with the Complete button, one typed on the confirmation screen, two aborted. The result was one session with the observed times, 2 completed and 2 skipped sets, no legacy row, and it appeared in Today and Progress.
 
 ## Owner direction for later (2026-09-27)
 
 - The Task 8 UI must look premium and perform well. Use the installed design skills.
 - **The design system is reopened.** The owner does not want Material 3 Expressive locked in: the current implementation may be replaced if something is better. Before more visual work, write a full UI/UX research plan and compare the options (M3 Expressive, custom on Compose Foundation, others) on look, performance, accessibility, maintenance and license. The owner decides from that plan. Until then, only structural work continues (navigation, data paths). Its visuals are provisional.
 - A progression system (a full ranked catalogue, progressions, custom exercises, daily goals, demonstrations) comes after Task 8. It will be planned in depth first. Brief: `docs/plans/future-progression-system-brief.md`.
+
+## Previous phase: v2 history editing (merged)
+
+PR #29 merged as `c2d0402`.
 
 ## Previous phase: remaining history readers (merged)
 
@@ -192,8 +187,8 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Add the single-workout v2 write path, with the one-time backfill and dual-read comparison at cutover (`docs/development/v2-workout-history.md`).
-2. Move program and interval workouts onto sessions, then add `UnifiedWorkoutFlowTest`.
+1. Save manual records (Record Training) as v2 sessions. The user picks the date and time, so they are MINUTE precision.
+2. Save program workouts as v2 sessions (PROGRAM_TEMPLATE, with the loop and round structure), then interval workouts (INTERVAL_TEMPLATE). Then add `UnifiedWorkoutFlowTest`.
 3. Before any further visual work: research and write the UI/UX design-system plan (ADR 0004 decision 2 is reopened). Build it only after the owner chooses.
 
-Files likely involved next: `ui/screens/WorkoutScreen.kt`, `ui/screens/RecordScreen.kt`, `viewmodel/TrainingViewModel.kt`, `data/v2/V2Backfill.kt`.
+Files likely involved next: `ui/screens/RecordScreen.kt`, `ui/screens/ProgramExecutionScreen.kt`, `util/ProgramExecutionUtils.kt`, `data/v2/`.

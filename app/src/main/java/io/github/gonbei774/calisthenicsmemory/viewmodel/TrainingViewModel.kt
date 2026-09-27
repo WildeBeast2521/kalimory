@@ -18,6 +18,8 @@ import io.github.gonbei774.calisthenicsmemory.data.restoreMissingGroups
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkout
+import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.V2HistoryEditor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -1429,24 +1431,45 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun completeTodoTaskByReference(type: String, referenceId: Long) {
+    /**
+     * Saves a finished single-exercise workout as one v2 session, then, when it came from a
+     * to-do, completes that to-do. They run in that order, so the group check sees the new sets.
+     */
+    fun recordSingleWorkout(workout: SingleWorkout, completeTodo: Boolean) {
         viewModelScope.launch {
             try {
-                val task = todoTaskDao.getTaskByReference(type, referenceId)
-                if (task != null && task.isRepeating()) {
-                    val todayStr = java.time.LocalDate.now().toString()
-                    todoTaskDao.updateLastCompletedDate(type, referenceId, todayStr)
-                } else {
-                    todoTaskDao.deleteByReference(type, referenceId)
+                if (SingleWorkoutWriter.write(database, workout) != null) {
+                    _snackbarMessage.value = UiMessage.SetsRecorded(workout.completedSetCount)
                 }
-
-                // 種目完了時にグループToDoの完了もチェック
-                if (type == TodoTask.TYPE_EXERCISE) {
-                    checkGroupTodoCompletion(referenceId)
-                }
+                if (completeTodo) completeTodoTask(TodoTask.TYPE_EXERCISE, workout.exerciseId)
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
+        }
+    }
+
+    fun completeTodoTaskByReference(type: String, referenceId: Long) {
+        viewModelScope.launch {
+            try {
+                completeTodoTask(type, referenceId)
+            } catch (e: Exception) {
+                _snackbarMessage.value = UiMessage.ErrorOccurred
+            }
+        }
+    }
+
+    private suspend fun completeTodoTask(type: String, referenceId: Long) {
+        val task = todoTaskDao.getTaskByReference(type, referenceId)
+        if (task != null && task.isRepeating()) {
+            val todayStr = java.time.LocalDate.now().toString()
+            todoTaskDao.updateLastCompletedDate(type, referenceId, todayStr)
+        } else {
+            todoTaskDao.deleteByReference(type, referenceId)
+        }
+
+        // 種目完了時にグループToDoの完了もチェック
+        if (type == TodoTask.TYPE_EXERCISE) {
+            checkGroupTodoCompletion(referenceId)
         }
     }
 

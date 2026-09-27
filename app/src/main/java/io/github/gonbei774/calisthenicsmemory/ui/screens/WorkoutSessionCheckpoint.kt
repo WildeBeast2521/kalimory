@@ -28,6 +28,8 @@ data class SingleSessionCheckpoint(
     /** The workout was started from a ToDo task, which is completed when the records are saved. */
     val fromToDo: Boolean,
     val savedAtWallMillis: Long,
+    /** When the workout began; absent in checkpoints written before it was recorded. */
+    val startedAtWallMillis: Long? = null,
 ) {
     /** Rebuilds the session for [exercise], which must have [exerciseId]. */
     fun toSession(exercise: Exercise): WorkoutSession {
@@ -43,6 +45,7 @@ data class SingleSessionCheckpoint(
             comment = comment,
             isAutoMode = isAutoMode,
             isDynamicCountSoundEnabled = isDynamicCountSoundEnabled,
+            startedAtWallMillis = startedAtWallMillis,
         )
     }
 
@@ -72,6 +75,7 @@ data class SingleSessionCheckpoint(
             atConfirmation = atConfirmation,
             fromToDo = fromToDo,
             savedAtWallMillis = savedAtWallMillis,
+            startedAtWallMillis = session.startedAtWallMillis,
         )
 
         fun file(directory: File) =
