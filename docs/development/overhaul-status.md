@@ -4,16 +4,25 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8, slice 9: program workouts are saved as v2 sessions. Branch `work/v2-program-write`, based on master `4a145d0`. See "Write path: program workouts" in `docs/development/v2-workout-history.md`, including the round-aware history numbering.
+Task 8, slice 10a: database version 24 and backup format 10 store interval workout settings on v2 sessions. Branch `work/interval-config-columns`, based on master `b4e8174`.
+- `MIGRATION_23_24` adds four nullable columns to `workout_sessions`. Schema 24 is exported, and the migration matrix now runs 9–24.
+- A new data-preservation test covers 23→24.
+- Backup format 10 carries the settings, with round-trip and validation tests.
 
-Verification:
-- `ProgramRunTest` (JVM, 2 tests).
-- 3 new `CompatibilityHistoryTest` cases: loop rounds, a repeated exercise, and a skipped-set gap.
-- A checkpoint compatibility test.
-- A program case in `SingleWorkoutWriteTest`.
-- A real run on the emulator: a program with a 2-round push-up loop and a plank.
-  - The database had one `PROGRAM_TEMPLATE` session with the observed duration, two occurrences linked to their program exercises, round 1 completed at its observed time, round 2 (0 reps) skipped, the plank at 26 s, and no legacy row.
-  - Progress listed both exercises under the program comment.
+Slice 10b (next) writes interval workouts to v2 and serves interval history through a compatibility reader.
+
+## CI debt (merged without GitHub Actions)
+
+GitHub Actions stopped starting jobs on 2026-09-27. The annotation says account payments failed or the spending limit needs raising. The owner decided: "Merge locally verified PRs for now, rerun CI later."
+
+Each PR below passed the full local gate before merging:
+- `testDebugUnitTest lintDebug assembleDebug`;
+- `connectedDebugAndroidTest` on `floor_api29`;
+- the schema check, when the schema changed.
+
+Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
+
+- PR #34: database 24 and backup format 10, interval settings.
 
 ## Owner direction for later (2026-09-27)
 
@@ -28,6 +37,10 @@ Verification:
 - The Task 8 UI must look premium and perform well. Use the installed design skills.
 - **The design system is reopened.** The owner does not want Material 3 Expressive locked in: the current implementation may be replaced if something is better. Before more visual work, write a full UI/UX research plan and compare the options (M3 Expressive, custom on Compose Foundation, others) on look, performance, accessibility, maintenance and license. The owner decides from that plan. Until then, only structural work continues (navigation, data paths). Its visuals are provisional.
 - A progression system (a full ranked catalogue, progressions, custom exercises, daily goals, demonstrations) comes after Task 8. It will be planned in depth first. Brief: `docs/plans/future-progression-system-brief.md`.
+
+## Previous phase: program v2 write (merged)
+
+PR #33 merged as `b4e8174`.
 
 ## Previous phase: manual-record v2 write (merged)
 

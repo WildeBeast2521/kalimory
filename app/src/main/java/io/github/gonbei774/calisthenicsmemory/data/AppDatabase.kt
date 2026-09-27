@@ -16,7 +16,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class, WorkoutSessionEntity::class, SessionExerciseEntity::class, SetEntryEntity::class],
-    version = 23,
+    version = 24,
     exportSchema = true
 )
 @TypeConverters(WorkoutTypeConverters::class)
@@ -50,7 +50,7 @@ abstract class AppDatabase : RoomDatabase() {
         const val DATABASE_NAME = "bodyweight_trainer_database"
 
         // Must equal the version in @Database; MigrationRegistrationTest checks it against the schemas.
-        const val CURRENT_VERSION = 23
+        const val CURRENT_VERSION = 24
 
         // The production configuration. Migration tests open their databases through it.
         // Unsupported installed versions are refused before Room can modify the file, and
@@ -426,6 +426,15 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Version 24: the interval settings a v2 interval workout ran with (nullable, other sources leave them empty).
+        val MIGRATION_23_24 = object : Migration(23, 24) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                for (column in listOf("intervalWorkSeconds", "intervalRestSeconds", "intervalRounds", "intervalRoundRestSeconds")) {
+                    database.execSQL("ALTER TABLE `workout_sessions` ADD COLUMN `$column` INTEGER")
+                }
+            }
+        }
+
         // Oldest installed database version that can migrate to the current version.
         // See docs/development/supported-database-versions.md.
         const val OLDEST_SUPPORTED_VERSION = 9
@@ -447,6 +456,7 @@ abstract class AppDatabase : RoomDatabase() {
             MIGRATION_20_21,
             MIGRATION_21_22,
             MIGRATION_22_23,
+            MIGRATION_23_24,
         )
     }
 }

@@ -242,4 +242,38 @@ class MigrationDataPreservationTest {
         )
         db.close()
     }
+
+    @Test
+    fun migrate23To24KeepsSessionsAndLeavesIntervalSettingsEmpty() {
+        val db = migrate(23, 24) {
+            it.execSQL(
+                "INSERT INTO workout_sessions (id, status, sourceType, startedAtEpochMillis, updatedAtEpochMillis, timePrecision, comment) " +
+                    "VALUES (1, 'COMPLETED', 'AD_HOC', 1000, 2000, 'EXACT', 'kept')"
+            )
+            it.execSQL(
+                "INSERT INTO session_exercises (id, workoutSessionId, orderIndex, exerciseId, exerciseNameSnapshot, exerciseKindSnapshot, lateralitySnapshot) " +
+                    "VALUES (1, 1, 0, 2, 'Incline Push-up', 'DYNAMIC', 'BILATERAL')"
+            )
+            it.execSQL(
+                "INSERT INTO set_entries (id, sessionExerciseId, orderIndex, setNumber, status, side, repetitions, timePrecision) " +
+                    "VALUES (1, 1, 0, 1, 'COMPLETED', 'BILATERAL', 12, 'EXACT')"
+            )
+        }
+        assertEquals(
+            listOf(listOf<Any?>(1L, "COMPLETED", "AD_HOC", 1000L, 2000L, "EXACT", "kept", null, null, null, null)),
+            db.rows(
+                "SELECT id, status, sourceType, startedAtEpochMillis, updatedAtEpochMillis, timePrecision, comment, " +
+                    "intervalWorkSeconds, intervalRestSeconds, intervalRounds, intervalRoundRestSeconds FROM workout_sessions"
+            ),
+        )
+        assertEquals(listOf(listOf<Any?>(12L)), db.rows("SELECT repetitions FROM set_entries"))
+
+        // The new columns accept values after the migration.
+        db.execSQL("UPDATE workout_sessions SET intervalWorkSeconds = 20, intervalRestSeconds = 10, intervalRounds = 8, intervalRoundRestSeconds = 60")
+        assertEquals(
+            listOf(listOf<Any?>(20L, 10L, 8L, 60L)),
+            db.rows("SELECT intervalWorkSeconds, intervalRestSeconds, intervalRounds, intervalRoundRestSeconds FROM workout_sessions"),
+        )
+        db.close()
+    }
 }

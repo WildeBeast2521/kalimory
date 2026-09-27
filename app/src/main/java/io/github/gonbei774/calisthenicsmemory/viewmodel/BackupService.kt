@@ -56,7 +56,7 @@ enum class BackupAnomalyKind {
     TODO_UNKNOWN_TYPE,
     TODO_INVALID_REPEAT_DAYS,
     PROGRAM_EXERCISE_FOREIGN_LOOP,
-    /** A v2 set entry has a negative metric or target; the app never writes one. */
+    /** A v2 set entry has a negative metric or target, or a session a negative interval setting; the app never writes one. */
     V2_NEGATIVE_VALUE,
     /**
      * A v2 set entry names a legacy training record the backup does not contain. The
@@ -211,6 +211,12 @@ class BackupService(
             }
         }
         val recordIds = data.records.mapTo(hashSetOf()) { it.id }
+        data.workoutSessions.forEach {
+            val settings = listOfNotNull(it.intervalWorkSeconds, it.intervalRestSeconds, it.intervalRounds, it.intervalRoundRestSeconds)
+            if (settings.any { v -> v < 0 }) {
+                anomalies += BackupAnomaly(BackupAnomalyKind.V2_NEGATIVE_VALUE, it.id, "Workout session ${it.id} has a negative interval setting")
+            }
+        }
         data.setEntries.forEach {
             val values = listOfNotNull(
                 it.repetitions?.toLong(), it.durationMillis, it.distanceCm?.toLong(), it.addedWeightGrams?.toLong(),
@@ -256,7 +262,7 @@ class BackupService(
     companion object {
         const val APP_NAME = "CalisthenicsMemory"
         const val MIN_VERSION = 1
-        const val CURRENT_VERSION = 9
+        const val CURRENT_VERSION = 10
     }
 }
 

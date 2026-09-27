@@ -28,6 +28,11 @@ data class ExportWorkoutSession(
     val updatedAtEpochMillis: Long,
     val timePrecision: String,
     val comment: String? = null,
+    // Format 10: interval settings of INTERVAL_TEMPLATE sessions.
+    val intervalWorkSeconds: Int? = null,
+    val intervalRestSeconds: Int? = null,
+    val intervalRounds: Int? = null,
+    val intervalRoundRestSeconds: Int? = null,
 )
 
 @Serializable
@@ -73,6 +78,7 @@ data class ExportSetEntry(
 internal fun WorkoutSessionEntity.toExport() = ExportWorkoutSession(
     id, status.code, sourceType.code, sourceTemplateId, sourceNameSnapshot, startedAtEpochMillis,
     endedAtEpochMillis, updatedAtEpochMillis, timePrecision.code, comment,
+    intervalWorkSeconds, intervalRestSeconds, intervalRounds, intervalRoundRestSeconds,
 )
 
 internal fun SessionExerciseEntity.toExport() = ExportSessionExercise(
@@ -90,6 +96,7 @@ internal fun SetEntryEntity.toExport() = ExportSetEntry(
 internal fun ExportWorkoutSession.toEntity() = WorkoutSessionEntity(
     id, codeOf<WorkoutSessionStatus>(status), codeOf<WorkoutSourceType>(sourceType), sourceTemplateId, sourceNameSnapshot,
     startedAtEpochMillis, endedAtEpochMillis, updatedAtEpochMillis, codeOf<TimePrecision>(timePrecision), comment,
+    intervalWorkSeconds, intervalRestSeconds, intervalRounds, intervalRoundRestSeconds,
 )
 
 internal fun ExportSessionExercise.toEntity() = SessionExerciseEntity(

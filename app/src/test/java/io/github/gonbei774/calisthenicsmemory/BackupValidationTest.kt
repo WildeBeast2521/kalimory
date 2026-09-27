@@ -192,6 +192,30 @@ class BackupValidationTest {
         )
     }
 
+    private fun validV10() = validV9().copy(
+        version = 10,
+        workoutSessions = validV9().workoutSessions + ExportWorkoutSession(
+            30, "COMPLETED", "INTERVAL_TEMPLATE", sourceTemplateId = 4, sourceNameSnapshot = "Tabata",
+            startedAtEpochMillis = 3_000, updatedAtEpochMillis = 4_000, timePrecision = "EXACT",
+            intervalWorkSeconds = 20, intervalRestSeconds = 10, intervalRounds = 8, intervalRoundRestSeconds = 60,
+        ),
+    )
+
+    @Test fun `accepts a version 10 backup with interval settings`() {
+        val result = service.parse(json.encodeToString(validV10()))
+        assertTrue("Expected success, got $result", result is BackupResult.Success)
+        assertEquals(ParsedBackup(validV10(), emptyList()), (result as BackupResult.Success).value)
+    }
+
+    @Test fun `a negative interval setting is accepted and reported`() {
+        val base = validV10()
+        val interval = base.workoutSessions.last()
+        assertAcceptedWith(
+            base.copy(workoutSessions = base.workoutSessions.dropLast(1) + interval.copy(intervalRestSeconds = -10)),
+            BackupAnomalyKind.V2_NEGATIVE_VALUE to 30L,
+        )
+    }
+
     @Test fun `a v2 exercise whose library links are null is valid`() {
         val base = validV9()
         val detached = base.copy(sessionExercises = listOf(base.sessionExercises.first().copy(exerciseId = null, groupId = null)))

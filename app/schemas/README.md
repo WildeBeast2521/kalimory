@@ -54,3 +54,4 @@ Each source commit is the commit that introduced the version. Across the full hi
 | 21 | `1bbf3e19ddbcd6f8c8928f6e4f01c8c2` | `eeaa5ae4`; the later entity-source variants `107328b` and `20d2292`, and the current sources, generate byte-identical output | v1.19.0–v1.26.0 |
 | 22 | `f96a9bb3891c84fed410f30467d831f6` | `bd8f3e9` (v2 workout tables, MIGRATION_21_22) | not yet released |
 | 23 | `88dac808210a3dc483c23dc6287b13bf` | Generated from the current sources when the legacy link became unique per side (MIGRATION_22_23) | not yet released |
+| 24 | `d81656f4367a1ea9fe305a32e8bb8732` | Generated from the current sources when interval settings were added to `workout_sessions` (MIGRATION_23_24) | not yet released |
