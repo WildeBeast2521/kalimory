@@ -65,28 +65,7 @@ object V2HistoryEditor {
         database.withTransaction {
             val occurrences = dao.sessionExercisesByIds(sets.mapNotNull { it.sessionExerciseId }.distinct())
             for (sessionId in occurrences.map { it.workoutSessionId }.distinct()) {
-                val session = dao.session(sessionId) ?: continue
-                val shift = start - session.startedAtEpochMillis
-                val moved = shift != 0L
-                dao.updateSession(
-                    session.copy(
-                        startedAtEpochMillis = start,
-                        endedAtEpochMillis = session.endedAtEpochMillis?.plus(shift),
-                        updatedAtEpochMillis = nowEpochMillis,
-                        timePrecision = if (moved) TimePrecision.MINUTE else session.timePrecision,
-                        comment = comment.ifBlank { null },
-                    )
-                )
-                if (moved) {
-                    dao.updateSetEntries(
-                        dao.setEntriesOfSession(sessionId).map {
-                            it.copy(
-                                startedAtEpochMillis = it.startedAtEpochMillis?.plus(shift),
-                                completedAtEpochMillis = it.completedAtEpochMillis?.plus(shift),
-                            )
-                        }
-                    )
-                }
+                moveSession(database, sessionId, start, comment, nowEpochMillis)
             }
             // After the move, so the metric edits apply to the shifted rows.
             sets.forEachIndexed { index, set ->
@@ -100,6 +79,55 @@ object V2HistoryEditor {
                     }
                 )
             }
+        }
+    }
+
+    /**
+     * Moves a whole workout to [date] and [time] in [zone] and sets its [comment]. Every set
+     * time shifts by the same amount, and a moved workout becomes MINUTE precision.
+     */
+    suspend fun updateSession(
+        database: AppDatabase,
+        sessionId: Long,
+        date: String,
+        time: String,
+        comment: String,
+        zone: ZoneId,
+        nowEpochMillis: Long,
+    ) {
+        val start = LocalDate.parse(date).atTime(LocalTime.parse(time)).atZone(zone).toInstant().toEpochMilli()
+        database.withTransaction { moveSession(database, sessionId, start, comment, nowEpochMillis) }
+    }
+
+    /** Deletes a whole workout; its exercises and sets cascade. */
+    suspend fun deleteSession(database: AppDatabase, sessionId: Long) {
+        database.workoutSessionDao().deleteSessions(listOf(sessionId))
+    }
+
+    // Call inside a transaction.
+    private suspend fun moveSession(database: AppDatabase, sessionId: Long, start: Long, comment: String, nowEpochMillis: Long) {
+        val dao = database.workoutSessionDao()
+        val session = dao.session(sessionId) ?: return
+        val shift = start - session.startedAtEpochMillis
+        val moved = shift != 0L
+        dao.updateSession(
+            session.copy(
+                startedAtEpochMillis = start,
+                endedAtEpochMillis = session.endedAtEpochMillis?.plus(shift),
+                updatedAtEpochMillis = nowEpochMillis,
+                timePrecision = if (moved) TimePrecision.MINUTE else session.timePrecision,
+                comment = comment.ifBlank { null },
+            )
+        )
+        if (moved) {
+            dao.updateSetEntries(
+                dao.setEntriesOfSession(sessionId).map {
+                    it.copy(
+                        startedAtEpochMillis = it.startedAtEpochMillis?.plus(shift),
+                        completedAtEpochMillis = it.completedAtEpochMillis?.plus(shift),
+                    )
+                }
+            )
         }
     }
 

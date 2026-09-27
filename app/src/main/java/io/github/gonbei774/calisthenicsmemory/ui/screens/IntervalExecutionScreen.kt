@@ -33,7 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.IntervalProgram
-import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.Laterality
+import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalRunExercise
+import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalRun
+import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
 import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
 import io.github.gonbei774.calisthenicsmemory.service.WorkoutTimerService
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
@@ -62,12 +65,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
 import java.io.File
 import java.util.concurrent.Executors
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 /**
  * Exercise info resolved from IntervalProgramExercise + Exercise
@@ -508,7 +507,8 @@ fun IntervalExecutionScreen(
                         roundRestSeconds = p.roundRestSeconds,
                         exercises = currentPhase.exercises.map {
                             IntervalExerciseSnapshot(it.exerciseId, it.name, it.description)
-                        }
+                        },
+                        startedAtWallMillis = System.currentTimeMillis()
                     )
                     saveCheckpoint(started)
                     phase = IntervalPhase.Running
@@ -615,28 +615,41 @@ fun IntervalExecutionScreen(
                 appColors = appColors,
                 onSave = { comment ->
                     scope.launch {
+                        // The snapshot taken at the start; a resumed workout brings it from its checkpoint.
                         val p = program!!
-                        val exercisesJson = JSONArray().apply {
-                            exercises.forEach { put(it.name) }
-                        }.toString()
-
-                        val now = LocalDate.now()
-                        val time = LocalTime.now()
-
-                        val record = IntervalRecord(
-                            programName = p.name,
-                            date = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                            time = time.format(DateTimeFormatter.ofPattern("HH:mm")),
-                            workSeconds = p.workSeconds,
-                            restSeconds = p.restSeconds,
-                            rounds = p.rounds,
-                            roundRestSeconds = p.roundRestSeconds,
-                            completedRounds = currentPhase.completedRounds,
-                            completedExercisesInLastRound = currentPhase.completedExercisesInLastRound,
-                            exercisesJson = exercisesJson,
-                            comment = comment.ifBlank { null }
+                        val context = sessionContext ?: IntervalSessionContext(
+                            p.id, p.name, p.workSeconds, p.restSeconds, p.rounds, p.roundRestSeconds,
+                            exercises.map { IntervalExerciseSnapshot(it.exerciseId, it.name, it.description) }
                         )
-                        viewModel.saveIntervalRecord(record)
+                        val library = viewModel.exercises.value.associateBy { it.id }
+                        val groups = viewModel.groups.value
+                        viewModel.recordIntervalWorkout(
+                            IntervalRun(
+                                programId = context.programId,
+                                programName = context.programName,
+                                workSeconds = context.workSeconds,
+                                restSeconds = context.restSeconds,
+                                rounds = context.rounds,
+                                roundRestSeconds = context.roundRestSeconds,
+                                exercises = context.exercises.map { snapshot ->
+                                    val exercise = library[snapshot.exerciseId]
+                                    IntervalRunExercise(
+                                        // An exercise deleted since the start keeps only its snapshot.
+                                        exerciseId = exercise?.id,
+                                        name = snapshot.name,
+                                        kind = if (exercise?.type == "Isometric") ExerciseKind.ISOMETRIC else ExerciseKind.DYNAMIC,
+                                        laterality = if (exercise?.laterality == "Unilateral") Laterality.UNILATERAL else Laterality.BILATERAL,
+                                        groupId = exercise?.group?.let { name -> groups.find { it.name == name }?.id },
+                                        groupName = exercise?.group,
+                                    )
+                                },
+                                completedRounds = currentPhase.completedRounds,
+                                completedExercisesInLastRound = currentPhase.completedExercisesInLastRound,
+                                comment = comment,
+                                startedAtWallMillis = context.startedAtWallMillis,
+                                savedAtWallMillis = System.currentTimeMillis()
+                            )
+                        )
                         onComplete()
                     }
                 }
