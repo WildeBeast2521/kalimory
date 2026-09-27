@@ -49,4 +49,18 @@ class ProgramSessionCheckpointStoreTest {
         store.clear()
         assertNull(store.load())
     }
+
+    @Test fun `start and set times round trip, and older files without them still load`() {
+        val timed = checkpoint.copy(
+            startedAtWallMillis = 500,
+            sets = checkpoint.sets.mapIndexed { i, set -> if (i == 0) set.copy(completedAtWallMillis = 900) else set },
+        )
+        store.save(timed)
+        assertEquals(timed, store.load())
+
+        store.save(checkpoint)
+        // A file from before these fields existed has neither key.
+        file.writeText(file.readText().replace(Regex(",\\s*\"(startedAtWallMillis|completedAtWallMillis)\"\\s*:\\s*null"), ""))
+        assertEquals(checkpoint, store.load())
+    }
 }

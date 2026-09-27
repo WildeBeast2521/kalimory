@@ -417,7 +417,8 @@ fun ProgramExecutionScreen(
                     exercises = exercisePairs,
                     sets = savedSets.toMutableList(),
                     comment = savedComment,
-                    loops = programLoops
+                    loops = programLoops,
+                    startedAtWallMillis = savedState.getStartedAt()
                 )
                 session = newSession
 
@@ -462,6 +463,9 @@ fun ProgramExecutionScreen(
             is ProgramExecutionStep.Result -> Triple(step.session, 0, true)
             else -> return@LaunchedEffect
         }
+        if (stepSession.startedAtWallMillis == null && !atResult) {
+            stepSession.startedAtWallMillis = System.currentTimeMillis()
+        }
         val checkpoint = ProgramSessionCheckpoint(
             programId = programId,
             currentSetIndex = index.coerceIn(0, (stepSession.sets.size - 1).coerceAtLeast(0)),
@@ -469,7 +473,8 @@ fun ProgramExecutionScreen(
             // copy() snapshots the mutable set fields as they are now
             sets = stepSession.sets.map { it.copy() },
             comment = stepSession.comment,
-            savedAtWallMillis = System.currentTimeMillis()
+            savedAtWallMillis = System.currentTimeMillis(),
+            startedAtWallMillis = stepSession.startedAtWallMillis
         )
         checkpointWriter.execute {
             try {
@@ -574,7 +579,11 @@ fun ProgramExecutionScreen(
                 TextButton(onClick = {
                     pendingResume = null
                     val base = session ?: return@TextButton
-                    val resumed = base.copy(sets = checkpoint.sets.toMutableList(), comment = checkpoint.comment)
+                    val resumed = base.copy(
+                        sets = checkpoint.sets.toMutableList(),
+                        comment = checkpoint.comment,
+                        startedAtWallMillis = checkpoint.startedAtWallMillis
+                    )
                     session = resumed
                     val index = checkpoint.currentSetIndex.coerceIn(0, resumed.sets.size - 1)
                     currentStep = when {
@@ -639,7 +648,8 @@ fun ProgramExecutionScreen(
                                 programId = programId,
                                 currentSetIndex = pendingSaveSetIndex,
                                 sets = saveSession.sets.toList(),
-                                comment = saveSession.comment
+                                comment = saveSession.comment,
+                                startedAtWallMillis = saveSession.startedAtWallMillis
                             )
                         }
                         pendingSaveSession = null
@@ -1207,7 +1217,8 @@ fun ProgramExecutionScreen(
                                             val sets = step.session.sets
                                             sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
                                                 actualValue = actualValue,
-                                                isCompleted = true
+                                                isCompleted = true,
+                                                completedAtWallMillis = System.currentTimeMillis()
                                             )
                                             val completedSet = sets[step.currentSetIndex]
                                             val nextIndex = step.currentSetIndex + 1
@@ -1259,7 +1270,8 @@ fun ProgramExecutionScreen(
                                         val sets = step.session.sets
                                         sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
                                             actualValue = actualValue,
-                                            isCompleted = true
+                                            isCompleted = true,
+                                            completedAtWallMillis = System.currentTimeMillis()
                                         )
                                         val completedSet = sets[step.currentSetIndex]
 
@@ -1314,7 +1326,8 @@ fun ProgramExecutionScreen(
                                         val sets = step.session.sets
                                         sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
                                             actualValue = actualValue,
-                                            isCompleted = true
+                                            isCompleted = true,
+                                            completedAtWallMillis = System.currentTimeMillis()
                                         )
                                         val completedSet = sets[step.currentSetIndex]
 
@@ -1374,7 +1387,8 @@ fun ProgramExecutionScreen(
                                             val sets = step.session.sets
                                             sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
                                                 actualValue = actualValue,
-                                                isCompleted = true
+                                                isCompleted = true,
+                                                completedAtWallMillis = System.currentTimeMillis()
                                             )
                                             val completedSet = sets[step.currentSetIndex]
                                             val nextIndex = step.currentSetIndex + 1
@@ -1427,7 +1441,8 @@ fun ProgramExecutionScreen(
                                             val sets = step.session.sets
                                             sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
                                                 actualValue = actualValue,
-                                                isCompleted = true
+                                                isCompleted = true,
+                                                completedAtWallMillis = System.currentTimeMillis()
                                             )
                                             val completedSet = sets[step.currentSetIndex]
                                             val nextIndex = step.currentSetIndex + 1
@@ -1484,7 +1499,8 @@ fun ProgramExecutionScreen(
                                             val sets = step.session.sets
                                             sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
                                                 actualValue = actualValue,
-                                                isCompleted = true
+                                                isCompleted = true,
+                                                completedAtWallMillis = System.currentTimeMillis()
                                             )
                                             val completedSet = sets[step.currentSetIndex]
                                             val nextIndex = step.currentSetIndex + 1
@@ -1966,7 +1982,8 @@ fun ProgramExecutionScreen(
                         programId = programId,
                         currentSetIndex = currentIndex,
                         sets = navSession.sets.toList(),
-                        comment = navSession.comment
+                        comment = navSession.comment,
+                        startedAtWallMillis = navSession.startedAtWallMillis
                     )
                     showNavigationSheet = false
                     clearCheckpoint()

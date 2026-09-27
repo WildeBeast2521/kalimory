@@ -1,111 +1,71 @@
 package io.github.gonbei774.calisthenicsmemory.util
 
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
-import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
+import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
+import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
+import io.github.gonbei774.calisthenicsmemory.data.v2.BodySide
+import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
+import io.github.gonbei774.calisthenicsmemory.data.v2.Laterality
+import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramRun
+import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramRunExercise
+import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramRunSet
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 /**
- * プログラム実行結果を保存する
+ * プログラム実行結果を保存する: the run is saved as one v2 session (see [toProgramRun]).
  */
 fun saveProgramResults(
     viewModel: TrainingViewModel,
     session: ProgramExecutionSession
 ) {
-    val date = LocalDate.now().toString()
-    val time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
-
-    // 同じ種目がプログラム内で複数回出てくる場合、全セットをまとめて1回で保存
-    // 種目IDでグループ化
-    val groupedByExerciseId = session.exercises
-        .mapIndexed { index, pair -> index to pair }
-        .groupBy { (_, pair) -> pair.second.id }
-
-    var totalSetsRecorded = 0
-
-    groupedByExerciseId.forEach { (exerciseId, exerciseInfoList) ->
-        val exercise = exerciseInfoList.first().second.second
-
-        // この種目の全セット（プログラム内で複数回出てきても全て収集）
-        // isCompleted または isSkipped のセットを記録対象とする
-        val allSetsForExercise = exerciseInfoList.flatMap { (exerciseIndex, _) ->
-            session.sets.filter {
-                it.exerciseIndex == exerciseIndex && (it.isCompleted || it.isSkipped)
-            }
-        }
-
-        if (allSetsForExercise.isEmpty()) return@forEach
-
-        if (exercise.laterality == "Unilateral") {
-            // 片側種目: 右・左をまとめて記録
-            // 両方0のセットは除外、片方だけ0は保存
-            val groupedBySetNumber = allSetsForExercise.groupBy { it.setNumber }
-            val validSets = groupedBySetNumber.filter { (_, sets) ->
-                val rightValue = sets.firstOrNull { it.side == "Right" }?.actualValue ?: 0
-                val leftValue = sets.firstOrNull { it.side == "Left" }?.actualValue ?: 0
-                rightValue > 0 || leftValue > 0  // 少なくとも片方が0より大きい
-            }
-
-            val valuesRight = validSets.flatMap { (_, sets) ->
-                sets.filter { it.side == "Right" }.map { it.actualValue }
-            }
-            val valuesLeft = validSets.flatMap { (_, sets) ->
-                sets.filter { it.side == "Left" }.map { it.actualValue }
-            }
-            // tracking値はR/L共通なのでRight行から取得（編集時にR/L同期書き込み済み）
-            val rightSetsInOrder = validSets.flatMap { (_, sets) -> sets.filter { it.side == "Right" } }
-            val distancesCm = rightSetsInOrder.map { it.distanceCm }
-            val weightsG = rightSetsInOrder.map { it.weightG }
-            val assistancesG = rightSetsInOrder.map { it.assistanceG }
-
-            if (valuesRight.isNotEmpty()) {
-                viewModel.addTrainingRecordsUnilateral(
-                    exerciseId = exerciseId,
-                    valuesRight = valuesRight,
-                    valuesLeft = valuesLeft,
-                    date = date,
-                    time = time,
-                    comment = session.comment,
-                    distancesCm = distancesCm,
-                    weightsG = weightsG,
-                    assistancesG = assistancesG,
-                    emitMessage = false
-                )
-                totalSetsRecorded += valuesRight.size
-            }
-        } else {
-            // 両側種目: 0のセットは除外
-            val validSets = allSetsForExercise.filter { it.actualValue > 0 }
-            val values = validSets.map { it.actualValue }
-            val distancesCm = validSets.map { it.distanceCm }
-            val weightsG = validSets.map { it.weightG }
-            val assistancesG = validSets.map { it.assistanceG }
-
-            if (values.isNotEmpty()) {
-                viewModel.addTrainingRecords(
-                    exerciseId = exerciseId,
-                    values = values,
-                    date = date,
-                    time = time,
-                    comment = session.comment,
-                    distancesCm = distancesCm,
-                    weightsG = weightsG,
-                    assistancesG = assistancesG,
-                    emitMessage = false
-                )
-                totalSetsRecorded += values.size
-            }
-        }
-    }
-
-    if (totalSetsRecorded > 0) {
-        viewModel.notifyProgramSetsRecorded(totalSetsRecorded)
-    }
+    viewModel.recordProgramWorkout(session.toProgramRun(viewModel.groups.value, System.currentTimeMillis()))
 }
+
+/**
+ * This run as one v2 session. Every exercise occurrence keeps its own sets in execution
+ * order, loop rounds included; sets that were completed or skipped are recorded, and those
+ * without a value become skipped sets, which the legacy save dropped.
+ */
+fun ProgramExecutionSession.toProgramRun(groups: List<ExerciseGroup>, savedAtWallMillis: Long): ProgramRun =
+    ProgramRun(
+        programId = program.id,
+        programName = program.name,
+        exercises = exercises.mapIndexed { exerciseIndex, (programExercise, exercise) ->
+            ProgramRunExercise(
+                programExerciseId = programExercise.id,
+                exerciseId = exercise.id,
+                exerciseName = exercise.name,
+                kind = if (exercise.type == "Isometric") ExerciseKind.ISOMETRIC else ExerciseKind.DYNAMIC,
+                laterality = if (exercise.laterality == "Unilateral") Laterality.UNILATERAL else Laterality.BILATERAL,
+                groupId = exercise.group?.let { name -> groups.find { it.name == name }?.id },
+                groupName = exercise.group,
+                targetSets = programExercise.sets,
+                targetValue = programExercise.targetValue,
+                sets = sets.filter { it.exerciseIndex == exerciseIndex && (it.isCompleted || it.isSkipped) }.map { set ->
+                    ProgramRunSet(
+                        setNumber = set.setNumber,
+                        roundNumber = set.roundNumber.takeIf { set.loopId != null },
+                        side = when (set.side) {
+                            "Right" -> BodySide.RIGHT
+                            "Left" -> BodySide.LEFT
+                            else -> BodySide.BILATERAL
+                        },
+                        value = set.actualValue.coerceAtLeast(0),
+                        targetValue = set.targetValue,
+                        distanceCm = set.distanceCm,
+                        weightG = set.weightG,
+                        assistanceG = set.assistanceG,
+                        completedAtWallMillis = set.completedAtWallMillis,
+                    )
+                },
+            )
+        },
+        comment = comment,
+        startedAtWallMillis = startedAtWallMillis,
+        savedAtWallMillis = savedAtWallMillis,
+    )
 
 /**
  * セットリストを構築するファクトリ関数

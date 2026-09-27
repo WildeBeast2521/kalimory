@@ -67,4 +67,39 @@ class CompatibilityHistoryTest {
     @Test fun `v2 rows have no legacy record to edit`() {
         assertEquals(null, CompatibilityHistory.merge(emptyList(), listOf(row(1, reps = 5)), zone).single().toLegacyRecord())
     }
+
+    private fun programRow(id: Long, occurrence: Long, occurrenceOrder: Int, set: Int, round: Int?, reps: Int, exercise: Long = 1) =
+        row(id, exercise = exercise, set = set, reps = reps).copy(
+            sessionExerciseId = occurrence, sessionExerciseOrderIndex = occurrenceOrder, roundNumber = round, workoutSessionId = 5,
+        )
+
+    @Test fun `loop rounds that repeat a set number stay separate sets`() {
+        val rows = listOf(
+            programRow(1, occurrence = 10, occurrenceOrder = 0, set = 1, round = 1, reps = 10),
+            programRow(2, occurrence = 10, occurrenceOrder = 0, set = 1, round = 2, reps = 9),
+            programRow(3, occurrence = 10, occurrenceOrder = 0, set = 1, round = 3, reps = 8),
+        )
+        val merged = CompatibilityHistory.merge(emptyList(), rows, zone)
+        assertEquals(listOf(1 to 10, 2 to 9, 3 to 8), merged.map { it.setNumber to it.valueRight })
+        assertEquals(listOf(listOf(1L), listOf(2L), listOf(3L)), merged.map { it.setEntryIds })
+    }
+
+    @Test fun `an exercise repeated in one workout is numbered in execution order, like a legacy save`() {
+        val rows = listOf(
+            programRow(1, occurrence = 10, occurrenceOrder = 0, set = 1, round = null, reps = 10),
+            programRow(2, occurrence = 10, occurrenceOrder = 0, set = 2, round = null, reps = 9),
+            programRow(3, occurrence = 12, occurrenceOrder = 2, set = 1, round = null, reps = 5),
+            programRow(4, occurrence = 11, occurrenceOrder = 1, set = 1, round = null, reps = 30, exercise = 2),
+        )
+        val merged = CompatibilityHistory.merge(emptyList(), rows, zone)
+        assertEquals(listOf(1 to 10, 2 to 9, 3 to 5), merged.filter { it.exerciseId == 1L }.map { it.setNumber to it.valueRight })
+        assertEquals(listOf(1 to 30), merged.filter { it.exerciseId == 2L }.map { it.setNumber to it.valueRight })
+        assertEquals(listOf(10L, 10L, 12L), merged.filter { it.exerciseId == 1L }.map { it.sessionExerciseId })
+    }
+
+    @Test fun `a skipped set leaves no gap in the displayed numbers`() {
+        // Set 2 was skipped, so only sets 1 and 3 have completed rows.
+        val merged = CompatibilityHistory.merge(emptyList(), listOf(row(1, set = 1, reps = 5), row(3, set = 3, reps = 4)), zone)
+        assertEquals(listOf(1 to 5, 2 to 4), merged.map { it.setNumber to it.valueRight })
+    }
 }

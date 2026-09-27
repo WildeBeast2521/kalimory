@@ -57,6 +57,10 @@ data class V2HistoryRow(
     val completedAtEpochMillis: Long?,
     val sessionStartedAtEpochMillis: Long,
     val sessionComment: String?,
+    val workoutSessionId: Long = 0,
+    /** The occurrence's position in its workout, for execution order across occurrences. */
+    val sessionExerciseOrderIndex: Int = 0,
+    val roundNumber: Int? = null,
 )
 
 /**
@@ -76,8 +80,16 @@ object CompatibilityHistory {
                 it.valueRight, it.valueLeft, it.comment, it.distanceCm, it.weightG, it.assistanceG,
             )
         }
-        // RIGHT and LEFT entries of one set become one row, as the legacy screens store them.
-        val v2Sets = v2.groupBy { it.sessionExerciseId to it.setNumber }.values.map { rows ->
+        // RIGHT and LEFT entries of one set (in one round) become one row, as the legacy screens store them.
+        val v2Groups = v2.groupBy { Triple(it.sessionExerciseId, it.roundNumber, it.setNumber) }.values
+            .map { rows -> rows.sortedBy { it.orderIndex } }
+        // Legacy saves numbered an exercise's sets 1..n in execution order, across rounds and repeated
+        // occurrences in one workout; displayed v2 set numbers follow that rule.
+        val numbered = v2Groups.groupBy { it.first().workoutSessionId to it.first().exerciseId }.values.flatMap { sets ->
+            sets.sortedWith(compareBy({ it.first().sessionExerciseOrderIndex }, { it.first().orderIndex }))
+                .mapIndexed { index, rows -> index + 1 to rows }
+        }
+        val v2Sets = numbered.map { (displayNumber, rows) ->
             val right = rows.firstOrNull { it.side == BodySide.RIGHT }
             val left = rows.firstOrNull { it.side == BodySide.LEFT }
             val primary = rows.firstOrNull { it.side == BodySide.BILATERAL } ?: right ?: left!!
@@ -87,11 +99,11 @@ object CompatibilityHistory {
             HistorySet(
                 source = HistorySource.V2,
                 legacyRecordId = null,
-                setEntryIds = rows.sortedBy { it.orderIndex }.map { it.setEntryId },
+                setEntryIds = rows.map { it.setEntryId },
                 exerciseId = primary.exerciseId,
                 date = at.format(DATE),
                 time = at.format(TIME),
-                setNumber = primary.setNumber,
+                setNumber = displayNumber,
                 valueRight = value(primary),
                 valueLeft = if (primary.side == BodySide.BILATERAL || left == null || left === primary) null else value(left),
                 comment = primary.sessionComment.orEmpty(),

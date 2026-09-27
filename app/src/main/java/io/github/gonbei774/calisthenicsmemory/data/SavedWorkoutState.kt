@@ -25,7 +25,8 @@ class SavedWorkoutState(context: Context) {
         programId: Long,
         currentSetIndex: Int,
         sets: List<ProgramWorkoutSet>,
-        comment: String
+        comment: String,
+        startedAtWallMillis: Long? = null
     ) {
         val setsJson = json.encodeToString(sets)
         prefs.edit()
@@ -34,6 +35,9 @@ class SavedWorkoutState(context: Context) {
             .putString(KEY_SETS, setsJson)
             .putString(KEY_COMMENT, comment)
             .putLong(KEY_SAVED_AT, System.currentTimeMillis())
+            .apply {
+                if (startedAtWallMillis != null) putLong(KEY_STARTED_AT, startedAtWallMillis) else remove(KEY_STARTED_AT)
+            }
             .apply()
     }
 
@@ -88,6 +92,10 @@ class SavedWorkoutState(context: Context) {
         return prefs.getLong(KEY_SAVED_AT, 0L)
     }
 
+    /** When the saved run began, or null when it was not recorded. */
+    fun getStartedAt(): Long? =
+        if (prefs.contains(KEY_STARTED_AT)) prefs.getLong(KEY_STARTED_AT, 0L) else null
+
     /**
      * 途中状態をクリア
      */
@@ -102,5 +110,6 @@ class SavedWorkoutState(context: Context) {
         private const val KEY_SETS = "sets"
         private const val KEY_COMMENT = "comment"
         private const val KEY_SAVED_AT = "saved_at"
+        private const val KEY_STARTED_AT = "started_at"
     }
 }
