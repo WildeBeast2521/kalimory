@@ -42,6 +42,11 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.ManualWorkout
+import io.github.gonbei774.calisthenicsmemory.data.v2.ManualSet
+import io.github.gonbei774.calisthenicsmemory.data.v2.Laterality
+import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
+import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
@@ -224,31 +229,6 @@ fun RecordScreen(
                 onShowTimePicker = { showTimePicker = it },
                 onDateSelected = { selectedDate = it },
                 onTimeSelected = { selectedTime = it },
-                onRecord = {
-                    val values = setValues
-                        .filter { it.isNotBlank() }
-                        .mapNotNull { it.toIntOrNull() }
-                        .filter { it >= 0 }
-
-                    if (values.isNotEmpty()) {
-                        viewModel.addTrainingRecords(
-                            exerciseId = selectedExercise!!.id,
-                            values = values,
-                            date = selectedDate.format(dateFormatter),
-                            time = selectedTime.format(timeFormatter),
-                            comment = comment
-                        )
-
-                        // Reset and go back to selection
-                        selectedExercise = null
-                        numberOfSets = 1
-                        setValues = List(1) { "" }
-                        selectedDate = LocalDate.now()
-                        selectedTime = LocalTime.now()
-                        comment = ""
-                        currentStep = RecordStep.SelectExercise
-                    }
-                },
                 viewModel = viewModel
             )
         }
@@ -689,10 +669,10 @@ fun WorkoutInputScreen(
     onShowTimePicker: (Boolean) -> Unit,
     onDateSelected: (LocalDate) -> Unit,
     onTimeSelected: (LocalTime) -> Unit,
-    onRecord: () -> Unit,
     viewModel: TrainingViewModel
 ) {
     val appColors = LocalAppColors.current
+    val groups by viewModel.groups.collectAsState()
     // Unilateral判定
     val isUnilateral = exercise.laterality == "Unilateral"
 
@@ -870,20 +850,15 @@ fun WorkoutInputScreen(
                     parseWeightG(assistanceInputs.getOrElse(i) { "" })
                 }
 
-                viewModel.addTrainingRecordsUnilateral(
-                    exerciseId = exercise.id,
-                    valuesRight = valuesRight,
-                    valuesLeft = valuesLeft,
-                    date = selectedDate.format(dateFormatter),
-                    time = selectedTime.format(timeFormatter),
-                    comment = comment,
-                    distancesCm = distancesCm,
-                    weightsG = weightsG,
-                    assistancesG = assistancesG
+                viewModel.recordManualWorkout(
+                    manualWorkout(
+                        exercise, groups, selectedDate, selectedTime, comment,
+                        valuesRight.indices.map { i ->
+                            ManualSet(valuesRight[i], valuesLeft[i], distancesCm[i], weightsG[i], assistancesG[i])
+                        }
+                    ),
+                    completeTodo = fromToDo
                 )
-                if (fromToDo) {
-                    viewModel.completeTodoTaskByReference(TodoTask.TYPE_EXERCISE, exercise.id)
-                }
                 onNavigateBack()
             }
         } else {
@@ -906,19 +881,15 @@ fun WorkoutInputScreen(
                     parseWeightG(assistanceInputs.getOrElse(i) { "" })
                 }
 
-                viewModel.addTrainingRecords(
-                    exerciseId = exercise.id,
-                    values = values,
-                    date = selectedDate.format(dateFormatter),
-                    time = selectedTime.format(timeFormatter),
-                    comment = comment,
-                    distancesCm = distancesCm,
-                    weightsG = weightsG,
-                    assistancesG = assistancesG
+                viewModel.recordManualWorkout(
+                    manualWorkout(
+                        exercise, groups, selectedDate, selectedTime, comment,
+                        values.indices.map { i ->
+                            ManualSet(values[i], null, distancesCm[i], weightsG[i], assistancesG[i])
+                        }
+                    ),
+                    completeTodo = fromToDo
                 )
-                if (fromToDo) {
-                    viewModel.completeTodoTaskByReference(TodoTask.TYPE_EXERCISE, exercise.id)
-                }
                 onNavigateBack()
             }
         }
@@ -1975,3 +1946,25 @@ private fun InlineStepperRow(
         }
     }
 }
+
+/** Sets entered by hand for [exercise], as one v2 manual session. Group links resolve through [groups]. */
+private fun manualWorkout(
+    exercise: Exercise,
+    groups: List<ExerciseGroup>,
+    date: LocalDate,
+    time: LocalTime,
+    comment: String,
+    sets: List<ManualSet>
+) = ManualWorkout(
+    exerciseId = exercise.id,
+    exerciseName = exercise.name,
+    kind = if (exercise.type == "Isometric") ExerciseKind.ISOMETRIC else ExerciseKind.DYNAMIC,
+    laterality = if (exercise.laterality == "Unilateral") Laterality.UNILATERAL else Laterality.BILATERAL,
+    groupId = exercise.group?.let { name -> groups.find { it.name == name }?.id },
+    groupName = exercise.group,
+    date = date,
+    time = time,
+    sets = sets,
+    comment = comment,
+    savedAtWallMillis = System.currentTimeMillis()
+)

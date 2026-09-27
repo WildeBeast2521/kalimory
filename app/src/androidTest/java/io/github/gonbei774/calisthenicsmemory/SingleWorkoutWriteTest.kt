@@ -23,6 +23,11 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.ZoneId
+import java.time.LocalTime
+import java.time.LocalDate
+import io.github.gonbei774.calisthenicsmemory.data.v2.ManualWorkoutWriter
+import io.github.gonbei774.calisthenicsmemory.data.v2.ManualWorkout
+import io.github.gonbei774.calisthenicsmemory.data.v2.ManualSet
 import java.time.ZonedDateTime
 
 /** A finished single workout is written as one v2 session and shows in history like a legacy save. */
@@ -83,5 +88,22 @@ class SingleWorkoutWriteTest {
     fun nothingIsWrittenWhenNoSetWasDone() = runBlocking {
         assertNull(SingleWorkoutWriter.write(database, workout(listOf(set(1, BodySide.RIGHT, 0, null)))))
         assertEquals(emptyList<Any>(), database.workoutSessionDao().sessionsNewestFirst())
+    }
+
+    @Test
+    fun aManualEntryShowsAtTheChosenMinuteLikeALegacyRecord() = runBlocking {
+        val entry = ManualWorkout(
+            exerciseId = 1, exerciseName = "Lunge", kind = ExerciseKind.DYNAMIC, laterality = Laterality.UNILATERAL,
+            groupId = null, groupName = null, date = LocalDate.of(2025, 1, 2), time = LocalTime.of(7, 5),
+            sets = listOf(ManualSet(9, 8, null, null, null), ManualSet(0, null, null, null, null)), comment = "by hand",
+            savedAtWallMillis = start,
+        )
+        ManualWorkoutWriter.write(database, entry, zone)
+        val history = CompatibilityHistory.read(database, zone)
+        assertEquals(
+            listOf(Triple("2025-01-02", "07:05", 1 to (9 to 8)), Triple("2025-01-02", "07:05", 2 to (0 to null))),
+            history.map { Triple(it.date, it.time, it.setNumber to (it.valueRight to it.valueLeft)) },
+        )
+        assertEquals(setOf("by hand"), history.map { it.comment }.toSet())
     }
 }
