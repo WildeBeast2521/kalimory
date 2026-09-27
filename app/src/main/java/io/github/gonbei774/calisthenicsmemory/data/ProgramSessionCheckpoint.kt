@@ -20,6 +20,8 @@ data class ProgramSessionCheckpoint(
     val sets: List<ProgramWorkoutSet>,
     val comment: String,
     val savedAtWallMillis: Long,
+    /** When the run began; absent in checkpoints written before it was recorded. */
+    val startedAtWallMillis: Long? = null,
 ) {
     companion object {
         const val CURRENT_VERSION = 1

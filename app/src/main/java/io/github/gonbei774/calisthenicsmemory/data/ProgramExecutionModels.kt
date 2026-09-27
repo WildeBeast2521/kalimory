@@ -28,7 +28,9 @@ data class ProgramWorkoutSet(
     // 前回値（表示用）
     val previousWeightG: Int? = null,
     val previousDistanceCm: Int? = null,
-    val previousAssistanceG: Int? = null
+    val previousAssistanceG: Int? = null,
+    // When the set was observed to finish (wall clock); null when not timed.
+    var completedAtWallMillis: Long? = null
 )
 
 /**
@@ -39,7 +41,9 @@ data class ProgramExecutionSession(
     val exercises: List<Pair<ProgramExercise, Exercise>>, // ProgramExercise + Exercise情報
     val sets: MutableList<ProgramWorkoutSet>,             // 実行順の全セット
     var comment: String = "",
-    val loops: List<ProgramLoop> = emptyList()            // ループ情報
+    val loops: List<ProgramLoop> = emptyList(),           // ループ情報
+    // When the first set, or its countdown, began (wall clock); null until then.
+    var startedAtWallMillis: Long? = null
 )
 
 /**

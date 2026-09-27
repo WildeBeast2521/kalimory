@@ -20,6 +20,8 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.v2.ManualWorkout
 import io.github.gonbei774.calisthenicsmemory.data.v2.ManualWorkoutWriter
+import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramRun
+import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkout
 import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.V2HistoryEditor
@@ -383,90 +385,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    // Training Record operations
-    // セット別の距離/重量/アシストに対応。リストはvaluesと同じindexで整列していることを呼び出し側で保証すること
-    fun addTrainingRecords(
-        exerciseId: Long,
-        values: List<Int>,
-        date: String,
-        time: String,
-        comment: String,
-        distancesCm: List<Int?> = emptyList(),   // セット別距離（cm）
-        weightsG: List<Int?> = emptyList(),      // セット別追加ウエイト（g）
-        assistancesG: List<Int?> = emptyList(),  // セット別アシスト量（g）
-        emitMessage: Boolean = true              // false の場合スナックバー通知を抑制（プログラムモードで合計を1回だけ流すため）
-    ) {
-        viewModelScope.launch {
-            try {
-                val records = values.mapIndexed { index, value ->
-                    TrainingRecord(
-                        exerciseId = exerciseId,
-                        valueRight = value,
-                        valueLeft = null,
-                        setNumber = index + 1,
-                        date = date,
-                        time = time,
-                        comment = comment,
-                        distanceCm = distancesCm.getOrNull(index),
-                        weightG = weightsG.getOrNull(index),
-                        assistanceG = assistancesG.getOrNull(index)
-                    )
-                }
-                recordDao.insertRecords(records)
-                if (emitMessage) {
-                    _snackbarMessage.value = UiMessage.SetsRecorded(values.size)
-                }
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
-    // Unilateral種目用（セット別の距離/重量/アシストに対応）
-    fun addTrainingRecordsUnilateral(
-        exerciseId: Long,
-        valuesRight: List<Int>,
-        valuesLeft: List<Int?>,
-        date: String,
-        time: String,
-        comment: String,
-        distancesCm: List<Int?> = emptyList(),   // セット別距離（cm）
-        weightsG: List<Int?> = emptyList(),      // セット別追加ウエイト（g）
-        assistancesG: List<Int?> = emptyList(),  // セット別アシスト量（g）
-        emitMessage: Boolean = true              // false の場合スナックバー通知を抑制（プログラムモードで合計を1回だけ流すため）
-    ) {
-        viewModelScope.launch {
-            try {
-                // 右側の値を基準にレコードを作成
-                val records = valuesRight.mapIndexed { index, valueRight ->
-                    TrainingRecord(
-                        exerciseId = exerciseId,
-                        valueRight = valueRight,
-                        valueLeft = valuesLeft.getOrNull(index),  // 左側の値（なければnull）
-                        setNumber = index + 1,
-                        date = date,
-                        time = time,
-                        comment = comment,
-                        distanceCm = distancesCm.getOrNull(index),
-                        weightG = weightsG.getOrNull(index),
-                        assistanceG = assistancesG.getOrNull(index)
-                    )
-                }
-                recordDao.insertRecords(records)
-                if (emitMessage) {
-                    _snackbarMessage.value = UiMessage.SetsRecorded(valuesRight.size)
-                }
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
-    /** プログラムモード保存完了の通知（合計セット数を1回だけ流す） */
-    fun notifyProgramSetsRecorded(totalSets: Int) {
-        _snackbarMessage.value = UiMessage.ProgramSetsRecorded(totalSets)
-    }
-
+    // Training Record operations (legacy rows; new training is written as v2 sessions)
     fun updateRecord(record: TrainingRecord) {
         viewModelScope.launch {
             try {
@@ -1444,6 +1363,19 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                     _snackbarMessage.value = UiMessage.SetsRecorded(workout.completedSetCount)
                 }
                 if (completeTodo) completeTodoTask(TodoTask.TYPE_EXERCISE, workout.exerciseId)
+            } catch (e: Exception) {
+                _snackbarMessage.value = UiMessage.ErrorOccurred
+            }
+        }
+    }
+
+    /** Saves a finished program run as one v2 session. */
+    fun recordProgramWorkout(run: ProgramRun) {
+        viewModelScope.launch {
+            try {
+                if (ProgramWorkoutWriter.write(database, run) != null) {
+                    _snackbarMessage.value = UiMessage.ProgramSetsRecorded(run.completedSetCount)
+                }
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }

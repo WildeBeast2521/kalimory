@@ -11,6 +11,10 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
 import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySource
 import io.github.gonbei774.calisthenicsmemory.data.v2.Laterality
+import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramRun
+import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramRunExercise
+import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramRunSet
+import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.SetEntryStatus
 import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkout
 import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkoutSet
@@ -105,5 +109,29 @@ class SingleWorkoutWriteTest {
             history.map { Triple(it.date, it.time, it.setNumber to (it.valueRight to it.valueLeft)) },
         )
         assertEquals(setOf("by hand"), history.map { it.comment }.toSet())
+    }
+
+    @Test
+    fun aProgramRunShowsEachRoundAndOccurrenceAsItsOwnSet() = runBlocking {
+        fun runSet(number: Int, round: Int?, value: Int) =
+            ProgramRunSet(number, round, BodySide.RIGHT, value, 10, null, null, null, start + 60_000)
+        fun occurrence(programExerciseId: Long, sets: List<ProgramRunSet>) = ProgramRunExercise(
+            programExerciseId, exerciseId = 1, exerciseName = "Lunge", kind = ExerciseKind.DYNAMIC,
+            laterality = Laterality.UNILATERAL, groupId = null, groupName = null, targetSets = 1, targetValue = 10, sets = sets,
+        )
+        val run = ProgramRun(
+            programId = 9, programName = "Legs",
+            // A two-round loop, then the same exercise again outside the loop.
+            exercises = listOf(occurrence(21, listOf(runSet(1, 1, 10), runSet(1, 2, 9))), occurrence(22, listOf(runSet(1, null, 7)))),
+            comment = "Legs day", startedAtWallMillis = start, savedAtWallMillis = start + 600_000,
+        )
+        val sessionId = ProgramWorkoutWriter.write(database, run)!!
+        val session = database.workoutSessionDao().session(sessionId)!!
+        assertEquals(9L, session.sourceTemplateId)
+        assertEquals("Legs", session.sourceNameSnapshot)
+
+        val history = CompatibilityHistory.read(database, zone)
+        assertEquals(listOf(1 to 10, 2 to 9, 3 to 7), history.map { it.setNumber to it.valueRight })
+        assertEquals(setOf("Legs day"), history.map { it.comment }.toSet())
     }
 }
