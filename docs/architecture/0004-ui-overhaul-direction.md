@@ -11,7 +11,7 @@ Task 8 of `docs/plans/2026-08-30-overhaul-bootstrap.md` delivers the visible ove
 
 1. **No feature flag.** The app is not published until the overhaul is complete, so the new UI replaces the old one directly. The plan's flag and its "flag off" acceptance items, including the Task 7 item in `docs/development/v2-workout-history.md`, no longer apply. Legacy screens stay reachable until their replacements reach parity, and are removed only after an explicit parity review. Data safety rules are unchanged: no data is deleted or hidden, and every change stays exportable and restorable.
 
-2. **Material 3 Expressive.** The owner chose it after comparison with apps that use it:
+2. **Material 3 Expressive.** *Reopened 2026-09-27: the owner asked for a full UI/UX research plan before committing to a design system, and is willing to replace the current implementation. The dependency stays until that plan is decided.* The owner chose it after comparison with apps that use it:
    - mpvEx: Compose, `material3:1.5.0-alpha15`, Expressive components.
    - ArrMatey: Compose Multiplatform, `material3:1.5.0-alpha14`, `MaterialExpressiveTheme`.
    - Obtainium: Flutter; it builds its own Expressive-style theme and is not directly comparable.

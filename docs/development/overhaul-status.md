@@ -19,7 +19,8 @@ Task 8, slice 5: the remaining history readers include v2-only workouts. Branch 
 
 ## Owner direction for later (2026-09-27)
 
-- The Task 8 UI must look premium. Use the installed design skills, within ADR 0004.
+- The Task 8 UI must look premium and perform well. Use the installed design skills.
+- **The design system is reopened.** The owner does not want Material 3 Expressive locked in: the current implementation may be replaced if something is better. Before more visual work, write a full UI/UX research plan and compare the options (M3 Expressive, custom on Compose Foundation, others) on look, performance, accessibility, maintenance and license. The owner decides from that plan. Until then, only structural work continues (navigation, data paths). Its visuals are provisional.
 - A progression system (a full ranked catalogue, progressions, custom exercises, daily goals, demonstrations) comes after Task 8. It will be planned in depth first. Brief: `docs/plans/future-progression-system-brief.md`.
 
 ## Previous phase: history screens on the compatibility reader (merged)
@@ -184,6 +185,6 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 1. Allow v2 sets to be edited and deleted in Progress, so v2 can become a write path without losing edit ability.
 2. Add the single-workout v2 write path, with the one-time backfill and dual-read comparison at cutover (`docs/development/v2-workout-history.md`).
 3. Move program and interval workouts onto sessions, then add `UnifiedWorkoutFlowTest`.
-4. Build the premium visual design system and apply it to the destinations and workout screens.
+4. Before any further visual work: research and write the UI/UX design-system plan (ADR 0004 decision 2 is reopened). Build it only after the owner chooses.
 
 Files likely involved next: `ui/screens/view/`, `data/v2/WorkoutSessionDao.kt`, `viewmodel/TrainingViewModel.kt`.
