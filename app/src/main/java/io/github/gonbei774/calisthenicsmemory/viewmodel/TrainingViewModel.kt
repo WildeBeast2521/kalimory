@@ -18,6 +18,7 @@ import io.github.gonbei774.calisthenicsmemory.data.restoreMissingGroups
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.V2HistoryEditor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -341,6 +342,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun loadDeleteImpact(exercise: Exercise) {
         _deleteImpact.value = null
         viewModelScope.launch {
+            // Legacy records are what the delete removes; v2 sets keep their snapshot and survive it.
             val recordCount = recordDao.countByExercise(exercise.id)
             val programNames = programExerciseDao.getProgramNamesUsingExercise(exercise.id)
             val intervalNames = intervalProgramExerciseDao.getProgramNamesUsingExercise(exercise.id)
@@ -477,6 +479,40 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             try {
                 recordDao.deleteSession(exerciseId, date, time)
                 _snackbarMessage.value = UiMessage.RecordDeleted
+            } catch (e: Exception) {
+                _snackbarMessage.value = UiMessage.ErrorOccurred
+            }
+        }
+    }
+
+    fun updateV2SetValues(set: HistorySet, valueRight: Int, valueLeft: Int?) = editV2(UiMessage.RecordUpdated) {
+        V2HistoryEditor.updateSetValues(database, set, valueRight, valueLeft)
+    }
+
+    fun updateV2Session(
+        sets: List<HistorySet>,
+        date: String,
+        time: String,
+        comment: String,
+        distancesCm: List<Int?>,
+        weightsG: List<Int?>,
+        assistancesG: List<Int?>
+    ) = editV2(UiMessage.RecordUpdated) {
+        V2HistoryEditor.updateSession(
+            database, sets, date, time, comment, distancesCm, weightsG, assistancesG,
+            ZoneId.systemDefault(), System.currentTimeMillis()
+        )
+    }
+
+    fun deleteV2Sets(sets: List<HistorySet>) = editV2(UiMessage.RecordDeleted) {
+        V2HistoryEditor.delete(database, sets)
+    }
+
+    private fun editV2(done: UiMessage, edit: suspend () -> Unit) {
+        viewModelScope.launch {
+            try {
+                edit()
+                _snackbarMessage.value = done
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
@@ -1433,7 +1469,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         // グループ内の全種目に今日の記録があるか確認
         val groupExercises = exercises.value.filter { it.group == groupName }
         val allCompleted = groupExercises.all { ex ->
-            recordDao.hasRecordOnDate(ex.id, todayStr)
+            hasRecordOnDate(ex.id, todayStr)
         }
 
         if (allCompleted) {

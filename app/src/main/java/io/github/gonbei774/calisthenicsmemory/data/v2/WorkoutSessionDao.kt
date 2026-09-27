@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import androidx.room.Transaction
+import androidx.room.Update
 
 /** A workout with its exercises and their sets, in order. */
 data class WorkoutSessionGraph(
@@ -26,6 +27,32 @@ interface WorkoutSessionDao {
 
     @Query("SELECT * FROM workout_sessions WHERE id = :id")
     suspend fun session(id: Long): WorkoutSessionEntity?
+
+    @Update
+    suspend fun updateSession(session: WorkoutSessionEntity)
+
+    @Update
+    suspend fun updateSetEntries(sets: List<SetEntryEntity>)
+
+    @Query("SELECT * FROM set_entries WHERE id IN (:ids)")
+    suspend fun setEntriesByIds(ids: List<Long>): List<SetEntryEntity>
+
+    @Query("SELECT * FROM session_exercises WHERE id IN (:ids)")
+    suspend fun sessionExercisesByIds(ids: List<Long>): List<SessionExerciseEntity>
+
+    @Query("SELECT * FROM set_entries WHERE sessionExerciseId IN (SELECT id FROM session_exercises WHERE workoutSessionId = :sessionId)")
+    suspend fun setEntriesOfSession(sessionId: Long): List<SetEntryEntity>
+
+    /** Deletes the occurrences with their sets (the sets cascade). */
+    @Query("DELETE FROM session_exercises WHERE id IN (:ids)")
+    suspend fun deleteSessionExercises(ids: List<Long>)
+
+    /** Deletes those of [ids] that no longer have any exercise. */
+    @Query(
+        "DELETE FROM workout_sessions WHERE id IN (:ids) " +
+            "AND NOT EXISTS (SELECT 1 FROM session_exercises WHERE workoutSessionId = workout_sessions.id)"
+    )
+    suspend fun deleteEmptySessions(ids: List<Long>)
 
     @Query("SELECT * FROM workout_sessions ORDER BY startedAtEpochMillis DESC, id DESC")
     suspend fun sessionsNewestFirst(): List<WorkoutSessionEntity>

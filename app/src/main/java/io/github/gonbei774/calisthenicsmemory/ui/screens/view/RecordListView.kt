@@ -166,8 +166,7 @@ fun SessionCard(
                     )
                 }
 
-                // v2 sessions are read-only here, so they get no edit/delete menu.
-                if (session.isEditable) Box {
+                Box {
                     var menuExpanded by remember { mutableStateOf(false) }
                     IconButton(onClick = { menuExpanded = true }) {
                         Icon(

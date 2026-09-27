@@ -56,10 +56,7 @@ data class SessionInfo(
     val comment: String,
     val records: List<HistorySet>,
     val source: HistorySource = HistorySource.LEGACY
-) {
-    /** Only legacy sessions can be edited or deleted here; v2 sets are read-only until v2 editing exists. */
-    val isEditable: Boolean get() = source == HistorySource.LEGACY
-}
+)
 
 // 統一リスト用sealed class
 sealed class RecordItem(val date: String, val time: String) {
@@ -347,8 +344,7 @@ fun ViewScreen(
                             onExerciseClick = { exercise ->
                                 selectedExerciseFilter = exercise
                             },
-                            onRecordClick = onRecordClick@{ record ->
-                                if (record.source != HistorySource.LEGACY) return@onRecordClick
+                            onRecordClick = { record ->
                                 editingRecord = record
                                 if (record.valueLeft != null) {
                                     // Unilateral
@@ -360,10 +356,10 @@ fun ViewScreen(
                                 }
                             },
                             onSessionLongPress = { session ->
-                                if (session.isEditable) showSessionEditDialog = session
+                                showSessionEditDialog = session
                             },
                             onDeleteClick = { session ->
-                                if (session.isEditable) showDeleteDialog = session
+                                showDeleteDialog = session
                             },
                             onIntervalEditClick = { record ->
                                 showIntervalEditDialog = record
@@ -548,8 +544,11 @@ fun ViewScreen(
                             val newValueLeft = editValueLeft.toIntOrNull()
 
                             if (newValueRight != null && newValueRight >= 0) {
-                                record.toLegacyRecord()?.let {
-                                    viewModel.updateRecord(it.copy(valueRight = newValueRight, valueLeft = newValueLeft))
+                                val legacy = record.toLegacyRecord()
+                                if (legacy != null) {
+                                    viewModel.updateRecord(legacy.copy(valueRight = newValueRight, valueLeft = newValueLeft))
+                                } else {
+                                    viewModel.updateV2SetValues(record, newValueRight, newValueLeft)
                                 }
                                 editingRecord = null
                                 editValueRight = ""
@@ -559,7 +558,9 @@ fun ViewScreen(
                             // Bilateral: 従来通り
                             editValue.toIntOrNull()?.let { newValue ->
                                 if (newValue >= 0) {
-                                    record.toLegacyRecord()?.let { viewModel.updateRecord(it.copy(valueRight = newValue)) }
+                                    val legacy = record.toLegacyRecord()
+                                    if (legacy != null) viewModel.updateRecord(legacy.copy(valueRight = newValue))
+                                    else viewModel.updateV2SetValues(record, newValue, null)
                                     editingRecord = null
                                     editValue = ""
                                 }
@@ -619,6 +620,11 @@ fun ViewScreen(
             exercise = editExercise,
             onDismiss = { showSessionEditDialog = null },
             onConfirm = { newDate, newTime, newComment, newDistancesCm, newWeightsG, newAssistancesG ->
+                if (session.source == HistorySource.V2) {
+                    viewModel.updateV2Session(
+                        session.records, newDate, newTime, newComment, newDistancesCm, newWeightsG, newAssistancesG
+                    )
+                }
                 session.records.forEachIndexed { index, record ->
                     val legacy = record.toLegacyRecord() ?: return@forEachIndexed
                     viewModel.updateRecord(
@@ -655,11 +661,15 @@ fun ViewScreen(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        viewModel.deleteSession(
-                            session.exerciseId,
-                            session.date,
-                            session.time
-                        )
+                        if (session.source == HistorySource.V2) {
+                            viewModel.deleteV2Sets(session.records)
+                        } else {
+                            viewModel.deleteSession(
+                                session.exerciseId,
+                                session.date,
+                                session.time
+                            )
+                        }
                         showDeleteDialog = null
                     },
                     colors = ButtonDefaults.textButtonColors(
