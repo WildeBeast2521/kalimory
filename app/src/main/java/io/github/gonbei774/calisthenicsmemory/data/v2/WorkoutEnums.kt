@@ -21,6 +21,8 @@ enum class WorkoutSourceType(override val code: String) : StableCode {
     PROGRAM_TEMPLATE("PROGRAM_TEMPLATE"),
     INTERVAL_TEMPLATE("INTERVAL_TEMPLATE"),
     LEGACY_IMPORT("LEGACY_IMPORT"),
+    /** Entered by hand after the fact, with a user-chosen date and time. */
+    MANUAL("MANUAL"),
 }
 
 enum class SetEntryStatus(override val code: String) : StableCode {

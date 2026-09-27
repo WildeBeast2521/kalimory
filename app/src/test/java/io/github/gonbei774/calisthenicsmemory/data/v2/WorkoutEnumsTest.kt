@@ -11,7 +11,7 @@ class WorkoutEnumsTest {
 
     @Test fun `persisted codes are exactly these`() {
         assertEquals(listOf("PLANNED", "ACTIVE", "PAUSED", "COMPLETED", "ABANDONED"), codes<WorkoutSessionStatus>())
-        assertEquals(listOf("AD_HOC", "PROGRAM_TEMPLATE", "INTERVAL_TEMPLATE", "LEGACY_IMPORT"), codes<WorkoutSourceType>())
+        assertEquals(listOf("AD_HOC", "PROGRAM_TEMPLATE", "INTERVAL_TEMPLATE", "LEGACY_IMPORT", "MANUAL"), codes<WorkoutSourceType>())
         assertEquals(listOf("PENDING", "COMPLETED", "SKIPPED"), codes<SetEntryStatus>())
         assertEquals(listOf("BILATERAL", "RIGHT", "LEFT"), codes<BodySide>())
         assertEquals(listOf("DYNAMIC", "ISOMETRIC"), codes<ExerciseKind>())

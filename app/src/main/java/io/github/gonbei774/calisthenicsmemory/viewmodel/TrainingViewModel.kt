@@ -18,6 +18,8 @@ import io.github.gonbei774.calisthenicsmemory.data.restoreMissingGroups
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.ManualWorkout
+import io.github.gonbei774.calisthenicsmemory.data.v2.ManualWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkout
 import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.V2HistoryEditor
@@ -1440,6 +1442,20 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             try {
                 if (SingleWorkoutWriter.write(database, workout) != null) {
                     _snackbarMessage.value = UiMessage.SetsRecorded(workout.completedSetCount)
+                }
+                if (completeTodo) completeTodoTask(TodoTask.TYPE_EXERCISE, workout.exerciseId)
+            } catch (e: Exception) {
+                _snackbarMessage.value = UiMessage.ErrorOccurred
+            }
+        }
+    }
+
+    /** Saves sets entered by hand as one v2 session, then completes the to-do it came from, in that order. */
+    fun recordManualWorkout(workout: ManualWorkout, completeTodo: Boolean) {
+        viewModelScope.launch {
+            try {
+                if (ManualWorkoutWriter.write(database, workout, ZoneId.systemDefault()) != null) {
+                    _snackbarMessage.value = UiMessage.SetsRecorded(workout.sets.size)
                 }
                 if (completeTodo) completeTodoTask(TodoTask.TYPE_EXERCISE, workout.exerciseId)
             } catch (e: Exception) {
