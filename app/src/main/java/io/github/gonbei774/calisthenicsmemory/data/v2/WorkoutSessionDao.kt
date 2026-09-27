@@ -75,7 +75,8 @@ interface WorkoutSessionDao {
         SELECT t.id AS setEntryId, t.sessionExerciseId, e.exerciseId, e.exerciseKindSnapshot, t.setNumber,
                t.orderIndex, t.side, t.repetitions, t.durationMillis, t.distanceCm, t.addedWeightGrams,
                t.assistanceGrams, t.completedAtEpochMillis, s.startedAtEpochMillis AS sessionStartedAtEpochMillis,
-               s.comment AS sessionComment
+               s.comment AS sessionComment, s.id AS workoutSessionId, e.orderIndex AS sessionExerciseOrderIndex,
+               t.roundNumber
         FROM set_entries t
         JOIN session_exercises e ON e.id = t.sessionExerciseId
         JOIN workout_sessions s ON s.id = e.workoutSessionId
@@ -91,7 +92,8 @@ interface WorkoutSessionDao {
         SELECT t.id AS setEntryId, t.sessionExerciseId, e.exerciseId, e.exerciseKindSnapshot, t.setNumber,
                t.orderIndex, t.side, t.repetitions, t.durationMillis, t.distanceCm, t.addedWeightGrams,
                t.assistanceGrams, t.completedAtEpochMillis, s.startedAtEpochMillis AS sessionStartedAtEpochMillis,
-               s.comment AS sessionComment
+               s.comment AS sessionComment, s.id AS workoutSessionId, e.orderIndex AS sessionExerciseOrderIndex,
+               t.roundNumber
         FROM set_entries t
         JOIN session_exercises e ON e.id = t.sessionExerciseId
         JOIN workout_sessions s ON s.id = e.workoutSessionId
@@ -107,7 +109,8 @@ interface WorkoutSessionDao {
         SELECT t.id AS setEntryId, t.sessionExerciseId, e.exerciseId, e.exerciseKindSnapshot, t.setNumber,
                t.orderIndex, t.side, t.repetitions, t.durationMillis, t.distanceCm, t.addedWeightGrams,
                t.assistanceGrams, t.completedAtEpochMillis, s.startedAtEpochMillis AS sessionStartedAtEpochMillis,
-               s.comment AS sessionComment
+               s.comment AS sessionComment, s.id AS workoutSessionId, e.orderIndex AS sessionExerciseOrderIndex,
+               t.roundNumber
         FROM set_entries t
         JOIN session_exercises e ON e.id = t.sessionExerciseId
         JOIN workout_sessions s ON s.id = e.workoutSessionId
