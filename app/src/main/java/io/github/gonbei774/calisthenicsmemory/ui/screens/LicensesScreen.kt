@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -13,7 +14,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
-import com.mikepenz.aboutlibraries.ui.compose.m3.LibraryDefaults
+import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
+import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
+import com.mikepenz.aboutlibraries.ui.compose.m3.libraryColors
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 
@@ -54,15 +57,16 @@ fun LicensesScreen(
             }
         }
     ) { paddingValues ->
+        // Generated at build time by the AboutLibraries Android plugin (res/raw/aboutlibraries).
+        val libraries by produceLibraries()
         LibrariesContainer(
+            libraries = libraries,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
             colors = LibraryDefaults.libraryColors(
-                backgroundColor = appColors.background,
-                contentColor = appColors.textPrimary,
-                badgeBackgroundColor = Color(0xFF9333EA), // Purple600
-                badgeContentColor = appColors.textPrimary
+                libraryBackgroundColor = appColors.background,
+                libraryContentColor = appColors.textPrimary
             )
         )
     }

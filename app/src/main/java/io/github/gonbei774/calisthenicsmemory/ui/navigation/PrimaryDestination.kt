@@ -44,7 +44,7 @@ fun PrimaryNavigationBar(
                 // The default selected label uses the secondary color, green here, which clashes with the blue
                 // indicator and is low-contrast on the dark bar. Match the indicator's content color instead.
                 colors = ShortNavigationBarItemDefaults.colors(
-                    selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    selectedTextColorTopIconPosition = MaterialTheme.colorScheme.onSecondaryContainer,
                 ),
             )
         }
