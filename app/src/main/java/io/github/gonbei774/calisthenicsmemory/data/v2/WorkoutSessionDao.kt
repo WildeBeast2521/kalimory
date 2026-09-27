@@ -74,6 +74,44 @@ interface WorkoutSessionDao {
     )
     fun observeV2OnlyHistoryRows(): Flow<List<V2HistoryRow>>
 
+    /** The v2-only rows of [exerciseId] in the newest session that has any, for previous-value prefill. */
+    @Query(
+        """
+        SELECT t.id AS setEntryId, t.sessionExerciseId, e.exerciseId, e.exerciseKindSnapshot, t.setNumber,
+               t.orderIndex, t.side, t.repetitions, t.durationMillis, t.distanceCm, t.addedWeightGrams,
+               t.assistanceGrams, t.completedAtEpochMillis, s.startedAtEpochMillis AS sessionStartedAtEpochMillis,
+               s.comment AS sessionComment
+        FROM set_entries t
+        JOIN session_exercises e ON e.id = t.sessionExerciseId
+        JOIN workout_sessions s ON s.id = e.workoutSessionId
+        WHERE t.legacyTrainingRecordId IS NULL AND t.status = 'COMPLETED' AND e.exerciseId = :exerciseId
+          AND s.id = (
+            SELECT s2.id FROM set_entries t2
+            JOIN session_exercises e2 ON e2.id = t2.sessionExerciseId
+            JOIN workout_sessions s2 ON s2.id = e2.workoutSessionId
+            WHERE t2.legacyTrainingRecordId IS NULL AND t2.status = 'COMPLETED' AND e2.exerciseId = :exerciseId
+            ORDER BY s2.startedAtEpochMillis DESC, s2.id DESC
+            LIMIT 1
+          )
+        ORDER BY e.orderIndex, t.orderIndex
+        """
+    )
+    suspend fun latestV2OnlySessionRows(exerciseId: Long): List<V2HistoryRow>
+
+    /** Whether a v2-only completed set of [exerciseId] belongs to a session started in [startMillis, endMillis). */
+    @Query(
+        """
+        SELECT EXISTS(
+            SELECT 1 FROM set_entries t
+            JOIN session_exercises e ON e.id = t.sessionExerciseId
+            JOIN workout_sessions s ON s.id = e.workoutSessionId
+            WHERE t.legacyTrainingRecordId IS NULL AND t.status = 'COMPLETED' AND e.exerciseId = :exerciseId
+              AND s.startedAtEpochMillis >= :startMillis AND s.startedAtEpochMillis < :endMillis
+        )
+        """
+    )
+    suspend fun hasV2OnlySetStartedBetween(exerciseId: Long, startMillis: Long, endMillis: Long): Boolean
+
     /** Reads one workout consistently. */
     @Transaction
     suspend fun sessionGraph(id: Long): WorkoutSessionGraph? {

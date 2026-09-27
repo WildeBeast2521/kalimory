@@ -3,6 +3,7 @@ package io.github.gonbei774.calisthenicsmemory.data.v2
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -78,7 +79,9 @@ object CompatibilityHistory {
             val right = rows.firstOrNull { it.side == BodySide.RIGHT }
             val left = rows.firstOrNull { it.side == BodySide.LEFT }
             val primary = rows.firstOrNull { it.side == BodySide.BILATERAL } ?: right ?: left!!
-            val at = Instant.ofEpochMilli(primary.completedAtEpochMillis ?: primary.sessionStartedAtEpochMillis).atZone(zone)
+            // Legacy history stamps a whole saved workout with one time, and its screens group sets by it,
+            // so a v2 set takes its session's start rather than its own completion time.
+            val at = Instant.ofEpochMilli(primary.sessionStartedAtEpochMillis).atZone(zone)
             HistorySet(
                 source = HistorySource.V2,
                 legacyRecordId = null,
@@ -109,4 +112,28 @@ object CompatibilityHistory {
 
     suspend fun read(database: AppDatabase, zone: ZoneId): List<HistorySet> =
         merge(database.backupDao().records(), database.workoutSessionDao().v2OnlyHistoryRows(), zone)
+
+    /**
+     * The sets of the newest workout of [exerciseId], from either store, ordered by set number.
+     * A legacy workout is every record at one date and time, as the legacy query defines it.
+     */
+    suspend fun latestSession(database: AppDatabase, exerciseId: Long, zone: ZoneId): List<HistorySet> {
+        val merged = merge(
+            database.trainingRecordDao().getLatestSessionByExercise(exerciseId),
+            database.workoutSessionDao().latestV2OnlySessionRows(exerciseId),
+            zone,
+        )
+        val newest = merged.firstOrNull() ?: return emptyList()
+        return merged
+            .filter { it.source == newest.source && it.date == newest.date && it.time == newest.time }
+            .sortedBy { it.setNumber }
+    }
+
+    /** Whether [exerciseId] has a set on [date] in [zone], from either store. */
+    suspend fun hasSetOn(database: AppDatabase, exerciseId: Long, date: LocalDate, zone: ZoneId): Boolean {
+        if (database.trainingRecordDao().hasRecordOnDate(exerciseId, date.format(DATE))) return true
+        val start = date.atStartOfDay(zone).toInstant().toEpochMilli()
+        val end = date.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
+        return database.workoutSessionDao().hasV2OnlySetStartedBetween(exerciseId, start, end)
+    }
 }
