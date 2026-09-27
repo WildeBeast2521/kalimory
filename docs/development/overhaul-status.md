@@ -14,11 +14,12 @@ Tests:
 - Negative check: suppressing the single-workout write fails exactly the two single save tests.
 
 Task 8 acceptance gate, as it stands:
+- **Met:** the full instrumented suite passes on API 29 (`floor_api29`) and API 36 (`s1_api36`). On API 36, 129 of 130 passed at first. The remaining failure was a test bug: `dumpsys power` also logs past wake-lock events there, and the test now reads only the held-lock list.
 - **Met:** one durable session lifecycle for all sources, queryable v2 history, export and restore (format 10), resume after recreation, and the Today, Train, Progress and Library destinations.
 - **Covered elsewhere:** pause, background, skip and process death (Task 6 tests and emulator runs); the history editing tests.
-- **Still open:**
-  - The whole suite has run only on API 29. A run on a current API emulator (`s1_api36`) is still to do.
-  - The "flag off" fallback item was dropped by ADR 0004.
+- **Not applicable:** the "flag off" fallback item was dropped by ADR 0004.
+
+The Task 8 data and flow gate is therefore complete. The visual design system is still pending the UI/UX research plan (ADR 0004 decision 2 is reopened).
 
 ## CI debt (merged without GitHub Actions)
 
@@ -34,6 +35,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #34: database 24 and backup format 10, interval settings.
 - PR #35: interval workouts to v2.
 - PR #36: unified workout flow tests.
+- PR #37: wake-lock test fix for API 36.
 
 ## Owner direction for later (2026-09-27)
 
@@ -228,8 +230,6 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. `UnifiedWorkoutFlowTest`: start, record, pause, background, resume, skip, finish, abandon, back navigation and process recreation for all three source types (Task 8 acceptance).
-2. Before any further visual work: research and write the UI/UX design-system plan (ADR 0004 decision 2 is reopened). Build it only after the owner chooses.
-3. Re-run CI on `master` once GitHub Actions works again (see "CI debt").
-
-Files likely involved next: `app/src/androidTest/`, `ui/screens/WorkoutScreen.kt`, `ui/screens/ProgramExecutionScreen.kt`, `ui/screens/IntervalExecutionScreen.kt`.
+1. Research and write the UI/UX design-system plan for the owner to decide (ADR 0004 decision 2). No further visual work before that decision.
+2. Re-run CI on `master` once GitHub Actions works again (see "CI debt").
+3. Later, owner to-dos: GitHub issue templates, the progression system (plan first), and the wiki (after the app is complete).
