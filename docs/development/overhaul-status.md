@@ -4,14 +4,16 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8, slice 8: manual records are saved as v2 sessions (`MANUAL`). Branch `work/v2-manual-write`, based on master `6437fea`. See "Write path: manual records" in `docs/development/v2-workout-history.md`. The unused `onRecord` callback of `WorkoutInputScreen`, which would have written legacy rows, is removed.
+Task 8, slice 9: program workouts are saved as v2 sessions. Branch `work/v2-program-write`, based on master `4a145d0`. See "Write path: program workouts" in `docs/development/v2-workout-history.md`, including the round-aware history numbering.
 
 Verification:
-- `ManualWorkoutWriterTest` (JVM, 6 tests).
-- A manual-entry case in `SingleWorkoutWriteTest`.
-- Manual run on the emulator: two unilateral entries were saved as `MANUAL` sessions, with no legacy rows. They show in Progress, and the second entry was prefilled from the first ("Prev 9 / Prev 8").
-
-The emulator run found a real issue, now fixed: the default time carried seconds. It is truncated to the minute, with a test.
+- `ProgramRunTest` (JVM, 2 tests).
+- 3 new `CompatibilityHistoryTest` cases: loop rounds, a repeated exercise, and a skipped-set gap.
+- A checkpoint compatibility test.
+- A program case in `SingleWorkoutWriteTest`.
+- A real run on the emulator: a program with a 2-round push-up loop and a plank.
+  - The database had one `PROGRAM_TEMPLATE` session with the observed duration, two occurrences linked to their program exercises, round 1 completed at its observed time, round 2 (0 reps) skipped, the plank at 26 s, and no legacy row.
+  - Progress listed both exercises under the program comment.
 
 ## Owner direction for later (2026-09-27)
 
@@ -26,6 +28,10 @@ The emulator run found a real issue, now fixed: the default time carried seconds
 - The Task 8 UI must look premium and perform well. Use the installed design skills.
 - **The design system is reopened.** The owner does not want Material 3 Expressive locked in: the current implementation may be replaced if something is better. Before more visual work, write a full UI/UX research plan and compare the options (M3 Expressive, custom on Compose Foundation, others) on look, performance, accessibility, maintenance and license. The owner decides from that plan. Until then, only structural work continues (navigation, data paths). Its visuals are provisional.
 - A progression system (a full ranked catalogue, progressions, custom exercises, daily goals, demonstrations) comes after Task 8. It will be planned in depth first. Brief: `docs/plans/future-progression-system-brief.md`.
+
+## Previous phase: manual-record v2 write (merged)
+
+PR #32 merged as `4a145d0`.
 
 ## Previous phase: single-workout v2 write (merged)
 
@@ -198,7 +204,7 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Save program workouts as v2 sessions (`PROGRAM_TEMPLATE`, with the loop and round structure), then interval workouts (`INTERVAL_TEMPLATE`, from the checkpointed plan). They are the last callers of `addTrainingRecords`. Then add `UnifiedWorkoutFlowTest`.
+1. Save interval workouts as v2 sessions (`INTERVAL_TEMPLATE`, from the checkpointed `IntervalSessionContext` and timer state). Decide how `interval_records` and the history screens' interval list are served during the transition. Then add `UnifiedWorkoutFlowTest`.
 2. Before any further visual work: research and write the UI/UX design-system plan (ADR 0004 decision 2 is reopened). Build it only after the owner chooses.
 
-Files likely involved next: `ui/screens/ProgramExecutionScreen.kt`, `util/ProgramExecutionUtils.kt`, `ui/screens/IntervalExecutionScreen.kt`, `data/v2/`.
+Files likely involved next: `ui/screens/IntervalExecutionScreen.kt`, `workout/IntervalWorkoutPlan.kt`, `data/IntervalRecord*.kt`, `ui/screens/view/`.

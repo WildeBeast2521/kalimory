@@ -59,6 +59,19 @@ Sets entered on the Record Training screen are saved as one v2 session through `
 
 A chosen local time that does not exist because of a daylight-saving gap is moved forward by the zone rules, so 02:30 becomes 03:30. The legacy string kept 02:30.
 
+## Write path: program workouts (Task 8)
+
+A finished program run is saved as one v2 session through `ProgramWorkoutWriter`:
+- **Source:** `PROGRAM_TEMPLATE`, with the program id and name as snapshots, so later edits or deletion of the program do not change history.
+- **Exercises:** each program exercise becomes an occurrence in program order, linked through `sourceProgramExerciseId` and carrying its target snapshots. An occurrence with no recorded set is left out, as the legacy save left it out.
+- **Sets:** the recorded (completed or skipped) sets keep execution order, with a `roundNumber` for loop sets.
+- **Times:** follow the single-workout rules. The start and each set's completion time are stored in the program checkpoint and in the "Save & Exit" state, so a resumed run keeps them. A set ticked off in the overview sheet has no time.
+- **Values:** a set without a value, including one completed with 0, is SKIPPED.
+
+The history merge now groups a v2 set's sides by occurrence, round and set number. It numbers the displayed sets of an exercise 1..n per workout, in execution order across rounds and repeated occurrences, which is how the legacy save numbered them. Before this change, loop rounds that repeat a set number would have collapsed into one row.
+
+No workout flow writes `training_records` any more, and `addTrainingRecords`, `addTrainingRecordsUnilateral` and `notifyProgramSetsRecorded` are removed. The remaining legacy writers are the CSV record import and the history editor for legacy rows. Interval workouts still write `interval_records`, their own legacy table.
+
 ## Backfill timing (revised)
 
 The compatibility reader already shows legacy and v2 history together, and edits reach each row in its own store. Moving single workouts to v2 therefore needs no backfill. The one-time `V2Backfill` and dual-read comparison now belong to the step that retires the legacy table and its editor. That is later than the Task 8 cutover planned above.
