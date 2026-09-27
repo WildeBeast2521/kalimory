@@ -4,22 +4,13 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8, slice 11: `UnifiedWorkoutFlowTest` drives the real screens end to end. Branch `work/unified-flow-test`, based on master `9af9219`.
+The UI design-system plan is written for the owner to decide: `docs/plans/2026-09-27-ui-design-system-options.md`. It compares Expressive alpha, stable Material 3 with the app's own design system (recommended), fully custom components, Miuix and Lumo UI.
 
-Tests:
-- **Single workout:** finish (one v2 session), recreating the activity mid-workout (the resume offer appears; resuming and finishing saves one session), and abandon (nothing saved, checkpoint cleared).
-- **Program:** finish, and recreation with resume, both started from a due to-do on Today.
-- **Interval:** finish, saving one `INTERVAL_TEMPLATE` session with its settings.
-- The test sets and restores the app's workout preferences, and uses uniquely named synthetic rows that it removes afterwards.
-- Negative check: suppressing the single-workout write fails exactly the two single save tests.
+It rests on two measured facts:
+- the Expressive pin runs Compose core `1.11.0-beta02`, while the stable BOM `2026.09.00` has 1.12.1;
+- Material 3 1.5 is still alpha (alpha29).
 
-Task 8 acceptance gate, as it stands:
-- **Met:** the full instrumented suite passes on API 29 (`floor_api29`) and API 36 (`s1_api36`). On API 36, 129 of 130 passed at first. The remaining failure was a test bug: `dumpsys power` also logs past wake-lock events there, and the test now reads only the held-lock list.
-- **Met:** one durable session lifecycle for all sources, queryable v2 history, export and restore (format 10), resume after recreation, and the Today, Train, Progress and Library destinations.
-- **Covered elsewhere:** pause, background, skip and process death (Task 6 tests and emulator runs); the history editing tests.
-- **Not applicable:** the "flag off" fallback item was dropped by ADR 0004.
-
-The Task 8 data and flow gate is therefore complete. The visual design system is still pending the UI/UX research plan (ADR 0004 decision 2 is reopened).
+No visual work starts until the owner decides.
 
 ## CI debt (merged without GitHub Actions)
 
@@ -36,6 +27,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #35: interval workouts to v2.
 - PR #36: unified workout flow tests.
 - PR #37: wake-lock test fix for API 36.
+- PR #38: design-system options plan (documentation only).
 
 ## Owner direction for later (2026-09-27)
 
