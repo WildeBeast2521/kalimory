@@ -77,6 +77,12 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import kotlinx.serialization.Serializable
+import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
+import io.github.gonbei774.calisthenicsmemory.data.v2.BodySide
+import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
+import io.github.gonbei774.calisthenicsmemory.data.v2.Laterality
+import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkout
+import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkoutSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
@@ -94,7 +100,9 @@ data class WorkoutSet(
     // セット別トラッキング値（Settings画面で入力した共通値が全セットにコピーされ、Confirmation画面で個別編集可能）
     var distanceCm: Int? = null, // 距離（cm）
     var weightG: Int? = null,    // 追加ウエイト（g）
-    var assistanceG: Int? = null // アシスト量（g）
+    var assistanceG: Int? = null, // アシスト量（g）
+    // When the set was observed to finish (wall clock); null when not timed.
+    var completedAtWallMillis: Long? = null
 )
 
 // ワークアウトセッションのデータ
@@ -108,7 +116,9 @@ data class WorkoutSession(
     val sets: MutableList<WorkoutSet>,
     var comment: String = "",
     val isAutoMode: Boolean = true, // 自動モード（目標達成時に自動遷移）
-    val isDynamicCountSoundEnabled: Boolean = true // レップカウント音有効
+    val isDynamicCountSoundEnabled: Boolean = true, // レップカウント音有効
+    // When the first set, or its countdown, began (wall clock); null until then.
+    var startedAtWallMillis: Long? = null
 )
 
 // ワークアウト画面の状態
@@ -134,6 +144,7 @@ fun WorkoutScreen(
 ) {
     val appColors = LocalAppColors.current
     val exercises by viewModel.exercises.collectAsState()
+    val groups by viewModel.groups.collectAsState()
     val context = LocalContext.current
 
     // Find initial exercise if provided
@@ -214,6 +225,9 @@ fun WorkoutScreen(
             is WorkoutStep.Interval -> Triple(step.session, step.currentSetIndex, false)
             is WorkoutStep.Confirmation -> Triple(step.session, 0, true)
             else -> return@LaunchedEffect
+        }
+        if (stepSession.startedAtWallMillis == null && !atConfirmation) {
+            stepSession.startedAtWallMillis = System.currentTimeMillis()
         }
         val checkpoint = SingleSessionCheckpoint.of(
             stepSession, index, atConfirmation, fromToDo || resumedFromToDo, System.currentTimeMillis()
@@ -425,6 +439,7 @@ fun WorkoutScreen(
                         }
                     }
                     val onSetComplete: (WorkoutSession) -> Unit = { updatedSession ->
+                        updatedSession.sets.getOrNull(step.currentSetIndex)?.completedAtWallMillis = System.currentTimeMillis()
                         val nextIndex = step.currentSetIndex + 1
                         currentStep = nextStepAfterSet(updatedSession, nextIndex)
                     }
@@ -433,6 +448,10 @@ fun WorkoutScreen(
                         currentStep = nextStepAfterSet(updatedSession, nextIndex)
                     }
                     val onAbort: (WorkoutSession) -> Unit = { updatedSession ->
+                        // The set in progress ends now; it counts only if it has a value.
+                        updatedSession.sets.getOrNull(step.currentSetIndex)
+                            ?.takeIf { it.actualValue > 0 && it.completedAtWallMillis == null }
+                            ?.completedAtWallMillis = System.currentTimeMillis()
                         for (i in step.currentSetIndex + 1 until updatedSession.sets.size) {
                             updatedSession.sets[i].isSkipped = true
                             updatedSession.sets[i].actualValue = 0
@@ -633,12 +652,12 @@ fun WorkoutScreen(
                     ConfirmationStep(
                         session = step.session,
                         onConfirm = { finalSession ->
-                            saveWorkoutRecords(viewModel, finalSession, workoutModeComment)
+                            // Saved as one v2 session; a to-do it came from is completed after the save.
+                            viewModel.recordSingleWorkout(
+                                finalSession.toSingleWorkout(workoutModeComment, groups, System.currentTimeMillis()),
+                                completeTodo = fromToDo || resumedFromToDo
+                            )
                             clearCheckpoint()
-                            // Delete todo task if from ToDo
-                            if (fromToDo || resumedFromToDo) {
-                                viewModel.completeTodoTaskByReference(TodoTask.TYPE_EXERCISE, finalSession.exercise.id)
-                            }
                             onNavigateBack()
                         },
                         onAddSet = { updatedSession, nextIndex ->
@@ -3073,66 +3092,45 @@ private fun parseWeightGValue(input: String): Int? {
     return (kg * 1000).toInt()
 }
 
-// 記録保存関数
-fun saveWorkoutRecords(
-    viewModel: TrainingViewModel,
-    session: WorkoutSession,
-    workoutModeComment: String
-) {
-    val today = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
-    val now = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
-
-    if (session.exercise.laterality == "Unilateral") {
-        // Unilateral: setNumber毎にRight/Leftをペアにする。重量等はRight側から拾う
-        // （Settings画面でセット共通値、Confirmation画面ではL/R共通で1値を編集）
-        val rightSets = session.sets.filter { it.side == "Right" && it.actualValue > 0 }
-        val leftSetsBySetNumber = session.sets
-            .filter { it.side == "Left" }
-            .associateBy { it.setNumber }
-
-        val valuesRight = rightSets.map { it.actualValue }
-        val valuesLeft: List<Int?> = rightSets.map { right ->
-            leftSetsBySetNumber[right.setNumber]
-                ?.takeIf { it.actualValue > 0 }
-                ?.actualValue
-        }
-        val distancesCm = rightSets.map { it.distanceCm }
-        val weightsG = rightSets.map { it.weightG }
-        val assistancesG = rightSets.map { it.assistanceG }
-
-        if (valuesRight.isNotEmpty()) {
-            viewModel.addTrainingRecordsUnilateral(
-                exerciseId = session.exercise.id,
-                valuesRight = valuesRight,
-                valuesLeft = valuesLeft,
-                date = today,
-                time = now,
-                comment = session.comment.ifEmpty { workoutModeComment },
-                distancesCm = distancesCm,
-                weightsG = weightsG,
-                assistancesG = assistancesG
+/**
+ * This finished workout as one v2 session. Every set is kept: those without a value become
+ * skipped sets, which the legacy save dropped. Group links resolve through [groups].
+ */
+fun WorkoutSession.toSingleWorkout(
+    workoutModeComment: String,
+    groups: List<ExerciseGroup>,
+    savedAtWallMillis: Long
+): SingleWorkout {
+    val group = exercise.group?.let { name -> groups.find { it.name == name } }
+    return SingleWorkout(
+        exerciseId = exercise.id,
+        exerciseName = exercise.name,
+        kind = if (exercise.type == "Isometric") ExerciseKind.ISOMETRIC else ExerciseKind.DYNAMIC,
+        laterality = if (exercise.laterality == "Unilateral") Laterality.UNILATERAL else Laterality.BILATERAL,
+        groupId = group?.id,
+        groupName = exercise.group,
+        targetSets = totalSets,
+        targetValue = targetValue,
+        sets = sets.map { set ->
+            SingleWorkoutSet(
+                setNumber = set.setNumber,
+                side = when (set.side) {
+                    "Right" -> BodySide.RIGHT
+                    "Left" -> BodySide.LEFT
+                    else -> BodySide.BILATERAL
+                },
+                value = set.actualValue.coerceAtLeast(0),
+                targetValue = set.targetValue,
+                distanceCm = set.distanceCm,
+                weightG = set.weightG,
+                assistanceG = set.assistanceG,
+                completedAtWallMillis = set.completedAtWallMillis,
             )
-        }
-    } else {
-        val validSets = session.sets.filter { it.actualValue > 0 }
-        val values = validSets.map { it.actualValue }
-        val distancesCm = validSets.map { it.distanceCm }
-        val weightsG = validSets.map { it.weightG }
-        val assistancesG = validSets.map { it.assistanceG }
-
-        if (values.isNotEmpty()) {
-            viewModel.addTrainingRecords(
-                exerciseId = session.exercise.id,
-                values = values,
-                date = today,
-                time = now,
-                comment = session.comment.ifEmpty { workoutModeComment },
-                distancesCm = distancesCm,
-                weightsG = weightsG,
-                assistancesG = assistancesG
-            )
-        }
-    }
+        },
+        comment = comment.ifEmpty { workoutModeComment },
+        startedAtWallMillis = startedAtWallMillis,
+        savedAtWallMillis = savedAtWallMillis,
+    )
 }
 
 // 次のセット情報をテキスト1行で表示（実行中画面の下部用）

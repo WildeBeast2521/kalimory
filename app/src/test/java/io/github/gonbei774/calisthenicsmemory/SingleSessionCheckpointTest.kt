@@ -49,4 +49,20 @@ class SingleSessionCheckpointTest {
         File(folder.root, SingleSessionCheckpoint.FILE_NAME).writeText("{\"version\":2}")
         assertNull(file.load())
     }
+
+    @Test fun `start and set times round trip, and older files without a start still load`() {
+        val live = session().apply {
+            startedAtWallMillis = 1_000
+            sets[0].completedAtWallMillis = 2_000
+        }
+        val file = SingleSessionCheckpoint.file(folder.root)
+        file.save(SingleSessionCheckpoint.of(live, 1, false, false, 3_000))
+        val restored = file.load()!!.toSession(exercise)
+        assertEquals(1_000L, restored.startedAtWallMillis)
+        assertEquals(2_000L, restored.sets[0].completedAtWallMillis)
+
+        val saved = File(folder.root, SingleSessionCheckpoint.FILE_NAME)
+        saved.writeText(saved.readText().replace(Regex(",\\s*\"startedAtWallMillis\"\\s*:\\s*1000"), ""))
+        assertNull(file.load()!!.startedAtWallMillis)
+    }
 }
