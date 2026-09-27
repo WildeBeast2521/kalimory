@@ -843,4 +843,6 @@
     <string name="today_due_title">今日の予定</string>
     <string name="today_due_none">今日の予定はありません</string>
     <string name="today_all_todos">すべてのTo Do</string>
+    <string name="dynamic_color_title">壁紙の色</string>
+    <string name="dynamic_color_description">壁紙の色を使用します。オフにするとアプリ独自の配色を使用します。</string>
 </resources>

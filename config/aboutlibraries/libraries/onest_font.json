@@ -1,0 +1,19 @@
+{
+  "uniqueId": "font:onest",
+  "artifactVersion": "google/fonts ofl/onest",
+  "name": "Onest (font)",
+  "description": "The typeface used throughout the app.",
+  "website": "https://github.com/googlefonts/onest",
+  "developers": [
+    {
+      "name": "The Onest Project Authors (Dmitri Voloshin, Andrey Kudryavtsev)",
+      "organisationUrl": "https://github.com/googlefonts/onest"
+    }
+  ],
+  "scm": {
+    "url": "https://github.com/googlefonts/onest"
+  },
+  "licenses": [
+    "OFL-1.1"
+  ]
+}

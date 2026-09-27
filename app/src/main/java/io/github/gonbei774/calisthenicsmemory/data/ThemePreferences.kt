@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 /**
  * テーマ設定の保存・読み込みを管理するクラス
@@ -29,9 +30,17 @@ class ThemePreferences(context: Context) {
         prefs.edit().putString(KEY_THEME, theme.code).apply()
     }
 
+    /** Whether colours follow the wallpaper (Android 12+); off by default so the app keeps its own palette. */
+    fun isDynamicColor(): Boolean = prefs.getBoolean(KEY_DYNAMIC_COLOR, false)
+
+    fun setDynamicColor(enabled: Boolean) {
+        prefs.edit { putBoolean(KEY_DYNAMIC_COLOR, enabled) }
+    }
+
     companion object {
         private const val PREFS_NAME = "theme_preferences"
         private const val KEY_THEME = "app_theme"
+        private const val KEY_DYNAMIC_COLOR = "dynamic_color"
     }
 }
 

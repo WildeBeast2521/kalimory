@@ -136,4 +136,6 @@
     <string name="today_due_title">На сегодня</string>
     <string name="today_due_none">На сегодня ничего нет</string>
     <string name="today_all_todos">Все задачи</string>
+    <string name="dynamic_color_title">Цвета обоев</string>
+    <string name="dynamic_color_description">Использовать цвета обоев. Если выключено, приложение использует собственную палитру.</string>
 </resources>
