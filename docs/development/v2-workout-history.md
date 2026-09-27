@@ -49,6 +49,16 @@ Known gaps:
 - The confirmation screen still says zero-value sets "will not be saved". They are stored as skipped sets and are not shown in history. Reword this with the new UI.
 - A unilateral set with only a left value shows the left value in the right-side column of the legacy-shaped screens. The legacy save dropped such a set.
 
+## Write path: manual records (Task 8)
+
+Sets entered on the Record Training screen are saved as one v2 session through `ManualWorkoutWriter`, with the new `MANUAL` source code. This is an additive enum code stored as text, so the schema does not change.
+- **Time:** the session starts at the date and minute the user chose, and the seconds of the screen's default "now" are dropped. It has MINUTE precision and no end, and no set has a time.
+- **Values:** every entered value is a completed set, 0 included, as the legacy screen recorded it.
+- **Unilateral sets:** a left entry exists only when a left value was entered.
+- **To-dos:** the to-do the entry came from is completed after the write.
+
+A chosen local time that does not exist because of a daylight-saving gap is moved forward by the zone rules, so 02:30 becomes 03:30. The legacy string kept 02:30.
+
 ## Backfill timing (revised)
 
 The compatibility reader already shows legacy and v2 history together, and edits reach each row in its own store. Moving single workouts to v2 therefore needs no backfill. The one-time `V2Backfill` and dual-read comparison now belong to the step that retires the legacy table and its editor. That is later than the Task 8 cutover planned above.

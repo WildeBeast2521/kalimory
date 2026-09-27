@@ -4,15 +4,14 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8, slice 7: single-exercise workouts are saved as v2 sessions. Branch `work/v2-single-write`, based on master `c2d0402`.
-
-See "Write path: single-exercise workouts" and "Backfill timing (revised)" in `docs/development/v2-workout-history.md`.
+Task 8, slice 8: manual records are saved as v2 sessions (`MANUAL`). Branch `work/v2-manual-write`, based on master `6437fea`. See "Write path: manual records" in `docs/development/v2-workout-history.md`. The unused `onRecord` callback of `WorkoutInputScreen`, which would have written legacy rows, is removed.
 
 Verification:
-- `SingleWorkoutWriterTest` (JVM, 6 tests): the mapping.
-- `SingleWorkoutWriteTest` (database, 2 tests): the write, and how history shows it.
-- The checkpoint round trip and an old checkpoint without a start time.
-- A real workout on the emulator: 4 sets, one completed with the Complete button, one typed on the confirmation screen, two aborted. The result was one session with the observed times, 2 completed and 2 skipped sets, no legacy row, and it appeared in Today and Progress.
+- `ManualWorkoutWriterTest` (JVM, 6 tests).
+- A manual-entry case in `SingleWorkoutWriteTest`.
+- Manual run on the emulator: two unilateral entries were saved as `MANUAL` sessions, with no legacy rows. They show in Progress, and the second entry was prefilled from the first ("Prev 9 / Prev 8").
+
+The emulator run found a real issue, now fixed: the default time carried seconds. It is truncated to the minute, with a test.
 
 ## Owner direction for later (2026-09-27)
 
@@ -27,6 +26,10 @@ Verification:
 - The Task 8 UI must look premium and perform well. Use the installed design skills.
 - **The design system is reopened.** The owner does not want Material 3 Expressive locked in: the current implementation may be replaced if something is better. Before more visual work, write a full UI/UX research plan and compare the options (M3 Expressive, custom on Compose Foundation, others) on look, performance, accessibility, maintenance and license. The owner decides from that plan. Until then, only structural work continues (navigation, data paths). Its visuals are provisional.
 - A progression system (a full ranked catalogue, progressions, custom exercises, daily goals, demonstrations) comes after Task 8. It will be planned in depth first. Brief: `docs/plans/future-progression-system-brief.md`.
+
+## Previous phase: single-workout v2 write (merged)
+
+PR #30 merged as `b4eb4cd`; PR #31 (to-do notes) as `6437fea`.
 
 ## Previous phase: v2 history editing (merged)
 
@@ -195,8 +198,7 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Save manual records (Record Training) as v2 sessions. The user picks the date and time, so they are MINUTE precision.
-2. Save program workouts as v2 sessions (PROGRAM_TEMPLATE, with the loop and round structure), then interval workouts (INTERVAL_TEMPLATE). Then add `UnifiedWorkoutFlowTest`.
-3. Before any further visual work: research and write the UI/UX design-system plan (ADR 0004 decision 2 is reopened). Build it only after the owner chooses.
+1. Save program workouts as v2 sessions (`PROGRAM_TEMPLATE`, with the loop and round structure), then interval workouts (`INTERVAL_TEMPLATE`, from the checkpointed plan). They are the last callers of `addTrainingRecords`. Then add `UnifiedWorkoutFlowTest`.
+2. Before any further visual work: research and write the UI/UX design-system plan (ADR 0004 decision 2 is reopened). Build it only after the owner chooses.
 
-Files likely involved next: `ui/screens/RecordScreen.kt`, `ui/screens/ProgramExecutionScreen.kt`, `util/ProgramExecutionUtils.kt`, `data/v2/`.
+Files likely involved next: `ui/screens/ProgramExecutionScreen.kt`, `util/ProgramExecutionUtils.kt`, `ui/screens/IntervalExecutionScreen.kt`, `data/v2/`.
