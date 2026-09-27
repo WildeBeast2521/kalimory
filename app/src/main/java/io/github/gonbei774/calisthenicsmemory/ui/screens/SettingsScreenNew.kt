@@ -45,7 +45,9 @@ fun SettingsScreenNew(
     onNavigateToCsvDataManagement: () -> Unit = {},
     onNavigateToShareHub: () -> Unit = {},
     currentTheme: AppTheme = AppTheme.SYSTEM,
-    onThemeChange: (AppTheme) -> Unit = {}
+    onThemeChange: (AppTheme) -> Unit = {},
+    dynamicColor: Boolean = false,
+    onDynamicColorChange: (Boolean) -> Unit = {}
 ) {
     val appColors = LocalAppColors.current
     val context = LocalContext.current
@@ -336,6 +338,41 @@ fun SettingsScreenNew(
                             }
                         }
                     )
+                }
+            }
+
+            // Wallpaper colours (Material You), Android 12+ only
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(20.dp),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(R.string.dynamic_color_title),
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = appColors.textPrimary
+                                )
+                                Text(
+                                    text = stringResource(R.string.dynamic_color_description),
+                                    fontSize = 14.sp,
+                                    color = appColors.textSecondary,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                            Switch(checked = dynamicColor, onCheckedChange = onDynamicColorChange)
+                        }
+                    }
                 }
             }
 

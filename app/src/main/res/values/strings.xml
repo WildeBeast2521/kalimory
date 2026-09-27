@@ -836,4 +836,6 @@
     <string name="today_due_title">Due today</string>
     <string name="today_due_none">Nothing due today</string>
     <string name="today_all_todos">All to-dos</string>
+    <string name="dynamic_color_title">Wallpaper colours</string>
+    <string name="dynamic_color_description">Use the colours of your wallpaper. When off, the app uses its own palette.</string>
 </resources>

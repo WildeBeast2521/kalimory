@@ -832,4 +832,6 @@
     <string name="today_due_title">Para hoy</string>
     <string name="today_due_none">Nada para hoy</string>
     <string name="today_all_todos">Todas las tareas</string>
+    <string name="dynamic_color_title">Colores del fondo de pantalla</string>
+    <string name="dynamic_color_description">Usa los colores de tu fondo de pantalla. Si está desactivado, la app usa su propia paleta.</string>
 </resources>

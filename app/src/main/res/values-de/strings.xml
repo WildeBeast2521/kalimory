@@ -803,4 +803,6 @@
     <string name="today_due_title">Heute fällig</string>
     <string name="today_due_none">Heute ist nichts fällig</string>
     <string name="today_all_todos">Alle Aufgaben</string>
+    <string name="dynamic_color_title">Hintergrundfarben</string>
+    <string name="dynamic_color_description">Farben deines Hintergrundbilds verwenden. Wenn aus, nutzt die App ihre eigene Farbpalette.</string>
 </resources>

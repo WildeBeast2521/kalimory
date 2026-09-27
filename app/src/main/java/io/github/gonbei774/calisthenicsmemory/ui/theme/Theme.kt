@@ -1,72 +1,18 @@
 package io.github.gonbei774.calisthenicsmemory.ui.theme
 
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-
-private val DarkColorScheme = darkColorScheme(
-    primary = Blue600,
-    secondary = Green600,
-    tertiary = Purple600,
-    background = Slate900,
-    surface = Slate800,
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color.White,
-    onSurface = Color.White,
-    error = Red600,
-    onError = Color.White,
-    primaryContainer = Blue900,
-    onPrimaryContainer = Blue100,
-    secondaryContainer = Blue900,
-    onSecondaryContainer = Blue100,
-    surfaceVariant = Slate700,
-    onSurfaceVariant = Slate300,
-    surfaceContainerLowest = Slate900,
-    surfaceContainerLow = Slate800,
-    surfaceContainer = Slate800,
-    surfaceContainerHigh = Slate750,
-    surfaceContainerHighest = Slate700,
-    outline = Slate600,
-    outlineVariant = Slate700
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Blue600,
-    secondary = Green600,
-    tertiary = Purple600,
-    background = Color.White,
-    surface = Slate50,
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Slate800,
-    onSurface = Slate800,
-    error = Red600,
-    onError = Color.White,
-    primaryContainer = Blue100,
-    onPrimaryContainer = Blue800,
-    secondaryContainer = Blue100,
-    onSecondaryContainer = Blue800,
-    surfaceVariant = Slate100,
-    onSurfaceVariant = Slate600,
-    surfaceContainerLowest = Color.White,
-    surfaceContainerLow = Slate50,
-    surfaceContainer = Slate100,
-    surfaceContainerHigh = Slate100,
-    surfaceContainerHighest = Slate200,
-    outline = Slate300,
-    outlineVariant = Slate200
-)
+import androidx.compose.ui.platform.LocalContext
 
 @Immutable
 data class AppColors(
@@ -134,20 +80,34 @@ private val LightAppColors = AppColors(
 
 val LocalAppColors = staticCompositionLocalOf { DarkAppColors }
 
+/**
+ * The app theme (ADR 0004, decision 5): Material 3 Expressive components with the app's own calm
+ * palette, type and shapes. With [dynamicColor] on Android 12+, colours follow the wallpaper
+ * instead. [LocalAppColors] still serves the legacy screens until each is moved to the theme roles.
+ */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun CalisthenicsMemoryTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val context = LocalContext.current
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        darkTheme -> CalmPalette.dark
+        else -> CalmPalette.light
+    }
     val appColors = if (darkTheme) DarkAppColors else LightAppColors
 
     CompositionLocalProvider(LocalAppColors provides appColors) {
         MaterialExpressiveTheme(
             colorScheme = colorScheme,
-            motionScheme = MotionScheme.expressive(),
+            // Calm, not bouncy; the one expressive moment is reserved for completing a set.
+            motionScheme = MotionScheme.standard(),
             typography = Typography,
+            shapes = CalmShapes,
             content = content
         )
     }

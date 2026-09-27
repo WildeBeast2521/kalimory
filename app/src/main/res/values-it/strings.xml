@@ -776,4 +776,6 @@
     <string name="today_due_title">In programma oggi</string>
     <string name="today_due_none">Niente in programma oggi</string>
     <string name="today_all_todos">Tutte le attività</string>
+    <string name="dynamic_color_title">Colori dello sfondo</string>
+    <string name="dynamic_color_description">Usa i colori del tuo sfondo. Se disattivato, l\'app usa la propria tavolozza.</string>
 </resources>

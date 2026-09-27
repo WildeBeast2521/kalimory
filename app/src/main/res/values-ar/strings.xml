@@ -30,4 +30,6 @@
     <string name="today_due_title">مستحق اليوم</string>
     <string name="today_due_none">لا شيء مستحق اليوم</string>
     <string name="today_all_todos">كل المهام</string>
+    <string name="dynamic_color_title">ألوان الخلفية</string>
+    <string name="dynamic_color_description">استخدم ألوان خلفية الشاشة. عند الإيقاف، يستخدم التطبيق ألوانه الخاصة.</string>
 </resources>

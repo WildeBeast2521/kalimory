@@ -773,4 +773,6 @@
     <string name="today_due_title">Prévu aujourd\'hui</string>
     <string name="today_due_none">Rien de prévu aujourd\'hui</string>
     <string name="today_all_todos">Toutes les tâches</string>
+    <string name="dynamic_color_title">Couleurs du fond d\'écran</string>
+    <string name="dynamic_color_description">Utiliser les couleurs de votre fond d\'écran. Désactivé, l\'app utilise sa propre palette.</string>
 </resources>

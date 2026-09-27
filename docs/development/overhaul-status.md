@@ -4,36 +4,14 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-The toolchain is upgraded to the latest versions (ADR 0004, decision 5). Branch `work/toolchain-upgrade`, based on master `d280468`.
+Design tokens (ADR 0004, decision 5). Branch `work/design-tokens`, based on master `878c7fb`.
 
-| | Before | After |
-|:---|:---|:---|
-| Gradle | 8.13 | 9.8.0 |
-| Android Gradle Plugin | 8.13 | 9.4.1 (built-in Kotlin, so the separate Kotlin Android plugin is removed) |
-| Kotlin | 2.0.21 | 2.4.20 |
-| KSP | 2.0.21-1.0.28 | 2.3.12 |
-| Room | 2.6.1 | 2.8.5 |
-| compileSdk | 35 | 37 |
-| Compose BOM | 2024.10.01 | 2026.09.00 |
-| Material 3 | 1.5.0-alpha18 | 1.5.0-alpha29 (it pulls Compose 1.13.0-alpha01) |
-| AboutLibraries | 11.2.3 | 15.2.0 (Android plugin, `offlineMode = true`) |
-
-targetSdk stays 35 on purpose: raising it changes runtime behaviour and needs its own tested step.
-
-Changes this required:
-- **Material 3:** `MenuAnchorType` is now `ExposedDropdownMenuAnchorType`, and `menuAnchor()` needs an explicit type. The navigation-item colour parameter is now `selectedTextColorTopIconPosition`.
-- **AboutLibraries:** the new container API loads the generated `res/raw/aboutlibraries.json`, which has no timestamp.
-- **Schema check:** `scripts/check-room-schemas.sh` now reads the Kotlin `AppDatabase_Impl.kt` that Room 2.8 generates.
-
-Room 2.8.5 regenerates every committed schema byte for byte.
-
-Verification:
-- 331 unit tests pass, and lint passes with 6 warnings.
-- **130 instrumented tests pass on API 36 (`s1_api36`) and on API 29 (`floor_api29`).**
-- The schema check passes for versions 9–24.
-- The app launched on the emulator, and the Licenses screen lists its libraries.
-
-Next: design tokens, then a Macrobenchmark and Baseline Profiles, then prototypes of three screens.
+- **Palette (`ui/theme/CalmPalette.kt`):** full Material colour roles for light and dark. Chalk background, spruce ink and spruce accent (done, primary actions), stone for supporting actions, brass for active or in progress, crimson for destructive. `CalmPaletteContrastTest` checks every text/background pair against WCAG AA, and borders against 3:1. Negative check: a lightened text colour fails it.
+- **Type:** Onest (SIL Open Font License 1.1, from google/fonts), bundled as one variable font of 193 KB. It covers Latin and Cyrillic; Arabic, Japanese and Chinese fall back to the system font. It is listed on the Licenses screen. The Material type scale is set in Onest, and `WorkoutNumerals` is the one bold style: weight 800 with tabular figures.
+- **Shapes and spacing:** graded corners (8/12/16/20/28 dp) and a 4 dp spacing grid (`Spacing`).
+- **Motion:** `MotionScheme.standard()`, calm. The expressive moment is reserved for completing a set.
+- **Dynamic colour:** a "Wallpaper colours" setting, shown on Android 12+ and off by default. It takes effect immediately, and is translated for all 10 locales.
+- **Scope:** the legacy screens still use `AppColors` and their per-screen accents until each is migrated. The new destinations already use the calm theme.
 
 ## CI debt (merged without GitHub Actions)
 
@@ -54,6 +32,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #39: UI technology evaluation (documentation only).
 - PR #40: design decision (documentation only).
 - PR #41: toolchain upgrade.
+- PR #42: design tokens.
 
 ## Owner direction for later (2026-09-27)
 

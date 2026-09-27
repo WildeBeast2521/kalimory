@@ -103,6 +103,7 @@ class MainActivity : ComponentActivity() {
             val isSystemDark by systemDarkMode
             val savedTheme = remember { themePrefs.getTheme() }
             var currentTheme by remember { mutableStateOf(savedTheme) }
+            var dynamicColor by remember { mutableStateOf(themePrefs.isDynamicColor()) }
 
             val darkTheme = when (currentTheme) {
                 AppTheme.SYSTEM -> isSystemDark
@@ -116,7 +117,7 @@ class MainActivity : ComponentActivity() {
                 startupState = withContext(Dispatchers.IO) { DatabaseStartupCheck.run(applicationContext) }
             }
 
-            CalisthenicsMemoryTheme(darkTheme = darkTheme) {
+            CalisthenicsMemoryTheme(darkTheme = darkTheme, dynamicColor = dynamicColor) {
                 when (val state = startupState) {
                     null -> Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))
                     DatabaseStartupState.Ready -> CalisthenicsMemoryApp(
@@ -124,6 +125,11 @@ class MainActivity : ComponentActivity() {
                         onThemeChange = { newTheme ->
                             themePrefs.setTheme(newTheme)
                             currentTheme = newTheme
+                        },
+                        dynamicColor = dynamicColor,
+                        onDynamicColorChange = { enabled ->
+                            themePrefs.setDynamicColor(enabled)
+                            dynamicColor = enabled
                         }
                     )
                     else -> Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
@@ -233,7 +239,9 @@ fun UiMessage.toMessageString(): String {
 @Composable
 fun CalisthenicsMemoryApp(
     currentTheme: AppTheme = AppTheme.SYSTEM,
-    onThemeChange: (AppTheme) -> Unit = {}
+    onThemeChange: (AppTheme) -> Unit = {},
+    dynamicColor: Boolean = false,
+    onDynamicColorChange: (Boolean) -> Unit = {}
 ) {
     val viewModel: TrainingViewModel = viewModel()
     var currentScreen by rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.Home) }
@@ -383,7 +391,9 @@ fun CalisthenicsMemoryApp(
                         onNavigateToCsvDataManagement = { currentScreen = Screen.CsvDataManagement },
                         onNavigateToShareHub = { currentScreen = Screen.ShareHub },
                         currentTheme = currentTheme,
-                        onThemeChange = onThemeChange
+                        onThemeChange = onThemeChange,
+                        dynamicColor = dynamicColor,
+                        onDynamicColorChange = onDynamicColorChange
                     )
                 }
                 is Screen.Licenses -> {
