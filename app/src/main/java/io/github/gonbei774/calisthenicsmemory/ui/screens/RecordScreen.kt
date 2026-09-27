@@ -41,7 +41,7 @@ import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
-import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
@@ -93,10 +93,10 @@ fun RecordScreen(
     var setValues by remember { mutableStateOf(List(1) { "" }) }
 
     // 前回セッションのプリフィル用データ
-    var prefillData by remember { mutableStateOf<List<TrainingRecord>?>(null) }
+    var prefillData by remember { mutableStateOf<List<HistorySet>?>(null) }
 
     // 前回セッション（「前回」表示用。プリフィル設定とは独立して常に取得する）
-    var previousSession by remember { mutableStateOf<List<TrainingRecord>?>(null) }
+    var previousSession by remember { mutableStateOf<List<HistorySet>?>(null) }
 
     // Date and Time with pickers
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
@@ -668,8 +668,8 @@ fun WorkoutInputScreen(
     exercise: Exercise,
     numberOfSets: Int,
     setValues: List<String>,
-    prefillData: List<TrainingRecord>? = null,
-    previousSession: List<TrainingRecord>? = null,
+    prefillData: List<HistorySet>? = null,
+    previousSession: List<HistorySet>? = null,
     selectedDate: LocalDate,
     selectedTime: LocalTime,
     comment: String,
@@ -1641,7 +1641,7 @@ private fun PerSetTrackingFields(
     onWeightChange: (Int, String) -> Unit,
     onAssistanceChange: (Int, String) -> Unit,
     appColors: io.github.gonbei774.calisthenicsmemory.ui.theme.AppColors,
-    previousSession: List<TrainingRecord>? = null
+    previousSession: List<HistorySet>? = null
 ) {
     // 距離
     if (exercise.distanceTrackingEnabled) {

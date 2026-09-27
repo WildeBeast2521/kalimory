@@ -43,11 +43,11 @@ class CompatibilityHistoryTest {
         assertEquals(null, plank.valueLeft)
     }
 
-    @Test fun `v2 times are shown in the given zone, from completion when known`() {
+    @Test fun `v2 sets take their session's start time in the given zone, like one saved legacy workout`() {
         val completed = ZonedDateTime.of(2025, 2, 1, 23, 59, 59, 0, zone).toInstant().toEpochMilli()
         val merged = CompatibilityHistory.merge(emptyList(), listOf(row(1, reps = 5), row(2, exercise = 2, reps = 5, completedAt = completed)), zone)
-        assertEquals(listOf("2025-02-01" to "23:59", "2025-02-01" to "09:05"), merged.map { it.date to it.time })
-        assertEquals(HistorySource.V2, merged.first().source)
+        assertEquals(listOf("2025-02-01" to "09:05", "2025-02-01" to "09:05"), merged.map { it.date to it.time })
+        assertEquals(setOf(HistorySource.V2), merged.map { it.source }.toSet())
     }
 
     @Test fun `newest first, legacy before v2 at the same minute`() {

@@ -145,7 +145,7 @@ fun ProgramExecutionScreen(
         if (exercisePairs.isEmpty()) return@LaunchedEffect
 
         // 前回値を取得（表示用に常に取得）
-        val previousRecordsMap = mutableMapOf<Long, List<io.github.gonbei774.calisthenicsmemory.data.TrainingRecord>>()
+        val previousRecordsMap = mutableMapOf<Long, List<io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet>>()
         exercisePairs.forEach { (_, exercise) ->
             previousRecordsMap[exercise.id] = viewModel.getLatestSession(exercise.id)
         }
@@ -958,7 +958,7 @@ fun ProgramExecutionScreen(
                                     // 実行順 (種目index, ラウンド) のブロック並びで処理し、ループのラウンド優先順を保持する
                                     val blockOrder = originalSets.map { it.exerciseIndex to it.roundNumber }.distinct()
                                     // 前回記録は種目ごとに1回だけ取得してキャッシュ（同一種目が複数ラウンド出てくるため）
-                                    val latestByIndex = mutableMapOf<Int, List<io.github.gonbei774.calisthenicsmemory.data.TrainingRecord>>()
+                                    val latestByIndex = mutableMapOf<Int, List<io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet>>()
                                     blockOrder.forEach { (index, round) ->
                                         val (pe, exercise) = step.session.exercises[index]
                                         // ループ情報を元のセットから取得

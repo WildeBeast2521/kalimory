@@ -1337,7 +1337,7 @@ fun SettingsStep(
     var isometricIntervalSeconds by remember { mutableIntStateOf(workoutPrefs.getIsometricIntervalSeconds()) }
 
     // 前回セッションデータ（前回値表示用）
-    var previousSessionRecords by remember { mutableStateOf<List<io.github.gonbei774.calisthenicsmemory.data.TrainingRecord>>(emptyList()) }
+    var previousSessionRecords by remember { mutableStateOf<List<io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet>>(emptyList()) }
 
     // プリフィル：前回セッションのデータを取得
     LaunchedEffect(exercise.id) {

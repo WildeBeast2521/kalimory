@@ -33,6 +33,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -212,14 +213,6 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
 
     // Exercise Groups
     val groups: StateFlow<List<ExerciseGroup>> = groupDao.getAllGroups()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = emptyList()
-        )
-
-    // Training Records
-    val records: StateFlow<List<TrainingRecord>> = recordDao.getAllRecords()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
@@ -854,7 +847,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
      */
     suspend fun exportRecords(): String = withContext(Dispatchers.IO) {
         try {
-            val currentRecords = records.value
+            // Every set in history, legacy or v2, so v2-only workouts are exported too.
+            val currentRecords = CompatibilityHistory.read(database, ZoneId.systemDefault())
             val currentExercises = exercises.value
 
             // 種目IDから種目情報へのマップを作成
@@ -1146,6 +1140,11 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             // ヘッダー行をスキップ
             val dataRecords = csvRecords.drop(1)
 
+            // Sets already in history, legacy or v2, so an exported v2 set is not imported again as a duplicate.
+            val existingSets = CompatibilityHistory.read(database, ZoneId.systemDefault())
+                .map { listOf(it.exerciseId, it.date, it.time, it.setNumber) }
+                .toHashSet()
+
             dataRecords.forEachIndexed { index, columns ->
                 try {
                     if (columns.size < 8) {
@@ -1203,12 +1202,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                     }
 
                     // 重複チェック
-                    val isDuplicate = records.value.any { existingRecord ->
-                        existingRecord.exerciseId == exercise.id &&
-                        existingRecord.date == date &&
-                        existingRecord.time == time &&
-                        existingRecord.setNumber == setNumber
-                    }
+                    val isDuplicate = listOf(exercise.id, date, time, setNumber) in existingSets
 
                     if (isDuplicate) {
                         skippedItems.add("\"$exerciseName ($exerciseType)\" - $date $time Set $setNumber (already exists)")
@@ -1451,9 +1445,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    suspend fun hasRecordOnDate(exerciseId: Long, date: String): Boolean {
-        return recordDao.hasRecordOnDate(exerciseId, date)
-    }
+    suspend fun hasRecordOnDate(exerciseId: Long, date: String): Boolean =
+        CompatibilityHistory.hasSetOn(database, exerciseId, LocalDate.parse(date), ZoneId.systemDefault())
 
     fun updateTodoRepeatDays(taskId: Long, repeatDays: String) {
         viewModelScope.launch {
@@ -1495,9 +1488,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
      * 指定した種目の前回セッション記録を取得
      * オートフィル機能用
      */
-    suspend fun getLatestSession(exerciseId: Long): List<TrainingRecord> {
-        return recordDao.getLatestSessionByExercise(exerciseId)
-    }
+    suspend fun getLatestSession(exerciseId: Long): List<HistorySet> =
+        CompatibilityHistory.latestSession(database, exerciseId, ZoneId.systemDefault())
 
     // ========================================
     // Program 操作

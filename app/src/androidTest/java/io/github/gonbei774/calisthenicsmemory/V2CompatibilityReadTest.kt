@@ -24,6 +24,10 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSourceType
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
+import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import java.time.LocalDate
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -123,5 +127,41 @@ class V2CompatibilityReadTest {
         assertEquals(9, v2.valueRight)
         assertEquals(8, v2.valueLeft)
         assertEquals("v2 only", v2.comment)
+    }
+
+    @Test
+    fun latestSessionIsTheNewestWorkoutFromEitherStore() = runBlocking {
+        writeV2OnlyWorkout()
+
+        // Lunge: the v2 workout (Feb 1) is newer than the legacy one (Jan 6); its sides pair into one set.
+        val lunge = CompatibilityHistory.latestSession(database, 2, zone)
+        assertEquals(listOf(HistorySource.V2), lunge.map { it.source })
+        assertEquals(listOf(9 to 8), lunge.map { it.valueRight to it.valueLeft })
+
+        // Push-up has only legacy history: every record of its newest date and time, by set number.
+        val pushUp = CompatibilityHistory.latestSession(database, 1, zone)
+        assertEquals(listOf(1L, 2L), pushUp.map { it.legacyRecordId })
+
+        // A newer legacy workout wins again.
+        database.trainingRecordDao().insertRecord(TrainingRecord(10, 2, 6, 6, 1, "2025-03-01", "08:00", "later"))
+        assertEquals(listOf(10L), CompatibilityHistory.latestSession(database, 2, zone).map { it.legacyRecordId })
+
+        assertEquals(emptyList<HistorySet>(), CompatibilityHistory.latestSession(database, 99, zone))
+    }
+
+    @Test
+    fun hasSetOnChecksBothStoresInTheGivenZone() = runBlocking {
+        writeV2OnlyWorkout()
+        val feb1 = LocalDate.of(2025, 2, 1)
+
+        assertTrue(CompatibilityHistory.hasSetOn(database, 2, feb1, zone))
+        assertFalse(CompatibilityHistory.hasSetOn(database, 2, feb1.minusDays(1), zone))
+        assertTrue(CompatibilityHistory.hasSetOn(database, 2, LocalDate.of(2025, 1, 6), zone))
+        // 06:00 in Kolkata on Feb 1 is still Jan 31 in Los Angeles.
+        val losAngeles = ZoneId.of("America/Los_Angeles")
+        assertTrue(CompatibilityHistory.hasSetOn(database, 2, feb1.minusDays(1), losAngeles))
+        assertFalse(CompatibilityHistory.hasSetOn(database, 2, feb1, losAngeles))
+        // Push-up has no v2 sets and no legacy record that day.
+        assertFalse(CompatibilityHistory.hasSetOn(database, 1, feb1, zone))
     }
 }
