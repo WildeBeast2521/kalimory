@@ -19,7 +19,13 @@ class WorkoutTimerServiceTest {
         val output = ParcelFileDescriptor.AutoCloseInputStream(
             instrumentation.uiAutomation.executeShellCommand("dumpsys power")
         ).bufferedReader().use { it.readText() }
-        return output.contains("CalisthenicsMemory::WorkoutTimerService")
+        // Only the list of held wake locks counts. Newer Android versions also print a log of
+        // past acquire and release events, where the tag stays after it is released.
+        val held = output.lineSequence()
+            .dropWhile { !it.trimStart().startsWith("Wake Locks: size=") }
+            .drop(1)
+            .takeWhile { it.isNotBlank() }
+        return held.any { it.contains("CalisthenicsMemory::WorkoutTimerService") }
     }
 
     private fun waitUntil(condition: () -> Boolean): Boolean {
