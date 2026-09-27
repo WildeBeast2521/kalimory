@@ -14,7 +14,8 @@ cd "$(dirname "$0")/.."
 schema_root="app/schemas"
 schema_dir="$schema_root/io.github.gonbei774.calisthenicsmemory.data.AppDatabase"
 database_source="app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt"
-generated_database="app/build/generated/ksp/debug/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase_Impl.java"
+# Room 2.7+ with KSP 2 generates Kotlin.
+generated_database="app/build/generated/ksp/debug/kotlin/io/github/gonbei774/calisthenicsmemory/data/AppDatabase_Impl.kt"
 
 fail() {
     echo "error: $*" >&2

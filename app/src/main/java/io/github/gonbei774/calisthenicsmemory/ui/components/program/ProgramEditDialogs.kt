@@ -628,7 +628,7 @@ fun ExerciseSettingsDialog(
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .menuAnchor(),
+                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = Orange600,
                                 focusedLabelColor = Orange600,

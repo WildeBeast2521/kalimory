@@ -1301,7 +1301,7 @@ fun UnifiedAddDialog(
                                             readOnly = true,
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                                             trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) }
                                         )
 
