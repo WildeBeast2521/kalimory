@@ -4,12 +4,17 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8, slice 10a: database version 24 and backup format 10 store interval workout settings on v2 sessions. Branch `work/interval-config-columns`, based on master `b4e8174`.
-- `MIGRATION_23_24` adds four nullable columns to `workout_sessions`. Schema 24 is exported, and the migration matrix now runs 9–24.
-- A new data-preservation test covers 23→24.
-- Backup format 10 carries the settings, with round-trip and validation tests.
+Task 8, slice 10b: interval workouts are saved as v2 sessions and read through `IntervalHistory`. Branch `work/v2-interval-write`, based on master `683d46c`. See "Write path: interval workouts" in `docs/development/v2-workout-history.md`.
 
-Slice 10b (next) writes interval workouts to v2 and serves interval history through a compatibility reader.
+All four workout sources now write v2: single, manual, program and interval. The legacy tables are only read, imported (CSV and backup) and edited.
+
+Verification:
+- `IntervalWorkoutTest` (JVM, 6 tests).
+- `IntervalHistoryDbTest` (2 tests).
+- A real run on the emulator: a two-exercise, two-round program next to a seeded legacy interval record.
+  - The database had one `INTERVAL_TEMPLATE` session with its settings, 4 completed slots with no metrics, and no new legacy row.
+  - Progress listed both workouts.
+  - Deleting the v2 workout from the Progress menu removed its session and sets and kept the legacy record.
 
 ## CI debt (merged without GitHub Actions)
 
@@ -23,6 +28,7 @@ Each PR below passed the full local gate before merging:
 Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
 - PR #34: database 24 and backup format 10, interval settings.
+- PR #35: interval workouts to v2.
 
 ## Owner direction for later (2026-09-27)
 
@@ -217,7 +223,8 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Save interval workouts as v2 sessions (`INTERVAL_TEMPLATE`, from the checkpointed `IntervalSessionContext` and timer state). Decide how `interval_records` and the history screens' interval list are served during the transition. Then add `UnifiedWorkoutFlowTest`.
+1. `UnifiedWorkoutFlowTest`: start, record, pause, background, resume, skip, finish, abandon, back navigation and process recreation for all three source types (Task 8 acceptance).
 2. Before any further visual work: research and write the UI/UX design-system plan (ADR 0004 decision 2 is reopened). Build it only after the owner chooses.
+3. Re-run CI on `master` once GitHub Actions works again (see "CI debt").
 
-Files likely involved next: `ui/screens/IntervalExecutionScreen.kt`, `workout/IntervalWorkoutPlan.kt`, `data/IntervalRecord*.kt`, `ui/screens/view/`.
+Files likely involved next: `app/src/androidTest/`, `ui/screens/WorkoutScreen.kt`, `ui/screens/ProgramExecutionScreen.kt`, `ui/screens/IntervalExecutionScreen.kt`.
