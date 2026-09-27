@@ -16,6 +16,14 @@ Verification:
 
 ## Owner direction for later (2026-09-27)
 
+- **GitHub issue templates** (to-do; none exist yet, and `.github/` holds only `workflows`). Add `.github/ISSUE_TEMPLATE/` with:
+  - a bug report asking for app version, Android version and device, and steps;
+  - a feature request;
+  - a `config.yml`.
+
+  The bug template must tell reporters not to attach backups, database files or personal workout data, and to share only synthetic examples. The app collects no telemetry, so the template is the only diagnostic channel. Blank issues can stay allowed.
+- **Project wiki** (deferred until the app is complete). Build a wiki modelled on the upstream project's Codeberg wiki, written once the overhaul is finished so it documents the final screens and flows. Keep upstream attribution where its structure or content is reused, and never push to upstream.
+
 - The Task 8 UI must look premium and perform well. Use the installed design skills.
 - **The design system is reopened.** The owner does not want Material 3 Expressive locked in: the current implementation may be replaced if something is better. Before more visual work, write a full UI/UX research plan and compare the options (M3 Expressive, custom on Compose Foundation, others) on look, performance, accessibility, maintenance and license. The owner decides from that plan. Until then, only structural work continues (navigation, data paths). Its visuals are provisional.
 - A progression system (a full ranked catalogue, progressions, custom exercises, daily goals, demonstrations) comes after Task 8. It will be planned in depth first. Brief: `docs/plans/future-progression-system-brief.md`.
