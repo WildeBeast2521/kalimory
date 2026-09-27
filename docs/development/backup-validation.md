@@ -6,7 +6,7 @@ Rule: every JSON backup this app exports must restore on this app. Import follow
 
 ## Rejected (the database itself could not hold them)
 
-- Wrong `app` or a backup version outside 1–9.
+- Wrong `app` or a backup version outside 1–10.
 - Non-positive or duplicate ids in any collection.
 - A duplicate group name or a duplicate exercise name/type pair (unique indexes).
 - References backed by foreign keys: a record, program exercise, or interval program exercise pointing at a missing exercise or program; a program loop pointing at a missing program; a program exercise pointing at a missing loop.
@@ -43,3 +43,7 @@ Group rename and delete and exercise delete each run as one Room transaction (`E
 ## Format 9: v2 workout history
 
 Format 9 adds `workoutSessions`, `sessionExercises`, and `setEntries`. Enum values are written as their stable database codes. Export reads the v2 tables in the same transaction as the legacy tables. Restore replaces them in the same transaction, clearing v2 first and inserting it last. Restoring a format 1–8 backup therefore also removes v2 history, which matches the "overwrite all data" warning. Older app versions reject format 9 files as an unsupported version rather than silently dropping the v2 data.
+
+## Format 10: interval settings
+
+Format 10 adds four optional fields to each workout session: `intervalWorkSeconds`, `intervalRestSeconds`, `intervalRounds` and `intervalRoundRestSeconds`. They mirror database version 24 and record the interval settings an `INTERVAL_TEMPLATE` workout ran with; other sessions leave them out. A format 9 file restores with them empty. Older app versions reject format 10 files as unsupported rather than dropping the settings. A negative setting is accepted and reported as `V2_NEGATIVE_VALUE`, like a negative set value.

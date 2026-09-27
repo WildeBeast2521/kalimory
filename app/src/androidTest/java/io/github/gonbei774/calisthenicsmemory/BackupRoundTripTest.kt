@@ -99,7 +99,15 @@ class BackupRoundTripTest {
                 sourceType = io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSourceType.PROGRAM_TEMPLATE,
                 sourceTemplateId = 2, sourceNameSnapshot = "B", startedAtEpochMillis = 1_000, endedAtEpochMillis = 9_000,
                 updatedAtEpochMillis = 9_000, timePrecision = io.github.gonbei774.calisthenicsmemory.data.v2.TimePrecision.EXACT, comment = "c",
-            )
+            ),
+            // An interval workout keeps its settings (database 24, backup format 10).
+            io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSessionEntity(
+                id = 6, status = io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSessionStatus.COMPLETED,
+                sourceType = io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSourceType.INTERVAL_TEMPLATE,
+                sourceTemplateId = 3, sourceNameSnapshot = "Tabata", startedAtEpochMillis = 20_000, endedAtEpochMillis = 260_000,
+                updatedAtEpochMillis = 260_000, timePrecision = io.github.gonbei774.calisthenicsmemory.data.v2.TimePrecision.EXACT,
+                intervalWorkSeconds = 20, intervalRestSeconds = 10, intervalRounds = 8, intervalRoundRestSeconds = 60,
+            ),
         ),
         sessionExercises = listOf(
             io.github.gonbei774.calisthenicsmemory.data.v2.SessionExerciseEntity(
@@ -134,12 +142,13 @@ class BackupRoundTripTest {
 
         val exported = BackupService(source.backupDao()).export()
         val json = (exported as BackupResult.Success).value.json
-        assertTrue(json.contains("\"version\":9"))
+        assertTrue(json.contains("\"version\":10"))
+        assertTrue(json.contains("\"intervalRoundRestSeconds\":60"))
         val parsed = BackupService(target.backupDao()).parse(json)
         assertTrue("parse: $parsed", parsed is BackupResult.Success)
         val restored = BackupService(target.backupDao()).restore((parsed as BackupResult.Success).value.data)
         assertTrue("restore: $restored", restored is BackupResult.Success)
-        assertEquals(1, (restored as BackupResult.Success).value.workoutSessions)
+        assertEquals(2, (restored as BackupResult.Success).value.workoutSessions)
         assertEquals(2, restored.value.setEntries)
 
         assertEquals(v2History, target.backupDao().snapshot())

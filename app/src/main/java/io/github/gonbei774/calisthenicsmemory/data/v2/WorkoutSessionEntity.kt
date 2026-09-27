@@ -25,4 +25,12 @@ data class WorkoutSessionEntity(
     /** Precision of the start and end times; MINUTE for legacy-derived sessions. */
     val timePrecision: TimePrecision,
     val comment: String? = null,
+    /**
+     * The interval settings the workout ran with (INTERVAL_TEMPLATE sessions); null for other
+     * sources. Added in database version 24.
+     */
+    val intervalWorkSeconds: Int? = null,
+    val intervalRestSeconds: Int? = null,
+    val intervalRounds: Int? = null,
+    val intervalRoundRestSeconds: Int? = null,
 )
