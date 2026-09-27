@@ -11,6 +11,19 @@ Task 8, slice 10a: database version 24 and backup format 10 store interval worko
 
 Slice 10b (next) writes interval workouts to v2 and serves interval history through a compatibility reader.
 
+## CI debt (merged without GitHub Actions)
+
+GitHub Actions stopped starting jobs on 2026-09-27. The annotation says account payments failed or the spending limit needs raising. The owner decided: "Merge locally verified PRs for now, rerun CI later."
+
+Each PR below passed the full local gate before merging:
+- `testDebugUnitTest lintDebug assembleDebug`;
+- `connectedDebugAndroidTest` on `floor_api29`;
+- the schema check, when the schema changed.
+
+Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
+
+- PR #34: database 24 and backup format 10, interval settings.
+
 ## Owner direction for later (2026-09-27)
 
 - **GitHub issue templates** (to-do; none exist yet, and `.github/` holds only `workflows`). Add `.github/ISSUE_TEMPLATE/` with:
