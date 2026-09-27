@@ -11,7 +11,7 @@ Task 8 of `docs/plans/2026-08-30-overhaul-bootstrap.md` delivers the visible ove
 
 1. **No feature flag.** The app is not published until the overhaul is complete, so the new UI replaces the old one directly. The plan's flag and its "flag off" acceptance items, including the Task 7 item in `docs/development/v2-workout-history.md`, no longer apply. Legacy screens stay reachable until their replacements reach parity, and are removed only after an explicit parity review. Data safety rules are unchanged: no data is deleted or hidden, and every change stays exportable and restorable.
 
-2. **Material 3 Expressive.** *Reopened 2026-09-27: the owner asked for a full UI/UX research plan before committing to a design system, and is willing to replace the current implementation. The dependency stays until that plan is decided.* The owner chose it after comparison with apps that use it:
+2. **Material 3 Expressive.** *Reopened on 2026-09-27 for a full UI/UX research plan (`docs/plans/2026-09-27-ui-design-system-options.md`), then decided the same day. See Decision 5.* The owner chose it after comparison with apps that use it:
    - mpvEx: Compose, `material3:1.5.0-alpha15`, Expressive components.
    - ArrMatey: Compose Multiplatform, `material3:1.5.0-alpha14`, `MaterialExpressiveTheme`.
    - Obtainium: Flutter; it builds its own Expressive-style theme and is not directly comparable.
@@ -21,6 +21,13 @@ Task 8 of `docs/plans/2026-08-30-overhaul-bootstrap.md` delivers the visible ove
 3. **Navigation:** a bottom bar with the four destinations.
 
 4. **Today** shows the resumable in-progress workout first, then today's to-dos and scheduled items, then a short summary of recent activity.
+
+5. **Design system (decided 2026-09-27, after the research plan).**
+   - **Technology:** Jetpack Compose.
+   - **Look:** the app's own calm, focused design language (colour, type, spacing, motion, signature workout screens) built on Material 3 Expressive.
+   - **Versions:** the latest releases available. The toolchain is upgraded (AGP 9, compileSdk 37, current Kotlin and KSP) to follow the newest Material 3 1.5 releases instead of staying on the alpha18 pin.
+   - **Font:** a bundled font under the SIL Open Font License.
+   - **Dynamic colour:** a setting. On, the app uses the wallpaper colours; off, it uses its own palette.
 
 ## Consequences
 

@@ -4,13 +4,13 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-The UI design-system plan is written for the owner to decide: `docs/plans/2026-09-27-ui-design-system-options.md`. It compares Expressive alpha, stable Material 3 with the app's own design system (recommended), fully custom components, Miuix and Lumo UI.
+The design system is decided (ADR 0004, decision 5): Jetpack Compose, with the app's own calm, focused design language on Material 3 Expressive at the latest versions available, a bundled open-license font, and dynamic colour as a setting.
 
-It rests on two measured facts:
-- the Expressive pin runs Compose core `1.11.0-beta02`, while the stable BOM `2026.09.00` has 1.12.1;
-- Material 3 1.5 is still alpha (alpha29).
+Next is the toolchain upgrade that "latest" requires, as its own safety-first slice:
+- AGP 9.x, compileSdk 37, and current Kotlin, KSP and Room;
+- the latest Material 3 1.5 release and Compose BOM.
 
-No visual work starts until the owner decides.
+After that come design tokens, then measurement with a Macrobenchmark and Baseline Profiles, then prototypes of three screens, then migrating screens one by one.
 
 ## CI debt (merged without GitHub Actions)
 
@@ -28,6 +28,8 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #36: unified workout flow tests.
 - PR #37: wake-lock test fix for API 36.
 - PR #38: design-system options plan (documentation only).
+- PR #39: UI technology evaluation (documentation only).
+- PR #40: design decision (documentation only).
 
 ## Owner direction for later (2026-09-27)
 
