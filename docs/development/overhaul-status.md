@@ -4,17 +4,21 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8, slice 10b: interval workouts are saved as v2 sessions and read through `IntervalHistory`. Branch `work/v2-interval-write`, based on master `683d46c`. See "Write path: interval workouts" in `docs/development/v2-workout-history.md`.
+Task 8, slice 11: `UnifiedWorkoutFlowTest` drives the real screens end to end. Branch `work/unified-flow-test`, based on master `9af9219`.
 
-All four workout sources now write v2: single, manual, program and interval. The legacy tables are only read, imported (CSV and backup) and edited.
+Tests:
+- **Single workout:** finish (one v2 session), recreating the activity mid-workout (the resume offer appears; resuming and finishing saves one session), and abandon (nothing saved, checkpoint cleared).
+- **Program:** finish, and recreation with resume, both started from a due to-do on Today.
+- **Interval:** finish, saving one `INTERVAL_TEMPLATE` session with its settings.
+- The test sets and restores the app's workout preferences, and uses uniquely named synthetic rows that it removes afterwards.
+- Negative check: suppressing the single-workout write fails exactly the two single save tests.
 
-Verification:
-- `IntervalWorkoutTest` (JVM, 6 tests).
-- `IntervalHistoryDbTest` (2 tests).
-- A real run on the emulator: a two-exercise, two-round program next to a seeded legacy interval record.
-  - The database had one `INTERVAL_TEMPLATE` session with its settings, 4 completed slots with no metrics, and no new legacy row.
-  - Progress listed both workouts.
-  - Deleting the v2 workout from the Progress menu removed its session and sets and kept the legacy record.
+Task 8 acceptance gate, as it stands:
+- **Met:** one durable session lifecycle for all sources, queryable v2 history, export and restore (format 10), resume after recreation, and the Today, Train, Progress and Library destinations.
+- **Covered elsewhere:** pause, background, skip and process death (Task 6 tests and emulator runs); the history editing tests.
+- **Still open:**
+  - The whole suite has run only on API 29. A run on a current API emulator (`s1_api36`) is still to do.
+  - The "flag off" fallback item was dropped by ADR 0004.
 
 ## CI debt (merged without GitHub Actions)
 
@@ -29,6 +33,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 
 - PR #34: database 24 and backup format 10, interval settings.
 - PR #35: interval workouts to v2.
+- PR #36: unified workout flow tests.
 
 ## Owner direction for later (2026-09-27)
 
