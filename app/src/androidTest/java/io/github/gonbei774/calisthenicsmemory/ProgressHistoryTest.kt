@@ -4,6 +4,7 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
@@ -29,6 +30,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.navigation.PRIMARY_NAVIGATION_B
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import kotlinx.coroutines.runBlocking
 import org.junit.After
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -108,8 +110,33 @@ class ProgressHistoryTest {
         val today = LocalDate.now().toString()
         rule.onNodeWithText("$today 06:00").assertExists()
         rule.onNodeWithText("$today 20:00").assertExists()
-        // Only the legacy session has the edit/delete menu.
-        rule.onAllNodesWithContentDescription(context.getString(R.string.menu)).assertCountEquals(1)
+        // Both sessions can be edited and deleted.
+        rule.onAllNodesWithContentDescription(context.getString(R.string.menu)).assertCountEquals(2)
+    }
+
+    @Test
+    fun deletingAV2WorkoutRemovesOnlyIt() {
+        scenario = ActivityScenario.launch(MainActivity::class.java)
+        val progress = context.getString(PrimaryDestination.PROGRESS.label)
+        rule.waitUntil(STARTUP_TIMEOUT_MS) {
+            rule.onAllNodesWithText(progress).fetchSemanticsNodes().isNotEmpty()
+        }
+        rule.onNode(hasText(progress) and hasAnyAncestor(hasTestTag(PRIMARY_NAVIGATION_BAR_TAG))).performClick()
+        rule.onNodeWithText(context.getString(R.string.tab_list)).performClick()
+        rule.waitUntil(STARTUP_TIMEOUT_MS) {
+            rule.onAllNodesWithText(exerciseName).fetchSemanticsNodes().size == 2
+        }
+
+        // Newest first: the v2 workout at 20:00 is the first session card.
+        rule.onAllNodesWithContentDescription(context.getString(R.string.menu))[0].performClick()
+        rule.onNodeWithText(context.getString(R.string.delete)).performClick()
+        rule.onNode(hasText(context.getString(R.string.delete)) and hasAnyAncestor(isDialog())).performClick()
+
+        rule.waitUntil(STARTUP_TIMEOUT_MS) {
+            rule.onAllNodesWithText(exerciseName).fetchSemanticsNodes().size == 1
+        }
+        rule.onNodeWithText("${LocalDate.now()} 06:00").assertExists()
+        runBlocking { assertNull(database.workoutSessionDao().session(sessionId)) }
     }
 
     private companion object {
