@@ -4,22 +4,27 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Task 8, slice 4: history screens read the compatibility path (ADR 0003, stage 4, done before any v2 write). Branch `work/history-compat-read`, based on master `dc660cc`.
+Task 8, slice 5: the remaining history readers include v2-only workouts. Branch `work/legacy-readers-compat`, based on master `3529674`.
 
-- `TrainingViewModel.history` combines `training_records` with `WorkoutSessionDao.observeV2OnlyHistoryRows()` through `CompatibilityHistory.merge`, in the device zone.
-- These screens now read `HistorySet` instead of `TrainingRecord`: Progress (calendar, list, graph, challenge) and Today's summary.
-- Legacy and v2 sets never share a session row.
-- v2 sessions are read-only: they have no edit or delete menu, and tapping a set does nothing. Legacy edits convert back through `HistorySet.toLegacyRecord()`.
-- Still reading legacy records only:
-  - the view model's own uses of `records` (duplicate check, previous-value prefill);
-  - `hasRecordOnDate` for to-do group completion;
-  - CSV export.
+- CSV record export reads `CompatibilityHistory.read`.
+- The CSV import duplicate check also reads `CompatibilityHistory.read`, so re-importing an export that contains v2 sets adds nothing.
+- `getLatestSession` (previous-value prefill in the Workout, Record and Program screens) returns the newest workout from either store (`CompatibilityHistory.latestSession`).
+- `hasRecordOnDate` (group to-do completion) also counts v2 sets (`CompatibilityHistory.hasSetOn`). The day boundary uses the device zone.
+- v2 sets now take their date and time from the session start, as one saved legacy workout shares one time. Before, per-set completion times would have split one v2 workout into several rows. No v2 rows exist yet.
+- The unused legacy-only `TrainingViewModel.records` flow is removed.
+- Tests:
+  - `V2CompatibilityReadTest` covers latest session and set-on-date, including zone boundaries.
+  - `HistoryReadersViewModelTest` runs the view model on the app database: export, re-import, prefill, and the per-day check.
+  - Negative check: restoring the legacy-only duplicate check fails the re-import test.
 
-  These move when v2 writes begin, since only then can v2-only sets exist.
-- Verification:
-  - `ProgressHistoryTest` inserts a legacy record and a v2-only session and checks both appear, with only the legacy one editable.
-  - Two negative checks: showing the menu for v2 sessions, and filtering Progress to legacy rows, each make it fail.
-  - A manual legacy edit on the emulator updated exactly the edited row.
+## Owner direction for later (2026-09-27)
+
+- The Task 8 UI must look premium. Use the installed design skills, within ADR 0004.
+- A progression system (a full ranked catalogue, progressions, custom exercises, daily goals, demonstrations) comes after Task 8. It will be planned in depth first. Brief: `docs/plans/future-progression-system-brief.md`.
+
+## Previous phase: history screens on the compatibility reader (merged)
+
+PR #27 merged as `3529674`.
 
 ## Previous phase: Today resume and due to-dos (merged)
 
@@ -176,8 +181,9 @@ Room schema and migration hardening is complete. PR #2 merged into `master` as `
 
 ## Next task
 
-1. Move the remaining legacy-only readers (duplicate check, previous-value prefill, `hasRecordOnDate`, CSV export) to history that includes v2, or document why each must stay legacy.
-2. Then add the single-workout v2 write path, with the one-time backfill and dual-read comparison at cutover (`docs/development/v2-workout-history.md`). v2 editing in Progress is needed before v2 becomes the only write path.
+1. Allow v2 sets to be edited and deleted in Progress, so v2 can become a write path without losing edit ability.
+2. Add the single-workout v2 write path, with the one-time backfill and dual-read comparison at cutover (`docs/development/v2-workout-history.md`).
 3. Move program and interval workouts onto sessions, then add `UnifiedWorkoutFlowTest`.
+4. Build the premium visual design system and apply it to the destinations and workout screens.
 
-Files likely involved next: `viewmodel/TrainingViewModel.kt`, `util/CsvUtils.kt` (or equivalent), `data/v2/`.
+Files likely involved next: `ui/screens/view/`, `data/v2/WorkoutSessionDao.kt`, `viewmodel/TrainingViewModel.kt`.
