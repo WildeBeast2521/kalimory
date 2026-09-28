@@ -154,7 +154,6 @@
     <!-- Settings Screen -->
     <string name="data_management">Gestión de Datos</string>
     <string name="export_data">Exportar Datos</string>
-    <string name="create_backup">Crear Copia de Seguridad</string>
     <string name="import_data">Importar Datos</string>
     <string name="restore_from_backup">Restaurar desde Copia de Seguridad</string>
     <string name="warning_title">Advertencia</string>
@@ -355,7 +354,7 @@
     <string name="csv_import_more_items">... y %d más</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">Copia de Seguridad Completa (JSON)</string>
-    <string name="section_full_backup_description">Guardar y restaurar todos los datos (ejercicios, registros, grupos).\nUsa esto cuando cambies de dispositivo.</string>
+    <string name="section_full_backup_description">Guarda y restaura todos tus datos: ejercicios, registros, programas, intervalos y tareas.\nÚsalo al cambiar de dispositivo.</string>
     <string name="section_partial_data_management">Gestión Parcial de Datos (CSV)</string>
     <string name="section_partial_data_management_description">Para el intercambio de datos con otras aplicaciones y hojas de cálculo.\nExporta e importa grupos, ejercicios y registros individualmente mediante CSV.</string>
     <!-- Legacy key for compatibility -->
@@ -841,4 +840,6 @@
     <string name="workout_count_decrease">Uno menos</string>
     <string name="workout_count_increase">Uno más</string>
     <string name="workout_set_done">Serie %1$d hecha</string>
+    <string name="backup_last">Última copia: %1$s</string>
+    <string name="backup_never">Aún no hay copia de seguridad</string>
 </resources>

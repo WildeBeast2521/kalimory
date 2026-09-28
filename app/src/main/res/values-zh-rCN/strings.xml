@@ -154,7 +154,6 @@
     <!-- Settings Screen -->
     <string name="data_management">数据管理</string>
     <string name="export_data">导出数据</string>
-    <string name="create_backup">创建备份</string>
     <string name="import_data">导入数据</string>
     <string name="restore_from_backup">从备份恢复</string>
     <string name="warning_title">警告</string>
@@ -355,7 +354,7 @@
     <string name="csv_import_more_items">... 以及其他 %d 项</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">完整备份（JSON）</string>
-    <string name="section_full_backup_description">保存和恢复所有数据（动作、记录、分组）。\n更换设备时使用。</string>
+    <string name="section_full_backup_description">保存和恢复所有数据：动作、记录、计划、间歇和待办。\n更换设备时使用。</string>
     <string name="section_partial_data_management">部分数据管理（CSV）</string>
     <string name="section_partial_data_management_description">用于与其他应用和电子表格交换数据。\n通过CSV单独导出和导入分组、动作和记录。</string>
     <!-- Legacy key for compatibility -->
@@ -785,4 +784,6 @@
     <string name="workout_count_decrease">减一</string>
     <string name="workout_count_increase">加一</string>
     <string name="workout_set_done">第%1$d组完成</string>
+    <string name="backup_last">上次备份：%1$s</string>
+    <string name="backup_never">尚无备份</string>
 </resources>

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.BackupPreferences
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import io.github.gonbei774.calisthenicsmemory.viewmodel.BackupData
@@ -51,6 +52,13 @@ fun BackupScreen(
     var importRecordCount by remember { mutableStateOf(0) }
     var importAnomalyCount by remember { mutableIntStateOf(0) }
     var isLoading by remember { mutableStateOf(false) }
+    val backupPrefs = remember { BackupPreferences(context) }
+    var lastBackupAt by remember { mutableStateOf(backupPrefs.getLastBackupAtMillis()) }
+    val markBackedUp = {
+        val now = System.currentTimeMillis()
+        backupPrefs.setLastBackupAtMillis(now)
+        lastBackupAt = now
+    }
 
     // JSONエクスポート用ランチャー
     val exportLauncher = rememberLauncherForActivityResult(
@@ -67,6 +75,7 @@ fun BackupScreen(
                                 result.value.json
                             )
                         }
+                        markBackedUp()
                         val summary = result.value.summary
                         viewModel.showSnackbar(UiMessage.ExportComplete(summary.groups, summary.exercises, summary.records))
                     }
@@ -100,6 +109,7 @@ fun BackupScreen(
                                 )
                             }
                             success = true
+                            markBackedUp()
                             viewModel.showBackupResult(true)
                             showImportWarning = true
                         }
@@ -246,7 +256,8 @@ fun BackupScreen(
                                 color = appColors.textPrimary
                             )
                             Text(
-                                text = stringResource(R.string.create_backup),
+                                text = lastBackupAt?.let { stringResource(R.string.backup_last, formatBackupTime(it)) }
+                                    ?: stringResource(R.string.backup_never),
                                 fontSize = 14.sp,
                                 color = appColors.textSecondary,
                                 modifier = Modifier.padding(top = 4.dp)
@@ -311,7 +322,7 @@ fun BackupScreen(
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Icon(AppIcons.Info, contentDescription = null, modifier = Modifier.size(20.dp))
+                        Icon(AppIcons.Warning, contentDescription = null, modifier = Modifier.size(20.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.warning_title),
@@ -670,3 +681,8 @@ fun BackupScreen(
         )
     }
 }
+
+/** The last backup time in the user's locale and time zone, for example "Sep 28, 2026, 9:57 PM". */
+internal fun formatBackupTime(epochMillis: Long, zone: java.time.ZoneId = java.time.ZoneId.systemDefault()): String =
+    java.time.Instant.ofEpochMilli(epochMillis).atZone(zone)
+        .format(DateTimeFormatter.ofLocalizedDateTime(java.time.format.FormatStyle.MEDIUM, java.time.format.FormatStyle.SHORT))

@@ -94,10 +94,10 @@ class WorkoutPreferences(context: Context) {
 
     /**
      * 画面オン維持の有効/無効を取得
-     * @return 有効: true, 無効: false（デフォルト: false）
+     * @return 有効: true, 無効: false. On by default: a workout timer should stay visible.
      */
     fun isKeepScreenOnEnabled(): Boolean {
-        return prefs.getBoolean(KEY_KEEP_SCREEN_ON_ENABLED, false)
+        return prefs.getBoolean(KEY_KEEP_SCREEN_ON_ENABLED, true)
     }
 
     /**

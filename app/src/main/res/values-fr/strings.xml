@@ -154,7 +154,6 @@
     <!-- Settings Screen -->
     <string name="data_management">Gestion des Données</string>
     <string name="export_data">Exporter les Données</string>
-    <string name="create_backup">Créer une Sauvegarde</string>
     <string name="import_data">Importer les Données</string>
     <string name="restore_from_backup">Restaurer depuis une Sauvegarde</string>
     <string name="warning_title">Avertissement</string>
@@ -355,7 +354,7 @@
     <string name="csv_import_more_items">... et %d de plus</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">Sauvegarde Complète (JSON)</string>
-    <string name="section_full_backup_description">Sauvegarder et restaurer toutes les données (exercices, enregistrements, groupes).\nUtilisez cette option lors du changement d\'appareil.</string>
+    <string name="section_full_backup_description">Sauvegardez et restaurez toutes vos données : exercices, enregistrements, programmes, intervalles et tâches.\nÀ utiliser lors d’un changement d’appareil.</string>
     <string name="section_partial_data_management">Gestion Partielle des Données (CSV)</string>
     <string name="section_partial_data_management_description">Pour l\'échange de données avec d\'autres applications et tableurs.\nExportez et importez des groupes, exercices et enregistrements individuellement via CSV.</string>
     <!-- Legacy key for compatibility -->
@@ -782,4 +781,6 @@
     <string name="workout_count_decrease">Un de moins</string>
     <string name="workout_count_increase">Un de plus</string>
     <string name="workout_set_done">Série %1$d terminée</string>
+    <string name="backup_last">Dernière sauvegarde : %1$s</string>
+    <string name="backup_never">Aucune sauvegarde pour l’instant</string>
 </resources>

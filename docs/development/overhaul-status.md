@@ -4,7 +4,23 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-The catch-up audit of earlier slices is recorded under "Improvement ideas". It found two defects, both fixed: the glyph icons (PRs #49 and #50) and the redundant mode picker (PR #48). Next are the small items, then Progress, Settings and Record in the redesign.
+Last backup time and keep-screen-on default, as the owner decided on 2026-09-28. Branch `work/backup-time-screen-on`, based on master `07b87a3`.
+
+- **Backup screen:** the export card shows "Last backup: <date, time>" in the user's locale, or "No backup yet".
+  - The time is saved in `BackupPreferences` after a completed export: from Export, or from the safety backup that the import flow already offers.
+  - A cancelled or failed export leaves the time unchanged.
+  - There are no reminders and no automatic backups, by owner decision.
+- **Backup copy:** the description now lists everything a backup holds (exercises, records, programs, intervals and to-dos) in the eight locales that had it. The warning card uses the warning icon.
+- **Keep screen on:** now defaults to on. Anyone who never changed the setting gets it on; an explicit choice is kept.
+
+Verification:
+- `BackupTimeFormatTest`;
+- the full local gate (130/130 instrumented tests on API 29);
+- on the emulator, a real export through the system file picker changed "No backup yet" to "Last backup: Sep 28, 2026, 10:33 PM".
+
+## Previous phase: catch-up audit recorded (merged)
+
+PR #51 merged as `07b87a3`.
 
 ## Previous phase: glyph icons, second pass (merged)
 
@@ -30,11 +46,11 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - glyph icons that PR #44 missed (PRs #49 and #50);
 - the redundant mode picker (PR #48).
 
-**Data safety (suggest to the owner soon):**
-- (M) Backup shows no "last backup" date and never reminds. For an offline app, a manual backup is the only protection.
-- (M) Before an import replaces everything, offer to save a safety backup of the current data first.
-- (L) Optional automatic local backups to a folder the user picks (Storage Access Framework, no network).
-- (S) The backup description lists only "exercises, records, groups"; it should mention programs, intervals and to-dos. The warning card uses an info icon instead of a warning icon.
+**Data safety** (owner decisions, 2026-09-28):
+- Show the last backup time: done in PR #52.
+- No reminders and no automatic backups: owner decision.
+- The safety backup before an import already existed; the audit missed it.
+- The backup description and the warning icon: fixed in PR #52.
 
 **Today:**
 - (S) A program hero shows only "Program"; add the exercise count and the estimate.
@@ -61,8 +77,8 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - (S) The program run shows "1/10" (sets across the whole program) and a capitalised "NEXT"; show "Set 1/6", plus the exercise position.
 - (S) The interval confirm screen has two Start buttons, the title "Confirm", and missing spaces ("20sec", "8rounds").
 - (M) Program and interval runs should use the in-workout kit (PR #47).
-- (M) Record ("Log a past workout") behaves like a live session: a "NOW" badge, and every set must be completed before Record is enabled. For logging the past, allow saving all sets as shown.
-- (L) Log a past workout with several exercises in one session. The v2 model supports this, and ManualWorkoutWriter handles one exercise today.
+- (M, owner-approved) Record ("Log a past workout") behaves like a live session: a "NOW" badge, and every set must be completed before Record is enabled. For logging the past, allow saving all sets as shown.
+- (L, owner-approved, after the item above) Log a past workout with several exercises in one session. The v2 model supports this, and ManualWorkoutWriter handles one exercise today.
 
 **Progress (feeds its redesign):**
 - (S) The week label reads "Sep 22 – 27" while the strip shows the 22nd to the 28th; check whether today is left out.
@@ -75,7 +91,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - (L) Trends and personal bests (progression system).
 
 **Settings:**
-- (S/owner) "Keep screen on" defaults to off; for a workout timer, on may be the better default.
+- "Keep screen on" now defaults to on: owner-approved, done in PR #52.
 - (M) Changing the language needs a restart. Per-app language (AndroidX) could apply it at once.
 
 **Known limitations and ADR deferrals, re-judged:**
@@ -126,6 +142,8 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #48: Quick start goes straight to choosing an exercise.
 - PR #49: finish replacing glyph icons.
 - PR #50: glyph icons, second pass.
+- PR #51: catch-up audit (documentation only).
+- PR #52: last backup time and keep-screen-on default.
 
 ## Owner direction for later (2026-09-27)
 
