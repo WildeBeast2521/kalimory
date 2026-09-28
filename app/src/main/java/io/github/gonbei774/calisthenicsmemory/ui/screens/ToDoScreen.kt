@@ -2034,7 +2034,8 @@ private fun RepeatDaysDialog(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                (1..7).forEach { dayNum ->
+                // In display order from the chosen first day; stored numbers stay ISO (Monday = 1).
+                weekDaysFrom(firstDayOfWeek()).map { it.value }.forEach { dayNum ->
                     val dayOfWeek = java.time.DayOfWeek.of(dayNum)
                     val dayName = dayOfWeek.getDisplayName(java.time.format.TextStyle.NARROW, locale)
                     val isSelected = dayNum in selectedDays

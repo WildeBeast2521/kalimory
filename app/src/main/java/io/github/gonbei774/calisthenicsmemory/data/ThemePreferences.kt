@@ -37,7 +37,16 @@ class ThemePreferences(context: Context) {
         prefs.edit { putBoolean(KEY_DYNAMIC_COLOR, enabled) }
     }
 
+    /** The chosen first day of the week, or null to follow the language and region. */
+    fun getFirstDayOfWeek(): java.time.DayOfWeek? =
+        prefs.getInt(KEY_FIRST_DAY_OF_WEEK, 0).takeIf { it in 1..7 }?.let { java.time.DayOfWeek.of(it) }
+
+    fun setFirstDayOfWeek(day: java.time.DayOfWeek?) {
+        prefs.edit { if (day == null) remove(KEY_FIRST_DAY_OF_WEEK) else putInt(KEY_FIRST_DAY_OF_WEEK, day.value) }
+    }
+
     companion object {
+        private const val KEY_FIRST_DAY_OF_WEEK = "first_day_of_week"
         private const val PREFS_NAME = "theme_preferences"
         private const val KEY_THEME = "app_theme"
         private const val KEY_DYNAMIC_COLOR = "dynamic_color"

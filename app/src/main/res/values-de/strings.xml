@@ -810,4 +810,6 @@
     <string name="today_week_summary">Diese Woche: %1$d von %2$d</string>
     <string name="today_done_title">Heute erledigt</string>
     <string name="today_see_progress">Fortschritt ansehen</string>
+    <string name="first_day_of_week">Erster Tag der Woche</string>
+    <string name="first_day_of_week_automatic">Automatisch (%1$s)</string>
 </resources>

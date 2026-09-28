@@ -33,6 +33,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -75,6 +76,7 @@ import kotlinx.coroutines.withContext
 import io.github.gonbei774.calisthenicsmemory.ui.screens.CsvDataManagementScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ShareHubScreen
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
+import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalFirstDayOfWeekSetting
 import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
@@ -104,6 +106,7 @@ class MainActivity : ComponentActivity() {
             val savedTheme = remember { themePrefs.getTheme() }
             var currentTheme by remember { mutableStateOf(savedTheme) }
             var dynamicColor by remember { mutableStateOf(themePrefs.isDynamicColor()) }
+            var firstDayOfWeek by remember { mutableStateOf(themePrefs.getFirstDayOfWeek()) }
 
             val darkTheme = when (currentTheme) {
                 AppTheme.SYSTEM -> isSystemDark
@@ -118,6 +121,7 @@ class MainActivity : ComponentActivity() {
             }
 
             CalisthenicsMemoryTheme(darkTheme = darkTheme, dynamicColor = dynamicColor) {
+              CompositionLocalProvider(LocalFirstDayOfWeekSetting provides firstDayOfWeek) {
                 when (val state = startupState) {
                     null -> Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))
                     DatabaseStartupState.Ready -> CalisthenicsMemoryApp(
@@ -130,6 +134,11 @@ class MainActivity : ComponentActivity() {
                         onDynamicColorChange = { enabled ->
                             themePrefs.setDynamicColor(enabled)
                             dynamicColor = enabled
+                        },
+                        firstDayOfWeek = firstDayOfWeek,
+                        onFirstDayOfWeekChange = { day ->
+                            themePrefs.setFirstDayOfWeek(day)
+                            firstDayOfWeek = day
                         }
                     )
                     else -> Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
@@ -143,7 +152,8 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-        }
+          }
+            }
     }
 
     /**
@@ -241,7 +251,9 @@ fun CalisthenicsMemoryApp(
     currentTheme: AppTheme = AppTheme.SYSTEM,
     onThemeChange: (AppTheme) -> Unit = {},
     dynamicColor: Boolean = false,
-    onDynamicColorChange: (Boolean) -> Unit = {}
+    onDynamicColorChange: (Boolean) -> Unit = {},
+    firstDayOfWeek: java.time.DayOfWeek? = null,
+    onFirstDayOfWeekChange: (java.time.DayOfWeek?) -> Unit = {}
 ) {
     val viewModel: TrainingViewModel = viewModel()
     var currentScreen by rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.Home) }
@@ -394,7 +406,9 @@ fun CalisthenicsMemoryApp(
                         currentTheme = currentTheme,
                         onThemeChange = onThemeChange,
                         dynamicColor = dynamicColor,
-                        onDynamicColorChange = onDynamicColorChange
+                        onDynamicColorChange = onDynamicColorChange,
+                        firstDayOfWeek = firstDayOfWeek,
+                        onFirstDayOfWeekChange = onFirstDayOfWeekChange
                     )
                 }
                 is Screen.Licenses -> {

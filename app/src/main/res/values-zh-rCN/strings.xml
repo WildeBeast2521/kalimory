@@ -783,4 +783,6 @@
     <string name="today_week_summary">本周：%1$d / %2$d</string>
     <string name="today_done_title">今日完成</string>
     <string name="today_see_progress">查看进度</string>
+    <string name="first_day_of_week">每周第一天</string>
+    <string name="first_day_of_week_automatic">自动（%1$s）</string>
 </resources>

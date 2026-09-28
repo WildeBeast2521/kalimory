@@ -44,7 +44,9 @@ fun SettingsScreenNew(
     currentTheme: AppTheme = AppTheme.SYSTEM,
     onThemeChange: (AppTheme) -> Unit = {},
     dynamicColor: Boolean = false,
-    onDynamicColorChange: (Boolean) -> Unit = {}
+    onDynamicColorChange: (Boolean) -> Unit = {},
+    firstDayOfWeek: java.time.DayOfWeek? = null,
+    onFirstDayOfWeekChange: (java.time.DayOfWeek?) -> Unit = {}
 ) {
     val appColors = LocalAppColors.current
     val context = LocalContext.current
@@ -364,6 +366,78 @@ fun SettingsScreenNew(
                             Switch(checked = dynamicColor, onCheckedChange = onDynamicColorChange)
                         }
                     }
+                }
+            }
+
+            // First day of the week, used by Today's week strip, the Progress calendar and To Do.
+            item {
+                var showDialog by remember { mutableStateOf(false) }
+                val locale = LocalConfiguration.current.locales[0]
+                val automaticDay = java.time.temporal.WeekFields.of(locale).firstDayOfWeek
+                fun dayName(day: java.time.DayOfWeek) = day.getDisplayName(java.time.format.TextStyle.FULL, locale)
+                val automaticLabel = stringResource(R.string.first_day_of_week_automatic, dayName(automaticDay))
+                val current = firstDayOfWeek?.let(::dayName) ?: automaticLabel
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                    shape = RoundedCornerShape(12.dp),
+                    onClick = { showDialog = true }
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(AppIcons.Today, contentDescription = null, modifier = Modifier.size(32.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.first_day_of_week),
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = appColors.textPrimary
+                            )
+                            Text(
+                                text = current,
+                                fontSize = 14.sp,
+                                color = appColors.textSecondary,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                    }
+                }
+                if (showDialog) {
+                    val options: List<Pair<java.time.DayOfWeek?, String>> =
+                        listOf<Pair<java.time.DayOfWeek?, String>>(null to automaticLabel) +
+                            listOf(java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.SATURDAY, java.time.DayOfWeek.SUNDAY).map { it to dayName(it) }
+                    AlertDialog(
+                        onDismissRequest = { showDialog = false },
+                        title = { Text(stringResource(R.string.first_day_of_week), fontWeight = FontWeight.Bold) },
+                        text = {
+                            Column {
+                                options.forEach { (day, label) ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                onFirstDayOfWeekChange(day)
+                                                showDialog = false
+                                            }
+                                            .padding(vertical = 12.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        RadioButton(selected = day == firstDayOfWeek, onClick = null)
+                                        Spacer(modifier = Modifier.width(12.dp))
+                                        Text(label)
+                                    }
+                                }
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = { showDialog = false }) { Text(stringResource(R.string.close)) }
+                        }
+                    )
                 }
             }
 

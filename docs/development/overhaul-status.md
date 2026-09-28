@@ -4,11 +4,20 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-One icon library, as the owner asked on 2026-09-28. Branch `work/material-symbols`, based on master `abea0aa`.
+First day of the week, as the owner asked on 2026-09-28. Branch `work/first-day-of-week`, based on master `4e1e18b`.
 
-- **Library:** every icon now comes from Material Symbols, Rounded (Apache-2.0, `google/material-design-icons` pinned at `bd8cb85`). They are fetched as Android vector drawables (`res/drawable/ms_*.xml`, 53 files) by `scripts/fetch-material-symbols.sh`, from the manifest `scripts/material-symbols.txt`, and listed on the Licenses screen.
-- **Usage:** screens use `ui/icons/AppIcons`, whose names say what an icon means, not what it draws. The bottom bar shows the filled variant for the selected destination. Directional icons are mirrored for right-to-left.
-- **Replaced:** every `material-icons-core` usage (28 files); every emoji "icon" in Settings, Backup, CSV, Share, To Do and history; the text "★" favourite marks; and the ✎ 🔁 ✅ 💬 ⚙ glyphs. Emoji prefixes are removed from string resources in every locale. The `material-icons-core` dependency is removed.
+- **Setting:** a Settings card offers Automatic (the language and region's first day, shown by name), Monday, Saturday or Sunday. It is stored in `ThemePreferences`.
+- **Provided app-wide:** through `LocalFirstDayOfWeekSetting` and `firstDayOfWeek()` (`ui/theme/Week.kt`).
+- **Used by:**
+  - Today's week strip;
+  - the Progress month calendar (header and the column of the 1st);
+  - the order of the To Do repeat-day picker. Stored repeat days stay ISO numbers, Monday = 1, so data is unchanged.
+
+The Progress "1 week" range is the last 7 days, not a calendar week, so it is unaffected.
+
+Verification:
+- `WeekTest` (2 tests).
+- On the emulator with Monday chosen, both Today and the Progress calendar start on Monday, and 1 September 2026 falls on Tuesday.
 
 ## CI debt (merged without GitHub Actions)
 
@@ -32,10 +41,10 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #42: design tokens.
 - PR #43: Today redesign.
 - PR #44: Material Symbols icons.
+- PR #45: first day of the week.
 
 ## Owner direction for later (2026-09-27)
 
-- **First day of the week** (2026-09-28): a setting, defaulting to the locale's first day, used by Today's week strip and by the Progress calendar.
 - **One icon library** (2026-09-28): replace every icon, including the emoji "icons" in Settings and the legacy screens and the frozen `material-icons-core` set, with one consistent library that suits Material 3 Expressive. Material Symbols (Apache-2.0) is the likely candidate. Evaluate it, then migrate screen by screen with the redesign.
 
 - **GitHub issue templates** (to-do; none exist yet, and `.github/` holds only `workflows`). Add `.github/ISSUE_TEMPLATE/` with:

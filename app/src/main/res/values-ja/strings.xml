@@ -850,4 +850,6 @@
     <string name="today_week_summary">今週: %2$d日中%1$d日</string>
     <string name="today_done_title">今日の記録</string>
     <string name="today_see_progress">進捗を見る</string>
+    <string name="first_day_of_week">週の始まり</string>
+    <string name="first_day_of_week_automatic">自動（%1$s）</string>
 </resources>
