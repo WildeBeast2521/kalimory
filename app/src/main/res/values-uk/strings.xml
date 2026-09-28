@@ -151,7 +151,6 @@
     <string name="program_empty">Програм ще немає.\nДодайте першу за допомогою кнопки +</string>
     <string name="edit_exercise_title">Редагувати вправу</string>
     <string name="edit_program">Редагувати програму</string>
-    <string name="create_backup">Створити резервну копію</string>
     <string name="back_button">Назад</string>
     <string name="restore_from_backup">Відновити з резервної копії</string>
     <string name="backup_failed">Не вдалося створити резервну копію</string>
@@ -450,7 +449,7 @@
     <string name="weekly_change">Зміна за тиждень</string>
     <string name="section_add_records">Додати записи (CSV)</string>
     <string name="section_add_records_description">Додавання записів до існуючих даних.\nВикористовуйте для імпорту даних з інших додатків.</string>
-    <string name="section_full_backup_description">Збереження та відновлення всіх даних (вправ, записів, груп).\nВикористовуйте для перенесення даних на інший пристрій.</string>
+    <string name="section_full_backup_description">Збереження та відновлення всіх даних: вправ, записів, програм, інтервалів і завдань.\nВикористовуйте під час зміни пристрою.</string>
     <string name="section_partial_data_management_description">Для обміну даними з іншими програмами та електронними таблицями.\nЕкспортуйте та імпортуйте групи, вправи та записи окремо через CSV.</string>
     <string name="edit_session_info">Редагувати інформацію про заняття</string>
     <string name="edit_session_title">Редагувати інформацію про заняття</string>
@@ -788,4 +787,6 @@
     <string name="workout_count_decrease">На один менше</string>
     <string name="workout_count_increase">На один більше</string>
     <string name="workout_set_done">Підхід %1$d виконано</string>
+    <string name="backup_last">Остання резервна копія: %1$s</string>
+    <string name="backup_never">Резервних копій ще немає</string>
 </resources>

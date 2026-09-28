@@ -169,7 +169,6 @@
     <!-- Settings Screen -->
     <string name="data_management">データ管理</string>
     <string name="export_data">データをエクスポート</string>
-    <string name="create_backup">バックアップを作成</string>
     <string name="import_data">データをインポート</string>
     <string name="restore_from_backup">バックアップから復元</string>
     <string name="warning_title">注意</string>
@@ -403,7 +402,7 @@
     <string name="csv_import_more_items">... その他 %d件</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">完全バックアップ (JSON)</string>
-    <string name="section_full_backup_description">全データの保存・復元。端末移行時に使用。</string>
+    <string name="section_full_backup_description">すべてのデータ（種目、記録、プログラム、インターバル、ToDo）を保存・復元します。\n機種変更時にご利用ください。</string>
     <string name="section_partial_data_management">部分データ管理 (CSV)</string>
     <string name="section_partial_data_management_description">他アプリや表計算ソフトとのデータ連携に。\nグループ、種目、記録をCSVで個別にやり取りできます。</string>
     <!-- Legacy key for compatibility -->
@@ -852,4 +851,6 @@
     <string name="workout_count_decrease">1つ減らす</string>
     <string name="workout_count_increase">1つ増やす</string>
     <string name="workout_set_done">セット %1$d 完了</string>
+    <string name="backup_last">最終バックアップ: %1$s</string>
+    <string name="backup_never">バックアップはまだありません</string>
 </resources>

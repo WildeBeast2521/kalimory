@@ -52,4 +52,6 @@
     <string name="workout_count_decrease">واحد أقل</string>
     <string name="workout_count_increase">واحد أكثر</string>
     <string name="workout_set_done">اكتملت المجموعة %1$d</string>
+    <string name="backup_last">آخر نسخة احتياطية: %1$s</string>
+    <string name="backup_never">لا توجد نسخة احتياطية بعد</string>
 </resources>

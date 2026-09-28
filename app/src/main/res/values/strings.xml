@@ -173,7 +173,6 @@
     <!-- Settings Screen -->
     <string name="data_management">Data Management</string>
     <string name="export_data">Export Data</string>
-    <string name="create_backup">Create Backup</string>
     <string name="import_data">Import Data</string>
     <string name="restore_from_backup">Restore from Backup</string>
     <string name="warning_title">Warning</string>
@@ -422,7 +421,7 @@
     <string name="csv_import_more_items">... and %d more</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">Complete Backup (JSON)</string>
-    <string name="section_full_backup_description">Save and restore all data (exercises, records, groups).\nUse when changing devices.</string>
+    <string name="section_full_backup_description">Save and restore all your data: exercises, records, programs, intervals and to-dos.\nUse when changing devices.</string>
     <string name="section_partial_data_management">Partial Data Management (CSV)</string>
     <string name="section_partial_data_management_description">For data exchange with other apps and spreadsheets.\nExport and import groups, exercises, and records individually via CSV.</string>
     <!-- Legacy key for compatibility -->
@@ -846,4 +845,6 @@
     <string name="workout_count_increase">One more</string>
     <!-- The set number names the set; it is not a quantity. -->
     <string name="workout_set_done" tools:ignore="PluralsCandidate">Set %1$d done</string>
+    <string name="backup_last">Last backup: %1$s</string>
+    <string name="backup_never">No backup yet</string>
 </resources>
