@@ -786,4 +786,8 @@
     <string name="workout_set_done">第%1$d组完成</string>
     <string name="backup_last">上次备份：%1$s</string>
     <string name="backup_never">尚无备份</string>
+    <string name="record_mixed_title">记录哪些组？</string>
+    <string name="record_mixed_message">部分组已勾选完成（有数值的 %2$d 组中 %1$d 组）。记录所有有数值的组，还是只记录已勾选的？</string>
+    <string name="record_all_sets">全部记录（%1$d）</string>
+    <string name="record_only_done_sets">仅已勾选（%1$d）</string>
 </resources>

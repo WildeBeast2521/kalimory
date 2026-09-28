@@ -783,4 +783,8 @@
     <string name="workout_set_done">Série %1$d terminée</string>
     <string name="backup_last">Dernière sauvegarde : %1$s</string>
     <string name="backup_never">Aucune sauvegarde pour l’instant</string>
+    <string name="record_mixed_title">Quelles séries enregistrer ?</string>
+    <string name="record_mixed_message">Certaines séries sont cochées comme faites (%1$d sur %2$d avec des valeurs). Enregistrer toutes les séries renseignées, ou seulement celles cochées ?</string>
+    <string name="record_all_sets">Tout enregistrer (%1$d)</string>
+    <string name="record_only_done_sets">Cochées seulement (%1$d)</string>
 </resources>

@@ -786,4 +786,8 @@
     <string name="workout_set_done">Serie %1$d fatta</string>
     <string name="backup_last">Ultimo backup: %1$s</string>
     <string name="backup_never">Nessun backup</string>
+    <string name="record_mixed_title">Quali serie registrare?</string>
+    <string name="record_mixed_message">Alcune serie sono segnate come fatte (%1$d su %2$d con valori). Registrare tutte le serie con un valore o solo quelle segnate?</string>
+    <string name="record_all_sets">Registra tutte (%1$d)</string>
+    <string name="record_only_done_sets">Solo segnate (%1$d)</string>
 </resources>

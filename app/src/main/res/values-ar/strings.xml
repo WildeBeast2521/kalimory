@@ -54,4 +54,8 @@
     <string name="workout_set_done">اكتملت المجموعة %1$d</string>
     <string name="backup_last">آخر نسخة احتياطية: %1$s</string>
     <string name="backup_never">لا توجد نسخة احتياطية بعد</string>
+    <string name="record_mixed_title">أي المجموعات تُسجَّل؟</string>
+    <string name="record_mixed_message">بعض المجموعات مُعلَّمة كمكتملة (%1$d من %2$d لها قيم). هل تسجّل كل مجموعة لها قيمة، أم المُعلَّمة فقط؟</string>
+    <string name="record_all_sets">تسجيل الكل (%1$d)</string>
+    <string name="record_only_done_sets">المُعلَّمة فقط (%1$d)</string>
 </resources>

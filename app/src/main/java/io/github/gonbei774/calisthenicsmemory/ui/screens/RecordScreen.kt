@@ -777,10 +777,11 @@ fun WorkoutInputScreen(
         v.isNotBlank() && v.toIntOrNull()?.let { it >= 0 } == true
     }
 
-    // 保存対象 = 「完了(DONE)」かつメイン値が有効なセットのみ（✓が入ったセットだけ保存）
-    val savableCount = (0 until numberOfSets).count { i ->
-        setStatuses.getOrElse(i) { SetStatus.PENDING } == SetStatus.DONE && mainValueValid(i)
-    }
+    // Sets with a value can be recorded. Ticking sets as done is optional: when some are ticked,
+    // the user chooses between all entered sets and only the ticked ones.
+    val isDone: (Int) -> Boolean = { i -> setStatuses.getOrElse(i) { SetStatus.PENDING } == SetStatus.DONE }
+    val enteredCount = (0 until numberOfSets).count { i -> mainValueValid(i) }
+    val doneCount = (0 until numberOfSets).count { i -> isDone(i) && mainValueValid(i) }
 
     // --- 未保存の変更検知（戻る時の破棄確認用） ---
     // 全入力欄の現在値を1つの文字列にまとめ、開いた時点との差分で「変更あり」を判定する。
@@ -810,14 +811,12 @@ fun WorkoutInputScreen(
     // システム戻る・スワイプ戻りを横取り（最内の BackHandler が優先される）
     BackHandler { handleBack() }
 
-    // 記録処理（完了(DONE)かつ有効なセットのみ保存）。直接でも確認ダイアログ経由でも呼ぶ。
-    val doRecord: () -> Unit = {
+    // Records the sets with a value; with onlyDone, only those also ticked as done.
+    val doRecord: (Boolean) -> Unit = { onlyDone ->
         if (isUnilateral) {
             // Unilateral: 完了(DONE)かつ有効なセットのindexを決定 → 全リストを同じindexでフィルタ
             val validIndices = (0 until numberOfSets).filter { i ->
-                val s = setValuesRight.getOrElse(i) { "" }
-                setStatuses.getOrElse(i) { SetStatus.PENDING } == SetStatus.DONE &&
-                    s.isNotBlank() && s.toIntOrNull()?.let { it >= 0 } == true
+                (!onlyDone || isDone(i)) && mainValueValid(i)
             }
 
             if (validIndices.isNotEmpty()) {
@@ -852,9 +851,7 @@ fun WorkoutInputScreen(
         } else {
             // Bilateral: 完了(DONE)かつ有効なセットのindexを決定 → 全リストを同じindexでフィルタ
             val validIndices = (0 until numberOfSets).filter { i ->
-                val s = setValues.getOrElse(i) { "" }
-                setStatuses.getOrElse(i) { SetStatus.PENDING } == SetStatus.DONE &&
-                    s.isNotBlank() && s.toIntOrNull()?.let { it >= 0 } == true
+                (!onlyDone || isDone(i)) && mainValueValid(i)
             }
 
             if (validIndices.isNotEmpty()) {
@@ -1405,17 +1402,17 @@ fun WorkoutInputScreen(
             item {
                 Button(
                     onClick = {
-                        // 未完了セットが残っている場合は確認、全完了ならそのまま記録
-                        if (savableCount < numberOfSets) {
+                        // Ask only when some entered sets are ticked and others are not.
+                        if (doneCount in 1 until enteredCount) {
                             showIncompleteDialog = true
                         } else {
-                            doRecord()
+                            doRecord(false)
                         }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    enabled = savableCount > 0,
+                    enabled = enteredCount > 0,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Green600,
                         disabledContainerColor = appColors.cardBackgroundDisabled
@@ -1440,7 +1437,7 @@ fun WorkoutInputScreen(
                             .padding(horizontal = 8.dp, vertical = 2.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.record_done_count, savableCount, numberOfSets),
+                            text = stringResource(R.string.record_done_count, enteredCount, numberOfSets),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -1494,19 +1491,14 @@ fun WorkoutInputScreen(
             containerColor = appColors.cardBackground,
             title = {
                 Text(
-                    text = stringResource(R.string.record_incomplete_title),
+                    text = stringResource(R.string.record_mixed_title),
                     color = appColors.textPrimary,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
-                    text = stringResource(
-                        R.string.record_incomplete_message,
-                        numberOfSets,
-                        numberOfSets - savableCount,
-                        savableCount
-                    ),
+                    text = stringResource(R.string.record_mixed_message, doneCount, enteredCount),
                     color = appColors.textTertiary
                 )
             },
@@ -1514,15 +1506,20 @@ fun WorkoutInputScreen(
                 TextButton(
                     onClick = {
                         showIncompleteDialog = false
-                        doRecord()
+                        doRecord(false)
                     }
                 ) {
-                    Text(stringResource(R.string.record_button), color = Green600)
+                    Text(stringResource(R.string.record_all_sets, enteredCount), color = Green600)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showIncompleteDialog = false }) {
-                    Text(stringResource(R.string.cancel))
+                TextButton(
+                    onClick = {
+                        showIncompleteDialog = false
+                        doRecord(true)
+                    }
+                ) {
+                    Text(stringResource(R.string.record_only_done_sets, doneCount))
                 }
             }
         )
