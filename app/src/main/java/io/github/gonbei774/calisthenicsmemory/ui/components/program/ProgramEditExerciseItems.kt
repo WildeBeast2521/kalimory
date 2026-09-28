@@ -1,11 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -67,7 +65,7 @@ fun ProgramExerciseItem(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Icon(
-                    Icons.Default.Delete,
+                    AppIcons.Delete,
                     contentDescription = stringResource(R.string.delete),
                     tint = appColors.textPrimary
                 )
@@ -94,7 +92,7 @@ fun ProgramExerciseItem(
             ) {
                 // Drag handle
                 Icon(
-                    Icons.Default.Menu,
+                    AppIcons.DragHandle,
                     contentDescription = stringResource(R.string.todo_drag_to_reorder),
                     tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
                     modifier = Modifier

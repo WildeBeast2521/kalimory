@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -12,14 +13,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -279,7 +272,7 @@ fun ExerciseSelectionScreen(
                 ) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -350,7 +343,7 @@ fun ExerciseSelectionScreen(
                     },
                     leadingIcon = {
                         Icon(
-                            Icons.Default.Search,
+                            AppIcons.Search,
                             contentDescription = null,
                             tint = appColors.textSecondary
                         )
@@ -359,7 +352,7 @@ fun ExerciseSelectionScreen(
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { searchQuery = "" }) {
                                 Icon(
-                                    Icons.Default.Clear,
+                                    AppIcons.Close,
                                     contentDescription = stringResource(R.string.clear),
                                     tint = appColors.textSecondary
                                 )
@@ -466,7 +459,7 @@ fun HierarchicalExerciseGroup(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = if (isExpanded) Icons.Default.KeyboardArrowDown else Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            imageVector = if (isExpanded) AppIcons.ExpandMore else AppIcons.Forward,
                             contentDescription = null,
                             tint = appColors.textPrimary
                         )
@@ -547,12 +540,7 @@ fun ExerciseSelectionItem(
                 ) {
                     // お気に入り
                     if (exercise.isFavorite) {
-                        Text(
-                            text = "★",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFD700)
-                        )
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFFFD700))
                     }
 
                     // レベル（課題設定がある場合のみ）
@@ -633,7 +621,7 @@ fun ExerciseSelectionItem(
             }
 
             Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
+                AppIcons.Back,
                 contentDescription = stringResource(R.string.select),
                 tint = Green400,
                 modifier = Modifier.rotate(180f)
@@ -983,7 +971,7 @@ fun WorkoutInputScreen(
                 ) {
                     IconButton(onClick = handleBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -1075,7 +1063,7 @@ fun WorkoutInputScreen(
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Icon(
-                            Icons.Default.Check,
+                            AppIcons.Check,
                             contentDescription = null,
                             modifier = Modifier.size(20.dp)
                         )
@@ -1355,7 +1343,7 @@ fun WorkoutInputScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = Green600)
                     ) {
                         Icon(
-                            Icons.Default.Add,
+                            AppIcons.Add,
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
@@ -1435,7 +1423,7 @@ fun WorkoutInputScreen(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Icon(
-                        Icons.Default.Check,
+                        AppIcons.Check,
                         contentDescription = null,
                         modifier = Modifier.padding(end = 8.dp)
                     )
@@ -1805,7 +1793,7 @@ private fun SetCardHeader(
                 modifier = Modifier.size(36.dp)
             ) {
                 Icon(
-                    Icons.Default.Clear,
+                    AppIcons.Close,
                     contentDescription = stringResource(R.string.delete),
                     tint = if (canRemove) appColors.textSecondary else appColors.cardBackgroundDisabled,
                     modifier = Modifier.size(20.dp)

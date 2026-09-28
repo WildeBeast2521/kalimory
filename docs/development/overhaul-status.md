@@ -4,16 +4,11 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-The first redesigned screen, Today, as the prototype of the design language. Branch `work/today-redesign`, based on master `1d900c7`.
+One icon library, as the owner asked on 2026-09-28. Branch `work/material-symbols`, based on master `abea0aa`.
 
-From top to bottom:
-- **Header:** the date, then "Today" in large type.
-- **Week strip:** trained days filled in spruce; future days only outlined; today ringed in brass. Below it, "Trained N of 7 days this week".
-- **Hero card:** the one thing to do next, whether a workout to resume or the first due to-do. If nothing is planned, it offers "Start a workout" and opens Train. The card is deep spruce in both themes, with one faint Material 3 Expressive organic shape (`MaterialShapes.Cookie9Sided`) for depth.
-- **Other items:** anything else to resume or due appears as quiet rows with organic-shape badges.
-- **Done today:** each exercise in the order it was done. Its sets appear as chalk tallies (four strokes and a fifth across) plus value chips in tabular figures, with one-sided sets as "R6 L5". Long-press copies the plain-text summary, as the old dashboard card did.
-
-Checked in light and dark on the emulator with synthetic data. The dark hero uses `primaryContainer`, so it stays calm at night.
+- **Library:** every icon now comes from Material Symbols, Rounded (Apache-2.0, `google/material-design-icons` pinned at `bd8cb85`). They are fetched as Android vector drawables (`res/drawable/ms_*.xml`, 53 files) by `scripts/fetch-material-symbols.sh`, from the manifest `scripts/material-symbols.txt`, and listed on the Licenses screen.
+- **Usage:** screens use `ui/icons/AppIcons`, whose names say what an icon means, not what it draws. The bottom bar shows the filled variant for the selected destination. Directional icons are mirrored for right-to-left.
+- **Replaced:** every `material-icons-core` usage (28 files); every emoji "icon" in Settings, Backup, CSV, Share, To Do and history; the text "★" favourite marks; and the ✎ 🔁 ✅ 💬 ⚙ glyphs. Emoji prefixes are removed from string resources in every locale. The `material-icons-core` dependency is removed.
 
 ## CI debt (merged without GitHub Actions)
 
@@ -36,6 +31,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #41: toolchain upgrade.
 - PR #42: design tokens.
 - PR #43: Today redesign.
+- PR #44: Material Symbols icons.
 
 ## Owner direction for later (2026-09-27)
 

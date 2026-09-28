@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -13,9 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -186,7 +184,7 @@ private fun NavigationSheetHeader(
             modifier = Modifier.size(32.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.Close,
+                imageVector = AppIcons.Close,
                 contentDescription = null,
                 tint = appColors.textSecondary
             )
@@ -1265,7 +1263,7 @@ private fun SetStatusIcon(
             when (status) {
                 SetStatus.COMPLETED -> {
                     Icon(
-                        imageVector = Icons.Default.Check,
+                        imageVector = AppIcons.Check,
                         contentDescription = null,
                         tint = appColors.textPrimary,
                         modifier = Modifier.size(14.dp)
@@ -1430,11 +1428,7 @@ private fun TrackingPill(
         Text(text = unit, fontSize = 11.sp, color = Slate500)
         if (onClick != null) {
             Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = "✎",
-                fontSize = 11.sp,
-                color = if (isEditing) Green400 else Slate500
-            )
+            Icon(AppIcons.Edit, contentDescription = null, modifier = Modifier.size(11.dp), tint = if (isEditing) Green400 else Slate500)
         }
     }
 }
@@ -1467,11 +1461,7 @@ private fun ValuePill(
         Text(text = unit, fontSize = 11.sp, color = Slate500)
         if (onClick != null) {
             Spacer(modifier = Modifier.width(6.dp))
-            Text(
-                text = "✎",
-                fontSize = 11.sp,
-                color = if (isEditing) Green400 else Slate500
-            )
+            Icon(AppIcons.Edit, contentDescription = null, modifier = Modifier.size(11.dp), tint = if (isEditing) Green400 else Slate500)
         }
     }
 }

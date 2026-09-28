@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.foundation.layout.size
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,8 +24,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -203,7 +203,7 @@ fun CommunityShareExportScreen(
                 ) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -658,12 +658,7 @@ private fun ExercisesExportTab(
                                     ) {
                                         // お気に入り
                                         if (exercise.isFavorite) {
-                                            Text(
-                                                text = "★",
-                                                fontSize = 11.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                color = Color(0xFFFFD700)
-                                            )
+                                            Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(11.dp), tint = Color(0xFFFFD700))
                                         }
 
                                         // レベル（課題設定がある場合のみ）

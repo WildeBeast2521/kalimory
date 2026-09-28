@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -11,12 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -97,7 +92,7 @@ fun AddExerciseToProgramDialog(
                         },
                         leadingIcon = {
                             Icon(
-                                Icons.Default.Search,
+                                AppIcons.Search,
                                 contentDescription = null,
                                 tint = appColors.textSecondary
                             )
@@ -106,7 +101,7 @@ fun AddExerciseToProgramDialog(
                             if (searchQuery.isNotEmpty()) {
                                 IconButton(onClick = { searchQuery = "" }) {
                                     Icon(
-                                        Icons.Default.Clear,
+                                        AppIcons.Close,
                                         contentDescription = stringResource(R.string.clear),
                                         tint = appColors.textSecondary
                                     )
@@ -250,12 +245,7 @@ private fun ProgramExerciseSelectItem(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Text(
-                            text = "★",
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFD700)
-                        )
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                         Text(
@@ -357,9 +347,9 @@ private fun ProgramSelectExerciseGroup(
                     ) {
                         Icon(
                             imageVector = if (isExpanded)
-                                Icons.Default.KeyboardArrowDown
+                                AppIcons.ExpandMore
                             else
-                                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                AppIcons.Forward,
                             contentDescription = null,
                             tint = appColors.textPrimary
                         )
@@ -415,12 +405,7 @@ private fun ProgramSelectExerciseGroup(
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
                                     if (exercise.isFavorite) {
-                                        Text(
-                                            text = "★",
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color(0xFFFFD700)
-                                        )
+                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
                                     }
                                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                                         Text(
@@ -771,7 +756,7 @@ fun LoopSettingsDialog(
                             brush = Brush.horizontalGradient(listOf(Red600, Red600))
                         )
                     ) {
-                        Icon(Icons.Default.Delete, contentDescription = null)
+                        Icon(AppIcons.Delete, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(R.string.delete))
                     }

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.provider.Settings
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -21,9 +22,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -152,7 +150,7 @@ fun NowBadge(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Icon(
-                Icons.Filled.PlayArrow,
+                AppIcons.Workout,
                 contentDescription = null,
                 tint = Color.White,
                 modifier = Modifier.size(10.dp)
@@ -200,7 +198,7 @@ fun SetCheckToggle(
     ) {
         if (checked) {
             Icon(
-                Icons.Filled.Check,
+                AppIcons.Check,
                 contentDescription = desc,
                 tint = Color.White,
                 modifier = Modifier.size(14.dp)
@@ -233,7 +231,7 @@ fun SetCompleteButton(
         border = BorderStroke(1.dp, Green600.copy(alpha = 0.3f))
     ) {
         Icon(
-            Icons.Filled.Check,
+            AppIcons.Check,
             contentDescription = null,
             modifier = Modifier.size(16.dp)
         )

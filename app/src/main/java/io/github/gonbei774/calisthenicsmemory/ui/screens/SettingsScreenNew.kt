@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -7,10 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -68,7 +65,7 @@ fun SettingsScreenNew(
                 ) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -141,10 +138,7 @@ fun SettingsScreenNew(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "\uD83C\uDF10",
-                            fontSize = 32.sp
-                        )
+                        Icon(AppIcons.Language, contentDescription = null, modifier = Modifier.size(32.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.language_setting),
@@ -269,10 +263,7 @@ fun SettingsScreenNew(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "\uD83C\uDFA8",
-                            fontSize = 32.sp
-                        )
+                        Icon(AppIcons.Theme, contentDescription = null, modifier = Modifier.size(32.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.theme_setting),
@@ -435,10 +426,7 @@ fun SettingsScreenNew(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = "\uD83D\uDCDD",
-                                fontSize = 32.sp
-                            )
+                            Icon(AppIcons.RecordManually, contentDescription = null, modifier = Modifier.size(32.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.settings_prefill_previous),
@@ -594,10 +582,7 @@ fun SettingsScreenNew(
                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "\uD83D\uDCF8",
-                                    fontSize = 32.sp
-                                )
+                                Icon(AppIcons.Camera, contentDescription = null, modifier = Modifier.size(32.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = stringResource(R.string.flash_notification_setting),
@@ -645,10 +630,7 @@ fun SettingsScreenNew(
                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "\uD83D\uDD06",
-                                    fontSize = 32.sp
-                                )
+                                Icon(AppIcons.Brightness, contentDescription = null, modifier = Modifier.size(32.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = stringResource(R.string.keep_screen_on_setting),
@@ -822,10 +804,7 @@ fun SettingsScreenNew(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "\uD83D\uDCBE",
-                            fontSize = 32.sp
-                        )
+                        Icon(AppIcons.Save, contentDescription = null, modifier = Modifier.size(32.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.section_full_backup),
@@ -867,10 +846,7 @@ fun SettingsScreenNew(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "\uD83D\uDCCB",
-                            fontSize = 32.sp
-                        )
+                        Icon(AppIcons.List, contentDescription = null, modifier = Modifier.size(32.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.section_partial_data_management),
@@ -912,10 +888,7 @@ fun SettingsScreenNew(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "\uD83E\uDD1D",
-                            fontSize = 32.sp
-                        )
+                        Icon(AppIcons.Share, contentDescription = null, modifier = Modifier.size(32.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.share_section_title),
@@ -1008,7 +981,7 @@ fun SettingsScreenNew(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.Info,
+                                imageVector = AppIcons.Info,
                                 contentDescription = null,
                                 tint = appColors.textSecondary,
                                 modifier = Modifier.size(24.dp)
@@ -1059,10 +1032,7 @@ fun SettingsScreenNew(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = "\uD83D\uDCC4",
-                                fontSize = 20.sp
-                            )
+                            Icon(AppIcons.Document, contentDescription = null, modifier = Modifier.size(20.dp))
                             Text(
                                 text = stringResource(R.string.open_source_licenses),
                                 fontSize = 16.sp,
@@ -1102,7 +1072,7 @@ fun SettingsScreenNew(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.Person,
+                                imageVector = AppIcons.Exercise,
                                 contentDescription = null,
                                 tint = appColors.textSecondary,
                                 modifier = Modifier.size(24.dp)
@@ -1150,10 +1120,7 @@ fun SettingsScreenNew(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = "\uD83D\uDCDD",
-                                fontSize = 20.sp
-                            )
+                            Icon(AppIcons.RecordManually, contentDescription = null, modifier = Modifier.size(20.dp))
                             Text(
                                 text = stringResource(R.string.report_issue_codeberg),
                                 fontSize = 16.sp,
@@ -1172,10 +1139,7 @@ fun SettingsScreenNew(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = "\uD83D\uDCDD",
-                                fontSize = 20.sp
-                            )
+                            Icon(AppIcons.RecordManually, contentDescription = null, modifier = Modifier.size(20.dp))
                             Text(
                                 text = stringResource(R.string.report_issue_github),
                                 fontSize = 16.sp,

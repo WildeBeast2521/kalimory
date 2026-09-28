@@ -227,7 +227,7 @@
     <string name="error_occurred">Виникла помилка</string>
     <string name="csv_import_errors">Помилки (%d)</string>
     <string name="csv_import_partial">Імпортовано %1$d записів, виникло %2$d помилок</string>
-    <string name="csv_import_error_label">❌ Помилки</string>
+    <string name="csv_import_error_label">Помилки</string>
     <string name="no_challenge_set">Немає встановлених викликів</string>
     <string name="challenge">Виклик</string>
     <string name="tab_challenge">Виклик</string>
@@ -256,7 +256,7 @@
     <string name="program_exercise_count">%d вправ</string>
     <string name="program_exercises_required">Додайте хоча б одну вправу</string>
     <string name="target_with_unit">%1$d×%2$d%3$s</string>
-    <string name="csv_import_success_label">✅ Успішно</string>
+    <string name="csv_import_success_label">Успішно</string>
     <string name="csv_import_skipped_label">⏭️ Пропущено</string>
     <string name="csv_import_skipped_items">Пропущені елементи (%d)</string>
     <string name="open_source_licenses">Ліцензії з відкритим кодом</string>
@@ -390,15 +390,15 @@
     <string name="skipped_label">Пропущено</string>
     <string name="nav_skipped">Пропущено</string>
     <string name="record_workout">Записати</string>
-    <string name="complete_with_time">✓ Завершити (%d с)</string>
-    <string name="complete_with_reps">✓ Завершити (%d разів)</string>
+    <string name="complete_with_time">Завершити (%d с)</string>
+    <string name="complete_with_reps">Завершити (%d разів)</string>
     <string name="timer_on">Увімк.</string>
     <string name="timer_off">Вимк.</string>
     <string name="enter_seconds">Уведіть секунди</string>
     <string name="enter_seconds_max">Уведіть секунди (макс. %d)</string>
     <string name="statistics_summary">Статистика</string>
-    <string name="import_data_preview_title">📋 Підтвердження імпорту</string>
-    <string name="data_management">📦 Керування даними</string>
+    <string name="import_data_preview_title">Підтвердження імпорту</string>
+    <string name="data_management">Керування даними</string>
     <string name="section_partial_data_management">Вибіркове керування даними (CSV)</string>
     <string name="csv_export_record_template">Шаблон запису</string>
     <string name="csv_export_record_template_description">Експорт шаблону для додавання записів</string>
@@ -412,7 +412,7 @@
     <string name="track_weight">Відстежувати вагу</string>
     <string name="track_distance_description">Записувати відстань (см) для кожного заняття</string>
     <string name="track_weight_description">Записувати додаткову вагу (кг) для кожного заняття</string>
-    <string name="data_overwrite_title">⚠️ Перезапис даних</string>
+    <string name="data_overwrite_title">Перезапис даних</string>
     <string name="existing_data_will_be_deleted">Усі існуючі дані буде видалено.</string>
     <string name="import_confirm">Імпортувати</string>
     <string name="nav_save_overwrite_message">Одночасно можна зберегти лише одне тренування. Попереднє збережене тренування буде перезаписано.</string>

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.expandVertically
@@ -12,13 +13,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -78,7 +74,7 @@ fun CreateScreen(
                 ) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -98,7 +94,7 @@ fun CreateScreen(
                 containerColor = Blue600
             ) {
                 Icon(
-                    Icons.Default.Add,
+                    AppIcons.Add,
                     contentDescription = stringResource(R.string.add),
                     tint = Color.White
                 )
@@ -169,7 +165,7 @@ fun CreateScreen(
                     },
                     leadingIcon = {
                         Icon(
-                            Icons.Default.Search,
+                            AppIcons.Search,
                             contentDescription = null,
                             tint = appColors.textSecondary
                         )
@@ -178,7 +174,7 @@ fun CreateScreen(
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { searchQuery = "" }) {
                                 Icon(
-                                    Icons.Default.Clear,
+                                    AppIcons.Close,
                                     contentDescription = stringResource(R.string.clear),
                                     tint = appColors.textSecondary
                                 )
@@ -520,7 +516,7 @@ fun ExpandableGroupCard(
                         // ドラッグハンドル（通常グループのみ）
                         if (dragHandle != null) {
                             Icon(
-                                imageVector = Icons.Default.Menu,
+                                imageVector = AppIcons.DragHandle,
                                 contentDescription = stringResource(R.string.todo_drag_to_reorder),
                                 tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
                                 modifier = Modifier
@@ -529,7 +525,7 @@ fun ExpandableGroupCard(
                             )
                         }
                         Icon(
-                            imageVector = if (isExpanded) Icons.Default.KeyboardArrowDown else Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            imageVector = if (isExpanded) AppIcons.ExpandMore else AppIcons.Forward,
                             contentDescription = null,
                             tint = appColors.textPrimary
                         )
@@ -556,7 +552,7 @@ fun ExpandableGroupCard(
                             modifier = Modifier.size(24.dp)
                         ) {
                             Icon(
-                                Icons.Default.MoreVert,
+                                AppIcons.More,
                                 contentDescription = stringResource(R.string.menu),
                                 tint = appColors.textPrimary,
                                 modifier = Modifier.size(18.dp)
@@ -603,7 +599,7 @@ fun ExpandableGroupCard(
                                 // ドラッグハンドル（お気に入りグループ以外で表示）
                                 if (!isFavoriteGroup) {
                                     Icon(
-                                        imageVector = Icons.Default.Menu,
+                                        imageVector = AppIcons.DragHandle,
                                         contentDescription = stringResource(R.string.todo_drag_to_reorder),
                                         tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
                                         modifier = Modifier
@@ -668,12 +664,7 @@ fun ExerciseItemCompactContent(
             ) {
                 // お気に入り
                 if (exercise.isFavorite) {
-                    Text(
-                        text = "★",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFFFD700)
-                    )
+                    Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFFFD700))
                 }
 
                 // レベル（課題設定がある場合のみ）
@@ -757,7 +748,7 @@ fun ExerciseItemCompactContent(
             var menuExpanded by remember { mutableStateOf(false) }
             IconButton(onClick = { menuExpanded = true }) {
                 Icon(
-                    Icons.Default.MoreVert,
+                    AppIcons.More,
                     contentDescription = stringResource(R.string.menu),
                     tint = appColors.textSecondary
                 )
@@ -966,7 +957,7 @@ fun UnifiedAddDialog(
                         ) {
                             IconButton(onClick = onDismiss) {
                                 Icon(
-                                    Icons.Default.Close,
+                                    AppIcons.Close,
                                     contentDescription = stringResource(R.string.cancel),
                                     tint = Color.White
                                 )
@@ -988,7 +979,7 @@ fun UnifiedAddDialog(
                             if (creationType == "exercise") {
                                 IconButton(onClick = { isFavorite = !isFavorite }) {
                                     Icon(
-                                        imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
+                                        imageVector = if (isFavorite) AppIcons.FavoriteFilled else AppIcons.Favorite,
                                         contentDescription = if (isFavorite) {
                                             stringResource(R.string.remove_from_favorites)
                                         } else {
@@ -1286,7 +1277,7 @@ fun UnifiedAddDialog(
                                                 isCreatingNewGroup = false
                                                 newGroupName = ""
                                             }) {
-                                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.cancel))
+                                                Icon(AppIcons.Close, contentDescription = stringResource(R.string.cancel))
                                             }
                                         }
                                     )
@@ -1302,7 +1293,7 @@ fun UnifiedAddDialog(
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
-                                            trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) }
+                                            trailingIcon = { Icon(AppIcons.DropDown, null) }
                                         )
 
                                         ExposedDropdownMenu(

@@ -1,0 +1,48 @@
+# Material Symbols (Rounded) used by the app, fetched by scripts/fetch-material-symbols.sh.
+# One name per line; "fill" also fetches the filled variant (used for selected states).
+add
+arrow_back
+arrow_drop_down
+bar_chart
+book_2 fill
+chat
+check
+check_circle fill
+chevron_right
+close
+content_paste
+delete
+description
+download
+drag_handle
+edit
+edit_note
+exercise
+fitness_center fill
+folder
+format_list_bulleted
+handshake
+history
+info
+insights fill
+keyboard_arrow_down
+keyboard_arrow_up
+language
+light_mode
+list_alt
+menu
+more_vert
+palette
+photo_camera
+play_arrow fill
+repeat
+save
+schedule
+search
+settings
+star fill
+swap_vert
+timer
+today fill
+upload
+warning

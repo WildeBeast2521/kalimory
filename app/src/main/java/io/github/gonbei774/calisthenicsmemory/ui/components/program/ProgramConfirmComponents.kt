@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
@@ -407,11 +408,7 @@ internal fun SettingsSection(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = "⚙",
-                        fontSize = 14.sp,
-                        color = appColors.textTertiary
-                    )
+                    Icon(AppIcons.Settings, contentDescription = null, modifier = Modifier.size(14.dp), tint = appColors.textTertiary)
                     Text(
                         text = stringResource(R.string.settings),
                         fontSize = 14.sp,
@@ -1099,10 +1096,7 @@ private fun ProgramConfirmLoopBlock(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 // ループアイコン
-                Text(
-                    text = "🔁",
-                    fontSize = 16.sp
-                )
+                Icon(AppIcons.Repeat, contentDescription = null, modifier = Modifier.size(16.dp))
 
                 // ループ情報
                 Text(

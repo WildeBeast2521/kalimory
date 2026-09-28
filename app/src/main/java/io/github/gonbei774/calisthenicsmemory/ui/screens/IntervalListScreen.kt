@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -7,14 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -69,7 +62,7 @@ fun IntervalListScreen(
                 ) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -88,7 +81,7 @@ fun IntervalListScreen(
                 onClick = { onNavigateToEdit(null) },
                 containerColor = Orange600
             ) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.new_interval_program), tint = appColors.textPrimary)
+                Icon(AppIcons.Add, contentDescription = stringResource(R.string.new_interval_program), tint = appColors.textPrimary)
             }
         }
     ) { paddingValues ->
@@ -133,7 +126,7 @@ fun IntervalListScreen(
                     },
                     leadingIcon = {
                         Icon(
-                            Icons.Default.Search,
+                            AppIcons.Search,
                             contentDescription = null,
                             tint = appColors.textSecondary
                         )
@@ -142,7 +135,7 @@ fun IntervalListScreen(
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { searchQuery = "" }) {
                                 Icon(
-                                    Icons.Default.Clear,
+                                    AppIcons.Close,
                                     contentDescription = stringResource(R.string.clear),
                                     tint = appColors.textSecondary
                                 )
@@ -272,7 +265,7 @@ private fun IntervalProgramListItem(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Icon(
-                    Icons.Default.Delete,
+                    AppIcons.Delete,
                     contentDescription = stringResource(R.string.delete),
                     tint = appColors.textPrimary
                 )
@@ -327,7 +320,7 @@ private fun IntervalProgramListItem(
                         modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
-                            Icons.Default.Edit,
+                            AppIcons.Edit,
                             contentDescription = stringResource(R.string.edit_interval_program),
                             tint = appColors.textSecondary
                         )
@@ -342,7 +335,7 @@ private fun IntervalProgramListItem(
                         modifier = Modifier.height(36.dp)
                     ) {
                         Icon(
-                            Icons.Default.PlayArrow,
+                            AppIcons.Play,
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
@@ -376,7 +369,7 @@ private fun IntervalProgramListItem(
                     },
                     leadingIcon = {
                         Icon(
-                            Icons.Default.Add,
+                            AppIcons.Add,
                             contentDescription = null,
                             tint = appColors.textTertiary
                         )
@@ -395,7 +388,7 @@ private fun IntervalProgramListItem(
                     },
                     leadingIcon = {
                         Icon(
-                            Icons.Default.Delete,
+                            AppIcons.Delete,
                             contentDescription = null,
                             tint = Red600
                         )

@@ -172,14 +172,14 @@
     <string name="no_exercises_in_period">No exercises worked on in %s</string>
     <string name="achievement_rate">%1$d%% (%2$d/%3$d%4$s)</string>
     <!-- Settings Screen -->
-    <string name="data_management">📦 Data Management</string>
+    <string name="data_management">Data Management</string>
     <string name="export_data">Export Data</string>
     <string name="create_backup">Create Backup</string>
     <string name="import_data">Import Data</string>
     <string name="restore_from_backup">Restore from Backup</string>
     <string name="warning_title">Warning</string>
     <string name="import_warning">Importing will delete all existing data.</string>
-    <string name="import_data_preview_title">📋 Confirm Import</string>
+    <string name="import_data_preview_title">Confirm Import</string>
     <string name="file_name">File Name</string>
     <string name="data_contents">Data Contents</string>
     <string name="groups">Groups</string>
@@ -189,7 +189,7 @@
     <string name="count_records">%d records</string>
     <string name="import_data_preview_message">Do you want to proceed with importing this data?</string>
     <string name="next">Next</string>
-    <string name="data_overwrite_title">⚠️ Data Overwrite</string>
+    <string name="data_overwrite_title">Data Overwrite</string>
     <string name="existing_data_will_be_deleted">All existing data will be deleted.</string>
     <string name="cannot_undo">This action cannot be undone.</string>
     <string name="import_confirm">Import</string>
@@ -417,9 +417,9 @@
     <string name="csv_import_button">Import</string>
     <!-- CSV Import Result Dialog -->
     <string name="csv_import_completed">Import Completed</string>
-    <string name="csv_import_success_label">✅ Success</string>
+    <string name="csv_import_success_label">Success</string>
     <string name="csv_import_skipped_label">⏭️ Skipped</string>
-    <string name="csv_import_error_label">❌ Errors</string>
+    <string name="csv_import_error_label">Errors</string>
     <string name="csv_import_skipped_items">Skipped Items (%d)</string>
     <string name="csv_import_errors">Errors (%d)</string>
     <string name="csv_import_more_items">... and %d more</string>
@@ -623,8 +623,8 @@
     <!-- Isometric Manual Mode -->
     <string name="paused_label">Paused</string>
     <string name="elapsed_target_format">Elapsed: %1$ds / Target: %2$ds</string>
-    <string name="complete_with_time">✓ Complete (%ds)</string>
-    <string name="complete_with_reps">✓ Complete (%d reps)</string>
+    <string name="complete_with_time">Complete (%ds)</string>
+    <string name="complete_with_reps">Complete (%d reps)</string>
     <string name="target_reps_format">Target: %d reps</string>
     <string name="previous_value_format">Previous: %s</string>
     <string name="previous_reps_format">Previous: %d reps</string>

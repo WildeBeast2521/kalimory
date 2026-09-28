@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
@@ -14,15 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -226,7 +218,7 @@ fun IntervalEditScreen(
                 ) {
                     IconButton(onClick = { handleBackPress() }) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -422,7 +414,7 @@ fun IntervalEditScreen(
                                             contentAlignment = Alignment.CenterEnd
                                         ) {
                                             Icon(
-                                                Icons.Default.Delete,
+                                                AppIcons.Delete,
                                                 contentDescription = stringResource(R.string.delete),
                                                 tint = appColors.textPrimary
                                             )
@@ -452,7 +444,7 @@ fun IntervalEditScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = Orange600)
                     ) {
                         Icon(
-                            Icons.Default.Add,
+                            AppIcons.Add,
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
@@ -493,7 +485,7 @@ fun IntervalEditScreen(
                                 brush = Brush.horizontalGradient(listOf(Red600, Red600))
                             )
                         ) {
-                            Icon(Icons.Default.Delete, contentDescription = null)
+                            Icon(AppIcons.Delete, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(stringResource(R.string.interval_delete_program))
                         }
@@ -674,7 +666,7 @@ private fun IntervalExerciseItem(
         ) {
             // Drag handle
             Icon(
-                Icons.Default.Menu,
+                AppIcons.DragHandle,
                 contentDescription = null,
                 tint = appColors.textTertiary,
                 modifier = Modifier
@@ -772,7 +764,7 @@ private fun AddExerciseToIntervalDialog(
                         },
                         leadingIcon = {
                             Icon(
-                                Icons.Default.Search,
+                                AppIcons.Search,
                                 contentDescription = null,
                                 tint = appColors.textSecondary
                             )
@@ -781,7 +773,7 @@ private fun AddExerciseToIntervalDialog(
                             if (searchQuery.isNotEmpty()) {
                                 IconButton(onClick = { searchQuery = "" }) {
                                     Icon(
-                                        Icons.Default.Clear,
+                                        AppIcons.Close,
                                         contentDescription = stringResource(R.string.clear),
                                         tint = appColors.textSecondary
                                     )
@@ -927,12 +919,7 @@ private fun IntervalExerciseSelectItem(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Text(
-                            text = "★",
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFD700)
-                        )
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                         Text(
@@ -1035,9 +1022,9 @@ private fun IntervalSelectExerciseGroup(
                     ) {
                         Icon(
                             imageVector = if (isExpanded)
-                                Icons.Default.KeyboardArrowDown
+                                AppIcons.ExpandMore
                             else
-                                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                AppIcons.Forward,
                             contentDescription = null,
                             tint = appColors.textPrimary
                         )
@@ -1095,12 +1082,7 @@ private fun IntervalSelectExerciseGroup(
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
                                     if (exercise.isFavorite) {
-                                        Text(
-                                            text = "★",
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color(0xFFFFD700)
-                                        )
+                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
                                     }
                                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                                         Text(

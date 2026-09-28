@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.expandVertically
@@ -19,16 +20,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -163,7 +154,7 @@ fun ToDoScreen(
                     ) {
                         IconButton(onClick = onNavigateBack) {
                             Icon(
-                                Icons.AutoMirrored.Filled.ArrowBack,
+                                AppIcons.Back,
                                 contentDescription = stringResource(R.string.back),
                                 tint = Color.White
                             )
@@ -183,7 +174,7 @@ fun ToDoScreen(
                 onClick = { showAddDialog = true },
                 containerColor = Amber500
             ) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add), tint = appColors.textPrimary)
+                Icon(AppIcons.Add, contentDescription = stringResource(R.string.add), tint = appColors.textPrimary)
             }
         }
     ) { paddingValues ->
@@ -260,7 +251,7 @@ fun ToDoScreen(
                                             contentAlignment = Alignment.CenterEnd
                                         ) {
                                             Icon(
-                                                Icons.Default.Delete,
+                                                AppIcons.Delete,
                                                 contentDescription = stringResource(R.string.delete),
                                                 tint = appColors.textPrimary
                                             )
@@ -326,7 +317,7 @@ fun ToDoScreen(
                                         contentAlignment = Alignment.CenterEnd
                                     ) {
                                         Icon(
-                                            Icons.Default.Delete,
+                                            AppIcons.Delete,
                                             contentDescription = stringResource(R.string.delete),
                                             tint = appColors.textPrimary
                                         )
@@ -436,7 +427,7 @@ private fun ActiveTaskContent(
     if (task.hasTarget(exerciseMap.keys, groupMap.keys, programMap.keys, intervalProgramMap.keys) != true) {
         UnavailableTaskCard(isDragging = isDragging, elevation = elevation) {
             Icon(
-                Icons.Default.Menu,
+                AppIcons.DragHandle,
                 contentDescription = stringResource(R.string.todo_drag_to_reorder),
                 tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
                 modifier = Modifier.size(24.dp).then(dragHandleModifier)
@@ -696,7 +687,7 @@ private fun GroupTaskCard(
             ) {
                 // ドラッグハンドル
                 Icon(
-                    Icons.Default.Menu,
+                    AppIcons.DragHandle,
                     contentDescription = stringResource(R.string.todo_drag_to_reorder),
                     tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
                     modifier = Modifier
@@ -755,8 +746,8 @@ private fun GroupTaskCard(
                 // 展開ボタン
                 IconButton(onClick = { isExpanded = !isExpanded }) {
                     Icon(
-                        imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp
-                            else Icons.Default.KeyboardArrowDown,
+                        imageVector = if (isExpanded) AppIcons.ExpandLess
+                            else AppIcons.ExpandMore,
                         contentDescription = null,
                         tint = appColors.textSecondary
                     )
@@ -922,7 +913,7 @@ private fun ExerciseTaskCard(
         ) {
             // Drag handle
             Icon(
-                Icons.Default.Menu,
+                AppIcons.DragHandle,
                 contentDescription = stringResource(R.string.todo_drag_to_reorder),
                 tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
                 modifier = Modifier
@@ -945,7 +936,7 @@ private fun ExerciseTaskCard(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Text(text = "★", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFFFFD700))
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(11.dp), tint = Color(0xFFFFD700))
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                         Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Blue600)
@@ -1065,7 +1056,7 @@ private fun ProgramTaskCard(
         ) {
             // Drag handle
             Icon(
-                Icons.Default.Menu,
+                AppIcons.DragHandle,
                 contentDescription = stringResource(R.string.todo_drag_to_reorder),
                 tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
                 modifier = Modifier
@@ -1153,7 +1144,7 @@ private fun IntervalTaskCard(
         ) {
             // Drag handle
             Icon(
-                Icons.Default.Menu,
+                AppIcons.DragHandle,
                 contentDescription = stringResource(R.string.todo_drag_to_reorder),
                 tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
                 modifier = Modifier
@@ -1436,12 +1427,12 @@ private fun ExercisesTabContent(
                     Text(text = stringResource(R.string.search_placeholder), color = appColors.textSecondary)
                 },
                 leadingIcon = {
-                    Icon(Icons.Default.Search, contentDescription = null, tint = appColors.textSecondary)
+                    Icon(AppIcons.Search, contentDescription = null, tint = appColors.textSecondary)
                 },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
                         IconButton(onClick = { searchQuery = "" }) {
-                            Icon(Icons.Default.Clear, contentDescription = stringResource(R.string.clear), tint = appColors.textSecondary)
+                            Icon(AppIcons.Close, contentDescription = stringResource(R.string.clear), tint = appColors.textSecondary)
                         }
                     }
                 },
@@ -1601,8 +1592,8 @@ private fun GroupsTabContent(
                                 )
                             }
                             Icon(
-                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp
-                                    else Icons.Default.KeyboardArrowDown,
+                                imageVector = if (isExpanded) AppIcons.ExpandLess
+                                    else AppIcons.ExpandMore,
                                 contentDescription = null,
                                 tint = appColors.textSecondary
                             )
@@ -1808,9 +1799,9 @@ fun AddExerciseGroup(
                     ) {
                         Icon(
                             imageVector = if (isExpanded)
-                                Icons.Default.KeyboardArrowDown
+                                AppIcons.ExpandMore
                             else
-                                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                AppIcons.Forward,
                             contentDescription = null,
                             tint = appColors.textPrimary
                         )
@@ -1876,7 +1867,7 @@ fun AddExerciseGroup(
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
                                     if (exercise.isFavorite) {
-                                        Text(text = "★", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color(0xFFFFD700))
+                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
                                     }
                                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                                         Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Blue600)
@@ -1958,7 +1949,7 @@ fun SearchResultExerciseItem(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Text(text = "★", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color(0xFFFFD700))
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                         Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Blue600)
