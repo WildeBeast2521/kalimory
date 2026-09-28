@@ -4,30 +4,45 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-In-workout redesign (single workout). Branch `work/workout-screen-redesign`, based on master `2d41a69`.
+Quick start goes straight to choosing an exercise. Branch `work/quick-start-direct`, based on master `4beda29`.
 
-- **Shared kit:** `ui/components/workout/WorkoutKit.kt` holds the in-workout building blocks:
-  - `WorkoutHeader`: the exercise, the set, and one segment per set;
-  - `TimerDial`: a countdown ring in `WorkoutNumerals`, tapped to pause;
-  - `CountDisplay`: the large rep count;
-  - `StepButton`, `WorkoutPrimaryButton`;
-  - `SetDoneBadge`: the one expressive moment, a spring-in check at the start of a rest after a completed set.
-- **Colour means state** (`WorkoutTone`, matching `CalmPalette`): the set in progress and getting ready use tertiary (brass), rest uses secondary, and done uses primary (spruce).
-- **Moved onto theme roles:** the five single-set screens, the get-ready and rest steps, the setup, confirmation and sheets in `WorkoutScreen.kt`, and the shared `PreviousTargetRow`, `RepPaceIndicator` and `RecordAdjustDialog`. The last three are also used by program execution.
-- **Removed:**
-  - the unused `ExecutingStep` and `CircularProgressTimer`;
-  - their strings `workout_in_progress` and `reps_count`.
-- **Timing, sound and saving logic are unchanged.**
+The old Single / Program / Interval mode picker is removed. It repeated Train, which lists programs and interval routines itself. Also removed:
+- `ModeSelectionStep`;
+- `WorkoutScreen`'s `onNavigateToProgramList` and `onNavigateToIntervalList` parameters;
+- seven orphaned strings.
 
-Verification: the full local gate, plus screenshots on the API 29 emulator of setup, get ready, dynamic and isometric sets (running and paused), the save dialog, rest with the badge, the menu sheet and the confirmation step.
+`UnifiedWorkoutFlowTest` now goes Train, then Workout, then the exercise.
+
+Verification:
+- the full local gate (130/130 instrumented tests on API 29);
+- on the emulator, Start opens exercise selection and Back returns to Train.
+
+## Previous phase: in-workout redesign (merged)
+
+PR #47 merged as `4beda29`. A shared in-workout kit (`ui/components/workout/WorkoutKit.kt`), colour as state (`WorkoutTone`), and the "Set N done" badge. The single-workout screens are on theme roles.
 
 ## Improvement ideas (beyond upstream)
 
 The owner said the overhaul need not mirror upstream. Ideas found while working, for the review at the end of Task 8 unless small enough to do sooner:
 
-- Train's "Quick start" opens the old mode picker (Single, Program, Interval), which repeats Train itself. It should go straight to choosing an exercise. This is a small follow-up slice.
+- ~~Train's "Quick start" opens the old mode picker.~~ Done in PR #48.
+- Train shows "~0 min" for a program with no exercises. It should say that the program is empty, or offer to add exercises. Small.
 - Setup asks for a rep duration and target even when the exercise has none saved, and Start stays disabled with no hint why. Sensible defaults, or an inline reason, would help.
 - Program and interval execution should adopt the workout kit, for one in-workout language.
+
+**Catch-up audit of earlier slices (next).** Done once, as a user walkthrough on the emulator with synthetic data. It covers every shipped flow:
+- Today;
+- Train and Library;
+- Progress history and editing;
+- manual recording;
+- program, interval and single workouts;
+- resume after the app is killed;
+- backup and restore;
+- Settings.
+
+For each flow, look for extra taps, dead ends, unclear wording, missing feedback, and places where one step does not lead into the next. Also re-judge the "Known limitations" section and the ADR deferrals, now that upstream parity is not required. Each finding goes on this list, tagged small, medium or large:
+- small findings become their own slices;
+- larger ones wait for the review with the owner at the end of Task 8.
 
 ## Previous phase: Train and Library redesign (merged)
 
@@ -62,6 +77,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #45: first day of the week.
 - PR #46: Train and Library redesign.
 - PR #47: in-workout redesign.
+- PR #48: Quick start goes straight to choosing an exercise.
 
 ## Owner direction for later (2026-09-27)
 

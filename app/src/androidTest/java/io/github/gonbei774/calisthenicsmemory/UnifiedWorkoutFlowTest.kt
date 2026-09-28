@@ -138,12 +138,10 @@ class UnifiedWorkoutFlowTest {
         rule.onNode(hasText(train) and hasAnyAncestor(hasTestTag(PRIMARY_NAVIGATION_BAR_TAG))).performClick()
     }
 
-    /** Train, then Workout, then Single, then the seeded exercise, then Start. */
+    /** Train, then Workout, then the seeded exercise, then Start. Quick start skips any mode choice. */
     private fun startSingleWorkout() {
         launchAndOpenTrain()
         rule.onNodeWithText(text(R.string.home_workout)).performClick()
-        waitForText(text(R.string.single_mode))
-        rule.onNodeWithText(text(R.string.single_mode)).performClick()
         waitForText(text(R.string.no_group))
         rule.onNodeWithText(text(R.string.no_group)).performClick()
         waitForText(exerciseName)

@@ -493,8 +493,6 @@
     <string name="notification_workout_title">训练进行中</string>
     <string name="notification_workout_text">计时器正在运行</string>
     <!-- Program Feature -->
-    <string name="program_mode">训练计划</string>
-    <string name="program_mode_description">连续执行多个动作</string>
     <string name="program_list_title">训练计划</string>
     <string name="program_empty">暂无训练计划\n点击 + 创建</string>
     <string name="edit_program">编辑计划</string>
@@ -547,14 +545,12 @@
     <string name="sets_label_short">组数:</string>
     <string name="unit_seconds_short">秒</string>
     <string name="new_program">新建方案</string>
-    <string name="single_mode">单项</string>
     <string name="single_mode_description">一次一个动作</string>
     <string name="start_countdown">开始倒计时</string>
     <string name="timer_on">开</string>
     <string name="timer_off">关</string>
     <string name="timer_mode_on_description">达成目标时自动完成</string>
     <string name="timer_mode_off_description">通过完成按钮手动完成</string>
-    <string name="workout_mode_selection">选择模式</string>
     <string name="record_weight_for_graph">记录此动作的重量</string>
     <string name="complete_with_reps">完成 (%d次)</string>
     <string name="target_reps_format">目标：%d次</string>
@@ -631,9 +627,6 @@
     <string name="theme_dark">深色</string>
 
     <!-- Interval Mode -->
-    <string name="interval_mode">间歇</string>
-    <string name="interval_mode_description">适用于HIIT和循环训练</string>
-    <string name="interval_mode_note">间歇模式不记录次数或保持时间。如需记录请使用程序模式。</string>
     <string name="interval_no_record_note">此模式不记录次数或保持时间</string>
     <string name="interval_list_title">间歇</string>
     <string name="interval_empty">暂无间歇程序\n点击 + 创建一个</string>

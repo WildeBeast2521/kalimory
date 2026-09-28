@@ -542,11 +542,7 @@
     <string name="notification_workout_title">ワークアウト実行中</string>
     <string name="notification_workout_text">タイマーが動作しています</string>
     <!-- Program Mode -->
-    <string name="workout_mode_selection">モードを選択</string>
-    <string name="single_mode">単発</string>
     <string name="single_mode_description">1種目ずつ実行</string>
-    <string name="program_mode">プログラム</string>
-    <string name="program_mode_description">複数種目を連続実行</string>
     <string name="program_list_title">プログラム</string>
     <string name="program_empty">プログラムがありません\n+ をタップして作成</string>
     <string name="new_program">新規プログラム</string>
@@ -694,9 +690,6 @@
     <string name="description_optional">説明文（任意）</string>
 
     <!-- Interval Mode -->
-    <string name="interval_mode">インターバル</string>
-    <string name="interval_mode_description">HIITやサーキット用</string>
-    <string name="interval_mode_note">インターバルモードではレップ数・保持時間は記録されません。記録が必要な場合はプログラムモードをご利用ください。</string>
     <string name="interval_list_title">インターバル</string>
     <string name="interval_empty">インターバルプログラムがありません\n+ をタップして作成</string>
     <string name="interval_summary_format">%1$d種目 · %2$d秒/%3$d秒 · %4$d周</string>

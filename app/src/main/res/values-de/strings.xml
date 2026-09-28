@@ -488,8 +488,6 @@
     <string name="notification_workout_title">Training läuft</string>
     <string name="notification_workout_text">Timer ist aktiv</string>
     <!-- Program Feature -->
-    <string name="program_mode">Programm</string>
-    <string name="program_mode_description">Mehrere Übungen nacheinander ausführen</string>
     <string name="program_list_title">Programme</string>
     <string name="program_empty">Noch keine Programme\nTippe + zum Erstellen</string>
     <string name="edit_program">Programm bearbeiten</string>
@@ -542,14 +540,12 @@
     <string name="sets_label_short">Sätze:</string>
     <string name="unit_seconds_short">s</string>
     <string name="new_program">Neues Programm</string>
-    <string name="single_mode">Einzeln</string>
     <string name="single_mode_description">Eine Übung nach der anderen</string>
     <string name="start_countdown">Start-Countdown</string>
     <string name="timer_on">AN</string>
     <string name="timer_off">AUS</string>
     <string name="timer_mode_on_description">Automatisch abschließen bei Zielerreichung</string>
     <string name="timer_mode_off_description">Manuell mit der Fertig-Taste abschließen</string>
-    <string name="workout_mode_selection">Modus wählen</string>
     <string name="record_weight_for_graph">Gewicht für diese Übung aufzeichnen</string>
     <string name="complete_with_reps">Fertig (%d Wdh.)</string>
     <string name="target_reps_format">Ziel: %d Wdh.</string>
@@ -627,9 +623,6 @@
     <!-- Exercise Description -->
     <string name="description_optional">Beschreibung (optional)</string>
     <!-- Interval Mode -->
-    <string name="interval_mode">Intervall</string>
-    <string name="interval_mode_description">Für HIIT und Zirkeltraining</string>
-    <string name="interval_mode_note">Im Intervallmodus werden Wiederholungen und Haltezeiten nicht aufgezeichnet. Verwende den Programmmodus, wenn du Aufzeichnungen benötigst.</string>
     <string name="interval_no_record_note">In diesem Modus werden Wiederholungen und Haltezeiten nicht aufgezeichnet</string>
     <string name="interval_list_title">Intervall</string>
     <string name="interval_empty">Noch keine Intervallprogramme\nTippe auf + um eines zu erstellen</string>

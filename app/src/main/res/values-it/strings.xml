@@ -493,8 +493,6 @@
     <string name="notification_workout_title">Allenamento in corso</string>
     <string name="notification_workout_text">Il timer è attivo</string>
     <!-- Program Feature -->
-    <string name="program_mode">Programma</string>
-    <string name="program_mode_description">Esegui più esercizi in sequenza</string>
     <string name="program_list_title">Programmi</string>
     <string name="program_empty">Nessun programma\nTocca + per crearne uno</string>
     <string name="edit_program">Modifica programma</string>
@@ -547,14 +545,12 @@
     <string name="sets_label_short">Serie:</string>
     <string name="unit_seconds_short">s</string>
     <string name="new_program">Nuovo programma</string>
-    <string name="single_mode">Singolo</string>
     <string name="single_mode_description">Un esercizio alla volta</string>
     <string name="start_countdown">Conto alla rovescia iniziale</string>
     <string name="timer_on">ON</string>
     <string name="timer_off">OFF</string>
     <string name="timer_mode_on_description">Completamento automatico al raggiungimento dell\'obiettivo</string>
     <string name="timer_mode_off_description">Completamento manuale con il pulsante Completa</string>
-    <string name="workout_mode_selection">Seleziona modalità</string>
     <string name="record_weight_for_graph">Registra peso per questo esercizio</string>
     <string name="complete_with_reps">Completa (%d reps)</string>
     <string name="target_reps_format">Obiettivo: %d reps</string>
@@ -631,9 +627,6 @@
     <string name="theme_dark">Scuro</string>
 
     <!-- Interval Mode -->
-    <string name="interval_mode">Intervallo</string>
-    <string name="interval_mode_description">Per HIIT e circuiti</string>
-    <string name="interval_mode_note">La modalità intervallo non registra ripetizioni o tempo di mantenimento. Usa la modalità Programma se hai bisogno di registrazioni.</string>
     <string name="interval_no_record_note">Questa modalità non registra ripetizioni o tempo di mantenimento</string>
     <string name="interval_list_title">Intervallo</string>
     <string name="interval_empty">Nessun programma di intervallo\nTocca + per crearne uno</string>

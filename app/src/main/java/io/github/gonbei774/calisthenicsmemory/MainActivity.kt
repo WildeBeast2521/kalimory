@@ -440,8 +440,6 @@ fun CalisthenicsMemoryApp(
                     WorkoutScreen(
                         viewModel = viewModel,
                         onNavigateBack = { currentScreen = backDestination },
-                        onNavigateToProgramList = { currentScreen = Screen.ProgramList },
-                        onNavigateToIntervalList = { currentScreen = Screen.IntervalList },
                         initialExerciseId = workoutScreen.exerciseId,
                         fromToDo = workoutScreen.fromToDo
                     )
