@@ -25,7 +25,6 @@
     <string name="loading">加载中...</string>
     <!-- Home Screen -->
     <string name="bodyweight_training">自重训练</string>
-    <string name="home_create">创建动作</string>
     <string name="home_record">记录训练</string>
     <string name="home_workout">训练</string>
     <string name="home_view">查看</string>
@@ -785,4 +784,11 @@
     <string name="today_see_progress">查看进度</string>
     <string name="first_day_of_week">每周第一天</string>
     <string name="first_day_of_week_automatic">自动（%1$s）</string>
+    <string name="train_no_programs">暂无计划</string>
+    <string name="train_no_intervals">暂无间歇训练</string>
+    <string name="train_log_title">记录过去的训练</string>
+    <string name="train_log_detail">输入已完成的组</string>
+    <string name="train_see_all">查看全部</string>
+    <string name="train_quick_label">快速开始</string>
+    <string name="library_exercises">动作和分组</string>
 </resources>

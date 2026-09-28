@@ -25,7 +25,6 @@
     <string name="loading">Lädt...</string>
     <!-- Home Screen -->
     <string name="bodyweight_training">Eigengewichtstraining</string>
-    <string name="home_create">Übung erstellen</string>
     <string name="home_record">Training aufzeichnen</string>
     <string name="home_workout">Training</string>
     <string name="home_view">Ansehen</string>
@@ -812,4 +811,11 @@
     <string name="today_see_progress">Fortschritt ansehen</string>
     <string name="first_day_of_week">Erster Tag der Woche</string>
     <string name="first_day_of_week_automatic">Automatisch (%1$s)</string>
+    <string name="train_no_programs">Noch keine Programme</string>
+    <string name="train_no_intervals">Noch keine Intervall-Routinen</string>
+    <string name="train_log_title">Vergangenes Training eintragen</string>
+    <string name="train_log_detail">Bereits absolvierte Sätze eingeben</string>
+    <string name="train_see_all">Alle anzeigen</string>
+    <string name="train_quick_label">Schnellstart</string>
+    <string name="library_exercises">Übungen und Gruppen</string>
 </resources>

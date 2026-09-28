@@ -195,7 +195,7 @@ fun TodayScreen(
                 stringResource(R.string.today_start), AppIcons.Workout, emphasised = false, onClick = onOpenTrain,
             )
         }
-        resumeItems.drop(1).forEach { TodayRow(it.icon, it.name, it.kind, it.open) }
+        resumeItems.drop(1).forEach { TodayRow(it.icon, it.name, it.kind, onClick = it.open) }
 
         // What else is due; the hero already shows the first when nothing waits to be resumed.
         val otherDue = if (heroFromDue) dueItems.drop(1) else dueItems
@@ -207,7 +207,7 @@ fun TodayScreen(
             if (otherDue.isEmpty()) {
                 Text(stringResource(R.string.today_due_none), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
             } else {
-                Column { otherDue.forEach { TodayRow(it.icon, it.name, it.kind, it.open) } }
+                Column { otherDue.forEach { TodayRow(it.icon, it.name, it.kind, onClick = it.open) } }
             }
         }
 

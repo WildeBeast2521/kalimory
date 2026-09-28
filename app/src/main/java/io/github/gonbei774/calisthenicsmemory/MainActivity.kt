@@ -348,6 +348,10 @@ fun CalisthenicsMemoryApp(
                             onOpenTrain = { primaryDestination = PrimaryDestination.TRAIN }
                         )
                         PrimaryDestination.TRAIN -> TrainScreen(
+                            viewModel = viewModel,
+                            // fromToday returns to the primary destination (here Train) on back.
+                            onStartProgram = { id -> currentScreen = Screen.ProgramExecution(id, fromToday = true) },
+                            onStartInterval = { id -> currentScreen = Screen.IntervalExecution(id, fromToday = true) },
                             onStartWorkout = { currentScreen = Screen.Workout() },
                             onRecordManually = { currentScreen = Screen.Record() },
                             onOpenPrograms = { currentScreen = Screen.ProgramList },
@@ -355,6 +359,7 @@ fun CalisthenicsMemoryApp(
                         )
                         PrimaryDestination.PROGRESS -> ViewScreen(viewModel = viewModel)
                         PrimaryDestination.LIBRARY -> LibraryScreen(
+                            viewModel = viewModel,
                             onOpenExercises = { currentScreen = Screen.Create },
                             onOpenPrograms = { currentScreen = Screen.ProgramList },
                             onOpenIntervals = { currentScreen = Screen.IntervalList },
