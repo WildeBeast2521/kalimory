@@ -32,4 +32,12 @@
     <string name="today_all_todos">كل المهام</string>
     <string name="dynamic_color_title">ألوان الخلفية</string>
     <string name="dynamic_color_description">استخدم ألوان خلفية الشاشة. عند الإيقاف، يستخدم التطبيق ألوانه الخاصة.</string>
+    <string name="today_next_up">التالي</string>
+    <string name="today_start">ابدأ</string>
+    <string name="today_nothing_planned">لا شيء مخطط بعد</string>
+    <string name="today_start_workout">ابدأ تمرينًا</string>
+    <string name="today_start_workout_detail">اختر تمرينًا أو برنامجًا أو فاصلًا زمنيًا.</string>
+    <string name="today_week_summary">هذا الأسبوع: %1$d من %2$d</string>
+    <string name="today_done_title">أُنجز اليوم</string>
+    <string name="today_see_progress">عرض التقدم</string>
 </resources>

@@ -332,7 +332,8 @@ fun CalisthenicsMemoryApp(
                             },
                             onOpenToDo = { currentScreen = Screen.ToDo },
                             onOpenHistory = { primaryDestination = PrimaryDestination.PROGRESS },
-                            onOpenSettings = { currentScreen = Screen.Settings }
+                            onOpenSettings = { currentScreen = Screen.Settings },
+                            onOpenTrain = { primaryDestination = PrimaryDestination.TRAIN }
                         )
                         PrimaryDestination.TRAIN -> TrainScreen(
                             onStartWorkout = { currentScreen = Screen.Workout() },

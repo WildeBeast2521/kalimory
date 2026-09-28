@@ -113,7 +113,8 @@ class TodayScreenTest {
         rule.onAllNodesWithTag(PRIMARY_NAVIGATION_BAR_TAG).assertCountEquals(0)
 
         pressBack()
-        rule.onNode(hasText(text(R.string.today_due_title)) and isHeading()).assertExists()
+        // With nothing to resume, the first due to-do is the "Next up" card.
+        rule.onNode(hasText(text(R.string.today_next_up)) and isHeading()).assertExists()
     }
 
     private companion object {

@@ -26,10 +26,7 @@
     <string name="home_create">Створити вправу</string>
     <string name="home_record">Записати тренування</string>
     <string name="home_workout">Тренування</string>
-    <string name="today">Сьогоднішнє тренування</string>
-    <string name="no_records_today">Сьогодні ще немає записів</string>
     <string name="view_details">Переглянути деталі →</string>
-    <string name="view_all_records">Переглянути всі записи →</string>
     <string name="copied_to_clipboard">Скопійовано в буфер обміну</string>
     <string name="exercise_creation">Створення вправи</string>
     <string name="no_exercises">Вправ ще немає.\nДодайте першу за допомогою кнопки + нижче</string>
@@ -781,4 +778,12 @@
     <string name="today_all_todos">Усі завдання</string>
     <string name="dynamic_color_title">Кольори шпалер</string>
     <string name="dynamic_color_description">Використовувати кольори шпалер. Якщо вимкнено, застосунок використовує власну палітру.</string>
+    <string name="today_next_up">Далі</string>
+    <string name="today_start">Почати</string>
+    <string name="today_nothing_planned">Поки нічого не заплановано</string>
+    <string name="today_start_workout">Почати тренування</string>
+    <string name="today_start_workout_detail">Оберіть вправу, програму або інтервал.</string>
+    <string name="today_week_summary">Цього тижня: %1$d з %2$d</string>
+    <string name="today_done_title">Зроблено сьогодні</string>
+    <string name="today_see_progress">Переглянути прогрес</string>
 </resources>

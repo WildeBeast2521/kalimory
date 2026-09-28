@@ -25,10 +25,7 @@
     <string name="home_record">Записать тренировку</string>
     <string name="home_workout">Тренировка</string>
     <string name="home_view">Вид</string>
-    <string name="today">Сегодняшняя тренировка</string>
-    <string name="no_records_today">Нет записей сегодня</string>
     <string name="view_details">Просмотр деталей →</string>
-    <string name="view_all_records">Просмотр всех записей →</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
     <string name="exercise_creation">Создание упражнения</string>
     <string name="no_exercises">Упражнений пока нет\nДобавьте упражнение, используя кнопку «+» ниже</string>
@@ -138,4 +135,12 @@
     <string name="today_all_todos">Все задачи</string>
     <string name="dynamic_color_title">Цвета обоев</string>
     <string name="dynamic_color_description">Использовать цвета обоев. Если выключено, приложение использует собственную палитру.</string>
+    <string name="today_next_up">Далее</string>
+    <string name="today_start">Начать</string>
+    <string name="today_nothing_planned">Пока ничего не запланировано</string>
+    <string name="today_start_workout">Начать тренировку</string>
+    <string name="today_start_workout_detail">Выберите упражнение, программу или интервал.</string>
+    <string name="today_week_summary">На этой неделе: %1$d из %2$d</string>
+    <string name="today_done_title">Сделано сегодня</string>
+    <string name="today_see_progress">Смотреть прогресс</string>
 </resources>
