@@ -4,19 +4,21 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Last backup time and keep-screen-on default, as the owner decided on 2026-09-28. Branch `work/backup-time-screen-on`, based on master `07b87a3`.
+Record saves sets as entered (owner-approved, 2026-09-28). Branch `work/record-as-entered`, based on master `7151057`.
 
-- **Backup screen:** the export card shows "Last backup: <date, time>" in the user's locale, or "No backup yet".
-  - The time is saved in `BackupPreferences` after a completed export: from Export, or from the safety backup that the import flow already offers.
-  - A cancelled or failed export leaves the time unchanged.
-  - There are no reminders and no automatic backups, by owner decision.
-- **Backup copy:** the description now lists everything a backup holds (exercises, records, programs, intervals and to-dos) in the eight locales that had it. The warning card uses the warning icon.
-- **Keep screen on:** now defaults to on. Anyone who never changed the setting gets it on; an explicit choice is kept.
+- **Ticking sets as done is now optional in Record.** The Record button is enabled as soon as any set has a value.
+  - With nothing ticked (the usual past log), it saves every set that has a value.
+  - With every entered set ticked, it saves them, as before.
+  - With a mix, a dialog offers "Record all (n)" or "Only ticked (n)".
+- **The counter badge** shows the sets with a value.
+- **Strings:** four new strings in all 10 locales. The two strings of the old "incomplete sets" dialog are removed.
+- **Test:** the new `UnifiedWorkoutFlowTest.pastWorkoutIsRecordedAsEnteredWithoutTickingSets` checks the flow through the UI, from Train, then Record, then applying the exercise's targets, then Record, and expects one MANUAL session with 3 and 3 reps. It fails without the change (no session is saved) and passes with it.
 
-Verification:
-- `BackupTimeFormatTest`;
-- the full local gate (130/130 instrumented tests on API 29);
-- on the emulator, a real export through the system file picker changed "No backup yet" to "Last backup: Sep 28, 2026, 10:33 PM".
+Verification: the full local gate (131/131 instrumented tests on API 29). The mixed-choice dialog was not seen on screen; its logic is the one branch the test does not reach.
+
+## Previous phase: last backup time and keep screen on (merged)
+
+PR #52 merged as `7151057`.
 
 ## Previous phase: catch-up audit recorded (merged)
 
@@ -77,7 +79,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - (S) The program run shows "1/10" (sets across the whole program) and a capitalised "NEXT"; show "Set 1/6", plus the exercise position.
 - (S) The interval confirm screen has two Start buttons, the title "Confirm", and missing spaces ("20sec", "8rounds").
 - (M) Program and interval runs should use the in-workout kit (PR #47).
-- (M, owner-approved) Record ("Log a past workout") behaves like a live session: a "NOW" badge, and every set must be completed before Record is enabled. For logging the past, allow saving all sets as shown.
+- Done in PR #53: (M) Record ("Log a past workout") behaves like a live session: a "NOW" badge, and every set must be completed before Record is enabled. For logging the past, allow saving all sets as shown.
 - (L, owner-approved, after the item above) Log a past workout with several exercises in one session. The v2 model supports this, and ManualWorkoutWriter handles one exercise today.
 
 **Progress (feeds its redesign):**
@@ -144,6 +146,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #50: glyph icons, second pass.
 - PR #51: catch-up audit (documentation only).
 - PR #52: last backup time and keep-screen-on default.
+- PR #53: Record saves sets as entered.
 
 ## Owner direction for later (2026-09-27)
 

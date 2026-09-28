@@ -156,4 +156,8 @@
     <string name="workout_set_done">Подход %1$d выполнен</string>
     <string name="backup_last">Последняя резервная копия: %1$s</string>
     <string name="backup_never">Резервных копий пока нет</string>
+    <string name="record_mixed_title">Какие подходы записать?</string>
+    <string name="record_mixed_message">Часть подходов отмечена как выполненные (%1$d из %2$d со значениями). Записать все подходы со значениями или только отмеченные?</string>
+    <string name="record_all_sets">Записать все (%1$d)</string>
+    <string name="record_only_done_sets">Только отмеченные (%1$d)</string>
 </resources>

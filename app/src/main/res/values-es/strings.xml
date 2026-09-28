@@ -754,8 +754,6 @@
     <string name="set_status_check_desc">Establecer el estado de finalización</string>
     <string name="set_uncheck_desc">Marcar como «no completado»</string>
     <string name="record_done_count">%1$d/%2$d</string>
-    <string name="record_incomplete_title">Establecer incompleto</string>
-    <string name="record_incomplete_message">%2$d de %1$d conjuntos no están completos. ¿Quieres guardar solo los %3$d conjuntos completados?</string>
     <string name="stat_previous_label">Anterior</string>
     <string name="stat_target_label">Objetivo</string>
     <string name="rep_pace_format">Ritmo: %d s / rep</string>
@@ -842,4 +840,8 @@
     <string name="workout_set_done">Serie %1$d hecha</string>
     <string name="backup_last">Última copia: %1$s</string>
     <string name="backup_never">Aún no hay copia de seguridad</string>
+    <string name="record_mixed_title">¿Qué series registrar?</string>
+    <string name="record_mixed_message">Algunas series están marcadas como hechas (%1$d de %2$d con valores). ¿Registrar todas las series con valor o solo las marcadas?</string>
+    <string name="record_all_sets">Registrar todas (%1$d)</string>
+    <string name="record_only_done_sets">Solo marcadas (%1$d)</string>
 </resources>

@@ -732,7 +732,6 @@
     <string name="add_exercise_to_group">Neue Übung zu Gruppe hinzufügen</string>
     <string name="previous_value_label">Vorher</string>
     <string name="set_uncheck_desc">Satz als nicht beendet markieren</string>
-    <string name="record_incomplete_title">Nicht beendete Sätze</string>
     <string name="challenge_best">Beste</string>
     <string name="challenge_target_label">Ziel</string>
     <string name="workout_label_start_countdown">Countdown starten</string>
@@ -813,4 +812,8 @@
     <string name="workout_set_done">Satz %1$d geschafft</string>
     <string name="backup_last">Letzte Sicherung: %1$s</string>
     <string name="backup_never">Noch keine Sicherung</string>
+    <string name="record_mixed_title">Welche Sätze speichern?</string>
+    <string name="record_mixed_message">Einige Sätze sind als erledigt markiert (%1$d von %2$d mit Werten). Alle Sätze mit Wert speichern oder nur die markierten?</string>
+    <string name="record_all_sets">Alle speichern (%1$d)</string>
+    <string name="record_only_done_sets">Nur markierte (%1$d)</string>
 </resources>

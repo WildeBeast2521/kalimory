@@ -97,8 +97,6 @@
     <string name="set_status_check_desc">セットの完了状態</string>
     <string name="set_uncheck_desc">完了を取り消す</string>
     <string name="record_done_count">%1$d/%2$d</string>
-    <string name="record_incomplete_title">未完了のセットがあります</string>
-    <string name="record_incomplete_message">%1$d セット中 %2$d セットが未完了です。完了済みの %3$d セットだけ記録しますか？</string>
     <string name="reps_label">回数</string>
     <string name="time_label">秒数</string>
     <string name="dynamic_type">回数制</string>
@@ -853,4 +851,8 @@
     <string name="workout_set_done">セット %1$d 完了</string>
     <string name="backup_last">最終バックアップ: %1$s</string>
     <string name="backup_never">バックアップはまだありません</string>
+    <string name="record_mixed_title">どのセットを記録しますか？</string>
+    <string name="record_mixed_message">一部のセットだけ完了チェックが付いています（値のある %2$d セット中 %1$d）。値のあるすべてのセットを記録しますか？チェック済みのみにしますか？</string>
+    <string name="record_all_sets">すべて記録（%1$d）</string>
+    <string name="record_only_done_sets">チェック済みのみ（%1$d）</string>
 </resources>

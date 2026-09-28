@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory
 
 import android.content.Context
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDialog
@@ -10,6 +11,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToNode
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -262,6 +264,28 @@ class UnifiedWorkoutFlowTest {
         rule.waitUntil(TIMEOUT_MS) { runBlocking { newSessions().isNotEmpty() } }
         val sets = database.workoutSessionDao().sessionGraph(newSessions().single().id)!!.exercises.single().second
         assertEquals(2, sets.count { it.status == SetEntryStatus.COMPLETED })
+    }
+
+    @Test
+    fun pastWorkoutIsRecordedAsEnteredWithoutTickingSets() = runBlocking {
+        launchAndOpenTrain()
+        rule.onNodeWithText(text(R.string.home_record)).performScrollTo().performClick()
+        waitForText(text(R.string.no_group))
+        rule.onNodeWithText(text(R.string.no_group)).performClick()
+        waitForText(exerciseName)
+        rule.onNodeWithText(exerciseName).performClick()
+        // Fills 2 sets of 3 reps from the exercise; no set is ticked as done.
+        waitForText(text(R.string.apply_exercise_settings))
+        rule.onNodeWithText(text(R.string.apply_exercise_settings)).performClick()
+        rule.onNode(hasScrollAction()).performScrollToNode(hasText(text(R.string.record_button)))
+        rule.onNodeWithText(text(R.string.record_button)).performClick()
+
+        rule.waitUntil(TIMEOUT_MS) { runBlocking { newSessions().isNotEmpty() } }
+        val session = newSessions().single()
+        assertEquals(WorkoutSourceType.MANUAL, session.sourceType)
+        val sets = database.workoutSessionDao().sessionGraph(session.id)!!.exercises.single().second
+        assertEquals(listOf(3, 3), sets.map { it.repetitions })
+        assertEquals(listOf(SetEntryStatus.COMPLETED, SetEntryStatus.COMPLETED), sets.map { it.status })
     }
 
     @Test
