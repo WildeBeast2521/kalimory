@@ -415,10 +415,10 @@ internal fun SettingsSection(
                         color = appColors.textTertiary
                     )
                 }
-                Text(
-                    text = "▼",
-                    fontSize = 12.sp,
-                    color = appColors.textSecondary,
+                Icon(
+                    AppIcons.ExpandMore,
+                    contentDescription = null,
+                    tint = appColors.textSecondary,
                     modifier = Modifier.rotate(chevronRotation)
                 )
             }
@@ -736,10 +736,10 @@ internal fun ProgramConfirmExerciseCard(
                 }
 
                 // シェブロン
-                Text(
-                    text = "▼",
-                    fontSize = 12.sp,
-                    color = appColors.textSecondary,
+                Icon(
+                    AppIcons.ExpandMore,
+                    contentDescription = null,
+                    tint = appColors.textSecondary,
                     modifier = Modifier.rotate(chevronRotation)
                 )
             }
@@ -1134,10 +1134,10 @@ private fun ProgramConfirmLoopBlock(
                 }
 
                 // シェブロン
-                Text(
-                    text = "▼",
-                    fontSize = 12.sp,
-                    color = appColors.textSecondary,
+                Icon(
+                    AppIcons.ExpandMore,
+                    contentDescription = null,
+                    tint = appColors.textSecondary,
                     modifier = Modifier.rotate(chevronRotation)
                 )
             }

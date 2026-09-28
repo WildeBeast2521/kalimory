@@ -419,7 +419,7 @@ internal fun ProgramIntervalStep(
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(
-                        text = "${stringResource(R.string.interval_next)} ▶",
+                        text = "${stringResource(R.string.interval_next)}",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = Cyan600
