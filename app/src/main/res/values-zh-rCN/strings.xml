@@ -153,14 +153,14 @@
     <string name="no_exercises_in_period">%s内未进行训练</string>
     <string name="achievement_rate">%1$d%%（%2$d/%3$d%4$s）</string>
     <!-- Settings Screen -->
-    <string name="data_management">📦 数据管理</string>
+    <string name="data_management">数据管理</string>
     <string name="export_data">导出数据</string>
     <string name="create_backup">创建备份</string>
     <string name="import_data">导入数据</string>
     <string name="restore_from_backup">从备份恢复</string>
     <string name="warning_title">警告</string>
     <string name="import_warning">导入将删除所有现有数据。</string>
-    <string name="import_data_preview_title">📋 确认导入</string>
+    <string name="import_data_preview_title">确认导入</string>
     <string name="file_name">文件名</string>
     <string name="data_contents">数据内容</string>
     <string name="groups">分组</string>
@@ -170,7 +170,7 @@
     <string name="count_records">%d条记录</string>
     <string name="import_data_preview_message">您是否要继续导入这些数据？</string>
     <string name="next">下一步</string>
-    <string name="data_overwrite_title">⚠️ 数据覆盖</string>
+    <string name="data_overwrite_title">数据覆盖</string>
     <string name="existing_data_will_be_deleted">所有现有数据将被删除。</string>
     <string name="cannot_undo">此操作无法撤销。</string>
     <string name="import_confirm">导入</string>
@@ -350,9 +350,9 @@
     <string name="csv_import_button">导入</string>
     <!-- CSV Import Result Dialog -->
     <string name="csv_import_completed">导入完成</string>
-    <string name="csv_import_success_label">✅ 成功</string>
+    <string name="csv_import_success_label">成功</string>
     <string name="csv_import_skipped_label">⏭️ 已跳过</string>
-    <string name="csv_import_error_label">❌ 错误</string>
+    <string name="csv_import_error_label">错误</string>
     <string name="csv_import_skipped_items">已跳过项目（%d）</string>
     <string name="csv_import_errors">错误（%d）</string>
     <string name="csv_import_more_items">... 以及其他 %d 项</string>
@@ -559,11 +559,11 @@
     <string name="timer_mode_off_description">通过完成按钮手动完成</string>
     <string name="workout_mode_selection">选择模式</string>
     <string name="record_weight_for_graph">记录此动作的重量</string>
-    <string name="complete_with_reps">✓ 完成 (%d次)</string>
+    <string name="complete_with_reps">完成 (%d次)</string>
     <string name="target_reps_format">目标：%d次</string>
     <string name="paused_label">已暂停</string>
     <string name="elapsed_target_format">已用时：%1$d秒 / 目标：%2$d秒</string>
-    <string name="complete_with_time">✓ 完成 (%d秒)</string>
+    <string name="complete_with_time">完成 (%d秒)</string>
     <string name="previous_value_format">上次：%s</string>
     <string name="previous_reps_format">上次：%d次</string>
     <string name="previous_time_format">上次：%d秒</string>

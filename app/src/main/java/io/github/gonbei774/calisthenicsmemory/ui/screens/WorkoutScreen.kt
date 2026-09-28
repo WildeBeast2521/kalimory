@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -26,15 +27,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -320,7 +312,7 @@ fun WorkoutScreen(
                         }
                     }) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -339,7 +331,7 @@ fun WorkoutScreen(
                     ) {
                         IconButton(onClick = { showNavigationSheet = true }) {
                             Icon(
-                                Icons.Default.Menu,
+                                AppIcons.Menu,
                                 contentDescription = stringResource(R.string.nav_program_overview),
                                 tint = Color.White
                             )
@@ -792,7 +784,7 @@ fun ExerciseSelectionStep(
                 },
                 leadingIcon = {
                     Icon(
-                        Icons.Default.Search,
+                        AppIcons.Search,
                         contentDescription = null,
                         tint = appColors.textSecondary
                     )
@@ -801,7 +793,7 @@ fun ExerciseSelectionStep(
                     if (searchQuery.isNotEmpty()) {
                         IconButton(onClick = { searchQuery = "" }) {
                             Icon(
-                                Icons.Default.Clear,
+                                AppIcons.Close,
                                 contentDescription = stringResource(R.string.clear),
                                 tint = appColors.textSecondary
                             )
@@ -910,7 +902,7 @@ fun WorkoutHierarchicalGroup(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = if (isExpanded) Icons.Default.KeyboardArrowDown else Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            imageVector = if (isExpanded) AppIcons.ExpandMore else AppIcons.Forward,
                             contentDescription = null,
                             tint = appColors.textPrimary
                         )
@@ -991,12 +983,7 @@ fun WorkoutExerciseItem(
                 ) {
                     // お気に入り
                     if (exercise.isFavorite) {
-                        Text(
-                            text = "★",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFD700)
-                        )
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFFFD700))
                     }
 
                     // レベル
@@ -1078,7 +1065,7 @@ fun WorkoutExerciseItem(
             }
 
             Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
+                AppIcons.Back,
                 contentDescription = stringResource(R.string.select),
                 tint = Orange600,
                 modifier = Modifier.rotate(180f)
@@ -1476,7 +1463,7 @@ fun SettingsStep(
             shape = RoundedCornerShape(8.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.Check,
+                imageVector = AppIcons.Check,
                 contentDescription = null,
                 modifier = Modifier.size(20.dp)
             )
@@ -3442,7 +3429,7 @@ fun ModeSelectionStep(
                     )
                 }
                 Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    AppIcons.Forward,
                     contentDescription = null,
                     tint = Orange600,
                     modifier = Modifier.size(28.dp)
@@ -3481,7 +3468,7 @@ fun ModeSelectionStep(
                     )
                 }
                 Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    AppIcons.Forward,
                     contentDescription = null,
                     tint = Orange600,
                     modifier = Modifier.size(28.dp)
@@ -3518,7 +3505,7 @@ fun ModeSelectionStep(
                     )
                 }
                 Icon(
-                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    AppIcons.Forward,
                     contentDescription = null,
                     tint = Orange600,
                     modifier = Modifier.size(28.dp)
@@ -3592,12 +3579,7 @@ fun WorkoutSearchResultItem(
                 ) {
                     // お気に入り
                     if (exercise.isFavorite) {
-                        Text(
-                            text = "★",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFD700)
-                        )
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFFFD700))
                     }
 
                     // レベル
@@ -3679,7 +3661,7 @@ fun WorkoutSearchResultItem(
             }
 
             Icon(
-                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                AppIcons.Forward,
                 contentDescription = null,
                 tint = Orange600,
                 modifier = Modifier.size(24.dp)

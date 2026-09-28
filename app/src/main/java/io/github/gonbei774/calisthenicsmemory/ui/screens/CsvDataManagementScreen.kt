@@ -1,13 +1,12 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -274,7 +273,7 @@ fun CsvDataManagementScreen(
                 ) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -328,10 +327,7 @@ fun CsvDataManagementScreen(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "\uD83D\uDCCB",
-                            fontSize = 32.sp
-                        )
+                        Icon(AppIcons.List, contentDescription = null, modifier = Modifier.size(32.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.csv_export),
@@ -371,10 +367,7 @@ fun CsvDataManagementScreen(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "\uD83D\uDCCA",
-                            fontSize = 32.sp
-                        )
+                        Icon(AppIcons.Chart, contentDescription = null, modifier = Modifier.size(32.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.csv_import),
@@ -444,7 +437,7 @@ fun CsvDataManagementScreen(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "\uD83D\uDCC1", fontSize = 24.sp)
+                            Icon(AppIcons.Folder, contentDescription = null, modifier = Modifier.size(24.dp))
                             Column {
                                 Text(
                                     text = stringResource(R.string.csv_export_groups),
@@ -482,7 +475,7 @@ fun CsvDataManagementScreen(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "\uD83D\uDCAA", fontSize = 24.sp)
+                            Icon(AppIcons.Exercise, contentDescription = null, modifier = Modifier.size(24.dp))
                             Column {
                                 Text(
                                     text = stringResource(R.string.csv_export_exercises),
@@ -520,7 +513,7 @@ fun CsvDataManagementScreen(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "\uD83D\uDCCA", fontSize = 24.sp)
+                            Icon(AppIcons.Chart, contentDescription = null, modifier = Modifier.size(24.dp))
                             Column {
                                 Text(
                                     text = stringResource(R.string.csv_export_records),
@@ -558,7 +551,7 @@ fun CsvDataManagementScreen(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "\uD83D\uDCCB", fontSize = 24.sp)
+                            Icon(AppIcons.List, contentDescription = null, modifier = Modifier.size(24.dp))
                             Column {
                                 Text(
                                     text = stringResource(R.string.csv_export_record_template),

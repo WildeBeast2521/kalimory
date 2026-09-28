@@ -1,13 +1,12 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -181,7 +180,7 @@ fun BackupScreen(
                 ) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -238,10 +237,7 @@ fun BackupScreen(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "\uD83D\uDCE4",
-                            fontSize = 32.sp
-                        )
+                        Icon(AppIcons.Upload, contentDescription = null, modifier = Modifier.size(32.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.export_data),
@@ -281,10 +277,7 @@ fun BackupScreen(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "\uD83D\uDCE5",
-                            fontSize = 32.sp
-                        )
+                        Icon(AppIcons.Download, contentDescription = null, modifier = Modifier.size(32.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.import_data),

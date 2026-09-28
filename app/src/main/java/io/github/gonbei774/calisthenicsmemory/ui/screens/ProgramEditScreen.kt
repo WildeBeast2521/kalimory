@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
@@ -14,17 +15,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -308,7 +298,7 @@ fun ProgramEditScreen(
                 ) {
                     IconButton(onClick = { handleBackPress() }) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -396,7 +386,7 @@ fun ProgramEditScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Warning,
+                                imageVector = AppIcons.Warning,
                                 contentDescription = null,
                                 tint = Color.White,
                                 modifier = Modifier.size(16.dp)
@@ -576,7 +566,7 @@ fun ProgramEditScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = Orange600)
                     ) {
                         Icon(
-                            Icons.Default.Add,
+                            AppIcons.Add,
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
@@ -597,7 +587,7 @@ fun ProgramEditScreen(
                             brush = Brush.horizontalGradient(listOf(Orange600, Orange600))
                         )
                     ) {
-                        Text("🔁", fontSize = 16.sp)
+                        Icon(AppIcons.Repeat, contentDescription = null, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(R.string.add_loop))
                     }
@@ -617,7 +607,7 @@ fun ProgramEditScreen(
                                 brush = Brush.horizontalGradient(listOf(Red600, Red600))
                             )
                         ) {
-                            Icon(Icons.Default.Delete, contentDescription = null)
+                            Icon(AppIcons.Delete, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(stringResource(R.string.delete_program))
                         }

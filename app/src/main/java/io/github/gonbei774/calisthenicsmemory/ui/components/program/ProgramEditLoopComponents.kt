@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -7,12 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -94,7 +89,7 @@ fun LoopBlock(
                     ) {
                         // Drag handle
                         Icon(
-                            Icons.Default.Menu,
+                            AppIcons.DragHandle,
                             contentDescription = stringResource(R.string.todo_drag_to_reorder),
                             tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
                             modifier = Modifier
@@ -102,10 +97,7 @@ fun LoopBlock(
                                 .then(dragHandle())
                         )
                         // Loop icon
-                        Text(
-                            text = "🔁",
-                            fontSize = 18.sp
-                        )
+                        Icon(AppIcons.Repeat, contentDescription = null, modifier = Modifier.size(18.dp))
                         // Rounds badge
                         Text(
                             text = stringResource(R.string.loop_round_format, loop.rounds),
@@ -156,9 +148,9 @@ fun LoopBlock(
                         // Expand/collapse icon
                         Icon(
                             imageVector = if (isExpanded)
-                                Icons.Default.KeyboardArrowDown
+                                AppIcons.ExpandMore
                             else
-                                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                AppIcons.Forward,
                             contentDescription = null,
                             tint = appColors.textSecondary
                         )
@@ -232,7 +224,7 @@ fun LoopBlock(
                         )
                     ) {
                         Icon(
-                            Icons.Default.Add,
+                            AppIcons.Add,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp)
                         )
@@ -346,7 +338,7 @@ private fun LoopExerciseItemWithDrag(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Icon(
-                    Icons.Default.Delete,
+                    AppIcons.Delete,
                     contentDescription = stringResource(R.string.delete),
                     tint = appColors.textPrimary
                 )
@@ -379,7 +371,7 @@ private fun LoopExerciseItemWithDrag(
             ) {
                 // Drag handle
                 Icon(
-                    Icons.Default.Menu,
+                    AppIcons.DragHandle,
                     contentDescription = stringResource(R.string.todo_drag_to_reorder),
                     tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
                     modifier = Modifier

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.today
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -14,13 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -128,22 +122,22 @@ fun TodayScreen(
     val resumeItems = resumable.map { workout ->
         when (workout) {
             is ResumableWorkout.Single ->
-                Item(Icons.Filled.PlayArrow, exerciseNames.getValue(workout.exerciseId), workoutLabel) { onResume(workout) }
+                Item(AppIcons.Workout, exerciseNames.getValue(workout.exerciseId), workoutLabel) { onResume(workout) }
             is ResumableWorkout.Program -> Item(
-                Icons.AutoMirrored.Filled.List,
+                AppIcons.Program,
                 programNames.getValue(workout.programId),
                 if (workout.savedByUser) "$programLabel · $savedForLater" else programLabel,
             ) { onResume(workout) }
             is ResumableWorkout.Interval ->
-                Item(Icons.Filled.Refresh, intervalNames.getValue(workout.programId), intervalLabel) { onResume(workout) }
+                Item(AppIcons.Interval, intervalNames.getValue(workout.programId), intervalLabel) { onResume(workout) }
         }
     }
     val dueItems = dueTasks.mapNotNull { task ->
         val (icon, name, kind) = when (task.type) {
-            TodoTask.TYPE_EXERCISE -> Triple(Icons.Filled.CheckCircle, exerciseNames[task.referenceId], workoutLabel)
-            TodoTask.TYPE_GROUP -> Triple(Icons.Filled.Star, groupNames[task.referenceId], groupLabel)
-            TodoTask.TYPE_PROGRAM -> Triple(Icons.AutoMirrored.Filled.List, programNames[task.referenceId], programLabel)
-            TodoTask.TYPE_INTERVAL -> Triple(Icons.Filled.Refresh, intervalNames[task.referenceId], intervalLabel)
+            TodoTask.TYPE_EXERCISE -> Triple(AppIcons.Done, exerciseNames[task.referenceId], workoutLabel)
+            TodoTask.TYPE_GROUP -> Triple(AppIcons.FavoriteFilled, groupNames[task.referenceId], groupLabel)
+            TodoTask.TYPE_PROGRAM -> Triple(AppIcons.Program, programNames[task.referenceId], programLabel)
+            TodoTask.TYPE_INTERVAL -> Triple(AppIcons.Interval, intervalNames[task.referenceId], intervalLabel)
             // Tasks whose target is gone or whose type is unknown stay visible on the To Do screen.
             else -> return@mapNotNull null
         }
@@ -174,7 +168,7 @@ fun TodayScreen(
                 )
             }
             IconButton(onClick = onOpenSettings) {
-                Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.settings), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                Icon(AppIcons.Settings, contentDescription = stringResource(R.string.settings), tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
 
@@ -197,7 +191,7 @@ fun TodayScreen(
             }
             else -> HeroCard(
                 stringResource(R.string.today_nothing_planned), stringResource(R.string.today_start_workout), stringResource(R.string.today_start_workout_detail),
-                stringResource(R.string.today_start), Icons.Filled.PlayArrow, emphasised = false, onClick = onOpenTrain,
+                stringResource(R.string.today_start), AppIcons.Workout, emphasised = false, onClick = onOpenTrain,
             )
         }
         resumeItems.drop(1).forEach { TodayRow(it.icon, it.name, it.kind, it.open) }

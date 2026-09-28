@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -11,12 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import kotlinx.coroutines.launch
@@ -287,7 +282,7 @@ fun ViewScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Icon(
-                                        Icons.Default.Search,
+                                        AppIcons.Search,
                                         contentDescription = stringResource(R.string.select_exercise_filter),
                                         modifier = Modifier.size(16.dp)
                                     )
@@ -738,7 +733,7 @@ fun FilterBottomSheetContent(
             placeholder = { Text(stringResource(R.string.search_exercise), color = appColors.textSecondary) },
             leadingIcon = {
                 Icon(
-                    Icons.Default.Search,
+                    AppIcons.Search,
                     contentDescription = stringResource(R.string.search),
                     tint = appColors.textSecondary
                 )
@@ -747,7 +742,7 @@ fun FilterBottomSheetContent(
                 if (searchQuery.isNotEmpty()) {
                     IconButton(onClick = { searchQuery = "" }) {
                         Icon(
-                            Icons.Default.Close,
+                            AppIcons.Close,
                             contentDescription = stringResource(R.string.clear),
                             tint = appColors.textSecondary
                         )
@@ -833,9 +828,9 @@ fun FilterBottomSheetContent(
                                 }
                                 Icon(
                                     imageVector = if (expandedGroups.contains(group.groupName)) {
-                                        Icons.Default.KeyboardArrowDown
+                                        AppIcons.ExpandMore
                                     } else {
-                                        Icons.AutoMirrored.Filled.KeyboardArrowRight
+                                        AppIcons.Forward
                                     },
                                     contentDescription = null,
                                     tint = appColors.textSecondary
@@ -907,12 +902,7 @@ fun FilterExerciseItem(
                 ) {
                     // お気に入り
                     if (exercise.isFavorite) {
-                        Text(
-                            text = "★",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFD700)
-                        )
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFFFD700))
                     }
 
                     // レベル
@@ -947,7 +937,7 @@ fun FilterExerciseItem(
 
             if (isSelected) {
                 Icon(
-                    imageVector = Icons.Default.Search,
+                    imageVector = AppIcons.Search,
                     contentDescription = null,
                     tint = Purple600
                 )
@@ -989,7 +979,7 @@ fun FilterTextItem(
 
             if (isSelected) {
                 Icon(
-                    imageVector = Icons.Default.Search,
+                    imageVector = AppIcons.Search,
                     contentDescription = null,
                     tint = Purple600
                 )
@@ -1209,10 +1199,7 @@ fun ChallengeExerciseCard(
 
                 // 達成マーク
                 if (hasChallenge && status != null && status.achievementRate >= 100 && status.status == ChallengeResult.Perfect) {
-                    Text(
-                        text = "✅",
-                        fontSize = 18.sp
-                    )
+                    Icon(AppIcons.DoneFilled, contentDescription = null, modifier = Modifier.size(18.dp))
                 }
             }
 

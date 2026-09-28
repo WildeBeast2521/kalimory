@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -14,11 +15,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -701,7 +697,7 @@ fun ProgramExecutionScreen(
                         }
                     }) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -726,7 +722,7 @@ fun ProgramExecutionScreen(
                             }
                         ) {
                             Icon(
-                                Icons.Default.PlayArrow,
+                                AppIcons.Play,
                                 contentDescription = null,
                                 tint = Color.White,
                                 modifier = Modifier.size(20.dp)
@@ -743,7 +739,7 @@ fun ProgramExecutionScreen(
                     if (showNavigationButton) {
                         IconButton(onClick = { showNavigationSheet = true }) {
                             Icon(
-                                Icons.Default.Menu,
+                                AppIcons.Menu,
                                 contentDescription = stringResource(R.string.nav_program_overview),
                                 tint = Color.White
                             )

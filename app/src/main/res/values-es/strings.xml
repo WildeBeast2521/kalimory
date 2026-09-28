@@ -153,14 +153,14 @@
     <string name="no_exercises_in_period">No hay ejercicios realizados en %s</string>
     <string name="achievement_rate">%1$d%% (%2$d/%3$d%4$s)</string>
     <!-- Settings Screen -->
-    <string name="data_management">📦 Gestión de Datos</string>
+    <string name="data_management">Gestión de Datos</string>
     <string name="export_data">Exportar Datos</string>
     <string name="create_backup">Crear Copia de Seguridad</string>
     <string name="import_data">Importar Datos</string>
     <string name="restore_from_backup">Restaurar desde Copia de Seguridad</string>
     <string name="warning_title">Advertencia</string>
     <string name="import_warning">Importar eliminará todos los datos existentes.</string>
-    <string name="import_data_preview_title">📋 Confirmar Importación</string>
+    <string name="import_data_preview_title">Confirmar Importación</string>
     <string name="file_name">Nombre del Archivo</string>
     <string name="data_contents">Contenido de Datos</string>
     <string name="groups">Grupos</string>
@@ -170,7 +170,7 @@
     <string name="count_records">%d registros</string>
     <string name="import_data_preview_message">¿Desea proceder con la importación de estos datos?</string>
     <string name="next">Siguiente</string>
-    <string name="data_overwrite_title">⚠️ Sobrescritura de Datos</string>
+    <string name="data_overwrite_title">Sobrescritura de Datos</string>
     <string name="existing_data_will_be_deleted">Todos los datos existentes serán eliminados.</string>
     <string name="cannot_undo">Esta acción no se puede deshacer.</string>
     <string name="import_confirm">Importar</string>
@@ -350,9 +350,9 @@
     <string name="csv_import_button">Importar</string>
     <!-- CSV Import Result Dialog -->
     <string name="csv_import_completed">Importación Completada</string>
-    <string name="csv_import_success_label">✅ Éxito</string>
+    <string name="csv_import_success_label">Éxito</string>
     <string name="csv_import_skipped_label">⏭️ Omitidos</string>
-    <string name="csv_import_error_label">❌ Errores</string>
+    <string name="csv_import_error_label">Errores</string>
     <string name="csv_import_skipped_items">Elementos Omitidos (%d)</string>
     <string name="csv_import_errors">Errores (%d)</string>
     <string name="csv_import_more_items">... y %d más</string>
@@ -559,11 +559,11 @@
     <string name="timer_mode_off_description">Completar manualmente con el botón Finalizar</string>
     <string name="workout_mode_selection">Seleccionar modo</string>
     <string name="record_weight_for_graph">Registrar peso para este ejercicio</string>
-    <string name="complete_with_reps">✓ Completar (%d reps)</string>
+    <string name="complete_with_reps">Completar (%d reps)</string>
     <string name="target_reps_format">Objetivo: %d reps</string>
     <string name="paused_label">Pausado</string>
     <string name="elapsed_target_format">Transcurrido: %1$ds / Objetivo: %2$ds</string>
-    <string name="complete_with_time">✓ Completar (%ds)</string>
+    <string name="complete_with_time">Completar (%ds)</string>
     <string name="previous_value_format">Anterior: %s</string>
     <string name="previous_reps_format">Anterior: %d reps</string>
     <string name="previous_time_format">Anterior: %ds</string>

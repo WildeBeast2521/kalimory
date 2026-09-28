@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,11 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -170,7 +166,7 @@ fun SessionCard(
                     var menuExpanded by remember { mutableStateOf(false) }
                     IconButton(onClick = { menuExpanded = true }) {
                         Icon(
-                            Icons.Default.MoreVert,
+                            AppIcons.More,
                             contentDescription = stringResource(R.string.menu),
                             tint = appColors.textSecondary
                         )
@@ -203,10 +199,7 @@ fun SessionCard(
                     modifier = Modifier.padding(bottom = 12.dp),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(
-                        text = "💬",
-                        fontSize = 14.sp
-                    )
+                    Icon(AppIcons.Comment, contentDescription = null, modifier = Modifier.size(14.dp))
                     Text(
                         text = session.comment,
                         fontSize = 14.sp,
@@ -634,7 +627,7 @@ fun IntervalRecordCard(
                     var menuExpanded by remember { mutableStateOf(false) }
                     IconButton(onClick = { menuExpanded = true }) {
                         Icon(
-                            Icons.Default.MoreVert,
+                            AppIcons.More,
                             contentDescription = stringResource(R.string.menu),
                             tint = appColors.textSecondary
                         )
@@ -667,7 +660,7 @@ fun IntervalRecordCard(
                     modifier = Modifier.padding(bottom = 12.dp),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(text = "\uD83D\uDCAC", fontSize = 14.sp)
+                    Icon(AppIcons.Comment, contentDescription = null, modifier = Modifier.size(14.dp))
                     Text(
                         text = record.comment!!,
                         fontSize = 14.sp,
@@ -755,8 +748,8 @@ fun IntervalRecordCard(
                             color = appColors.textSecondary
                         )
                         Icon(
-                            if (exercisesExpanded) Icons.Default.KeyboardArrowDown
-                            else Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            if (exercisesExpanded) AppIcons.ExpandMore
+                            else AppIcons.Forward,
                             contentDescription = null,
                             tint = appColors.textSecondary,
                             modifier = Modifier.size(20.dp)

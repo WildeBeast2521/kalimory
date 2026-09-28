@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.activity.compose.BackHandler
 import android.view.WindowManager
 import androidx.compose.foundation.Canvas
@@ -10,11 +11,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -694,7 +690,7 @@ private fun IntervalConfirmContent(
                 ) {
                     IconButton(onClick = onBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
                             tint = Color.White
                         )
@@ -708,7 +704,7 @@ private fun IntervalConfirmContent(
                     )
                     TextButton(onClick = onStart) {
                         Icon(
-                            Icons.Default.PlayArrow,
+                            AppIcons.Play,
                             contentDescription = null,
                             tint = Color.White,
                             modifier = Modifier.size(20.dp)
@@ -1284,7 +1280,7 @@ private fun IntervalCompleteContent(
             item {
                 Spacer(modifier = Modifier.height(16.dp))
                 Icon(
-                    imageVector = if (isFullCompletion) Icons.Default.Check else Icons.Default.Close,
+                    imageVector = if (isFullCompletion) AppIcons.Check else AppIcons.Close,
                     contentDescription = null,
                     tint = statusColor,
                     modifier = Modifier.size(64.dp)

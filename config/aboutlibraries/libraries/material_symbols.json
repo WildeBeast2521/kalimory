@@ -1,0 +1,19 @@
+{
+  "uniqueId": "icons:material-symbols",
+  "artifactVersion": "google/material-design-icons bd8cb85",
+  "name": "Material Symbols (icons)",
+  "description": "The icons used throughout the app (Rounded style).",
+  "website": "https://github.com/google/material-design-icons",
+  "developers": [
+    {
+      "name": "Google",
+      "organisationUrl": "https://fonts.google.com/icons"
+    }
+  ],
+  "scm": {
+    "url": "https://github.com/google/material-design-icons"
+  },
+  "licenses": [
+    "Apache-2.0"
+  ]
+}

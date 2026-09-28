@@ -168,14 +168,14 @@
     <string name="no_exercises_in_period">%sに取り組んだ種目がありません</string>
     <string name="achievement_rate">%1$d%% (%2$d/%3$d%4$s)</string>
     <!-- Settings Screen -->
-    <string name="data_management">📦 データ管理</string>
+    <string name="data_management">データ管理</string>
     <string name="export_data">データをエクスポート</string>
     <string name="create_backup">バックアップを作成</string>
     <string name="import_data">データをインポート</string>
     <string name="restore_from_backup">バックアップから復元</string>
     <string name="warning_title">注意</string>
     <string name="import_warning">インポート時に既存データは全削除されます。</string>
-    <string name="import_data_preview_title">📋 インポート内容の確認</string>
+    <string name="import_data_preview_title">インポート内容の確認</string>
     <string name="file_name">ファイル名</string>
     <string name="data_contents">データ内容</string>
     <string name="groups">グループ</string>
@@ -185,7 +185,7 @@
     <string name="count_records">%d件</string>
     <string name="import_data_preview_message">このデータをインポートしますか？</string>
     <string name="next">次へ</string>
-    <string name="data_overwrite_title">⚠️ データの上書き</string>
+    <string name="data_overwrite_title">データの上書き</string>
     <string name="existing_data_will_be_deleted">既存のデータは全て削除されます。</string>
     <string name="cannot_undo">インポート後は元に戻せません。</string>
     <string name="import_confirm">インポートする</string>
@@ -398,9 +398,9 @@
     <string name="csv_import_button">インポート</string>
     <!-- CSV Import Result Dialog -->
     <string name="csv_import_completed">インポート完了</string>
-    <string name="csv_import_success_label">✅ 成功</string>
+    <string name="csv_import_success_label">成功</string>
     <string name="csv_import_skipped_label">⏭️ スキップ</string>
-    <string name="csv_import_error_label">❌ エラー</string>
+    <string name="csv_import_error_label">エラー</string>
     <string name="csv_import_skipped_items">スキップ項目 (%d)</string>
     <string name="csv_import_errors">エラー (%d)</string>
     <string name="csv_import_more_items">... その他 %d件</string>
@@ -603,7 +603,7 @@
     <!-- Isometric Manual Mode -->
     <string name="paused_label">一時停止中</string>
     <string name="elapsed_target_format">経過: %1$d秒 / 目標: %2$d秒</string>
-    <string name="complete_with_time">✓ 完了（%d秒で記録）</string>
+    <string name="complete_with_time">完了（%d秒で記録）</string>
     <!-- Exit Workout Confirmation -->
     <string name="exit_workout_title">トレーニングを中断しますか？</string>
     <string name="exit_workout_message">進捗は保存されません。</string>
@@ -617,7 +617,7 @@
     <string name="sets_label_short">セット:</string>
     <string name="unit_seconds_short">秒</string>
     <string name="record_weight_for_graph">この種目の重量を記録する</string>
-    <string name="complete_with_reps">✓ 完了 (%d回)</string>
+    <string name="complete_with_reps">完了 (%d回)</string>
     <string name="target_reps_format">目標: %d回</string>
     <string name="previous_value_format">前回: %s</string>
     <string name="previous_reps_format">前回: %d回</string>
