@@ -25,7 +25,6 @@
     <string name="loading">Loading...</string>
     <!-- Home Screen -->
     <string name="bodyweight_training">Bodyweight Training</string>
-    <string name="home_create">Create Exercise</string>
     <string name="home_record">Record Training</string>
     <string name="home_workout">Workout</string>
     <string name="home_view">View</string>
@@ -845,4 +844,11 @@
     <string name="today_see_progress">See progress</string>
     <string name="first_day_of_week">First day of the week</string>
     <string name="first_day_of_week_automatic">Automatic (%1$s)</string>
+    <string name="train_no_programs">No programs yet</string>
+    <string name="train_no_intervals">No interval routines yet</string>
+    <string name="train_log_title">Log a past workout</string>
+    <string name="train_log_detail">Enter sets you already did</string>
+    <string name="train_see_all">See all</string>
+    <string name="train_quick_label">Quick start</string>
+    <string name="library_exercises">Exercises and groups</string>
 </resources>

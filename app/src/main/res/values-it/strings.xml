@@ -25,7 +25,6 @@
     <string name="loading">Caricamento...</string>
     <!-- Home Screen -->
     <string name="bodyweight_training">Allenamento a Corpo Libero</string>
-    <string name="home_create">Crea Esercizio</string>
     <string name="home_record">Registra Allenamento</string>
     <string name="home_workout">Allenamento</string>
     <string name="home_view">Visualizza</string>
@@ -785,4 +784,11 @@
     <string name="today_see_progress">Vedi progressi</string>
     <string name="first_day_of_week">Primo giorno della settimana</string>
     <string name="first_day_of_week_automatic">Automatico (%1$s)</string>
+    <string name="train_no_programs">Ancora nessun programma</string>
+    <string name="train_no_intervals">Ancora nessuna routine a intervalli</string>
+    <string name="train_log_title">Registra un allenamento passato</string>
+    <string name="train_log_detail">Inserisci le serie già fatte</string>
+    <string name="train_see_all">Vedi tutto</string>
+    <string name="train_quick_label">Avvio rapido</string>
+    <string name="library_exercises">Esercizi e gruppi</string>
 </resources>

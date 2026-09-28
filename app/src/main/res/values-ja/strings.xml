@@ -25,7 +25,6 @@
     <string name="loading">読み込み中...</string>
     <!-- Home Screen -->
     <string name="bodyweight_training">自重トレーニング</string>
-    <string name="home_create">種目作成</string>
     <string name="home_record">記録入力</string>
     <string name="home_workout">ワークアウト</string>
     <string name="home_view">閲覧</string>
@@ -852,4 +851,11 @@
     <string name="today_see_progress">進捗を見る</string>
     <string name="first_day_of_week">週の始まり</string>
     <string name="first_day_of_week_automatic">自動（%1$s）</string>
+    <string name="train_no_programs">プログラムはまだありません</string>
+    <string name="train_no_intervals">インターバルはまだありません</string>
+    <string name="train_log_title">過去のトレーニングを記録</string>
+    <string name="train_log_detail">すでに行ったセットを入力</string>
+    <string name="train_see_all">すべて表示</string>
+    <string name="train_quick_label">クイックスタート</string>
+    <string name="library_exercises">種目とグループ</string>
 </resources>

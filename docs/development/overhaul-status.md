@@ -4,20 +4,22 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-First day of the week, as the owner asked on 2026-09-28. Branch `work/first-day-of-week`, based on master `4e1e18b`.
+Train and Library redesign. Branch `work/train-library-redesign`, based on master `2bfdb8d`. Both destinations now follow Today's design language.
 
-- **Setting:** a Settings card offers Automatic (the language and region's first day, shown by name), Monday, Saturday or Sunday. It is stored in `ThemePreferences`.
-- **Provided app-wide:** through `LocalFirstDayOfWeekSetting` and `firstDayOfWeek()` (`ui/theme/Week.kt`).
-- **Used by:**
-  - Today's week strip;
-  - the Progress month calendar (header and the column of the 1st);
-  - the order of the To Do repeat-day picker. Stored repeat days stay ISO numbers, Monday = 1, so data is unchanged.
+- **Train:**
+  - a "Quick start" hero opens a single-exercise workout;
+  - Programs and Interval list the user's own routines, each with its estimate ("~14 min", or exercises, work/rest and rounds), and a tap starts it directly;
+  - "See all" opens each full list for editing;
+  - "Log a past workout" opens manual recording.
+- **Library:** grouped rows for Exercises and groups, Programs and Interval, each with its count, then Settings.
+- **Shared parts:** `RowGroup` (rows on one `surfaceContainerLow` surface) and an optional trailing icon on `TodayRow`, in `ui/screens/today/TodayParts.kt`. `ui/navigation/DestinationEntry.kt` is removed, since nothing used it.
+- **Strings:** seven new strings in all 10 locales.
 
-The Progress "1 week" range is the last 7 days, not a calendar week, so it is unaffected.
+Verification: the full local gate, plus screenshots on the API 29 emulator with synthetic programs and an interval routine.
 
-Verification:
-- `WeekTest` (2 tests).
-- On the emulator with Monday chosen, both Today and the Progress calendar start on Monday, and 1 September 2026 falls on Tuesday.
+## Previous phase: first day of the week (merged)
+
+PR #45 merged as `b5d746e`. A Settings choice (Automatic, Monday, Saturday or Sunday) drives Today's week strip, the Progress calendar and the To Do repeat-day picker order.
 
 ## CI debt (merged without GitHub Actions)
 
@@ -42,10 +44,11 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #43: Today redesign.
 - PR #44: Material Symbols icons.
 - PR #45: first day of the week.
+- PR #46: Train and Library redesign.
 
 ## Owner direction for later (2026-09-27)
 
-- **One icon library** (2026-09-28): replace every icon, including the emoji "icons" in Settings and the legacy screens and the frozen `material-icons-core` set, with one consistent library that suits Material 3 Expressive. Material Symbols (Apache-2.0) is the likely candidate. Evaluate it, then migrate screen by screen with the redesign.
+- **One icon library** (2026-09-28): done in PR #44 with Material Symbols Rounded (Apache-2.0).
 
 - **GitHub issue templates** (to-do; none exist yet, and `.github/` holds only `workflows`). Add `.github/ISSUE_TEMPLATE/` with:
   - a bug report asking for app version, Android version and device, and steps;
@@ -56,7 +59,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - **Project wiki** (deferred until the app is complete). Build a wiki modelled on the upstream project's Codeberg wiki, written once the overhaul is finished so it documents the final screens and flows. Keep upstream attribution where its structure or content is reused, and never push to upstream.
 
 - The Task 8 UI must look premium and perform well. Use the installed design skills.
-- **The design system is reopened.** The owner does not want Material 3 Expressive locked in: the current implementation may be replaced if something is better. Before more visual work, write a full UI/UX research plan and compare the options (M3 Expressive, custom on Compose Foundation, others) on look, performance, accessibility, maintenance and license. The owner decides from that plan. Until then, only structural work continues (navigation, data paths). Its visuals are provisional.
+- **The design system is decided** (ADR 0004 decision 5): the app's own calm, focused design language on Material 3 Expressive, at the latest versions.
 - A progression system (a full ranked catalogue, progressions, custom exercises, daily goals, demonstrations) comes after Task 8. It will be planned in depth first. Brief: `docs/plans/future-progression-system-brief.md`.
 
 ## Previous phase: program v2 write (merged)

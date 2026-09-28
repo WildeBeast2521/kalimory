@@ -23,7 +23,6 @@
     <string name="type">Тип</string>
     <string name="menu">Меню</string>
     <string name="loading">Завантаження...</string>
-    <string name="home_create">Створити вправу</string>
     <string name="home_record">Записати тренування</string>
     <string name="home_workout">Тренування</string>
     <string name="view_details">Переглянути деталі →</string>
@@ -788,4 +787,11 @@
     <string name="today_see_progress">Переглянути прогрес</string>
     <string name="first_day_of_week">Перший день тижня</string>
     <string name="first_day_of_week_automatic">Автоматично (%1$s)</string>
+    <string name="train_no_programs">Програм поки немає</string>
+    <string name="train_no_intervals">Інтервальних тренувань поки немає</string>
+    <string name="train_log_title">Записати минуле тренування</string>
+    <string name="train_log_detail">Ввести вже виконані підходи</string>
+    <string name="train_see_all">Показати все</string>
+    <string name="train_quick_label">Швидкий старт</string>
+    <string name="library_exercises">Вправи та групи</string>
 </resources>

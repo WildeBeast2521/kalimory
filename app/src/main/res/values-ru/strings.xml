@@ -21,7 +21,6 @@
     <string name="menu">Меню</string>
     <string name="loading">Загрузка...</string>
     <string name="bodyweight_training">Тренировки с собственным весом</string>
-    <string name="home_create">Создать упражнение</string>
     <string name="home_record">Записать тренировку</string>
     <string name="home_workout">Тренировка</string>
     <string name="home_view">Вид</string>
@@ -145,4 +144,11 @@
     <string name="today_see_progress">Смотреть прогресс</string>
     <string name="first_day_of_week">Первый день недели</string>
     <string name="first_day_of_week_automatic">Автоматически (%1$s)</string>
+    <string name="train_no_programs">Программ пока нет</string>
+    <string name="train_no_intervals">Интервальных тренировок пока нет</string>
+    <string name="train_log_title">Записать прошедшую тренировку</string>
+    <string name="train_log_detail">Ввести уже выполненные подходы</string>
+    <string name="train_see_all">Показать все</string>
+    <string name="train_quick_label">Быстрый старт</string>
+    <string name="library_exercises">Упражнения и группы</string>
 </resources>
