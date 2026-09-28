@@ -554,11 +554,7 @@
     <string name="notification_workout_title">Workout in progress</string>
     <string name="notification_workout_text">Timer is running</string>
     <!-- Program Mode -->
-    <string name="workout_mode_selection">Select Mode</string>
-    <string name="single_mode">Single</string>
     <string name="single_mode_description">One exercise at a time</string>
-    <string name="program_mode">Program</string>
-    <string name="program_mode_description">Run multiple exercises in sequence</string>
     <string name="program_list_title">Programs</string>
     <string name="program_empty">No programs yet\nTap + to create one</string>
     <string name="new_program">New Program</string>
@@ -690,9 +686,6 @@
     <string name="description_optional">Description (Optional)</string>
 
     <!-- Interval Mode -->
-    <string name="interval_mode">Interval</string>
-    <string name="interval_mode_description">For HIIT and circuits</string>
-    <string name="interval_mode_note">Interval mode does not record reps or hold time. Use Program mode if you need records.</string>
     <string name="interval_list_title">Interval</string>
     <string name="interval_empty">No interval programs yet\nTap + to create one</string>
     <string name="interval_summary_format">%1$d exercises · %2$ds/%3$ds · %4$d rounds</string>

@@ -133,8 +133,6 @@
     <string name="github_mirror">GitHub</string>
     <string name="todo_add_exercises">Додати вправи</string>
     <string name="notification_channel_workout">Таймер тренувань</string>
-    <string name="workout_mode_selection">Виберіть режим</string>
-    <string name="program_mode">Програма</string>
     <string name="program_list_title">Програми</string>
     <string name="program_use_program">Програма</string>
     <string name="program_use_challenge">Вправа</string>
@@ -308,8 +306,6 @@
     <string name="executing_label">Виконання</string>
     <string name="auto_mode_disabled_hint">Необхідно, щоб «Звук відліку часу» було ввімкнено</string>
     <string name="single_mode_description">Одна вправа за раз</string>
-    <string name="program_mode_description">Виконання кількох вправ послідовно</string>
-    <string name="single_mode">Одиночний</string>
     <string name="no_group_workout">Без групи</string>
     <string name="no_group_display">Без групи</string>
     <string name="level_format">Рівень %d</string>
@@ -575,8 +571,6 @@
     <string name="section_theme_description">Зміна зовнішнього вигляду додатка.</string>
     <!-- Exercise Description -->
     <string name="description_optional">Опис (необов’язково)</string>
-    <string name="interval_mode">Інтервал</string>
-    <string name="interval_mode_description">Для ВІІТ і кругових тренувань</string>
     <string name="interval_list_title">Інтервал</string>
     <string name="interval_empty">Програм для ВІІТ тренувань ще немає.\nДодайте першу за допомогою кнопки +</string>
     <string name="interval_summary_format">%1$d вправ · %2$d с/%3$d с · %4$d раундів</string>
@@ -625,7 +619,6 @@
     <string name="interval_discard_result">Не зберігати</string>
     <string name="interval_save_and_finish">Зберегти і завершити</string>
     <string name="interval_not_executed">(не виконано)</string>
-    <string name="interval_mode_note">В інтервальному режимі час і повторення не реєструються. Якщо вам потрібно їх записати, використовуйте режим «Програма».</string>
     <string name="interval_no_record_note">У цьому режимі час і повторення не реєструються</string>
     <string name="interval_work_seconds">Час виконання</string>
     <string name="interval_rest_seconds">Час відпочинку</string>

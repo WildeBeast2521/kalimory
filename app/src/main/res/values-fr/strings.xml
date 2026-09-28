@@ -493,8 +493,6 @@
     <string name="notification_workout_title">Entraînement en cours</string>
     <string name="notification_workout_text">Le minuteur est actif</string>
     <!-- Program Feature -->
-    <string name="program_mode">Programme</string>
-    <string name="program_mode_description">Exécuter plusieurs exercices à la suite</string>
     <string name="program_list_title">Programmes</string>
     <string name="program_empty">Aucun programme\nAppuyez sur + pour en créer un</string>
     <string name="edit_program">Modifier le programme</string>
@@ -547,14 +545,12 @@
     <string name="sets_label_short">Séries:</string>
     <string name="unit_seconds_short">s</string>
     <string name="new_program">Nouveau programme</string>
-    <string name="single_mode">Individuel</string>
     <string name="single_mode_description">Un exercice à la fois</string>
     <string name="start_countdown">Compte à rebours de départ</string>
     <string name="timer_on">ON</string>
     <string name="timer_off">OFF</string>
     <string name="timer_mode_on_description">Complétion automatique à l\'atteinte de l\'objectif</string>
     <string name="timer_mode_off_description">Complétion manuelle avec le bouton Terminer</string>
-    <string name="workout_mode_selection">Sélectionner le mode</string>
     <string name="record_weight_for_graph">Enregistrer le poids pour cet exercice</string>
     <string name="complete_with_reps">Terminer (%d reps)</string>
     <string name="target_reps_format">Objectif : %d reps</string>
@@ -628,9 +624,6 @@
     <string name="theme_light">Clair</string>
     <string name="theme_dark">Sombre</string>
     <!-- Interval Mode -->
-    <string name="interval_mode">Intervalle</string>
-    <string name="interval_mode_description">Pour HIIT et circuits</string>
-    <string name="interval_mode_note">Le mode intervalle n\'enregistre pas les répétitions ni le temps de maintien. Utilisez le mode Programme si vous avez besoin d\'enregistrements.</string>
     <string name="interval_no_record_note">Ce mode n\'enregistre pas les répétitions ni le temps de maintien</string>
     <string name="interval_list_title">Intervalle</string>
     <string name="interval_empty">Pas encore de programmes d\'intervalle\nAppuyez sur + pour en créer un</string>

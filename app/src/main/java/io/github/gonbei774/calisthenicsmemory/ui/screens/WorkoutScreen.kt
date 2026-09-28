@@ -120,7 +120,6 @@ data class WorkoutSession(
 
 // ワークアウト画面の状態
 sealed class WorkoutStep {
-    object ModeSelection : WorkoutStep()  // モード選択（単発/プログラム）
     object ExerciseSelection : WorkoutStep()
     object Settings : WorkoutStep()
     data class StartInterval(val session: WorkoutSession, val currentSetIndex: Int) : WorkoutStep()
@@ -134,8 +133,6 @@ sealed class WorkoutStep {
 fun WorkoutScreen(
     viewModel: TrainingViewModel,
     onNavigateBack: () -> Unit,
-    onNavigateToProgramList: () -> Unit = {},
-    onNavigateToIntervalList: () -> Unit = {},
     initialExerciseId: Long? = null,
     fromToDo: Boolean = false
 ) {
@@ -152,16 +149,13 @@ fun WorkoutScreen(
         }
     }
 
-    // 初期ステップの決定：
-    // - initialExerciseが指定されている場合 → Settings
-    // - fromToDoの場合 → ExerciseSelection（単発モード）
-    // - それ以外 → ModeSelection（モード選択）
+    // First step: Settings for a given exercise, otherwise choosing one. Programs and
+    // intervals start from Train, so there is no separate mode choice here.
     var currentStep by remember(initialExercise, fromToDo) {
         mutableStateOf<WorkoutStep>(
             when {
                 initialExercise != null -> WorkoutStep.Settings
-                fromToDo -> WorkoutStep.ExerciseSelection
-                else -> WorkoutStep.ModeSelection
+                else -> WorkoutStep.ExerciseSelection
             }
         )
     }
@@ -204,8 +198,7 @@ fun WorkoutScreen(
     LaunchedEffect(exercises) {
         if (resumeChecked || exercises.isEmpty()) return@LaunchedEffect
         resumeChecked = true
-        val notStarted = currentStep is WorkoutStep.ModeSelection ||
-            currentStep is WorkoutStep.ExerciseSelection || currentStep is WorkoutStep.Settings
+        val notStarted = currentStep is WorkoutStep.ExerciseSelection || currentStep is WorkoutStep.Settings
         if (!notStarted) return@LaunchedEffect
         val checkpoint = withContext(Dispatchers.IO) { checkpointFile.load() } ?: return@LaunchedEffect
         val exercise = exercises.find { it.id == checkpoint.exerciseId } ?: return@LaunchedEffect
@@ -240,7 +233,6 @@ fun WorkoutScreen(
     // 戻るボタンのハンドリング
     BackHandler {
         when (currentStep) {
-            is WorkoutStep.ModeSelection,
             is WorkoutStep.ExerciseSelection,
             is WorkoutStep.Settings -> onNavigateBack()
             else -> {
@@ -309,7 +301,6 @@ fun WorkoutScreen(
                 ) {
                     IconButton(onClick = {
                         when (currentStep) {
-                            is WorkoutStep.ModeSelection,
                             is WorkoutStep.ExerciseSelection,
                             is WorkoutStep.Settings -> onNavigateBack()
                             else -> showExitConfirmDialog = true
@@ -350,15 +341,6 @@ fun WorkoutScreen(
                 .padding(paddingValues)
         ) {
             when (val step = currentStep) {
-                is WorkoutStep.ModeSelection -> {
-                    ModeSelectionStep(
-                        onSingleModeSelected = {
-                            currentStep = WorkoutStep.ExerciseSelection
-                        },
-                        onProgramModeSelected = onNavigateToProgramList,
-                        onIntervalModeSelected = onNavigateToIntervalList
-                    )
-                }
                 is WorkoutStep.ExerciseSelection -> {
                     ExerciseSelectionStep(
                         viewModel = viewModel,
@@ -2981,152 +2963,6 @@ fun SingleWorkoutSettingsSection(
                 }
             }
         }
-    }
-}
-
-// モード選択画面
-@Composable
-fun ModeSelectionStep(
-    onSingleModeSelected: () -> Unit,
-    onProgramModeSelected: () -> Unit,
-    onIntervalModeSelected: () -> Unit = {}
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // タイトル
-        Text(
-            text = stringResource(R.string.workout_mode_selection),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        // 単発モード
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 12.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-            shape = RoundedCornerShape(12.dp),
-            onClick = onSingleModeSelected
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.single_mode),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = stringResource(R.string.single_mode_description),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
-                Icon(
-                    AppIcons.Forward,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-        }
-
-        // プログラムモード
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 12.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-            shape = RoundedCornerShape(12.dp),
-            onClick = onProgramModeSelected
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.program_mode),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = stringResource(R.string.program_mode_description),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
-                Icon(
-                    AppIcons.Forward,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-        }
-
-        // インターバルモード
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-            shape = RoundedCornerShape(12.dp),
-            onClick = onIntervalModeSelected
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.interval_mode),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = stringResource(R.string.interval_mode_description),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
-                Icon(
-                    AppIcons.Forward,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-        }
-
-        // インターバルモードの注意書き
-        Text(
-            text = stringResource(R.string.interval_mode_note),
-            fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = 12.dp, start = 4.dp, end = 4.dp)
-        )
     }
 }
 
