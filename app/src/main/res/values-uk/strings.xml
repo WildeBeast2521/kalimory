@@ -786,4 +786,6 @@
     <string name="today_week_summary">Цього тижня: %1$d з %2$d</string>
     <string name="today_done_title">Зроблено сьогодні</string>
     <string name="today_see_progress">Переглянути прогрес</string>
+    <string name="first_day_of_week">Перший день тижня</string>
+    <string name="first_day_of_week_automatic">Автоматично (%1$s)</string>
 </resources>

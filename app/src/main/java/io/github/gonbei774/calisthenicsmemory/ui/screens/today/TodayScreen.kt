@@ -48,13 +48,13 @@ import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.ui.screens.formatRecordsForClipboard
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import java.time.temporal.WeekFields
 
 /**
  * Today (ADR 0004): the week at a glance, then the one thing to do next, then what else is
@@ -98,7 +98,8 @@ fun TodayScreen(
     }
     val dueTasks = remember(todoTasks, today) { todoTasks.filter { it.isDueOn(today) } }
 
-    val week = remember(today, locale) { weekOf(today, WeekFields.of(locale).firstDayOfWeek) }
+    val firstDay = firstDayOfWeek()
+    val week = remember(today, firstDay) { weekOf(today, firstDay) }
     val trainedDays = remember(history, intervalHistory) {
         (history.map { it.date } + intervalHistory.map { it.record.date })
             .mapNotNull { runCatching { LocalDate.parse(it) }.getOrNull() }.toSet()

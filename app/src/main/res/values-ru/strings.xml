@@ -143,4 +143,6 @@
     <string name="today_week_summary">На этой неделе: %1$d из %2$d</string>
     <string name="today_done_title">Сделано сегодня</string>
     <string name="today_see_progress">Смотреть прогресс</string>
+    <string name="first_day_of_week">Первый день недели</string>
+    <string name="first_day_of_week_automatic">Автоматически (%1$s)</string>
 </resources>

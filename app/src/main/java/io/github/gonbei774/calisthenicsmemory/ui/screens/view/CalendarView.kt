@@ -325,12 +325,9 @@ private fun MonthGrid(
 
         // 曜日ヘッダー
         val locale = LocalConfiguration.current.locales[0]
+        val firstDay = firstDayOfWeek()
         Row(modifier = Modifier.fillMaxWidth()) {
-            val daysOfWeek = listOf(
-                DayOfWeek.SUNDAY, DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
-                DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY
-            )
-            daysOfWeek.forEach { day ->
+            weekDaysFrom(firstDay).forEach { day ->
                 Text(
                     text = day.getDisplayName(TextStyle.SHORT, locale),
                     fontSize = 12.sp,
@@ -345,7 +342,8 @@ private fun MonthGrid(
 
         // 日付グリッド
         val firstDayOfMonth = yearMonth.atDay(1)
-        val startOffset = firstDayOfMonth.dayOfWeek.value % 7 // Sunday=0
+        // Columns start on the chosen first day of the week.
+        val startOffset = (firstDayOfMonth.dayOfWeek.value - firstDay.value + 7) % 7
         val daysInMonth = yearMonth.lengthOfMonth()
         val totalCells = startOffset + daysInMonth
         val rows = (totalCells + 6) / 7
