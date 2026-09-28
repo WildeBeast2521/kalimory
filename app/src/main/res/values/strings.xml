@@ -29,10 +29,7 @@
     <string name="home_record">Record Training</string>
     <string name="home_workout">Workout</string>
     <string name="home_view">View</string>
-    <string name="today">Today\'s Workout</string>
-    <string name="no_records_today">No records yet today</string>
     <string name="view_details">View details →</string>
-    <string name="view_all_records">View all records →</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <!-- Create Screen -->
     <string name="exercise_creation">Exercise Creation</string>
@@ -838,4 +835,12 @@
     <string name="today_all_todos">All to-dos</string>
     <string name="dynamic_color_title">Wallpaper colours</string>
     <string name="dynamic_color_description">Use the colours of your wallpaper. When off, the app uses its own palette.</string>
+    <string name="today_next_up">Next up</string>
+    <string name="today_start">Start</string>
+    <string name="today_nothing_planned">Nothing planned yet</string>
+    <string name="today_start_workout">Start a workout</string>
+    <string name="today_start_workout_detail">Pick an exercise, a program or an interval.</string>
+    <string name="today_week_summary">This week: %1$d of %2$d</string>
+    <string name="today_done_title">Done today</string>
+    <string name="today_see_progress">See progress</string>
 </resources>

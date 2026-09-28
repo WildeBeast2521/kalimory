@@ -29,10 +29,7 @@
     <string name="home_record">Registra Allenamento</string>
     <string name="home_workout">Allenamento</string>
     <string name="home_view">Visualizza</string>
-    <string name="today">Allenamento di Oggi</string>
-    <string name="no_records_today">Nessuna registrazione oggi</string>
     <string name="view_details">Visualizza dettagli →</string>
-    <string name="view_all_records">Visualizza tutte le registrazioni →</string>
     <string name="copied_to_clipboard">Copiato negli appunti</string>
     <!-- Create Screen -->
     <string name="exercise_creation">Creazione Esercizio</string>
@@ -778,4 +775,12 @@
     <string name="today_all_todos">Tutte le attività</string>
     <string name="dynamic_color_title">Colori dello sfondo</string>
     <string name="dynamic_color_description">Usa i colori del tuo sfondo. Se disattivato, l\'app usa la propria tavolozza.</string>
+    <string name="today_next_up">Prossimo</string>
+    <string name="today_start">Inizia</string>
+    <string name="today_nothing_planned">Ancora niente in programma</string>
+    <string name="today_start_workout">Inizia un allenamento</string>
+    <string name="today_start_workout_detail">Scegli un esercizio, un programma o un intervallo.</string>
+    <string name="today_week_summary">Questa settimana: %1$d su %2$d</string>
+    <string name="today_done_title">Fatto oggi</string>
+    <string name="today_see_progress">Vedi progressi</string>
 </resources>

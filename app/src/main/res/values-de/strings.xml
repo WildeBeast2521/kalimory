@@ -29,10 +29,7 @@
     <string name="home_record">Training aufzeichnen</string>
     <string name="home_workout">Training</string>
     <string name="home_view">Ansehen</string>
-    <string name="today">Heutiges Training</string>
-    <string name="no_records_today">Noch keine Aufzeichnungen heute</string>
     <string name="view_details">Details anzeigen →</string>
-    <string name="view_all_records">Alle Aufzeichnungen anzeigen →</string>
     <string name="copied_to_clipboard">In Zwischenablage kopiert</string>
     <!-- Create Screen -->
     <string name="exercise_creation">Übung erstellen</string>
@@ -805,4 +802,12 @@
     <string name="today_all_todos">Alle Aufgaben</string>
     <string name="dynamic_color_title">Hintergrundfarben</string>
     <string name="dynamic_color_description">Farben deines Hintergrundbilds verwenden. Wenn aus, nutzt die App ihre eigene Farbpalette.</string>
+    <string name="today_next_up">Als Nächstes</string>
+    <string name="today_start">Starten</string>
+    <string name="today_nothing_planned">Noch nichts geplant</string>
+    <string name="today_start_workout">Training starten</string>
+    <string name="today_start_workout_detail">Wähle eine Übung, ein Programm oder ein Intervall.</string>
+    <string name="today_week_summary">Diese Woche: %1$d von %2$d</string>
+    <string name="today_done_title">Heute erledigt</string>
+    <string name="today_see_progress">Fortschritt ansehen</string>
 </resources>

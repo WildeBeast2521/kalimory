@@ -29,10 +29,7 @@
     <string name="home_record">记录训练</string>
     <string name="home_workout">训练</string>
     <string name="home_view">查看</string>
-    <string name="today">今天的训练</string>
-    <string name="no_records_today">今天还没有记录</string>
     <string name="view_details">查看详情 →</string>
-    <string name="view_all_records">查看所有记录 →</string>
     <string name="copied_to_clipboard">已复制到剪贴板</string>
     <!-- Create Screen -->
     <string name="exercise_creation">创建动作</string>
@@ -778,4 +775,12 @@
     <string name="today_all_todos">全部待办</string>
     <string name="dynamic_color_title">壁纸颜色</string>
     <string name="dynamic_color_description">使用壁纸的颜色。关闭时，应用使用自己的配色。</string>
+    <string name="today_next_up">下一项</string>
+    <string name="today_start">开始</string>
+    <string name="today_nothing_planned">暂无计划</string>
+    <string name="today_start_workout">开始训练</string>
+    <string name="today_start_workout_detail">选择一个动作、计划或间歇训练。</string>
+    <string name="today_week_summary">本周：%1$d / %2$d</string>
+    <string name="today_done_title">今日完成</string>
+    <string name="today_see_progress">查看进度</string>
 </resources>

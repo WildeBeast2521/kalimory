@@ -4,14 +4,16 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Design tokens (ADR 0004, decision 5). Branch `work/design-tokens`, based on master `878c7fb`.
+The first redesigned screen, Today, as the prototype of the design language. Branch `work/today-redesign`, based on master `1d900c7`.
 
-- **Palette (`ui/theme/CalmPalette.kt`):** full Material colour roles for light and dark. Chalk background, spruce ink and spruce accent (done, primary actions), stone for supporting actions, brass for active or in progress, crimson for destructive. `CalmPaletteContrastTest` checks every text/background pair against WCAG AA, and borders against 3:1. Negative check: a lightened text colour fails it.
-- **Type:** Onest (SIL Open Font License 1.1, from google/fonts), bundled as one variable font of 193 KB. It covers Latin and Cyrillic; Arabic, Japanese and Chinese fall back to the system font. It is listed on the Licenses screen. The Material type scale is set in Onest, and `WorkoutNumerals` is the one bold style: weight 800 with tabular figures.
-- **Shapes and spacing:** graded corners (8/12/16/20/28 dp) and a 4 dp spacing grid (`Spacing`).
-- **Motion:** `MotionScheme.standard()`, calm. The expressive moment is reserved for completing a set.
-- **Dynamic colour:** a "Wallpaper colours" setting, shown on Android 12+ and off by default. It takes effect immediately, and is translated for all 10 locales.
-- **Scope:** the legacy screens still use `AppColors` and their per-screen accents until each is migrated. The new destinations already use the calm theme.
+From top to bottom:
+- **Header:** the date, then "Today" in large type.
+- **Week strip:** trained days filled in spruce; future days only outlined; today ringed in brass. Below it, "Trained N of 7 days this week".
+- **Hero card:** the one thing to do next, whether a workout to resume or the first due to-do. If nothing is planned, it offers "Start a workout" and opens Train. The card is deep spruce in both themes, with one faint Material 3 Expressive organic shape (`MaterialShapes.Cookie9Sided`) for depth.
+- **Other items:** anything else to resume or due appears as quiet rows with organic-shape badges.
+- **Done today:** each exercise in the order it was done. Its sets appear as chalk tallies (four strokes and a fifth across) plus value chips in tabular figures, with one-sided sets as "R6 L5". Long-press copies the plain-text summary, as the old dashboard card did.
+
+Checked in light and dark on the emulator with synthetic data. The dark hero uses `primaryContainer`, so it stays calm at night.
 
 ## CI debt (merged without GitHub Actions)
 
@@ -33,8 +35,12 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #40: design decision (documentation only).
 - PR #41: toolchain upgrade.
 - PR #42: design tokens.
+- PR #43: Today redesign.
 
 ## Owner direction for later (2026-09-27)
+
+- **First day of the week** (2026-09-28): a setting, defaulting to the locale's first day, used by Today's week strip and by the Progress calendar.
+- **One icon library** (2026-09-28): replace every icon, including the emoji "icons" in Settings and the legacy screens and the frozen `material-icons-core` set, with one consistent library that suits Material 3 Expressive. Material Symbols (Apache-2.0) is the likely candidate. Evaluate it, then migrate screen by screen with the redesign.
 
 - **GitHub issue templates** (to-do; none exist yet, and `.github/` holds only `workflows`). Add `.github/ISSUE_TEMPLATE/` with:
   - a bug report asking for app version, Android version and device, and steps;
