@@ -13,17 +13,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 
 /** ドット表示に切り替える上限（これを超える repDuration は横バー表示） */
 private const val DOT_THRESHOLD = 9
@@ -43,7 +41,7 @@ fun RepPaceIndicator(
     paused: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val appColors = LocalAppColors.current
+    val ink = MaterialTheme.colorScheme.tertiary
     val baseAlpha = if (paused) 0.3f else 1f
 
     Column(
@@ -67,7 +65,7 @@ fun RepPaceIndicator(
                         modifier = Modifier
                             .size(if (isCurrent) 14.dp else 10.dp)
                             .clip(CircleShape)
-                            .background(appColors.textPrimary.copy(alpha = alpha))
+                            .background(ink.copy(alpha = alpha))
                     )
                 }
             }
@@ -78,14 +76,14 @@ fun RepPaceIndicator(
                     .fillMaxWidth()
                     .height(10.dp)
                     .clip(RoundedCornerShape(5.dp))
-                    .background(appColors.textPrimary.copy(alpha = baseAlpha * 0.18f))
+                    .background(ink.copy(alpha = baseAlpha * 0.18f))
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(progress)
                         .fillMaxHeight()
                         .clip(RoundedCornerShape(5.dp))
-                        .background(appColors.textPrimary.copy(alpha = baseAlpha))
+                        .background(ink.copy(alpha = baseAlpha))
                 )
             }
         }
@@ -94,9 +92,8 @@ fun RepPaceIndicator(
 
         Text(
             text = stringResource(R.string.rep_pace_format, repDuration),
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Medium,
-            color = appColors.textSecondary
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

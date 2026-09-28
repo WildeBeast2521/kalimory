@@ -298,7 +298,6 @@
     <string name="notification_channel_workout_description">Показує сповіщення, коли працює таймер тренування</string>
     <string name="notification_workout_text">Таймер запущено</string>
     <string name="notification_workout_title">Триває тренування</string>
-    <string name="workout_in_progress">Триває тренування</string>
     <string name="todo_empty">Щоб додати вправу, натисніть +</string>
     <string name="section_workout_settings_description">Налаштувати поведінку екрана тренування.</string>
     <string name="timer_settings_description">Налаштуйте таймери для цієї вправи. Залиште порожнім, щоб використовувати значення за замовчуванням.</string>
@@ -365,7 +364,6 @@
     <string name="dynamic_type">Повторення</string>
     <string name="unit_reps">разів</string>
     <string name="dynamic_label">Повторення</string>
-    <string name="reps_count">%d разів</string>
     <string name="reps_unit">разів</string>
     <string name="reps_input">Повторення</string>
     <string name="legend_reps">Повторення</string>
@@ -794,4 +792,7 @@
     <string name="train_see_all">Показати все</string>
     <string name="train_quick_label">Швидкий старт</string>
     <string name="library_exercises">Вправи та групи</string>
+    <string name="workout_count_decrease">На один менше</string>
+    <string name="workout_count_increase">На один більше</string>
+    <string name="workout_set_done">Підхід %1$d виконано</string>
 </resources>

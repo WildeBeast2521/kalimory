@@ -35,6 +35,7 @@ object AppIcons {
     // Training
     val Workout: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_play_arrow)
     val Play: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_play_arrow_fill)
+    val SkipNext: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_skip_next)
     val Exercise: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_exercise)
     val Program: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_format_list_bulleted)
     val Interval: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_timer)
@@ -50,6 +51,7 @@ object AppIcons {
 
     // Actions
     val Add: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_add)
+    val Remove: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_remove)
     val Edit: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_edit)
     val Delete: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_delete)
     val Close: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_close)

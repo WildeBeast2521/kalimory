@@ -208,12 +208,10 @@
     <string name="back_button">Zurück</string>
     <string name="preparing">Vorbereiten</string>
     <string name="skip_button">Überspringen</string>
-    <string name="workout_in_progress">Training läuft</string>
     <string name="set_format">Satz %1$d/%2$d</string>
     <string name="set_format_with_side">Satz %1$d/%2$d - %3$s</string>
     <string name="side_right">Rechts</string>
     <string name="side_left">Links</string>
-    <string name="reps_count">%d Wdh.</string>
     <string name="pause_button">Pause</string>
     <string name="resume_button">Fortsetzen</string>
     <string name="stop_button">Stoppen</string>
@@ -818,4 +816,7 @@
     <string name="train_see_all">Alle anzeigen</string>
     <string name="train_quick_label">Schnellstart</string>
     <string name="library_exercises">Übungen und Gruppen</string>
+    <string name="workout_count_decrease">Eins weniger</string>
+    <string name="workout_count_increase">Eins mehr</string>
+    <string name="workout_set_done">Satz %1$d geschafft</string>
 </resources>

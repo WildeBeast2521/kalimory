@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- App Name -->
     <string name="app_name">Calisthenics Memory</string>
     <!-- Common -->
@@ -242,14 +242,12 @@
     <string name="back_button">Back</string>
     <string name="preparing">Preparing</string>
     <string name="skip_button">Skip</string>
-    <string name="workout_in_progress">Workout In Progress</string>
     <string name="set_format">Set %1$d/%2$d</string>
     <string name="set_format_with_side">Set %1$d/%2$d - %3$s</string>
     <string name="set_progress">%1$d/%2$d</string>
     <string name="set_progress_with_side">%1$d/%2$d - %3$s</string>
     <string name="side_right">Right</string>
     <string name="side_left">Left</string>
-    <string name="reps_count">%d reps</string>
     <string name="reps_unit">reps</string>
     <string name="pause_button">Pause</string>
     <string name="resume_button">Resume</string>
@@ -851,4 +849,8 @@
     <string name="train_see_all">See all</string>
     <string name="train_quick_label">Quick start</string>
     <string name="library_exercises">Exercises and groups</string>
+    <string name="workout_count_decrease">One fewer</string>
+    <string name="workout_count_increase">One more</string>
+    <!-- The set number names the set; it is not a quantity. -->
+    <string name="workout_set_done" tools:ignore="PluralsCandidate">Set %1$d done</string>
 </resources>
