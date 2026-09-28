@@ -35,11 +35,13 @@ more_vert
 palette
 photo_camera
 play_arrow fill
+remove
 repeat
 save
 schedule
 search
 settings
+skip_next
 star fill
 swap_vert
 timer

@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -13,14 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
 import androidx.compose.ui.res.stringResource
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Amber500
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Cyan600
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
+import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 
 /**
  * 実行画面下部に表示する「前回 ｜ 目標」の2カラム。
@@ -36,33 +34,36 @@ fun PreviousTargetRow(
     unit: String,
     modifier: Modifier = Modifier
 ) {
-    val appColors = LocalAppColors.current
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
     ) {
-        StatColumn(
-            label = stringResource(R.string.stat_previous_label),
-            value = previous?.toString() ?: "—",
-            unit = if (previous != null) unit else null,
-            accent = Cyan600,
-            modifier = Modifier.weight(1f)
-        )
-        Box(
-            modifier = Modifier
-                .width(1.dp)
-                .height(40.dp)
-                .background(appColors.divider)
-        )
-        StatColumn(
-            label = stringResource(R.string.stat_target_label),
-            value = target.toString(),
-            unit = unit,
-            accent = Amber500,
-            modifier = Modifier.weight(1f)
-        )
+        Row(
+            modifier = Modifier.padding(vertical = Spacing.m),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            StatColumn(
+                label = stringResource(R.string.stat_previous_label),
+                value = previous?.toString() ?: "—",
+                unit = if (previous != null) unit else null,
+                valueColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f)
+            )
+            Box(
+                modifier = Modifier
+                    .width(1.dp)
+                    .height(40.dp)
+                    .background(MaterialTheme.colorScheme.outlineVariant)
+            )
+            StatColumn(
+                label = stringResource(R.string.stat_target_label),
+                value = target.toString(),
+                unit = unit,
+                valueColor = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f)
+            )
+        }
     }
 }
 
@@ -71,7 +72,7 @@ private fun StatColumn(
     label: String,
     value: String,
     unit: String?,
-    accent: Color,
+    valueColor: Color,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -79,25 +80,21 @@ private fun StatColumn(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = label.uppercase(),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 1.sp,
-            color = accent.copy(alpha = 0.85f)
+            text = label,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Row(verticalAlignment = Alignment.Bottom) {
             Text(
                 text = value,
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-                color = accent
+                style = MaterialTheme.typography.headlineSmall,
+                color = valueColor
             )
             if (unit != null) {
                 Text(
                     text = " $unit",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = accent.copy(alpha = 0.7f),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(bottom = 3.dp)
                 )
             }

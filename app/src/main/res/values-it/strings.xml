@@ -210,14 +210,12 @@
     <string name="back_button">Indietro</string>
     <string name="preparing">Preparazione</string>
     <string name="skip_button">Salta</string>
-    <string name="workout_in_progress">Allenamento in Corso</string>
     <string name="set_format">Serie %1$d/%2$d</string>
     <string name="set_format_with_side">Serie %1$d/%2$d - %3$s</string>
     <string name="set_progress">%1$d/%2$d</string>
     <string name="set_progress_with_side">%1$d/%2$d - %3$s</string>
     <string name="side_right">Destra</string>
     <string name="side_left">Sinistra</string>
-    <string name="reps_count">%d ripetizioni</string>
     <string name="pause_button">Pausa</string>
     <string name="resume_button">Riprendi</string>
     <string name="stop_button">Ferma</string>
@@ -791,4 +789,7 @@
     <string name="train_see_all">Vedi tutto</string>
     <string name="train_quick_label">Avvio rapido</string>
     <string name="library_exercises">Esercizi e gruppi</string>
+    <string name="workout_count_decrease">Uno in meno</string>
+    <string name="workout_count_increase">Uno in più</string>
+    <string name="workout_set_done">Serie %1$d fatta</string>
 </resources>

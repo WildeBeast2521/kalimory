@@ -4,18 +4,34 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Train and Library redesign. Branch `work/train-library-redesign`, based on master `2bfdb8d`. Both destinations now follow Today's design language.
+In-workout redesign (single workout). Branch `work/workout-screen-redesign`, based on master `2d41a69`.
 
-- **Train:**
-  - a "Quick start" hero opens a single-exercise workout;
-  - Programs and Interval list the user's own routines, each with its estimate ("~14 min", or exercises, work/rest and rounds), and a tap starts it directly;
-  - "See all" opens each full list for editing;
-  - "Log a past workout" opens manual recording.
-- **Library:** grouped rows for Exercises and groups, Programs and Interval, each with its count, then Settings.
-- **Shared parts:** `RowGroup` (rows on one `surfaceContainerLow` surface) and an optional trailing icon on `TodayRow`, in `ui/screens/today/TodayParts.kt`. `ui/navigation/DestinationEntry.kt` is removed, since nothing used it.
-- **Strings:** seven new strings in all 10 locales.
+- **Shared kit:** `ui/components/workout/WorkoutKit.kt` holds the in-workout building blocks:
+  - `WorkoutHeader`: the exercise, the set, and one segment per set;
+  - `TimerDial`: a countdown ring in `WorkoutNumerals`, tapped to pause;
+  - `CountDisplay`: the large rep count;
+  - `StepButton`, `WorkoutPrimaryButton`;
+  - `SetDoneBadge`: the one expressive moment, a spring-in check at the start of a rest after a completed set.
+- **Colour means state** (`WorkoutTone`, matching `CalmPalette`): the set in progress and getting ready use tertiary (brass), rest uses secondary, and done uses primary (spruce).
+- **Moved onto theme roles:** the five single-set screens, the get-ready and rest steps, the setup, confirmation and sheets in `WorkoutScreen.kt`, and the shared `PreviousTargetRow`, `RepPaceIndicator` and `RecordAdjustDialog`. The last three are also used by program execution.
+- **Removed:**
+  - the unused `ExecutingStep` and `CircularProgressTimer`;
+  - their strings `workout_in_progress` and `reps_count`.
+- **Timing, sound and saving logic are unchanged.**
 
-Verification: the full local gate, plus screenshots on the API 29 emulator with synthetic programs and an interval routine.
+Verification: the full local gate, plus screenshots on the API 29 emulator of setup, get ready, dynamic and isometric sets (running and paused), the save dialog, rest with the badge, the menu sheet and the confirmation step.
+
+## Improvement ideas (beyond upstream)
+
+The owner said the overhaul need not mirror upstream. Ideas found while working, for the review at the end of Task 8 unless small enough to do sooner:
+
+- Train's "Quick start" opens the old mode picker (Single, Program, Interval), which repeats Train itself. It should go straight to choosing an exercise. This is a small follow-up slice.
+- Setup asks for a rep duration and target even when the exercise has none saved, and Start stays disabled with no hint why. Sensible defaults, or an inline reason, would help.
+- Program and interval execution should adopt the workout kit, for one in-workout language.
+
+## Previous phase: Train and Library redesign (merged)
+
+PR #46 merged as `2d41a69`.
 
 ## Previous phase: first day of the week (merged)
 
@@ -45,6 +61,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #44: Material Symbols icons.
 - PR #45: first day of the week.
 - PR #46: Train and Library redesign.
+- PR #47: in-workout redesign.
 
 ## Owner direction for later (2026-09-27)
 

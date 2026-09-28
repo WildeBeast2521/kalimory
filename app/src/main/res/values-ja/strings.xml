@@ -238,14 +238,12 @@
     <string name="back_button">戻る</string>
     <string name="preparing">準備中</string>
     <string name="skip_button">スキップ</string>
-    <string name="workout_in_progress">ワークアウト中</string>
     <string name="set_format">セット %1$d/%2$d</string>
     <string name="set_format_with_side">セット %1$d/%2$d - %3$s</string>
     <string name="set_progress">%1$d/%2$d</string>
     <string name="set_progress_with_side">%1$d/%2$d - %3$s</string>
     <string name="side_right">右</string>
     <string name="side_left">左</string>
-    <string name="reps_count">%d回</string>
     <string name="reps_unit">回</string>
     <string name="pause_button">一時停止</string>
     <string name="resume_button">再開</string>
@@ -858,4 +856,7 @@
     <string name="train_see_all">すべて表示</string>
     <string name="train_quick_label">クイックスタート</string>
     <string name="library_exercises">種目とグループ</string>
+    <string name="workout_count_decrease">1つ減らす</string>
+    <string name="workout_count_increase">1つ増やす</string>
+    <string name="workout_set_done">セット %1$d 完了</string>
 </resources>

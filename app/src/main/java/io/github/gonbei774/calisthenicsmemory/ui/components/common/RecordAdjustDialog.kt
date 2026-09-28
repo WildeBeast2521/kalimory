@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -43,11 +44,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Amber500
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Amber600
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Green400
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Slate500
 
 /**
  * 完了時に自動カウント値を確認・微調整するダイアログ。
@@ -87,7 +83,6 @@ fun RecordAdjustDialog(
     onConfirm: (value: Int, weightG: Int?, distanceCm: Int?, assistanceG: Int?) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     var value by remember { mutableIntStateOf(initialValue) }
 
     var weightStr by remember { mutableStateOf(initialWeightG?.let { gToKgString(it) } ?: "") }
@@ -122,13 +117,13 @@ fun RecordAdjustDialog(
                             text = "$value",
                             fontSize = 44.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Green400
+                            color = MaterialTheme.colorScheme.primary
                         )
                         Text(
                             text = " $unit",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium,
-                            color = appColors.textSecondary,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 6.dp)
                         )
                     }
@@ -141,7 +136,7 @@ fun RecordAdjustDialog(
                 if (targetValue != null) {
                     Spacer(modifier = Modifier.height(16.dp))
                     val isAtTarget = value == targetValue
-                    val accent = if (isAtTarget) Amber500.copy(alpha = 0.4f) else Amber500
+                    val accent = if (isAtTarget) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f) else MaterialTheme.colorScheme.primary
                     OutlinedButton(
                         onClick = { value = targetValue },
                         enabled = !isAtTarget,
@@ -149,11 +144,11 @@ fun RecordAdjustDialog(
                         shape = RoundedCornerShape(10.dp),
                         border = BorderStroke(
                             1.5.dp,
-                            if (isAtTarget) Amber600.copy(alpha = 0.4f) else Amber600
+                            if (isAtTarget) MaterialTheme.colorScheme.outlineVariant else MaterialTheme.colorScheme.primary
                         ),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = Amber500,
-                            disabledContentColor = Amber500.copy(alpha = 0.4f)
+                            contentColor = MaterialTheme.colorScheme.primary,
+                            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                         )
                     ) {
                         // ターゲット（同心円）アイコン
@@ -174,7 +169,7 @@ fun RecordAdjustDialog(
                 // 荷重/距離/アシスト入力（有効な項目のみ）
                 if (hasTracking) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    HorizontalDivider(color = Slate500.copy(alpha = 0.4f))
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     Spacer(modifier = Modifier.height(8.dp))
 
                     if (distanceTrackingEnabled) {
@@ -281,11 +276,10 @@ private fun AdjustButton(
     enabled: Boolean,
     onClick: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Surface(
         shape = RoundedCornerShape(50),
         color = Color.Transparent,
-        border = BorderStroke(2.dp, Slate500),
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
         onClick = onClick,
         enabled = enabled,
         modifier = Modifier.size(56.dp)
@@ -295,7 +289,7 @@ private fun AdjustButton(
                 text = symbol,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary.copy(alpha = if (enabled) 1f else 0.3f)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = if (enabled) 1f else 0.3f)
             )
         }
     }
@@ -316,7 +310,6 @@ private fun TrackingStepperRow(
     onPlus: () -> Unit,
     minusEnabled: Boolean
 ) {
-    val appColors = LocalAppColors.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -328,19 +321,19 @@ private fun TrackingStepperRow(
                 text = label,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = appColors.textSecondary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = stringResource(R.string.previous_value_format, previousText),
                 fontSize = 11.sp,
-                color = appColors.textTertiary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         SmallStepButton(symbol = "−", enabled = minusEnabled, onClick = onMinus)
         Surface(
             shape = RoundedCornerShape(8.dp),
             color = Color.Transparent,
-            border = BorderStroke(1.5.dp, Slate500),
+            border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline),
             modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .width(64.dp)
@@ -352,12 +345,12 @@ private fun TrackingStepperRow(
                     onValueChange = onValueTextChange,
                     singleLine = true,
                     textStyle = TextStyle(
-                        color = appColors.textPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
                     ),
-                    cursorBrush = SolidColor(Green400),
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                     keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -373,11 +366,10 @@ private fun SmallStepButton(
     enabled: Boolean,
     onClick: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Surface(
         shape = RoundedCornerShape(50),
         color = Color.Transparent,
-        border = BorderStroke(1.5.dp, Slate500),
+        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline),
         onClick = onClick,
         enabled = enabled,
         modifier = Modifier.size(40.dp)
@@ -387,7 +379,7 @@ private fun SmallStepButton(
                 text = symbol,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary.copy(alpha = if (enabled) 1f else 0.3f)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = if (enabled) 1f else 0.3f)
             )
         }
     }
