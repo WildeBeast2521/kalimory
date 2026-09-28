@@ -4,16 +4,19 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Finish replacing glyph icons. Branch `work/glyph-icons`, based on master `977baa9`. The catch-up audit found text glyphs still standing in for icons, which PR #44 missed:
-- ⏱ and ⏸ in Settings and program confirmation;
-- ℹ️ in Backup;
-- › chevrons in Settings;
-- ✓ in To Do;
-- ▼ and ▶ in CSV import.
+Remaining glyph icons, second pass. Branch `work/glyph-icons-2`, based on master `d82ddaf`.
 
-They are now Material Symbols: `Timer`, the new `Rest` (hourglass_empty), `Info`, `Forward`, `Check`, and `ExpandLess`/`ExpandMore`. The ⏭️ and → glyphs are also removed from two strings in every locale. Only comments and one internal key still contain such characters.
+PR #49's search did not cover the Geometric Shapes block (U+25A0 to U+25FF), which let through:
+- the ▼ chevrons in the program start screen, now `AppIcons.ExpandMore` rotated as before;
+- the "Next ▶" labels in program and interval execution, where the arrow is dropped.
 
-Verification: the full local gate (130/130 instrumented tests on API 29), plus a Settings screenshot on the emulator.
+A search over every symbol and emoji block now finds only comments and one internal key.
+
+Verification: the full local gate (130/130 instrumented tests on API 29), plus a screenshot of the program start screen.
+
+## Previous phase: finish replacing glyph icons (merged)
+
+PR #49 merged as `d82ddaf`.
 
 ## Previous phase: Quick start goes straight to choosing an exercise (merged)
 
@@ -77,6 +80,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #47: in-workout redesign.
 - PR #48: Quick start goes straight to choosing an exercise.
 - PR #49: finish replacing glyph icons.
+- PR #50: glyph icons, second pass.
 
 ## Owner direction for later (2026-09-27)
 
