@@ -25,7 +25,7 @@
     <string name="loading">Завантаження...</string>
     <string name="home_record">Записати тренування</string>
     <string name="home_workout">Тренування</string>
-    <string name="view_details">Переглянути деталі →</string>
+    <string name="view_details">Переглянути деталі</string>
     <string name="copied_to_clipboard">Скопійовано в буфер обміну</string>
     <string name="exercise_creation">Створення вправи</string>
     <string name="no_exercises">Вправ ще немає.\nДодайте першу за допомогою кнопки + нижче</string>
@@ -254,7 +254,7 @@
     <string name="program_exercises_required">Додайте хоча б одну вправу</string>
     <string name="target_with_unit">%1$d×%2$d%3$s</string>
     <string name="csv_import_success_label">Успішно</string>
-    <string name="csv_import_skipped_label">⏭️ Пропущено</string>
+    <string name="csv_import_skipped_label">Пропущено</string>
     <string name="csv_import_skipped_items">Пропущені елементи (%d)</string>
     <string name="open_source_licenses">Ліцензії з відкритим кодом</string>
     <string name="program_previous_value">Використовується попереднє значення</string>

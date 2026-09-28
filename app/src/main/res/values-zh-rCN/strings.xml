@@ -28,7 +28,7 @@
     <string name="home_record">记录训练</string>
     <string name="home_workout">训练</string>
     <string name="home_view">查看</string>
-    <string name="view_details">查看详情 →</string>
+    <string name="view_details">查看详情</string>
     <string name="copied_to_clipboard">已复制到剪贴板</string>
     <!-- Create Screen -->
     <string name="exercise_creation">创建动作</string>
@@ -348,7 +348,7 @@
     <!-- CSV Import Result Dialog -->
     <string name="csv_import_completed">导入完成</string>
     <string name="csv_import_success_label">成功</string>
-    <string name="csv_import_skipped_label">⏭️ 已跳过</string>
+    <string name="csv_import_skipped_label">已跳过</string>
     <string name="csv_import_error_label">错误</string>
     <string name="csv_import_skipped_items">已跳过项目（%d）</string>
     <string name="csv_import_errors">错误（%d）</string>

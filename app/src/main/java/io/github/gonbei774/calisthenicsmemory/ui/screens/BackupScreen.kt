@@ -311,10 +311,7 @@ fun BackupScreen(
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text(
-                            text = "\u2139\uFE0F",
-                            fontSize = 20.sp
-                        )
+                        Icon(AppIcons.Info, contentDescription = null, modifier = Modifier.size(20.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.warning_title),

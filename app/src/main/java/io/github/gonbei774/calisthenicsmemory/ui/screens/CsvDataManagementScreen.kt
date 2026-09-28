@@ -798,10 +798,11 @@ fun CsvDataManagementScreen(
                                         color = appColors.textTertiary,
                                         fontWeight = FontWeight.Medium
                                     )
-                                    Text(
-                                        text = if (showSkippedItems) "\u25BC" else "\u25B6",
-                                        fontSize = 12.sp,
-                                        color = appColors.textSecondary
+                                    Icon(
+                                        if (showSkippedItems) AppIcons.ExpandLess else AppIcons.ExpandMore,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(20.dp),
+                                        tint = appColors.textSecondary
                                     )
                                 }
 
@@ -857,10 +858,11 @@ fun CsvDataManagementScreen(
                                         color = Red600,
                                         fontWeight = FontWeight.Medium
                                     )
-                                    Text(
-                                        text = if (showErrors) "\u25BC" else "\u25B6",
-                                        fontSize = 12.sp,
-                                        color = appColors.textSecondary
+                                    Icon(
+                                        if (showErrors) AppIcons.ExpandLess else AppIcons.ExpandMore,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(20.dp),
+                                        tint = appColors.textSecondary
                                     )
                                 }
 

@@ -44,6 +44,7 @@ object AppIcons {
     val Done: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_check_circle)
     val DoneFilled: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_check_circle_fill)
     val Repeat: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_repeat)
+    val Rest: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_hourglass_empty)
     val Timer: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_schedule)
     val History: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_history)
     val Chart: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_bar_chart)
