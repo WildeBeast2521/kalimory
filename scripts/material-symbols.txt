@@ -23,6 +23,7 @@ folder
 format_list_bulleted
 handshake
 history
+hourglass_empty
 info
 insights fill
 keyboard_arrow_down

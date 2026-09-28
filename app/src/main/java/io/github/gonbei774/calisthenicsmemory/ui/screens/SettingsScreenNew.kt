@@ -547,10 +547,7 @@ fun SettingsScreenNew(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = "\u23F1\uFE0F",
-                                fontSize = 32.sp
-                            )
+                            Icon(AppIcons.Timer, contentDescription = null, modifier = Modifier.size(32.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.start_countdown_setting),
@@ -598,10 +595,7 @@ fun SettingsScreenNew(
                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "\u23F8\uFE0F",
-                                    fontSize = 32.sp
-                                )
+                                Icon(AppIcons.Rest, contentDescription = null, modifier = Modifier.size(32.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = stringResource(R.string.set_interval_setting),
@@ -894,11 +888,7 @@ fun SettingsScreenNew(
                                 maxLines = 2
                             )
                         }
-                        Text(
-                            text = "\u203A",
-                            fontSize = 24.sp,
-                            color = appColors.textSecondary
-                        )
+                        Icon(AppIcons.Forward, contentDescription = null, tint = appColors.textSecondary)
                     }
                 }
             }
@@ -936,11 +926,7 @@ fun SettingsScreenNew(
                                 maxLines = 2
                             )
                         }
-                        Text(
-                            text = "\u203A",
-                            fontSize = 24.sp,
-                            color = appColors.textSecondary
-                        )
+                        Icon(AppIcons.Forward, contentDescription = null, tint = appColors.textSecondary)
                     }
                 }
             }
@@ -978,11 +964,7 @@ fun SettingsScreenNew(
                                 maxLines = 2
                             )
                         }
-                        Text(
-                            text = "\u203A",
-                            fontSize = 24.sp,
-                            color = appColors.textSecondary
-                        )
+                        Icon(AppIcons.Forward, contentDescription = null, tint = appColors.textSecondary)
                     }
                 }
             }

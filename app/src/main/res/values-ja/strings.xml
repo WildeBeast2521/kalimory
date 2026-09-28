@@ -28,7 +28,7 @@
     <string name="home_record">記録入力</string>
     <string name="home_workout">ワークアウト</string>
     <string name="home_view">閲覧</string>
-    <string name="view_details">詳細を見る →</string>
+    <string name="view_details">詳細を見る</string>
     <string name="copied_to_clipboard">コピーしました</string>
     <!-- Create Screen -->
     <string name="exercise_creation">種目作成</string>
@@ -396,7 +396,7 @@
     <!-- CSV Import Result Dialog -->
     <string name="csv_import_completed">インポート完了</string>
     <string name="csv_import_success_label">成功</string>
-    <string name="csv_import_skipped_label">⏭️ スキップ</string>
+    <string name="csv_import_skipped_label">スキップ</string>
     <string name="csv_import_error_label">エラー</string>
     <string name="csv_import_skipped_items">スキップ項目 (%d)</string>
     <string name="csv_import_errors">エラー (%d)</string>

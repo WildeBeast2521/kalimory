@@ -966,11 +966,7 @@ internal fun ProgramConfirmExerciseCard(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "⏱",
-                            fontSize = 12.sp,
-                            color = Slate500
-                        )
+                        Icon(AppIcons.Timer, contentDescription = null, modifier = Modifier.size(14.dp), tint = Slate500)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = stringResource(R.string.interval_short),

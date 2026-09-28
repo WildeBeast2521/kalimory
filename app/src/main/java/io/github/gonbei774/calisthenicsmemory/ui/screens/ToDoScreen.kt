@@ -796,11 +796,11 @@ private fun GroupTaskCard(
                                 )
                             }
                             if (isCompleted) {
-                                Text(
-                                    text = "\u2713",
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Green600.copy(alpha = 0.6f)
+                                Icon(
+                                    AppIcons.Check,
+                                    contentDescription = stringResource(R.string.nav_done),
+                                    modifier = Modifier.size(18.dp),
+                                    tint = Green600.copy(alpha = 0.6f)
                                 )
                             } else if (showStartButton) {
                                 Button(

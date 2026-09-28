@@ -28,7 +28,7 @@
     <string name="home_record">Enregistrer l\'Entraînement</string>
     <string name="home_workout">S\'entraîner</string>
     <string name="home_view">Consulter</string>
-    <string name="view_details">Voir les détails →</string>
+    <string name="view_details">Voir les détails</string>
     <string name="copied_to_clipboard">Copié dans le presse-papiers</string>
     <!-- Create Screen -->
     <string name="exercise_creation">Création d\'Exercice</string>
@@ -348,7 +348,7 @@
     <!-- CSV Import Result Dialog -->
     <string name="csv_import_completed">Importation Terminée</string>
     <string name="csv_import_success_label">Succès</string>
-    <string name="csv_import_skipped_label">⏭️ Ignorés</string>
+    <string name="csv_import_skipped_label">Ignorés</string>
     <string name="csv_import_error_label">Erreurs</string>
     <string name="csv_import_skipped_items">Éléments Ignorés (%d)</string>
     <string name="csv_import_errors">Erreurs (%d)</string>
