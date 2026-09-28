@@ -4,15 +4,11 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Remaining glyph icons, second pass. Branch `work/glyph-icons-2`, based on master `d82ddaf`.
+The catch-up audit of earlier slices is recorded under "Improvement ideas". It found two defects, both fixed: the glyph icons (PRs #49 and #50) and the redundant mode picker (PR #48). Next are the small items, then Progress, Settings and Record in the redesign.
 
-PR #49's search did not cover the Geometric Shapes block (U+25A0 to U+25FF), which let through:
-- the ▼ chevrons in the program start screen, now `AppIcons.ExpandMore` rotated as before;
-- the "Next ▶" labels in program and interval execution, where the arrow is dropped.
+## Previous phase: glyph icons, second pass (merged)
 
-A search over every symbol and emoji block now finds only comments and one internal key.
-
-Verification: the full local gate (130/130 instrumented tests on API 29), plus a screenshot of the program start screen.
+PR #50 merged as `383aafe`.
 
 ## Previous phase: finish replacing glyph icons (merged)
 
@@ -24,26 +20,75 @@ PR #48 merged as `977baa9`.
 
 ## Improvement ideas (beyond upstream)
 
-The owner said the overhaul need not mirror upstream. Ideas found while working, for the review at the end of Task 8 unless small enough to do sooner:
+The owner said the overhaul need not mirror upstream (2026-09-28).
+- Small items (S) become their own slices, or fold into the redesign of their screen.
+- Medium (M) and large (L) items wait for the review with the owner at the end of Task 8, unless noted.
 
-- ~~Train's "Quick start" opens the old mode picker.~~ Done in PR #48.
-- Train shows "~0 min" for a program with no exercises. It should say that the program is empty, or offer to add exercises. Small.
-- Setup asks for a rep duration and target even when the exercise has none saved, and Start stays disabled with no hint why. Sensible defaults, or an inline reason, would help.
-- Program and interval execution should adopt the workout kit, for one in-workout language.
+### Catch-up audit of earlier slices (2026-09-28)
 
-**Catch-up audit of earlier slices (next).** Done once, as a user walkthrough on the emulator with synthetic data. It covers every shipped flow:
-- Today;
-- Train and Library;
-- Progress history and editing;
-- manual recording;
-- program, interval and single workouts;
-- resume after the app is killed;
-- backup and restore;
-- Settings.
+The audit was a user walkthrough on the API 29 emulator with synthetic data. It found two defects, both fixed:
+- glyph icons that PR #44 missed (PRs #49 and #50);
+- the redundant mode picker (PR #48).
 
-For each flow, look for extra taps, dead ends, unclear wording, missing feedback, and places where one step does not lead into the next. Also re-judge the "Known limitations" section and the ADR deferrals, now that upstream parity is not required. Each finding goes on this list, tagged small, medium or large:
-- small findings become their own slices;
-- larger ones wait for the review with the owner at the end of Task 8.
+**Data safety (suggest to the owner soon):**
+- (M) Backup shows no "last backup" date and never reminds. For an offline app, a manual backup is the only protection.
+- (M) Before an import replaces everything, offer to save a safety backup of the current data first.
+- (L) Optional automatic local backups to a folder the user picks (Storage Access Framework, no network).
+- (S) The backup description lists only "exercises, records, groups"; it should mention programs, intervals and to-dos. The warning card uses an info icon instead of a warning icon.
+
+**Today:**
+- (S) A program hero shows only "Program"; add the exercise count and the estimate.
+- (S) Due exercise rows say "Workout"; show the target (for example 3 x 12) or when it was last done.
+- (S) Due rows lack the trailing start mark that Train rows have.
+- (S) The gap between the "Due today" heading and its rows is too big; fixed on Train, not here.
+- (S) Tabular figures make "15" read as "1 5" in value chips. Use them only where digits sit in columns.
+- (M) Tapping a day in the week strip could open that day's history.
+- (M) "Done today" has no totals, and no comparison with the last session.
+- (M/L) "This week: 2 of 7" implies a seven-day goal. Weekly goals belong with the progression system's goals.
+
+**Train and Library:**
+- (S) A program with no exercises shows "~0 min".
+- (S) Estimates disagree between screens for the same program (~12, ~13 and ~16 min, depending on the screen and the prefill mode). Label them consistently, or explain the difference.
+- (S) The exercise list is titled "Exercise Creation"; it should be "Exercises". An empty "Favorite" group is still shown.
+- (S) Program list rows have no summary (exercise count, estimate), and tapping a row does nothing.
+- (S) The interval list shows no total duration.
+- (S/M) Per-exercise "Interval 60s" means rest, and clashes with Interval mode. Say "Rest" everywhere.
+- (M) Show when each exercise or program was last done.
+
+**Workouts:**
+- (S) Single-workout setup can leave Start disabled with no reason (an empty rep duration or target). Use defaults, or say what is missing.
+- (S) The program start screen has settings expanded, and Start is a small top-bar action. Make Start a large bottom button and collapse the settings.
+- (S) The program run shows "1/10" (sets across the whole program) and a capitalised "NEXT"; show "Set 1/6", plus the exercise position.
+- (S) The interval confirm screen has two Start buttons, the title "Confirm", and missing spaces ("20sec", "8rounds").
+- (M) Program and interval runs should use the in-workout kit (PR #47).
+- (M) Record ("Log a past workout") behaves like a live session: a "NOW" badge, and every set must be completed before Record is enabled. For logging the past, allow saving all sets as shown.
+- (L) Log a past workout with several exercises in one session. The v2 model supports this, and ManualWorkoutWriter handles one exercise today.
+
+**Progress (feeds its redesign):**
+- (S) The week label reads "Sep 22 – 27" while the strip shows the 22nd to the 28th; check whether today is left out.
+- (S) "1 sets"; the plural is missing.
+- (S) Dates show as "2026-09-25"; use the locale's format.
+- (S) "6reps" is missing a space. The right and left sides use arbitrary colours (green and purple).
+- (S/M) Graph starts empty until an exercise is picked; default to the most recent exercise.
+- (M) "1 Week" is a rolling seven days, while Today uses the calendar week and the first-day setting.
+- (M) The Challenge tab does not say how to set a challenge, and overlaps with the progression goals.
+- (L) Trends and personal bests (progression system).
+
+**Settings:**
+- (S/owner) "Keep screen on" defaults to off; for a workout timer, on may be the better default.
+- (M) Changing the language needs a restart. Per-app language (AndroidX) could apply it at once.
+
+**Known limitations and ADR deferrals, re-judged:**
+- The ADR 0001 non-goals (accounts, social features, hosted AI, cloud sync, telemetry) come from the owner's brief and its privacy rules, not from upstream. They stay.
+- (M) "A recovery zip can only be restored manually" is a real gap. An in-app restore from a recovery zip would complete the corruption-recovery story.
+- The other known limitations are technical safeguards, not product gaps.
+
+**Performance:**
+- (M) A cold start on the API 29 emulator showed a blank screen for about 4 seconds. Baseline Profiles and a Macrobenchmark are already planned; measure before judging.
+
+## Previous phase: in-workout redesign (merged)
+
+PR #47 merged as `4beda29`.
 
 ## Previous phase: Train and Library redesign (merged)
 
