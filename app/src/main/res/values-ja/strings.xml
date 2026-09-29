@@ -855,4 +855,5 @@
     <string name="record_mixed_message">一部のセットだけ完了チェックが付いています（値のある %2$d セット中 %1$d）。値のあるすべてのセットを記録しますか？チェック済みのみにしますか？</string>
     <string name="record_all_sets">すべて記録（%1$d）</string>
     <string name="record_only_done_sets">チェック済みのみ（%1$d）</string>
+    <string name="program_no_exercises">種目がまだありません</string>
 </resources>

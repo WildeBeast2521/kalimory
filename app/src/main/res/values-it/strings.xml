@@ -790,4 +790,5 @@
     <string name="record_mixed_message">Alcune serie sono segnate come fatte (%1$d su %2$d con valori). Registrare tutte le serie con un valore o solo quelle segnate?</string>
     <string name="record_all_sets">Registra tutte (%1$d)</string>
     <string name="record_only_done_sets">Solo segnate (%1$d)</string>
+    <string name="program_no_exercises">Ancora nessun esercizio</string>
 </resources>

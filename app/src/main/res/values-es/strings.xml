@@ -844,4 +844,5 @@
     <string name="record_mixed_message">Algunas series están marcadas como hechas (%1$d de %2$d con valores). ¿Registrar todas las series con valor o solo las marcadas?</string>
     <string name="record_all_sets">Registrar todas (%1$d)</string>
     <string name="record_only_done_sets">Solo marcadas (%1$d)</string>
+    <string name="program_no_exercises">Aún sin ejercicios</string>
 </resources>

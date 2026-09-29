@@ -160,4 +160,5 @@
     <string name="record_mixed_message">Часть подходов отмечена как выполненные (%1$d из %2$d со значениями). Записать все подходы со значениями или только отмеченные?</string>
     <string name="record_all_sets">Записать все (%1$d)</string>
     <string name="record_only_done_sets">Только отмеченные (%1$d)</string>
+    <string name="program_no_exercises">Упражнений пока нет</string>
 </resources>

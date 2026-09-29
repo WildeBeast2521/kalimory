@@ -29,10 +29,10 @@ import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.HeroCard
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.RowGroup
+import io.github.gonbei774.calisthenicsmemory.ui.screens.today.Section
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.TodayRow
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
-import io.github.gonbei774.calisthenicsmemory.util.ProgramTimeEstimator
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
 /**
@@ -47,23 +47,14 @@ fun TrainScreen(
     onOpenPrograms: () -> Unit,
     onOpenIntervals: () -> Unit,
     onStartProgram: (Long) -> Unit,
+    onEditProgram: (Long) -> Unit,
     onStartInterval: (Long) -> Unit,
 ) {
     val exercises by viewModel.exercises.collectAsState()
     val programs by viewModel.programs.collectAsState()
     val intervalPrograms by viewModel.intervalPrograms.collectAsState()
 
-    // Estimated minutes per program and exercises per interval routine, as the To Do screen shows them.
-    val programMinutes = remember { mutableStateMapOf<Long, Int>() }
-    LaunchedEffect(programs, exercises) {
-        val byId = exercises.associateBy { it.id }
-        programs.forEach { program ->
-            val pes = viewModel.getProgramExercisesSync(program.id)
-            val loops = viewModel.getProgramLoopsSync(program.id)
-            val used = pes.mapNotNull { pe -> byId[pe.exerciseId]?.let { pe.exerciseId to it } }.toMap()
-            programMinutes[program.id] = (ProgramTimeEstimator.estimateSeconds(pes, loops, used, startCountdownSeconds = 0) + 59) / 60
-        }
-    }
+    val programSummaries = rememberProgramSummaries(viewModel, programs, exercises)
     val intervalCounts = remember { mutableStateMapOf<Long, Int>() }
     LaunchedEffect(intervalPrograms) {
         intervalPrograms.forEach { intervalCounts[it.id] = viewModel.getIntervalProgramExercisesSync(it.id).size }
@@ -94,25 +85,26 @@ fun TrainScreen(
             onClick = onStartWorkout,
         )
 
-        TrainSection(stringResource(R.string.program_list_title), onOpenPrograms) {
+        Section(stringResource(R.string.program_list_title), onOpenPrograms) {
             if (programs.isEmpty()) {
                 EmptyLine(stringResource(R.string.train_no_programs))
             } else {
                 RowGroup {
                     programs.forEach { program ->
-                        val minutes = programMinutes[program.id]
+                        // An empty program has nothing to start, so it opens for editing.
+                        val empty = programSummaries[program.id]?.exerciseCount == 0
                         TodayRow(
                             AppIcons.Program,
                             program.name,
-                            minutes?.let { stringResource(R.string.program_estimated_time, it) }.orEmpty(),
-                            trailing = AppIcons.Play,
-                        ) { onStartProgram(program.id) }
+                            programSummaries[program.id].describe(),
+                            trailing = if (empty) AppIcons.Forward else AppIcons.Play,
+                        ) { if (empty) onEditProgram(program.id) else onStartProgram(program.id) }
                     }
                 }
             }
         }
 
-        TrainSection(stringResource(R.string.interval_list_title), onOpenIntervals) {
+        Section(stringResource(R.string.interval_list_title), onOpenIntervals) {
             if (intervalPrograms.isEmpty()) {
                 EmptyLine(stringResource(R.string.train_no_intervals))
             } else {
@@ -132,7 +124,7 @@ fun TrainScreen(
             }
         }
 
-        TrainSection(stringResource(R.string.train_log_title), onOpenAll = null) {
+        Section(stringResource(R.string.train_log_title), onOpenAll = null) {
             RowGroup {
                 TodayRow(
                     AppIcons.RecordManually,
@@ -143,20 +135,6 @@ fun TrainScreen(
                 )
             }
         }
-    }
-}
-
-/** A heading kept close to its rows, with a way to see and edit everything in it when there is one. */
-@Composable
-private fun TrainSection(title: String, onOpenAll: (() -> Unit)?, content: @Composable () -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-        Row(Modifier.heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
-            SectionHeading(title, Modifier.weight(1f))
-            if (onOpenAll != null) {
-                TextButton(onClick = onOpenAll) { Text(stringResource(R.string.train_see_all)) }
-            }
-        }
-        content()
     }
 }
 

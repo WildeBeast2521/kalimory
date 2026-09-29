@@ -4,17 +4,24 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Record saves sets as entered (owner-approved, 2026-09-28). Branch `work/record-as-entered`, based on master `7151057`.
+Today polish, from the audit. Branch `work/today-polish`, based on master `0cc58c9`.
 
-- **Ticking sets as done is now optional in Record.** The Record button is enabled as soon as any set has a value.
-  - With nothing ticked (the usual past log), it saves every set that has a value.
-  - With every entered set ticked, it saves them, as before.
-  - With a mix, a dialog offers "Record all (n)" or "Only ticked (n)".
-- **The counter badge** shows the sets with a value.
-- **Strings:** four new strings in all 10 locales. The two strings of the old "incomplete sets" dialog are removed.
-- **Test:** the new `UnifiedWorkoutFlowTest.pastWorkoutIsRecordedAsEnteredWithoutTickingSets` checks the flow through the UI, from Train, then Record, then applying the exercise's targets, then Record, and expects one MANUAL session with 3 and 3 reps. It fails without the change (no session is saved) and passes with it.
+- **Program details:** program heroes and rows on Today, and program rows on Train, show "3 exercise(s) · ~12 min". The summary comes from `rememberProgramSummaries`, in `ui/screens/train/ProgramSummaries.kt`.
+- **Empty programs** say "No exercises yet". On Train, their row opens the program editor instead of starting.
+- **Due exercises** show their target ("3 sets × 20 sec") when the exercise has one.
+- **Due and extra resume rows** sit on one surface with a trailing start mark, like Train.
+- **Spacing:** Due and Done use the shared `Section`, which keeps a heading close to its rows and leaves more space between sections. `TrainSection` moved to `TodayParts` as `Section`.
+- **Done-today chips** no longer use tabular figures, so "15" no longer reads as "1 5".
+- **Strings:** one new string, `program_no_exercises`, in all 10 locales.
 
-Verification: the full local gate (131/131 instrumented tests on API 29). The mixed-choice dialog was not seen on screen; its logic is the one branch the test does not reach.
+Verification:
+- the full local gate (131/131 instrumented tests on API 29);
+- screenshots of Today and Train with synthetic data, including an empty program;
+- tapping the empty program opens its editor.
+
+## Previous phase: Record saves sets as entered (merged)
+
+PR #53 merged as `0cc58c9`.
 
 ## Previous phase: last backup time and keep screen on (merged)
 
@@ -55,17 +62,17 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - The backup description and the warning icon: fixed in PR #52.
 
 **Today:**
-- (S) A program hero shows only "Program"; add the exercise count and the estimate.
-- (S) Due exercise rows say "Workout"; show the target (for example 3 x 12) or when it was last done.
-- (S) Due rows lack the trailing start mark that Train rows have.
-- (S) The gap between the "Due today" heading and its rows is too big; fixed on Train, not here.
-- (S) Tabular figures make "15" read as "1 5" in value chips. Use them only where digits sit in columns.
+- Done in PR #54: (S) A program hero shows only "Program"; add the exercise count and the estimate.
+- Done in PR #54: (S) Due exercise rows say "Workout"; show the target (for example 3 x 12) or when it was last done.
+- Done in PR #54: (S) Due rows lack the trailing start mark that Train rows have.
+- Done in PR #54: (S) The gap between the "Due today" heading and its rows is too big; fixed on Train, not here.
+- Done in PR #54: (S) Tabular figures make "15" read as "1 5" in value chips. Use them only where digits sit in columns.
 - (M) Tapping a day in the week strip could open that day's history.
 - (M) "Done today" has no totals, and no comparison with the last session.
 - (M/L) "This week: 2 of 7" implies a seven-day goal. Weekly goals belong with the progression system's goals.
 
 **Train and Library:**
-- (S) A program with no exercises shows "~0 min".
+- Done in PR #54: (S) A program with no exercises shows "~0 min".
 - (S) Estimates disagree between screens for the same program (~12, ~13 and ~16 min, depending on the screen and the prefill mode). Label them consistently, or explain the difference.
 - (S) The exercise list is titled "Exercise Creation"; it should be "Exercises". An empty "Favorite" group is still shown.
 - (S) Program list rows have no summary (exercise count, estimate), and tapping a row does nothing.
@@ -147,6 +154,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #51: catch-up audit (documentation only).
 - PR #52: last backup time and keep-screen-on default.
 - PR #53: Record saves sets as entered.
+- PR #54: Today polish.
 
 ## Owner direction for later (2026-09-27)
 

@@ -791,4 +791,5 @@
     <string name="record_mixed_message">Частину підходів позначено як виконані (%1$d з %2$d зі значеннями). Записати всі підходи зі значеннями чи лише позначені?</string>
     <string name="record_all_sets">Записати всі (%1$d)</string>
     <string name="record_only_done_sets">Лише позначені (%1$d)</string>
+    <string name="program_no_exercises">Вправ ще немає</string>
 </resources>

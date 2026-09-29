@@ -816,4 +816,5 @@
     <string name="record_mixed_message">Einige Sätze sind als erledigt markiert (%1$d von %2$d mit Werten). Alle Sätze mit Wert speichern oder nur die markierten?</string>
     <string name="record_all_sets">Alle speichern (%1$d)</string>
     <string name="record_only_done_sets">Nur markierte (%1$d)</string>
+    <string name="program_no_exercises">Noch keine Übungen</string>
 </resources>
