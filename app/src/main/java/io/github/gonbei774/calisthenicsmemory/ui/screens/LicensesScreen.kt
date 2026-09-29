@@ -17,21 +17,19 @@ import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.libraryColors
 import io.github.gonbei774.calisthenicsmemory.R
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LicensesScreen(
     onNavigateBack: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Scaffold(
         topBar = {
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = appColors.border
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -43,14 +41,14 @@ fun LicensesScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = appColors.textPrimary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = stringResource(R.string.open_source_licenses),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -64,8 +62,8 @@ fun LicensesScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
             colors = LibraryDefaults.libraryColors(
-                libraryBackgroundColor = appColors.background,
-                libraryContentColor = appColors.textPrimary
+                libraryBackgroundColor = MaterialTheme.colorScheme.background,
+                libraryContentColor = MaterialTheme.colorScheme.onSurface
             )
         )
     }

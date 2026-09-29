@@ -40,7 +40,6 @@ fun ShareHubScreen(
     onNavigateBack: () -> Unit,
     onNavigateToCommunityShareExport: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -175,7 +174,7 @@ fun ShareHubScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Slate600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -187,14 +186,14 @@ fun ShareHubScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = stringResource(R.string.share_section_title),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -212,7 +211,7 @@ fun ShareHubScreen(
                 Text(
                     text = stringResource(R.string.share_section_description),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 20.sp,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
@@ -223,7 +222,7 @@ fun ShareHubScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
                     shape = RoundedCornerShape(12.dp),
                     onClick = { onNavigateToCommunityShareExport() }
@@ -241,12 +240,12 @@ fun ShareHubScreen(
                                 text = stringResource(R.string.share_export_title),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.share_export_description),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -259,7 +258,7 @@ fun ShareHubScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
                     shape = RoundedCornerShape(12.dp),
                     onClick = {
@@ -281,12 +280,12 @@ fun ShareHubScreen(
                                 text = stringResource(R.string.share_import_title),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.share_import_description),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -304,7 +303,7 @@ fun ShareHubScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator(
-                            color = Purple600
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -340,7 +339,7 @@ fun ShareHubScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
@@ -352,13 +351,13 @@ fun ShareHubScreen(
                             Text(
                                 text = stringResource(R.string.file_name),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(bottom = 6.dp)
                             )
                             Text(
                                 text = shareImportFileName ?: "unknown.json",
                                 fontSize = 16.sp,
-                                color = appColors.textPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Medium
                             )
                         }
@@ -371,7 +370,7 @@ fun ShareHubScreen(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = Green400.copy(alpha = 0.1f)
+                                containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {
@@ -384,7 +383,7 @@ fun ShareHubScreen(
                                 Text(
                                     text = stringResource(R.string.share_import_preview_new),
                                     fontSize = 14.sp,
-                                    color = Green400,
+                                    color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.Bold,
                                     modifier = Modifier.padding(bottom = 4.dp)
                                 )
@@ -393,8 +392,8 @@ fun ShareHubScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text(text = stringResource(R.string.groups), fontSize = 14.sp, color = appColors.textTertiary)
-                                        Text(text = "${preview.groupsAdded}", fontSize = 14.sp, color = appColors.textPrimary, fontWeight = FontWeight.Bold)
+                                        Text(text = stringResource(R.string.groups), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = "${preview.groupsAdded}", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
                                     }
                                 }
                                 if (preview.exercisesAdded > 0) {
@@ -402,8 +401,8 @@ fun ShareHubScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text(text = stringResource(R.string.exercises), fontSize = 14.sp, color = appColors.textTertiary)
-                                        Text(text = "${preview.exercisesAdded}", fontSize = 14.sp, color = appColors.textPrimary, fontWeight = FontWeight.Bold)
+                                        Text(text = stringResource(R.string.exercises), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = "${preview.exercisesAdded}", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
                                     }
                                 }
                                 if (preview.programsAdded > 0) {
@@ -411,8 +410,8 @@ fun ShareHubScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text(text = stringResource(R.string.share_tab_programs), fontSize = 14.sp, color = appColors.textTertiary)
-                                        Text(text = "${preview.programsAdded}", fontSize = 14.sp, color = appColors.textPrimary, fontWeight = FontWeight.Bold)
+                                        Text(text = stringResource(R.string.share_tab_programs), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = "${preview.programsAdded}", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
                                     }
                                 }
                                 if (preview.intervalProgramsAdded > 0) {
@@ -420,8 +419,8 @@ fun ShareHubScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text(text = stringResource(R.string.share_tab_intervals), fontSize = 14.sp, color = appColors.textTertiary)
-                                        Text(text = "${preview.intervalProgramsAdded}", fontSize = 14.sp, color = appColors.textPrimary, fontWeight = FontWeight.Bold)
+                                        Text(text = stringResource(R.string.share_tab_intervals), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = "${preview.intervalProgramsAdded}", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
                                     }
                                 }
                             }
@@ -435,7 +434,7 @@ fun ShareHubScreen(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = appColors.cardBackgroundSecondary
+                                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {
@@ -448,7 +447,7 @@ fun ShareHubScreen(
                                 Text(
                                     text = stringResource(R.string.share_import_preview_exists),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Bold,
                                     modifier = Modifier.padding(bottom = 4.dp)
                                 )
@@ -457,8 +456,8 @@ fun ShareHubScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text(text = stringResource(R.string.groups), fontSize = 14.sp, color = appColors.textTertiary)
-                                        Text(text = stringResource(R.string.share_import_count_reused, preview.groupsReused), fontSize = 14.sp, color = appColors.textSecondary)
+                                        Text(text = stringResource(R.string.groups), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = stringResource(R.string.share_import_count_reused, preview.groupsReused), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                 }
                                 if (preview.exercisesSkipped > 0) {
@@ -466,8 +465,8 @@ fun ShareHubScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text(text = stringResource(R.string.exercises), fontSize = 14.sp, color = appColors.textTertiary)
-                                        Text(text = stringResource(R.string.share_import_count_skipped, preview.exercisesSkipped), fontSize = 14.sp, color = appColors.textSecondary)
+                                        Text(text = stringResource(R.string.exercises), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = stringResource(R.string.share_import_count_skipped, preview.exercisesSkipped), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                 }
                                 if (preview.programsSkipped > 0) {
@@ -475,8 +474,8 @@ fun ShareHubScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text(text = stringResource(R.string.share_tab_programs), fontSize = 14.sp, color = appColors.textTertiary)
-                                        Text(text = stringResource(R.string.share_import_count_skipped, preview.programsSkipped), fontSize = 14.sp, color = appColors.textSecondary)
+                                        Text(text = stringResource(R.string.share_tab_programs), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = stringResource(R.string.share_import_count_skipped, preview.programsSkipped), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                 }
                                 if (preview.intervalProgramsSkipped > 0) {
@@ -484,8 +483,8 @@ fun ShareHubScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Text(text = stringResource(R.string.share_tab_intervals), fontSize = 14.sp, color = appColors.textTertiary)
-                                        Text(text = stringResource(R.string.share_import_count_skipped, preview.intervalProgramsSkipped), fontSize = 14.sp, color = appColors.textSecondary)
+                                        Text(text = stringResource(R.string.share_tab_intervals), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = stringResource(R.string.share_import_count_skipped, preview.intervalProgramsSkipped), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                 }
                             }
@@ -497,7 +496,7 @@ fun ShareHubScreen(
                         Text(
                             text = stringResource(R.string.share_import_preview_nothing),
                             fontSize = 14.sp,
-                            color = appColors.textSecondary,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             lineHeight = 20.sp
                         )
                     }
@@ -512,7 +511,7 @@ fun ShareHubScreen(
                         showBackupConfirmation = true
                     },
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = Purple600
+                        contentColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
                     Text(
@@ -562,7 +561,7 @@ fun ShareHubScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
@@ -580,12 +579,12 @@ fun ShareHubScreen(
                                 Text(
                                     text = stringResource(R.string.groups),
                                     fontSize = 14.sp,
-                                    color = appColors.textTertiary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = stringResource(R.string.share_import_added_reused, report.groupsAdded, report.groupsReused),
                                     fontSize = 14.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -597,12 +596,12 @@ fun ShareHubScreen(
                                 Text(
                                     text = stringResource(R.string.exercises),
                                     fontSize = 14.sp,
-                                    color = appColors.textTertiary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = stringResource(R.string.share_import_added_skipped, report.exercisesAdded, report.exercisesSkipped),
                                     fontSize = 14.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -614,12 +613,12 @@ fun ShareHubScreen(
                                 Text(
                                     text = stringResource(R.string.share_tab_programs),
                                     fontSize = 14.sp,
-                                    color = appColors.textTertiary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = stringResource(R.string.share_import_added_skipped, report.programsAdded, report.programsSkipped),
                                     fontSize = 14.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -631,12 +630,12 @@ fun ShareHubScreen(
                                 Text(
                                     text = stringResource(R.string.share_tab_intervals),
                                     fontSize = 14.sp,
-                                    color = appColors.textTertiary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = stringResource(R.string.share_import_added_skipped, report.intervalProgramsAdded, report.intervalProgramsSkipped),
                                     fontSize = 14.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -648,7 +647,7 @@ fun ShareHubScreen(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = Red600.copy(alpha = 0.1f)
+                                containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.1f)
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {
@@ -661,7 +660,7 @@ fun ShareHubScreen(
                                 Text(
                                     text = stringResource(R.string.share_import_errors, report.errors.size),
                                     fontSize = 14.sp,
-                                    color = Red600,
+                                    color = MaterialTheme.colorScheme.error,
                                     fontWeight = FontWeight.Medium,
                                     modifier = Modifier.padding(bottom = 4.dp)
                                 )
@@ -669,7 +668,7 @@ fun ShareHubScreen(
                                     Text(
                                         text = "\u2022 $error",
                                         fontSize = 12.sp,
-                                        color = Red600.copy(alpha = 0.8f),
+                                        color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
                                         lineHeight = 16.sp
                                     )
                                 }
@@ -677,7 +676,7 @@ fun ShareHubScreen(
                                     Text(
                                         text = stringResource(R.string.csv_import_more_items, report.errors.size - 10),
                                         fontSize = 12.sp,
-                                        color = Red600.copy(alpha = 0.8f)
+                                        color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
                                     )
                                 }
                             }
@@ -692,7 +691,7 @@ fun ShareHubScreen(
                         shareImportReport = null
                     },
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = Purple600
+                        contentColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
                     Text(stringResource(R.string.ok))
@@ -736,7 +735,7 @@ fun ShareHubScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Purple600
+                            containerColor = MaterialTheme.colorScheme.primary
                         )
                     ) {
                         Text(
@@ -771,7 +770,7 @@ fun ShareHubScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = appColors.textPrimary
+                            contentColor = MaterialTheme.colorScheme.onSurface
                         )
                     ) {
                         Text(

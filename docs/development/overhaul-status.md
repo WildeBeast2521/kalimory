@@ -4,18 +4,19 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-To Do and Record on the calm theme. Branch `work/todo-record-theme`, based on master `ed4acdd`.
+Data screens on the calm theme. Branch `work/data-screens-theme`, based on master `05fca7c`.
 
-- **Screens:** `ToDoScreen`, `RecordScreen` and `WorkoutSetCard` map `AppColors` and the palette to theme roles.
-- **Top bars:** they become quiet surfaces; To Do loses its amber gradient.
-- **Buttons:** To Do's start buttons stay brass (tertiary, "active") with onTertiary text. Record's green actions become primary.
-- **Contrast:** text and icons on filled containers use the matching on-colour, so dark theme stays readable.
-- **Record's date** shows in the user's locale; the stored value is unchanged.
-- **Tooling:** the mapping script now drops explicit palette imports and `appColors` parameters and arguments.
+- **Screens:** Backup, CSV data management, Share hub, Community share export, Licenses and Database recovery move from `AppColors` and the palette to theme roles, with quiet top bars.
+- **Contrast:** text on the brass share-export actions uses onTertiary.
+- **Settings:** the backup card shows up to four lines, so the longer description from PR #52 is no longer cut off after "intervals".
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- screenshots of To Do and Record.
+- screenshots of the CSV, Share and Settings data section.
+
+## Previous phase: To Do and Record on the calm theme (merged)
+
+PR #58 merged as `05fca7c`.
 
 ## Previous phase: Library editors on the calm theme (merged)
 
@@ -175,6 +176,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #56: Settings on the calm theme.
 - PR #57: Library editors on the calm theme.
 - PR #58: To Do and Record on the calm theme.
+- PR #59: data screens on the calm theme.
 
 ## Owner direction for later (2026-09-27)
 

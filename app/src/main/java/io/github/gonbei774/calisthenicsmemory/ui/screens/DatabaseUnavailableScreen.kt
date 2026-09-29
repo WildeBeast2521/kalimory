@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.material3.MaterialTheme
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,7 +30,6 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.DatabaseFileExport
 import io.github.gonbei774.calisthenicsmemory.data.DatabaseStartupState
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,7 +46,6 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Unit) {
     val context = LocalContext.current
-    val appColors = LocalAppColors.current
     val scope = rememberCoroutineScope()
     var exportResult by remember { mutableStateOf<String?>(null) }
     val exportDone = stringResource(R.string.db_export_done)
@@ -84,7 +83,7 @@ fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Uni
             text = stringResource(R.string.db_unavailable_title),
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary
+            color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = when (state) {
@@ -94,13 +93,13 @@ fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Uni
                 DatabaseStartupState.Ready -> ""
             },
             fontSize = 16.sp,
-            color = appColors.textPrimary
+            color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = stringResource(R.string.db_unavailable_export_hint),
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary
+            color = MaterialTheme.colorScheme.onSurface
         )
         Button(
             onClick = {
@@ -111,7 +110,7 @@ fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Uni
         ) {
             Text(stringResource(R.string.db_export_files))
         }
-        exportResult?.let { Text(text = it, fontSize = 14.sp, color = appColors.textPrimary) }
+        exportResult?.let { Text(text = it, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface) }
         if (state == DatabaseStartupState.CorruptionReported) {
             OutlinedButton(onClick = onContinue, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.db_continue))
@@ -121,7 +120,7 @@ fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Uni
             Text(
                 text = stringResource(R.string.db_error_details, state.details),
                 fontSize = 12.sp,
-                color = appColors.textTertiary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

@@ -856,7 +856,7 @@ fun SettingsScreenNew(
                                 fontSize = 14.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp),
-                                maxLines = 2
+                                maxLines = 4
                             )
                         }
                         Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
