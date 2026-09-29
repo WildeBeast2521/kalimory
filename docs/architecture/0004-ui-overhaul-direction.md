@@ -16,6 +16,8 @@ Task 8 of `docs/plans/2026-08-30-overhaul-bootstrap.md` delivers the visible ove
    - ArrMatey: Compose Multiplatform, `material3:1.5.0-alpha14`, `MaterialExpressiveTheme`.
    - Obtainium: Flutter; it builds its own Expressive-style theme and is not directly comparable.
 
+   *Superseded version detail: PR #41 upgraded the toolchain, and the app now uses `material3:1.5.0-alpha29` with AGP 9 and compileSdk 37. The text below records the state at the time of this decision.*
+
    Stable `material3:1.4.0` ships the Expressive APIs (`MaterialExpressiveTheme`, `ButtonGroup`, `LoadingIndicator` and others) as `internal`. They are public only in the 1.5 alphas. `1.5.0-alpha19` and later declare `minCompileSdk=37` and require Android Gradle Plugin 9.1, whereas this project uses compileSdk 35 and AGP 8.13. The app therefore pins **`material3:1.5.0-alpha18`**, the newest release that fits the current toolchain. It resolves the other Compose libraries to `1.11.0-beta02`.
 
 3. **Navigation:** a bottom bar with the four destinations.
@@ -30,6 +32,9 @@ Task 8 of `docs/plans/2026-08-30-overhaul-bootstrap.md` delivers the visible ove
    - **Dynamic colour:** a setting. On, the app uses the wallpaper colours; off, it uses its own palette.
 
 ## Consequences
+
+*These consequences were written before PR #41. The AGP 9 and compileSdk 37 upgrade is done. PR #44 replaced `material-icons-core` with Material Symbols.*
+
 
 - Alpha and beta Compose artifacts carry more risk of bugs and API changes than stable ones. The version is pinned exactly, and upgrades are deliberate and verified: unit tests, lint, and instrumented tests on an emulator.
 - Moving past alpha18, or to a stable release that exposes the Expressive APIs, requires the AGP 9 and compileSdk 37 upgrade as a separate step.

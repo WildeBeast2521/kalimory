@@ -1,431 +1,123 @@
 # Overhaul status
 
-Durable handoff for the multi-session overhaul. Update at every verified checkpoint. Record only verified facts.
-
-## Current phase
-
-Graph axis and program rows. Branch `work/graph-axis`, based on master `a2e6f3d`.
-
-- **Graph y-axis:** `calculateYAxisLabels` picks a whole-number step from a 1-2-5 ladder, with at most seven labels. Labels no longer repeat after rounding ("4 reps, 4 reps").
-  - Labels also stay inside the plotted range. Before, the top labels could sit above the chart.
-  - The axis text uses the theme's `onSurfaceVariant` instead of a fixed slate.
-  - New test: `YAxisLabelsTest`.
-- **Program list:** tapping a row opens the program editor, the same as the edit button. It does not start the program, so a stray tap cannot begin a workout.
-
-Verification:
-- the full local gate (131/131 instrumented tests on API 29, 339 unit tests);
-- screenshots of Graph with a 5.5-rep maximum (labels 1 to 5), and of a row tap opening "Edit Program".
-
-## Previous phase: list summaries and a default graph (merged)
-
-PR #68 merged as `a2e6f3d`.
-
-## Previous phase: start flows (merged)
-
-PR #67 merged as `7612f38`.
-
-## Previous phase: small audit fixes (merged)
-
-PR #66 merged as `569be6b`.
-
-## Previous phase: program runs use the in-workout kit (merged)
-
-PR #65 merged as `bdd1221`.
-
-## Previous phase: Baseline Profiles and Macrobenchmark (merged)
-
-PR #64 merged as `5f03984`.
-
-## Previous phase: Settings links point to this repository (merged)
-
-PR #63 merged as `cf0865d`.
-
-## Previous phase: workout run copy fixes (merged)
-
-PR #62 merged as `5f529d6`.
-
-## Previous phase: remove AppColors (merged)
-
-PR #61 merged as `bc57a4b`.
-
-## Previous phase: program and interval runs on the calm theme (merged)
-
-PR #60 merged as `a3947cf`.
-
-## Previous phase: data screens on the calm theme (merged)
-
-PR #59 merged as `8a62c4c`.
-
-## Previous phase: To Do and Record on the calm theme (merged)
-
-PR #58 merged as `05fca7c`.
-
-## Previous phase: Library editors on the calm theme (merged)
-
-PR #57 merged as `ed4acdd`.
-
-## Previous phase: Settings on the calm theme (merged)
-
-PR #56 merged as `6d1619e`.
-
-## Previous phase: Progress redesign (merged)
-
-PR #55 merged as `79675a6`.
-
-## Previous phase: Today polish (merged)
-
-PR #54 merged as `d37a656`.
-
-## Previous phase: Record saves sets as entered (merged)
-
-PR #53 merged as `0cc58c9`.
-
-## Previous phase: last backup time and keep screen on (merged)
-
-PR #52 merged as `7151057`.
-
-## Previous phase: catch-up audit recorded (merged)
-
-PR #51 merged as `07b87a3`.
-
-## Previous phase: glyph icons, second pass (merged)
-
-PR #50 merged as `383aafe`.
-
-## Previous phase: finish replacing glyph icons (merged)
-
-PR #49 merged as `d82ddaf`.
-
-## Previous phase: Quick start goes straight to choosing an exercise (merged)
-
-PR #48 merged as `977baa9`.
-
-## Improvement ideas (beyond upstream)
-
-The owner said the overhaul need not mirror upstream (2026-09-28).
-- Small items (S) become their own slices, or fold into the redesign of their screen.
-- Medium (M) and large (L) items wait for the review with the owner at the end of Task 8, unless noted.
-
-### Catch-up audit of earlier slices (2026-09-28)
-
-The audit was a user walkthrough on the API 29 emulator with synthetic data. It found two defects, both fixed:
-- glyph icons that PR #44 missed (PRs #49 and #50);
-- the redundant mode picker (PR #48).
-
-**Data safety** (owner decisions, 2026-09-28):
-- Show the last backup time: done in PR #52.
-- No reminders and no automatic backups: owner decision.
-- The safety backup before an import already existed; the audit missed it.
-- The backup description and the warning icon: fixed in PR #52.
-
-**Today:**
-- Done in PR #54: (S) A program hero shows only "Program"; add the exercise count and the estimate.
-- Done in PR #54: (S) Due exercise rows say "Workout"; show the target (for example 3 x 12) or when it was last done.
-- Done in PR #54: (S) Due rows lack the trailing start mark that Train rows have.
-- Done in PR #54: (S) The gap between the "Due today" heading and its rows is too big; fixed on Train, not here.
-- Done in PR #54: (S) Tabular figures make "15" read as "1 5" in value chips. Use them only where digits sit in columns.
-- (M) Tapping a day in the week strip could open that day's history.
-- (M) "Done today" has no totals, and no comparison with the last session.
-- (M/L) "This week: 2 of 7" implies a seven-day goal. Weekly goals belong with the progression system's goals.
-
-**Train and Library:**
-- Done in PR #54: (S) A program with no exercises shows "~0 min".
-- (S) Estimates disagree between screens for the same program (~12, ~13 and ~16 min, depending on the screen and the prefill mode). Label them consistently, or explain the difference.
-- Done in PR #57: the exercise list title. Done in PR #66: the empty "Favorite" group is hidden.
-- Done in PR #68: program list rows show a summary. Done in PR #69: tapping a row opens the editor.
-- Done in PR #68: interval rows show the estimated total.
-- Done in PR #66: per-exercise rest now reads "Rest" where it said "Interval".
-- (M) Show when each exercise or program was last done.
-
-**Workouts:**
-- Done in PR #67: single-workout setup starts with targets or defaults filled in.
-- Done in PR #67: the program start screen has one pinned Start and collapsed settings.
-- Done in PR #65: the program run shows "Set 1/6" within the exercise.
-- Done in PR #62: the two interval Start buttons, the missing spaces, and "NEXT" in capitals. Done in PR #66: the "Confirm" title.
-- Program runs use the kit (PR #65). The interval run keeps its own timer screen for now; it is already on theme roles.
-- Done in PR #53: (M) Record ("Log a past workout") behaves like a live session: a "NOW" badge, and every set must be completed before Record is enabled. For logging the past, allow saving all sets as shown.
-- (L, owner-approved, after the item above) Log a past workout with several exercises in one session. The v2 model supports this, and ManualWorkoutWriter handles one exercise today.
-
-**Progress (feeds its redesign):**
-- Done in PR #55: (S) The week label reads "Sep 22 – 27" while the strip shows the 22nd to the 28th; check whether today is left out.
-- Done in PR #55: (S) "1 sets"; the plural is missing.
-- Done in PR #55: (S) Dates show as "2026-09-25"; use the locale's format.
-- Done in PR #55: (S) "6reps" is missing a space. The right and left sides use arbitrary colours (green and purple).
-- Done in PR #66: the Progress exercise sheet pads for the navigation bar.
-- Done in PR #68: Graph defaults to the latest exercise. Done in PR #69: the y-axis no longer repeats labels.
-- (S) The Graph axis says "1 reps"; the unit suffix is not pluralised.
-- (M) "1 Week" is a rolling seven days, while Today uses the calendar week and the first-day setting.
-- (M) The Challenge tab does not say how to set a challenge, and overlaps with the progression goals.
-- (L) Trends and personal bests (progression system).
-
-**Settings:**
-- Done in PR #63 (owner: "Yes, point"): source and issue links go to this repository, and upstream attribution stays.
-- "Keep screen on" now defaults to on: owner-approved, done in PR #52.
-- (M) Changing the language needs a restart. Per-app language (AndroidX) could apply it at once.
-
-**Known limitations and ADR deferrals, re-judged:**
-- The ADR 0001 non-goals (accounts, social features, hosted AI, cloud sync, telemetry) come from the owner's brief and its privacy rules, not from upstream. They stay.
-- (M) "A recovery zip can only be restored manually" is a real gap. An in-app restore from a recovery zip would complete the corruption-recovery story.
-- The other known limitations are technical safeguards, not product gaps.
-
-**Performance:**
-- Measured in PR #64. The 4 s was a debug build; release takes about 1.3 s on emulators. The Baseline Profile cuts tab-switching jank (P99 −55% on API 36). Frame timing inside a workout needs seeded data (follow-up).
-
-## Previous phase: in-workout redesign (merged)
-
-PR #47 merged as `4beda29`.
-
-## Previous phase: Train and Library redesign (merged)
-
-PR #46 merged as `2d41a69`.
-
-## Previous phase: first day of the week (merged)
-
-PR #45 merged as `b5d746e`. A Settings choice (Automatic, Monday, Saturday or Sunday) drives Today's week strip, the Progress calendar and the To Do repeat-day picker order.
-
-## CI debt (merged without GitHub Actions)
-
-GitHub Actions stopped starting jobs on 2026-09-27. The annotation says account payments failed or the spending limit needs raising. The owner decided: "Merge locally verified PRs for now, rerun CI later."
-
-Each PR below passed the full local gate before merging:
-- `testDebugUnitTest lintDebug assembleDebug`;
-- `connectedDebugAndroidTest` on `floor_api29`;
-- the schema check, when the schema changed.
-
-Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
-
-- PR #34: database 24 and backup format 10, interval settings.
-- PR #35: interval workouts to v2.
-- PR #36: unified workout flow tests.
-- PR #37: wake-lock test fix for API 36.
-- PR #38: design-system options plan (documentation only).
-- PR #39: UI technology evaluation (documentation only).
-- PR #40: design decision (documentation only).
-- PR #41: toolchain upgrade.
-- PR #42: design tokens.
-- PR #43: Today redesign.
-- PR #44: Material Symbols icons.
-- PR #45: first day of the week.
-- PR #46: Train and Library redesign.
-- PR #47: in-workout redesign.
-- PR #48: Quick start goes straight to choosing an exercise.
-- PR #49: finish replacing glyph icons.
-- PR #50: glyph icons, second pass.
-- PR #51: catch-up audit (documentation only).
-- PR #52: last backup time and keep-screen-on default.
-- PR #53: Record saves sets as entered.
-- PR #54: Today polish.
-- PR #55: Progress redesign.
-- PR #56: Settings on the calm theme.
-- PR #57: Library editors on the calm theme.
-- PR #58: To Do and Record on the calm theme.
-- PR #59: data screens on the calm theme.
-- PR #60: program and interval runs on the calm theme.
-- PR #61: remove AppColors.
-- PR #62: workout run copy fixes.
-- PR #63: Settings links point to this repository.
-- PR #64: Baseline Profiles and Macrobenchmark.
-- PR #65: program runs use the in-workout kit.
-- PR #66: small audit fixes.
-- PR #67: start flows.
-- PR #68: list summaries and a default graph.
-- PR #69: graph axis labels and program row tap.
-
-## Owner direction for later (2026-09-27)
-
-- **One icon library** (2026-09-28): done in PR #44 with Material Symbols Rounded (Apache-2.0).
-
-- **GitHub issue templates** (to-do; none exist yet, and `.github/` holds only `workflows`). Add `.github/ISSUE_TEMPLATE/` with:
-  - a bug report asking for app version, Android version and device, and steps;
+Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
+
+Last reviewed: 2026-09-29, master `01f3ffa` (PR #69).
+
+## Where things stand
+
+- **Tasks 1 to 7 of the bootstrap plan are done.** They cover data safety, Room schema and migration hardening, durable workout timers with resume, and the additive v2 workout model with backup format 10.
+- **Task 8, the new UI, is done.** The app has four destinations (Today, Train, Progress, Library) and one workout flow. Every screen uses the calm design (ADR 0004 decision 5). The Baseline Profile and Macrobenchmark are measured (PR #64).
+- **Every workout source writes v2 sessions**, and history reads legacy and v2 together (`docs/development/v2-workout-history.md`).
+- **Database version 24. Backup format 10.** See `docs/development/supported-database-versions.md` and `docs/development/backup-validation.md`.
+- **Toolchain:** Gradle 9.8, AGP 9.4.1 (built-in Kotlin), Kotlin 2.4.20, Room 2.8.5 with KSP, compileSdk 37, targetSdk 35, minSdk 26, Compose BOM 2026.09.00, material3 1.5.0-alpha29. The source of truth is `gradle/libs.versions.toml` and `app/build.gradle.kts`.
+- **Not released.** `versionName` is still upstream's 1.26.0.
+
+## Next work (owner-approved at the end-of-redesign review, 2026-09-29)
+
+The review page, with live motion previews: https://claude.ai/artifact/6JM7EwpckEkJfCkPP3hC52. The owner's answer: "Do all except M4." The summary screen is "fine as you showed". Do the items in this order, one verified slice each:
+
+1. **MO, the motion package.** Two slices.
+   - First slice: screens slide forward and back (`AnimatedContent` over `currentScreen`, with predictive back), tabs fade through, the navigation indicator glides, and the theme uses `MotionScheme.expressive()`.
+   - Second slice: timer and count digits roll, a finished set turns spruce with a drawn tick and a haptic (with a setting to turn vibration off), and buttons change shape when pressed.
+   - Measure frame timing before and after. Respect the Android "Remove animations" setting.
+2. **M2 with SP.**
+   - M2: a workout summary screen after the last set. Rings close, totals count up, the week dot fills, and a personal best appears in brass. There is no confetti. It includes the "Done today" totals and a comparison with the last session.
+   - SP: a large "this week" number on Today, brass kept for in-progress and personal bests only, and a soft glow in dark mode.
+3. **M1:** tapping a day in the week strip shows that day's history. **M3:** show when each exercise and program was last done.
+4. **L1:** log a past workout with several exercises. `ManualWorkoutWriter` handles one exercise today; the v2 model supports more.
+5. **M5:** restore from a recovery zip inside the app.
+6. **Also approved:**
+   - M6: Progress "1 Week" follows the calendar week and the first-day setting, as Today does.
+   - L2: interval runs on the workout kit.
+   - The small fixes listed below.
+
+- **Not doing:** M4, changing the language without a restart.
+- **Waiting for the progression system (PG):** weekly goals (Today's "This week: 2 of 7"), the Challenge tab's purpose, and trends and personal bests in depth.
+
+## Open small fixes
+
+- Estimates disagree between screens for the same program (about 12, 13 and 16 min). Label them consistently, or explain the difference.
+- The Graph axis says "1 reps"; the unit suffix is not pluralised.
+- The period chips on Progress clip at the screen edge, with no hint that they scroll.
+- `program_result_zero_warning` says zero-value sets "will not be saved". v2 stores them as skipped sets and hides them from history. Reword it in every locale.
+- `util/WakeLockManager.kt` is unused. Remove it in a cleanup change.
+
+Log new ideas here while working. Small ones become their own slice; ask the owner before larger features.
+
+## Owner direction for later
+
+- **Progression system:** the biggest planned upgrade. The brief is `docs/plans/future-progression-system-brief.md`. Do not start until the owner says so, and plan it in depth first.
+- **GitHub issue templates:** none exist yet (`.github/` holds only `workflows`). Add `.github/ISSUE_TEMPLATE/` with:
+  - a bug report asking for the app version, the Android version and device, and steps;
   - a feature request;
   - a `config.yml`.
 
-  The bug template must tell reporters not to attach backups, database files or personal workout data, and to share only synthetic examples. The app collects no telemetry, so the template is the only diagnostic channel. Blank issues can stay allowed.
-- **Project wiki** (deferred until the app is complete). Build a wiki modelled on the upstream project's Codeberg wiki, written once the overhaul is finished so it documents the final screens and flows. Keep upstream attribution where its structure or content is reused, and never push to upstream.
+  The bug template must tell reporters not to attach backups, database files or personal workout data. Blank issues can stay allowed.
+- **Project wiki:** after the app is complete, modelled on upstream's Codeberg wiki, keeping attribution where its structure or content is reused.
+- **README, screenshots and the changelog** still describe upstream v1.26.0. Rewrite them for the new app at release time, together with the wiki.
 
-- The Task 8 UI must look premium and perform well. Use the installed design skills.
-- **The design system is decided** (ADR 0004 decision 5): the app's own calm, focused design language on Material 3 Expressive, at the latest versions.
-- A progression system (a full ranked catalogue, progressions, custom exercises, daily goals, demonstrations) comes after Task 8. It will be planned in depth first. Brief: `docs/plans/future-progression-system-brief.md`.
+## CI debt (merged without GitHub Actions)
 
-## Previous phase: program v2 write (merged)
+GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed, or its spending limit needs raising. The owner decided: "Merge locally verified PRs for now, rerun CI later."
 
-PR #33 merged as `b4e8174`.
+Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-## Previous phase: manual-record v2 write (merged)
+PRs #34 to #69.
 
-PR #32 merged as `4a145d0`.
+## How to verify (the local gate)
 
-## Previous phase: single-workout v2 write (merged)
+```bash
+export ANDROID_SERIAL=emulator-5554 JAVA_HOME="$HOME/.local/share/jdks/temurin-17" ANDROID_HOME="$HOME/Android/Sdk"
+adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks ProgressHistoryTest
+./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
+```
 
-PR #30 merged as `b4eb4cd`; PR #31 (to-do notes) as `6437fea`.
-
-## Previous phase: v2 history editing (merged)
-
-PR #29 merged as `c2d0402`.
-
-## Previous phase: remaining history readers (merged)
-
-PR #28 merged as `59a7c09`.
-
-## Previous phase: history screens on the compatibility reader (merged)
-
-PR #27 merged as `3529674`.
-
-## Previous phase: Today resume and due to-dos (merged)
-
-PR #26 merged as `dc660cc`.
-
-## Previous phase: primary destinations (merged)
-
-PR #25 merged as `e3d1f27`.
-
-## Previous phase: Material 3 Expressive dependency (merged)
-
-PR #24 merged as `44f03b8`.
-
-## Previous phase: Task 7 closed (merged)
-
-PR #23 merged as `d4914b4` (documentation only).
-
-## Previous phase: v2 in the JSON backup, Task 7 slice 4 (merged)
-
-PR #22 merged as `6404b91`: backup format 9.
-
-## Previous phase: compatibility reader, Task 7 slice 3 (merged)
-
-PR #21 merged as `53061da`.
-
-## Previous phase: conservative backfill, Task 7 slice 2 (merged)
-
-PR #20 merged as `b808a24`: database 23 and `V2Backfill`.
-
-## Previous phase: v2 tables, Task 7 slice 1 (merged)
-
-PR #19 merged as `10d7d35`: database 22 with `workout_sessions`, `session_exercises`, and `set_entries`.
-
-## Previous phase: timer service wake lock, completing Task 6 (merged)
-
-PR #18 merged as `a15647a`.
-
-## Previous phase: single-exercise checkpoint and resume (merged)
-
-PR #17 merged as `9eef2af`.
-
-## Previous phase: program checkpoint and resume (merged)
-
-PR #16 merged as `d1cbb29`.
-
-## Previous phase: single-exercise execution timers (merged)
-
-PR #15 merged as `de51f90`.
-
-## Previous phase: program execution timers (merged)
-
-PR #14 merged as `7d250b0`; PR CI run 36230206658 and post-merge `master` run 36230602665 passed.
-
-## Previous phase: interval resume timing (merged)
-
-PR #13 merged as `aa4bd46`; the reboot and clock-change protocol is recorded in `docs/development/workout-timer-spike.md`.
-
-## Previous phase: interval checkpoint and resume (merged)
-
-PR #12 merged as `a18b10b`; PR CI run 36169050766 and post-merge `master` run 36169697792 passed.
-
-## Previous phase: interval screen on the reducer (merged)
-
-PR #11 merged as `f1e3086`; PR CI run 36164763728 and post-merge `master` run 36165538007 passed.
-
-## Previous phase: Task 6 spike (merged)
-
-PR #10 merged as `8085783`; PR CI run 36160581697 and post-merge `master` run 36161423810 passed. It added the pure reducer, checkpoint, recovery, and atomic store.
-
-## Previous phase: missing group rows (merged)
-
-PR #9 merged as `eaa7dd9`; PR CI run 36156661163 (77 emulator tests) and post-merge `master` run 36157361490 passed. The user chose "recreate group rows" (2026-09-25).
-
-## Earlier phase: share import atomicity and hidden todo tasks (merged)
-
-PR #8 merged as `c74e000`; PR CI run 36149723855 (75 emulator tests) and post-merge `master` run 36150610815 passed.
-
-## Previous phase: database recovery screen (merged)
-
-PR #7 merged as `7420a28`; PR CI run 36143132719 (73 emulator tests) and post-merge `master` run 36143969836 passed. Unsupported, unopenable, or corruption-reported databases show `DatabaseUnavailableScreen`, which exports the raw files as a zip.
-
-## Previous phase: corruption preservation (merged)
-
-PR #6 merged as `583484a`. PR CI run 36139303039 (70 emulator tests) and post-merge `master` run 36140056456 passed. The user chose "copy aside, keep live" (2026-09-25). Room's default `onCorruption` deleted the database; now the files are copied once to `<name>.corrupt` and the live file is kept.
-
-## Previous phase: backup restorability and mutation atomicity (merged)
-
-PR #4 merged as `c619f0a`; PR CI run 36129605040 and post-merge `master` run 36130284869 passed. The user chose "accept and warn" for anomalies the database can hold (2026-09-25).
-
-Commits merged by PR #4:
-
-- `b4fb7ab` fix: tolerate malformed todo repeat days when reading
-- `3220edd` fix: restore every backup the app can export
-- `f86a2ba` fix: make group and exercise deletion and renaming atomic
-- `dba8969` fix: never replace an exercise on a duplicate insert
-- `4cdd0b5` style: use an int state holder for the import anomaly count
-
-Verification actually run before merge:
-
-- `./gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug :app:compileDebugAndroidTestKotlin`: PASS (232 unit tests). Lint reports 15 unbaselined dependency-version warnings from existing build files; none comes from this branch.
-- `./gradlew connectedDebugAndroidTest` on AVD `floor_api29` (API 29, x86_64): 69 tests, 0 failures.
-- `SCHEMA_BASE_REF=origin/master scripts/check-room-schemas.sh`: PASS.
-- Red first: the duplicate-insert test failed before `dba8969` (no exception, history deleted). The old unit tests show that master rejected each anomaly class that is now accepted.
-
-The contract is documented in `docs/development/backup-validation.md`.
-
-## Previous phase: Room schema and migration hardening (merged)
-
-Room schema and migration hardening is complete. PR #2 merged into `master` as `0efcfb1`.
-
-## Commits merged by PR #2
-
-- `5301586` docs: declare supported database versions
-- `7ea6e1e` docs: tighten unsupported database recovery guidance
-- `adb2d2c` build: export current Room schema
-- `b3af5c2` build: enforce committed Room schema immutability
-- `e8708b9` build: close remaining schema check gaps
-- `0500dd2`, `d69c98e`, `59820da` test: recover Room schemas 9–13, 14–17, 18–20
-- `c531d4f` refactor: centralize Room migration registration
-- `248f9b2` docs: add overhaul status handoff
-- `4d32660` fix: refuse unsupported databases before opening them
-- `b4ca727` test: cover every supported Room migration path
-- `f0a3f06` test: assert exact values produced by each migration
-- `5d18990` ci: run instrumentation tests on an API 29 emulator
-
-## Verification actually run (2026-09-25, local, JDK Temurin 17)
-
-- `./gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug :app:compileDebugAndroidTestKotlin --stacktrace`: PASS at `4d32660` sources (230 unit tests, 0 failures). Later commits change only androidTest sources, CI config, and docs.
-- `./gradlew --no-daemon :app:connectedDebugAndroidTest` on AVD `floor_api29` (Android SDK built for x86_64, API 29), started with `-read-only -no-snapshot`: 63 tests, 0 failures, at `f0a3f06` sources.
-- `SCHEMA_BASE_REF=6aa07a3 scripts/check-room-schemas.sh --no-daemon`: PASS with schemas 9–21.
-- GitHub Actions run 36120561721 (workflow_dispatch at `248f9b2`): success, including the schema check with all 13 files.
-- GitHub Actions run 36123425188 (PR #2 at `2c940f2`): `Verify debug build` passed (schema check against the PR base, unit tests, lint, debug build, androidTest compilation); `Instrumentation tests (API 29 emulator)` passed, running 63 tests.
-- Negative checks: drift check fails on tampered identity hash, tampered field, committed modification or deletion, bad base ref; `MigrationRegistrationTest` fails without `MIGRATION_15_16`; `MigrationPathTest` from 9 fails when the 9→10 tie-break is reversed; before the header guard, opening a version 8 or 22 rollback-journal database changed header bytes 18, 19, 27, 95.
-- Each historical schema is byte-identical to the output of `scripts/recover-historical-room-schema.sh` for its introducing commit.
-
-## Reviews
-
-- Phase A: external review requested changes (4 Important, 10 Minor); all fixed except M-7 (build-cache input tracking, deferred while caching is off). Re-review approved; its 4 Minor notes were fixed in `e8708b9`.
-- Phases B–F: reviewed inline. The user asked not to use subagents because of usage limits.
+- Expected as of PR #69: 339 unit tests, 131 instrumented tests on `floor_api29` (API 29), and "Lint found 6 warnings" (baselined dependency-version notices).
+- Also run `scripts/check-room-schemas.sh` when a schema changes.
+- **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
+- Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.
+- Regenerate the Baseline Profile with `./gradlew :app:generateBaselineProfile` (run `adb root` first). Benchmarks need API 31 or newer for frame timing.
+- A local `assembleRelease` fails without a keystore. Use the `nonMinifiedRelease` or benchmark variants, which are debug-signed.
+- `gh` has two accounts. Use `GH_TOKEN=$(gh auth token --user WildeBeast2521)` for this repository.
 
 ## Known limitations
 
-- Corruption found after start-up (damaged pages first touched by a later query) can still crash that screen. The next start shows the recovery screen, because the `.corrupt` copy needs attention.
-- A recovery zip can only be restored manually. There is no in-app import for it.
-- When a non-empty `-wal` or `-journal` exists, the header guard defers to Room; Room fails closed but SQLite may apply the pending journal.
-- Migrations 13→14, 14→15, and 18→19 drop and rebuild tables. They are safe because Room enables `foreign_keys` only in `onOpen`, after migrations; this is covered by the production-path tests.
+- Corruption found after start-up can still crash that screen. The next start shows the recovery screen.
+- A recovery zip can only be restored manually (M5 above).
+- When a non-empty `-wal` or `-journal` file exists, the header guard defers to Room. Room fails closed, but SQLite may apply the pending journal.
+- Migrations 13→14, 14→15 and 18→19 drop and rebuild tables. They are safe because Room enables `foreign_keys` only in `onOpen`, after migrations. Tests cover this.
+- Legacy writers remain: the CSV record import and the history editor for legacy rows. `V2Backfill` has not run. It belongs to the later step that retires `training_records`.
 - The schema check's base comparison is skipped for `workflow_dispatch` runs.
-- GitHub branch protection is unavailable on the private free plan; merge gate is reviewed PR plus green CI.
-- The local `gh` active account is `i252165-crypto`, which cannot see this repository. Commands use `GH_TOKEN=$(gh auth token --user WildeBeast2521)` for this repository without switching the global account.
+- GitHub branch protection is unavailable on the private free plan.
 
-## Environment notes
+## Merged PRs
 
-- Local AVDs exist (`floor_api29`, `s1_api28`, `s1_api36`, `r1_api28_arm64`) and `/dev/kvm` is available, so instrumentation tests can run headless locally. Record the AVD/API used.
+Merge commit, then summary. Each PR description holds its verification.
 
-## Next task
-
-1. Research and write the UI/UX design-system plan for the owner to decide (ADR 0004 decision 2). No further visual work before that decision.
-2. Re-run CI on `master` once GitHub Actions works again (see "CI debt").
-3. Later, owner to-dos: GitHub issue templates, the progression system (plan first), and the wiki (after the app is complete).
+| PR | Merge | Summary |
+|---:|:---|:---|
+| 1 | `6aa07a3` | Phase 0: data-safe foundation, destructive fallback removed |
+| 2 | `0efcfb1` | Room schema export and migration coverage 9 to 21 |
+| 3, 5 | `956f19a`, `5519fe5` | Status records |
+| 4 | `c619f0a` | Every exported backup restores; no orphan or cascade loss |
+| 6 | `583484a` | Keep the database when SQLite reports corruption |
+| 7 | `7420a28` | Recovery screen when the database cannot open |
+| 8 | `c74e000` | Atomic share import; removable orphan to-dos |
+| 9 | `eaa7dd9` | Recreate missing group rows |
+| 10 to 18 | `8085783` to `a15647a` | Task 6: workout reducer, monotonic timers, resume for every mode, wake-lock release |
+| 19 to 23 | `10d7d35` to `d4914b4` | Task 7: v2 tables (databases 22 and 23), backfill, compatibility reader, backup format 9 |
+| 24, 25 | `44f03b8`, `e3d1f27` | Material 3 Expressive and the four destinations |
+| 26 to 29 | `dc660cc` to `c2d0402` | Today resume and due items; history on the compatibility reader; v2 editing |
+| 30 to 35 | `b4eb4cd` to `9af9219` | Single, manual, program and interval workouts write v2 (database 24, backup format 10) |
+| 36, 37 | `9515236`, `4c4e575` | Unified workout flow tests; wake-lock test on API 36 |
+| 38 to 40 | `872b5d9` to `d280468` | Design-system research and decision (ADR 0004 decision 5) |
+| 41 | `878c7fb` | Toolchain upgrade (AGP 9, Kotlin 2.4, compileSdk 37) |
+| 42 to 45 | `1d900c7` to `2bfdb8d` | Calm tokens, Today redesign, Material Symbols, first day of the week |
+| 46 to 50 | `2d41a69` to `383aafe` | Train, Library and workout redesign; quick start; glyph icons removed |
+| 51 | `07b87a3` | Catch-up audit of earlier slices |
+| 52, 53 | `7151057`, `0cc58c9` | Last backup time; screen kept on by default; Record saves sets as entered |
+| 54 to 61 | `d37a656` to `bc57a4b` | Every remaining screen moved to the calm theme; `AppColors` removed |
+| 62, 63 | `5f529d6`, `cf0865d` | Workout copy fixes; Settings links point to this repository |
+| 64 | `5f03984` | Baseline Profile and Macrobenchmark |
+| 65 to 69 | `bdd1221` to `01f3ffa` | Program runs on the workout kit; audit fixes; start flows; list summaries; Graph axis |

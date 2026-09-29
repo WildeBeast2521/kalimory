@@ -20,7 +20,7 @@ Neither destructive migration fallback nor destructive downgrade fallback is per
 
 `AppDatabase.build` enforces this before Room opens the file: `InstalledDatabaseVersion` reads `user_version` from the SQLite header and throws `UnsupportedDatabaseVersionException` for a version outside 9–24, leaving the database and its journal files byte-identical. Without this check, Room's switch to WAL mode rewrites header bytes of a rollback-journal database before the missing migration is detected. When a non-empty `-wal` or `-journal` file exists, the header alone is not authoritative; the check then defers to Room, which still fails closed without migrating, although SQLite may apply the pending journal to the main file.
 
-This policy concerns the installed Room database schema version only. It is separate from the JSON backup format and its versions v1–v8; a JSON backup version does not establish support for the correspondingly numbered Room database version.
+This policy concerns the installed Room database schema version only. It is separate from the JSON backup format and its versions 1–10; a JSON backup version does not establish support for the correspondingly numbered Room database version.
 
 ## Corrupt databases
 
@@ -47,7 +47,7 @@ Support begins at version 9 because it is the earliest source in the contiguous 
 | 21 | `eeaa5ae4` |
 | 22 | `bd8f3e9`: additive v2 workout tables |
 | 23 | per-side unique legacy link on `set_entries` |
-| 24 | this change (current): interval settings on `workout_sessions` |
+| 24 | PR #34 (current): interval settings on `workout_sessions` |
 
 ## Required evidence
 

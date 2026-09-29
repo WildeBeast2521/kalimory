@@ -2,6 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-08-30
+- **Implemented:** stages 1 to 7 (PRs #1 to #35). Stage 8, cutting reads over and retiring the legacy tables, remains. There is no feature flag (ADR 0004 decision 1). The Context section describes the code as of 2026-08-30.
 
 ## Context
 

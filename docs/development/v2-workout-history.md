@@ -1,6 +1,6 @@
 # v2 workout history (Task 7)
 
-Status: storage layer complete (Task 7). History screens read legacy and v2 together, and v2 history can be edited. Single-exercise workouts write v2 (Task 8).
+Status (reviewed 2026-09-29): every workout source (single, manual, program and interval) writes v2 sessions. History screens read legacy and v2 together, and v2 history can be edited. The legacy writers left are the CSV record import and the editor for legacy rows.
 
 ## What exists
 
@@ -11,7 +11,8 @@ Status: storage layer complete (Task 7). History screens read legacy and v2 toge
 | Stable enum codes | `data/v2/WorkoutEnums.kt` | `WorkoutEnumsTest` |
 | Conservative legacy conversion and report | `data/v2/V2Backfill.kt`, `V2MigrationReport.kt` | `V2BackfillTest`, `V2BackfillRunTest` |
 | Compatibility history (legacy plus v2-only, each set once) | `data/v2/CompatibilityHistory.kt` | `CompatibilityHistoryTest`, `V2CompatibilityReadTest` |
-| JSON backup format 9 | `viewmodel/BackupV2.kt`, `BackupService`, `BackupDao` | `BackupValidationTest`, `BackupRoundTripTest` |
+| Interval settings on sessions (database 24) | `MIGRATION_23_24` | migration matrix 9→24 |
+| JSON backup formats 9 and 10 | `viewmodel/BackupV2.kt`, `BackupService`, `BackupDao` | `BackupValidationTest`, `BackupRoundTripTest` |
 
 ## Task 7 acceptance gate
 
@@ -21,7 +22,7 @@ Status: storage layer complete (Task 7). History screens read legacy and v2 toge
 - Malformed and ambiguous legacy records are reported, not guessed. **Met.**
 - Before v2 writes are enabled, the legacy UI reads legacy and v2-only sessions through the tested compatibility path, including with the feature flag off. **Partly met.** The reader and its test exist. There is no feature flag or v2 write yet, so the "flag off" half is verified in Task 8, when the flag is introduced. *Superseded by ADR 0004: there is no feature flag. The compatibility reader remains the tested path for reading legacy and v2 history together.*
 
-## When the backfill runs (decision)
+## When the backfill runs (original decision, revised below)
 
 `V2Backfill` does **not** run yet, neither at start-up nor anywhere else. The reasons:
 
@@ -33,7 +34,7 @@ The backfill therefore runs at the Task 8 cutover, when v2 becomes the write pat
 
 ## Write path: single-exercise workouts (Task 8)
 
-Finished single-exercise workouts (Train, then Workout, then Single) are saved as one v2 session through `SingleWorkoutWriter`. They are not written to `training_records`. Manual recording and program and interval workouts still write legacy records until their own slices.
+Finished single-exercise workouts are saved as one v2 session through `SingleWorkoutWriter`. They are not written to `training_records`.
 
 How a workout maps to rows, without inventing anything:
 - **Start:** stamped when the first set or its countdown begins, and kept in the checkpoint. If it was not observed (a checkpoint written before this change), the save time stands in for it and the session is marked MINUTE precision.
