@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -62,15 +63,7 @@ import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.IntervalProgram
 import io.github.gonbei774.calisthenicsmemory.data.Program
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Amber500
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Amber600
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Blue600
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Cyan600
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Green400
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Pink600
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Purple600
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Slate600
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -83,7 +76,6 @@ fun CommunityShareExportScreen(
     viewModel: TrainingViewModel,
     onNavigateBack: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -193,7 +185,7 @@ fun CommunityShareExportScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Slate600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -205,21 +197,21 @@ fun CommunityShareExportScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = stringResource(R.string.share_export_screen_title),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = appColors.cardBackground
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLow
             ) {
                 Box(
                     modifier = Modifier
@@ -231,8 +223,8 @@ fun CommunityShareExportScreen(
                         onClick = { showPreviewDialog = true },
                         enabled = totalSelected > 0 && !isExporting,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Amber500,
-                            disabledContainerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.tertiary,
+                            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.fillMaxWidth()
@@ -241,7 +233,7 @@ fun CommunityShareExportScreen(
                             text = if (totalSelected > 0) stringResource(R.string.share_export_button_with_count, totalSelected) else stringResource(R.string.share_export_button),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (totalSelected > 0) Color.White else appColors.textSecondary
+                            color = if (totalSelected > 0) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -258,8 +250,8 @@ fun CommunityShareExportScreen(
                 val minTabWidth = maxWidth / tabTitles.size
                 ScrollableTabRow(
                     selectedTabIndex = pagerState.currentPage,
-                    containerColor = appColors.cardBackground,
-                    contentColor = Amber500,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                    contentColor = MaterialTheme.colorScheme.tertiary,
                     edgePadding = 0.dp
                 ) {
                     tabTitles.forEachIndexed { index, title ->
@@ -271,7 +263,7 @@ fun CommunityShareExportScreen(
                                 Text(
                                     text = title,
                                     fontSize = 13.sp,
-                                    color = if (pagerState.currentPage == index) Amber500 else appColors.textSecondary,
+                                    color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
@@ -341,12 +333,12 @@ fun CommunityShareExportScreen(
 
         AlertDialog(
             onDismissRequest = { if (!isExporting) showPreviewDialog = false },
-            containerColor = appColors.cardBackground,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.share_export_preview_title),
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             },
             text = {
@@ -356,13 +348,13 @@ fun CommunityShareExportScreen(
                             text = stringResource(R.string.share_preview_programs, selectedPrograms.size),
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         selectedPrograms.forEach { program ->
                             Text(
                                 text = "  • ${program.name}",
                                 fontSize = 13.sp,
-                                color = appColors.textSecondary
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -371,13 +363,13 @@ fun CommunityShareExportScreen(
                             text = stringResource(R.string.share_preview_intervals, selectedIntervals.size),
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         selectedIntervals.forEach { interval ->
                             Text(
                                 text = "  • ${interval.name}",
                                 fontSize = 13.sp,
-                                color = appColors.textSecondary
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -386,12 +378,12 @@ fun CommunityShareExportScreen(
                         text = stringResource(R.string.share_preview_total_exercises, totalExerciseCount) +
                                 if (autoIncludedExerciseCount > 0) stringResource(R.string.share_preview_auto_included, autoIncludedExerciseCount) else "",
                         fontSize = 13.sp,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         text = stringResource(R.string.share_preview_groups, groupCount),
                         fontSize = 13.sp,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             },
@@ -404,11 +396,11 @@ fun CommunityShareExportScreen(
                         exportLauncher.launch(fileName)
                     },
                     enabled = !isExporting,
-                    colors = ButtonDefaults.buttonColors(containerColor = Amber500)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
                 ) {
                     Text(
                         text = if (isExporting) stringResource(R.string.share_exporting) else stringResource(R.string.share_export_button),
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onTertiary
                     )
                 }
             },
@@ -417,7 +409,7 @@ fun CommunityShareExportScreen(
                     onClick = { showPreviewDialog = false },
                     enabled = !isExporting
                 ) {
-                    Text(text = stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(text = stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         )
@@ -432,13 +424,12 @@ private fun ProgramsExportTab(
     loopCounts: Map<Long, Int>,
     onToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
 
     if (programs.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
             Text(
                 text = stringResource(R.string.share_no_programs),
-                color = appColors.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -454,7 +445,7 @@ private fun ProgramsExportTab(
             ) { program ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Row(
@@ -467,8 +458,8 @@ private fun ProgramsExportTab(
                             checked = program.id in selectedIds,
                             onCheckedChange = { onToggle(program.id) },
                             colors = CheckboxDefaults.colors(
-                                checkedColor = Amber500,
-                                uncheckedColor = appColors.textSecondary
+                                checkedColor = MaterialTheme.colorScheme.tertiary,
+                                uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
                         Column(modifier = Modifier.padding(start = 4.dp)) {
@@ -476,7 +467,7 @@ private fun ProgramsExportTab(
                                 text = program.name,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             val exCount = exerciseCounts[program.id] ?: 0
                             val lpCount = loopCounts[program.id] ?: 0
@@ -486,7 +477,7 @@ private fun ProgramsExportTab(
                             Text(
                                 text = subtitle,
                                 fontSize = 11.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 2.dp)
                             )
                         }
@@ -504,13 +495,12 @@ private fun IntervalsExportTab(
     exerciseCounts: Map<Long, Int>,
     onToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
 
     if (intervalPrograms.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
             Text(
                 text = stringResource(R.string.share_no_intervals),
-                color = appColors.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -526,7 +516,7 @@ private fun IntervalsExportTab(
             ) { interval ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Row(
@@ -539,8 +529,8 @@ private fun IntervalsExportTab(
                             checked = interval.id in selectedIds,
                             onCheckedChange = { onToggle(interval.id) },
                             colors = CheckboxDefaults.colors(
-                                checkedColor = Amber500,
-                                uncheckedColor = appColors.textSecondary
+                                checkedColor = MaterialTheme.colorScheme.tertiary,
+                                uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
                         Column(modifier = Modifier.padding(start = 4.dp)) {
@@ -548,13 +538,13 @@ private fun IntervalsExportTab(
                                 text = interval.name,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             val exCount = exerciseCounts[interval.id] ?: 0
                             Text(
                                 text = stringResource(R.string.interval_summary_format, exCount, interval.workSeconds, interval.restSeconds, interval.rounds),
                                 fontSize = 11.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 2.dp)
                             )
                         }
@@ -574,7 +564,6 @@ private fun ExercisesExportTab(
     includedExerciseIds: Set<Long>,
     onToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
 
     // Group exercises by group name, with ungrouped at the end
     val groupedExercises = remember(exercises, groups) {
@@ -590,7 +579,7 @@ private fun ExercisesExportTab(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
             Text(
                 text = stringResource(R.string.share_no_exercises),
-                color = appColors.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -606,7 +595,7 @@ private fun ExercisesExportTab(
                         text = groupName.ifEmpty { stringResource(R.string.share_ungrouped) },
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Amber500,
+                        color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 4.dp)
                     )
                 }
@@ -617,7 +606,7 @@ private fun ExercisesExportTab(
                     val isIncluded = exercise.id in includedExerciseIds
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Row(
@@ -631,9 +620,9 @@ private fun ExercisesExportTab(
                                 onCheckedChange = { if (!isIncluded) onToggle(exercise.id) },
                                 enabled = !isIncluded,
                                 colors = CheckboxDefaults.colors(
-                                    checkedColor = if (isIncluded) appColors.textSecondary else Amber500,
-                                    uncheckedColor = appColors.textSecondary,
-                                    disabledCheckedColor = appColors.textSecondary
+                                    checkedColor = if (isIncluded) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.tertiary,
+                                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    disabledCheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                             Column(modifier = Modifier.padding(start = 4.dp)) {
@@ -641,13 +630,13 @@ private fun ExercisesExportTab(
                                     text = exercise.name,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = if (isIncluded) appColors.textSecondary else appColors.textPrimary
+                                    color = if (isIncluded) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface
                                 )
                                 if (isIncluded) {
                                     Text(
                                         text = stringResource(R.string.share_exercise_auto_included),
                                         fontSize = 11.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 2.dp)
                                     )
                                 } else {
@@ -658,7 +647,7 @@ private fun ExercisesExportTab(
                                     ) {
                                         // お気に入り
                                         if (exercise.isFavorite) {
-                                            Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(11.dp), tint = Color(0xFFFFD700))
+                                            Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(11.dp), tint = MaterialTheme.colorScheme.tertiary)
                                         }
 
                                         // レベル（課題設定がある場合のみ）
@@ -667,7 +656,7 @@ private fun ExercisesExportTab(
                                                 text = stringResource(R.string.level_format, exercise.sortOrder),
                                                 fontSize = 11.sp,
                                                 fontWeight = FontWeight.Bold,
-                                                color = Blue600
+                                                color = MaterialTheme.colorScheme.secondary
                                             )
                                         }
 
@@ -676,7 +665,7 @@ private fun ExercisesExportTab(
                                             text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
                                             fontSize = 11.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = appColors.textSecondary
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
 
                                         // Unilateral
@@ -685,7 +674,7 @@ private fun ExercisesExportTab(
                                                 text = stringResource(R.string.one_sided),
                                                 fontSize = 11.sp,
                                                 fontWeight = FontWeight.Bold,
-                                                color = Purple600
+                                                color = MaterialTheme.colorScheme.primary
                                             )
                                         }
 
@@ -695,7 +684,7 @@ private fun ExercisesExportTab(
                                                 text = stringResource(R.string.legend_weight),
                                                 fontSize = 11.sp,
                                                 fontWeight = FontWeight.Bold,
-                                                color = Amber500
+                                                color = MaterialTheme.colorScheme.tertiary
                                             )
                                         }
                                         if (exercise.distanceTrackingEnabled) {
@@ -703,7 +692,7 @@ private fun ExercisesExportTab(
                                                 text = stringResource(R.string.legend_distance),
                                                 fontSize = 11.sp,
                                                 fontWeight = FontWeight.Bold,
-                                                color = Cyan600
+                                                color = MaterialTheme.colorScheme.secondary
                                             )
                                         }
                                         if (exercise.assistanceTrackingEnabled) {
@@ -727,7 +716,7 @@ private fun ExercisesExportTab(
                                             ),
                                             fontSize = 11.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Green400,
+                                            color = MaterialTheme.colorScheme.primary,
                                             modifier = Modifier.padding(top = 2.dp)
                                         )
                                     }

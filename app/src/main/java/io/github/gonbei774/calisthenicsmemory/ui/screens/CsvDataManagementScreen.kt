@@ -39,7 +39,6 @@ fun CsvDataManagementScreen(
     viewModel: TrainingViewModel,
     onNavigateBack: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -263,7 +262,7 @@ fun CsvDataManagementScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Slate600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -275,14 +274,14 @@ fun CsvDataManagementScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = stringResource(R.string.section_partial_data_management),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -300,7 +299,7 @@ fun CsvDataManagementScreen(
                 Text(
                     text = stringResource(R.string.section_partial_data_management_description),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 20.sp,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
@@ -311,7 +310,7 @@ fun CsvDataManagementScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
                     shape = RoundedCornerShape(12.dp),
                     onClick = {
@@ -333,12 +332,12 @@ fun CsvDataManagementScreen(
                                 text = stringResource(R.string.csv_export),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.csv_export_description),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -351,7 +350,7 @@ fun CsvDataManagementScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
                     shape = RoundedCornerShape(12.dp),
                     onClick = {
@@ -373,12 +372,12 @@ fun CsvDataManagementScreen(
                                 text = stringResource(R.string.csv_import),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.csv_import_description),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -396,7 +395,7 @@ fun CsvDataManagementScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator(
-                            color = Purple600
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -420,7 +419,7 @@ fun CsvDataManagementScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         onClick = {
                             showCsvExportDialog = false
@@ -443,12 +442,12 @@ fun CsvDataManagementScreen(
                                     text = stringResource(R.string.csv_export_groups),
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.csv_export_groups_description),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -458,7 +457,7 @@ fun CsvDataManagementScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         onClick = {
                             showCsvExportDialog = false
@@ -481,12 +480,12 @@ fun CsvDataManagementScreen(
                                     text = stringResource(R.string.csv_export_exercises),
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.csv_export_exercises_description),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -496,7 +495,7 @@ fun CsvDataManagementScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         onClick = {
                             showCsvExportDialog = false
@@ -519,12 +518,12 @@ fun CsvDataManagementScreen(
                                     text = stringResource(R.string.csv_export_records),
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.csv_export_records_description),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -534,7 +533,7 @@ fun CsvDataManagementScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         onClick = {
                             showCsvExportDialog = false
@@ -557,12 +556,12 @@ fun CsvDataManagementScreen(
                                     text = stringResource(R.string.csv_export_record_template),
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.csv_export_record_template_description),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -601,7 +600,7 @@ fun CsvDataManagementScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
@@ -618,12 +617,12 @@ fun CsvDataManagementScreen(
                                 Text(
                                     text = stringResource(R.string.csv_file),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = csvFileName ?: "unknown.csv",
                                     fontSize = 14.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Medium
                                 )
                             }
@@ -635,12 +634,12 @@ fun CsvDataManagementScreen(
                                 Text(
                                     text = stringResource(R.string.csv_type),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = getCsvTypeLocalizedString(csvImportType),
                                     fontSize = 14.sp,
-                                    color = Green400,
+                                    color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -652,12 +651,12 @@ fun CsvDataManagementScreen(
                                 Text(
                                     text = stringResource(R.string.csv_items),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = "$csvImportDataCount",
                                     fontSize = 14.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -672,7 +671,7 @@ fun CsvDataManagementScreen(
                         showBackupConfirmation = true
                     },
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = Purple600
+                        contentColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
                     Text(
@@ -723,7 +722,7 @@ fun CsvDataManagementScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
@@ -737,11 +736,11 @@ fun CsvDataManagementScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(text = stringResource(R.string.csv_import_success_label), fontSize = 14.sp, color = Green400)
+                                Text(text = stringResource(R.string.csv_import_success_label), fontSize = 14.sp, color = MaterialTheme.colorScheme.primary)
                                 Text(
                                     text = "${report.successCount}",
                                     fontSize = 14.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -749,11 +748,11 @@ fun CsvDataManagementScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(text = stringResource(R.string.csv_import_skipped_label), fontSize = 14.sp, color = appColors.textSecondary)
+                                Text(text = stringResource(R.string.csv_import_skipped_label), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 Text(
                                     text = "${report.skippedCount}",
                                     fontSize = 14.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -761,11 +760,11 @@ fun CsvDataManagementScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(text = stringResource(R.string.csv_import_error_label), fontSize = 14.sp, color = Red600)
+                                Text(text = stringResource(R.string.csv_import_error_label), fontSize = 14.sp, color = MaterialTheme.colorScheme.error)
                                 Text(
                                     text = "${report.errorCount}",
                                     fontSize = 14.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -777,7 +776,7 @@ fun CsvDataManagementScreen(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = appColors.cardBackgroundSecondary
+                                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                             ),
                             shape = RoundedCornerShape(8.dp),
                             onClick = { showSkippedItems = !showSkippedItems }
@@ -795,14 +794,14 @@ fun CsvDataManagementScreen(
                                     Text(
                                         text = stringResource(R.string.csv_import_skipped_items, report.skippedCount),
                                         fontSize = 14.sp,
-                                        color = appColors.textTertiary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Medium
                                     )
                                     Icon(
                                         if (showSkippedItems) AppIcons.ExpandLess else AppIcons.ExpandMore,
                                         contentDescription = null,
                                         modifier = Modifier.size(20.dp),
-                                        tint = appColors.textSecondary
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
 
@@ -815,7 +814,7 @@ fun CsvDataManagementScreen(
                                             Text(
                                                 text = "\u2022 $item",
                                                 fontSize = 12.sp,
-                                                color = appColors.textSecondary,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 lineHeight = 16.sp
                                             )
                                         }
@@ -823,7 +822,7 @@ fun CsvDataManagementScreen(
                                             Text(
                                                 text = stringResource(R.string.csv_import_more_items, report.skippedItems.size - 10),
                                                 fontSize = 12.sp,
-                                                color = appColors.textSecondary
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
                                         }
                                     }
@@ -837,7 +836,7 @@ fun CsvDataManagementScreen(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = Red600.copy(alpha = 0.1f)
+                                containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.1f)
                             ),
                             shape = RoundedCornerShape(8.dp),
                             onClick = { showErrors = !showErrors }
@@ -855,14 +854,14 @@ fun CsvDataManagementScreen(
                                     Text(
                                         text = stringResource(R.string.csv_import_errors, report.errorCount),
                                         fontSize = 14.sp,
-                                        color = Red600,
+                                        color = MaterialTheme.colorScheme.error,
                                         fontWeight = FontWeight.Medium
                                     )
                                     Icon(
                                         if (showErrors) AppIcons.ExpandLess else AppIcons.ExpandMore,
                                         contentDescription = null,
                                         modifier = Modifier.size(20.dp),
-                                        tint = appColors.textSecondary
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
 
@@ -875,7 +874,7 @@ fun CsvDataManagementScreen(
                                             Text(
                                                 text = "\u2022 $error",
                                                 fontSize = 12.sp,
-                                                color = Red600.copy(alpha = 0.8f),
+                                                color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
                                                 lineHeight = 16.sp
                                             )
                                         }
@@ -883,7 +882,7 @@ fun CsvDataManagementScreen(
                                             Text(
                                                 text = stringResource(R.string.csv_import_more_items, report.errors.size - 10),
                                                 fontSize = 12.sp,
-                                                color = Red600.copy(alpha = 0.8f)
+                                                color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
                                             )
                                         }
                                     }
@@ -900,7 +899,7 @@ fun CsvDataManagementScreen(
                         importReport = null
                     },
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = Purple600
+                        contentColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
                     Text(stringResource(R.string.ok))
@@ -944,7 +943,7 @@ fun CsvDataManagementScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Purple600
+                            containerColor = MaterialTheme.colorScheme.primary
                         )
                     ) {
                         Text(
@@ -981,7 +980,7 @@ fun CsvDataManagementScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = appColors.textPrimary
+                            contentColor = MaterialTheme.colorScheme.onSurface
                         )
                     ) {
                         Text(

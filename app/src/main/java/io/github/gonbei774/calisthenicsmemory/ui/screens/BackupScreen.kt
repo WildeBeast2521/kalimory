@@ -38,7 +38,6 @@ fun BackupScreen(
     viewModel: TrainingViewModel,
     onNavigateBack: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -180,7 +179,7 @@ fun BackupScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Slate600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -192,14 +191,14 @@ fun BackupScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = stringResource(R.string.section_full_backup),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -217,7 +216,7 @@ fun BackupScreen(
                 Text(
                     text = stringResource(R.string.section_full_backup_description),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 20.sp,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
@@ -228,7 +227,7 @@ fun BackupScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
                     shape = RoundedCornerShape(12.dp),
                     onClick = {
@@ -253,13 +252,13 @@ fun BackupScreen(
                                 text = stringResource(R.string.export_data),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = lastBackupAt?.let { stringResource(R.string.backup_last, formatBackupTime(it)) }
                                     ?: stringResource(R.string.backup_never),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -272,7 +271,7 @@ fun BackupScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
                     shape = RoundedCornerShape(12.dp),
                     onClick = {
@@ -294,12 +293,12 @@ fun BackupScreen(
                                 text = stringResource(R.string.import_data),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.restore_from_backup),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -312,7 +311,7 @@ fun BackupScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = Red600.copy(alpha = 0.1f)
+                        containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.1f)
                     ),
                     shape = RoundedCornerShape(12.dp)
                 ) {
@@ -328,13 +327,13 @@ fun BackupScreen(
                                 text = stringResource(R.string.warning_title),
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )
                             Text(
                                 text = stringResource(R.string.import_warning),
                                 fontSize = 14.sp,
-                                color = appColors.textTertiary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 lineHeight = 20.sp
                             )
                         }
@@ -352,7 +351,7 @@ fun BackupScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator(
-                            color = Purple600
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -385,7 +384,7 @@ fun BackupScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
@@ -397,13 +396,13 @@ fun BackupScreen(
                             Text(
                                 text = stringResource(R.string.file_name),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(bottom = 6.dp)
                             )
                             Text(
                                 text = importFileName ?: "unknown.json",
                                 fontSize = 16.sp,
-                                color = appColors.textPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Medium
                             )
                         }
@@ -413,7 +412,7 @@ fun BackupScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
@@ -426,7 +425,7 @@ fun BackupScreen(
                             Text(
                                 text = stringResource(R.string.data_contents),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )
                             Row(
@@ -436,12 +435,12 @@ fun BackupScreen(
                                 Text(
                                     text = stringResource(R.string.groups),
                                     fontSize = 16.sp,
-                                    color = appColors.textTertiary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = stringResource(R.string.count_items, importGroupCount),
                                     fontSize = 16.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -452,12 +451,12 @@ fun BackupScreen(
                                 Text(
                                     text = stringResource(R.string.exercises),
                                     fontSize = 16.sp,
-                                    color = appColors.textTertiary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = stringResource(R.string.count_items, importExerciseCount),
                                     fontSize = 16.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -468,12 +467,12 @@ fun BackupScreen(
                                 Text(
                                     text = stringResource(R.string.records),
                                     fontSize = 16.sp,
-                                    color = appColors.textTertiary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = stringResource(R.string.count_records, importRecordCount),
                                     fontSize = 16.sp,
-                                    color = appColors.textPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -484,7 +483,7 @@ fun BackupScreen(
                         Text(
                             text = stringResource(R.string.import_anomalies_notice, importAnomalyCount),
                             fontSize = 14.sp,
-                            color = Amber500,
+                            color = MaterialTheme.colorScheme.tertiary,
                             lineHeight = 20.sp
                         )
                     }
@@ -492,7 +491,7 @@ fun BackupScreen(
                     Text(
                         text = stringResource(R.string.import_data_preview_message),
                         fontSize = 16.sp,
-                        color = appColors.textTertiary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         lineHeight = 22.sp
                     )
                 }
@@ -504,7 +503,7 @@ fun BackupScreen(
                         showBackupConfirmation = true
                     },
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = Purple600
+                        contentColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
                     Text(
@@ -549,7 +548,7 @@ fun BackupScreen(
                         text = stringResource(R.string.cannot_undo),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Red600
+                        color = MaterialTheme.colorScheme.error
                     )
                 }
             },
@@ -581,7 +580,7 @@ fun BackupScreen(
                         }
                     },
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = Red600
+                        contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
                     Text(
@@ -638,7 +637,7 @@ fun BackupScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Purple600
+                            containerColor = MaterialTheme.colorScheme.primary
                         )
                     ) {
                         Text(
@@ -657,7 +656,7 @@ fun BackupScreen(
                             .fillMaxWidth()
                             .height(56.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = appColors.textPrimary
+                            contentColor = MaterialTheme.colorScheme.onSurface
                         )
                     ) {
                         Text(
