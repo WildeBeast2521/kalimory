@@ -43,7 +43,6 @@ fun RecordListView(
     onIntervalEditClick: (RecordItem.Interval) -> Unit,
     onIntervalDeleteClick: (RecordItem.Interval) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     if (items.isEmpty() && selectedExerciseFilter == null) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -52,7 +51,7 @@ fun RecordListView(
             Text(
                 text = stringResource(R.string.no_records_yet),
                 fontSize = 18.sp,
-                color = appColors.textSecondary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     } else {
@@ -73,7 +72,7 @@ fun RecordListView(
                         Text(
                             text = stringResource(R.string.no_records_for_exercise),
                             fontSize = 16.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -125,11 +124,10 @@ fun SessionCard(
     onSessionLongPress: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) appColors.cardBackgroundSelected else appColors.cardBackground
+            containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -150,15 +148,15 @@ fun SessionCard(
                         text = exercise?.name ?: stringResource(R.string.unknown_exercise),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if (exercise != null) Purple600 else Color.White,
+                        color = if (exercise != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.clickable(enabled = exercise != null) {
                             exercise?.let { onExerciseClick(it) }
                         }
                     )
                     Text(
-                        text = "${session.date} ${session.time}",
+                        text = displayDateTime(session.date, session.time),
                         fontSize = 14.sp,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
@@ -168,7 +166,7 @@ fun SessionCard(
                         Icon(
                             AppIcons.More,
                             contentDescription = stringResource(R.string.menu),
-                            tint = appColors.textSecondary
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     DropdownMenu(
@@ -183,7 +181,7 @@ fun SessionCard(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text(stringResource(R.string.delete), color = Red600) },
+                            text = { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) },
                             onClick = {
                                 menuExpanded = false
                                 onDeleteClick()
@@ -203,7 +201,7 @@ fun SessionCard(
                     Text(
                         text = session.comment,
                         fontSize = 14.sp,
-                        color = appColors.textTertiary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontStyle = FontStyle.Italic
                     )
                 }
@@ -217,7 +215,7 @@ fun SessionCard(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackgroundSecondary
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         shape = RoundedCornerShape(8.dp),
                         onClick = { onRecordClick(record) }
@@ -236,7 +234,7 @@ fun SessionCard(
                                 Text(
                                     text = stringResource(R.string.set_number, record.setNumber),
                                     fontSize = 14.sp,
-                                    color = appColors.textTertiary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
 
                                 // Unilateral/Bilateral 対応
@@ -250,22 +248,22 @@ fun SessionCard(
                                             text = stringResource(R.string.right_value_short, record.valueRight, if (exercise?.type == "Dynamic") stringResource(R.string.unit_reps) else stringResource(R.string.unit_seconds)),
                                             fontSize = 16.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Green400
+                                            color = MaterialTheme.colorScheme.primary
                                         )
                                         Text(
                                             text = stringResource(R.string.left_value_short, record.valueLeft!!, if (exercise?.type == "Dynamic") stringResource(R.string.unit_reps) else stringResource(R.string.unit_seconds)),
                                             fontSize = 16.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Purple600
+                                            color = MaterialTheme.colorScheme.primary
                                         )
                                     }
                                 } else {
                                     // Bilateral: 従来通り
                                     Text(
-                                        text = "${record.valueRight}${if (exercise?.type == "Dynamic") stringResource(R.string.unit_reps) else stringResource(R.string.unit_seconds)}",
+                                        text = stringResource(R.string.value_with_unit, record.valueRight, if (exercise?.type == "Dynamic") stringResource(R.string.unit_reps) else stringResource(R.string.unit_seconds)),
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Green400
+                                        color = MaterialTheme.colorScheme.primary
                                     )
                                 }
                             }
@@ -282,7 +280,7 @@ fun SessionCard(
                                         Text(
                                             text = stringResource(R.string.distance_display_format, record.distanceCm!!),
                                             fontSize = 13.sp,
-                                            color = Blue600,
+                                            color = MaterialTheme.colorScheme.secondary,
                                             fontWeight = FontWeight.Bold
                                         )
                                     }
@@ -290,7 +288,7 @@ fun SessionCard(
                                         Text(
                                             text = stringResource(R.string.weight_display_format, record.weightG!! / 1000.0f),
                                             fontSize = 13.sp,
-                                            color = Orange600,
+                                            color = MaterialTheme.colorScheme.tertiary,
                                             fontWeight = FontWeight.Bold
                                         )
                                     }
@@ -298,7 +296,7 @@ fun SessionCard(
                                         Text(
                                             text = stringResource(R.string.assistance_display_format, record.assistanceG!! / 1000.0f),
                                             fontSize = 13.sp,
-                                            color = Amber500,
+                                            color = MaterialTheme.colorScheme.tertiary,
                                             fontWeight = FontWeight.Bold
                                         )
                                     }
@@ -584,7 +582,6 @@ fun IntervalRecordCard(
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     var exercisesExpanded by remember { mutableStateOf(false) }
 
     val exercises = remember(record.exercisesJson) {
@@ -598,7 +595,7 @@ fun IntervalRecordCard(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -615,12 +612,12 @@ fun IntervalRecordCard(
                         text = record.programName,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Orange600
+                        color = MaterialTheme.colorScheme.tertiary
                     )
                     Text(
-                        text = "${record.date} ${record.time}",
+                        text = displayDateTime(record.date, record.time),
                         fontSize = 14.sp,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Box {
@@ -629,7 +626,7 @@ fun IntervalRecordCard(
                         Icon(
                             AppIcons.More,
                             contentDescription = stringResource(R.string.menu),
-                            tint = appColors.textSecondary
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     DropdownMenu(
@@ -644,7 +641,7 @@ fun IntervalRecordCard(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text(stringResource(R.string.delete), color = Red600) },
+                            text = { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) },
                             onClick = {
                                 menuExpanded = false
                                 onDeleteClick()
@@ -664,7 +661,7 @@ fun IntervalRecordCard(
                     Text(
                         text = record.comment!!,
                         fontSize = 14.sp,
-                        color = appColors.textTertiary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontStyle = FontStyle.Italic
                     )
                 }
@@ -673,7 +670,7 @@ fun IntervalRecordCard(
             // Settings & completion
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Column(
@@ -696,20 +693,20 @@ fun IntervalRecordCard(
                             ),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (isFullCompletion) Orange600 else appColors.textTertiary
+                            color = if (isFullCompletion) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         if (isFullCompletion) {
                             Text(
                                 text = stringResource(R.string.interval_record_complete),
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Orange600
+                                color = MaterialTheme.colorScheme.tertiary
                             )
                         } else {
                             Text(
                                 text = stringResource(R.string.interval_record_partial),
                                 fontSize = 12.sp,
-                                color = appColors.textTertiary
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -723,7 +720,7 @@ fun IntervalRecordCard(
                             record.roundRestSeconds
                         ),
                         fontSize = 13.sp,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -745,13 +742,13 @@ fun IntervalRecordCard(
                         Text(
                             text = stringResource(R.string.interval_record_exercises_count, exercises.size),
                             fontSize = 14.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Icon(
                             if (exercisesExpanded) AppIcons.ExpandMore
                             else AppIcons.Forward,
                             contentDescription = null,
-                            tint = appColors.textSecondary,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -779,16 +776,16 @@ fun IntervalRecordCard(
                                 Text(
                                     text = name,
                                     fontSize = 13.sp,
-                                    color = if (isExerciseComplete) appColors.textPrimary
-                                    else appColors.textTertiary,
+                                    color = if (isExerciseComplete) MaterialTheme.colorScheme.onSurface
+                                    else MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.weight(1f)
                                 )
                                 Text(
                                     text = "$doneRounds/${record.rounds}",
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = if (isExerciseComplete) Orange600
-                                    else appColors.textTertiary
+                                    color = if (isExerciseComplete) MaterialTheme.colorScheme.tertiary
+                                    else MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -807,7 +804,6 @@ fun IntervalRecordCard(
 @Composable
 fun IntervalRecordEditDialog(
     record: IntervalRecord,
-    appColors: AppColors,
     onDismiss: () -> Unit,
     onConfirm: (IntervalRecord) -> Unit
 ) {
@@ -822,11 +818,11 @@ fun IntervalRecordEditDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = appColors.cardBackground,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 stringResource(R.string.edit_session_info),
-                color = appColors.textPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
         },
         text = {
@@ -852,13 +848,13 @@ fun IntervalRecordEditDialog(
                     modifier = Modifier.fillMaxWidth(),
                     maxLines = 3,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedTextColor = appColors.textPrimary,
-                        focusedBorderColor = Orange600,
-                        unfocusedBorderColor = appColors.textTertiary,
-                        focusedLabelColor = Orange600,
-                        unfocusedLabelColor = appColors.textTertiary,
-                        cursorColor = Orange600
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        cursorColor = MaterialTheme.colorScheme.tertiary
                     )
                 )
             }
@@ -873,12 +869,12 @@ fun IntervalRecordEditDialog(
                     )
                 )
             }) {
-                Text(stringResource(R.string.save), color = Orange600)
+                Text(stringResource(R.string.save), color = MaterialTheme.colorScheme.tertiary)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     )

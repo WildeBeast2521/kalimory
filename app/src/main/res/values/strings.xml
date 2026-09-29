@@ -82,9 +82,9 @@
     <string name="right">Right</string>
     <string name="left">Left</string>
     <string name="right_value">Right (%s)</string>
-    <string name="right_value_short">R: %1$d%2$s</string>
+    <string name="right_value_short">R: %1$d %2$s</string>
     <string name="left_value">Left (%s)</string>
-    <string name="left_value_short">L: %1$d%2$s</string>
+    <string name="left_value_short">L: %1$d %2$s</string>
     <string name="set_number_format">Set %d</string>
     <string name="set_number_with_unit" formatted="false">Set %d (%s)</string>
     <string name="date_format">Date: %s</string>
@@ -346,7 +346,6 @@
     <string name="set_number_display">Set %d</string>
     <string name="date_with_label">Date: %s</string>
     <string name="time_with_label">Time: %s</string>
-    <string name="close_x">×</string>
     <string name="select_exercise_filter">Select Exercise</string>
     <string name="target_display_short">Target: %1$d sets × %2$d%3$s%4$s</string>
     <string name="edit_exercise_title">Edit Exercise</string>
@@ -850,4 +849,9 @@
     <string name="record_all_sets">Record all (%1$d)</string>
     <string name="record_only_done_sets">Only ticked (%1$d)</string>
     <string name="program_no_exercises">No exercises yet</string>
+    <plurals name="set_count">
+        <item quantity="one">%d set</item>
+        <item quantity="other">%d sets</item>
+    </plurals>
+    <string name="value_with_unit">%1$d %2$s</string>
 </resources>

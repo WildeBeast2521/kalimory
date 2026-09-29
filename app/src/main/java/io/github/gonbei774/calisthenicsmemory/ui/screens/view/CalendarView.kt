@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,7 +46,6 @@ fun CalendarView(
     selectedPeriod: Period?,
     onExerciseClick: (Exercise) -> Unit
 ) {
-    val appColors = LocalAppColors.current
 
     // 種目ID → Lv (sortOrder) マップ
     val exerciseLevelMap = remember(exercises) {
@@ -142,7 +142,6 @@ fun CalendarView(
                             onClick = {
                                 selectedDate = if (selectedDate == date) null else date
                             },
-                            appColors = appColors,
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -154,8 +153,7 @@ fun CalendarView(
                     stats = stats,
                     selectedExercise = selectedExerciseFilter,
                     rangeStart = statsRange.first,
-                    rangeEnd = statsRange.second,
-                    appColors = appColors
+                    rangeEnd = statsRange.second
                 )
             }
 
@@ -169,7 +167,6 @@ fun CalendarView(
                             date = selected,
                             items = dayItems,
                             exerciseMap = exerciseMap,
-                            appColors = appColors,
                             onExerciseClick = onExerciseClick
                         )
                     }
@@ -184,7 +181,6 @@ fun CalendarView(
                                 date = date,
                                 items = dayItems,
                                 exerciseMap = exerciseMap,
-                                appColors = appColors,
                                 onExerciseClick = onExerciseClick
                             )
                         }
@@ -242,8 +238,7 @@ fun CalendarView(
                     selectedPeriod = selectedPeriod,
                     onDateClick = { date ->
                         selectedDate = if (selectedDate == date) null else date
-                    },
-                    appColors = appColors
+                    }
                 )
             }
 
@@ -252,8 +247,7 @@ fun CalendarView(
                     stats = stats,
                     selectedExercise = selectedExerciseFilter,
                     rangeStart = statsRange.first,
-                    rangeEnd = statsRange.second,
-                    appColors = appColors
+                    rangeEnd = statsRange.second
                 )
             }
 
@@ -267,7 +261,6 @@ fun CalendarView(
                             date = selected,
                             items = dayItems,
                             exerciseMap = exerciseMap,
-                            appColors = appColors,
                             onExerciseClick = onExerciseClick
                         )
                     }
@@ -287,7 +280,6 @@ fun CalendarView(
                                     date = date,
                                     items = dayItems,
                                     exerciseMap = exerciseMap,
-                                    appColors = appColors,
                                     onExerciseClick = onExerciseClick
                                 )
                             }
@@ -306,8 +298,7 @@ private fun MonthGrid(
     selectedDate: LocalDate?,
     dayInfoMap: Map<String, DayInfo>,
     selectedPeriod: Period? = null,
-    onDateClick: (LocalDate) -> Unit,
-    appColors: AppColors
+    onDateClick: (LocalDate) -> Unit
 ) {
     val cutoffDate = remember(selectedPeriod, today) {
         selectedPeriod?.let { today.minusDays(it.days.toLong() - 1) }
@@ -319,7 +310,7 @@ private fun MonthGrid(
             text = formatYearMonth(yearMonth),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -331,7 +322,7 @@ private fun MonthGrid(
                 Text(
                     text = day.getDisplayName(TextStyle.SHORT, locale),
                     fontSize = 12.sp,
-                    color = appColors.textTertiary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.weight(1f)
                 )
@@ -371,7 +362,6 @@ private fun MonthGrid(
                             level = scoreToLevel(dayInfo?.score ?: 0.0),
                             hasInterval = dayInfo?.hasInterval == true,
                             onClick = { onDateClick(date) },
-                            appColors = appColors,
                             modifier = Modifier.weight(1f)
                         )
                     } else {
@@ -379,7 +369,7 @@ private fun MonthGrid(
                             modifier = Modifier
                                 .weight(1f)
                                 .aspectRatio(1f)
-                                .border(0.5.dp, appColors.textTertiary.copy(alpha = 0.2f))
+                                .border(0.5.dp, MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f))
                         )
                     }
                 }
@@ -407,12 +397,11 @@ private fun StatsCard(
     stats: StatsSummary,
     selectedExercise: Exercise?,
     rangeStart: LocalDate,
-    rangeEnd: LocalDate,
-    appColors: AppColors
+    rangeEnd: LocalDate
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(
@@ -422,17 +411,17 @@ private fun StatsCard(
             Text(
                 text = formatStatsRange(rangeStart, rangeEnd),
                 fontSize = 12.sp,
-                color = appColors.textTertiary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            StatsRow(label = stringResource(R.string.stats_total_sets), value = stats.totalSets.toString(), appColors = appColors)
+            StatsRow(label = stringResource(R.string.stats_total_sets), value = stats.totalSets.toString())
             if (selectedExercise == null) {
-                StatsRow(label = stringResource(R.string.stats_exercise_count), value = stats.exerciseCount.toString(), appColors = appColors)
-                StatsRow(label = stringResource(R.string.stats_total_intervals), value = stats.intervalCount.toString(), appColors = appColors)
+                StatsRow(label = stringResource(R.string.stats_exercise_count), value = stats.exerciseCount.toString())
+                StatsRow(label = stringResource(R.string.stats_total_intervals), value = stats.intervalCount.toString())
             } else {
                 if (selectedExercise.type == "Isometric") {
-                    StatsRow(label = stringResource(R.string.stats_total_time), value = formatTotalSeconds(stats.totalValue), appColors = appColors)
+                    StatsRow(label = stringResource(R.string.stats_total_time), value = formatTotalSeconds(stats.totalValue))
                 } else {
-                    StatsRow(label = stringResource(R.string.stats_total_reps), value = stats.totalValue.toString(), appColors = appColors)
+                    StatsRow(label = stringResource(R.string.stats_total_reps), value = stats.totalValue.toString())
                 }
             }
         }
@@ -442,14 +431,13 @@ private fun StatsCard(
 @Composable
 private fun StatsRow(
     label: String,
-    value: String,
-    appColors: AppColors
+    value: String
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .background(appColors.cardBackgroundSecondary)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .padding(horizontal = 12.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -457,13 +445,13 @@ private fun StatsRow(
         Text(
             text = label,
             fontSize = 14.sp,
-            color = appColors.textSecondary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = value,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
@@ -473,7 +461,8 @@ private fun formatStatsRange(start: LocalDate, end: LocalDate): String {
     val context = LocalContext.current
     val zone = ZoneId.systemDefault()
     val startMillis = start.atStartOfDay(zone).toInstant().toEpochMilli()
-    val endMillis = end.atStartOfDay(zone).toInstant().toEpochMilli()
+    // formatDateRange treats the end as exclusive, so the last day is included by ending after it.
+    val endMillis = end.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
     return DateUtils.formatDateRange(
         context,
         startMillis,
@@ -503,25 +492,25 @@ private fun DayCell(
     level: Int,
     hasInterval: Boolean,
     onClick: () -> Unit,
-    appColors: AppColors,
     modifier: Modifier = Modifier
 ) {
     val showHeatmap = level > 0 && !isOutOfRange
     val textColor = when {
-        isOutOfRange -> appColors.textTertiary.copy(alpha = 0.3f)
-        isToday && !showHeatmap -> Purple600
-        else -> appColors.textPrimary
+        isOutOfRange -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+        isToday && !showHeatmap -> MaterialTheme.colorScheme.primary
+        showHeatmap -> heatContent(level)
+        else -> MaterialTheme.colorScheme.onSurface
     }
 
     Box(
         modifier = modifier
             .aspectRatio(1f)
             .background(
-                if (showHeatmap) Purple600.copy(alpha = levelToAlpha(level)) else Color.Transparent
+                if (showHeatmap) heatBackground(level) else Color.Transparent
             )
-            .border(0.5.dp, appColors.textTertiary.copy(alpha = 0.2f))
+            .border(0.5.dp, MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f))
             .then(
-                if (isSelected) Modifier.border(2.dp, appColors.textPrimary) else Modifier
+                if (isSelected) Modifier.border(2.dp, MaterialTheme.colorScheme.onSurface) else Modifier
             )
             .clickable(onClick = onClick)
     ) {
@@ -541,7 +530,7 @@ private fun DayCell(
                     .size(6.dp)
                     .align(Alignment.TopEnd)
                     .offset(x = (-3).dp, y = 3.dp)
-                    .background(Orange600, CircleShape)
+                    .background(MaterialTheme.colorScheme.tertiary, CircleShape)
             )
         }
     }
@@ -555,7 +544,6 @@ private fun WeekDayCell(
     level: Int,
     hasInterval: Boolean,
     onClick: () -> Unit,
-    appColors: AppColors,
     modifier: Modifier = Modifier
 ) {
     val locale = LocalConfiguration.current.locales[0]
@@ -565,12 +553,12 @@ private fun WeekDayCell(
     Box(
         modifier = modifier
             .background(
-                if (level > 0) Purple600.copy(alpha = levelToAlpha(level)) else Color.Transparent,
+                if (level > 0) heatBackground(level) else Color.Transparent,
                 shape
             )
-            .border(0.5.dp, appColors.textTertiary.copy(alpha = 0.2f), shape)
+            .border(0.5.dp, MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f), shape)
             .then(
-                if (isSelected) Modifier.border(2.dp, appColors.textPrimary, shape) else Modifier
+                if (isSelected) Modifier.border(2.dp, MaterialTheme.colorScheme.onSurface, shape) else Modifier
             )
             .clickable(onClick = onClick)
             .padding(vertical = 8.dp)
@@ -584,7 +572,7 @@ private fun WeekDayCell(
             Text(
                 text = dayOfWeekText,
                 fontSize = 11.sp,
-                color = appColors.textTertiary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
             Text(
@@ -592,8 +580,9 @@ private fun WeekDayCell(
                 fontSize = 20.sp,
                 fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
                 color = when {
-                    isToday && level == 0 -> Purple600
-                    else -> appColors.textPrimary
+                    isToday && level == 0 -> MaterialTheme.colorScheme.primary
+                    level > 0 -> heatContent(level)
+                    else -> MaterialTheme.colorScheme.onSurface
                 },
                 textAlign = TextAlign.Center
             )
@@ -605,7 +594,7 @@ private fun WeekDayCell(
                     .size(6.dp)
                     .align(Alignment.TopEnd)
                     .offset(x = (-4).dp, y = 4.dp)
-                    .background(Orange600, CircleShape)
+                    .background(MaterialTheme.colorScheme.tertiary, CircleShape)
             )
         }
     }
@@ -616,12 +605,11 @@ private fun DayRecordSummary(
     date: LocalDate,
     items: List<RecordItem>,
     exerciseMap: Map<Long, Exercise>,
-    appColors: AppColors,
     onExerciseClick: (Exercise) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column(
@@ -630,10 +618,10 @@ private fun DayRecordSummary(
         ) {
             // 日付ヘッダー
             Text(
-                text = date.toString(),
+                text = formatDate(date, LocalConfiguration.current.locales[0]),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textSecondary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             // 同じ種目のセッションは1行に集約し、合計set数を表示する
@@ -649,15 +637,13 @@ private fun DayRecordSummary(
                     exerciseId = exerciseId,
                     setCount = setCount,
                     exerciseMap = exerciseMap,
-                    appColors = appColors,
                     onExerciseClick = onExerciseClick
                 )
             }
 
             items.filterIsInstance<RecordItem.Interval>().forEach { item ->
                 IntervalSummaryRow(
-                    record = item.record,
-                    appColors = appColors
+                    record = item.record
                 )
             }
         }
@@ -669,7 +655,6 @@ private fun SessionSummaryRow(
     exerciseId: Long,
     setCount: Int,
     exerciseMap: Map<Long, Exercise>,
-    appColors: AppColors,
     onExerciseClick: (Exercise) -> Unit
 ) {
     val exercise = exerciseMap[exerciseId]
@@ -679,7 +664,7 @@ private fun SessionSummaryRow(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .background(appColors.cardBackgroundSecondary)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .then(
                 if (exercise != null) {
                     Modifier.clickable { onExerciseClick(exercise) }
@@ -699,28 +684,27 @@ private fun SessionSummaryRow(
             Box(
                 modifier = Modifier
                     .size(8.dp)
-                    .background(Purple600, CircleShape)
+                    .background(MaterialTheme.colorScheme.primary, CircleShape)
             )
             Text(
                 text = exerciseName,
                 fontSize = 14.sp,
-                color = appColors.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
         Text(
-            text = stringResource(R.string.sets_format, setCount),
+            text = pluralStringResource(R.plurals.set_count, setCount, setCount),
             fontSize = 13.sp,
-            color = appColors.textTertiary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
 
 @Composable
 private fun IntervalSummaryRow(
-    record: IntervalRecord,
-    appColors: AppColors
+    record: IntervalRecord
 ) {
     val isFullCompletion = record.completedRounds == record.rounds
 
@@ -735,7 +719,7 @@ private fun IntervalSummaryRow(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .background(appColors.cardBackgroundSecondary)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .padding(horizontal = 12.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -748,13 +732,13 @@ private fun IntervalSummaryRow(
             Box(
                 modifier = Modifier
                     .size(8.dp)
-                    .background(Orange600, CircleShape)
+                    .background(MaterialTheme.colorScheme.tertiary, CircleShape)
             )
             Column {
                 Text(
                     text = record.programName,
                     fontSize = 14.sp,
-                    color = Orange600,
+                    color = MaterialTheme.colorScheme.tertiary,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -763,7 +747,7 @@ private fun IntervalSummaryRow(
                     Text(
                         text = exerciseNames.joinToString(", "),
                         fontSize = 12.sp,
-                        color = appColors.textTertiary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -773,7 +757,7 @@ private fun IntervalSummaryRow(
         Text(
             text = "${record.completedRounds}/${record.rounds}",
             fontSize = 13.sp,
-            color = if (isFullCompletion) Orange600 else appColors.textTertiary,
+            color = if (isFullCompletion) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = if (isFullCompletion) FontWeight.Bold else FontWeight.Normal
         )
     }
@@ -803,13 +787,21 @@ private fun scoreToLevel(score: Double): Int = when {
     else -> 4
 }
 
-private fun levelToAlpha(level: Int): Float = when (level) {
-    1 -> 0.15f
-    2 -> 0.35f
-    3 -> 0.6f
-    4 -> 0.9f
-    else -> 0f
+/**
+ * How much was trained on a day, from light to full spruce. Levels 1 and 2 use the container
+ * colour and levels 3 and 4 the primary colour, each with its own readable text colour.
+ */
+@Composable
+private fun heatBackground(level: Int): Color = when (level) {
+    1 -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.55f)
+    2 -> MaterialTheme.colorScheme.primaryContainer
+    3 -> MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+    else -> MaterialTheme.colorScheme.primary
 }
+
+@Composable
+private fun heatContent(level: Int): Color =
+    if (level >= 3) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onPrimaryContainer
 
 private fun formatYearMonth(yearMonth: YearMonth): String {
     val locale = Locale.getDefault()

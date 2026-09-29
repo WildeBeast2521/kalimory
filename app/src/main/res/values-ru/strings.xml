@@ -74,9 +74,9 @@
     <string name="right">Правый</string>
     <string name="left">Левый</string>
     <string name="right_value">Правый (%s)</string>
-    <string name="right_value_short">П: %1$d%2$s</string>
+    <string name="right_value_short">П: %1$d %2$s</string>
     <string name="left_value">Левый (%s)</string>
-    <string name="left_value_short">Л: %1$d%2$s</string>
+    <string name="left_value_short">Л: %1$d %2$s</string>
     <string name="set_number_format">Подход %d</string>
     <string name="set_number_with_unit" formatted="false">Подход %d (%s)</string>
     <string name="date_format">Дата: %s</string>
@@ -161,4 +161,11 @@
     <string name="record_all_sets">Записать все (%1$d)</string>
     <string name="record_only_done_sets">Только отмеченные (%1$d)</string>
     <string name="program_no_exercises">Упражнений пока нет</string>
+    <plurals name="set_count">
+        <item quantity="one">%d подход</item>
+        <item quantity="few">%d подхода</item>
+        <item quantity="many">%d подходов</item>
+        <item quantity="other">%d подхода</item>
+    </plurals>
+    <string name="value_with_unit">%1$d %2$s</string>
 </resources>

@@ -81,9 +81,9 @@
     <string name="right">Droit</string>
     <string name="left">Gauche</string>
     <string name="right_value">Droit (%s)</string>
-    <string name="right_value_short">D : %1$d%2$s</string>
+    <string name="right_value_short">D : %1$d %2$s</string>
     <string name="left_value">Gauche (%s)</string>
-    <string name="left_value_short">G : %1$d%2$s</string>
+    <string name="left_value_short">G : %1$d %2$s</string>
     <string name="set_number_format">Série %d</string>
     <string name="set_number_with_unit" formatted="false">Série %d (%s)</string>
     <string name="date_format">Date : %s</string>
@@ -281,7 +281,6 @@
     <string name="set_number_display">Série %d</string>
     <string name="date_with_label">Date : %s</string>
     <string name="time_with_label">Heure : %s</string>
-    <string name="close_x">×</string>
     <string name="select_exercise_filter">Sélectionner un Exercice</string>
     <string name="target_display_short">Objectif : %1$d séries × %2$d%3$s%4$s</string>
     <string name="edit_exercise_title">Modifier l\'Exercice</string>
@@ -788,4 +787,10 @@
     <string name="record_all_sets">Tout enregistrer (%1$d)</string>
     <string name="record_only_done_sets">Cochées seulement (%1$d)</string>
     <string name="program_no_exercises">Aucun exercice pour l’instant</string>
+    <plurals name="set_count">
+        <item quantity="one">%d série</item>
+        <item quantity="many">%d de séries</item>
+        <item quantity="other">%d séries</item>
+    </plurals>
+    <string name="value_with_unit">%1$d %2$s</string>
 </resources>
