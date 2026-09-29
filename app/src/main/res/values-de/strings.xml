@@ -605,8 +605,6 @@
     <string name="add_exercise_to_loop">Übung hinzufügen</string>
     <string name="move_to_loop">In Schleife verschieben</string>
     <string name="loop_number_format">Schleife %d</string>
-    <string name="set_progress">%1$d/%2$d</string>
-    <string name="set_progress_with_side">%1$d/%2$d - %3$s</string>
     <string name="exercise_type_dynamic">Dynamisch</string>
     <string name="exercise_type_isometric">Isometrisch</string>
     <string name="section_theme">Designeinstellungen</string>

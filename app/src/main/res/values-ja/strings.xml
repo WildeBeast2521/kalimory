@@ -236,8 +236,6 @@
     <string name="skip_button">スキップ</string>
     <string name="set_format">セット %1$d/%2$d</string>
     <string name="set_format_with_side">セット %1$d/%2$d - %3$s</string>
-    <string name="set_progress">%1$d/%2$d</string>
-    <string name="set_progress_with_side">%1$d/%2$d - %3$s</string>
     <string name="side_right">右</string>
     <string name="side_left">左</string>
     <string name="reps_unit">回</string>

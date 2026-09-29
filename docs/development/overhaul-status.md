@@ -4,32 +4,22 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Baseline Profiles and a Macrobenchmark module. Branch `work/baseline-profiles`, based on master `cf0865d`.
+Program runs use the in-workout kit. Branch `work/program-run-kit`, based on master `5f03984`.
 
-- **`:baselineprofile`** (`com.android.test` with `androidx.baselineprofile` 1.5.0), the one module the rollout plan called for:
-  - `BaselineProfileGenerator` records a cold start and a visit to each destination;
-  - `StartupBenchmark` measures cold start and tab switching, each without and with the profile.
-  - Emulator runs are allowed with `androidx.benchmark.suppressErrors=EMULATOR`; their numbers are only comparable with each other.
-- **App:** `profileinstaller` 1.4.1 installs the profile on devices without Play cloud profiles (F-Droid). The generated profile is committed at `app/src/release/generated/baselineProfiles/`.
-- **Signing:** benchmark and non-minified release copies are signed with the debug key through the variant API, because the repository has no keystore.
-- **Regenerating:** run `./gradlew :app:generateBaselineProfile` on a rooted emulator (API 28+; `adb root`). Use `ANDROID_SERIAL`.
-
-Measured (release build, median of 10; emulators render in software, so absolute frame times are high):
-
-| Metric | API 29 emulator | API 36 emulator |
-|:---|:---|:---|
-| Cold start, time to initial display | 1306 ms without, 1360 to 1364 ms with (ranges overlap: no measurable change) | 1334 ms without, 1330 ms with (no change) |
-| Tab switching, frame CPU time | not measurable (no frame timeline below API 31; the test skips) | P50 79 to 74 ms, P90 120 to 95 ms (−21%), P99 399 to 180 ms (−55%) |
-
-So on emulators the profile helps smoothness, not start-up. Start-up gains need a real ARM device.
-
-The "4 s blank screen" seen in the audit was a debug build; release reaches its first frame in about 1.3 s on these emulators.
-
-**Reproducibility:** two clean builds produced identical `assets/dexopt/baseline.prof` and `baseline.profm` (same SHA-256), so F-Droid reproducible builds are unaffected.
+- **Set screens:** the five program set screens use `WorkoutHeader`, `CountDisplay`, `TimerDial`, `StepButton` and `WorkoutPrimaryButton`, the same as the single workout.
+- **Header:** `ProgramSetHeader` shows the exercise, "Set 2/6" within that exercise (with side), a round caption for loops (`WorkoutHeader` gains `caption`), and one segment per set of the exercise. It replaces the program-wide "1/10" from the audit.
+- **Get ready:** it uses the kit's header, status, dial and skip.
+- **Rest:** it gains the "Set N done" badge, the kit dial (220 dp, so the next-exercise card and Skip fit), and the shared −10/+10 buttons. The "Next" card shows "Set 2/3 - Right" within the exercise.
+- **Shared parts:** `WorkoutStatus`, `WorkoutSkipButton` and `RestAdjustButtons` move into the kit and are used by the single and program steps.
+- **Strings:** the orphaned `set_progress` strings are removed.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- the benchmarks above.
+- screenshots of a program with a two-round loop: set, get ready and rest.
+
+## Previous phase: Baseline Profiles and Macrobenchmark (merged)
+
+PR #64 merged as `5f03984`.
 
 ## Previous phase: Settings links point to this repository (merged)
 
@@ -135,9 +125,9 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 **Workouts:**
 - (S) Single-workout setup can leave Start disabled with no reason (an empty rep duration or target). Use defaults, or say what is missing.
 - (S) The program start screen has settings expanded, and Start is a small top-bar action. Make Start a large bottom button and collapse the settings.
-- (S) The program run shows "1/10" (sets across the whole program) and a capitalised "NEXT"; show "Set 1/6", plus the exercise position.
+- Done in PR #65: the program run shows "Set 1/6" within the exercise.
 - Done in PR #62: the two interval Start buttons, the missing spaces, and "NEXT" in capitals. Still open: (S) the generic "Confirm" title.
-- (M) Program and interval runs should use the in-workout kit (PR #47).
+- Program runs use the kit (PR #65). The interval run keeps its own timer screen for now; it is already on theme roles.
 - Done in PR #53: (M) Record ("Log a past workout") behaves like a live session: a "NOW" badge, and every set must be completed before Record is enabled. For logging the past, allow saving all sets as shown.
 - (L, owner-approved, after the item above) Log a past workout with several exercises in one session. The v2 model supports this, and ManualWorkoutWriter handles one exercise today.
 
@@ -219,6 +209,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #62: workout run copy fixes.
 - PR #63: Settings links point to this repository.
 - PR #64: Baseline Profiles and Macrobenchmark.
+- PR #65: program runs use the in-workout kit.
 
 ## Owner direction for later (2026-09-27)
 

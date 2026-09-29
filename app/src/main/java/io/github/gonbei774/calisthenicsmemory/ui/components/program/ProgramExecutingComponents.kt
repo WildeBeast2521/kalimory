@@ -1,5 +1,14 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.CountDisplay
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.StepButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.TimerDial
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutHeader
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutTone
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.setLabel
+import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -98,77 +107,22 @@ internal fun ProgramExecutingStepDynamicManual(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(horizontal = Spacing.l, vertical = Spacing.m),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 種目名
-        Text(
-            text = exercise.name,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = cs.onSurface,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-
-        // 全体の進捗表示
-        val globalSetIndex = currentSetIndex + 1
-        val totalSets = session.sets.size
-        val sideText = when (currentSet.side) {
-            "Right" -> stringResource(R.string.side_right)
-            "Left" -> stringResource(R.string.side_left)
-            else -> null
-        }
-        Text(
-            text = if (sideText != null) {
-                stringResource(R.string.set_progress_with_side, globalSetIndex, totalSets, sideText)
-            } else {
-                stringResource(R.string.set_progress, globalSetIndex, totalSets)
-            },
-            fontSize = 18.sp,
-            color = cs.onSurfaceVariant,
-            modifier = Modifier.padding(top = 4.dp)
-        )
-
-        // ループ内セットならラウンド情報を表示
-        if (currentSet.loopId != null && currentSet.totalRounds > 1) {
-            Text(
-                text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
-                fontSize = 16.sp,
-                color = cs.secondary,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
+        ProgramSetHeader(session, exercise.name, currentSetIndex)
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 大きなレップ数（タップで一時停止/再開）
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { isPaused = !isPaused }
-        ) {
-            Row(verticalAlignment = Alignment.Bottom) {
-                Text(
-                    text = "$recordValue",
-                    fontSize = 96.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (isTimerComplete) cs.primary else cs.onSurface,
-                    modifier = Modifier.alpha(if (effectivelyPaused) 0.3f else 1f)
-                )
-                Text(
-                    text = " " + stringResource(R.string.unit_reps),
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = cs.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 14.dp)
-                )
-            }
-        }
+        CountDisplay(
+            value = recordValue,
+            unit = stringResource(R.string.unit_reps),
+            reached = isTimerComplete,
+            paused = effectivelyPaused,
+            onToggle = { isPaused = !isPaused },
+        )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(Spacing.l))
 
         // レップ内ペース表示（ドット or 横バー）
         RepPaceIndicator(
@@ -187,27 +141,17 @@ internal fun ProgramExecutingStepDynamicManual(
             unit = stringResource(R.string.unit_reps)
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(Spacing.l))
 
         // 完了ボタン（押下で記録確認シートを表示）
         var showConfirm by remember(currentSetIndex) { mutableStateOf(false) }
-        Button(
+        WorkoutPrimaryButton(
+            text = stringResource(R.string.complete_with_reps, recordValue),
             onClick = {
                 isPaused = true
                 showConfirm = true
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.complete_with_reps, recordValue),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        )
 
         if (showConfirm) {
             RecordAdjustDialog(
@@ -311,102 +255,27 @@ internal fun ProgramExecutingStepIsometricManual(
     val isTimerComplete = remainingTime <= 0
 
     // 色（一時停止中=グレー、完了=緑、実行中=オレンジ）
-    val activeColor = if (isTimerComplete) cs.primary else cs.tertiary
+    val activeColor = WorkoutTone.work
 
 
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(horizontal = Spacing.l, vertical = Spacing.m),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 種目名
-        Text(
-            text = exercise.name,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = cs.onSurface,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-
-        // 全体の進捗表示
-        val globalSetIndex = currentSetIndex + 1
-        val totalSets = session.sets.size
-        val sideText = when (currentSet.side) {
-            "Right" -> stringResource(R.string.side_right)
-            "Left" -> stringResource(R.string.side_left)
-            else -> null
-        }
-        Text(
-            text = if (sideText != null) {
-                stringResource(R.string.set_progress_with_side, globalSetIndex, totalSets, sideText)
-            } else {
-                stringResource(R.string.set_progress, globalSetIndex, totalSets)
-            },
-            fontSize = 18.sp,
-            color = cs.onSurfaceVariant,
-            modifier = Modifier.padding(top = 4.dp)
-        )
-
-        // ループ内セットならラウンド情報を表示
-        if (currentSet.loopId != null && currentSet.totalRounds > 1) {
-            Text(
-                text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
-                fontSize = 16.sp,
-                color = cs.secondary,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
+        ProgramSetHeader(session, exercise.name, currentSetIndex)
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 円形タイマー（タップで一時停止/再開）
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(240.dp)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { isPaused = !isPaused }
-        ) {
-            Canvas(modifier = Modifier.size(240.dp)) {
-                drawArc(
-                    color = cs.outline,
-                    startAngle = -90f,
-                    sweepAngle = 360f,
-                    useCenter = false,
-                    style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
-                )
-                drawArc(
-                    color = activeColor.copy(alpha = if (effectivelyPaused) 0.3f else 1f),
-                    startAngle = -90f,
-                    sweepAngle = 360f * progress,
-                    useCenter = false,
-                    style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
-                )
-            }
-            Text(
-                text = "$remainingTime",
-                fontSize = 80.sp,
-                fontWeight = FontWeight.Bold,
-                color = cs.onSurface,
-                modifier = Modifier.alpha(if (effectivelyPaused) 0.2f else 1f)
-            )
-            if (effectivelyPaused) {
-                val iconColor = cs.onSurface
-                Canvas(modifier = Modifier.size(56.dp)) {
-                    val path = Path().apply {
-                        moveTo(size.width * 0.25f, size.height * 0.15f)
-                        lineTo(size.width * 0.85f, size.height * 0.5f)
-                        lineTo(size.width * 0.25f, size.height * 0.85f)
-                        close()
-                    }
-                    drawPath(path, color = iconColor.copy(alpha = 0.9f))
-                }
-            }
-        }
+        TimerDial(
+            progress = progress,
+            value = "$remainingTime",
+            accent = activeColor,
+            paused = effectivelyPaused,
+            onToggle = { isPaused = !isPaused },
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -417,27 +286,17 @@ internal fun ProgramExecutingStepIsometricManual(
             unit = stringResource(R.string.unit_seconds_short)
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(Spacing.l))
 
         // 完了ボタン（押下で記録確認シートを表示）
         var showConfirm by remember(currentSetIndex) { mutableStateOf(false) }
-        Button(
+        WorkoutPrimaryButton(
+            text = stringResource(R.string.complete_with_time, recordValue),
             onClick = {
                 isPaused = true
                 showConfirm = true
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.complete_with_time, recordValue),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        )
 
         if (showConfirm) {
             RecordAdjustDialog(
@@ -540,101 +399,26 @@ internal fun ProgramExecutingStepIsometricAuto(
     } else 0f
 
     // 色（一時停止中=グレー、実行中=オレンジ）
-    val activeColor = cs.tertiary
+    val activeColor = WorkoutTone.work
 
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(horizontal = Spacing.l, vertical = Spacing.m),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 種目名
-        Text(
-            text = exercise.name,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = cs.onSurface,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-
-        // 全体の進捗表示
-        val globalSetIndex = currentSetIndex + 1
-        val totalSets = session.sets.size
-        val sideText = when (currentSet.side) {
-            "Right" -> stringResource(R.string.side_right)
-            "Left" -> stringResource(R.string.side_left)
-            else -> null
-        }
-        Text(
-            text = if (sideText != null) {
-                stringResource(R.string.set_progress_with_side, globalSetIndex, totalSets, sideText)
-            } else {
-                stringResource(R.string.set_progress, globalSetIndex, totalSets)
-            },
-            fontSize = 18.sp,
-            color = cs.onSurfaceVariant,
-            modifier = Modifier.padding(top = 4.dp)
-        )
-
-        // ループ内セットならラウンド情報を表示
-        if (currentSet.loopId != null && currentSet.totalRounds > 1) {
-            Text(
-                text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
-                fontSize = 16.sp,
-                color = cs.secondary,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
+        ProgramSetHeader(session, exercise.name, currentSetIndex)
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 円形タイマー（タップで一時停止/再開）
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(240.dp)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { isPaused = !isPaused }
-        ) {
-            Canvas(modifier = Modifier.size(240.dp)) {
-                drawArc(
-                    color = cs.outline,
-                    startAngle = -90f,
-                    sweepAngle = 360f,
-                    useCenter = false,
-                    style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
-                )
-                drawArc(
-                    color = activeColor.copy(alpha = if (effectivelyPaused) 0.3f else 1f),
-                    startAngle = -90f,
-                    sweepAngle = 360f * progress,
-                    useCenter = false,
-                    style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
-                )
-            }
-            Text(
-                text = "$remainingTime",
-                fontSize = 80.sp,
-                fontWeight = FontWeight.Bold,
-                color = cs.onSurface,
-                modifier = Modifier.alpha(if (effectivelyPaused) 0.2f else 1f)
-            )
-            if (effectivelyPaused) {
-                val iconColor = cs.onSurface
-                Canvas(modifier = Modifier.size(56.dp)) {
-                    val path = Path().apply {
-                        moveTo(size.width * 0.25f, size.height * 0.15f)
-                        lineTo(size.width * 0.85f, size.height * 0.5f)
-                        lineTo(size.width * 0.25f, size.height * 0.85f)
-                        close()
-                    }
-                    drawPath(path, color = iconColor.copy(alpha = 0.9f))
-                }
-            }
-        }
+        TimerDial(
+            progress = progress,
+            value = "$remainingTime",
+            accent = activeColor,
+            paused = effectivelyPaused,
+            onToggle = { isPaused = !isPaused },
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -645,23 +429,13 @@ internal fun ProgramExecutingStepIsometricAuto(
             unit = stringResource(R.string.unit_seconds_short)
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(Spacing.l))
 
         // 完了ボタン（早期完了用）
-        Button(
+        WorkoutPrimaryButton(
+            text = stringResource(R.string.complete_with_time, recordValue),
             onClick = { onSetComplete(recordValue) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.complete_with_time, recordValue),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        )
 
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
     }
@@ -736,77 +510,22 @@ internal fun ProgramExecutingStepDynamicAuto(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(horizontal = Spacing.l, vertical = Spacing.m),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 種目名
-        Text(
-            text = exercise.name,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = cs.onSurface,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-
-        // 全体の進捗表示
-        val globalSetIndex = currentSetIndex + 1
-        val totalSets = session.sets.size
-        val sideText = when (currentSet.side) {
-            "Right" -> stringResource(R.string.side_right)
-            "Left" -> stringResource(R.string.side_left)
-            else -> null
-        }
-        Text(
-            text = if (sideText != null) {
-                stringResource(R.string.set_progress_with_side, globalSetIndex, totalSets, sideText)
-            } else {
-                stringResource(R.string.set_progress, globalSetIndex, totalSets)
-            },
-            fontSize = 18.sp,
-            color = cs.onSurfaceVariant,
-            modifier = Modifier.padding(top = 4.dp)
-        )
-
-        // ループ内セットならラウンド情報を表示
-        if (currentSet.loopId != null && currentSet.totalRounds > 1) {
-            Text(
-                text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
-                fontSize = 16.sp,
-                color = cs.secondary,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
+        ProgramSetHeader(session, exercise.name, currentSetIndex)
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 大きなレップ数（タップで一時停止/再開）
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { isPaused = !isPaused }
-        ) {
-            Row(verticalAlignment = Alignment.Bottom) {
-                Text(
-                    text = "$recordValue",
-                    fontSize = 96.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = if (isTimerComplete) cs.primary else cs.onSurface,
-                    modifier = Modifier.alpha(if (effectivelyPaused) 0.3f else 1f)
-                )
-                Text(
-                    text = " " + stringResource(R.string.unit_reps),
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = cs.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 14.dp)
-                )
-            }
-        }
+        CountDisplay(
+            value = recordValue,
+            unit = stringResource(R.string.unit_reps),
+            reached = isTimerComplete,
+            paused = effectivelyPaused,
+            onToggle = { isPaused = !isPaused },
+        )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(Spacing.l))
 
         // レップ内ペース表示（ドット or 横バー）
         RepPaceIndicator(
@@ -825,23 +544,13 @@ internal fun ProgramExecutingStepDynamicAuto(
             unit = stringResource(R.string.unit_reps)
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(Spacing.l))
 
         // 完了ボタン（早期完了用）
-        Button(
+        WorkoutPrimaryButton(
+            text = stringResource(R.string.complete_with_reps, recordValue),
             onClick = { onSetComplete(recordValue) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.complete_with_reps, recordValue),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        )
 
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
     }
@@ -866,96 +575,20 @@ internal fun ProgramExecutingStepDynamicSimple(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(horizontal = Spacing.l, vertical = Spacing.m),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 種目名
-        Text(
-            text = exercise.name,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = cs.onSurface,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-
-        // 全体の進捗表示
-        val globalSetIndex = currentSetIndex + 1
-        val totalSets = session.sets.size
-        val sideText = when (currentSet.side) {
-            "Right" -> stringResource(R.string.side_right)
-            "Left" -> stringResource(R.string.side_left)
-            else -> null
-        }
-        Text(
-            text = if (sideText != null) {
-                stringResource(R.string.set_progress_with_side, globalSetIndex, totalSets, sideText)
-            } else {
-                stringResource(R.string.set_progress, globalSetIndex, totalSets)
-            },
-            fontSize = 18.sp,
-            color = cs.onSurfaceVariant,
-            modifier = Modifier.padding(top = 4.dp)
-        )
-
-        // ループ内セットならラウンド情報を表示
-        if (currentSet.loopId != null && currentSet.totalRounds > 1) {
-            Text(
-                text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
-                fontSize = 16.sp,
-                color = cs.secondary,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
+        ProgramSetHeader(session, exercise.name, currentSetIndex)
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 大きなレップ数表示
         Row(
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.l),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(
-                onClick = { if (repsCount > 0) repsCount-- },
-                modifier = Modifier.size(64.dp)
-            ) {
-                Surface(
-                    shape = RoundedCornerShape(50),
-                    color = Color.Transparent,
-                    border = BorderStroke(3.dp, cs.outline)
-                ) {
-                    Box(
-                        modifier = Modifier.size(64.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "-", fontSize = 36.sp, fontWeight = FontWeight.Bold, color = cs.onSurface)
-                    }
-                }
-            }
-
-            Text(
-                text = "$repsCount",
-                fontSize = 96.sp,
-                fontWeight = FontWeight.Bold,
-                color = cs.primary
-            )
-
-            IconButton(
-                onClick = { repsCount++ },
-                modifier = Modifier.size(64.dp)
-            ) {
-                Surface(
-                    shape = RoundedCornerShape(50),
-                    color = Color.Transparent,
-                    border = BorderStroke(3.dp, cs.outline)
-                ) {
-                    Box(
-                        modifier = Modifier.size(64.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "+", fontSize = 36.sp, fontWeight = FontWeight.Bold, color = cs.onSurface)
-                    }
-                }
-            }
+            StepButton(AppIcons.Remove, stringResource(R.string.workout_count_decrease), enabled = repsCount > 0) { if (repsCount > 0) repsCount-- }
+            CountDisplay(value = repsCount, unit = null, reached = repsCount >= currentSet.targetValue, paused = false, onToggle = null, compact = true)
+            StepButton(AppIcons.Add, stringResource(R.string.workout_count_increase)) { repsCount++ }
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -967,24 +600,37 @@ internal fun ProgramExecutingStepDynamicSimple(
             unit = stringResource(R.string.unit_reps)
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(Spacing.l))
 
         // 完了ボタン
-        Button(
+        WorkoutPrimaryButton(
+            text = stringResource(R.string.complete_with_reps, repsCount),
             onClick = { onSetComplete(repsCount) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.complete_with_reps, repsCount),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        )
 
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
     }
+}
+
+/**
+ * The shared workout header for a program set: the exercise, "Set 2/6" within that exercise
+ * (and round, for loops), with one segment per set of the exercise.
+ */
+@Composable
+internal fun ProgramSetHeader(session: ProgramExecutionSession, exerciseName: String, currentSetIndex: Int) {
+    val currentSet = session.sets[currentSetIndex]
+    val exerciseSets = session.sets
+        .filter { it.exerciseIndex == currentSet.exerciseIndex && it.roundNumber == currentSet.roundNumber }
+        .map { it.setNumber }
+        .distinct()
+    WorkoutHeader(
+        exerciseName = exerciseName,
+        setLabel = setLabel(currentSet.setNumber, exerciseSets.size, currentSet.side),
+        setNumber = currentSet.setNumber,
+        totalSets = exerciseSets.size,
+        accent = WorkoutTone.work,
+        caption = if (currentSet.loopId != null && currentSet.totalRounds > 1) {
+            stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds)
+        } else null,
+    )
 }

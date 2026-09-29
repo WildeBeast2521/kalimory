@@ -71,8 +71,8 @@ object WorkoutTone {
 }
 
 /**
- * The exercise, with the set as a quiet line and one segment per set: done sets filled,
- * the current one in [accent], the rest still to come.
+ * The exercise, with the set as a quiet line, an optional [caption] (a program's loop round)
+ * and one segment per set: done sets filled, the current one in [accent], the rest to come.
  */
 @Composable
 fun WorkoutHeader(
@@ -82,6 +82,7 @@ fun WorkoutHeader(
     totalSets: Int,
     accent: Color,
     modifier: Modifier = Modifier,
+    caption: String? = null,
 ) {
     Column(
         modifier = modifier.fillMaxWidth().padding(top = Spacing.s),
@@ -101,6 +102,14 @@ fun WorkoutHeader(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = Spacing.xs),
         )
+        if (caption != null) {
+            Text(
+                caption,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.padding(top = Spacing.xs),
+            )
+        }
         if (totalSets in 2..MAX_SEGMENTS) {
             SetSegments(setNumber, totalSets, accent, Modifier.padding(top = Spacing.m))
         }
@@ -270,6 +279,35 @@ fun setLabel(setNumber: Int, totalSets: Int, side: String?): String {
         stringResource(R.string.set_format_with_side, setNumber, totalSets, sideText)
     } else {
         stringResource(R.string.set_format, setNumber, totalSets)
+    }
+}
+
+/** What is happening now (getting ready, resting), in the colour of that state. */
+@Composable
+fun WorkoutStatus(text: String, color: Color) {
+    Text(text = text, style = MaterialTheme.typography.headlineMedium, color = color)
+}
+
+/** Skipping the rest of a timer: a quiet action, below the main one. */
+@Composable
+fun WorkoutSkipButton(onSkip: () -> Unit) {
+    androidx.compose.material3.TextButton(onClick = onSkip, modifier = Modifier.heightIn(min = 48.dp)) {
+        Icon(AppIcons.SkipNext, contentDescription = null)
+        Spacer(Modifier.size(Spacing.s))
+        Text(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+/** A rest's −10 s and +10 s adjustments; they change only this rest. */
+@Composable
+fun RestAdjustButtons(onMinus: () -> Unit, onPlus: () -> Unit) {
+    Row(horizontalArrangement = Arrangement.spacedBy(Spacing.l)) {
+        androidx.compose.material3.FilledTonalButton(onClick = onMinus, modifier = Modifier.heightIn(min = 48.dp)) {
+            Text(stringResource(R.string.minus_10sec), style = MaterialTheme.typography.titleMedium)
+        }
+        androidx.compose.material3.FilledTonalButton(onClick = onPlus, modifier = Modifier.heightIn(min = 48.dp)) {
+            Text(stringResource(R.string.plus_10sec), style = MaterialTheme.typography.titleMedium)
+        }
     }
 }
 
