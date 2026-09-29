@@ -48,7 +48,6 @@ fun LoopBlock(
     onLoopExercisesReordered: (List<ProgramExercise>) -> Unit,
     dragHandle: @Composable () -> Modifier
 ) {
-    val appColors = LocalAppColors.current
     // State for loop exercise reordering
     var loopExerciseList by remember(exercises) {
         mutableStateOf(exercises.map { it.first })
@@ -59,11 +58,11 @@ fun LoopBlock(
             .fillMaxWidth()
             .border(
                 width = 2.dp,
-                color = if (isDragging) Orange600.copy(alpha = 0.7f) else Orange600,
+                color = if (isDragging) MaterialTheme.colorScheme.primary.copy(alpha = 0.7f) else MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(12.dp)
             ),
         colors = CardDefaults.cardColors(
-            containerColor = if (isDragging) appColors.cardBackgroundSecondary.copy(alpha = 0.9f) else appColors.cardBackground
+            containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
@@ -91,7 +90,7 @@ fun LoopBlock(
                         Icon(
                             AppIcons.DragHandle,
                             contentDescription = stringResource(R.string.todo_drag_to_reorder),
-                            tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                            tint = if (isDragging) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier
                                 .size(24.dp)
                                 .then(dragHandle())
@@ -103,10 +102,10 @@ fun LoopBlock(
                             text = stringResource(R.string.loop_round_format, loop.rounds),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Amber500,
+                            color = MaterialTheme.colorScheme.tertiary,
                             modifier = Modifier
                                 .background(
-                                    color = Amber500.copy(alpha = 0.2f),
+                                    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.2f),
                                     shape = RoundedCornerShape(4.dp)
                                 )
                                 .padding(horizontal = 8.dp, vertical = 2.dp)
@@ -116,9 +115,9 @@ fun LoopBlock(
                             Text(
                                 text = stringResource(R.string.loop_rest_format, loop.restBetweenRounds),
                                 fontSize = 12.sp,
-                                color = appColors.textTertiary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier
-                                    .background(appColors.cardBackgroundSecondary, RoundedCornerShape(4.dp))
+                                    .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(4.dp))
                                     .padding(horizontal = 8.dp, vertical = 2.dp)
                             )
                         }
@@ -126,7 +125,7 @@ fun LoopBlock(
                         Text(
                             text = "(${exercises.size})",
                             fontSize = 12.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
 
@@ -142,7 +141,7 @@ fun LoopBlock(
                             Text(
                                 text = stringResource(R.string.edit),
                                 fontSize = 12.sp,
-                                color = Orange600
+                                color = MaterialTheme.colorScheme.primary
                             )
                         }
                         // Expand/collapse icon
@@ -152,7 +151,7 @@ fun LoopBlock(
                             else
                                 AppIcons.Forward,
                             contentDescription = null,
-                            tint = appColors.textSecondary
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -174,12 +173,12 @@ fun LoopBlock(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(
-                                    color = appColors.cardBackgroundSecondary,
+                                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
                                     shape = RoundedCornerShape(8.dp)
                                 )
                                 .border(
                                     width = 1.dp,
-                                    color = Amber500.copy(alpha = 0.3f),
+                                    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.3f),
                                     shape = RoundedCornerShape(8.dp)
                                 )
                                 .padding(16.dp),
@@ -187,7 +186,7 @@ fun LoopBlock(
                         ) {
                             Text(
                                 text = stringResource(R.string.loop_empty),
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 14.sp
                             )
                         }
@@ -217,10 +216,10 @@ fun LoopBlock(
                         onClick = onAddExercise,
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = Amber500
+                            contentColor = MaterialTheme.colorScheme.tertiary
                         ),
                         border = ButtonDefaults.outlinedButtonBorder.copy(
-                            brush = Brush.horizontalGradient(listOf(Amber500, Amber500))
+                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.tertiary, MaterialTheme.colorScheme.tertiary))
                         )
                     ) {
                         Icon(
@@ -304,7 +303,6 @@ private fun LoopExerciseItemWithDrag(
     onDelete: () -> Unit,
     dragHandle: @Composable () -> Modifier
 ) {
-    val appColors = LocalAppColors.current
     var pendingDelete by remember { mutableStateOf(false) }
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
@@ -331,7 +329,7 @@ private fun LoopExerciseItemWithDrag(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        color = Red600,
+                        color = MaterialTheme.colorScheme.error,
                         shape = RoundedCornerShape(8.dp)
                     )
                     .padding(horizontal = 16.dp),
@@ -340,7 +338,7 @@ private fun LoopExerciseItemWithDrag(
                 Icon(
                     AppIcons.Delete,
                     contentDescription = stringResource(R.string.delete),
-                    tint = appColors.textPrimary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         },
@@ -353,11 +351,11 @@ private fun LoopExerciseItemWithDrag(
                 .fillMaxWidth()
                 .border(
                     width = 2.dp,
-                    color = Amber500,
+                    color = MaterialTheme.colorScheme.tertiary,
                     shape = RoundedCornerShape(8.dp)
                 ),
             colors = CardDefaults.cardColors(
-                containerColor = if (isDragging) Slate600.copy(alpha = 0.9f) else appColors.cardBackgroundSecondary
+                containerColor = if (isDragging) MaterialTheme.colorScheme.outline.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerHigh
             ),
             shape = RoundedCornerShape(8.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = elevation)
@@ -373,7 +371,7 @@ private fun LoopExerciseItemWithDrag(
                 Icon(
                     AppIcons.DragHandle,
                     contentDescription = stringResource(R.string.todo_drag_to_reorder),
-                    tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                    tint = if (isDragging) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .size(24.dp)
                         .then(dragHandle())
@@ -385,7 +383,7 @@ private fun LoopExerciseItemWithDrag(
                         text = exercise.name,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
-                        color = appColors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -394,7 +392,7 @@ private fun LoopExerciseItemWithDrag(
                         Text(
                             text = stringResource(R.string.program_sets_format, programExercise.sets),
                             fontSize = 11.sp,
-                            color = Blue600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                         Text(
                             text = stringResource(
@@ -403,12 +401,12 @@ private fun LoopExerciseItemWithDrag(
                                 stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
                             ),
                             fontSize = 11.sp,
-                            color = Green400
+                            color = MaterialTheme.colorScheme.primary
                         )
                         Text(
                             text = stringResource(R.string.program_interval_format, programExercise.intervalSeconds),
                             fontSize = 11.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }

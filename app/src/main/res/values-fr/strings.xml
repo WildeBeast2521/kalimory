@@ -31,7 +31,6 @@
     <string name="view_details">Voir les détails</string>
     <string name="copied_to_clipboard">Copié dans le presse-papiers</string>
     <!-- Create Screen -->
-    <string name="exercise_creation">Création d\'Exercice</string>
     <string name="no_exercises">Aucun exercice pour le moment\nAjoutez-en un avec le bouton + ci-dessous</string>
     <string name="exercise_name">Nom de l\'Exercice</string>
     <string name="set_challenge">Définir un Objectif</string>

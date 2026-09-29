@@ -36,7 +36,6 @@ fun ProgramListScreen(
     onNavigateToExecute: (Long) -> Unit,
     onNavigateToResume: (Long) -> Unit = onNavigateToExecute  // デフォルトは通常実行と同じ
 ) {
-    val appColors = LocalAppColors.current
     val programs by viewModel.programs.collectAsState()
     val context = LocalContext.current
     val savedWorkoutState = remember { SavedWorkoutState(context) }
@@ -48,7 +47,7 @@ fun ProgramListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Orange600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -60,24 +59,23 @@ fun ProgramListScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = stringResource(R.string.program_list_title),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { onNavigateToEdit(null) },
-                containerColor = Orange600
+                onClick = { onNavigateToEdit(null) }
             ) {
-                Icon(AppIcons.Add, contentDescription = stringResource(R.string.new_program), tint = appColors.textPrimary)
+                Icon(AppIcons.Add, contentDescription = stringResource(R.string.new_program), tint = MaterialTheme.colorScheme.onSurface)
             }
         }
     ) { paddingValues ->
@@ -92,7 +90,7 @@ fun ProgramListScreen(
                 Text(
                     text = stringResource(R.string.program_empty),
                     fontSize = 16.sp,
-                    color = appColors.textSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
                 )
             }
@@ -119,14 +117,14 @@ fun ProgramListScreen(
                     placeholder = {
                         Text(
                             text = stringResource(R.string.search_placeholder),
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     },
                     leadingIcon = {
                         Icon(
                             AppIcons.Search,
                             contentDescription = null,
-                            tint = appColors.textSecondary
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     },
                     trailingIcon = {
@@ -135,20 +133,20 @@ fun ProgramListScreen(
                                 Icon(
                                     AppIcons.Close,
                                     contentDescription = stringResource(R.string.clear),
-                                    tint = appColors.textSecondary
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedTextColor = appColors.textPrimary,
-                        focusedContainerColor = appColors.cardBackground,
-                        unfocusedContainerColor = appColors.cardBackground,
-                        focusedBorderColor = Orange600,
-                        unfocusedBorderColor = appColors.border,
-                        cursorColor = Orange600
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                        cursorColor = MaterialTheme.colorScheme.primary
                     ),
                     shape = RoundedCornerShape(8.dp)
                 )
@@ -161,7 +159,7 @@ fun ProgramListScreen(
                         Text(
                             text = stringResource(R.string.no_results),
                             fontSize = 14.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 } else {
@@ -201,7 +199,6 @@ private fun ProgramListItem(
     onDelete: () -> Unit,
     onDuplicate: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
     var showContextMenu by remember { mutableStateOf(false) }
     val dismissState = rememberSwipeToDismissBoxState(
@@ -219,18 +216,18 @@ private fun ProgramListItem(
     if (showDeleteConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirmDialog = false },
-            containerColor = appColors.cardBackground,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.delete_program),
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
                     text = stringResource(R.string.delete_program_warning, program.name),
-                    color = appColors.textTertiary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             confirmButton = {
@@ -240,12 +237,12 @@ private fun ProgramListItem(
                         onDelete()
                     }
                 ) {
-                    Text(stringResource(R.string.delete), color = Red600)
+                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirmDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         )
@@ -258,7 +255,7 @@ private fun ProgramListItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        color = Red600,
+                        color = MaterialTheme.colorScheme.error,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .padding(horizontal = 16.dp),
@@ -267,7 +264,7 @@ private fun ProgramListItem(
                 Icon(
                     AppIcons.Delete,
                     contentDescription = stringResource(R.string.delete),
-                    tint = appColors.textPrimary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         },
@@ -282,7 +279,7 @@ private fun ProgramListItem(
                         onClick = { },
                         onLongClick = { showContextMenu = true }
                     ),
-                colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Row(
@@ -298,7 +295,7 @@ private fun ProgramListItem(
                             text = program.name,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
 
@@ -310,7 +307,7 @@ private fun ProgramListItem(
                         Icon(
                             AppIcons.Edit,
                             contentDescription = stringResource(R.string.edit_program),
-                            tint = appColors.textSecondary
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
 
@@ -318,7 +315,7 @@ private fun ProgramListItem(
                     if (hasSavedState) {
                         Button(
                             onClick = onResume,
-                            colors = ButtonDefaults.buttonColors(containerColor = Green600),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                             shape = RoundedCornerShape(8.dp),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                             modifier = Modifier.height(36.dp)
@@ -332,7 +329,7 @@ private fun ProgramListItem(
                             Text(
                                 text = stringResource(R.string.nav_resume),
                                 fontSize = 12.sp,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onPrimary
                             )
                         }
                     }
@@ -340,7 +337,7 @@ private fun ProgramListItem(
                     // Execute button
                     Button(
                         onClick = onExecute,
-                        colors = ButtonDefaults.buttonColors(containerColor = Orange600),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         shape = RoundedCornerShape(8.dp),
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                         modifier = Modifier.height(36.dp)
@@ -354,7 +351,7 @@ private fun ProgramListItem(
                         Text(
                             text = stringResource(R.string.program_start),
                             fontSize = 12.sp,
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }
@@ -365,13 +362,13 @@ private fun ProgramListItem(
                 expanded = showContextMenu,
                 onDismissRequest = { showContextMenu = false },
                 offset = DpOffset(16.dp, 0.dp),
-                containerColor = appColors.cardBackgroundSecondary
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
             ) {
                 DropdownMenuItem(
                     text = {
                         Text(
                             stringResource(R.string.duplicate_program),
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     },
                     onClick = {
@@ -382,7 +379,7 @@ private fun ProgramListItem(
                         Icon(
                             AppIcons.Add,
                             contentDescription = null,
-                            tint = appColors.textTertiary
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 )
@@ -390,7 +387,7 @@ private fun ProgramListItem(
                     text = {
                         Text(
                             stringResource(R.string.delete_program),
-                            color = Red600
+                            color = MaterialTheme.colorScheme.error
                         )
                     },
                     onClick = {
@@ -401,7 +398,7 @@ private fun ProgramListItem(
                         Icon(
                             AppIcons.Delete,
                             contentDescription = null,
-                            tint = Red600
+                            tint = MaterialTheme.colorScheme.error
                         )
                     }
                 )

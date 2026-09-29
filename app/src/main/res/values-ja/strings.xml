@@ -31,7 +31,6 @@
     <string name="view_details">詳細を見る</string>
     <string name="copied_to_clipboard">コピーしました</string>
     <!-- Create Screen -->
-    <string name="exercise_creation">種目作成</string>
     <string name="no_exercises">種目がまだありません\n右下の + ボタンから追加してください</string>
     <string name="exercise_name">種目名</string>
     <string name="set_challenge">課題を設定</string>

@@ -39,7 +39,6 @@ fun AddExerciseToProgramDialog(
     onDismiss: () -> Unit,
     onAdd: (List<Exercise>) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
     val expandedGroups by viewModel.expandedGroups.collectAsState()
 
@@ -58,11 +57,11 @@ fun AddExerciseToProgramDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = appColors.cardBackground,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 text = stringResource(R.string.add_exercise_to_program),
-                color = appColors.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold
             )
         },
@@ -70,7 +69,7 @@ fun AddExerciseToProgramDialog(
             if (exercises.isEmpty()) {
                 Text(
                     text = stringResource(R.string.no_exercises_available),
-                    color = appColors.textSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             } else {
                 Column(
@@ -87,14 +86,14 @@ fun AddExerciseToProgramDialog(
                         placeholder = {
                             Text(
                                 text = stringResource(R.string.search_placeholder),
-                                color = appColors.textSecondary
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         },
                         leadingIcon = {
                             Icon(
                                 AppIcons.Search,
                                 contentDescription = null,
-                                tint = appColors.textSecondary
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         },
                         trailingIcon = {
@@ -103,20 +102,20 @@ fun AddExerciseToProgramDialog(
                                     Icon(
                                         AppIcons.Close,
                                         contentDescription = stringResource(R.string.clear),
-                                        tint = appColors.textSecondary
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             }
                         },
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = appColors.textPrimary,
-                            unfocusedTextColor = appColors.textPrimary,
-                            focusedContainerColor = appColors.cardBackgroundSecondary,
-                            unfocusedContainerColor = appColors.cardBackgroundSecondary,
-                            focusedBorderColor = Orange600,
-                            unfocusedBorderColor = Slate600,
-                            cursorColor = Orange600
+                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                            cursorColor = MaterialTheme.colorScheme.primary
                         ),
                         shape = RoundedCornerShape(8.dp)
                     )
@@ -131,7 +130,7 @@ fun AddExerciseToProgramDialog(
                                 item {
                                     Text(
                                         text = stringResource(R.string.no_results),
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(16.dp)
                                     )
                                 }
@@ -194,13 +193,13 @@ fun AddExerciseToProgramDialog(
             ) {
                 Text(
                     text = stringResource(R.string.add),
-                    color = if (selectedExercises.isNotEmpty()) Orange600 else appColors.textSecondary
+                    color = if (selectedExercises.isNotEmpty()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     )
@@ -212,10 +211,9 @@ private fun ProgramExerciseSelectItem(
     isSelected: Boolean,
     onToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(
@@ -228,8 +226,8 @@ private fun ProgramExerciseSelectItem(
                 checked = isSelected,
                 onCheckedChange = { onToggle(exercise.id) },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = Orange600,
-                    uncheckedColor = appColors.textSecondary
+                    checkedColor = MaterialTheme.colorScheme.primary,
+                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
             Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
@@ -237,7 +235,7 @@ private fun ProgramExerciseSelectItem(
                     text = exercise.name,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -245,28 +243,28 @@ private fun ProgramExerciseSelectItem(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.tertiary)
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                         Text(
                             text = stringResource(R.string.level_format, exercise.sortOrder),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Blue600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                     Text(
                         text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     if (exercise.laterality == "Unilateral") {
                         Text(
                             text = stringResource(R.string.one_sided),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Purple600
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                     if (exercise.weightTrackingEnabled) {
@@ -274,7 +272,7 @@ private fun ProgramExerciseSelectItem(
                             text = stringResource(R.string.legend_weight),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Amber500
+                            color = MaterialTheme.colorScheme.tertiary
                         )
                     }
                     if (exercise.distanceTrackingEnabled) {
@@ -282,7 +280,7 @@ private fun ProgramExerciseSelectItem(
                             text = stringResource(R.string.legend_distance),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Cyan600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                     if (exercise.assistanceTrackingEnabled) {
@@ -304,7 +302,7 @@ private fun ProgramExerciseSelectItem(
                         ),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Green400,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 2.dp)
                     )
                 }
@@ -322,10 +320,9 @@ private fun ProgramSelectExerciseGroup(
     onExpandToggle: () -> Unit,
     onExerciseToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(8.dp)
     ) {
         Column {
@@ -351,18 +348,18 @@ private fun ProgramSelectExerciseGroup(
                             else
                                 AppIcons.Forward,
                             contentDescription = null,
-                            tint = appColors.textPrimary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = groupName ?: stringResource(R.string.no_group),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = "(${exercises.size})",
                             fontSize = 14.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -388,8 +385,8 @@ private fun ProgramSelectExerciseGroup(
                                 checked = exercise.id in selectedExercises,
                                 onCheckedChange = { onExerciseToggle(exercise.id) },
                                 colors = CheckboxDefaults.colors(
-                                    checkedColor = Orange600,
-                                    uncheckedColor = appColors.textSecondary
+                                    checkedColor = MaterialTheme.colorScheme.primary,
+                                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                             Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
@@ -397,7 +394,7 @@ private fun ProgramSelectExerciseGroup(
                                     text = exercise.name,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 FlowRow(
                                     horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -405,28 +402,28 @@ private fun ProgramSelectExerciseGroup(
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
                                     if (exercise.isFavorite) {
-                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
+                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.tertiary)
                                     }
                                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                                         Text(
                                             text = stringResource(R.string.level_format, exercise.sortOrder),
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Blue600
+                                            color = MaterialTheme.colorScheme.secondary
                                         )
                                     }
                                     Text(
                                         text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = appColors.textSecondary
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     if (exercise.laterality == "Unilateral") {
                                         Text(
                                             text = stringResource(R.string.one_sided),
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Purple600
+                                            color = MaterialTheme.colorScheme.primary
                                         )
                                     }
                                     if (exercise.weightTrackingEnabled) {
@@ -434,7 +431,7 @@ private fun ProgramSelectExerciseGroup(
                                             text = stringResource(R.string.legend_weight),
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Amber500
+                                            color = MaterialTheme.colorScheme.tertiary
                                         )
                                     }
                                     if (exercise.distanceTrackingEnabled) {
@@ -442,7 +439,7 @@ private fun ProgramSelectExerciseGroup(
                                             text = stringResource(R.string.legend_distance),
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Cyan600
+                                            color = MaterialTheme.colorScheme.secondary
                                         )
                                     }
                                     if (exercise.assistanceTrackingEnabled) {
@@ -464,7 +461,7 @@ private fun ProgramSelectExerciseGroup(
                                         ),
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Green400,
+                                        color = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.padding(top = 2.dp)
                                     )
                                 }
@@ -486,7 +483,6 @@ fun ExerciseSettingsDialog(
     onDismiss: () -> Unit,
     onSave: (ProgramExercise) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     var sets by remember {
         mutableStateOf(if (programExercise.sets == 0) "" else programExercise.sets.toString())
     }
@@ -505,11 +501,11 @@ fun ExerciseSettingsDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = appColors.cardBackground,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 text = stringResource(R.string.exercise_settings),
-                color = appColors.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold
             )
         },
@@ -521,7 +517,7 @@ fun ExerciseSettingsDialog(
                     text = exercise.name,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = appColors.textTertiary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 OutlinedTextField(
@@ -531,13 +527,13 @@ fun ExerciseSettingsDialog(
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Orange600,
-                        focusedLabelColor = Orange600,
-                        cursorColor = Orange600,
-                        unfocusedTextColor = appColors.textPrimary,
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedLabelColor = appColors.textSecondary,
-                        unfocusedBorderColor = Slate600
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        cursorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
                     ),
                     singleLine = true
                 )
@@ -555,13 +551,13 @@ fun ExerciseSettingsDialog(
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Orange600,
-                        focusedLabelColor = Orange600,
-                        cursorColor = Orange600,
-                        unfocusedTextColor = appColors.textPrimary,
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedLabelColor = appColors.textSecondary,
-                        unfocusedBorderColor = Slate600
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        cursorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
                     ),
                     singleLine = true
                 )
@@ -573,13 +569,13 @@ fun ExerciseSettingsDialog(
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Orange600,
-                        focusedLabelColor = Orange600,
-                        cursorColor = Orange600,
-                        unfocusedTextColor = appColors.textPrimary,
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedLabelColor = appColors.textSecondary,
-                        unfocusedBorderColor = Slate600
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        cursorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
                     ),
                     singleLine = true
                 )
@@ -591,7 +587,7 @@ fun ExerciseSettingsDialog(
                         text = stringResource(R.string.move_to_loop),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
-                        color = appColors.textTertiary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     ExposedDropdownMenuBox(
                         expanded = loopDropdownExpanded,
@@ -615,12 +611,12 @@ fun ExerciseSettingsDialog(
                                 .fillMaxWidth()
                                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Orange600,
-                                focusedLabelColor = Orange600,
-                                unfocusedTextColor = appColors.textPrimary,
-                                focusedTextColor = appColors.textPrimary,
-                                unfocusedLabelColor = appColors.textSecondary,
-                                unfocusedBorderColor = Slate600
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline
                             )
                         )
                         ExposedDropdownMenu(
@@ -672,12 +668,12 @@ fun ExerciseSettingsDialog(
                 },
                 enabled = isValid
             ) {
-                Text(stringResource(R.string.save), color = if (isValid) Orange600 else appColors.textSecondary)
+                Text(stringResource(R.string.save), color = if (isValid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     )
@@ -690,17 +686,16 @@ fun LoopSettingsDialog(
     onSave: (rounds: Int, restBetweenRounds: Int) -> Unit,
     onDelete: (() -> Unit)? = null
 ) {
-    val appColors = LocalAppColors.current
     var rounds by remember(loop) { mutableStateOf(loop?.rounds?.toString() ?: "3") }
     var restBetweenRounds by remember(loop) { mutableStateOf(loop?.restBetweenRounds?.toString() ?: "60") }
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = appColors.cardBackground,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 text = stringResource(R.string.loop_settings),
-                color = appColors.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold
             )
         },
@@ -715,13 +710,13 @@ fun LoopSettingsDialog(
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Orange600,
-                        focusedLabelColor = Orange600,
-                        cursorColor = Orange600,
-                        unfocusedTextColor = appColors.textPrimary,
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedLabelColor = appColors.textSecondary,
-                        unfocusedBorderColor = Slate600
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        cursorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
                     ),
                     singleLine = true
                 )
@@ -733,13 +728,13 @@ fun LoopSettingsDialog(
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Orange600,
-                        focusedLabelColor = Orange600,
-                        cursorColor = Orange600,
-                        unfocusedTextColor = appColors.textPrimary,
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedLabelColor = appColors.textSecondary,
-                        unfocusedBorderColor = Slate600
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        cursorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
                     ),
                     singleLine = true
                 )
@@ -750,10 +745,10 @@ fun LoopSettingsDialog(
                         onClick = onDelete,
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = Red600
+                            contentColor = MaterialTheme.colorScheme.error
                         ),
                         border = ButtonDefaults.outlinedButtonBorder.copy(
-                            brush = Brush.horizontalGradient(listOf(Red600, Red600))
+                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.error, MaterialTheme.colorScheme.error))
                         )
                     ) {
                         Icon(AppIcons.Delete, contentDescription = null)
@@ -775,12 +770,12 @@ fun LoopSettingsDialog(
                 },
                 enabled = isValid
             ) {
-                Text(stringResource(R.string.save), color = if (isValid) Orange600 else appColors.textSecondary)
+                Text(stringResource(R.string.save), color = if (isValid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     )

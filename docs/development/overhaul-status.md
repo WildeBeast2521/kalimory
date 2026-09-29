@@ -4,16 +4,21 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Settings on the calm theme. Branch `work/settings-redesign`, based on master `79675a6`.
+Library editors on the calm theme. Branch `work/library-editors-theme`, based on master `6d1619e`.
 
-- **Top bar:** the slate top bar becomes a quiet surface with a heading title.
-- **Colours:** cards and text use theme roles through the mapping script (`AppColors` and the Slate palette are gone from this file).
-- **Switches:** the five orange-track switch overrides are removed, so the switches use Material 3 defaults on the palette.
-- **Shapes:** cards use `MaterialTheme.shapes.large`.
+- **Screens:** the exercise list (`CreateScreen`), the program list and editor (with their dialogs, loop components and exercise items), and the interval list and editor.
+- **Top bars and buttons:** coloured top bars become quiet surfaces. Floating add buttons use Material defaults (primary container).
+- **Colours:** in these screens orange marked the main action, so it maps to primary. `AppColors` and the Slate palette map to theme roles. Text on primary, secondary and error containers uses the matching on-colour, so dark theme stays readable.
+- **Kept:** the assistance legend colour (pink).
+- **Title:** the exercise list is titled "Exercises and groups" instead of "Exercise Creation" (an audit item). The unused `exercise_creation` string is removed.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- screenshots of the top, the workout section and App info.
+- screenshots of the exercise list, the program list and editor, and the interval list.
+
+## Previous phase: Settings on the calm theme (merged)
+
+PR #56 merged as `6d1619e`.
 
 ## Previous phase: Progress redesign (merged)
 
@@ -78,7 +83,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 **Train and Library:**
 - Done in PR #54: (S) A program with no exercises shows "~0 min".
 - (S) Estimates disagree between screens for the same program (~12, ~13 and ~16 min, depending on the screen and the prefill mode). Label them consistently, or explain the difference.
-- (S) The exercise list is titled "Exercise Creation"; it should be "Exercises". An empty "Favorite" group is still shown.
+- Done in PR #57: the exercise list title. Still open: (S) an empty "Favorite" group is shown.
 - (S) Program list rows have no summary (exercise count, estimate), and tapping a row does nothing.
 - (S) The interval list shows no total duration.
 - (S/M) Per-exercise "Interval 60s" means rest, and clashes with Interval mode. Say "Rest" everywhere.
@@ -163,6 +168,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #54: Today polish.
 - PR #55: Progress redesign.
 - PR #56: Settings on the calm theme.
+- PR #57: Library editors on the calm theme.
 
 ## Owner direction for later (2026-09-27)
 
