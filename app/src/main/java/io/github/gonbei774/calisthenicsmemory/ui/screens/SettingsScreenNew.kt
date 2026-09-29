@@ -1032,17 +1032,17 @@ fun SettingsScreenNew(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://codeberg.org/Gonbei774/CalisthenicsMemory"))
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(REPOSITORY_URL))
                                     context.startActivity(intent)
                                 },
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = "<>",
-                                fontSize = 20.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontWeight = FontWeight.Bold
+                            Icon(
+                                imageVector = AppIcons.SourceCode,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(24.dp)
                             )
                             Text(
                                 text = stringResource(R.string.app_source_code),
@@ -1110,6 +1110,29 @@ fun SettingsScreenNew(
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                         }
+
+                        // The upstream project this app is based on (GPL-3.0 attribution).
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(UPSTREAM_URL)))
+                                },
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = AppIcons.SourceCode,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Text(
+                                text = stringResource(R.string.app_original_project),
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
                     }
                 }
             }
@@ -1136,31 +1159,12 @@ fun SettingsScreenNew(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
-                        // Codebergで問題を報告
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://codeberg.org/Gonbei774/CalisthenicsMemory/issues"))
-                                    context.startActivity(intent)
-                                },
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(AppIcons.RecordManually, contentDescription = null, modifier = Modifier.size(20.dp))
-                            Text(
-                                text = stringResource(R.string.report_issue_codeberg),
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-
                         // GitHubで問題を報告
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Gonbei774/CalisthenicsMemory/issues"))
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("$REPOSITORY_URL/issues"))
                                     context.startActivity(intent)
                                 },
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -1226,3 +1230,9 @@ suspend fun executeCsvImport(
         }
     }
 }
+
+/** This app's own repository: source code and issue reports. */
+private const val REPOSITORY_URL = "https://github.com/WildeBeast2521/CalisthenicsMemory"
+
+/** The upstream project this app is based on. */
+private const val UPSTREAM_URL = "https://codeberg.org/Gonbei774/CalisthenicsMemory"

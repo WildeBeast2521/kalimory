@@ -244,7 +244,6 @@
     <string name="csv_import_more_items">... і ще %d</string>
     <string name="keep_screen_on_description">Тримати екран увімкненим під час тренування, щоб бачити відлік часу</string>
     <string name="keep_screen_on_setting">Тримати екран увімкненим</string>
-    <string name="report_issue_codeberg">Повідомити про помилку на Codeberg</string>
     <string name="report_issue_github">Повідомити про помилку на GitHub</string>
     <string name="todo_drag_to_reorder">Перетягніть, щоб змінити порядок</string>
     <string name="program_exercise_count">%d вправ</string>
@@ -797,4 +796,5 @@
         <item quantity="other">%d підходу</item>
     </plurals>
     <string name="value_with_unit">%1$d %2$s</string>
+    <string name="app_original_project">Оригінальний проєкт</string>
 </resources>

@@ -516,7 +516,6 @@
     <string name="feedback_description">Report bugs or request features</string>
     <string name="codeberg_description">Main repository</string>
     <string name="github_description">Mirror repository</string>
-    <string name="report_issue_codeberg">Report issue on Codeberg</string>
     <string name="report_issue_github">Report issue on GitHub</string>
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
@@ -853,4 +852,5 @@
         <item quantity="other">%d sets</item>
     </plurals>
     <string name="value_with_unit">%1$d %2$s</string>
+    <string name="app_original_project">Original project</string>
 </resources>

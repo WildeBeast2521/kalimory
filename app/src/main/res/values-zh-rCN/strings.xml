@@ -452,7 +452,6 @@
     <string name="feedback_description">报告错误或请求功能</string>
     <string name="codeberg_description">主仓库</string>
     <string name="github_description">镜像仓库</string>
-    <string name="report_issue_codeberg">在Codeberg上报告问题</string>
     <string name="report_issue_github">在GitHub上报告问题</string>
     <!-- Flash Notification -->
     <string name="flash_notification_setting">LED闪光通知</string>
@@ -793,4 +792,5 @@
         <item quantity="other">%d组</item>
     </plurals>
     <string name="value_with_unit">%1$d%2$s</string>
+    <string name="app_original_project">原始项目</string>
 </resources>

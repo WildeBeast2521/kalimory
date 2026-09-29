@@ -499,7 +499,6 @@
     <string name="feedback_description">バグ報告・機能要望はこちら</string>
     <string name="codeberg_description">メインリポジトリ</string>
     <string name="github_description">ミラーリポジトリ</string>
-    <string name="report_issue_codeberg">Codebergで問題を報告する</string>
     <string name="report_issue_github">GitHubで問題を報告する</string>
     <!-- Flash Notification -->
     <string name="flash_notification_setting">LEDフラッシュ通知</string>
@@ -858,4 +857,5 @@
         <item quantity="other">%dセット</item>
     </plurals>
     <string name="value_with_unit">%1$d%2$s</string>
+    <string name="app_original_project">元のプロジェクト</string>
 </resources>
