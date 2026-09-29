@@ -4,16 +4,21 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Small audit fixes. Branch `work/small-audit-fixes`, based on master `bdd1221`.
+Start flows. Branch `work/start-flows`, based on master `569be6b`.
 
-- **Favorite group:** hidden until something is marked as a favourite. It came from the shared `prepareHierarchicalData`, so every exercise list is covered.
-- **Progress exercise sheet:** its list pads for the navigation bar, so the last rows scroll clear of it.
-- **Per-exercise rest:** it reads "Rest 60s" instead of "Interval 60s" in English, Japanese (休憩) and Ukrainian (Відпочинок). The other locales already said rest.
-- **Interval confirm screen:** its title is the routine's name instead of "Confirm". The duplicate heading in the body is removed, along with the `interval_confirm_title` string.
+- **Single-workout setup:** it starts ready. Sets and target come from the exercise's own targets, or the defaults Start already fell back to (3 × 10, and 5 s per rep for dynamic exercises). Start is no longer disabled with blank fields and no reason; "Apply Exercise Settings" still re-applies the targets.
+- **Program start screen:**
+  - one Start, pinned to the bottom with the play icon and always in view;
+  - the small top-bar Start and the end-of-list Start are removed;
+  - the settings section starts collapsed.
 
 Verification:
-- the full local gate (131/131 instrumented tests on API 29);
-- screenshots of the Progress sheet and the interval confirm screen.
+- the full local gate (131/131 instrumented tests on API 29); `UnifiedWorkoutFlowTest` still starts single and program workouts;
+- screenshots of the program start screen and the single setup.
+
+## Previous phase: small audit fixes (merged)
+
+PR #66 merged as `569be6b`.
 
 ## Previous phase: program runs use the in-workout kit (merged)
 
@@ -125,8 +130,8 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - (M) Show when each exercise or program was last done.
 
 **Workouts:**
-- (S) Single-workout setup can leave Start disabled with no reason (an empty rep duration or target). Use defaults, or say what is missing.
-- (S) The program start screen has settings expanded, and Start is a small top-bar action. Make Start a large bottom button and collapse the settings.
+- Done in PR #67: single-workout setup starts with targets or defaults filled in.
+- Done in PR #67: the program start screen has one pinned Start and collapsed settings.
 - Done in PR #65: the program run shows "Set 1/6" within the exercise.
 - Done in PR #62: the two interval Start buttons, the missing spaces, and "NEXT" in capitals. Done in PR #66: the "Confirm" title.
 - Program runs use the kit (PR #65). The interval run keeps its own timer screen for now; it is already on theme roles.
@@ -213,6 +218,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #64: Baseline Profiles and Macrobenchmark.
 - PR #65: program runs use the in-workout kit.
 - PR #66: small audit fixes.
+- PR #67: start flows.
 
 ## Owner direction for later (2026-09-27)
 
