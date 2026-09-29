@@ -4,17 +4,22 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Program and interval runs on the calm theme. Branch `work/execution-theme`, based on master `8a62c4c`.
+`AppColors` removed; every screen now uses the calm theme. Branch `work/remove-appcolors`, based on master `a3947cf`.
 
-- **Screens:** program start, run, overview sheet, results and rests, and the interval run, all move from `AppColors` and the palette to theme roles, with quiet top bars.
-- **Colours match the single workout (`WorkoutTone`):** orange (the set in progress) becomes brass (tertiary), green (done) becomes spruce, cyan (rest) and the purple labels become secondary, and red becomes error.
-- **Draw lambdas:** colours are read once per composable as `cs`, which covers the Canvas code.
-- **Overview sheet:** it was designed for a dark background, so its white text now uses onSurface, and white on filled containers uses the matching on-colour (`contentColorFor` for dynamic containers).
-- **Disabled buttons:** they use surface roles instead of hard-coded slate hex.
+- **Removed:**
+  - the `AppColors` class, `LocalAppColors`, and its provider in `CalisthenicsMemoryTheme`;
+  - the white-to-slate gradient that `MainActivity` drew behind every screen, now the theme background;
+  - the last stale imports.
+- **Palette:** `Color.kt` keeps only `Pink600`, the categorical assistance colour; the other 23 legacy constants had no users left. The Slate, Orange, Purple and other palette constants no longer appear anywhere in UI code.
+- **Dark theme:** it now depends only on `CalmPalette.dark`. Checked on the emulator with the app theme set to Dark: Today, Progress, the program list and a program run.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- screenshots of the program run and its overview sheet, the interval confirm screen and the interval run.
+- dark-theme screenshots.
+
+## Previous phase: program and interval runs on the calm theme (merged)
+
+PR #60 merged as `a3947cf`.
 
 ## Previous phase: data screens on the calm theme (merged)
 
@@ -184,6 +189,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #58: To Do and Record on the calm theme.
 - PR #59: data screens on the calm theme.
 - PR #60: program and interval runs on the calm theme.
+- PR #61: remove AppColors.
 
 ## Owner direction for later (2026-09-27)
 

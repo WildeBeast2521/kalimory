@@ -24,7 +24,6 @@ import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramLoop
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import androidx.compose.foundation.lazy.LazyColumn

@@ -28,7 +28,6 @@ import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramLoop
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
