@@ -1000,7 +1000,7 @@ fun WorkoutExerciseItem(
                             text = stringResource(R.string.legend_weight),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Amber500
+                            color = MaterialTheme.colorScheme.tertiary
                         )
                     }
                     if (exercise.distanceTrackingEnabled) {
@@ -1008,7 +1008,7 @@ fun WorkoutExerciseItem(
                             text = stringResource(R.string.legend_distance),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Cyan600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                     if (exercise.assistanceTrackingEnabled) {
@@ -3058,7 +3058,7 @@ fun WorkoutSearchResultItem(
                             text = stringResource(R.string.legend_weight),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Amber500
+                            color = MaterialTheme.colorScheme.tertiary
                         )
                     }
                     if (exercise.distanceTrackingEnabled) {
@@ -3066,7 +3066,7 @@ fun WorkoutSearchResultItem(
                             text = stringResource(R.string.legend_distance),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Cyan600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                     if (exercise.assistanceTrackingEnabled) {

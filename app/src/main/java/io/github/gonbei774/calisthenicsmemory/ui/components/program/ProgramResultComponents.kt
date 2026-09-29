@@ -19,14 +19,12 @@ import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
 import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 
 @Composable
 internal fun ProgramResultStep(
     session: ProgramExecutionSession,
     onSave: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     var comment by remember { mutableStateOf(session.comment) }
 
     // 0のセットがあるかチェック
@@ -56,7 +54,7 @@ internal fun ProgramResultStep(
             text = stringResource(R.string.workout_complete),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -72,8 +70,8 @@ internal fun ProgramResultStep(
             modifier = Modifier.fillMaxWidth(),
             maxLines = 3,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Orange600,
-                focusedLabelColor = Orange600
+                focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                focusedLabelColor = MaterialTheme.colorScheme.tertiary
             )
         )
 
@@ -94,7 +92,7 @@ internal fun ProgramResultStep(
                         text = exercise.name,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.padding(top = if (exerciseIndex > 0) 8.dp else 0.dp)
                     )
                 }
@@ -108,7 +106,7 @@ internal fun ProgramResultStep(
                             Text(
                                 text = stringResource(R.string.loop_round_current, roundNumber, totalRounds),
                                 fontSize = 14.sp,
-                                color = Purple400,
+                                color = MaterialTheme.colorScheme.secondary,
                                 modifier = Modifier.padding(top = 4.dp, start = 8.dp)
                             )
                         }
@@ -153,12 +151,12 @@ internal fun ProgramResultStep(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 12.dp),
-                colors = CardDefaults.cardColors(containerColor = Amber600.copy(alpha = 0.2f))
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.2f))
             ) {
                 Text(
                     text = stringResource(R.string.program_result_zero_warning),
                     fontSize = 14.sp,
-                    color = Amber500,
+                    color = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.padding(12.dp)
                 )
             }
@@ -170,7 +168,7 @@ internal fun ProgramResultStep(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Orange600)
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
         ) {
             Text(
                 text = stringResource(R.string.record_workout),
@@ -189,7 +187,6 @@ internal fun ProgramUnilateralSetItem(
     leftSet: ProgramWorkoutSet?,
     exercise: Exercise
 ) {
-    val appColors = LocalAppColors.current
     val exerciseType = exercise.type
     var rightValue by remember(rightSet) { mutableStateOf(rightSet?.actualValue?.toString() ?: "0") }
     var leftValue by remember(leftSet) { mutableStateOf(leftSet?.actualValue?.toString() ?: "0") }
@@ -197,7 +194,7 @@ internal fun ProgramUnilateralSetItem(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (rightSet?.isSkipped == true && leftSet?.isSkipped == true) appColors.cardBackgroundSecondary else appColors.cardBackground
+            containerColor = if (rightSet?.isSkipped == true && leftSet?.isSkipped == true) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
@@ -210,14 +207,14 @@ internal fun ProgramUnilateralSetItem(
                 text = stringResource(R.string.set_label, setNumber),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             if (rightSet?.isSkipped == true && leftSet?.isSkipped == true) {
                 Text(
                     text = stringResource(R.string.skipped_label),
                     fontSize = 12.sp,
-                    color = appColors.textSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
@@ -233,7 +230,7 @@ internal fun ProgramUnilateralSetItem(
                 Text(
                     text = stringResource(R.string.right_colon),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.width(30.dp)
                 )
                 OutlinedTextField(
@@ -261,7 +258,7 @@ internal fun ProgramUnilateralSetItem(
                 Text(
                     text = stringResource(R.string.left_colon),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.width(30.dp)
                 )
                 OutlinedTextField(
@@ -303,14 +300,13 @@ internal fun ProgramBilateralSetItem(
     set: ProgramWorkoutSet,
     exercise: Exercise
 ) {
-    val appColors = LocalAppColors.current
     val exerciseType = exercise.type
     var value by remember(set) { mutableStateOf(set.actualValue.toString()) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (set.isSkipped) appColors.cardBackgroundSecondary else appColors.cardBackground
+            containerColor = if (set.isSkipped) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
@@ -329,13 +325,13 @@ internal fun ProgramBilateralSetItem(
                         text = stringResource(R.string.set_label, set.setNumber),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     if (set.isSkipped) {
                         Text(
                             text = stringResource(R.string.skipped_label),
                             fontSize = 12.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -420,9 +416,9 @@ private fun ProgramResultTrackingInputs(
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Blue600,
-                focusedLabelColor = Blue600,
-                cursorColor = Blue600
+                focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                focusedLabelColor = MaterialTheme.colorScheme.secondary,
+                cursorColor = MaterialTheme.colorScheme.secondary
             )
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -447,9 +443,9 @@ private fun ProgramResultTrackingInputs(
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Orange600,
-                focusedLabelColor = Orange600,
-                cursorColor = Orange600
+                focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                cursorColor = MaterialTheme.colorScheme.tertiary
             )
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -474,9 +470,9 @@ private fun ProgramResultTrackingInputs(
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Amber500,
-                focusedLabelColor = Amber500,
-                cursorColor = Amber500
+                focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                cursorColor = MaterialTheme.colorScheme.tertiary
             )
         )
     }

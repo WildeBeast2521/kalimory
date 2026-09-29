@@ -28,7 +28,6 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.common.RepPaceIndica
 import io.github.gonbei774.calisthenicsmemory.util.FlashController
 import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import io.github.gonbei774.calisthenicsmemory.ui.components.rememberStepStopwatch
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -48,7 +47,7 @@ internal fun ProgramExecutingStepDynamicManual(
     onRetry: () -> Unit,
     onOpenNavigation: () -> Unit = {}
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val currentSet = session.sets[currentSetIndex]
     val (pe, exercise) = session.exercises[currentSet.exerciseIndex]
 
@@ -107,7 +106,7 @@ internal fun ProgramExecutingStepDynamicManual(
             text = exercise.name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary,
+            color = cs.onSurface,
             modifier = Modifier.padding(top = 8.dp)
         )
 
@@ -126,7 +125,7 @@ internal fun ProgramExecutingStepDynamicManual(
                 stringResource(R.string.set_progress, globalSetIndex, totalSets)
             },
             fontSize = 18.sp,
-            color = appColors.textTertiary,
+            color = cs.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
 
@@ -135,7 +134,7 @@ internal fun ProgramExecutingStepDynamicManual(
             Text(
                 text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
                 fontSize = 16.sp,
-                color = Purple400,
+                color = cs.secondary,
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
@@ -156,14 +155,14 @@ internal fun ProgramExecutingStepDynamicManual(
                     text = "$recordValue",
                     fontSize = 96.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (isTimerComplete) Green400 else appColors.textPrimary,
+                    color = if (isTimerComplete) cs.primary else cs.onSurface,
                     modifier = Modifier.alpha(if (effectivelyPaused) 0.3f else 1f)
                 )
                 Text(
                     text = " " + stringResource(R.string.unit_reps),
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Medium,
-                    color = appColors.textSecondary,
+                    color = cs.onSurfaceVariant,
                     modifier = Modifier.padding(bottom = 14.dp)
                 )
             }
@@ -200,7 +199,7 @@ internal fun ProgramExecutingStepDynamicManual(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Green600),
+            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
             shape = RoundedCornerShape(16.dp)
         ) {
             Text(
@@ -258,7 +257,7 @@ internal fun ProgramExecutingStepIsometricManual(
     onRetry: () -> Unit,
     onOpenNavigation: () -> Unit = {}
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val currentSet = session.sets[currentSetIndex]
     val (pe, exercise) = session.exercises[currentSet.exerciseIndex]
 
@@ -312,7 +311,7 @@ internal fun ProgramExecutingStepIsometricManual(
     val isTimerComplete = remainingTime <= 0
 
     // 色（一時停止中=グレー、完了=緑、実行中=オレンジ）
-    val activeColor = if (isTimerComplete) Green600 else Orange600
+    val activeColor = if (isTimerComplete) cs.primary else cs.tertiary
 
 
 
@@ -327,7 +326,7 @@ internal fun ProgramExecutingStepIsometricManual(
             text = exercise.name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary,
+            color = cs.onSurface,
             modifier = Modifier.padding(top = 8.dp)
         )
 
@@ -346,7 +345,7 @@ internal fun ProgramExecutingStepIsometricManual(
                 stringResource(R.string.set_progress, globalSetIndex, totalSets)
             },
             fontSize = 18.sp,
-            color = appColors.textTertiary,
+            color = cs.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
 
@@ -355,7 +354,7 @@ internal fun ProgramExecutingStepIsometricManual(
             Text(
                 text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
                 fontSize = 16.sp,
-                color = Purple400,
+                color = cs.secondary,
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
@@ -374,7 +373,7 @@ internal fun ProgramExecutingStepIsometricManual(
         ) {
             Canvas(modifier = Modifier.size(240.dp)) {
                 drawArc(
-                    color = Slate600,
+                    color = cs.outline,
                     startAngle = -90f,
                     sweepAngle = 360f,
                     useCenter = false,
@@ -392,11 +391,11 @@ internal fun ProgramExecutingStepIsometricManual(
                 text = "$remainingTime",
                 fontSize = 80.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary,
+                color = cs.onSurface,
                 modifier = Modifier.alpha(if (effectivelyPaused) 0.2f else 1f)
             )
             if (effectivelyPaused) {
-                val iconColor = appColors.textPrimary
+                val iconColor = cs.onSurface
                 Canvas(modifier = Modifier.size(56.dp)) {
                     val path = Path().apply {
                         moveTo(size.width * 0.25f, size.height * 0.15f)
@@ -430,7 +429,7 @@ internal fun ProgramExecutingStepIsometricManual(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Green600),
+            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
             shape = RoundedCornerShape(16.dp)
         ) {
             Text(
@@ -488,7 +487,7 @@ internal fun ProgramExecutingStepIsometricAuto(
     onRetry: () -> Unit,
     onOpenNavigation: () -> Unit = {}
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val currentSet = session.sets[currentSetIndex]
     val (pe, exercise) = session.exercises[currentSet.exerciseIndex]
 
@@ -541,7 +540,7 @@ internal fun ProgramExecutingStepIsometricAuto(
     } else 0f
 
     // 色（一時停止中=グレー、実行中=オレンジ）
-    val activeColor = Orange600
+    val activeColor = cs.tertiary
 
 
     Column(
@@ -555,7 +554,7 @@ internal fun ProgramExecutingStepIsometricAuto(
             text = exercise.name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary,
+            color = cs.onSurface,
             modifier = Modifier.padding(top = 8.dp)
         )
 
@@ -574,7 +573,7 @@ internal fun ProgramExecutingStepIsometricAuto(
                 stringResource(R.string.set_progress, globalSetIndex, totalSets)
             },
             fontSize = 18.sp,
-            color = appColors.textTertiary,
+            color = cs.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
 
@@ -583,7 +582,7 @@ internal fun ProgramExecutingStepIsometricAuto(
             Text(
                 text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
                 fontSize = 16.sp,
-                color = Purple400,
+                color = cs.secondary,
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
@@ -602,7 +601,7 @@ internal fun ProgramExecutingStepIsometricAuto(
         ) {
             Canvas(modifier = Modifier.size(240.dp)) {
                 drawArc(
-                    color = Slate600,
+                    color = cs.outline,
                     startAngle = -90f,
                     sweepAngle = 360f,
                     useCenter = false,
@@ -620,11 +619,11 @@ internal fun ProgramExecutingStepIsometricAuto(
                 text = "$remainingTime",
                 fontSize = 80.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary,
+                color = cs.onSurface,
                 modifier = Modifier.alpha(if (effectivelyPaused) 0.2f else 1f)
             )
             if (effectivelyPaused) {
-                val iconColor = appColors.textPrimary
+                val iconColor = cs.onSurface
                 Canvas(modifier = Modifier.size(56.dp)) {
                     val path = Path().apply {
                         moveTo(size.width * 0.25f, size.height * 0.15f)
@@ -654,7 +653,7 @@ internal fun ProgramExecutingStepIsometricAuto(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Green600),
+            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
             shape = RoundedCornerShape(16.dp)
         ) {
             Text(
@@ -683,7 +682,7 @@ internal fun ProgramExecutingStepDynamicAuto(
     onRetry: () -> Unit,
     onOpenNavigation: () -> Unit = {}
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val currentSet = session.sets[currentSetIndex]
     val (pe, exercise) = session.exercises[currentSet.exerciseIndex]
 
@@ -745,7 +744,7 @@ internal fun ProgramExecutingStepDynamicAuto(
             text = exercise.name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary,
+            color = cs.onSurface,
             modifier = Modifier.padding(top = 8.dp)
         )
 
@@ -764,7 +763,7 @@ internal fun ProgramExecutingStepDynamicAuto(
                 stringResource(R.string.set_progress, globalSetIndex, totalSets)
             },
             fontSize = 18.sp,
-            color = appColors.textTertiary,
+            color = cs.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
 
@@ -773,7 +772,7 @@ internal fun ProgramExecutingStepDynamicAuto(
             Text(
                 text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
                 fontSize = 16.sp,
-                color = Purple400,
+                color = cs.secondary,
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
@@ -794,14 +793,14 @@ internal fun ProgramExecutingStepDynamicAuto(
                     text = "$recordValue",
                     fontSize = 96.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (isTimerComplete) Green400 else appColors.textPrimary,
+                    color = if (isTimerComplete) cs.primary else cs.onSurface,
                     modifier = Modifier.alpha(if (effectivelyPaused) 0.3f else 1f)
                 )
                 Text(
                     text = " " + stringResource(R.string.unit_reps),
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Medium,
-                    color = appColors.textSecondary,
+                    color = cs.onSurfaceVariant,
                     modifier = Modifier.padding(bottom = 14.dp)
                 )
             }
@@ -834,7 +833,7 @@ internal fun ProgramExecutingStepDynamicAuto(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Green600),
+            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
             shape = RoundedCornerShape(16.dp)
         ) {
             Text(
@@ -857,7 +856,7 @@ internal fun ProgramExecutingStepDynamicSimple(
     onAbort: () -> Unit,
     onOpenNavigation: () -> Unit = {}
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val currentSet = session.sets[currentSetIndex]
     val (pe, exercise) = session.exercises[currentSet.exerciseIndex]
 
@@ -875,7 +874,7 @@ internal fun ProgramExecutingStepDynamicSimple(
             text = exercise.name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary,
+            color = cs.onSurface,
             modifier = Modifier.padding(top = 8.dp)
         )
 
@@ -894,7 +893,7 @@ internal fun ProgramExecutingStepDynamicSimple(
                 stringResource(R.string.set_progress, globalSetIndex, totalSets)
             },
             fontSize = 18.sp,
-            color = appColors.textTertiary,
+            color = cs.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
 
@@ -903,7 +902,7 @@ internal fun ProgramExecutingStepDynamicSimple(
             Text(
                 text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
                 fontSize = 16.sp,
-                color = Purple400,
+                color = cs.secondary,
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
@@ -922,13 +921,13 @@ internal fun ProgramExecutingStepDynamicSimple(
                 Surface(
                     shape = RoundedCornerShape(50),
                     color = Color.Transparent,
-                    border = BorderStroke(3.dp, Slate500)
+                    border = BorderStroke(3.dp, cs.outline)
                 ) {
                     Box(
                         modifier = Modifier.size(64.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = "-", fontSize = 36.sp, fontWeight = FontWeight.Bold, color = appColors.textPrimary)
+                        Text(text = "-", fontSize = 36.sp, fontWeight = FontWeight.Bold, color = cs.onSurface)
                     }
                 }
             }
@@ -937,7 +936,7 @@ internal fun ProgramExecutingStepDynamicSimple(
                 text = "$repsCount",
                 fontSize = 96.sp,
                 fontWeight = FontWeight.Bold,
-                color = Green400
+                color = cs.primary
             )
 
             IconButton(
@@ -947,13 +946,13 @@ internal fun ProgramExecutingStepDynamicSimple(
                 Surface(
                     shape = RoundedCornerShape(50),
                     color = Color.Transparent,
-                    border = BorderStroke(3.dp, Slate500)
+                    border = BorderStroke(3.dp, cs.outline)
                 ) {
                     Box(
                         modifier = Modifier.size(64.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = "+", fontSize = 36.sp, fontWeight = FontWeight.Bold, color = appColors.textPrimary)
+                        Text(text = "+", fontSize = 36.sp, fontWeight = FontWeight.Bold, color = cs.onSurface)
                     }
                 }
             }
@@ -976,7 +975,7 @@ internal fun ProgramExecutingStepDynamicSimple(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Green600),
+            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
             shape = RoundedCornerShape(16.dp)
         ) {
             Text(
