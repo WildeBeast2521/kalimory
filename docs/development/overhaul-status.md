@@ -4,17 +4,21 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-List summaries and a default graph. Branch `work/list-summaries`, based on master `7612f38`.
+Graph axis and program rows. Branch `work/graph-axis`, based on master `a2e6f3d`.
 
-- **Program list:** rows show "3 exercise(s) · ~12 min", from the shared `rememberProgramSummaries`.
-- **Interval summaries:** interval list and Train rows add the estimated total ("· ~7 min"), through the new shared `intervalSummary`, which uses `ProgramTimeEstimator.estimateIntervalSeconds`.
-- **Graph:** with no exercise selected, it shows the most recently trained exercise, labelled "Latest: <name>" (a new string in 10 locales), instead of an empty "Please select an exercise".
+- **Graph y-axis:** `calculateYAxisLabels` picks a whole-number step from a 1-2-5 ladder, with at most seven labels. Labels no longer repeat after rounding ("4 reps, 4 reps").
+  - Labels also stay inside the plotted range. Before, the top labels could sit above the chart.
+  - The axis text uses the theme's `onSurfaceVariant` instead of a fixed slate.
+  - New test: `YAxisLabelsTest`.
+- **Program list:** tapping a row opens the program editor, the same as the edit button. It does not start the program, so a stray tap cannot begin a workout.
 
 Verification:
-- the full local gate (131/131 instrumented tests on API 29);
-- screenshots of the program list, the interval list and Graph.
+- the full local gate (131/131 instrumented tests on API 29, 339 unit tests);
+- screenshots of Graph with a 5.5-rep maximum (labels 1 to 5), and of a row tap opening "Edit Program".
 
-Seen but not fixed: Graph's y-axis can repeat labels ("4 reps, 4 reps"). Added to the ideas list.
+## Previous phase: list summaries and a default graph (merged)
+
+PR #68 merged as `a2e6f3d`.
 
 ## Previous phase: start flows (merged)
 
@@ -128,7 +132,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - Done in PR #54: (S) A program with no exercises shows "~0 min".
 - (S) Estimates disagree between screens for the same program (~12, ~13 and ~16 min, depending on the screen and the prefill mode). Label them consistently, or explain the difference.
 - Done in PR #57: the exercise list title. Done in PR #66: the empty "Favorite" group is hidden.
-- Done in PR #68: program list rows show a summary. Still open: tapping a row does nothing.
+- Done in PR #68: program list rows show a summary. Done in PR #69: tapping a row opens the editor.
 - Done in PR #68: interval rows show the estimated total.
 - Done in PR #66: per-exercise rest now reads "Rest" where it said "Interval".
 - (M) Show when each exercise or program was last done.
@@ -148,7 +152,8 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - Done in PR #55: (S) Dates show as "2026-09-25"; use the locale's format.
 - Done in PR #55: (S) "6reps" is missing a space. The right and left sides use arbitrary colours (green and purple).
 - Done in PR #66: the Progress exercise sheet pads for the navigation bar.
-- Done in PR #68: Graph defaults to the latest exercise. Still open: (S) the y-axis repeats labels ("4 reps, 4 reps").
+- Done in PR #68: Graph defaults to the latest exercise. Done in PR #69: the y-axis no longer repeats labels.
+- (S) The Graph axis says "1 reps"; the unit suffix is not pluralised.
 - (M) "1 Week" is a rolling seven days, while Today uses the calendar week and the first-day setting.
 - (M) The Challenge tab does not say how to set a challenge, and overlaps with the progression goals.
 - (L) Trends and personal bests (progression system).
@@ -224,6 +229,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #66: small audit fixes.
 - PR #67: start flows.
 - PR #68: list summaries and a default graph.
+- PR #69: graph axis labels and program row tap.
 
 ## Owner direction for later (2026-09-27)
 

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import androidx.compose.ui.graphics.toArgb
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
@@ -862,7 +863,7 @@ fun SimpleLineChart(
         val graphHeight = size.height - topPadding - bottomPadding
 
         val textPaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#94A3B8")
+            color = cs.onSurfaceVariant.toArgb()
             textSize = 11.sp.toPx()
             isAntiAlias = true
         }
@@ -1279,7 +1280,7 @@ fun SimpleVolumeChart(
         val graphHeight = size.height - topPadding - bottomPadding
 
         val textPaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#94A3B8")
+            color = cs.onSurfaceVariant.toArgb()
             textSize = 11.sp.toPx()
             isAntiAlias = true
         }
@@ -1573,7 +1574,7 @@ fun SimpleAssistanceChart(
         val graphHeight = size.height - topPadding - bottomPadding
 
         val textPaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#94A3B8")
+            color = cs.onSurfaceVariant.toArgb()
             textSize = 11.sp.toPx()
             isAntiAlias = true
         }
@@ -1820,7 +1821,7 @@ fun SimpleWeightChart(
         val graphHeight = size.height - topPadding - bottomPadding
 
         val textPaint = Paint().apply {
-            color = android.graphics.Color.parseColor("#94A3B8")
+            color = cs.onSurfaceVariant.toArgb()
             textSize = 11.sp.toPx()
             isAntiAlias = true
         }
@@ -1958,19 +1959,12 @@ fun calculateWeightYAxisLabels(min: Float, max: Float): List<Float> {
 }
 
 fun calculateYAxisLabels(min: Float, max: Float): List<Float> {
-    val range = max
-    val interval = when {
-        range < 10 -> 1f
-        range < 50 -> 5f
-        range < 100 -> 10f
-        else -> 25f
-    }
-
-    val adjustedMax = ((max / interval).toInt() + 1) * interval
-
-    return (0..9).map { i ->
-        (adjustedMax * i / 9).toFloat()
-    }
+    // Whole-number steps from a 1-2-5 ladder, so no label repeats once shown as reps or seconds,
+    // and every label stays inside the plotted range (0..max).
+    val top = max - min
+    val step = generateSequence(1) { if (it.toString().first() == '2') it / 2 * 5 else it * 2 }
+        .first { top / it <= 6f }
+    return generateSequence(0f) { it + step }.takeWhile { it <= top }.toList()
 }
 
 // 距離Y軸用のラベル計算（6個程度、最下部はスキップしてX軸との干渉を回避）
