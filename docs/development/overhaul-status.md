@@ -4,15 +4,21 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Data screens on the calm theme. Branch `work/data-screens-theme`, based on master `05fca7c`.
+Program and interval runs on the calm theme. Branch `work/execution-theme`, based on master `8a62c4c`.
 
-- **Screens:** Backup, CSV data management, Share hub, Community share export, Licenses and Database recovery move from `AppColors` and the palette to theme roles, with quiet top bars.
-- **Contrast:** text on the brass share-export actions uses onTertiary.
-- **Settings:** the backup card shows up to four lines, so the longer description from PR #52 is no longer cut off after "intervals".
+- **Screens:** program start, run, overview sheet, results and rests, and the interval run, all move from `AppColors` and the palette to theme roles, with quiet top bars.
+- **Colours match the single workout (`WorkoutTone`):** orange (the set in progress) becomes brass (tertiary), green (done) becomes spruce, cyan (rest) and the purple labels become secondary, and red becomes error.
+- **Draw lambdas:** colours are read once per composable as `cs`, which covers the Canvas code.
+- **Overview sheet:** it was designed for a dark background, so its white text now uses onSurface, and white on filled containers uses the matching on-colour (`contentColorFor` for dynamic containers).
+- **Disabled buttons:** they use surface roles instead of hard-coded slate hex.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- screenshots of the CSV, Share and Settings data section.
+- screenshots of the program run and its overview sheet, the interval confirm screen and the interval run.
+
+## Previous phase: data screens on the calm theme (merged)
+
+PR #59 merged as `8a62c4c`.
 
 ## Previous phase: To Do and Record on the calm theme (merged)
 
@@ -99,7 +105,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - (S) Single-workout setup can leave Start disabled with no reason (an empty rep duration or target). Use defaults, or say what is missing.
 - (S) The program start screen has settings expanded, and Start is a small top-bar action. Make Start a large bottom button and collapse the settings.
 - (S) The program run shows "1/10" (sets across the whole program) and a capitalised "NEXT"; show "Set 1/6", plus the exercise position.
-- (S) The interval confirm screen has two Start buttons, the title "Confirm", and missing spaces ("20sec", "8rounds").
+- (S) The interval confirm screen has two Start buttons, the title "Confirm", and missing spaces ("20sec", "8rounds"). Program and interval runs still show "NEXT:" in capitals.
 - (M) Program and interval runs should use the in-workout kit (PR #47).
 - Done in PR #53: (M) Record ("Log a past workout") behaves like a live session: a "NOW" badge, and every set must be completed before Record is enabled. For logging the past, allow saving all sets as shown.
 - (L, owner-approved, after the item above) Log a past workout with several exercises in one session. The v2 model supports this, and ManualWorkoutWriter handles one exercise today.
@@ -177,6 +183,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #57: Library editors on the calm theme.
 - PR #58: To Do and Record on the calm theme.
 - PR #59: data screens on the calm theme.
+- PR #60: program and interval runs on the calm theme.
 
 ## Owner direction for later (2026-09-27)
 

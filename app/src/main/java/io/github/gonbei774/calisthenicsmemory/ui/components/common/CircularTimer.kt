@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.common
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -16,7 +17,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 
 @Composable
 fun ProgramCircularTimer(
@@ -24,14 +24,14 @@ fun ProgramCircularTimer(
     remainingTime: Int,
     color: Color
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.size(240.dp)
     ) {
         Canvas(modifier = Modifier.size(240.dp)) {
             drawArc(
-                color = appColors.timerTrack,
+                color = cs.surfaceContainerHighest,
                 startAngle = -90f,
                 sweepAngle = 360f,
                 useCenter = false,
@@ -49,7 +49,7 @@ fun ProgramCircularTimer(
             text = "$remainingTime",
             fontSize = 80.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary,
+            color = cs.onSurface,
             style = TextStyle(
                 shadow = Shadow(
                     color = Color.Black.copy(alpha = 0.3f),

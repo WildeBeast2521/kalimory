@@ -682,7 +682,7 @@ fun ProgramExecutionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Orange600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -699,14 +699,14 @@ fun ProgramExecutionScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = program?.name ?: stringResource(R.string.program_list_title),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.weight(1f)
                     )
                     // 開始ボタン（Confirm画面のみ表示）
@@ -724,13 +724,13 @@ fun ProgramExecutionScreen(
                             Icon(
                                 AppIcons.Play,
                                 contentDescription = null,
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = stringResource(R.string.program_start),
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -741,7 +741,7 @@ fun ProgramExecutionScreen(
                             Icon(
                                 AppIcons.Menu,
                                 contentDescription = stringResource(R.string.nav_program_overview),
-                                tint = Color.White
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -757,7 +757,7 @@ fun ProgramExecutionScreen(
             if (isLoading || currentStep == null) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
-                    color = Orange600
+                    color = MaterialTheme.colorScheme.tertiary
                 )
             } else {
                 when (val step = currentStep) {

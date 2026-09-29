@@ -23,7 +23,6 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ProgramCircularTimer
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import io.github.gonbei774.calisthenicsmemory.util.FlashController
 import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
 import io.github.gonbei774.calisthenicsmemory.ui.components.countdownSeconds
@@ -44,7 +43,7 @@ internal fun ProgramStartIntervalStep(
     onComplete: () -> Unit,
     onSkip: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val currentSet = session.sets[currentSetIndex]
     val (_, exercise) = session.exercises[currentSet.exerciseIndex]
 
@@ -94,7 +93,7 @@ internal fun ProgramStartIntervalStep(
             text = exercise.name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary,
+            color = cs.onSurface,
             modifier = Modifier.padding(top = 8.dp)
         )
 
@@ -113,7 +112,7 @@ internal fun ProgramStartIntervalStep(
                 stringResource(R.string.set_progress, globalSetIndex, totalSets)
             },
             fontSize = 18.sp,
-            color = appColors.textTertiary,
+            color = cs.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
 
@@ -124,7 +123,7 @@ internal fun ProgramStartIntervalStep(
             text = stringResource(R.string.get_ready),
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
-            color = Orange600
+            color = cs.tertiary
         )
 
         Spacer(modifier = Modifier.height(48.dp))
@@ -141,14 +140,14 @@ internal fun ProgramStartIntervalStep(
         ) {
             Canvas(modifier = Modifier.size(240.dp)) {
                 drawArc(
-                    color = appColors.timerTrack,
+                    color = cs.surfaceContainerHighest,
                     startAngle = -90f,
                     sweepAngle = 360f,
                     useCenter = false,
                     style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
                 )
                 drawArc(
-                    color = Orange600.copy(alpha = if (effectivelyPaused) 0.3f else 1f),
+                    color = cs.tertiary.copy(alpha = if (effectivelyPaused) 0.3f else 1f),
                     startAngle = -90f,
                     sweepAngle = 360f * progress,
                     useCenter = false,
@@ -159,11 +158,11 @@ internal fun ProgramStartIntervalStep(
                 text = "$remainingTime",
                 fontSize = 80.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary,
+                color = cs.onSurface,
                 modifier = Modifier.alpha(if (effectivelyPaused) 0.2f else 1f)
             )
             if (effectivelyPaused) {
-                val iconColor = appColors.textPrimary
+                val iconColor = cs.onSurface
                 Canvas(modifier = Modifier.size(56.dp)) {
                     val path = Path().apply {
                         moveTo(size.width * 0.25f, size.height * 0.15f)
@@ -182,7 +181,7 @@ internal fun ProgramStartIntervalStep(
         TextButton(onClick = onSkip) {
             Text(
                 text = stringResource(R.string.skip_button),
-                color = appColors.textSecondary
+                color = cs.onSurfaceVariant
             )
         }
     }
@@ -200,7 +199,7 @@ internal fun ProgramIntervalStep(
     onComplete: () -> Unit,
     onSkip: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val currentSet = session.sets[currentSetIndex]
     // 次のセット：オーバーライドがあればそれを使用、なければ+1
     val nextSetIndex = nextSetIndexOverride ?: (currentSetIndex + 1)
@@ -264,13 +263,13 @@ internal fun ProgramIntervalStep(
                 text = stringResource(R.string.loop_round_rest),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
-                color = Purple600,
+                color = cs.secondary,
                 modifier = Modifier.padding(top = 8.dp)
             )
             Text(
                 text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
                 fontSize = 20.sp,
-                color = appColors.textTertiary,
+                color = cs.onSurfaceVariant,
                 modifier = Modifier.padding(top = 4.dp)
             )
         } else {
@@ -279,7 +278,7 @@ internal fun ProgramIntervalStep(
                 text = stringResource(R.string.interval_label),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
-                color = Cyan600,
+                color = cs.secondary,
                 modifier = Modifier.padding(top = 8.dp)
             )
             // ループ内セットならラウンド情報を表示
@@ -287,7 +286,7 @@ internal fun ProgramIntervalStep(
                 Text(
                     text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
                     fontSize = 16.sp,
-                    color = appColors.textSecondary,
+                    color = cs.onSurfaceVariant,
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
@@ -312,13 +311,13 @@ internal fun ProgramIntervalStep(
                     Surface(
                         shape = RoundedCornerShape(50),
                         color = Color.Transparent,
-                        border = BorderStroke(2.dp, Slate500)
+                        border = BorderStroke(2.dp, cs.outline)
                     ) {
                         Box(
                             modifier = Modifier.size(48.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = "-", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = appColors.textPrimary)
+                            Text(text = "-", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = cs.onSurface)
                         }
                     }
                 }
@@ -335,14 +334,14 @@ internal fun ProgramIntervalStep(
                 ) {
                     Canvas(modifier = Modifier.size(240.dp)) {
                         drawArc(
-                            color = appColors.timerTrack,
+                            color = cs.surfaceContainerHighest,
                             startAngle = -90f,
                             sweepAngle = 360f,
                             useCenter = false,
                             style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
                         )
                         drawArc(
-                            color = Cyan600.copy(alpha = if (!effectivelyRunning) 0.3f else 1f),
+                            color = cs.secondary.copy(alpha = if (!effectivelyRunning) 0.3f else 1f),
                             startAngle = -90f,
                             sweepAngle = 360f * progress,
                             useCenter = false,
@@ -353,11 +352,11 @@ internal fun ProgramIntervalStep(
                         text = "$remainingTime",
                         fontSize = 80.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary,
+                        color = cs.onSurface,
                         modifier = Modifier.alpha(if (!effectivelyRunning) 0.2f else 1f)
                     )
                     if (!effectivelyRunning) {
-                        val iconColor = appColors.textPrimary
+                        val iconColor = cs.onSurface
                         Canvas(modifier = Modifier.size(56.dp)) {
                             val path = Path().apply {
                                 moveTo(size.width * 0.25f, size.height * 0.15f)
@@ -382,13 +381,13 @@ internal fun ProgramIntervalStep(
                     Surface(
                         shape = RoundedCornerShape(50),
                         color = Color.Transparent,
-                        border = BorderStroke(2.dp, Slate500)
+                        border = BorderStroke(2.dp, cs.outline)
                     ) {
                         Box(
                             modifier = Modifier.size(48.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = "+", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = appColors.textPrimary)
+                            Text(text = "+", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = cs.onSurface)
                         }
                     }
                 }
@@ -413,7 +412,7 @@ internal fun ProgramIntervalStep(
             }
 
             Card(
-                colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -422,20 +421,20 @@ internal fun ProgramIntervalStep(
                         text = "${stringResource(R.string.interval_next)}",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Cyan600
+                        color = cs.secondary
                     )
                     Text(
                         text = "${nextExercise.name}  $setProgressText",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
-                        color = appColors.textPrimary,
+                        color = cs.onSurface,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                     if (!nextExercise.description.isNullOrBlank()) {
                         Text(
                             text = nextExercise.description,
                             fontSize = 13.sp,
-                            color = appColors.textSecondary,
+                            color = cs.onSurfaceVariant,
                             modifier = Modifier.padding(top = 2.dp)
                         )
                     }
@@ -449,7 +448,7 @@ internal fun ProgramIntervalStep(
         TextButton(onClick = onSkip) {
             Text(
                 text = stringResource(R.string.skip_button),
-                color = appColors.textSecondary
+                color = cs.onSurfaceVariant
             )
         }
     }

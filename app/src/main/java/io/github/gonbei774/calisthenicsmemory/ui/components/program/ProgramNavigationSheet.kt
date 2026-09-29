@@ -45,7 +45,6 @@ import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
 import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -74,7 +73,7 @@ fun ProgramNavigationSheet(
     onSaveAndExit: () -> Unit,
     onDiscard: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
 
     // 編集中セットのインデックス + どのメトリクス（reps / weight / distance / assistance）。
     // 同じピル再タップで -1 に戻して閉じる。
@@ -96,7 +95,7 @@ fun ProgramNavigationSheet(
     ) {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = appColors.background
+            color = cs.background
         ) {
             Column(
                 modifier = Modifier
@@ -157,13 +156,13 @@ fun ProgramNavigationSheet(
 private fun NavigationSheetHeader(
     onDismiss: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .drawBehind {
                 drawLine(
-                    color = Slate700,
+                    color = cs.surfaceContainerHighest,
                     start = Offset(0f, size.height),
                     end = Offset(size.width, size.height),
                     strokeWidth = 1.dp.toPx()
@@ -177,7 +176,7 @@ private fun NavigationSheetHeader(
             text = stringResource(R.string.nav_program_overview),
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
-            color = appColors.textPrimary
+            color = cs.onSurface
         )
         IconButton(
             onClick = onDismiss,
@@ -186,7 +185,7 @@ private fun NavigationSheetHeader(
             Icon(
                 imageVector = AppIcons.Close,
                 contentDescription = null,
-                tint = appColors.textSecondary
+                tint = cs.onSurfaceVariant
             )
         }
     }
@@ -201,13 +200,13 @@ private fun NavigationProgressSection(
     totalSets: Int,
     progress: Float
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .drawBehind {
                 drawLine(
-                    color = Slate700,
+                    color = cs.surfaceContainerHighest,
                     start = Offset(0f, size.height),
                     end = Offset(size.width, size.height),
                     strokeWidth = 1.dp.toPx()
@@ -218,7 +217,7 @@ private fun NavigationProgressSection(
         Text(
             text = stringResource(R.string.nav_overall_progress),
             fontSize = 12.sp,
-            color = Slate500,
+            color = cs.outline,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Row(
@@ -229,15 +228,15 @@ private fun NavigationProgressSection(
                 text = stringResource(R.string.nav_sets_format, completedSets, totalSets),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = appColors.textPrimary
+                color = cs.onSurface
             )
             LinearProgressIndicator(
                 progress = { progress },
                 modifier = Modifier
                     .weight(1f)
                     .height(6.dp),
-                color = Green600,
-                trackColor = Slate700,
+                color = cs.primary,
+                trackColor = cs.surfaceContainerHighest,
                 strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
             )
         }
@@ -463,7 +462,7 @@ private fun NavigationRoundCard(
     onRedoSet: (Int) -> Unit,
     onToggleComplete: (Int) -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val roundStatus = when {
         sets.all { it.isCompleted } -> ExerciseStatus.DONE
         sets.any { allSets.indexOf(it) == currentSetIndex } -> ExerciseStatus.CURRENT
@@ -471,11 +470,11 @@ private fun NavigationRoundCard(
     }
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+        colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.border(
             width = 2.dp,
-            color = Purple600.copy(alpha = 0.5f),
+            color = cs.secondary.copy(alpha = 0.5f),
             shape = RoundedCornerShape(12.dp)
         )
     ) {
@@ -486,7 +485,7 @@ private fun NavigationRoundCard(
                     .fillMaxWidth()
                     .drawBehind {
                         drawLine(
-                            color = Slate700,
+                            color = cs.surfaceContainerHighest,
                             start = Offset(0f, size.height),
                             end = Offset(size.width, size.height),
                             strokeWidth = 1.dp.toPx()
@@ -499,14 +498,14 @@ private fun NavigationRoundCard(
                 // ラウンドバッジ
                 Box(
                     modifier = Modifier
-                        .background(Purple600, RoundedCornerShape(8.dp))
+                        .background(cs.secondary, RoundedCornerShape(8.dp))
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.loop_current_round, roundNumber, totalRounds),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary
+                        color = cs.onSurface
                     )
                 }
 
@@ -517,28 +516,28 @@ private fun NavigationRoundCard(
                     ExerciseStatus.DONE -> {
                         Box(
                             modifier = Modifier
-                                .background(Green600.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
+                                .background(cs.primary.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
                                 .padding(horizontal = 8.dp, vertical = 4.dp)
                         ) {
                             Text(
                                 text = stringResource(R.string.nav_done),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Green400
+                                color = cs.primary
                             )
                         }
                     }
                     ExerciseStatus.CURRENT -> {
                         Box(
                             modifier = Modifier
-                                .background(Orange600.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
+                                .background(cs.tertiary.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
                                 .padding(horizontal = 8.dp, vertical = 4.dp)
                         ) {
                             Text(
                                 text = stringResource(R.string.nav_current),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Orange600
+                                color = cs.tertiary
                             )
                         }
                     }
@@ -606,7 +605,7 @@ private fun NavigationRoundSetRow(
     onToggleComplete: (Int) -> Unit,
     isLast: Boolean
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val setStatus = when {
         set.isCompleted -> SetStatus.COMPLETED
         set.isSkipped -> SetStatus.SKIPPED
@@ -620,17 +619,17 @@ private fun NavigationRoundSetRow(
             .then(
                 if (isCurrent) {
                     Modifier
-                        .background(Orange600.copy(alpha = 0.1f))
+                        .background(cs.tertiary.copy(alpha = 0.1f))
                         .drawBehind {
                             drawLine(
-                                color = Orange600,
+                                color = cs.tertiary,
                                 start = Offset(0f, 0f),
                                 end = Offset(0f, size.height),
                                 strokeWidth = 3.dp.toPx()
                             )
                         }
                 } else if (set.isSkipped) {
-                    Modifier.background(Slate750)
+                    Modifier.background(cs.surfaceContainerHigh)
                 } else {
                     Modifier
                 }
@@ -639,7 +638,7 @@ private fun NavigationRoundSetRow(
                 if (!isLast) {
                     Modifier.drawBehind {
                         drawLine(
-                            color = Slate700,
+                            color = cs.surfaceContainerHighest,
                             start = Offset(0f, size.height),
                             end = Offset(size.width, size.height),
                             strokeWidth = 1.dp.toPx()
@@ -670,9 +669,9 @@ private fun NavigationRoundSetRow(
                 fontSize = 14.sp,
                 fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Medium,
                 color = when (setStatus) {
-                    SetStatus.COMPLETED -> Color.White
-                    SetStatus.CURRENT -> Orange600
-                    SetStatus.PENDING, SetStatus.SKIPPED -> Slate400
+                    SetStatus.COMPLETED -> cs.onSurface
+                    SetStatus.CURRENT -> cs.tertiary
+                    SetStatus.PENDING, SetStatus.SKIPPED -> cs.onSurfaceVariant
                 }
             )
             Spacer(modifier = Modifier.height(2.dp))
@@ -722,11 +721,11 @@ private fun NavigationExerciseCard(
     onRedoSet: (Int) -> Unit,
     onToggleComplete: (Int) -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
     val isUnilateral = exercise.laterality == "Unilateral"
     val exerciseType = exercise.type
-    val appColors = LocalAppColors.current
     Card(
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+        colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column {
@@ -850,13 +849,13 @@ private fun NavigationExerciseHeader(
     exerciseType: String,
     exerciseStatus: ExerciseStatus
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .drawBehind {
                 drawLine(
-                    color = Slate700,
+                    color = cs.surfaceContainerHighest,
                     start = Offset(0f, size.height),
                     end = Offset(size.width, size.height),
                     strokeWidth = 1.dp.toPx()
@@ -870,14 +869,14 @@ private fun NavigationExerciseHeader(
         Box(
             modifier = Modifier
                 .size(28.dp)
-                .background(Amber600, RoundedCornerShape(8.dp)),
+                .background(cs.tertiary, RoundedCornerShape(8.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = displayNumber.toString(),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary
+                color = cs.onSurface
             )
         }
 
@@ -886,14 +885,14 @@ private fun NavigationExerciseHeader(
             text = exerciseName,
             fontSize = 15.sp,
             fontWeight = FontWeight.SemiBold,
-            color = appColors.textPrimary,
+            color = cs.onSurface,
             modifier = Modifier.weight(1f)
         )
 
         // 種目タイプバッジ (Dyn / Iso)
         Box(
             modifier = Modifier
-                .background(Slate700, RoundedCornerShape(4.dp))
+                .background(cs.surfaceContainerHighest, RoundedCornerShape(4.dp))
                 .padding(horizontal = 6.dp, vertical = 3.dp)
         ) {
             Text(
@@ -903,7 +902,7 @@ private fun NavigationExerciseHeader(
                 ),
                 fontSize = 10.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Slate400
+                color = cs.onSurfaceVariant
             )
         }
 
@@ -912,28 +911,28 @@ private fun NavigationExerciseHeader(
             ExerciseStatus.DONE -> {
                 Box(
                     modifier = Modifier
-                        .background(Green600.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
+                        .background(cs.primary.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.nav_done),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = Green400
+                        color = cs.primary
                     )
                 }
             }
             ExerciseStatus.CURRENT -> {
                 Box(
                     modifier = Modifier
-                        .background(Orange600.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
+                        .background(cs.tertiary.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.nav_current),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = Orange600
+                        color = cs.tertiary
                     )
                 }
             }
@@ -961,7 +960,7 @@ private fun NavigationBilateralSetRow(
     onToggleComplete: (Int) -> Unit,
     isLast: Boolean
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val setStatus = when {
         set.isCompleted -> SetStatus.COMPLETED
         set.isSkipped -> SetStatus.SKIPPED
@@ -975,17 +974,17 @@ private fun NavigationBilateralSetRow(
             .then(
                 if (isCurrent) {
                     Modifier
-                        .background(Orange600.copy(alpha = 0.1f))
+                        .background(cs.tertiary.copy(alpha = 0.1f))
                         .drawBehind {
                             drawLine(
-                                color = Orange600,
+                                color = cs.tertiary,
                                 start = Offset(0f, 0f),
                                 end = Offset(0f, size.height),
                                 strokeWidth = 3.dp.toPx()
                             )
                         }
                 } else if (set.isSkipped) {
-                    Modifier.background(Slate750)
+                    Modifier.background(cs.surfaceContainerHigh)
                 } else {
                     Modifier
                 }
@@ -994,7 +993,7 @@ private fun NavigationBilateralSetRow(
                 if (!isLast) {
                     Modifier.drawBehind {
                         drawLine(
-                            color = Slate700,
+                            color = cs.surfaceContainerHighest,
                             start = Offset(0f, size.height),
                             end = Offset(size.width, size.height),
                             strokeWidth = 1.dp.toPx()
@@ -1029,23 +1028,23 @@ private fun NavigationBilateralSetRow(
                     fontSize = 14.sp,
                     fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Medium,
                     color = when (setStatus) {
-                        SetStatus.COMPLETED -> Color.White
-                        SetStatus.CURRENT -> Orange600
-                        SetStatus.PENDING, SetStatus.SKIPPED -> Slate500
+                        SetStatus.COMPLETED -> cs.onSurface
+                        SetStatus.CURRENT -> cs.tertiary
+                        SetStatus.PENDING, SetStatus.SKIPPED -> cs.outline
                     }
                 )
                 // ループ内のセットならラウンドバッジを表示
                 if (set.loopId != null && set.totalRounds > 1) {
                     Box(
                         modifier = Modifier
-                            .background(Purple600.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
+                            .background(cs.secondary.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
                             .padding(horizontal = 5.dp, vertical = 2.dp)
                     ) {
                         Text(
                             text = "R${set.roundNumber}",
                             fontSize = 10.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Purple400
+                            color = cs.secondary
                         )
                     }
                 }
@@ -1097,7 +1096,7 @@ private fun NavigationUnilateralSetRow(
     onToggleComplete: (Int) -> Unit,
     isLast: Boolean
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     // 両方完了していれば COMPLETED、どちらかがスキップなら SKIPPED、現在実行中なら CURRENT
     val setStatus = when {
         rightSet?.isCompleted == true && leftSet?.isCompleted == true -> SetStatus.COMPLETED
@@ -1112,17 +1111,17 @@ private fun NavigationUnilateralSetRow(
             .then(
                 if (isCurrent) {
                     Modifier
-                        .background(Orange600.copy(alpha = 0.1f))
+                        .background(cs.tertiary.copy(alpha = 0.1f))
                         .drawBehind {
                             drawLine(
-                                color = Orange600,
+                                color = cs.tertiary,
                                 start = Offset(0f, 0f),
                                 end = Offset(0f, size.height),
                                 strokeWidth = 3.dp.toPx()
                             )
                         }
                 } else if (setStatus == SetStatus.SKIPPED) {
-                    Modifier.background(Slate750)
+                    Modifier.background(cs.surfaceContainerHigh)
                 } else {
                     Modifier
                 }
@@ -1131,7 +1130,7 @@ private fun NavigationUnilateralSetRow(
                 if (!isLast) {
                     Modifier.drawBehind {
                         drawLine(
-                            color = Slate700,
+                            color = cs.surfaceContainerHighest,
                             start = Offset(0f, size.height),
                             end = Offset(size.width, size.height),
                             strokeWidth = 1.dp.toPx()
@@ -1175,9 +1174,9 @@ private fun NavigationUnilateralSetRow(
                     fontSize = 14.sp,
                     fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Medium,
                     color = when (setStatus) {
-                        SetStatus.COMPLETED -> Color.White
-                        SetStatus.CURRENT -> Orange600
-                        SetStatus.PENDING, SetStatus.SKIPPED -> Slate500
+                        SetStatus.COMPLETED -> cs.onSurface
+                        SetStatus.CURRENT -> cs.tertiary
+                        SetStatus.PENDING, SetStatus.SKIPPED -> cs.outline
                     }
                 )
                 // ループ内のセットならラウンドバッジを表示（rightSetから取得）
@@ -1185,14 +1184,14 @@ private fun NavigationUnilateralSetRow(
                 if (loopSet != null && loopSet.loopId != null && loopSet.totalRounds > 1) {
                     Box(
                         modifier = Modifier
-                            .background(Purple600.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
+                            .background(cs.secondary.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
                             .padding(horizontal = 5.dp, vertical = 2.dp)
                     ) {
                         Text(
                             text = "R${loopSet.roundNumber}",
                             fontSize = 10.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Purple400
+                            color = cs.secondary
                         )
                     }
                 }
@@ -1236,7 +1235,7 @@ private fun SetStatusIcon(
     status: SetStatus,
     onClick: (() -> Unit)? = null
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val description = stringResource(
         if (status == SetStatus.COMPLETED) R.string.nav_uncheck_set
         else R.string.nav_check_set
@@ -1252,10 +1251,10 @@ private fun SetStatusIcon(
                 .size(22.dp)
                 .then(
                     when (status) {
-                        SetStatus.COMPLETED -> Modifier.background(Green600, CircleShape)
-                        SetStatus.CURRENT -> Modifier.background(Orange600, CircleShape)
-                        SetStatus.PENDING -> Modifier.border(2.dp, Slate600, CircleShape)
-                        SetStatus.SKIPPED -> Modifier.background(Slate600, CircleShape)
+                        SetStatus.COMPLETED -> Modifier.background(cs.primary, CircleShape)
+                        SetStatus.CURRENT -> Modifier.background(cs.tertiary, CircleShape)
+                        SetStatus.PENDING -> Modifier.border(2.dp, cs.outline, CircleShape)
+                        SetStatus.SKIPPED -> Modifier.background(cs.outline, CircleShape)
                     }
                 ),
             contentAlignment = Alignment.Center
@@ -1265,7 +1264,7 @@ private fun SetStatusIcon(
                     Icon(
                         imageVector = AppIcons.Check,
                         contentDescription = null,
-                        tint = appColors.textPrimary,
+                        tint = cs.onSurface,
                         modifier = Modifier.size(14.dp)
                     )
                 }
@@ -1273,7 +1272,7 @@ private fun SetStatusIcon(
                     Box(
                         modifier = Modifier
                             .size(8.dp)
-                            .background(Color.White, CircleShape)
+                            .background(cs.onTertiary, CircleShape)
                     )
                 }
                 SetStatus.SKIPPED -> {
@@ -1281,7 +1280,7 @@ private fun SetStatusIcon(
                         text = "−",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Slate400
+                        color = cs.onSurfaceVariant
                     )
                 }
                 SetStatus.PENDING -> { /* 空 */ }
@@ -1307,6 +1306,7 @@ private fun SetValueText(
     editingMetric: EditingMetric = EditingMetric.REPS,
     onTogglePillEditing: ((Int, EditingMetric) -> Unit)? = null
 ) {
+    val cs = MaterialTheme.colorScheme
     val unit = stringResource(if (isIsometric) R.string.unit_seconds else R.string.unit_reps)
 
     if (status == SetStatus.SKIPPED) {
@@ -1314,16 +1314,16 @@ private fun SetValueText(
             text = stringResource(R.string.nav_skipped),
             fontSize = 13.sp,
             fontStyle = FontStyle.Italic,
-            color = Slate500
+            color = cs.outline
         )
         return
     }
 
     val (valueText, valueColor) = when (status) {
-        SetStatus.COMPLETED -> "${set.actualValue}" to Green400
-        SetStatus.CURRENT -> "${set.actualValue}/${set.targetValue}" to Slate400
-        SetStatus.PENDING -> "${set.targetValue}" to Slate500
-        SetStatus.SKIPPED -> "" to Slate500
+        SetStatus.COMPLETED -> "${set.actualValue}" to cs.primary
+        SetStatus.CURRENT -> "${set.actualValue}/${set.targetValue}" to cs.onSurfaceVariant
+        SetStatus.PENDING -> "${set.targetValue}" to cs.outline
+        SetStatus.SKIPPED -> "" to cs.outline
     }
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -1359,13 +1359,14 @@ private fun TrackingPills(
     editingMetric: EditingMetric,
     onTogglePillEditing: ((Int, EditingMetric) -> Unit)?
 ) {
+    val cs = MaterialTheme.colorScheme
     if (exercise == null) return
     if (exercise.weightTrackingEnabled) {
         TrackingPill(
             prefix = "W:",
             valueText = set.weightG?.let { "%.1f".format(it / 1000.0) } ?: "—",
             unit = "kg",
-            accentColor = Orange600,
+            accentColor = cs.tertiary,
             isEditing = isEditing && editingMetric == EditingMetric.WEIGHT,
             onClick = onTogglePillEditing?.let { cb -> { cb(setIndex, EditingMetric.WEIGHT) } }
         )
@@ -1375,7 +1376,7 @@ private fun TrackingPills(
             prefix = "D:",
             valueText = set.distanceCm?.toString() ?: "—",
             unit = "cm",
-            accentColor = Blue600,
+            accentColor = cs.secondary,
             isEditing = isEditing && editingMetric == EditingMetric.DISTANCE,
             onClick = onTogglePillEditing?.let { cb -> { cb(setIndex, EditingMetric.DISTANCE) } }
         )
@@ -1385,7 +1386,7 @@ private fun TrackingPills(
             prefix = "A:",
             valueText = set.assistanceG?.let { "%.1f".format(it / 1000.0) } ?: "—",
             unit = "kg",
-            accentColor = Amber500,
+            accentColor = cs.tertiary,
             isEditing = isEditing && editingMetric == EditingMetric.ASSISTANCE,
             onClick = onTogglePillEditing?.let { cb -> { cb(setIndex, EditingMetric.ASSISTANCE) } }
         )
@@ -1404,7 +1405,8 @@ private fun TrackingPill(
     isEditing: Boolean,
     onClick: (() -> Unit)?
 ) {
-    val borderColor = if (isEditing) Green400 else accentColor.copy(alpha = 0.6f)
+    val cs = MaterialTheme.colorScheme
+    val borderColor = if (isEditing) cs.primary else accentColor.copy(alpha = 0.6f)
     val pillModifier = Modifier
         .border(1.dp, borderColor, RoundedCornerShape(6.dp))
         .then(
@@ -1423,12 +1425,12 @@ private fun TrackingPill(
             color = accentColor
         )
         Spacer(modifier = Modifier.width(3.dp))
-        Text(text = valueText, fontSize = 13.sp, color = Color.White)
+        Text(text = valueText, fontSize = 13.sp, color = cs.onSurface)
         Spacer(modifier = Modifier.width(3.dp))
-        Text(text = unit, fontSize = 11.sp, color = Slate500)
+        Text(text = unit, fontSize = 11.sp, color = cs.outline)
         if (onClick != null) {
             Spacer(modifier = Modifier.width(4.dp))
-            Icon(AppIcons.Edit, contentDescription = null, modifier = Modifier.size(11.dp), tint = if (isEditing) Green400 else Slate500)
+            Icon(AppIcons.Edit, contentDescription = null, modifier = Modifier.size(11.dp), tint = if (isEditing) cs.primary else cs.outline)
         }
     }
 }
@@ -1444,7 +1446,8 @@ private fun ValuePill(
     isEditing: Boolean,
     onClick: (() -> Unit)?
 ) {
-    val borderColor = if (isEditing) Green400 else Slate600
+    val cs = MaterialTheme.colorScheme
+    val borderColor = if (isEditing) cs.primary else cs.outline
     val pillModifier = Modifier
         .border(1.dp, borderColor, RoundedCornerShape(6.dp))
         .then(
@@ -1458,10 +1461,10 @@ private fun ValuePill(
     ) {
         Text(text = valueText, fontSize = 13.sp, color = valueColor)
         Spacer(modifier = Modifier.width(4.dp))
-        Text(text = unit, fontSize = 11.sp, color = Slate500)
+        Text(text = unit, fontSize = 11.sp, color = cs.outline)
         if (onClick != null) {
             Spacer(modifier = Modifier.width(6.dp))
-            Icon(AppIcons.Edit, contentDescription = null, modifier = Modifier.size(11.dp), tint = if (isEditing) Green400 else Slate500)
+            Icon(AppIcons.Edit, contentDescription = null, modifier = Modifier.size(11.dp), tint = if (isEditing) cs.primary else cs.outline)
         }
     }
 }
@@ -1489,6 +1492,7 @@ private fun UnilateralValueText(
     editingMetric: EditingMetric,
     onTogglePillEditing: (Int, EditingMetric) -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
     val unit = stringResource(if (isIsometric) R.string.unit_seconds else R.string.unit_reps)
 
     if (status == SetStatus.SKIPPED) {
@@ -1496,7 +1500,7 @@ private fun UnilateralValueText(
             text = stringResource(R.string.nav_skipped),
             fontSize = 13.sp,
             fontStyle = FontStyle.Italic,
-            color = Slate500
+            color = cs.outline
         )
         return
     }
@@ -1562,6 +1566,7 @@ private fun UnilateralSidePill(
     isEditing: Boolean,
     onClick: (() -> Unit)?
 ) {
+    val cs = MaterialTheme.colorScheme
     val sideStatus = when {
         set == null -> SetStatus.PENDING
         set.isCompleted -> SetStatus.COMPLETED
@@ -1570,17 +1575,17 @@ private fun UnilateralSidePill(
         else -> SetStatus.PENDING
     }
     val (valueText, valueColor) = when (sideStatus) {
-        SetStatus.COMPLETED -> "${set?.actualValue ?: 0}" to Green400
-        SetStatus.CURRENT -> "${set?.actualValue ?: 0}/${set?.targetValue ?: 0}" to Slate400
-        SetStatus.PENDING -> "${set?.targetValue ?: 0}" to Slate500
-        SetStatus.SKIPPED -> "-" to Slate500
+        SetStatus.COMPLETED -> "${set?.actualValue ?: 0}" to cs.primary
+        SetStatus.CURRENT -> "${set?.actualValue ?: 0}/${set?.targetValue ?: 0}" to cs.onSurfaceVariant
+        SetStatus.PENDING -> "${set?.targetValue ?: 0}" to cs.outline
+        SetStatus.SKIPPED -> "-" to cs.outline
     }
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = sideLabel,
             fontSize = 11.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Slate500
+            color = cs.outline
         )
         Spacer(modifier = Modifier.width(4.dp))
         ValuePill(
@@ -1603,7 +1608,7 @@ private fun SetActionButton(
     onJumpToSet: (Int) -> Unit,
     onRedoSet: (Int) -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     when (setStatus) {
         SetStatus.COMPLETED -> {
             OutlinedButton(
@@ -1611,13 +1616,13 @@ private fun SetActionButton(
                 modifier = Modifier.height(32.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 shape = RoundedCornerShape(8.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Green600)
+                border = androidx.compose.foundation.BorderStroke(1.dp, cs.primary)
             ) {
                 Text(
                     text = stringResource(R.string.nav_redo),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Green400
+                    color = cs.primary
                 )
             }
         }
@@ -1627,13 +1632,13 @@ private fun SetActionButton(
                 modifier = Modifier.height(32.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 shape = RoundedCornerShape(8.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Slate500)
+                border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
             ) {
                 Text(
                     text = stringResource(R.string.nav_jump),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Slate400
+                    color = cs.onSurfaceVariant
                 )
             }
         }
@@ -1643,13 +1648,13 @@ private fun SetActionButton(
                 modifier = Modifier.height(32.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 shape = RoundedCornerShape(8.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Slate500)
+                border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
             ) {
                 Text(
                     text = stringResource(R.string.nav_redo),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Slate400
+                    color = cs.onSurfaceVariant
                 )
             }
         }
@@ -1666,7 +1671,7 @@ private fun NavigationSheetFooter(
     onDiscard: () -> Unit,
     showTopDivider: Boolean = true
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -1674,7 +1679,7 @@ private fun NavigationSheetFooter(
                 if (showTopDivider) {
                     Modifier.drawBehind {
                         drawLine(
-                            color = Slate700,
+                            color = cs.surfaceContainerHighest,
                             start = Offset(0f, 0f),
                             end = Offset(size.width, 0f),
                             strokeWidth = 1.dp.toPx()
@@ -1691,7 +1696,7 @@ private fun NavigationSheetFooter(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Green600),
+            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(
@@ -1712,13 +1717,13 @@ private fun NavigationSheetFooter(
                     .weight(1f)
                     .height(44.dp),
                 shape = RoundedCornerShape(12.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Orange600)
+                border = androidx.compose.foundation.BorderStroke(1.dp, cs.tertiary)
             ) {
                 Text(
                     text = stringResource(R.string.nav_save_and_exit),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Orange600
+                    color = cs.tertiary
                 )
             }
 
@@ -1729,13 +1734,13 @@ private fun NavigationSheetFooter(
                     .weight(1f)
                     .height(44.dp),
                 shape = RoundedCornerShape(12.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Slate500)
+                border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
             ) {
                 Text(
                     text = stringResource(R.string.nav_discard),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = appColors.textTertiary
+                    color = cs.onSurfaceVariant
                 )
             }
         }
@@ -1795,15 +1800,16 @@ private fun InlineBilateralEditor(
     onUpdateSetAssistanceG: (Int, Int?) -> Unit,
     isLast: Boolean
 ) {
+    val cs = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Slate800.copy(alpha = 0.5f))
+            .background(cs.surfaceContainerHigh.copy(alpha = 0.5f))
             .then(
                 if (!isLast) {
                     Modifier.drawBehind {
                         drawLine(
-                            color = Slate700,
+                            color = cs.surfaceContainerHighest,
                             start = Offset(0f, size.height),
                             end = Offset(size.width, size.height),
                             strokeWidth = 1.dp.toPx()
@@ -1866,16 +1872,17 @@ private fun InlineUnilateralEditor(
     onUpdateSetAssistanceG: (Int, Int?) -> Unit,
     isLast: Boolean
 ) {
+    val cs = MaterialTheme.colorScheme
     val unit = stringResource(if (isIsometric) R.string.unit_seconds else R.string.unit_reps)
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Slate800.copy(alpha = 0.5f))
+            .background(cs.surfaceContainerHigh.copy(alpha = 0.5f))
             .then(
                 if (!isLast) {
                     Modifier.drawBehind {
                         drawLine(
-                            color = Slate700,
+                            color = cs.surfaceContainerHighest,
                             start = Offset(0f, size.height),
                             end = Offset(size.width, size.height),
                             strokeWidth = 1.dp.toPx()
@@ -1956,6 +1963,7 @@ private fun UnilateralEditorBlock(
     onUpdateActualValue: (Int, Int) -> Unit,
     compact: Boolean = true
 ) {
+    val cs = MaterialTheme.colorScheme
     val isEditingActual = set.isCompleted
     val currentValue = if (isEditingActual) set.actualValue else set.targetValue
     val onChange: (Int) -> Unit = { newValue ->
@@ -1967,7 +1975,7 @@ private fun UnilateralEditorBlock(
             text = "$sideLabel:",
             fontSize = if (compact) 12.sp else 14.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Slate500
+            color = cs.outline
         )
         Spacer(modifier = Modifier.width(if (compact) 6.dp else 10.dp))
         InlineValueEditorCore(
@@ -1989,6 +1997,7 @@ private fun InlineValueEditorCore(
     onChange: (Int) -> Unit,
     compact: Boolean
 ) {
+    val cs = MaterialTheme.colorScheme
     val buttonSize = if (compact) 32.dp else 36.dp
     val valueMinWidth = if (compact) 56.dp else 72.dp
     Row(
@@ -2016,13 +2025,13 @@ private fun InlineValueEditorCore(
                     text = value.toString(),
                     fontSize = if (compact) 16.sp else 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = cs.onSurface
                 )
                 Spacer(modifier = Modifier.width(3.dp))
                 Text(
                     text = unit,
                     fontSize = 11.sp,
-                    color = Slate500,
+                    color = cs.outline,
                     modifier = Modifier.padding(bottom = 2.dp)
                 )
             }
@@ -2047,10 +2056,11 @@ private fun InlineWeightEditor(
     valueG: Int?,
     onChange: (Int?) -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
     InlineTrackingEditorCore(
         valueDisplay = valueG?.let { "%.1f".format(it / 1000.0) } ?: "—",
         unit = "kg",
-        accentColor = Orange600,
+        accentColor = cs.tertiary,
         decrementEnabled = (valueG ?: 0) > 0,
         onDecrement = {
             val next = ((valueG ?: 0) - 1000).coerceAtLeast(0)
@@ -2072,10 +2082,11 @@ private fun InlineDistanceEditor(
     valueCm: Int?,
     onChange: (Int?) -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
     InlineTrackingEditorCore(
         valueDisplay = valueCm?.toString() ?: "—",
         unit = "cm",
-        accentColor = Blue600,
+        accentColor = cs.secondary,
         decrementEnabled = (valueCm ?: 0) > 0,
         onDecrement = {
             val next = ((valueCm ?: 0) - 1).coerceAtLeast(0)
@@ -2097,10 +2108,11 @@ private fun InlineAssistanceEditor(
     valueG: Int?,
     onChange: (Int?) -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
     InlineTrackingEditorCore(
         valueDisplay = valueG?.let { "%.1f".format(it / 1000.0) } ?: "—",
         unit = "kg",
-        accentColor = Amber500,
+        accentColor = cs.tertiary,
         decrementEnabled = (valueG ?: 0) > 0,
         onDecrement = {
             val next = ((valueG ?: 0) - 1000).coerceAtLeast(0)
@@ -2147,7 +2159,7 @@ private fun InlineTrackingEditorCore(
                     text = valueDisplay,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
@@ -2183,12 +2195,13 @@ private fun RepeatableStepButton(
     contentDescription: String,
     onStep: () -> Boolean
 ) {
+    val cs = MaterialTheme.colorScheme
     val scope = rememberCoroutineScope()
     // 値が変わるたびに onStep ラムダが新しくなるが、pointerInput は再起動させたくないので
     // rememberUpdatedState で「常に最新」のラムダを参照する
     val currentOnStep by rememberUpdatedState(onStep)
-    val containerColor = if (enabled) Orange600 else Slate700
-    val textColor = if (enabled) Color.White else Slate500
+    val containerColor = if (enabled) cs.tertiary else cs.surfaceContainerHighest
+    val textColor = if (enabled) cs.onTertiary else cs.outline
     val description = contentDescription
     Box(
         modifier = Modifier

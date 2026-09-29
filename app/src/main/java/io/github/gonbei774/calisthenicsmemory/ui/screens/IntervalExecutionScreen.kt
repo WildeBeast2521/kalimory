@@ -106,10 +106,10 @@ fun IntervalExecutionScreen(
     onNavigateBack: () -> Unit,
     onComplete: () -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
     val context = LocalContext.current
     val view = LocalView.current
     val scope = rememberCoroutineScope()
-    val appColors = LocalAppColors.current
 
     // Preferences
     val workoutPrefs = remember { WorkoutPreferences(context) }
@@ -253,18 +253,18 @@ fun IntervalExecutionScreen(
     if (showExitDialog) {
         AlertDialog(
             onDismissRequest = { showExitDialog = false },
-            containerColor = appColors.cardBackground,
+            containerColor = cs.surfaceContainerLow,
             title = {
                 Text(
                     stringResource(R.string.interval_exit_confirm_title),
-                    color = appColors.textPrimary,
+                    color = cs.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
                     stringResource(R.string.interval_exit_confirm_message),
-                    color = appColors.textTertiary
+                    color = cs.onSurfaceVariant
                 )
             },
             confirmButton = {
@@ -286,12 +286,12 @@ fun IntervalExecutionScreen(
                         isFullCompletion = false
                     )
                 }) {
-                    Text(stringResource(R.string.interval_stop), color = Red600)
+                    Text(stringResource(R.string.interval_stop), color = cs.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showExitDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(stringResource(R.string.cancel), color = cs.onSurfaceVariant)
                 }
             }
         )
@@ -302,19 +302,19 @@ fun IntervalExecutionScreen(
         val interval = checkpoint.interval ?: return@let
         AlertDialog(
             onDismissRequest = {},
-            containerColor = appColors.cardBackground,
+            containerColor = cs.surfaceContainerLow,
             title = {
                 Text(
                     stringResource(R.string.interval_resume_title),
-                    color = appColors.textPrimary,
+                    color = cs.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(stringResource(R.string.interval_resume_message), color = appColors.textTertiary)
+                    Text(stringResource(R.string.interval_resume_message), color = cs.onSurfaceVariant)
                     if (timing != RecoveryTiming.EXACT) {
-                        Text(stringResource(R.string.interval_resume_approximate), color = appColors.textTertiary)
+                        Text(stringResource(R.string.interval_resume_approximate), color = cs.onSurfaceVariant)
                     }
                 }
             },
@@ -352,7 +352,7 @@ fun IntervalExecutionScreen(
                         phase = IntervalPhase.Running
                     }
                 }) {
-                    Text(stringResource(R.string.interval_resume_confirm), color = Orange600)
+                    Text(stringResource(R.string.interval_resume_confirm), color = cs.tertiary)
                 }
             },
             dismissButton = {
@@ -360,7 +360,7 @@ fun IntervalExecutionScreen(
                     pendingResume = null
                     clearCheckpoint()
                 }) {
-                    Text(stringResource(R.string.interval_resume_discard), color = Red600)
+                    Text(stringResource(R.string.interval_resume_discard), color = cs.error)
                 }
             }
         )
@@ -370,18 +370,18 @@ fun IntervalExecutionScreen(
     if (showUnsavedDialog) {
         AlertDialog(
             onDismissRequest = { showUnsavedDialog = false },
-            containerColor = appColors.cardBackground,
+            containerColor = cs.surfaceContainerLow,
             title = {
                 Text(
                     stringResource(R.string.interval_unsaved_title),
-                    color = appColors.textPrimary,
+                    color = cs.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
                     stringResource(R.string.interval_unsaved_message),
-                    color = appColors.textTertiary
+                    color = cs.onSurfaceVariant
                 )
             },
             confirmButton = {
@@ -389,12 +389,12 @@ fun IntervalExecutionScreen(
                     showUnsavedDialog = false
                     onComplete()
                 }) {
-                    Text(stringResource(R.string.interval_unsaved_leave), color = Red600)
+                    Text(stringResource(R.string.interval_unsaved_leave), color = cs.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showUnsavedDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(stringResource(R.string.cancel), color = cs.onSurfaceVariant)
                 }
             }
         )
@@ -475,7 +475,7 @@ fun IntervalExecutionScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator(color = Orange600)
+                CircularProgressIndicator(color = cs.tertiary)
             }
         }
 
@@ -483,7 +483,6 @@ fun IntervalExecutionScreen(
             IntervalConfirmContent(
                 program = currentPhase.program,
                 exercises = currentPhase.exercises,
-                appColors = appColors,
                 onStart = {
                     val p = currentPhase.program
                     val steps = IntervalWorkoutPlan.build(
@@ -525,8 +524,7 @@ fun IntervalExecutionScreen(
                     remainingSeconds = remainingSeconds,
                     totalSeconds = totalSeconds,
                     isPaused = isPaused,
-                    onPauseToggle = ::togglePause,
-                    appColors = appColors
+                    onPauseToggle = ::togglePause
                 )
                 IntervalStepType.WORK -> IntervalTimerContent(
                     program = program!!,
@@ -535,15 +533,14 @@ fun IntervalExecutionScreen(
                     exerciseIndex = step.exerciseIndex,
                     remainingSeconds = remainingSeconds,
                     totalSeconds = totalSeconds,
-                    phaseColor = Orange600,
+                    phaseColor = cs.tertiary,
                     phaseLabel = stringResource(R.string.interval_work_label),
                     exerciseName = exercises[step.exerciseIndex].name,
                     nextPreview = null,
                     isPaused = isPaused,
                     onPauseToggle = ::togglePause,
                     onStop = { showExitDialog = true },
-                    onSkip = null,
-                    appColors = appColors
+                    onSkip = null
                 )
                 IntervalStepType.REST -> {
                     val nextExercise = exercises.getOrNull(step.exerciseIndex + 1)
@@ -554,7 +551,7 @@ fun IntervalExecutionScreen(
                         exerciseIndex = step.exerciseIndex,
                         remainingSeconds = remainingSeconds,
                         totalSeconds = totalSeconds,
-                        phaseColor = Cyan600,
+                        phaseColor = cs.secondary,
                         phaseLabel = stringResource(R.string.interval_rest_label),
                         exerciseName = null,
                         nextPreview = nextExercise?.let {
@@ -567,8 +564,7 @@ fun IntervalExecutionScreen(
                         isPaused = isPaused,
                         onPauseToggle = ::togglePause,
                         onStop = null,
-                        onSkip = ::skipCurrentStep,
-                        appColors = appColors
+                        onSkip = ::skipCurrentStep
                     )
                 }
                 IntervalStepType.ROUND_REST -> {
@@ -580,7 +576,7 @@ fun IntervalExecutionScreen(
                         exerciseIndex = step.exerciseIndex,
                         remainingSeconds = remainingSeconds,
                         totalSeconds = totalSeconds,
-                        phaseColor = Purple600,
+                        phaseColor = cs.secondary,
                         phaseLabel = stringResource(R.string.interval_round_rest_label),
                         exerciseName = null,
                         nextPreview = firstExercise?.let {
@@ -594,8 +590,7 @@ fun IntervalExecutionScreen(
                         isPaused = isPaused,
                         onPauseToggle = ::togglePause,
                         onStop = null,
-                        onSkip = ::skipCurrentStep,
-                        appColors = appColors
+                        onSkip = ::skipCurrentStep
                     )
                 }
             }
@@ -608,7 +603,6 @@ fun IntervalExecutionScreen(
                 completedRounds = currentPhase.completedRounds,
                 completedExercisesInLastRound = currentPhase.completedExercisesInLastRound,
                 isFullCompletion = currentPhase.isFullCompletion,
-                appColors = appColors,
                 onSave = { comment ->
                     scope.launch {
                         // The snapshot taken at the start; a resumed workout brings it from its checkpoint.
@@ -662,10 +656,10 @@ fun IntervalExecutionScreen(
 private fun IntervalConfirmContent(
     program: IntervalProgram,
     exercises: List<IntervalExerciseInfo>,
-    appColors: AppColors,
     onStart: () -> Unit,
     onBack: () -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
     val exerciseCount = exercises.size
     val perRoundSeconds = exerciseCount * program.workSeconds +
             (exerciseCount - 1).coerceAtLeast(0) * program.restSeconds
@@ -680,7 +674,7 @@ private fun IntervalConfirmContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Orange600
+                color = cs.background
             ) {
                 Row(
                     modifier = Modifier
@@ -692,27 +686,27 @@ private fun IntervalConfirmContent(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = cs.onSurface
                         )
                     }
                     Text(
                         text = stringResource(R.string.interval_confirm_title),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White,
+                        color = cs.onSurface,
                         modifier = Modifier.weight(1f)
                     )
                     TextButton(onClick = onStart) {
                         Icon(
                             AppIcons.Play,
                             contentDescription = null,
-                            tint = Color.White,
+                            tint = cs.onSurface,
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.program_start),
-                            color = Color.White,
+                            color = cs.onSurface,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -733,14 +727,14 @@ private fun IntervalConfirmContent(
                     text = program.name,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary
+                    color = cs.onSurface
                 )
             }
 
             // Settings summary
             item {
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                    colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Column(
@@ -751,28 +745,24 @@ private fun IntervalConfirmContent(
                     ) {
                         ConfirmSettingRow(
                             label = stringResource(R.string.interval_work_seconds),
-                            value = "${program.workSeconds}${stringResource(R.string.interval_seconds_suffix)}",
-                            appColors = appColors
+                            value = "${program.workSeconds}${stringResource(R.string.interval_seconds_suffix)}"
                         )
                         ConfirmSettingRow(
                             label = stringResource(R.string.interval_rest_seconds),
-                            value = "${program.restSeconds}${stringResource(R.string.interval_seconds_suffix)}",
-                            appColors = appColors
+                            value = "${program.restSeconds}${stringResource(R.string.interval_seconds_suffix)}"
                         )
                         ConfirmSettingRow(
                             label = stringResource(R.string.interval_rounds),
-                            value = "${program.rounds}${stringResource(R.string.interval_rounds_suffix)}",
-                            appColors = appColors
+                            value = "${program.rounds}${stringResource(R.string.interval_rounds_suffix)}"
                         )
                         if (program.roundRestSeconds > 0) {
                             ConfirmSettingRow(
                                 label = stringResource(R.string.interval_round_rest_seconds),
-                                value = "${program.roundRestSeconds}${stringResource(R.string.interval_seconds_suffix)}",
-                                appColors = appColors
+                                value = "${program.roundRestSeconds}${stringResource(R.string.interval_seconds_suffix)}"
                             )
                         }
                         HorizontalDivider(
-                            color = appColors.textTertiary.copy(alpha = 0.3f),
+                            color = cs.onSurfaceVariant.copy(alpha = 0.3f),
                             modifier = Modifier.padding(vertical = 4.dp)
                         )
                         ConfirmSettingRow(
@@ -782,7 +772,6 @@ private fun IntervalConfirmContent(
                                 totalMinutes,
                                 totalRemainSeconds
                             ),
-                            appColors = appColors,
                             isBold = true
                         )
                     }
@@ -795,14 +784,14 @@ private fun IntervalConfirmContent(
                     text = stringResource(R.string.interval_exercises),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary,
+                    color = cs.onSurface,
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
 
             itemsIndexed(exercises) { index, exercise ->
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                    colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Row(
@@ -815,7 +804,7 @@ private fun IntervalConfirmContent(
                             text = "${index + 1}",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Orange600,
+                            color = cs.tertiary,
                             modifier = Modifier.width(28.dp),
                             textAlign = TextAlign.Center
                         )
@@ -823,13 +812,13 @@ private fun IntervalConfirmContent(
                             Text(
                                 text = exercise.name,
                                 fontSize = 15.sp,
-                                color = appColors.textPrimary
+                                color = cs.onSurface
                             )
                             if (!exercise.description.isNullOrBlank()) {
                                 Text(
                                     text = exercise.description,
                                     fontSize = 12.sp,
-                                    color = appColors.textSecondary,
+                                    color = cs.onSurfaceVariant,
                                     modifier = Modifier.padding(top = 2.dp)
                                 )
                             }
@@ -846,14 +835,14 @@ private fun IntervalConfirmContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Orange600),
+                    colors = ButtonDefaults.buttonColors(containerColor = cs.tertiary),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.interval_start_workout),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = cs.onTertiary
                     )
                 }
             }
@@ -865,9 +854,9 @@ private fun IntervalConfirmContent(
 private fun ConfirmSettingRow(
     label: String,
     value: String,
-    appColors: AppColors,
     isBold: Boolean = false
 ) {
+    val cs = MaterialTheme.colorScheme
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -875,13 +864,13 @@ private fun ConfirmSettingRow(
         Text(
             text = label,
             fontSize = 14.sp,
-            color = appColors.textSecondary
+            color = cs.onSurfaceVariant
         )
         Text(
             text = value,
             fontSize = 14.sp,
             fontWeight = if (isBold) FontWeight.Bold else FontWeight.Normal,
-            color = appColors.textPrimary
+            color = cs.onSurface
         )
     }
 }
@@ -896,9 +885,9 @@ private fun IntervalPrepareContent(
     remainingSeconds: Int,
     totalSeconds: Int,
     isPaused: Boolean,
-    onPauseToggle: () -> Unit,
-    appColors: AppColors
+    onPauseToggle: () -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
     val progress = remainingSeconds.toFloat() / totalSeconds
     val firstExercise = exercises.firstOrNull()
 
@@ -913,7 +902,7 @@ private fun IntervalPrepareContent(
             text = stringResource(R.string.interval_get_ready),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary,
+            color = cs.onSurface,
             modifier = Modifier.padding(top = 8.dp)
         )
 
@@ -931,14 +920,14 @@ private fun IntervalPrepareContent(
         ) {
             Canvas(modifier = Modifier.size(240.dp)) {
                 drawArc(
-                    color = Orange600.copy(alpha = 0.2f),
+                    color = cs.tertiary.copy(alpha = 0.2f),
                     startAngle = -90f,
                     sweepAngle = 360f,
                     useCenter = false,
                     style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
                 )
                 drawArc(
-                    color = Orange600.copy(alpha = if (isPaused) 0.3f else 1f),
+                    color = cs.tertiary.copy(alpha = if (isPaused) 0.3f else 1f),
                     startAngle = -90f,
                     sweepAngle = 360f * progress,
                     useCenter = false,
@@ -950,11 +939,11 @@ private fun IntervalPrepareContent(
                 text = "$remainingSeconds",
                 fontSize = 80.sp,
                 fontWeight = FontWeight.Bold,
-                color = Orange600,
+                color = cs.tertiary,
                 modifier = Modifier.alpha(if (isPaused) 0.2f else 1f)
             )
             if (isPaused) {
-                val iconColor = appColors.textPrimary
+                val iconColor = cs.onSurface
                 Canvas(modifier = Modifier.size(56.dp)) {
                     val path = Path().apply {
                         moveTo(size.width * 0.25f, size.height * 0.15f)
@@ -972,7 +961,7 @@ private fun IntervalPrepareContent(
         // Bottom: first exercise preview
         if (firstExercise != null) {
             Card(
-                colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -981,20 +970,20 @@ private fun IntervalPrepareContent(
                         text = "${stringResource(R.string.interval_next)}",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Orange600
+                        color = cs.tertiary
                     )
                     Text(
                         text = firstExercise.name,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
-                        color = appColors.textPrimary,
+                        color = cs.onSurface,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                     if (!firstExercise.description.isNullOrBlank()) {
                         Text(
                             text = firstExercise.description,
                             fontSize = 13.sp,
-                            color = appColors.textSecondary,
+                            color = cs.onSurfaceVariant,
                             modifier = Modifier.padding(top = 2.dp)
                         )
                     }
@@ -1031,9 +1020,9 @@ private fun IntervalTimerContent(
     onPauseToggle: () -> Unit,
     onStop: (() -> Unit)?,
     onSkip: (() -> Unit)?,
-    appColors: AppColors,
     roundCompleteMessage: String? = null
 ) {
+    val cs = MaterialTheme.colorScheme
     val progress = if (totalSeconds > 0) remainingSeconds.toFloat() / totalSeconds else 0f
 
     Column(
@@ -1048,7 +1037,7 @@ private fun IntervalTimerContent(
                 text = exerciseName,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary,
+                color = cs.onSurface,
                 modifier = Modifier.padding(top = 8.dp)
             )
         } else {
@@ -1056,7 +1045,7 @@ private fun IntervalTimerContent(
                 text = phaseLabel,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary,
+                color = cs.onSurface,
                 modifier = Modifier.padding(top = 8.dp)
             )
         }
@@ -1074,7 +1063,7 @@ private fun IntervalTimerContent(
                 else stringResource(R.string.interval_round_format, round, program.rounds)
             },
             fontSize = 16.sp,
-            color = appColors.textTertiary,
+            color = cs.onSurfaceVariant,
             modifier = Modifier.padding(top = 8.dp)
         )
 
@@ -1115,7 +1104,7 @@ private fun IntervalTimerContent(
                 modifier = Modifier.alpha(if (isPaused) 0.2f else 1f)
             )
             if (isPaused) {
-                val iconColor = appColors.textPrimary
+                val iconColor = cs.onSurface
                 Canvas(modifier = Modifier.size(56.dp)) {
                     val path = Path().apply {
                         moveTo(size.width * 0.25f, size.height * 0.15f)
@@ -1140,7 +1129,7 @@ private fun IntervalTimerContent(
 
         if (nextPreview != null) {
             Card(
-                colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -1157,14 +1146,14 @@ private fun IntervalTimerContent(
                         text = nextPreview.exerciseName,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
-                        color = appColors.textPrimary,
+                        color = cs.onSurface,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                     if (!nextPreview.description.isNullOrBlank()) {
                         Text(
                             text = nextPreview.description,
                             fontSize = 13.sp,
-                            color = appColors.textSecondary,
+                            color = cs.onSurfaceVariant,
                             modifier = Modifier.padding(top = 2.dp)
                         )
                     }
@@ -1174,7 +1163,7 @@ private fun IntervalTimerContent(
             Text(
                 text = "${stringResource(R.string.interval_next)}: ${nextEx.name}",
                 fontSize = 14.sp,
-                color = appColors.textSecondary
+                color = cs.onSurfaceVariant
             )
         }
 
@@ -1192,7 +1181,7 @@ private fun IntervalTimerContent(
                 Button(
                     onClick = onStop,
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Red600),
+                    colors = ButtonDefaults.buttonColors(containerColor = cs.error),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp)
@@ -1200,7 +1189,7 @@ private fun IntervalTimerContent(
                     Text(
                         text = stringResource(R.string.interval_stop),
                         fontSize = 15.sp,
-                        color = Color.White
+                        color = cs.onError
                     )
                 }
             }
@@ -1218,7 +1207,7 @@ private fun IntervalTimerContent(
                     Text(
                         text = stringResource(R.string.interval_skip),
                         fontSize = 15.sp,
-                        color = Color.White
+                        color = contentColorFor(phaseColor)
                     )
                 }
             }
@@ -1237,10 +1226,10 @@ private fun IntervalCompleteContent(
     completedRounds: Int,
     completedExercisesInLastRound: Int,
     isFullCompletion: Boolean,
-    appColors: AppColors,
     onSave: (String) -> Unit
 ) {
-    val statusColor = Orange600
+    val cs = MaterialTheme.colorScheme
+    val statusColor = cs.tertiary
     var comment by remember { mutableStateOf("") }
 
     Scaffold(
@@ -1249,7 +1238,7 @@ private fun IntervalCompleteContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = statusColor
+                color = cs.background
             ) {
                 Row(
                     modifier = Modifier
@@ -1262,7 +1251,7 @@ private fun IntervalCompleteContent(
                         else stringResource(R.string.interval_ended_title),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = cs.onSurface
                     )
                 }
             }
@@ -1293,7 +1282,7 @@ private fun IntervalCompleteContent(
                     text = program.name,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary,
+                    color = cs.onSurface,
                     textAlign = TextAlign.Center
                 )
             }
@@ -1301,7 +1290,7 @@ private fun IntervalCompleteContent(
             // Completion stats
             item {
                 Card(
-                    colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                    colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Column(
@@ -1338,12 +1327,12 @@ private fun IntervalCompleteContent(
                             Text(
                                 text = stringResource(R.string.interval_partial_note),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary
+                                color = cs.onSurfaceVariant
                             )
                         }
 
                         HorizontalDivider(
-                            color = appColors.textTertiary.copy(alpha = 0.3f),
+                            color = cs.onSurfaceVariant.copy(alpha = 0.3f),
                             modifier = Modifier.padding(vertical = 4.dp)
                         )
 
@@ -1355,7 +1344,7 @@ private fun IntervalCompleteContent(
                                 program.rounds
                             ),
                             fontSize = 13.sp,
-                            color = appColors.textSecondary
+                            color = cs.onSurfaceVariant
                         )
 
                     }
@@ -1368,7 +1357,7 @@ private fun IntervalCompleteContent(
                     text = stringResource(R.string.interval_exercises_done),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary,
+                    color = cs.onSurface,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 4.dp)
@@ -1394,16 +1383,16 @@ private fun IntervalCompleteContent(
                     Text(
                         text = exercise.name,
                         fontSize = 14.sp,
-                        color = if (isComplete) appColors.textPrimary
-                        else appColors.textTertiary,
+                        color = if (isComplete) cs.onSurface
+                        else cs.onSurfaceVariant,
                         modifier = Modifier.weight(1f)
                     )
                     Text(
                         text = "$doneRounds/${program.rounds}",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if (isComplete) Orange600
-                        else appColors.textTertiary
+                        color = if (isComplete) cs.tertiary
+                        else cs.onSurfaceVariant
                     )
                 }
             }
@@ -1420,13 +1409,13 @@ private fun IntervalCompleteContent(
                         .padding(top = 8.dp),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedTextColor = appColors.textPrimary,
-                        focusedBorderColor = Orange600,
-                        unfocusedBorderColor = appColors.textTertiary,
-                        focusedLabelColor = Orange600,
-                        unfocusedLabelColor = appColors.textTertiary,
-                        cursorColor = Orange600
+                        focusedTextColor = cs.onSurface,
+                        unfocusedTextColor = cs.onSurface,
+                        focusedBorderColor = cs.tertiary,
+                        unfocusedBorderColor = cs.onSurfaceVariant,
+                        focusedLabelColor = cs.tertiary,
+                        unfocusedLabelColor = cs.onSurfaceVariant,
+                        cursorColor = cs.tertiary
                     ),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -1447,7 +1436,7 @@ private fun IntervalCompleteContent(
                         text = stringResource(R.string.interval_save_and_finish),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = contentColorFor(statusColor)
                     )
                 }
             }

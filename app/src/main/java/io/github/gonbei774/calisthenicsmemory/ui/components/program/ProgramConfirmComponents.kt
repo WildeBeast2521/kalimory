@@ -43,7 +43,6 @@ import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
 import io.github.gonbei774.calisthenicsmemory.data.ProgramLoop
 import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import io.github.gonbei774.calisthenicsmemory.util.ProgramTimeEstimator
 
 // Sealed class to represent items in the confirm list (for grouping loops)
@@ -93,7 +92,7 @@ internal fun ProgramConfirmStep(
     onIsometricIntervalSecondsChange: (Int) -> Unit,
     onStart: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     var refreshKey by remember { mutableIntStateOf(0) }
     // 各種目の展開状態を親で管理（スクロール時も状態を保持）
     var expandedExercises by remember { mutableStateOf(session.exercises.indices.toSet()) }
@@ -174,12 +173,12 @@ internal fun ProgramConfirmStep(
                 Text(
                     text = stringResource(R.string.program_exercise_count, session.exercises.size),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary
+                    color = cs.onSurfaceVariant
                 )
                 Text(
                     text = stringResource(R.string.program_estimated_time, estimatedMinutes),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary
+                    color = cs.onSurfaceVariant
                 )
             }
         }
@@ -206,7 +205,7 @@ internal fun ProgramConfirmStep(
                 Text(
                     text = stringResource(R.string.auto_fill_target_label),
                     fontSize = 12.sp,
-                    color = Slate500,
+                    color = cs.outline,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
                 Row(
@@ -252,7 +251,7 @@ internal fun ProgramConfirmStep(
                         }
                     ),
                     fontSize = 11.sp,
-                    color = appColors.textSecondary,
+                    color = cs.onSurfaceVariant,
                     modifier = Modifier.padding(top = 6.dp, start = 4.dp)
                 )
             }
@@ -351,7 +350,7 @@ internal fun ProgramConfirmStep(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Green600),
+                    colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Text(
@@ -378,7 +377,7 @@ internal fun SettingsSection(
     onIsometricIntervalSoundChange: (Boolean) -> Unit,
     onIsometricIntervalSecondsChange: (Int) -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     // 折りたたみ状態（デフォルトは展開状態）
     var isExpanded by remember { mutableStateOf(true) }
     // シェブロンの回転アニメーション
@@ -391,7 +390,7 @@ internal fun SettingsSection(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+        colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column {
@@ -408,17 +407,17 @@ internal fun SettingsSection(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(AppIcons.Settings, contentDescription = null, modifier = Modifier.size(14.dp), tint = appColors.textTertiary)
+                    Icon(AppIcons.Settings, contentDescription = null, modifier = Modifier.size(14.dp), tint = cs.onSurfaceVariant)
                     Text(
                         text = stringResource(R.string.settings),
                         fontSize = 14.sp,
-                        color = appColors.textTertiary
+                        color = cs.onSurfaceVariant
                     )
                 }
                 Icon(
                     AppIcons.ExpandMore,
                     contentDescription = null,
-                    tint = appColors.textSecondary,
+                    tint = cs.onSurfaceVariant,
                     modifier = Modifier.rotate(chevronRotation)
                 )
             }
@@ -443,7 +442,7 @@ internal fun SettingsSection(
                     Text(
                         text = stringResource(R.string.auto_mode),
                         fontSize = 14.sp,
-                        color = appColors.textPrimary
+                        color = cs.onSurface
                     )
                     Text(
                         text = if (isAutoMode) {
@@ -452,17 +451,17 @@ internal fun SettingsSection(
                             stringResource(R.string.timer_mode_off_description)
                         },
                         fontSize = 11.sp,
-                        color = appColors.textSecondary
+                        color = cs.onSurfaceVariant
                     )
                 }
                 Switch(
                     checked = isAutoMode,
                     onCheckedChange = onAutoModeChange,
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = appColors.switchThumb,
-                        checkedTrackColor = Orange600,
-                        uncheckedThumbColor = appColors.switchThumb,
-                        uncheckedTrackColor = Slate500
+                        checkedThumbColor = cs.onPrimary,
+                        checkedTrackColor = cs.tertiary,
+                        uncheckedThumbColor = cs.onPrimary,
+                        uncheckedTrackColor = cs.outline
                     )
                 )
             }
@@ -476,7 +475,7 @@ internal fun SettingsSection(
                 Text(
                     text = stringResource(R.string.start_countdown),
                     fontSize = 14.sp,
-                    color = appColors.textPrimary
+                    color = cs.onSurface
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -486,12 +485,12 @@ internal fun SettingsSection(
                         onClick = { if (startCountdownSeconds > 0) onStartCountdownChange(startCountdownSeconds - 1) },
                         modifier = Modifier.size(28.dp)
                     ) {
-                        Text("−", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = appColors.textSecondary)
+                        Text("−", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = cs.onSurfaceVariant)
                     }
                     Text(
                         text = startCountdownSeconds.toString(),
                         fontSize = 14.sp,
-                        color = appColors.textPrimary,
+                        color = cs.onSurface,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.width(24.dp)
                     )
@@ -499,12 +498,12 @@ internal fun SettingsSection(
                         onClick = { onStartCountdownChange(startCountdownSeconds + 1) },
                         modifier = Modifier.size(28.dp)
                     ) {
-                        Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = appColors.textSecondary)
+                        Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = cs.onSurfaceVariant)
                     }
                     Text(
                         text = stringResource(R.string.unit_seconds_short),
                         fontSize = 12.sp,
-                        color = appColors.textSecondary
+                        color = cs.onSurfaceVariant
                     )
                 }
             }
@@ -519,22 +518,22 @@ internal fun SettingsSection(
                     Text(
                         text = stringResource(R.string.dynamic_count_sound_label),
                         fontSize = 14.sp,
-                        color = appColors.textPrimary
+                        color = cs.onSurface
                     )
                     Text(
                         text = stringResource(R.string.dynamic_count_sound_description),
                         fontSize = 11.sp,
-                        color = appColors.textSecondary
+                        color = cs.onSurfaceVariant
                     )
                 }
                 Switch(
                     checked = isDynamicCountSoundEnabled,
                     onCheckedChange = onDynamicCountSoundChange,
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = appColors.switchThumb,
-                        checkedTrackColor = Orange600,
-                        uncheckedThumbColor = appColors.switchThumb,
-                        uncheckedTrackColor = Slate500
+                        checkedThumbColor = cs.onPrimary,
+                        checkedTrackColor = cs.tertiary,
+                        uncheckedThumbColor = cs.onPrimary,
+                        uncheckedTrackColor = cs.outline
                     )
                 )
             }
@@ -549,12 +548,12 @@ internal fun SettingsSection(
                     Text(
                         text = stringResource(R.string.isometric_interval_sound_label),
                         fontSize = 14.sp,
-                        color = appColors.textPrimary
+                        color = cs.onSurface
                     )
                     Text(
                         text = stringResource(R.string.isometric_interval_sound_description),
                         fontSize = 11.sp,
-                        color = appColors.textSecondary
+                        color = cs.onSurfaceVariant
                     )
                 }
                 Row(
@@ -581,7 +580,7 @@ internal fun SettingsSection(
                             textStyle = androidx.compose.ui.text.TextStyle(
                                 fontSize = 14.sp,
                                 textAlign = TextAlign.Center,
-                                color = appColors.textPrimary
+                                color = cs.onSurface
                             ),
                             decorationBox = { innerTextField ->
                                 Column {
@@ -600,7 +599,7 @@ internal fun SettingsSection(
                                             .padding(horizontal = 2.dp)
                                             .then(Modifier.drawBehind {
                                                 drawLine(
-                                                    color = appColors.textSecondary,
+                                                    color = cs.onSurfaceVariant,
                                                     start = androidx.compose.ui.geometry.Offset(0f, 0f),
                                                     end = androidx.compose.ui.geometry.Offset(size.width, 0f),
                                                     strokeWidth = 1.dp.toPx()
@@ -614,17 +613,17 @@ internal fun SettingsSection(
                     Text(
                         text = stringResource(R.string.unit_seconds_short),
                         fontSize = 12.sp,
-                        color = appColors.textSecondary
+                        color = cs.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Switch(
                         checked = isIsometricIntervalSoundEnabled,
                         onCheckedChange = onIsometricIntervalSoundChange,
                         colors = SwitchDefaults.colors(
-                            checkedThumbColor = appColors.switchThumb,
-                            checkedTrackColor = Orange600,
-                            uncheckedThumbColor = appColors.switchThumb,
-                            uncheckedTrackColor = Slate500
+                            checkedThumbColor = cs.onPrimary,
+                            checkedTrackColor = cs.tertiary,
+                            uncheckedThumbColor = cs.onPrimary,
+                            uncheckedTrackColor = cs.outline
                         )
                     )
                 }
@@ -653,7 +652,7 @@ internal fun ProgramConfirmExerciseCard(
     onUpdateDistanceCm: (Int, Int?) -> Unit,
     onUpdateAssistanceG: (Int, Int?) -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     // 現在のセット数とインターバルを取得
     val currentSetCount = sets.maxOfOrNull { it.setNumber } ?: programExercise.sets
     val currentInterval = sets.firstOrNull()?.intervalSeconds ?: programExercise.intervalSeconds
@@ -669,7 +668,7 @@ internal fun ProgramConfirmExerciseCard(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+        colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column {
@@ -686,14 +685,14 @@ internal fun ProgramConfirmExerciseCard(
                 Box(
                     modifier = Modifier
                         .size(28.dp)
-                        .background(Amber600, RoundedCornerShape(8.dp)),
+                        .background(cs.tertiary, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = displayNumber.toString(),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary
+                        color = cs.onSurface
                     )
                 }
 
@@ -702,20 +701,20 @@ internal fun ProgramConfirmExerciseCard(
                     text = exercise.name,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = appColors.textPrimary,
+                    color = cs.onSurface,
                     modifier = Modifier.weight(1f)
                 )
 
                 // セット数バッジ
                 Box(
                     modifier = Modifier
-                        .background(appColors.cardBackgroundSecondary, RoundedCornerShape(12.dp))
+                        .background(cs.surfaceContainerHigh, RoundedCornerShape(12.dp))
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.sets_format, currentSetCount),
                         fontSize = 12.sp,
-                        color = appColors.textTertiary
+                        color = cs.onSurfaceVariant
                     )
                 }
 
@@ -723,14 +722,14 @@ internal fun ProgramConfirmExerciseCard(
                 if (loopRounds != null) {
                     Box(
                         modifier = Modifier
-                            .background(Purple600.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                            .background(cs.secondary.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
                             .padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.loop_round_format, loopRounds),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Purple400
+                            color = cs.secondary
                         )
                     }
                 }
@@ -739,7 +738,7 @@ internal fun ProgramConfirmExerciseCard(
                 Icon(
                     AppIcons.ExpandMore,
                     contentDescription = null,
-                    tint = appColors.textSecondary,
+                    tint = cs.onSurfaceVariant,
                     modifier = Modifier.rotate(chevronRotation)
                 )
             }
@@ -762,11 +761,11 @@ internal fun ProgramConfirmExerciseCard(
                         Text(
                             text = stringResource(R.string.sets_label_short),
                             fontSize = 13.sp,
-                            color = appColors.textSecondary
+                            color = cs.onSurfaceVariant
                         )
                         Row(
                             modifier = Modifier
-                                .background(appColors.cardBackgroundSecondary, RoundedCornerShape(8.dp))
+                                .background(cs.surfaceContainerHigh, RoundedCornerShape(8.dp))
                                 .padding(2.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -774,12 +773,12 @@ internal fun ProgramConfirmExerciseCard(
                                 onClick = { if (currentSetCount > 1) onUpdateSetCount(currentSetCount - 1) },
                                 modifier = Modifier.size(32.dp)
                             ) {
-                                Text("−", fontSize = 16.sp, color = appColors.textSecondary)
+                                Text("−", fontSize = 16.sp, color = cs.onSurfaceVariant)
                             }
                             Text(
                                 text = currentSetCount.toString(),
                                 fontSize = 14.sp,
-                                color = appColors.textPrimary,
+                                color = cs.onSurface,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.width(28.dp)
                             )
@@ -787,7 +786,7 @@ internal fun ProgramConfirmExerciseCard(
                                 onClick = { onUpdateSetCount(currentSetCount + 1) },
                                 modifier = Modifier.size(32.dp)
                             ) {
-                                Text("+", fontSize = 16.sp, color = appColors.textSecondary)
+                                Text("+", fontSize = 16.sp, color = cs.onSurfaceVariant)
                             }
                         }
                     }
@@ -818,14 +817,14 @@ internal fun ProgramConfirmExerciseCard(
                                 text = stringResource(R.string.set_number_format, set.setNumber),
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = appColors.textPrimary,
+                                color = cs.onSurface,
                                 modifier = Modifier.weight(1f)
                             )
                             if (index == 0) {
                                 Text(
                                     text = stringResource(R.string.program_use_previous),
                                     fontSize = 11.sp,
-                                    color = Slate500,
+                                    color = cs.outline,
                                     modifier = Modifier.width(60.dp),
                                     textAlign = TextAlign.End
                                 )
@@ -966,19 +965,19 @@ internal fun ProgramConfirmExerciseCard(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(AppIcons.Timer, contentDescription = null, modifier = Modifier.size(14.dp), tint = Slate500)
+                        Icon(AppIcons.Timer, contentDescription = null, modifier = Modifier.size(14.dp), tint = cs.outline)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = stringResource(R.string.interval_short),
                             fontSize = 12.sp,
-                            color = Slate500
+                            color = cs.outline
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Box(
                             modifier = Modifier
                                 .width(48.dp)
                                 .height(28.dp)
-                                .background(appColors.cardBackgroundSecondary, RoundedCornerShape(6.dp)),
+                                .background(cs.surfaceContainerHigh, RoundedCornerShape(6.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             BasicTextField(
@@ -995,7 +994,7 @@ internal fun ProgramConfirmExerciseCard(
                                 textStyle = androidx.compose.ui.text.TextStyle(
                                     fontSize = 13.sp,
                                     textAlign = TextAlign.Center,
-                                    color = appColors.textPrimary
+                                    color = cs.onSurface
                                 ),
                                 decorationBox = { innerTextField ->
                                     Box(
@@ -1011,7 +1010,7 @@ internal fun ProgramConfirmExerciseCard(
                         Text(
                             text = stringResource(R.string.unit_seconds_short),
                             fontSize = 12.sp,
-                            color = Slate500
+                            color = cs.outline
                         )
                     }
                 }
@@ -1029,11 +1028,11 @@ private fun BulkSettingTab(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Box(
         modifier = Modifier
             .background(
-                color = if (isSelected) Amber600 else Color.Transparent,
+                color = if (isSelected) cs.tertiary else Color.Transparent,
                 shape = RoundedCornerShape(20.dp)
             )
             .clickable { onClick() }
@@ -1042,7 +1041,7 @@ private fun BulkSettingTab(
         Text(
             text = text,
             fontSize = 13.sp,
-            color = if (isSelected) appColors.textPrimary else appColors.textSecondary
+            color = if (isSelected) cs.onSurface else cs.onSurfaceVariant
         )
     }
 }
@@ -1068,7 +1067,7 @@ private fun ProgramConfirmLoopBlock(
     onUpdateSetDistanceCm: (Int, Int?) -> Unit,
     onUpdateSetAssistanceG: (Int, Int?) -> Unit
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val chevronRotation by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
         label = "loopChevron"
@@ -1077,8 +1076,8 @@ private fun ProgramConfirmLoopBlock(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(2.dp, Orange600, RoundedCornerShape(12.dp)),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+            .border(2.dp, cs.tertiary, RoundedCornerShape(12.dp)),
+        colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column {
@@ -1099,7 +1098,7 @@ private fun ProgramConfirmLoopBlock(
                     text = stringResource(R.string.loop_label),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Orange600
+                    color = cs.tertiary
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -1107,14 +1106,14 @@ private fun ProgramConfirmLoopBlock(
                 // ラウンド数バッジ
                 Box(
                     modifier = Modifier
-                        .background(Purple600.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                        .background(cs.secondary.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.loop_round_format, loop.rounds),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = Purple400
+                        color = cs.secondary
                     )
                 }
 
@@ -1122,13 +1121,13 @@ private fun ProgramConfirmLoopBlock(
                 if (loop.restBetweenRounds > 0) {
                     Box(
                         modifier = Modifier
-                            .background(appColors.cardBackgroundSecondary, RoundedCornerShape(12.dp))
+                            .background(cs.surfaceContainerHigh, RoundedCornerShape(12.dp))
                             .padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.loop_rest_format, loop.restBetweenRounds),
                             fontSize = 12.sp,
-                            color = appColors.textTertiary
+                            color = cs.onSurfaceVariant
                         )
                     }
                 }
@@ -1137,7 +1136,7 @@ private fun ProgramConfirmLoopBlock(
                 Icon(
                     AppIcons.ExpandMore,
                     contentDescription = null,
-                    tint = appColors.textSecondary,
+                    tint = cs.onSurfaceVariant,
                     modifier = Modifier.rotate(chevronRotation)
                 )
             }
@@ -1171,7 +1170,7 @@ private fun ProgramConfirmLoopBlock(
                                 modifier = Modifier
                                     .width(3.dp)
                                     .fillMaxHeight()
-                                    .background(Amber500)
+                                    .background(cs.tertiary)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             // 種目カード
@@ -1224,10 +1223,11 @@ private fun OrangeCircleStepButton(
     enabled: Boolean = true,
     onStep: () -> Unit
 ) {
+    val cs = MaterialTheme.colorScheme
     val scope = rememberCoroutineScope()
     val currentOnStep by rememberUpdatedState(onStep)
-    val bgColor = if (enabled) Orange600 else Color(0xFF4A5B70)
-    val labelColor = if (enabled) Color.White else Color(0xFF8696AA)
+    val bgColor = if (enabled) cs.tertiary else cs.surfaceContainerHighest
+    val labelColor = if (enabled) cs.onTertiary else cs.outline
     Box(
         modifier = Modifier
             .size(30.dp)
@@ -1277,7 +1277,7 @@ private fun UnifiedStepperRow(
     onPlus: () -> Unit,
     minusEnabled: Boolean = true
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -1287,7 +1287,7 @@ private fun UnifiedStepperRow(
         Text(
             text = label,
             fontSize = 13.sp,
-            color = appColors.textSecondary,
+            color = cs.onSurfaceVariant,
             modifier = Modifier.width(96.dp)
         )
         Row(
@@ -1311,7 +1311,7 @@ private fun UnifiedStepperRow(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    color = appColors.textPrimary
+                    color = cs.onSurface
                 )
             )
             Spacer(modifier = Modifier.width(14.dp))
@@ -1323,7 +1323,7 @@ private fun UnifiedStepperRow(
         Text(
             text = previousText,
             fontSize = 13.sp,
-            color = Slate500,
+            color = cs.outline,
             textAlign = TextAlign.End,
             modifier = Modifier.width(60.dp)
         )
