@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.intervalSummary
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -298,13 +299,7 @@ private fun IntervalProgramListItem(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = stringResource(
-                                R.string.interval_summary_format,
-                                exerciseCount,
-                                program.workSeconds,
-                                program.restSeconds,
-                                program.rounds
-                            ),
+                            text = intervalSummary(program, exerciseCount),
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(top = 2.dp)

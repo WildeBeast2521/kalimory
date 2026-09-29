@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.describe
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.rememberProgramSummaries
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -37,6 +39,8 @@ fun ProgramListScreen(
     onNavigateToResume: (Long) -> Unit = onNavigateToExecute  // デフォルトは通常実行と同じ
 ) {
     val programs by viewModel.programs.collectAsState()
+    val exercises by viewModel.exercises.collectAsState()
+    val programSummaries = rememberProgramSummaries(viewModel, programs, exercises)
     val context = LocalContext.current
     val savedWorkoutState = remember { SavedWorkoutState(context) }
     val savedProgramId = savedWorkoutState.getSavedProgramId()
@@ -173,6 +177,7 @@ fun ProgramListScreen(
                         ) { program ->
                             ProgramListItem(
                                 program = program,
+                                summary = programSummaries[program.id].describe(),
                                 hasSavedState = savedProgramId == program.id,
                                 onEdit = { onNavigateToEdit(program.id) },
                                 onExecute = { onNavigateToExecute(program.id) },
@@ -192,6 +197,7 @@ fun ProgramListScreen(
 @Composable
 private fun ProgramListItem(
     program: Program,
+    summary: String,
     hasSavedState: Boolean,
     onEdit: () -> Unit,
     onExecute: () -> Unit,
@@ -297,6 +303,13 @@ private fun ProgramListItem(
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
+                        if (summary.isNotEmpty()) {
+                            Text(
+                                text = summary,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
 
                     // Edit button

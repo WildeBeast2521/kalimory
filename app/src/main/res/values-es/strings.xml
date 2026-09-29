@@ -846,4 +846,5 @@
     </plurals>
     <string name="value_with_unit">%1$d %2$s</string>
     <string name="app_original_project">Proyecto original</string>
+    <string name="graph_latest_exercise">Último: %1$s</string>
 </resources>

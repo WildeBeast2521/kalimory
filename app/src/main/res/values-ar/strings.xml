@@ -69,4 +69,5 @@
     </plurals>
     <string name="value_with_unit">%1$d %2$s</string>
     <string name="app_original_project">المشروع الأصلي</string>
+    <string name="graph_latest_exercise">الأحدث: %1$s</string>
 </resources>

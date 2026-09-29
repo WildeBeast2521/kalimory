@@ -4,17 +4,21 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Start flows. Branch `work/start-flows`, based on master `569be6b`.
+List summaries and a default graph. Branch `work/list-summaries`, based on master `7612f38`.
 
-- **Single-workout setup:** it starts ready. Sets and target come from the exercise's own targets, or the defaults Start already fell back to (3 × 10, and 5 s per rep for dynamic exercises). Start is no longer disabled with blank fields and no reason; "Apply Exercise Settings" still re-applies the targets.
-- **Program start screen:**
-  - one Start, pinned to the bottom with the play icon and always in view;
-  - the small top-bar Start and the end-of-list Start are removed;
-  - the settings section starts collapsed.
+- **Program list:** rows show "3 exercise(s) · ~12 min", from the shared `rememberProgramSummaries`.
+- **Interval summaries:** interval list and Train rows add the estimated total ("· ~7 min"), through the new shared `intervalSummary`, which uses `ProgramTimeEstimator.estimateIntervalSeconds`.
+- **Graph:** with no exercise selected, it shows the most recently trained exercise, labelled "Latest: <name>" (a new string in 10 locales), instead of an empty "Please select an exercise".
 
 Verification:
-- the full local gate (131/131 instrumented tests on API 29); `UnifiedWorkoutFlowTest` still starts single and program workouts;
-- screenshots of the program start screen and the single setup.
+- the full local gate (131/131 instrumented tests on API 29);
+- screenshots of the program list, the interval list and Graph.
+
+Seen but not fixed: Graph's y-axis can repeat labels ("4 reps, 4 reps"). Added to the ideas list.
+
+## Previous phase: start flows (merged)
+
+PR #67 merged as `7612f38`.
 
 ## Previous phase: small audit fixes (merged)
 
@@ -124,8 +128,8 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - Done in PR #54: (S) A program with no exercises shows "~0 min".
 - (S) Estimates disagree between screens for the same program (~12, ~13 and ~16 min, depending on the screen and the prefill mode). Label them consistently, or explain the difference.
 - Done in PR #57: the exercise list title. Done in PR #66: the empty "Favorite" group is hidden.
-- (S) Program list rows have no summary (exercise count, estimate), and tapping a row does nothing.
-- (S) The interval list shows no total duration.
+- Done in PR #68: program list rows show a summary. Still open: tapping a row does nothing.
+- Done in PR #68: interval rows show the estimated total.
 - Done in PR #66: per-exercise rest now reads "Rest" where it said "Interval".
 - (M) Show when each exercise or program was last done.
 
@@ -144,7 +148,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - Done in PR #55: (S) Dates show as "2026-09-25"; use the locale's format.
 - Done in PR #55: (S) "6reps" is missing a space. The right and left sides use arbitrary colours (green and purple).
 - Done in PR #66: the Progress exercise sheet pads for the navigation bar.
-- (S/M) Graph starts empty until an exercise is picked; default to the most recent exercise.
+- Done in PR #68: Graph defaults to the latest exercise. Still open: (S) the y-axis repeats labels ("4 reps, 4 reps").
 - (M) "1 Week" is a rolling seven days, while Today uses the calendar week and the first-day setting.
 - (M) The Challenge tab does not say how to set a challenge, and overlaps with the progression goals.
 - (L) Trends and personal bests (progression system).
@@ -219,6 +223,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #65: program runs use the in-workout kit.
 - PR #66: small audit fixes.
 - PR #67: start flows.
+- PR #68: list summaries and a default graph.
 
 ## Owner direction for later (2026-09-27)
 

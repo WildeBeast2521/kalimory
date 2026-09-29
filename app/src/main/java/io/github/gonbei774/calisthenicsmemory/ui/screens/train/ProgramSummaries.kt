@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
+import io.github.gonbei774.calisthenicsmemory.data.IntervalProgram
 import io.github.gonbei774.calisthenicsmemory.data.Program
 import io.github.gonbei774.calisthenicsmemory.util.ProgramTimeEstimator
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
@@ -44,4 +45,14 @@ fun ProgramSummary?.describe(): String = when {
     exerciseCount == 0 -> stringResource(R.string.program_no_exercises)
     else -> stringResource(R.string.program_exercise_count, exerciseCount) + " · " +
         stringResource(R.string.program_estimated_time, minutes)
+}
+
+/** "2 exercises · 20s/10s · 8 rounds · ~7 min" for an interval routine with [exerciseCount] exercises. */
+@Composable
+fun intervalSummary(interval: IntervalProgram, exerciseCount: Int): String {
+    val summary = stringResource(
+        R.string.interval_summary_format, exerciseCount, interval.workSeconds, interval.restSeconds, interval.rounds,
+    )
+    val seconds = ProgramTimeEstimator.estimateIntervalSeconds(interval, exerciseCount)
+    return if (seconds > 0) summary + " · " + stringResource(R.string.program_estimated_time, (seconds + 59) / 60) else summary
 }
