@@ -31,8 +31,9 @@ fun CalisthenicsMemoryTheme(
     }
     MaterialExpressiveTheme(
         colorScheme = colorScheme,
-        // Calm, not bouncy; the one expressive moment is reserved for completing a set.
-        motionScheme = MotionScheme.standard(),
+        // Expressive springs give components a physical feel; screen and tab transitions stay short
+        // and unbouncy (ui/navigation/ScreenMotion.kt).
+        motionScheme = MotionScheme.expressive(),
         typography = Typography,
         shapes = CalmShapes,
         content = content

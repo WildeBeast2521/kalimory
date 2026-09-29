@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-29, master `01f3ffa` (PR #69).
+Last reviewed: 2026-09-30, at PR #71.
 
 ## Where things stand
 
@@ -17,10 +17,20 @@ Last reviewed: 2026-09-29, master `01f3ffa` (PR #69).
 
 The review page, with live motion previews: https://claude.ai/artifact/6JM7EwpckEkJfCkPP3hC52. The owner's answer: "Do all except M4." The summary screen is "fine as you showed". Do the items in this order, one verified slice each:
 
-1. **MO, the motion package.** Two slices.
-   - First slice: screens slide forward and back (`AnimatedContent` over `currentScreen`, with predictive back), tabs fade through, the navigation indicator glides, and the theme uses `MotionScheme.expressive()`.
-   - Second slice: timer and count digits roll, a finished set turns spruce with a drawn tick and a haptic (with a setting to turn vibration off), and buttons change shape when pressed.
-   - Measure frame timing before and after. Respect the Android "Remove animations" setting.
+1. **MO, the motion package.**
+   - **Done in PR #71:**
+     - Screens slide forward and back. `AnimatedContent` runs over `currentScreen`, and `Screen.depth()` in `ui/navigation/ScreenMotion.kt` picks the direction. `ScreenDepthTest` checks that every back destination slides back.
+     - Tabs fade through.
+     - The navigation bar slides away on pushed screens.
+     - The theme uses `MotionScheme.expressive()`.
+     - The Baseline Profile is regenerated.
+   - **PR #71 verification on emulators:**
+     - Recorded with `animator_duration_scale 10`, and checked with the scale at 0 (Remove animations), where screens switch at once.
+     - Tab-switch benchmark on API 36 (median of 10), against master: per-frame CPU time P50 +5%, P90 +8%, P99 −23%. The crossfade draws two screens briefly. On this software-rendered emulator every frame overruns either way.
+   - **Differences from the review page:**
+     - The navigation indicator keeps Material's own grow-in animation rather than gliding between tabs. A glide needs a custom bar.
+     - Predictive back, where the back swipe scrubs the slide, is not done. Every screen declares its own back destination and side effects in `MainActivity`, so scrubbing needs those moved into one place first. That is a follow-up.
+   - **Next slice:** timer and count digits roll, a finished set turns spruce with a drawn tick and a haptic (with a setting to turn vibration off), and buttons change shape when pressed.
 2. **M2 with SP.**
    - M2: a workout summary screen after the last set. Rings close, totals count up, the week dot fills, and a personal best appears in brass. There is no confetti. It includes the "Done today" totals and a comparison with the last session.
    - SP: a large "this week" number on Today, brass kept for in-progress and personal bests only, and a soft glow in dark mode.
@@ -63,7 +73,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #69.
+PRs #34 to #71. PR #70 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -73,7 +83,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #69: 339 unit tests, 131 instrumented tests on `floor_api29` (API 29), and "Lint found 6 warnings" (baselined dependency-version notices).
+- Expected as of PR #71: 340 unit tests, 131 instrumented tests on `floor_api29` (API 29), and "Lint found 6 warnings" (baselined dependency-version notices).
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.
