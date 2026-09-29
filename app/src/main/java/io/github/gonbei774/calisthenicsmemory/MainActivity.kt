@@ -19,6 +19,10 @@ import io.github.gonbei774.calisthenicsmemory.data.AppTheme
 import io.github.gonbei774.calisthenicsmemory.data.LanguagePreferences
 import io.github.gonbei774.calisthenicsmemory.data.ThemePreferences
 import java.util.Locale
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -50,6 +54,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBar
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.depth
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.screenTransition
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.tabTransition
 import io.github.gonbei774.calisthenicsmemory.ui.screens.library.LibraryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.ResumableWorkout
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.TodayScreen
@@ -278,7 +285,11 @@ fun CalisthenicsMemoryApp(
     val showPrimaryNavigation = currentScreen is Screen.Home
     Scaffold(
         bottomBar = {
-            if (showPrimaryNavigation) {
+            AnimatedVisibility(
+                visible = showPrimaryNavigation,
+                enter = slideInVertically { it },
+                exit = slideOutVertically { it },
+            ) {
                 PrimaryNavigationBar(
                     selected = primaryDestination,
                     onSelect = { primaryDestination = it }
@@ -300,255 +311,270 @@ fun CalisthenicsMemoryApp(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(paddingValues)
         ) {
-            when (currentScreen) {
-                is Screen.Home -> {
-                    BackHandler(enabled = primaryDestination != PrimaryDestination.TODAY) {
-                        primaryDestination = PrimaryDestination.TODAY
-                    }
-                    when (primaryDestination) {
-                        PrimaryDestination.TODAY -> TodayScreen(
-                            viewModel = viewModel,
-                            onResume = { workout ->
-                                currentScreen = when (workout) {
-                                    // The single-workout screen offers its checkpoint whenever it opens.
-                                    is ResumableWorkout.Single -> Screen.Workout(fromToday = true)
-                                    is ResumableWorkout.Program -> Screen.ProgramExecution(
-                                        workout.programId,
-                                        resumeSavedState = workout.savedByUser,
-                                        fromToday = true
-                                    )
-                                    is ResumableWorkout.Interval -> Screen.IntervalExecution(workout.programId, fromToday = true)
-                                }
-                            },
-                            onOpenTask = { task ->
-                                currentScreen = when (task.type) {
-                                    TodoTask.TYPE_EXERCISE ->
-                                        Screen.Workout(exerciseId = task.referenceId, fromToDo = true, fromToday = true)
-                                    TodoTask.TYPE_PROGRAM ->
-                                        Screen.ProgramExecution(task.referenceId, fromToDo = true, fromToday = true)
-                                    TodoTask.TYPE_INTERVAL ->
-                                        Screen.IntervalExecution(task.referenceId, fromToDo = true, fromToday = true)
-                                    // A group needs an exercise chosen first, which the To Do screen offers.
-                                    else -> Screen.ToDo
-                                }
-                            },
-                            onOpenToDo = { currentScreen = Screen.ToDo },
-                            onOpenHistory = { primaryDestination = PrimaryDestination.PROGRESS },
-                            onOpenSettings = { currentScreen = Screen.Settings },
-                            onOpenTrain = { primaryDestination = PrimaryDestination.TRAIN }
-                        )
-                        PrimaryDestination.TRAIN -> TrainScreen(
-                            viewModel = viewModel,
-                            // fromToday returns to the primary destination (here Train) on back.
-                            onStartProgram = { id -> currentScreen = Screen.ProgramExecution(id, fromToday = true) },
-                            onEditProgram = { id -> currentScreen = Screen.ProgramEdit(id) },
-                            onStartInterval = { id -> currentScreen = Screen.IntervalExecution(id, fromToday = true) },
-                            onStartWorkout = { currentScreen = Screen.Workout() },
-                            onRecordManually = { currentScreen = Screen.Record() },
-                            onOpenPrograms = { currentScreen = Screen.ProgramList },
-                            onOpenIntervals = { currentScreen = Screen.IntervalList }
-                        )
-                        PrimaryDestination.PROGRESS -> ViewScreen(viewModel = viewModel)
-                        PrimaryDestination.LIBRARY -> LibraryScreen(
-                            viewModel = viewModel,
-                            onOpenExercises = { currentScreen = Screen.Create },
-                            onOpenPrograms = { currentScreen = Screen.ProgramList },
-                            onOpenIntervals = { currentScreen = Screen.IntervalList },
-                            onOpenSettings = { currentScreen = Screen.Settings }
-                        )
-                    }
-                }
-                is Screen.ToDo -> {
-                    BackHandler { currentScreen = Screen.Home }
-                    ToDoScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.Home },
-                        onNavigateToRecord = { exerciseId ->
-                            currentScreen = Screen.Record(exerciseId = exerciseId, fromToDo = true)
-                        },
-                        onNavigateToWorkout = { exerciseId ->
-                            currentScreen = Screen.Workout(exerciseId = exerciseId, fromToDo = true)
-                        },
-                        onNavigateToProgramPreview = { programId ->
-                            currentScreen = Screen.ProgramExecution(programId = programId, fromToDo = true)
-                        },
-                        onNavigateToIntervalPreview = { programId ->
-                            currentScreen = Screen.IntervalExecution(programId = programId, fromToDo = true)
+            // The screen being left keeps its own state while it animates out, so each branch reads
+            // `screen`, never `currentScreen`.
+            AnimatedContent(
+                targetState = currentScreen,
+                transitionSpec = { screenTransition(forward = targetState.depth() >= initialState.depth()) },
+                modifier = Modifier.fillMaxSize(),
+                label = "screen",
+            ) { screen ->
+                when (screen) {
+                    is Screen.Home -> {
+                        BackHandler(enabled = primaryDestination != PrimaryDestination.TODAY) {
+                            primaryDestination = PrimaryDestination.TODAY
                         }
-                    )
-                }
-                is Screen.Create -> {
-                    BackHandler {
-                        viewModel.saveGroupOrder()
-                        currentScreen = Screen.Home
+                        AnimatedContent(
+                            targetState = primaryDestination,
+                            transitionSpec = { tabTransition() },
+                            label = "primary destination",
+                        ) { destination ->
+                            when (destination) {
+                                PrimaryDestination.TODAY -> TodayScreen(
+                                    viewModel = viewModel,
+                                    onResume = { workout ->
+                                        currentScreen = when (workout) {
+                                            // The single-workout screen offers its checkpoint whenever it opens.
+                                            is ResumableWorkout.Single -> Screen.Workout(fromToday = true)
+                                            is ResumableWorkout.Program -> Screen.ProgramExecution(
+                                                workout.programId,
+                                                resumeSavedState = workout.savedByUser,
+                                                fromToday = true
+                                            )
+                                            is ResumableWorkout.Interval -> Screen.IntervalExecution(workout.programId, fromToday = true)
+                                        }
+                                    },
+                                    onOpenTask = { task ->
+                                        currentScreen = when (task.type) {
+                                            TodoTask.TYPE_EXERCISE ->
+                                                Screen.Workout(exerciseId = task.referenceId, fromToDo = true, fromToday = true)
+                                            TodoTask.TYPE_PROGRAM ->
+                                                Screen.ProgramExecution(task.referenceId, fromToDo = true, fromToday = true)
+                                            TodoTask.TYPE_INTERVAL ->
+                                                Screen.IntervalExecution(task.referenceId, fromToDo = true, fromToday = true)
+                                            // A group needs an exercise chosen first, which the To Do screen offers.
+                                            else -> Screen.ToDo
+                                        }
+                                    },
+                                    onOpenToDo = { currentScreen = Screen.ToDo },
+                                    onOpenHistory = { primaryDestination = PrimaryDestination.PROGRESS },
+                                    onOpenSettings = { currentScreen = Screen.Settings },
+                                    onOpenTrain = { primaryDestination = PrimaryDestination.TRAIN }
+                                )
+                                PrimaryDestination.TRAIN -> TrainScreen(
+                                    viewModel = viewModel,
+                                    // fromToday returns to the primary destination (here Train) on back.
+                                    onStartProgram = { id -> currentScreen = Screen.ProgramExecution(id, fromToday = true) },
+                                    onEditProgram = { id -> currentScreen = Screen.ProgramEdit(id) },
+                                    onStartInterval = { id -> currentScreen = Screen.IntervalExecution(id, fromToday = true) },
+                                    onStartWorkout = { currentScreen = Screen.Workout() },
+                                    onRecordManually = { currentScreen = Screen.Record() },
+                                    onOpenPrograms = { currentScreen = Screen.ProgramList },
+                                    onOpenIntervals = { currentScreen = Screen.IntervalList }
+                                )
+                                PrimaryDestination.PROGRESS -> ViewScreen(viewModel = viewModel)
+                                PrimaryDestination.LIBRARY -> LibraryScreen(
+                                    viewModel = viewModel,
+                                    onOpenExercises = { currentScreen = Screen.Create },
+                                    onOpenPrograms = { currentScreen = Screen.ProgramList },
+                                    onOpenIntervals = { currentScreen = Screen.IntervalList },
+                                    onOpenSettings = { currentScreen = Screen.Settings }
+                                )
+                            }
+                        }
                     }
-                    CreateScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = {
+                    is Screen.ToDo -> {
+                        BackHandler { currentScreen = Screen.Home }
+                        ToDoScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = Screen.Home },
+                            onNavigateToRecord = { exerciseId ->
+                                currentScreen = Screen.Record(exerciseId = exerciseId, fromToDo = true)
+                            },
+                            onNavigateToWorkout = { exerciseId ->
+                                currentScreen = Screen.Workout(exerciseId = exerciseId, fromToDo = true)
+                            },
+                            onNavigateToProgramPreview = { programId ->
+                                currentScreen = Screen.ProgramExecution(programId = programId, fromToDo = true)
+                            },
+                            onNavigateToIntervalPreview = { programId ->
+                                currentScreen = Screen.IntervalExecution(programId = programId, fromToDo = true)
+                            }
+                        )
+                    }
+                    is Screen.Create -> {
+                        BackHandler {
                             viewModel.saveGroupOrder()
                             currentScreen = Screen.Home
                         }
-                    )
-                }
-                is Screen.Settings -> {
-                    BackHandler { currentScreen = Screen.Home }
-                    SettingsScreenNew(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.Home },
-                        onNavigateToLicenses = { currentScreen = Screen.Licenses },
-                        onNavigateToBackup = { currentScreen = Screen.Backup },
-                        onNavigateToCsvDataManagement = { currentScreen = Screen.CsvDataManagement },
-                        onNavigateToShareHub = { currentScreen = Screen.ShareHub },
-                        currentTheme = currentTheme,
-                        onThemeChange = onThemeChange,
-                        dynamicColor = dynamicColor,
-                        onDynamicColorChange = onDynamicColorChange,
-                        firstDayOfWeek = firstDayOfWeek,
-                        onFirstDayOfWeekChange = onFirstDayOfWeekChange
-                    )
-                }
-                is Screen.Licenses -> {
-                    BackHandler { currentScreen = Screen.Settings }
-                    LicensesScreen(
-                        onNavigateBack = { currentScreen = Screen.Settings }
-                    )
-                }
-                is Screen.Record -> {
-                    val recordScreen = currentScreen as Screen.Record
-                    val backDestination = if (recordScreen.fromToDo) Screen.ToDo else Screen.Home
-                    BackHandler { currentScreen = backDestination }
-                    RecordScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = backDestination },
-                        initialExerciseId = recordScreen.exerciseId,
-                        fromToDo = recordScreen.fromToDo
-                    )
-                }
-                is Screen.Workout -> {
-                    val workoutScreen = currentScreen as Screen.Workout
-                    val backDestination = if (workoutScreen.fromToDo && !workoutScreen.fromToday) Screen.ToDo else Screen.Home
-                    BackHandler { currentScreen = backDestination }
-                    WorkoutScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = backDestination },
-                        initialExerciseId = workoutScreen.exerciseId,
-                        fromToDo = workoutScreen.fromToDo
-                    )
-                }
-                is Screen.ProgramList -> {
-                    BackHandler { currentScreen = Screen.Home }
-                    ProgramListScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.Home },
-                        onNavigateToEdit = { programId -> currentScreen = Screen.ProgramEdit(programId) },
-                        onNavigateToExecute = { programId ->
-                            currentScreen = Screen.ProgramExecution(programId)
-                        },
-                        onNavigateToResume = { programId ->
-                            currentScreen = Screen.ProgramExecution(programId, resumeSavedState = true)
-                        }
-                    )
-                }
-                is Screen.ProgramEdit -> {
-                    val editScreen = currentScreen as Screen.ProgramEdit
-                    BackHandler { currentScreen = Screen.ProgramList }
-                    ProgramEditScreen(
-                        viewModel = viewModel,
-                        programId = editScreen.programId,
-                        onNavigateBack = { currentScreen = Screen.ProgramList },
-                        onSaved = { currentScreen = Screen.ProgramList }
-                    )
-                }
-                is Screen.ProgramExecution -> {
-                    val execScreen = currentScreen as Screen.ProgramExecution
-                    val backDestination = when {
-                        execScreen.fromToday -> Screen.Home
-                        execScreen.fromToDo -> Screen.ToDo
-                        else -> Screen.ProgramList
-                    }
-                    BackHandler { currentScreen = backDestination }
-                    ProgramExecutionScreen(
-                        viewModel = viewModel,
-                        programId = execScreen.programId,
-                        resumeSavedState = execScreen.resumeSavedState,
-                        onNavigateBack = { currentScreen = backDestination },
-                        onComplete = {
-                            if (execScreen.fromToDo) {
-                                viewModel.completeTodoTaskByReference(TodoTask.TYPE_PROGRAM, execScreen.programId)
+                        CreateScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = {
+                                viewModel.saveGroupOrder()
+                                currentScreen = Screen.Home
                             }
-                            currentScreen = backDestination
-                        }
-                    )
-                }
-                is Screen.IntervalList -> {
-                    BackHandler { currentScreen = Screen.Home }
-                    IntervalListScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.Home },
-                        onNavigateToEdit = { programId -> currentScreen = Screen.IntervalEdit(programId) },
-                        onNavigateToExecute = { programId ->
-                            currentScreen = Screen.IntervalExecution(programId)
-                        }
-                    )
-                }
-                is Screen.IntervalEdit -> {
-                    val editScreen = currentScreen as Screen.IntervalEdit
-                    BackHandler { currentScreen = Screen.IntervalList }
-                    IntervalEditScreen(
-                        viewModel = viewModel,
-                        programId = editScreen.programId,
-                        onNavigateBack = { currentScreen = Screen.IntervalList },
-                        onSaved = { currentScreen = Screen.IntervalList }
-                    )
-                }
-                is Screen.IntervalExecution -> {
-                    val execScreen = currentScreen as Screen.IntervalExecution
-                    val backDestination = when {
-                        execScreen.fromToday -> Screen.Home
-                        execScreen.fromToDo -> Screen.ToDo
-                        else -> Screen.IntervalList
+                        )
                     }
-                    BackHandler { currentScreen = backDestination }
-                    IntervalExecutionScreen(
-                        viewModel = viewModel,
-                        programId = execScreen.programId,
-                        onNavigateBack = { currentScreen = backDestination },
-                        onComplete = {
-                            if (execScreen.fromToDo) {
-                                viewModel.completeTodoTaskByReference(TodoTask.TYPE_INTERVAL, execScreen.programId)
+                    is Screen.Settings -> {
+                        BackHandler { currentScreen = Screen.Home }
+                        SettingsScreenNew(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = Screen.Home },
+                            onNavigateToLicenses = { currentScreen = Screen.Licenses },
+                            onNavigateToBackup = { currentScreen = Screen.Backup },
+                            onNavigateToCsvDataManagement = { currentScreen = Screen.CsvDataManagement },
+                            onNavigateToShareHub = { currentScreen = Screen.ShareHub },
+                            currentTheme = currentTheme,
+                            onThemeChange = onThemeChange,
+                            dynamicColor = dynamicColor,
+                            onDynamicColorChange = onDynamicColorChange,
+                            firstDayOfWeek = firstDayOfWeek,
+                            onFirstDayOfWeekChange = onFirstDayOfWeekChange
+                        )
+                    }
+                    is Screen.Licenses -> {
+                        BackHandler { currentScreen = Screen.Settings }
+                        LicensesScreen(
+                            onNavigateBack = { currentScreen = Screen.Settings }
+                        )
+                    }
+                    is Screen.Record -> {
+                        val recordScreen = screen
+                        val backDestination = if (recordScreen.fromToDo) Screen.ToDo else Screen.Home
+                        BackHandler { currentScreen = backDestination }
+                        RecordScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = backDestination },
+                            initialExerciseId = recordScreen.exerciseId,
+                            fromToDo = recordScreen.fromToDo
+                        )
+                    }
+                    is Screen.Workout -> {
+                        val workoutScreen = screen
+                        val backDestination = if (workoutScreen.fromToDo && !workoutScreen.fromToday) Screen.ToDo else Screen.Home
+                        BackHandler { currentScreen = backDestination }
+                        WorkoutScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = backDestination },
+                            initialExerciseId = workoutScreen.exerciseId,
+                            fromToDo = workoutScreen.fromToDo
+                        )
+                    }
+                    is Screen.ProgramList -> {
+                        BackHandler { currentScreen = Screen.Home }
+                        ProgramListScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = Screen.Home },
+                            onNavigateToEdit = { programId -> currentScreen = Screen.ProgramEdit(programId) },
+                            onNavigateToExecute = { programId ->
+                                currentScreen = Screen.ProgramExecution(programId)
+                            },
+                            onNavigateToResume = { programId ->
+                                currentScreen = Screen.ProgramExecution(programId, resumeSavedState = true)
                             }
-                            currentScreen = backDestination
+                        )
+                    }
+                    is Screen.ProgramEdit -> {
+                        val editScreen = screen
+                        BackHandler { currentScreen = Screen.ProgramList }
+                        ProgramEditScreen(
+                            viewModel = viewModel,
+                            programId = editScreen.programId,
+                            onNavigateBack = { currentScreen = Screen.ProgramList },
+                            onSaved = { currentScreen = Screen.ProgramList }
+                        )
+                    }
+                    is Screen.ProgramExecution -> {
+                        val execScreen = screen
+                        val backDestination = when {
+                            execScreen.fromToday -> Screen.Home
+                            execScreen.fromToDo -> Screen.ToDo
+                            else -> Screen.ProgramList
                         }
-                    )
-                }
-                is Screen.CommunityShareExport -> {
-                    BackHandler { currentScreen = Screen.ShareHub }
-                    CommunityShareExportScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.ShareHub }
-                    )
-                }
-                is Screen.Backup -> {
-                    BackHandler { currentScreen = Screen.Settings }
-                    BackupScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.Settings }
-                    )
-                }
-                is Screen.CsvDataManagement -> {
-                    BackHandler { currentScreen = Screen.Settings }
-                    CsvDataManagementScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.Settings }
-                    )
-                }
-                is Screen.ShareHub -> {
-                    BackHandler { currentScreen = Screen.Settings }
-                    ShareHubScreen(
-                        viewModel = viewModel,
-                        onNavigateBack = { currentScreen = Screen.Settings },
-                        onNavigateToCommunityShareExport = { currentScreen = Screen.CommunityShareExport }
-                    )
+                        BackHandler { currentScreen = backDestination }
+                        ProgramExecutionScreen(
+                            viewModel = viewModel,
+                            programId = execScreen.programId,
+                            resumeSavedState = execScreen.resumeSavedState,
+                            onNavigateBack = { currentScreen = backDestination },
+                            onComplete = {
+                                if (execScreen.fromToDo) {
+                                    viewModel.completeTodoTaskByReference(TodoTask.TYPE_PROGRAM, execScreen.programId)
+                                }
+                                currentScreen = backDestination
+                            }
+                        )
+                    }
+                    is Screen.IntervalList -> {
+                        BackHandler { currentScreen = Screen.Home }
+                        IntervalListScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = Screen.Home },
+                            onNavigateToEdit = { programId -> currentScreen = Screen.IntervalEdit(programId) },
+                            onNavigateToExecute = { programId ->
+                                currentScreen = Screen.IntervalExecution(programId)
+                            }
+                        )
+                    }
+                    is Screen.IntervalEdit -> {
+                        val editScreen = screen
+                        BackHandler { currentScreen = Screen.IntervalList }
+                        IntervalEditScreen(
+                            viewModel = viewModel,
+                            programId = editScreen.programId,
+                            onNavigateBack = { currentScreen = Screen.IntervalList },
+                            onSaved = { currentScreen = Screen.IntervalList }
+                        )
+                    }
+                    is Screen.IntervalExecution -> {
+                        val execScreen = screen
+                        val backDestination = when {
+                            execScreen.fromToday -> Screen.Home
+                            execScreen.fromToDo -> Screen.ToDo
+                            else -> Screen.IntervalList
+                        }
+                        BackHandler { currentScreen = backDestination }
+                        IntervalExecutionScreen(
+                            viewModel = viewModel,
+                            programId = execScreen.programId,
+                            onNavigateBack = { currentScreen = backDestination },
+                            onComplete = {
+                                if (execScreen.fromToDo) {
+                                    viewModel.completeTodoTaskByReference(TodoTask.TYPE_INTERVAL, execScreen.programId)
+                                }
+                                currentScreen = backDestination
+                            }
+                        )
+                    }
+                    is Screen.CommunityShareExport -> {
+                        BackHandler { currentScreen = Screen.ShareHub }
+                        CommunityShareExportScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = Screen.ShareHub }
+                        )
+                    }
+                    is Screen.Backup -> {
+                        BackHandler { currentScreen = Screen.Settings }
+                        BackupScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = Screen.Settings }
+                        )
+                    }
+                    is Screen.CsvDataManagement -> {
+                        BackHandler { currentScreen = Screen.Settings }
+                        CsvDataManagementScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = Screen.Settings }
+                        )
+                    }
+                    is Screen.ShareHub -> {
+                        BackHandler { currentScreen = Screen.Settings }
+                        ShareHubScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = Screen.Settings },
+                            onNavigateToCommunityShareExport = { currentScreen = Screen.CommunityShareExport }
+                        )
+                    }
                 }
             }
         }
