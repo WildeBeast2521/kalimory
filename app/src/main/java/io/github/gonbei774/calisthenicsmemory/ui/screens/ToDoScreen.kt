@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -57,7 +56,6 @@ fun ToDoScreen(
     onNavigateToProgramPreview: (Long) -> Unit,
     onNavigateToIntervalPreview: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val todoTasks by viewModel.todoTasks.collectAsState()
     val exercises by viewModel.exercises.collectAsState()
     val groups by viewModel.groups.collectAsState()
@@ -130,21 +128,14 @@ fun ToDoScreen(
 
     Scaffold(
         topBar = {
-            // Amber gradient header
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Color.Transparent
+                color = MaterialTheme.colorScheme.background
             ) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            brush = Brush.horizontalGradient(
-                                colors = listOf(Amber500, Yellow500)
-                            )
-                        )
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     Row(
                         modifier = Modifier
@@ -156,14 +147,14 @@ fun ToDoScreen(
                             Icon(
                                 AppIcons.Back,
                                 contentDescription = stringResource(R.string.back),
-                                tint = Color.White
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
                         Text(
                             text = stringResource(R.string.todo_title),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -171,10 +162,9 @@ fun ToDoScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { showAddDialog = true },
-                containerColor = Amber500
+                onClick = { showAddDialog = true }
             ) {
-                Icon(AppIcons.Add, contentDescription = stringResource(R.string.add), tint = appColors.textPrimary)
+                Icon(AppIcons.Add, contentDescription = stringResource(R.string.add), tint = MaterialTheme.colorScheme.onSurface)
             }
         }
     ) { paddingValues ->
@@ -195,7 +185,7 @@ fun ToDoScreen(
                 Text(
                     text = stringResource(R.string.todo_empty),
                     fontSize = 16.sp,
-                    color = appColors.textSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
                 )
             }
@@ -244,7 +234,7 @@ fun ToDoScreen(
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 .background(
-                                                    color = Red600,
+                                                    color = MaterialTheme.colorScheme.error,
                                                     shape = RoundedCornerShape(12.dp)
                                                 )
                                                 .padding(horizontal = 16.dp),
@@ -253,7 +243,7 @@ fun ToDoScreen(
                                             Icon(
                                                 AppIcons.Delete,
                                                 contentDescription = stringResource(R.string.delete),
-                                                tint = appColors.textPrimary
+                                                tint = MaterialTheme.colorScheme.onSurface
                                             )
                                         }
                                     },
@@ -289,7 +279,7 @@ fun ToDoScreen(
                 if (inactiveTasks.isNotEmpty()) {
                     if (activeTasks.isNotEmpty()) {
                         HorizontalDivider(
-                            color = appColors.border,
+                            color = MaterialTheme.colorScheme.outlineVariant,
                             modifier = Modifier.padding(vertical = 4.dp)
                         )
                     }
@@ -310,7 +300,7 @@ fun ToDoScreen(
                                         modifier = Modifier
                                             .fillMaxSize()
                                             .background(
-                                                color = Red600,
+                                                color = MaterialTheme.colorScheme.error,
                                                 shape = RoundedCornerShape(12.dp)
                                             )
                                             .padding(horizontal = 16.dp),
@@ -319,7 +309,7 @@ fun ToDoScreen(
                                         Icon(
                                             AppIcons.Delete,
                                             contentDescription = stringResource(R.string.delete),
-                                            tint = appColors.textPrimary
+                                            tint = MaterialTheme.colorScheme.onSurface
                                         )
                                     }
                                 },
@@ -357,22 +347,22 @@ fun ToDoScreen(
         } ?: "?"
         AlertDialog(
             onDismissRequest = { deleteConfirmTask = null },
-            title = { Text(stringResource(R.string.delete_confirmation), color = appColors.textPrimary) },
-            text = { Text(stringResource(R.string.todo_delete_confirm_message, taskName), color = appColors.textPrimary) },
+            title = { Text(stringResource(R.string.delete_confirmation), color = MaterialTheme.colorScheme.onSurface) },
+            text = { Text(stringResource(R.string.todo_delete_confirm_message, taskName), color = MaterialTheme.colorScheme.onSurface) },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.deleteTodoTask(task.id)
                     deleteConfirmTask = null
                 }) {
-                    Text(stringResource(R.string.delete), color = Red600)
+                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { deleteConfirmTask = null }) {
-                    Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             },
-            containerColor = appColors.cardBackground
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         )
     }
 
@@ -423,13 +413,12 @@ private fun ActiveTaskContent(
     onNavigateToIntervalPreview: (Long) -> Unit,
     onLongClick: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     if (task.hasTarget(exerciseMap.keys, groupMap.keys, programMap.keys, intervalProgramMap.keys) != true) {
         UnavailableTaskCard(isDragging = isDragging, elevation = elevation) {
             Icon(
                 AppIcons.DragHandle,
                 contentDescription = stringResource(R.string.todo_drag_to_reorder),
-                tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                tint = if (isDragging) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(24.dp).then(dragHandleModifier)
             )
         }
@@ -452,11 +441,11 @@ private fun ActiveTaskContent(
                 if (showModeDialog) {
                     AlertDialog(
                         onDismissRequest = { showModeDialog = false },
-                        containerColor = appColors.cardBackground,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                         title = {
                             Text(
                                 text = stringResource(R.string.todo_choose_mode),
-                                color = appColors.textPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Bold
                             )
                         },
@@ -470,14 +459,14 @@ private fun ActiveTaskContent(
                                         showModeDialog = false
                                         onNavigateToRecord(task.referenceId)
                                     },
-                                    colors = ButtonDefaults.buttonColors(containerColor = Green600),
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                     shape = RoundedCornerShape(8.dp),
                                     modifier = Modifier.fillMaxWidth().height(48.dp)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.todo_mode_record),
                                         fontSize = 16.sp,
-                                        color = appColors.textPrimary
+                                        color = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
                                 Button(
@@ -485,14 +474,14 @@ private fun ActiveTaskContent(
                                         showModeDialog = false
                                         onNavigateToWorkout(task.referenceId)
                                     },
-                                    colors = ButtonDefaults.buttonColors(containerColor = Orange600),
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                     shape = RoundedCornerShape(8.dp),
                                     modifier = Modifier.fillMaxWidth().height(48.dp)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.todo_mode_workout),
                                         fontSize = 16.sp,
-                                        color = appColors.textPrimary
+                                        color = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
                             }
@@ -502,7 +491,7 @@ private fun ActiveTaskContent(
                             TextButton(onClick = { showModeDialog = false }) {
                                 Text(
                                     text = stringResource(R.string.cancel),
-                                    color = appColors.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -574,7 +563,6 @@ private fun InactiveTaskContent(
     intervalExerciseCounts: Map<Long, Int>,
     onLongClick: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     if (task.hasTarget(exerciseMap.keys, groupMap.keys, programMap.keys, intervalProgramMap.keys) != true) {
         UnavailableTaskCard(isDragging = false, elevation = 0.dp)
         return
@@ -663,7 +651,6 @@ private fun GroupTaskCard(
     onLongClick: () -> Unit,
     showStartButton: Boolean = true
 ) {
-    val appColors = LocalAppColors.current
     var isExpanded by remember { mutableStateOf(true) }
     val completedCount = completedExerciseIds.size
     val totalCount = groupExercises.size
@@ -671,7 +658,7 @@ private fun GroupTaskCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (isDragging) appColors.cardBackgroundSecondary.copy(alpha = 0.9f) else appColors.cardBackground
+            containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
@@ -689,7 +676,7 @@ private fun GroupTaskCard(
                 Icon(
                     AppIcons.DragHandle,
                     contentDescription = stringResource(R.string.todo_drag_to_reorder),
-                    tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                    tint = if (isDragging) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .size(24.dp)
                         .then(dragHandleModifier)
@@ -701,7 +688,7 @@ private fun GroupTaskCard(
                         text = group.name,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
-                        color = appColors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -712,13 +699,13 @@ private fun GroupTaskCard(
                             text = stringResource(R.string.todo_tab_groups),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Blue600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                         Text(
                             text = "$completedCount/$totalCount",
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (completedCount == totalCount && totalCount > 0) Green600 else appColors.textSecondary
+                            color = if (completedCount == totalCount && totalCount > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         val groupTotalSeconds = remember(groupExercises, completedExerciseIds) {
                             groupExercises
@@ -736,7 +723,7 @@ private fun GroupTaskCard(
                                 text = ProgramTimeEstimator.formatHmmss(groupTotalSeconds),
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Cyan600
+                                color = MaterialTheme.colorScheme.secondary
                             )
                         }
                     }
@@ -749,14 +736,14 @@ private fun GroupTaskCard(
                         imageVector = if (isExpanded) AppIcons.ExpandLess
                             else AppIcons.ExpandMore,
                         contentDescription = null,
-                        tint = appColors.textSecondary
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
 
             // 展開時: 所属種目リスト
             if (isExpanded && groupExercises.isNotEmpty()) {
-                HorizontalDivider(color = appColors.border)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 Column(
                     modifier = Modifier.padding(start = 48.dp, end = 12.dp, top = 4.dp, bottom = 8.dp)
                 ) {
@@ -778,7 +765,7 @@ private fun GroupTaskCard(
                             Text(
                                 text = exercise.name,
                                 fontSize = 14.sp,
-                                color = if (isCompleted) appColors.textSecondary else appColors.textPrimary,
+                                color = if (isCompleted) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier
                                     .weight(1f)
                                     .alpha(if (isCompleted) 0.4f else 1f)
@@ -789,7 +776,7 @@ private fun GroupTaskCard(
                                     text = ProgramTimeEstimator.formatHmmss(memberEstSeconds),
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Cyan600,
+                                    color = MaterialTheme.colorScheme.secondary,
                                     modifier = Modifier
                                         .padding(end = 8.dp)
                                         .alpha(if (isCompleted) 0.4f else 1f)
@@ -800,17 +787,17 @@ private fun GroupTaskCard(
                                     AppIcons.Check,
                                     contentDescription = stringResource(R.string.nav_done),
                                     modifier = Modifier.size(18.dp),
-                                    tint = Green600.copy(alpha = 0.6f)
+                                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
                                 )
                             } else if (showStartButton) {
                                 Button(
                                     onClick = { showModeDialog = true },
-                                    colors = ButtonDefaults.buttonColors(containerColor = Amber500),
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                                     shape = RoundedCornerShape(8.dp),
                                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                                     modifier = Modifier.height(32.dp)
                                 ) {
-                                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = appColors.textPrimary)
+                                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onTertiary)
                                 }
                             }
                         }
@@ -818,11 +805,11 @@ private fun GroupTaskCard(
                         if (showModeDialog) {
                             AlertDialog(
                                 onDismissRequest = { showModeDialog = false },
-                                containerColor = appColors.cardBackground,
+                                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                                 title = {
                                     Text(
                                         text = exercise.name,
-                                        color = appColors.textPrimary,
+                                        color = MaterialTheme.colorScheme.onTertiary,
                                         fontWeight = FontWeight.Bold
                                     )
                                 },
@@ -836,14 +823,14 @@ private fun GroupTaskCard(
                                                 showModeDialog = false
                                                 onNavigateToRecord(exercise.id)
                                             },
-                                            colors = ButtonDefaults.buttonColors(containerColor = Green600),
+                                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                             shape = RoundedCornerShape(8.dp),
                                             modifier = Modifier.fillMaxWidth().height(48.dp)
                                         ) {
                                             Text(
                                                 text = stringResource(R.string.todo_mode_record),
                                                 fontSize = 16.sp,
-                                                color = appColors.textPrimary
+                                                color = MaterialTheme.colorScheme.onPrimary
                                             )
                                         }
                                         Button(
@@ -851,14 +838,14 @@ private fun GroupTaskCard(
                                                 showModeDialog = false
                                                 onNavigateToWorkout(exercise.id)
                                             },
-                                            colors = ButtonDefaults.buttonColors(containerColor = Orange600),
+                                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                             shape = RoundedCornerShape(8.dp),
                                             modifier = Modifier.fillMaxWidth().height(48.dp)
                                         ) {
                                             Text(
                                                 text = stringResource(R.string.todo_mode_workout),
                                                 fontSize = 16.sp,
-                                                color = appColors.textPrimary
+                                                color = MaterialTheme.colorScheme.onPrimary
                                             )
                                         }
                                     }
@@ -868,7 +855,7 @@ private fun GroupTaskCard(
                                     TextButton(onClick = { showModeDialog = false }) {
                                         Text(
                                             text = stringResource(R.string.cancel),
-                                            color = appColors.textSecondary
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
                                 }
@@ -893,12 +880,11 @@ private fun ExerciseTaskCard(
     onLongClick: () -> Unit,
     showStartButton: Boolean = true
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (isDragging) appColors.cardBackgroundSecondary.copy(alpha = 0.9f) else appColors.cardBackground
+            containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
@@ -915,7 +901,7 @@ private fun ExerciseTaskCard(
             Icon(
                 AppIcons.DragHandle,
                 contentDescription = stringResource(R.string.todo_drag_to_reorder),
-                tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                tint = if (isDragging) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .size(24.dp)
                     .then(dragHandleModifier)
@@ -927,7 +913,7 @@ private fun ExerciseTaskCard(
                     text = exercise.name,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = appColors.textPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 // Badges row
                 Row(
@@ -936,17 +922,17 @@ private fun ExerciseTaskCard(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(11.dp), tint = Color(0xFFFFD700))
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(11.dp), tint = MaterialTheme.colorScheme.tertiary)
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                        Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Blue600)
+                        Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
                     }
                     Text(
                         text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                        fontSize = 11.sp, fontWeight = FontWeight.Bold, color = appColors.textSecondary
+                        fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     if (exercise.laterality == "Unilateral") {
-                        Text(text = stringResource(R.string.one_sided), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Purple600)
+                        Text(text = stringResource(R.string.one_sided), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                     }
                     val estSeconds = ProgramTimeEstimator.estimateExerciseSeconds(exercise)
                     if (estSeconds != null) {
@@ -954,7 +940,7 @@ private fun ExerciseTaskCard(
                             text = ProgramTimeEstimator.formatHmmss(estSeconds),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Cyan600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                 }
@@ -966,7 +952,7 @@ private fun ExerciseTaskCard(
                             exercise.targetValue!!,
                             stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
                         ),
-                        fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Green400,
+                        fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 2.dp)
                     )
                 }
@@ -977,12 +963,12 @@ private fun ExerciseTaskCard(
             if (showStartButton) {
                 Button(
                     onClick = onStart,
-                    colors = ButtonDefaults.buttonColors(containerColor = Amber500),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                     modifier = Modifier.height(32.dp)
                 ) {
-                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = appColors.textPrimary)
+                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onTertiary)
                 }
             }
         }
@@ -999,11 +985,10 @@ private fun UnavailableTaskCard(
     elevation: androidx.compose.ui.unit.Dp,
     dragHandle: (@Composable () -> Unit)? = null
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (isDragging) appColors.cardBackgroundSecondary.copy(alpha = 0.9f) else appColors.cardBackground
+            containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
@@ -1017,7 +1002,7 @@ private fun UnavailableTaskCard(
             Text(
                 text = stringResource(R.string.todo_missing_item),
                 fontSize = 14.sp,
-                color = appColors.textSecondary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -1036,12 +1021,11 @@ private fun ProgramTaskCard(
     onLongClick: () -> Unit,
     showStartButton: Boolean = true
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (isDragging) appColors.cardBackgroundSecondary.copy(alpha = 0.9f) else appColors.cardBackground
+            containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
@@ -1058,7 +1042,7 @@ private fun ProgramTaskCard(
             Icon(
                 AppIcons.DragHandle,
                 contentDescription = stringResource(R.string.todo_drag_to_reorder),
-                tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                tint = if (isDragging) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .size(24.dp)
                     .then(dragHandleModifier)
@@ -1070,7 +1054,7 @@ private fun ProgramTaskCard(
                     text = program.name,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = appColors.textPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -1080,7 +1064,7 @@ private fun ProgramTaskCard(
                     Text(
                         text = stringResource(R.string.todo_tab_programs),
                         fontSize = 11.sp,
-                        color = Orange600,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
                     if (estimatedSeconds != null && estimatedSeconds > 0) {
@@ -1088,7 +1072,7 @@ private fun ProgramTaskCard(
                             text = ProgramTimeEstimator.formatHmmss(estimatedSeconds),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Cyan600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                 }
@@ -1099,12 +1083,12 @@ private fun ProgramTaskCard(
             if (showStartButton) {
                 Button(
                     onClick = onNavigate,
-                    colors = ButtonDefaults.buttonColors(containerColor = Amber500),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                     modifier = Modifier.height(32.dp)
                 ) {
-                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = appColors.textPrimary)
+                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onTertiary)
                 }
             }
         }
@@ -1124,12 +1108,11 @@ private fun IntervalTaskCard(
     onLongClick: () -> Unit,
     showStartButton: Boolean = true
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (isDragging) appColors.cardBackgroundSecondary.copy(alpha = 0.9f) else appColors.cardBackground
+            containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
@@ -1146,7 +1129,7 @@ private fun IntervalTaskCard(
             Icon(
                 AppIcons.DragHandle,
                 contentDescription = stringResource(R.string.todo_drag_to_reorder),
-                tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                tint = if (isDragging) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .size(24.dp)
                     .then(dragHandleModifier)
@@ -1158,7 +1141,7 @@ private fun IntervalTaskCard(
                     text = intervalProgram.name,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = appColors.textPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = stringResource(
@@ -1169,7 +1152,7 @@ private fun IntervalTaskCard(
                         intervalProgram.rounds
                     ),
                     fontSize = 12.sp,
-                    color = appColors.textSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 2.dp)
                 )
                 if (exerciseCount > 0) {
@@ -1179,7 +1162,7 @@ private fun IntervalTaskCard(
                             text = ProgramTimeEstimator.formatHmmss(intervalEst),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Cyan600,
+                            color = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier.padding(top = 2.dp)
                         )
                     }
@@ -1191,12 +1174,12 @@ private fun IntervalTaskCard(
             if (showStartButton) {
                 Button(
                     onClick = onNavigate,
-                    colors = ButtonDefaults.buttonColors(containerColor = Amber500),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                     modifier = Modifier.height(32.dp)
                 ) {
-                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = appColors.textPrimary)
+                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onTertiary)
                 }
             }
         }
@@ -1214,7 +1197,6 @@ private fun AddItemsDialog(
     intervalExerciseCounts: Map<Long, Int>,
     onDismiss: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val tabTitles = listOf(
         stringResource(R.string.todo_tab_exercises),
         stringResource(R.string.todo_tab_groups),
@@ -1254,7 +1236,7 @@ private fun AddItemsDialog(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(appColors.cardBackground)
+                .background(MaterialTheme.colorScheme.surfaceContainerLow)
                 .systemBarsPadding()
         ) {
             // Top bar
@@ -1266,11 +1248,11 @@ private fun AddItemsDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextButton(onClick = onDismiss) {
-                    Text(text = stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(text = stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Text(
                     text = stringResource(R.string.todo_add_items),
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
@@ -1294,7 +1276,7 @@ private fun AddItemsDialog(
                 ) {
                     Text(
                         text = stringResource(R.string.add),
-                        color = if (hasSelection) Amber500 else appColors.textSecondary
+                        color = if (hasSelection) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -1304,8 +1286,8 @@ private fun AddItemsDialog(
                 val minTabWidth = maxWidth / tabTitles.size
                 ScrollableTabRow(
                     selectedTabIndex = pagerState.currentPage,
-                    containerColor = appColors.cardBackground,
-                    contentColor = Amber500,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                    contentColor = MaterialTheme.colorScheme.tertiary,
                     edgePadding = 0.dp
                 ) {
                     tabTitles.forEachIndexed { index, title ->
@@ -1317,7 +1299,7 @@ private fun AddItemsDialog(
                                 Text(
                                     text = title,
                                     fontSize = 13.sp,
-                                    color = if (pagerState.currentPage == index) Amber500 else appColors.textSecondary,
+                                    color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
@@ -1384,7 +1366,6 @@ private fun ExercisesTabContent(
     selectedIds: Set<Long>,
     onToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
     val expandedGroups by viewModel.expandedGroups.collectAsState()
 
@@ -1410,7 +1391,7 @@ private fun ExercisesTabContent(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
             Text(
                 text = stringResource(R.string.todo_all_added),
-                color = appColors.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -1424,27 +1405,27 @@ private fun ExercisesTabContent(
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
                 placeholder = {
-                    Text(text = stringResource(R.string.search_placeholder), color = appColors.textSecondary)
+                    Text(text = stringResource(R.string.search_placeholder), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 },
                 leadingIcon = {
-                    Icon(AppIcons.Search, contentDescription = null, tint = appColors.textSecondary)
+                    Icon(AppIcons.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
                         IconButton(onClick = { searchQuery = "" }) {
-                            Icon(AppIcons.Close, contentDescription = stringResource(R.string.clear), tint = appColors.textSecondary)
+                            Icon(AppIcons.Close, contentDescription = stringResource(R.string.clear), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 },
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = appColors.textPrimary,
-                    unfocusedTextColor = appColors.textPrimary,
-                    focusedContainerColor = appColors.cardBackgroundSecondary,
-                    unfocusedContainerColor = appColors.cardBackgroundSecondary,
-                    focusedBorderColor = Amber500,
-                    unfocusedBorderColor = appColors.border,
-                    cursorColor = Amber500
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                    cursorColor = MaterialTheme.colorScheme.tertiary
                 ),
                 shape = RoundedCornerShape(8.dp)
             )
@@ -1460,7 +1441,7 @@ private fun ExercisesTabContent(
                         item {
                             Text(
                                 text = stringResource(R.string.no_results),
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(16.dp)
                             )
                         }
@@ -1519,7 +1500,6 @@ private fun GroupsTabContent(
     selectedIds: Set<Long>,
     onToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val availableGroups = remember(groups, existingIds) {
         groups.filter { it.id !in existingIds }
     }
@@ -1537,7 +1517,7 @@ private fun GroupsTabContent(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
             Text(
                 text = stringResource(R.string.todo_no_groups),
-                color = appColors.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -1555,7 +1535,7 @@ private fun GroupsTabContent(
 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Column {
@@ -1573,8 +1553,8 @@ private fun GroupsTabContent(
                                 checked = group.id in selectedIds,
                                 onCheckedChange = { onToggle(group.id) },
                                 colors = CheckboxDefaults.colors(
-                                    checkedColor = Amber500,
-                                    uncheckedColor = appColors.textSecondary
+                                    checkedColor = MaterialTheme.colorScheme.tertiary,
+                                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                             Column(modifier = Modifier.weight(1f).padding(start = 4.dp)) {
@@ -1582,12 +1562,12 @@ private fun GroupsTabContent(
                                     text = group.name,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.todo_group_exercise_count, groupExercises.size),
                                     fontSize = 11.sp,
-                                    color = appColors.textSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(top = 2.dp)
                                 )
                             }
@@ -1595,13 +1575,13 @@ private fun GroupsTabContent(
                                 imageVector = if (isExpanded) AppIcons.ExpandLess
                                     else AppIcons.ExpandMore,
                                 contentDescription = null,
-                                tint = appColors.textSecondary
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
 
                         // 展開時: 所属種目のプレビュー
                         if (isExpanded && groupExercises.isNotEmpty()) {
-                            HorizontalDivider(color = appColors.border)
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                             Column(
                                 modifier = Modifier.padding(start = 48.dp, end = 16.dp, top = 4.dp, bottom = 8.dp)
                             ) {
@@ -1609,7 +1589,7 @@ private fun GroupsTabContent(
                                     Text(
                                         text = exercise.name,
                                         fontSize = 12.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(vertical = 2.dp)
                                     )
                                 }
@@ -1629,7 +1609,6 @@ private fun ProgramsTabContent(
     selectedIds: Set<Long>,
     onToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val availablePrograms = remember(programs, existingIds) {
         programs.filter { it.id !in existingIds }
     }
@@ -1638,7 +1617,7 @@ private fun ProgramsTabContent(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
             Text(
                 text = stringResource(R.string.todo_no_programs),
-                color = appColors.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -1653,7 +1632,7 @@ private fun ProgramsTabContent(
             ) { program ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Row(
@@ -1666,15 +1645,15 @@ private fun ProgramsTabContent(
                             checked = program.id in selectedIds,
                             onCheckedChange = { onToggle(program.id) },
                             colors = CheckboxDefaults.colors(
-                                checkedColor = Amber500,
-                                uncheckedColor = appColors.textSecondary
+                                checkedColor = MaterialTheme.colorScheme.tertiary,
+                                uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
                         Text(
                             text = program.name,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            color = appColors.textPrimary,
+                            color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(start = 4.dp)
                         )
                     }
@@ -1692,7 +1671,6 @@ private fun IntervalsTabContent(
     exerciseCounts: Map<Long, Int>,
     onToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val availableIntervals = remember(intervalPrograms, existingIds) {
         intervalPrograms.filter { it.id !in existingIds }
     }
@@ -1701,7 +1679,7 @@ private fun IntervalsTabContent(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
             Text(
                 text = stringResource(R.string.todo_no_intervals),
-                color = appColors.textSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -1716,7 +1694,7 @@ private fun IntervalsTabContent(
             ) { program ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Row(
@@ -1729,8 +1707,8 @@ private fun IntervalsTabContent(
                             checked = program.id in selectedIds,
                             onCheckedChange = { onToggle(program.id) },
                             colors = CheckboxDefaults.colors(
-                                checkedColor = Amber500,
-                                uncheckedColor = appColors.textSecondary
+                                checkedColor = MaterialTheme.colorScheme.tertiary,
+                                uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
                         Column(modifier = Modifier.padding(start = 4.dp)) {
@@ -1738,7 +1716,7 @@ private fun IntervalsTabContent(
                                 text = program.name,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(
@@ -1749,7 +1727,7 @@ private fun IntervalsTabContent(
                                     program.rounds
                                 ),
                                 fontSize = 11.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 2.dp)
                             )
                         }
@@ -1770,12 +1748,11 @@ fun AddExerciseGroup(
     onExerciseToggle: (Long) -> Unit,
     onGroupToggle: (List<Long>) -> Unit = {}
 ) {
-    val appColors = LocalAppColors.current
     val exerciseIds = exercises.map { it.id }
     val allSelected = exerciseIds.isNotEmpty() && exerciseIds.all { it in selectedExercises }
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(8.dp)
     ) {
         Column {
@@ -1803,26 +1780,26 @@ fun AddExerciseGroup(
                             else
                                 AppIcons.Forward,
                             contentDescription = null,
-                            tint = appColors.textPrimary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = groupName ?: stringResource(R.string.no_group),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = "(${exercises.size})",
                             fontSize = 14.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     Checkbox(
                         checked = allSelected,
                         onCheckedChange = { onGroupToggle(exerciseIds) },
                         colors = CheckboxDefaults.colors(
-                            checkedColor = Amber500,
-                            uncheckedColor = appColors.textSecondary
+                            checkedColor = MaterialTheme.colorScheme.tertiary,
+                            uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     )
                 }
@@ -1849,8 +1826,8 @@ fun AddExerciseGroup(
                                 checked = exercise.id in selectedExercises,
                                 onCheckedChange = { onExerciseToggle(exercise.id) },
                                 colors = CheckboxDefaults.colors(
-                                    checkedColor = Amber500,
-                                    uncheckedColor = appColors.textSecondary
+                                    checkedColor = MaterialTheme.colorScheme.tertiary,
+                                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                             Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
@@ -1858,7 +1835,7 @@ fun AddExerciseGroup(
                                     text = exercise.name,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 // Badges row
                                 FlowRow(
@@ -1867,23 +1844,23 @@ fun AddExerciseGroup(
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
                                     if (exercise.isFavorite) {
-                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
+                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.tertiary)
                                     }
                                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                                        Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Blue600)
+                                        Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
                                     }
                                     Text(
                                         text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                                        fontSize = 10.sp, fontWeight = FontWeight.Bold, color = appColors.textSecondary
+                                        fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     if (exercise.laterality == "Unilateral") {
-                                        Text(text = stringResource(R.string.one_sided), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Purple600)
+                                        Text(text = stringResource(R.string.one_sided), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                                     }
                                     if (exercise.weightTrackingEnabled) {
-                                        Text(text = stringResource(R.string.legend_weight), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Amber500)
+                                        Text(text = stringResource(R.string.legend_weight), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.tertiary)
                                     }
                                     if (exercise.distanceTrackingEnabled) {
-                                        Text(text = stringResource(R.string.legend_distance), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Cyan600)
+                                        Text(text = stringResource(R.string.legend_distance), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
                                     }
                                     if (exercise.assistanceTrackingEnabled) {
                                         Text(text = stringResource(R.string.legend_assistance), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Pink600)
@@ -1897,7 +1874,7 @@ fun AddExerciseGroup(
                                             exercise.targetValue!!,
                                             stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
                                         ),
-                                        fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Green400,
+                                        fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.padding(top = 2.dp)
                                     )
                                 }
@@ -1916,10 +1893,9 @@ fun SearchResultExerciseItem(
     isSelected: Boolean,
     onToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(
@@ -1932,8 +1908,8 @@ fun SearchResultExerciseItem(
                 checked = isSelected,
                 onCheckedChange = { onToggle(exercise.id) },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = Amber500,
-                    uncheckedColor = appColors.textSecondary
+                    checkedColor = MaterialTheme.colorScheme.tertiary,
+                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
             Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
@@ -1941,7 +1917,7 @@ fun SearchResultExerciseItem(
                     text = exercise.name,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -1949,23 +1925,23 @@ fun SearchResultExerciseItem(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.tertiary)
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                        Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Blue600)
+                        Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
                     }
                     Text(
                         text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                        fontSize = 10.sp, fontWeight = FontWeight.Bold, color = appColors.textSecondary
+                        fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     if (exercise.laterality == "Unilateral") {
-                        Text(text = stringResource(R.string.one_sided), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Purple600)
+                        Text(text = stringResource(R.string.one_sided), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                     }
                     if (exercise.weightTrackingEnabled) {
-                        Text(text = stringResource(R.string.legend_weight), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Amber500)
+                        Text(text = stringResource(R.string.legend_weight), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.tertiary)
                     }
                     if (exercise.distanceTrackingEnabled) {
-                        Text(text = stringResource(R.string.legend_distance), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Cyan600)
+                        Text(text = stringResource(R.string.legend_distance), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
                     }
                     if (exercise.assistanceTrackingEnabled) {
                         Text(text = stringResource(R.string.legend_assistance), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Pink600)
@@ -1979,7 +1955,7 @@ fun SearchResultExerciseItem(
                             exercise.targetValue!!,
                             stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
                         ),
-                        fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Green400,
+                        fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 2.dp)
                     )
                 }
@@ -1999,7 +1975,7 @@ private fun RepeatDaysLabel(repeatDays: String) {
     Text(
         text = dayNames.joinToString(" "),
         fontSize = 10.sp,
-        color = Amber500,
+        color = MaterialTheme.colorScheme.tertiary,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(top = 2.dp)
     )
@@ -2011,7 +1987,6 @@ private fun RepeatDaysDialog(
     onSave: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
     var selectedDays by remember(currentRepeatDays) {
         val initial = if (currentRepeatDays.isEmpty()) emptySet()
@@ -2021,11 +1996,11 @@ private fun RepeatDaysDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = appColors.cardBackground,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 text = stringResource(R.string.todo_repeat_title),
-                color = appColors.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold
             )
         },
@@ -2043,7 +2018,7 @@ private fun RepeatDaysDialog(
                     Surface(
                         modifier = Modifier.size(40.dp),
                         shape = RoundedCornerShape(20.dp),
-                        color = if (isSelected) Amber500 else appColors.cardBackgroundSecondary,
+                        color = if (isSelected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.surfaceContainerHigh,
                         onClick = {
                             selectedDays = if (isSelected) selectedDays - dayNum else selectedDays + dayNum
                         }
@@ -2053,7 +2028,7 @@ private fun RepeatDaysDialog(
                                 text = dayName,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = if (isSelected) Color.White else appColors.textSecondary
+                                color = if (isSelected) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -2065,7 +2040,7 @@ private fun RepeatDaysDialog(
                 val result = selectedDays.sorted().joinToString(",")
                 onSave(result)
             }) {
-                Text(stringResource(R.string.todo_repeat_save), color = Amber500)
+                Text(stringResource(R.string.todo_repeat_save), color = MaterialTheme.colorScheme.tertiary)
             }
         }
     )

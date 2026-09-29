@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
+import androidx.compose.material3.MaterialTheme
 import android.provider.Settings
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -42,10 +43,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
-import io.github.gonbei774.calisthenicsmemory.ui.theme.AppColors
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Green400
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Green600
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Slate600
 
 /**
  * ワークアウト記録画面における各セットの状態。
@@ -66,7 +63,6 @@ enum class SetStatus { DONE, CURRENT, PENDING }
 fun SetCardContainer(
     status: SetStatus,
     onActivate: () -> Unit,
-    appColors: AppColors,
     content: @Composable () -> Unit
 ) {
     val isCurrent = status == SetStatus.CURRENT
@@ -75,7 +71,7 @@ fun SetCardContainer(
     val outerModifier = if (isCurrent) {
         Modifier
             .fillMaxWidth()
-            .background(Green600.copy(alpha = 0.10f), RoundedCornerShape(18.dp))
+            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.10f), RoundedCornerShape(18.dp))
             .padding(4.dp)
     } else {
         Modifier.fillMaxWidth()
@@ -87,9 +83,9 @@ fun SetCardContainer(
                 .fillMaxWidth()
                 .then(if (isDone) Modifier.alpha(0.7f) else Modifier)
                 .then(if (status == SetStatus.PENDING) Modifier.clickable(onClick = onActivate) else Modifier),
-            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
             shape = RoundedCornerShape(14.dp),
-            border = if (isCurrent) BorderStroke(2.dp, Green600) else null
+            border = if (isCurrent) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null
         ) {
             content()
         }
@@ -138,13 +134,13 @@ fun NowBadge(modifier: Modifier = Modifier) {
                         scaleY = scale
                         alpha = 0.5f * (1f - progress)
                     }
-                    .background(Green600, RoundedCornerShape(999.dp))
+                    .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(999.dp))
             )
         }
         Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(999.dp))
-                .background(Green600)
+                .background(MaterialTheme.colorScheme.primary)
                 .padding(start = 7.dp, end = 8.dp, top = 3.dp, bottom = 3.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -152,12 +148,12 @@ fun NowBadge(modifier: Modifier = Modifier) {
             Icon(
                 AppIcons.Workout,
                 contentDescription = null,
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(10.dp)
             )
             Text(
                 text = stringResource(R.string.set_now_badge),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontSize = 10.sp,
                 fontWeight = FontWeight.ExtraBold,
                 letterSpacing = 1.2.sp
@@ -185,10 +181,10 @@ fun SetCheckToggle(
         modifier = Modifier
             .size(24.dp)
             .clip(CircleShape)
-            .background(if (checked) Green600 else Color.Transparent)
+            .background(if (checked) MaterialTheme.colorScheme.primary else Color.Transparent)
             .border(
                 width = if (checked) 2.dp else 1.5.dp,
-                color = if (checked) Green600 else Slate600,
+                color = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
                 shape = CircleShape
             )
             .then(
@@ -200,7 +196,7 @@ fun SetCheckToggle(
             Icon(
                 AppIcons.Check,
                 contentDescription = desc,
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(14.dp)
             )
         }
@@ -223,12 +219,12 @@ fun SetCompleteButton(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Green600.copy(alpha = 0.15f),
-            contentColor = Green400,
-            disabledContainerColor = Green600.copy(alpha = 0.05f),
-            disabledContentColor = Slate600
+            containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+            contentColor = MaterialTheme.colorScheme.primary,
+            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+            disabledContentColor = MaterialTheme.colorScheme.outline
         ),
-        border = BorderStroke(1.dp, Green600.copy(alpha = 0.3f))
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
     ) {
         Icon(
             AppIcons.Check,
