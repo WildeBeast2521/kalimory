@@ -4,18 +4,19 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-`AppColors` removed; every screen now uses the calm theme. Branch `work/remove-appcolors`, based on master `a3947cf`.
+Workout run copy fixes, from the audit. Branch `work/execution-copy`, based on master `bc57a4b`.
 
-- **Removed:**
-  - the `AppColors` class, `LocalAppColors`, and its provider in `CalisthenicsMemoryTheme`;
-  - the white-to-slate gradient that `MainActivity` drew behind every screen, now the theme background;
-  - the last stale imports.
-- **Palette:** `Color.kt` keeps only `Pink600`, the categorical assistance colour; the other 23 legacy constants had no users left. The Slate, Orange, Purple and other palette constants no longer appear anywhere in UI code.
-- **Dark theme:** it now depends only on `CalmPalette.dark`. Checked on the emulator with the app theme set to Dark: Today, Progress, the program list and a program run.
+- **Next labels:** "NEXT" and "NEXT ROUND" become sentence case ("Next", "Next round") in the seven locales that had capitals. Japanese uses 次 and 次のラウンド; Chinese was already fine.
+- **Interval confirm spacing:** "20 sec" and "8 rounds" now have the space, through `value_with_unit`, which keeps Japanese and Chinese without one.
+- **Interval confirm Start:** the duplicate top-bar Start is removed; the large Start Workout button at the bottom remains.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- dark-theme screenshots.
+- screenshots of the interval confirm screen and run.
+
+## Previous phase: remove AppColors (merged)
+
+PR #61 merged as `bc57a4b`.
 
 ## Previous phase: program and interval runs on the calm theme (merged)
 
@@ -110,7 +111,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - (S) Single-workout setup can leave Start disabled with no reason (an empty rep duration or target). Use defaults, or say what is missing.
 - (S) The program start screen has settings expanded, and Start is a small top-bar action. Make Start a large bottom button and collapse the settings.
 - (S) The program run shows "1/10" (sets across the whole program) and a capitalised "NEXT"; show "Set 1/6", plus the exercise position.
-- (S) The interval confirm screen has two Start buttons, the title "Confirm", and missing spaces ("20sec", "8rounds"). Program and interval runs still show "NEXT:" in capitals.
+- Done in PR #62: the two interval Start buttons, the missing spaces, and "NEXT" in capitals. Still open: (S) the generic "Confirm" title.
 - (M) Program and interval runs should use the in-workout kit (PR #47).
 - Done in PR #53: (M) Record ("Log a past workout") behaves like a live session: a "NOW" badge, and every set must be completed before Record is enabled. For logging the past, allow saving all sets as shown.
 - (L, owner-approved, after the item above) Log a past workout with several exercises in one session. The v2 model supports this, and ManualWorkoutWriter handles one exercise today.
@@ -190,6 +191,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #59: data screens on the calm theme.
 - PR #60: program and interval runs on the calm theme.
 - PR #61: remove AppColors.
+- PR #62: workout run copy fixes.
 
 ## Owner direction for later (2026-09-27)
 

@@ -720,8 +720,8 @@
     <string name="interval_round_rest_label">周間レスト</string>
     <string name="interval_round_format">周回 %1$d / %2$d</string>
     <string name="interval_exercise_format">種目 %1$d / %2$d</string>
-    <string name="interval_next">NEXT</string>
-    <string name="interval_next_round">NEXT ROUND</string>
+    <string name="interval_next">次</string>
+    <string name="interval_next_round">次のラウンド</string>
     <string name="interval_round_complete_format">%d周目完了！</string>
     <string name="interval_pause">一時停止</string>
     <string name="interval_resume">再開</string>

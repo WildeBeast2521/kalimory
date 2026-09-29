@@ -621,8 +621,8 @@
     <string name="interval_rest_seconds">Час відпочинку</string>
     <string name="interval_work_label">ТРЕНУВАННЯ</string>
     <string name="interval_rest_label">ВІДПОЧИНОК</string>
-    <string name="interval_next">НАСТУПНИЙ</string>
-    <string name="interval_next_round">НАСТУПНИЙ РАУНД</string>
+    <string name="interval_next">Наступний</string>
+    <string name="interval_next_round">Наступний раунд</string>
     <string name="interval_ended_title">Завершено</string>
     <string name="interval_comment_label">Коментар</string>
     <string name="interval_comment_placeholder">Як пройшло тренування?</string>

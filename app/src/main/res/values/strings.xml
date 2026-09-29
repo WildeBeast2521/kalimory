@@ -716,8 +716,8 @@
     <string name="interval_round_rest_label">Round Rest</string>
     <string name="interval_round_format">Round %1$d / %2$d</string>
     <string name="interval_exercise_format">Exercise %1$d / %2$d</string>
-    <string name="interval_next">NEXT</string>
-    <string name="interval_next_round">NEXT ROUND</string>
+    <string name="interval_next">Next</string>
+    <string name="interval_next_round">Next round</string>
     <string name="interval_round_complete_format">Round %d complete!</string>
     <string name="interval_pause">Pause</string>
     <string name="interval_resume">Resume</string>
