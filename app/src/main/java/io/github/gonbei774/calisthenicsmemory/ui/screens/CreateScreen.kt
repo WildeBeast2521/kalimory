@@ -40,7 +40,6 @@ fun CreateScreen(
     viewModel: TrainingViewModel,
     onNavigateBack: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
     val expandedGroups by viewModel.expandedGroups.collectAsState()
 
@@ -64,7 +63,7 @@ fun CreateScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Blue600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -76,27 +75,25 @@ fun CreateScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
-                        text = stringResource(R.string.exercise_creation),
+                        text = stringResource(R.string.library_exercises),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { showAddDialog = true },
-                containerColor = Blue600
+                onClick = { showAddDialog = true }
             ) {
                 Icon(
                     AppIcons.Add,
-                    contentDescription = stringResource(R.string.add),
-                    tint = Color.White
+                    contentDescription = stringResource(R.string.add)
                 )
             }
         }
@@ -110,7 +107,7 @@ fun CreateScreen(
             ) {
                 Text(
                     text = stringResource(R.string.no_exercises_add_with_plus),
-                    color = appColors.textSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 16.sp
                 )
             }
@@ -160,14 +157,14 @@ fun CreateScreen(
                     placeholder = {
                         Text(
                             text = stringResource(R.string.search_placeholder),
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     },
                     leadingIcon = {
                         Icon(
                             AppIcons.Search,
                             contentDescription = null,
-                            tint = appColors.textSecondary
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     },
                     trailingIcon = {
@@ -176,20 +173,20 @@ fun CreateScreen(
                                 Icon(
                                     AppIcons.Close,
                                     contentDescription = stringResource(R.string.clear),
-                                    tint = appColors.textSecondary
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedTextColor = appColors.textPrimary,
-                        focusedContainerColor = appColors.cardBackground,
-                        unfocusedContainerColor = appColors.cardBackground,
-                        focusedBorderColor = Blue600,
-                        unfocusedBorderColor = appColors.border,
-                        cursorColor = Blue600
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                        cursorColor = MaterialTheme.colorScheme.secondary
                     ),
                     shape = RoundedCornerShape(8.dp)
                 )
@@ -204,7 +201,7 @@ fun CreateScreen(
                             item {
                                 Text(
                                     text = stringResource(R.string.no_results),
-                                    color = appColors.textSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(16.dp)
                                 )
                             }
@@ -356,7 +353,7 @@ fun CreateScreen(
                 }
             )
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.delete_group), color = Red600) },
+                text = { Text(stringResource(R.string.delete_group), color = MaterialTheme.colorScheme.error) },
                 onClick = {
                     showGroupDeleteDialog = groupName
                     showGroupMenu = null
@@ -389,7 +386,7 @@ fun CreateScreen(
                         viewModel.deleteGroup(groupName)
                         showGroupDeleteDialog = null
                     },
-                    colors = ButtonDefaults.textButtonColors(contentColor = Red600)
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
                 ) {
                     Text(stringResource(R.string.delete))
                 }
@@ -457,7 +454,7 @@ fun CreateScreen(
                         viewModel.deleteExercise(exercise)
                         dismiss()
                     },
-                    colors = ButtonDefaults.textButtonColors(contentColor = Red600)
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
                 ) {
                     Text(stringResource(R.string.delete))
                 }
@@ -485,11 +482,10 @@ fun ExpandableGroupCard(
     elevation: Dp = 0.dp,
     dragHandle: (@Composable () -> Modifier)? = null
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (isDragging) appColors.cardBackground.copy(alpha = 0.9f) else appColors.cardBackground
+            containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
@@ -518,7 +514,7 @@ fun ExpandableGroupCard(
                             Icon(
                                 imageVector = AppIcons.DragHandle,
                                 contentDescription = stringResource(R.string.todo_drag_to_reorder),
-                                tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                                tint = if (isDragging) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier
                                     .size(24.dp)
                                     .then(dragHandle())
@@ -527,7 +523,7 @@ fun ExpandableGroupCard(
                         Icon(
                             imageVector = if (isExpanded) AppIcons.ExpandMore else AppIcons.Forward,
                             contentDescription = null,
-                            tint = appColors.textPrimary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = when (group.groupName) {
@@ -537,12 +533,12 @@ fun ExpandableGroupCard(
                             },
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = stringResource(R.string.exercises_count, group.exercises.size),
                             fontSize = 14.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
 
@@ -554,7 +550,7 @@ fun ExpandableGroupCard(
                             Icon(
                                 AppIcons.More,
                                 contentDescription = stringResource(R.string.menu),
-                                tint = appColors.textPrimary,
+                                tint = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.size(18.dp)
                             )
                         }
@@ -601,7 +597,7 @@ fun ExpandableGroupCard(
                                     Icon(
                                         imageVector = AppIcons.DragHandle,
                                         contentDescription = stringResource(R.string.todo_drag_to_reorder),
-                                        tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                                        tint = if (isDragging) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier
                                             .size(24.dp)
                                             .longPressDraggableHandle()
@@ -614,7 +610,7 @@ fun ExpandableGroupCard(
                                     onClick = { onExerciseEdit(exercise) },
                                     modifier = Modifier.weight(1f),
                                     colors = CardDefaults.cardColors(
-                                        containerColor = if (isDragging) appColors.cardBackgroundSecondary.copy(alpha = 0.9f) else appColors.cardBackgroundSecondary
+                                        containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerHigh
                                     ),
                                     shape = RoundedCornerShape(8.dp),
                                     elevation = CardDefaults.cardElevation(defaultElevation = elevation)
@@ -642,7 +638,6 @@ fun ExerciseItemCompactContent(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -655,7 +650,7 @@ fun ExerciseItemCompactContent(
                 text = exercise.name,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -664,7 +659,7 @@ fun ExerciseItemCompactContent(
             ) {
                 // お気に入り
                 if (exercise.isFavorite) {
-                    Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFFFD700))
+                    Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.tertiary)
                 }
 
                 // レベル（課題設定がある場合のみ）
@@ -673,7 +668,7 @@ fun ExerciseItemCompactContent(
                         text = stringResource(R.string.level_format, exercise.sortOrder),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Blue600
+                        color = MaterialTheme.colorScheme.secondary
                     )
                 }
 
@@ -682,7 +677,7 @@ fun ExerciseItemCompactContent(
                     text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 // Unilateral
@@ -691,7 +686,7 @@ fun ExerciseItemCompactContent(
                         text = stringResource(R.string.one_sided),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Purple600
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
 
@@ -701,7 +696,7 @@ fun ExerciseItemCompactContent(
                         text = stringResource(R.string.legend_weight),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Amber500
+                        color = MaterialTheme.colorScheme.tertiary
                     )
                 }
                 if (exercise.distanceTrackingEnabled) {
@@ -709,7 +704,7 @@ fun ExerciseItemCompactContent(
                         text = stringResource(R.string.legend_distance),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Cyan600
+                        color = MaterialTheme.colorScheme.secondary
                     )
                 }
                 if (exercise.assistanceTrackingEnabled) {
@@ -738,7 +733,7 @@ fun ExerciseItemCompactContent(
                         ),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Green400
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -750,7 +745,7 @@ fun ExerciseItemCompactContent(
                 Icon(
                     AppIcons.More,
                     contentDescription = stringResource(R.string.menu),
-                    tint = appColors.textSecondary
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             DropdownMenu(
@@ -765,7 +760,7 @@ fun ExerciseItemCompactContent(
                     }
                 )
                 DropdownMenuItem(
-                    text = { Text(stringResource(R.string.delete), color = Red600) },
+                    text = { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) },
                     onClick = {
                         menuExpanded = false
                         onDelete()
@@ -785,7 +780,6 @@ fun UnifiedAddDialog(
     viewModel: TrainingViewModel,
     onDismiss: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val groups by viewModel.groups.collectAsState()
     val exercises by viewModel.exercises.collectAsState()
     val existingGroupNames = remember(groups) { groups.map { it.name }.sorted() }
@@ -939,7 +933,7 @@ fun UnifiedAddDialog(
     ) {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = appColors.background
+            color = MaterialTheme.colorScheme.background
         ) {
             Scaffold(
                 topBar = {
@@ -947,7 +941,7 @@ fun UnifiedAddDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
-                        color = Blue600
+                        color = MaterialTheme.colorScheme.background
                     ) {
                         Row(
                             modifier = Modifier
@@ -959,7 +953,7 @@ fun UnifiedAddDialog(
                                 Icon(
                                     AppIcons.Close,
                                     contentDescription = stringResource(R.string.cancel),
-                                    tint = Color.White
+                                    tint = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                             Text(
@@ -972,7 +966,7 @@ fun UnifiedAddDialog(
                                 ),
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.weight(1f)
                             )
                             // 星ボタン（種目作成・編集時に表示）
@@ -985,7 +979,7 @@ fun UnifiedAddDialog(
                                         } else {
                                             stringResource(R.string.add_to_favorites)
                                         },
-                                        tint = if (isFavorite) Color(0xFFFFD700) else Color.White
+                                        tint = if (isFavorite) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurface
                                     )
                                 }
                             }
@@ -1002,14 +996,14 @@ fun UnifiedAddDialog(
                                             else -> R.string.add_button
                                         }
                                     ),
-                                    color = if (isFormValid) Color.White else Color.White.copy(alpha = 0.5f),
+                                    color = if (isFormValid) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                                     fontWeight = FontWeight.Bold
                                 )
                             }
                         }
                     }
                 },
-                containerColor = appColors.background
+                containerColor = MaterialTheme.colorScheme.background
             ) { paddingValues ->
                 Column(
                     modifier = Modifier
@@ -1024,14 +1018,14 @@ fun UnifiedAddDialog(
                     if (exercise == null) {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(
                                     text = stringResource(R.string.create_type),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Bold
                                 )
                                 Row(
@@ -1047,11 +1041,11 @@ fun UnifiedAddDialog(
                                         modifier = Modifier.weight(1f),
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             containerColor = if (isExercise) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                            contentColor = if (isExercise) Color.White else appColors.textTertiary
+                                            contentColor = if (isExercise) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                                         ),
                                         border = BorderStroke(
                                             1.dp,
-                                            if (isExercise) MaterialTheme.colorScheme.primary else appColors.border
+                                            if (isExercise) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
                                         ),
                                         shape = RoundedCornerShape(8.dp)
                                     ) {
@@ -1062,11 +1056,11 @@ fun UnifiedAddDialog(
                                         modifier = Modifier.weight(1f),
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             containerColor = if (isGroup) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                            contentColor = if (isGroup) Color.White else appColors.textTertiary
+                                            contentColor = if (isGroup) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                                         ),
                                         border = BorderStroke(
                                             1.dp,
-                                            if (isGroup) MaterialTheme.colorScheme.primary else appColors.border
+                                            if (isGroup) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
                                         ),
                                         shape = RoundedCornerShape(8.dp)
                                     ) {
@@ -1081,7 +1075,7 @@ fun UnifiedAddDialog(
                     if (creationType == "group" && exercise == null) {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
@@ -1094,8 +1088,8 @@ fun UnifiedAddDialog(
                                     isError = isGroupDuplicate,
                                     supportingText = {
                                         when {
-                                            isGroupDuplicate -> Text(stringResource(R.string.duplicate_group_name), color = Red600)
-                                            else -> Text(stringResource(R.string.character_count, groupName.length, 20), color = appColors.textSecondary)
+                                            isGroupDuplicate -> Text(stringResource(R.string.duplicate_group_name), color = MaterialTheme.colorScheme.error)
+                                            else -> Text(stringResource(R.string.character_count, groupName.length, 20), color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
                                     }
                                 )
@@ -1108,7 +1102,7 @@ fun UnifiedAddDialog(
                         // 基本情報カード
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Column(
@@ -1124,8 +1118,8 @@ fun UnifiedAddDialog(
                                     isError = isDuplicate,
                                     supportingText = {
                                         when {
-                                            isDuplicate -> Text(stringResource(R.string.duplicate_exercise_name), color = Red600)
-                                            else -> Text(stringResource(R.string.character_count, exerciseName.length, 30), color = appColors.textSecondary)
+                                            isDuplicate -> Text(stringResource(R.string.duplicate_exercise_name), color = MaterialTheme.colorScheme.error)
+                                            else -> Text(stringResource(R.string.character_count, exerciseName.length, 30), color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
                                     }
                                 )
@@ -1135,7 +1129,7 @@ fun UnifiedAddDialog(
                                     Text(
                                         text = stringResource(R.string.type),
                                         fontSize = 14.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Row(
@@ -1151,11 +1145,11 @@ fun UnifiedAddDialog(
                                             modifier = Modifier.weight(1f),
                                             colors = ButtonDefaults.outlinedButtonColors(
                                                 containerColor = if (isDynamic) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                                contentColor = if (isDynamic) Color.White else appColors.textTertiary
+                                                contentColor = if (isDynamic) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                                             ),
                                             border = BorderStroke(
                                                 1.dp,
-                                                if (isDynamic) MaterialTheme.colorScheme.primary else appColors.border
+                                                if (isDynamic) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
                                             ),
                                             shape = RoundedCornerShape(8.dp)
                                         ) {
@@ -1166,11 +1160,11 @@ fun UnifiedAddDialog(
                                             modifier = Modifier.weight(1f),
                                             colors = ButtonDefaults.outlinedButtonColors(
                                                 containerColor = if (isIsometric) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                                contentColor = if (isIsometric) Color.White else appColors.textTertiary
+                                                contentColor = if (isIsometric) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                                             ),
                                             border = BorderStroke(
                                                 1.dp,
-                                                if (isIsometric) MaterialTheme.colorScheme.primary else appColors.border
+                                                if (isIsometric) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
                                             ),
                                             shape = RoundedCornerShape(8.dp)
                                         ) {
@@ -1183,7 +1177,7 @@ fun UnifiedAddDialog(
                                         else
                                             stringResource(R.string.exercise_type_dynamic_description),
                                         fontSize = 12.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 4.dp)
                                     )
                                 }
@@ -1193,7 +1187,7 @@ fun UnifiedAddDialog(
                                     Text(
                                         text = stringResource(R.string.laterality),
                                         fontSize = 14.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Row(
@@ -1208,12 +1202,12 @@ fun UnifiedAddDialog(
                                             onClick = { selectedLaterality = "Bilateral" },
                                             modifier = Modifier.weight(1f),
                                             colors = ButtonDefaults.outlinedButtonColors(
-                                                containerColor = if (isBilateral) Blue600 else Color.Transparent,
-                                                contentColor = if (isBilateral) Color.White else appColors.textTertiary
+                                                containerColor = if (isBilateral) MaterialTheme.colorScheme.secondary else Color.Transparent,
+                                                contentColor = if (isBilateral) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
                                             ),
                                             border = BorderStroke(
                                                 1.dp,
-                                                if (isBilateral) Blue600 else appColors.border
+                                                if (isBilateral) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant
                                             ),
                                             shape = RoundedCornerShape(8.dp)
                                         ) {
@@ -1223,12 +1217,12 @@ fun UnifiedAddDialog(
                                             onClick = { selectedLaterality = "Unilateral" },
                                             modifier = Modifier.weight(1f),
                                             colors = ButtonDefaults.outlinedButtonColors(
-                                                containerColor = if (isUnilateral) Blue600 else Color.Transparent,
-                                                contentColor = if (isUnilateral) Color.White else appColors.textTertiary
+                                                containerColor = if (isUnilateral) MaterialTheme.colorScheme.secondary else Color.Transparent,
+                                                contentColor = if (isUnilateral) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
                                             ),
                                             border = BorderStroke(
                                                 1.dp,
-                                                if (isUnilateral) Blue600 else appColors.border
+                                                if (isUnilateral) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant
                                             ),
                                             shape = RoundedCornerShape(8.dp)
                                         ) {
@@ -1240,7 +1234,7 @@ fun UnifiedAddDialog(
                                             if (selectedLaterality == "Bilateral") R.string.example_bilateral else R.string.example_unilateral
                                         ),
                                         fontSize = 12.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 4.dp)
                                     )
                                 }
@@ -1250,7 +1244,7 @@ fun UnifiedAddDialog(
                         // グループ設定カード
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Column(
@@ -1260,7 +1254,7 @@ fun UnifiedAddDialog(
                                 Text(
                                     text = stringResource(R.string.group_optional),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Bold
                                 )
 
@@ -1271,7 +1265,7 @@ fun UnifiedAddDialog(
                                         label = { Text(stringResource(R.string.new_group_name)) },
                                         modifier = Modifier.fillMaxWidth(),
                                         singleLine = true,
-                                        supportingText = { Text("${newGroupName.length}/20", color = appColors.textSecondary) },
+                                        supportingText = { Text("${newGroupName.length}/20", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                                         trailingIcon = {
                                             IconButton(onClick = {
                                                 isCreatingNewGroup = false
@@ -1308,7 +1302,7 @@ fun UnifiedAddDialog(
                                                 }
                                             )
                                             DropdownMenuItem(
-                                                text = { Text(stringResource(R.string.new_group_plus), fontWeight = FontWeight.Bold, color = Blue600) },
+                                                text = { Text(stringResource(R.string.new_group_plus), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary) },
                                                 onClick = {
                                                     isCreatingNewGroup = true
                                                     showGroupDropdown = false
@@ -1332,7 +1326,7 @@ fun UnifiedAddDialog(
                         // 課題設定カード
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Column(
@@ -1347,7 +1341,7 @@ fun UnifiedAddDialog(
                                     Text(
                                         text = stringResource(R.string.set_challenge),
                                         fontSize = 14.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Switch(
@@ -1398,7 +1392,7 @@ fun UnifiedAddDialog(
                                         Text(
                                             text = stringResource(R.string.per_side_parenthesis),
                                             fontSize = 12.sp,
-                                            color = appColors.textSecondary
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
 
@@ -1407,7 +1401,7 @@ fun UnifiedAddDialog(
                                         Text(
                                             text = stringResource(R.string.level_display, selectedLevel),
                                             fontSize = 14.sp,
-                                            color = appColors.textSecondary
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                         Slider(
                                             value = selectedLevel.toFloat(),
@@ -1424,7 +1418,7 @@ fun UnifiedAddDialog(
                         // タイマー設定カード
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Column(
@@ -1435,13 +1429,13 @@ fun UnifiedAddDialog(
                                     Text(
                                         text = stringResource(R.string.timer_settings_optional),
                                         fontSize = 14.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
                                         text = stringResource(R.string.timer_settings_description),
                                         fontSize = 12.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 4.dp)
                                     )
                                 }
@@ -1487,7 +1481,7 @@ fun UnifiedAddDialog(
                         // トラッキング設定カード
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Column(
@@ -1497,7 +1491,7 @@ fun UnifiedAddDialog(
                                 Text(
                                     text = stringResource(R.string.tracking_settings_optional),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Bold
                                 )
 
@@ -1511,12 +1505,12 @@ fun UnifiedAddDialog(
                                         Text(
                                             text = stringResource(R.string.track_distance),
                                             fontSize = 14.sp,
-                                            color = appColors.textPrimary
+                                            color = MaterialTheme.colorScheme.onSurface
                                         )
                                         Text(
                                             text = stringResource(R.string.track_distance_description),
                                             fontSize = 12.sp,
-                                            color = appColors.textSecondary
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
                                     Switch(
@@ -1535,12 +1529,12 @@ fun UnifiedAddDialog(
                                         Text(
                                             text = stringResource(R.string.track_weight),
                                             fontSize = 14.sp,
-                                            color = appColors.textPrimary
+                                            color = MaterialTheme.colorScheme.onSurface
                                         )
                                         Text(
                                             text = stringResource(R.string.track_weight_description),
                                             fontSize = 12.sp,
-                                            color = appColors.textSecondary
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
                                     Switch(
@@ -1559,12 +1553,12 @@ fun UnifiedAddDialog(
                                         Text(
                                             text = stringResource(R.string.track_assistance),
                                             fontSize = 14.sp,
-                                            color = appColors.textPrimary
+                                            color = MaterialTheme.colorScheme.onSurface
                                         )
                                         Text(
                                             text = stringResource(R.string.track_assistance_description),
                                             fontSize = 12.sp,
-                                            color = appColors.textSecondary
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
                                     Switch(
@@ -1577,7 +1571,7 @@ fun UnifiedAddDialog(
                         // 説明文カード
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Column(
@@ -1587,7 +1581,7 @@ fun UnifiedAddDialog(
                                 Text(
                                     text = stringResource(R.string.description_optional),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Bold
                                 )
                                 OutlinedTextField(
@@ -1599,7 +1593,7 @@ fun UnifiedAddDialog(
                                     supportingText = {
                                         Text(
                                             stringResource(R.string.character_count, description.length, 120),
-                                            color = appColors.textSecondary
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
                                 )

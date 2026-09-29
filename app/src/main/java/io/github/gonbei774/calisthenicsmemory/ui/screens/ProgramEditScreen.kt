@@ -55,7 +55,6 @@ fun ProgramEditScreen(
     onNavigateBack: () -> Unit,
     onSaved: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val exercises by viewModel.exercises.collectAsState()
@@ -288,7 +287,7 @@ fun ProgramEditScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Orange600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -300,7 +299,7 @@ fun ProgramEditScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
@@ -309,7 +308,7 @@ fun ProgramEditScreen(
                         ),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.weight(1f)
                     )
                     // Save button
@@ -319,7 +318,7 @@ fun ProgramEditScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.save),
-                            color = if (isValid) Color.White else Color.White.copy(alpha = 0.5f),
+                            color = if (isValid) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -334,7 +333,7 @@ fun ProgramEditScreen(
                     .padding(paddingValues),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator(color = Orange600)
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             }
         } else {
             // Number of header items before the exercise list (Program Name + Exercises Section)
@@ -379,7 +378,7 @@ fun ProgramEditScreen(
                 if (hasIncompleteExercises) {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        color = Red600
+                        color = MaterialTheme.colorScheme.error
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -388,13 +387,13 @@ fun ProgramEditScreen(
                             Icon(
                                 imageVector = AppIcons.Warning,
                                 contentDescription = null,
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onError,
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = stringResource(R.string.program_validation_incomplete_sets_or_value),
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onError,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Medium
                             )
@@ -419,13 +418,13 @@ fun ProgramEditScreen(
                         placeholder = { Text(stringResource(R.string.program_name_hint)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Orange600,
-                            focusedLabelColor = Orange600,
-                            cursorColor = Orange600,
-                            unfocusedTextColor = appColors.textPrimary,
-                            focusedTextColor = appColors.textPrimary,
-                            unfocusedLabelColor = appColors.textSecondary,
-                            unfocusedBorderColor = appColors.border
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            focusedLabelColor = MaterialTheme.colorScheme.primary,
+                            cursorColor = MaterialTheme.colorScheme.primary,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
                         ),
                         singleLine = true
                     )
@@ -438,7 +437,7 @@ fun ProgramEditScreen(
                             text = stringResource(R.string.program_exercises),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         if (programListItems.isNotEmpty()) {
                             val estimatedMinutes = remember(programExercises, programLoops, exerciseMap) {
@@ -449,7 +448,7 @@ fun ProgramEditScreen(
                             Text(
                                 text = stringResource(R.string.program_estimated_time, estimatedMinutes),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -461,13 +460,13 @@ fun ProgramEditScreen(
                     item {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text(
                                 text = stringResource(R.string.program_exercises_required),
                                 modifier = Modifier.padding(16.dp),
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 14.sp
                             )
                         }
@@ -563,7 +562,7 @@ fun ProgramEditScreen(
                     Button(
                         onClick = { showAddExerciseDialog = true },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = Orange600)
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(
                             AppIcons.Add,
@@ -581,10 +580,10 @@ fun ProgramEditScreen(
                         onClick = { showAddLoopDialog = true },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = Orange600
+                            contentColor = MaterialTheme.colorScheme.primary
                         ),
                         border = ButtonDefaults.outlinedButtonBorder.copy(
-                            brush = Brush.horizontalGradient(listOf(Orange600, Orange600))
+                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary))
                         )
                     ) {
                         Icon(AppIcons.Repeat, contentDescription = null, modifier = Modifier.size(16.dp))
@@ -601,10 +600,10 @@ fun ProgramEditScreen(
                             onClick = { showDeleteConfirmDialog = true },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = Red600
+                                contentColor = MaterialTheme.colorScheme.error
                             ),
                             border = ButtonDefaults.outlinedButtonBorder.copy(
-                                brush = Brush.horizontalGradient(listOf(Red600, Red600))
+                                brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.error, MaterialTheme.colorScheme.error))
                             )
                         ) {
                             Icon(AppIcons.Delete, contentDescription = null)
@@ -693,18 +692,18 @@ fun ProgramEditScreen(
     if (showDeleteConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirmDialog = false },
-            containerColor = appColors.cardBackground,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.delete_program),
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
                     text = stringResource(R.string.delete_program_warning, name),
-                    color = appColors.textTertiary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             confirmButton = {
@@ -715,12 +714,12 @@ fun ProgramEditScreen(
                         onNavigateBack()
                     }
                 ) {
-                    Text(stringResource(R.string.delete), color = Red600)
+                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirmDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         )
@@ -771,18 +770,18 @@ fun ProgramEditScreen(
     if (showDiscardConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showDiscardConfirmDialog = false },
-            containerColor = appColors.cardBackground,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.discard_changes_title),
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
                     text = stringResource(R.string.discard_changes_message),
-                    color = appColors.textTertiary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             confirmButton = {
@@ -792,12 +791,12 @@ fun ProgramEditScreen(
                         onNavigateBack()
                     }
                 ) {
-                    Text(stringResource(R.string.discard), color = Red600)
+                    Text(stringResource(R.string.discard), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDiscardConfirmDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         )

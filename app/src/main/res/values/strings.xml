@@ -31,7 +31,6 @@
     <string name="view_details">View details</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <!-- Create Screen -->
-    <string name="exercise_creation">Exercise Creation</string>
     <string name="no_exercises">No exercises yet\nAdd one using the + button below</string>
     <string name="exercise_name">Exercise Name</string>
     <string name="set_challenge">Set Challenge</string>

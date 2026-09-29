@@ -27,7 +27,6 @@
     <string name="home_workout">Тренування</string>
     <string name="view_details">Переглянути деталі</string>
     <string name="copied_to_clipboard">Скопійовано в буфер обміну</string>
-    <string name="exercise_creation">Створення вправи</string>
     <string name="no_exercises">Вправ ще немає.\nДодайте першу за допомогою кнопки + нижче</string>
     <string name="exercise_name">Назва вправи</string>
     <string name="set_challenge">Встановити виклик</string>

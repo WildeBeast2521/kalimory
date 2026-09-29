@@ -30,7 +30,6 @@ fun ProgramExerciseItem(
     onDelete: () -> Unit,
     dragHandle: @Composable () -> Modifier
 ) {
-    val appColors = LocalAppColors.current
     var pendingDelete by remember { mutableStateOf(false) }
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
@@ -58,7 +57,7 @@ fun ProgramExerciseItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        color = Red600,
+                        color = MaterialTheme.colorScheme.error,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .padding(horizontal = 16.dp),
@@ -67,7 +66,7 @@ fun ProgramExerciseItem(
                 Icon(
                     AppIcons.Delete,
                     contentDescription = stringResource(R.string.delete),
-                    tint = appColors.textPrimary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         },
@@ -78,7 +77,7 @@ fun ProgramExerciseItem(
             onClick = onEdit,
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
-                containerColor = if (isDragging) appColors.cardBackgroundSecondary.copy(alpha = 0.9f) else appColors.cardBackground
+                containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
             ),
             shape = RoundedCornerShape(12.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = elevation)
@@ -94,7 +93,7 @@ fun ProgramExerciseItem(
                 Icon(
                     AppIcons.DragHandle,
                     contentDescription = stringResource(R.string.todo_drag_to_reorder),
-                    tint = if (isDragging) appColors.textPrimary else appColors.textSecondary,
+                    tint = if (isDragging) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .size(24.dp)
                         .then(dragHandle())
@@ -106,7 +105,7 @@ fun ProgramExerciseItem(
                         text = exercise.name,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
-                        color = appColors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -115,7 +114,7 @@ fun ProgramExerciseItem(
                         Text(
                             text = stringResource(R.string.program_sets_format, programExercise.sets),
                             fontSize = 12.sp,
-                            color = Blue600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                         Text(
                             text = stringResource(
@@ -124,12 +123,12 @@ fun ProgramExerciseItem(
                                 stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
                             ),
                             fontSize = 12.sp,
-                            color = Green400
+                            color = MaterialTheme.colorScheme.primary
                         )
                         Text(
                             text = stringResource(R.string.program_interval_format, programExercise.intervalSeconds),
                             fontSize = 12.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }

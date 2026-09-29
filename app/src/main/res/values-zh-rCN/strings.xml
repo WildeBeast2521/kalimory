@@ -31,7 +31,6 @@
     <string name="view_details">查看详情</string>
     <string name="copied_to_clipboard">已复制到剪贴板</string>
     <!-- Create Screen -->
-    <string name="exercise_creation">创建动作</string>
     <string name="no_exercises">还没有动作\n点击下方 + 按钮添加</string>
     <string name="exercise_name">动作名称</string>
     <string name="set_challenge">设定目标</string>

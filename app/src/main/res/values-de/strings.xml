@@ -31,7 +31,6 @@
     <string name="view_details">Details anzeigen</string>
     <string name="copied_to_clipboard">In Zwischenablage kopiert</string>
     <!-- Create Screen -->
-    <string name="exercise_creation">Übung erstellen</string>
     <string name="no_exercises">Noch keine Übungen vorhanden\nFüge eine mit dem + Button unten hinzu</string>
     <string name="exercise_name">Übungsname</string>
     <string name="set_challenge">Ziel festlegen</string>

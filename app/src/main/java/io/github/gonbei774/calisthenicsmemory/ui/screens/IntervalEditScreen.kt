@@ -44,7 +44,6 @@ fun IntervalEditScreen(
     onNavigateBack: () -> Unit,
     onSaved: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val coroutineScope = rememberCoroutineScope()
     val exercises by viewModel.exercises.collectAsState()
     val lazyListState = rememberLazyListState()
@@ -208,7 +207,7 @@ fun IntervalEditScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Orange600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -220,7 +219,7 @@ fun IntervalEditScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
@@ -229,7 +228,7 @@ fun IntervalEditScreen(
                         ),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.weight(1f)
                     )
                     TextButton(
@@ -238,7 +237,7 @@ fun IntervalEditScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.save),
-                            color = if (isValid) Color.White else Color.White.copy(alpha = 0.5f),
+                            color = if (isValid) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -253,7 +252,7 @@ fun IntervalEditScreen(
                     .padding(paddingValues),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator(color = Orange600)
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             }
         } else {
             // Number of header items before the exercise list
@@ -290,13 +289,13 @@ fun IntervalEditScreen(
                         label = { Text(stringResource(R.string.interval_program_name)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Orange600,
-                            focusedLabelColor = Orange600,
-                            cursorColor = Orange600,
-                            unfocusedTextColor = appColors.textPrimary,
-                            focusedTextColor = appColors.textPrimary,
-                            unfocusedLabelColor = appColors.textSecondary,
-                            unfocusedBorderColor = appColors.border
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            focusedLabelColor = MaterialTheme.colorScheme.primary,
+                            cursorColor = MaterialTheme.colorScheme.primary,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
                         ),
                         singleLine = true
                     )
@@ -308,7 +307,7 @@ fun IntervalEditScreen(
                         text = stringResource(R.string.interval_timer_settings),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
 
@@ -360,7 +359,7 @@ fun IntervalEditScreen(
                         text = stringResource(R.string.interval_exercises),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
 
@@ -369,13 +368,13 @@ fun IntervalEditScreen(
                     item {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text(
                                 text = stringResource(R.string.interval_exercises_required),
                                 modifier = Modifier.padding(16.dp),
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 14.sp
                             )
                         }
@@ -407,7 +406,7 @@ fun IntervalEditScreen(
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 .background(
-                                                    color = Red600,
+                                                    color = MaterialTheme.colorScheme.error,
                                                     shape = RoundedCornerShape(12.dp)
                                                 )
                                                 .padding(horizontal = 16.dp),
@@ -416,7 +415,7 @@ fun IntervalEditScreen(
                                             Icon(
                                                 AppIcons.Delete,
                                                 contentDescription = stringResource(R.string.delete),
-                                                tint = appColors.textPrimary
+                                                tint = MaterialTheme.colorScheme.onSurface
                                             )
                                         }
                                     },
@@ -441,7 +440,7 @@ fun IntervalEditScreen(
                     Button(
                         onClick = { showAddExerciseDialog = true },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = Orange600)
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(
                             AppIcons.Add,
@@ -458,14 +457,14 @@ fun IntervalEditScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackground.copy(alpha = 0.5f)
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.5f)
                         ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.interval_no_record_note),
                             modifier = Modifier.padding(12.dp),
-                            color = appColors.textTertiary,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 12.sp
                         )
                     }
@@ -479,10 +478,10 @@ fun IntervalEditScreen(
                             onClick = { showDeleteConfirmDialog = true },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = Red600
+                                contentColor = MaterialTheme.colorScheme.error
                             ),
                             border = ButtonDefaults.outlinedButtonBorder.copy(
-                                brush = Brush.horizontalGradient(listOf(Red600, Red600))
+                                brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.error, MaterialTheme.colorScheme.error))
                             )
                         ) {
                             Icon(AppIcons.Delete, contentDescription = null)
@@ -523,18 +522,18 @@ fun IntervalEditScreen(
     if (showDeleteConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirmDialog = false },
-            containerColor = appColors.cardBackground,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.interval_delete_program),
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
                     text = stringResource(R.string.interval_delete_program_warning, name),
-                    color = appColors.textTertiary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             confirmButton = {
@@ -545,12 +544,12 @@ fun IntervalEditScreen(
                         onNavigateBack()
                     }
                 ) {
-                    Text(stringResource(R.string.delete), color = Red600)
+                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirmDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         )
@@ -560,18 +559,18 @@ fun IntervalEditScreen(
     if (showDiscardConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showDiscardConfirmDialog = false },
-            containerColor = appColors.cardBackground,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.discard_changes_title),
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
                     text = stringResource(R.string.discard_changes_message),
-                    color = appColors.textTertiary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             confirmButton = {
@@ -581,12 +580,12 @@ fun IntervalEditScreen(
                         onNavigateBack()
                     }
                 ) {
-                    Text(stringResource(R.string.discard), color = Red600)
+                    Text(stringResource(R.string.discard), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDiscardConfirmDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         )
@@ -600,7 +599,6 @@ private fun TimerSettingRow(
     onValueChange: (String) -> Unit,
     suffix: String
 ) {
-    val appColors = LocalAppColors.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -609,7 +607,7 @@ private fun TimerSettingRow(
         Text(
             text = label,
             fontSize = 14.sp,
-            color = appColors.textPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
         Row(
@@ -622,11 +620,11 @@ private fun TimerSettingRow(
                 modifier = Modifier.width(80.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Orange600,
-                    cursorColor = Orange600,
-                    unfocusedTextColor = appColors.textPrimary,
-                    focusedTextColor = appColors.textPrimary,
-                    unfocusedBorderColor = appColors.border
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    cursorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
                 ),
                 singleLine = true,
                 textStyle = androidx.compose.ui.text.TextStyle(
@@ -637,7 +635,7 @@ private fun TimerSettingRow(
             Text(
                 text = suffix,
                 fontSize = 14.sp,
-                color = appColors.textSecondary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -651,10 +649,9 @@ private fun IntervalExerciseItem(
     elevation: androidx.compose.ui.unit.Dp,
     dragHandle: @Composable () -> Modifier
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
@@ -668,7 +665,7 @@ private fun IntervalExerciseItem(
             Icon(
                 AppIcons.DragHandle,
                 contentDescription = null,
-                tint = appColors.textTertiary,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .size(24.dp)
                     .then(dragHandle())
@@ -678,7 +675,7 @@ private fun IntervalExerciseItem(
             Text(
                 text = "$index.",
                 fontSize = 12.sp,
-                color = appColors.textTertiary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
 
@@ -687,13 +684,13 @@ private fun IntervalExerciseItem(
                 Text(
                     text = exercise.name,
                     fontSize = 14.sp,
-                    color = appColors.textPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 if (!exercise.description.isNullOrBlank()) {
                     Text(
                         text = exercise.description,
                         fontSize = 11.sp,
-                        color = appColors.textTertiary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 2.dp)
                     )
                 }
@@ -710,7 +707,6 @@ private fun AddExerciseToIntervalDialog(
     onDismiss: () -> Unit,
     onAdd: (List<Exercise>) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
     val expandedGroups by viewModel.expandedGroups.collectAsState()
 
@@ -729,11 +725,11 @@ private fun AddExerciseToIntervalDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = appColors.cardBackground,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 text = stringResource(R.string.interval_add_exercise),
-                color = appColors.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold
             )
         },
@@ -741,7 +737,7 @@ private fun AddExerciseToIntervalDialog(
             if (exercises.isEmpty()) {
                 Text(
                     text = stringResource(R.string.no_exercises_available),
-                    color = appColors.textSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             } else {
                 Column(
@@ -759,14 +755,14 @@ private fun AddExerciseToIntervalDialog(
                         placeholder = {
                             Text(
                                 text = stringResource(R.string.search_placeholder),
-                                color = appColors.textSecondary
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         },
                         leadingIcon = {
                             Icon(
                                 AppIcons.Search,
                                 contentDescription = null,
-                                tint = appColors.textSecondary
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         },
                         trailingIcon = {
@@ -775,20 +771,20 @@ private fun AddExerciseToIntervalDialog(
                                     Icon(
                                         AppIcons.Close,
                                         contentDescription = stringResource(R.string.clear),
-                                        tint = appColors.textSecondary
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             }
                         },
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = appColors.textPrimary,
-                            unfocusedTextColor = appColors.textPrimary,
-                            focusedContainerColor = appColors.cardBackgroundSecondary,
-                            unfocusedContainerColor = appColors.cardBackgroundSecondary,
-                            focusedBorderColor = Orange600,
-                            unfocusedBorderColor = Slate600,
-                            cursorColor = Orange600
+                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                            cursorColor = MaterialTheme.colorScheme.primary
                         ),
                         shape = RoundedCornerShape(8.dp)
                     )
@@ -804,7 +800,7 @@ private fun AddExerciseToIntervalDialog(
                                 item {
                                     Text(
                                         text = stringResource(R.string.no_results),
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(16.dp)
                                     )
                                 }
@@ -867,13 +863,13 @@ private fun AddExerciseToIntervalDialog(
             ) {
                 Text(
                     text = stringResource(R.string.add),
-                    color = if (selectedExercises.isNotEmpty()) Orange600 else appColors.textSecondary
+                    color = if (selectedExercises.isNotEmpty()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     )
@@ -885,10 +881,9 @@ private fun IntervalExerciseSelectItem(
     isSelected: Boolean,
     onToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(
@@ -901,8 +896,8 @@ private fun IntervalExerciseSelectItem(
                 checked = isSelected,
                 onCheckedChange = { onToggle(exercise.id) },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = Orange600,
-                    uncheckedColor = appColors.textSecondary
+                    checkedColor = MaterialTheme.colorScheme.primary,
+                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
             Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
@@ -910,7 +905,7 @@ private fun IntervalExerciseSelectItem(
                     text = exercise.name,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 // Badges row
                 FlowRow(
@@ -919,28 +914,28 @@ private fun IntervalExerciseSelectItem(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.tertiary)
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                         Text(
                             text = stringResource(R.string.level_format, exercise.sortOrder),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Blue600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                     Text(
                         text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     if (exercise.laterality == "Unilateral") {
                         Text(
                             text = stringResource(R.string.one_sided),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Purple600
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                     if (exercise.weightTrackingEnabled) {
@@ -948,7 +943,7 @@ private fun IntervalExerciseSelectItem(
                             text = stringResource(R.string.legend_weight),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Amber500
+                            color = MaterialTheme.colorScheme.tertiary
                         )
                     }
                     if (exercise.distanceTrackingEnabled) {
@@ -956,7 +951,7 @@ private fun IntervalExerciseSelectItem(
                             text = stringResource(R.string.legend_distance),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Cyan600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                     if (exercise.assistanceTrackingEnabled) {
@@ -978,7 +973,7 @@ private fun IntervalExerciseSelectItem(
                         ),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Green400,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 2.dp)
                     )
                 }
@@ -996,10 +991,9 @@ private fun IntervalSelectExerciseGroup(
     onExpandToggle: () -> Unit,
     onExerciseToggle: (Long) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(8.dp)
     ) {
         Column {
@@ -1026,18 +1020,18 @@ private fun IntervalSelectExerciseGroup(
                             else
                                 AppIcons.Forward,
                             contentDescription = null,
-                            tint = appColors.textPrimary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = groupName ?: stringResource(R.string.no_group),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = "(${exercises.size})",
                             fontSize = 14.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -1064,8 +1058,8 @@ private fun IntervalSelectExerciseGroup(
                                 checked = exercise.id in selectedExercises,
                                 onCheckedChange = { onExerciseToggle(exercise.id) },
                                 colors = CheckboxDefaults.colors(
-                                    checkedColor = Orange600,
-                                    uncheckedColor = appColors.textSecondary
+                                    checkedColor = MaterialTheme.colorScheme.primary,
+                                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                             Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
@@ -1073,7 +1067,7 @@ private fun IntervalSelectExerciseGroup(
                                     text = exercise.name,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 // Badges row
                                 FlowRow(
@@ -1082,28 +1076,28 @@ private fun IntervalSelectExerciseGroup(
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
                                     if (exercise.isFavorite) {
-                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = Color(0xFFFFD700))
+                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.tertiary)
                                     }
                                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                                         Text(
                                             text = stringResource(R.string.level_format, exercise.sortOrder),
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Blue600
+                                            color = MaterialTheme.colorScheme.secondary
                                         )
                                     }
                                     Text(
                                         text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = appColors.textSecondary
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     if (exercise.laterality == "Unilateral") {
                                         Text(
                                             text = stringResource(R.string.one_sided),
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Purple600
+                                            color = MaterialTheme.colorScheme.primary
                                         )
                                     }
                                     if (exercise.weightTrackingEnabled) {
@@ -1111,7 +1105,7 @@ private fun IntervalSelectExerciseGroup(
                                             text = stringResource(R.string.legend_weight),
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Amber500
+                                            color = MaterialTheme.colorScheme.tertiary
                                         )
                                     }
                                     if (exercise.distanceTrackingEnabled) {
@@ -1119,7 +1113,7 @@ private fun IntervalSelectExerciseGroup(
                                             text = stringResource(R.string.legend_distance),
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = Cyan600
+                                            color = MaterialTheme.colorScheme.secondary
                                         )
                                     }
                                     if (exercise.assistanceTrackingEnabled) {
@@ -1141,7 +1135,7 @@ private fun IntervalSelectExerciseGroup(
                                         ),
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Green400,
+                                        color = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.padding(top = 2.dp)
                                     )
                                 }

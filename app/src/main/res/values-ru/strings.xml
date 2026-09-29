@@ -26,7 +26,6 @@
     <string name="home_view">Вид</string>
     <string name="view_details">Просмотр деталей</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
-    <string name="exercise_creation">Создание упражнения</string>
     <string name="no_exercises">Упражнений пока нет\nДобавьте упражнение, используя кнопку «+» ниже</string>
     <string name="exercise_name">Название упражнения</string>
     <string name="set_challenge">Установить цель</string>
