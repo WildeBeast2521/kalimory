@@ -10,6 +10,7 @@ check
 check_circle fill
 chevron_right
 close
+code
 content_paste
 delete
 description

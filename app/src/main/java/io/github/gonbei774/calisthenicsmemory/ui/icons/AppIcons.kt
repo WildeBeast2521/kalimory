@@ -68,6 +68,7 @@ object AppIcons {
 
     // Settings and information
     val Settings: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_settings)
+    val SourceCode: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_code)
     val Info: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_info)
     val Warning: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_warning)
     val Theme: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_palette)

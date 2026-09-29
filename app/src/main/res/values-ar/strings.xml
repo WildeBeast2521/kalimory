@@ -68,4 +68,5 @@
         <item quantity="other">%d مجموعة</item>
     </plurals>
     <string name="value_with_unit">%1$d %2$s</string>
+    <string name="app_original_project">المشروع الأصلي</string>
 </resources>

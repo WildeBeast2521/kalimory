@@ -4,15 +4,24 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Workout run copy fixes, from the audit. Branch `work/execution-copy`, based on master `bc57a4b`.
+Settings links point to this repository (owner decision, 2026-09-29). Branch `work/repo-links`, based on master `5f529d6`.
 
-- **Next labels:** "NEXT" and "NEXT ROUND" become sentence case ("Next", "Next round") in the seven locales that had capitals. Japanese uses 次 and 次のラウンド; Chinese was already fine.
-- **Interval confirm spacing:** "20 sec" and "8 rounds" now have the space, through `value_with_unit`, which keeps Japanese and Chinese without one.
-- **Interval confirm Start:** the duplicate top-bar Start is removed; the large Start Workout button at the bottom remains.
+- **Links:**
+  - "Source Code" and "Report issue on GitHub" open `github.com/WildeBeast2521/CalisthenicsMemory`;
+  - the Codeberg issue row is removed, along with its string.
+  - The repository is private for now, so these links work only for people with access until it is published.
+- **Attribution:** it stays. The author row keeps Gonbei774, and a new "Original project" row, in all 10 locales, opens the upstream Codeberg repository.
+- **Icon:** the "<>" text glyph becomes the Material Symbol `code` (`AppIcons.SourceCode`).
+
+Owner note for the end-of-redesign review: the UI is "good, but not exceptional"; it needs more pizazz and to feel special, with animations and motion. Finish the remaining work first, then bring a motion and delight proposal.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- screenshots of the interval confirm screen and run.
+- a screenshot of the App info section.
+
+## Previous phase: workout run copy fixes (merged)
+
+PR #62 merged as `5f529d6`.
 
 ## Previous phase: remove AppColors (merged)
 
@@ -128,7 +137,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - (L) Trends and personal bests (progression system).
 
 **Settings:**
-- (S, owner) "Report issue on Codeberg/GitHub" and "Source Code" point to the upstream project. For this fork, should reports go to this repository, or stay upstream with attribution? The owner decides. Upstream attribution (author Gonbei774) stays either way.
+- Done in PR #63 (owner: "Yes, point"): source and issue links go to this repository, and upstream attribution stays.
 - "Keep screen on" now defaults to on: owner-approved, done in PR #52.
 - (M) Changing the language needs a restart. Per-app language (AndroidX) could apply it at once.
 
@@ -192,6 +201,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #60: program and interval runs on the calm theme.
 - PR #61: remove AppColors.
 - PR #62: workout run copy fixes.
+- PR #63: Settings links point to this repository.
 
 ## Owner direction for later (2026-09-27)
 

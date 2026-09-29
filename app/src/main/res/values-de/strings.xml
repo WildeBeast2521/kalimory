@@ -447,7 +447,6 @@
     <string name="feedback_description">Fehler melden oder Funktionen anfordern</string>
     <string name="codeberg_description">Haupt-Repository</string>
     <string name="github_description">Mirror-Repository</string>
-    <string name="report_issue_codeberg">Problem auf Codeberg melden</string>
     <string name="report_issue_github">Problem auf GitHub melden</string>
     <!-- Flash Notification -->
     <string name="flash_notification_setting">LED-Blitz-Benachrichtigung</string>
@@ -820,4 +819,5 @@
         <item quantity="other">%d Sätze</item>
     </plurals>
     <string name="value_with_unit">%1$d %2$s</string>
+    <string name="app_original_project">Ursprüngliches Projekt</string>
 </resources>
