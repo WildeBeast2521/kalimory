@@ -2,6 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-08-30
+- **Implemented:** databases 22 to 24 (PRs #19 to #35). The Context section describes the code as of 2026-08-30. Its line references are historical.
 
 ## Context
 

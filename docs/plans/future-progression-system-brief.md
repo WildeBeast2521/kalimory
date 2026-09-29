@@ -14,6 +14,12 @@ The biggest upgrade the app will get: a built-in progression system that helps a
 - **Daily goals.** Use the catalogue and progressions to set the goal for a day.
 - **Demonstrations.** Possibly an animated vector figure performing each exercise to show correct form.
 
+## Items moved here from the redesign review (2026-09-29)
+
+- Weekly goals. Today's "This week: 2 of 7" implies a seven-day goal.
+- The Challenge tab: how a person sets a challenge, and how it relates to goals.
+- Trends and personal bests in depth. The workout summary screen shows a simple personal best first.
+
 ## Constraints to respect when planning
 
 - ADR 0001 is unchanged: offline, private, no accounts, no hosted AI, no telemetry. The catalogue and demonstrations ship inside the app.

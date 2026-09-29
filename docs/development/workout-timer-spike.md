@@ -28,7 +28,7 @@ Tests: `WorkoutReducerTest` (16), `WorkoutTimerRecoveryTest` (6), and `WorkoutCh
 
 ## Integration
 
-- Done for the interval screen (`IntervalWorkoutPlan` plus a 100 ms render tick). On the floor_api29 AVD, a 35 s program with the screen off for 12 s completed at 36.4 s (detection latency included), and a 10.3 s pause gave 46.4 s against 45.3 s expected. Still to move over: program and single-exercise execution.
+- Done for the interval screen (`IntervalWorkoutPlan` plus a 100 ms render tick). On the floor_api29 AVD, a 35 s program with the screen off for 12 s completed at 36.4 s (detection latency included), and a 10.3 s pause gave 46.4 s against 45.3 s expected.
 - Done for the interval screen. It saves on start, pause, resume, and skip, and clears on finish, stop, or discard. Reopening the program offers Resume. On floor_api29:
   - After a `kill -9` at 13 s during a rest, resuming caught up to the true end at 35 s.
   - A paused workout killed for 37 s resumed with the same remaining time.
@@ -37,7 +37,7 @@ Tests: `WorkoutReducerTest` (16), `WorkoutTimerRecoveryTest` (6), and `WorkoutCh
   - Reboot, then the clock set back 1 h: recovery assumes no time away and resumes from the last checkpoint. Checkpoints are saved only on start, pause, resume, and skip, so this can be well before the interruption.
   - Recovery runs when Resume is tapped, so time spent reading the dialog is not counted.
 - Program execution now times its start countdown, rests, holds, and rep timers with `StepStopwatch`, so there is no drift and pause is exact. On floor_api29 the 35 s auto program completed at 37.1 s with the screen on and 38.0 s with the screen off from 8 s to 21 s. Program sessions still rely on the manual "Save & Exit" (`SavedWorkoutState`) rather than automatic checkpoints.
-- Single-exercise execution uses `StepStopwatch` too. On floor_api29 its 35 s auto run completed at 36.8 s with the screen on and 37.7 s with the screen off from 8 s to 21 s. No `delay(1000)` counting loop remains in the execution screens, apart from the unused `WorkoutScreen.ExecutingStep`.
+- Single-exercise execution uses `StepStopwatch` too. On floor_api29 its 35 s auto run completed at 36.8 s with the screen on and 37.7 s with the screen off from 8 s to 21 s. No `delay(1000)` counting loop remains in the execution screens.
 - Program sessions checkpoint automatically (`ProgramSessionCheckpoint`), separately from the user's "Save & Exit" slot. Resume restarts the interrupted set, or returns to the result screen. Verified on floor_api29 with kills during a set and on the result screen.
 - Single-exercise sessions checkpoint automatically too (`SingleSessionCheckpoint`), and are offered for resume when the Workout screen opens. Verified on floor_api29 with kills during a set and on the confirmation screen.
 - `WorkoutTimerService` keeps no workout state or decisions. It holds a foreground notification and a wake lock while a timer runs. The lock was reference-counted, and every step change started the service again, so it stayed held after workouts ended. It is now held once and released by stop, destroy, or task removal. This is guarded by `WorkoutTimerServiceTest`.
@@ -45,6 +45,6 @@ Tests: `WorkoutReducerTest` (16), `WorkoutTimerRecoveryTest` (6), and `WorkoutCh
 ## Remaining notes
 
 - The notification shows a fixed text. Showing the live step and remaining time is optional polish, not part of Task 6.
-- `util/WakeLockManager.kt` and `WorkoutScreen.ExecutingStep` are unused. They were left unchanged; removing them needs a separate cleanup change.
-- Make `WorkoutTimerService` an adapter: it shows state and forwards user actions and never makes domain decisions. Verify it releases its wake lock on teardown.
-- Run the manual API 26+ protocol and record the results: screen off during a countdown, app in the background, process killed with `adb shell am kill`, device reboot, and a wall-clock change. For each, note the observed drift and the recovery timing.
+- `util/WakeLockManager.kt` is unused. Removing it is listed in the open small fixes in `overhaul-status.md`. (`WorkoutScreen.ExecutingStep` is already gone.)
+- `WorkoutTimerService` is an adapter, and its wake-lock release is tested (see "Integration").
+- The manual protocol ran on floor_api29 (API 29): screen off, background, kill, reboot and clock change, with the results above. No run on an API 26 device is recorded.

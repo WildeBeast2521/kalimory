@@ -1,6 +1,12 @@
 # Calisthenics Memory Overhaul Bootstrap Plan
 
-> **For Hermes:** Execute this plan task-by-task, preserving the pending checkboxes until each acceptance gate has actually been run and verified.
+> **Historical plan (reviewed 2026-09-29).** Tasks 1 to 8 are done. The checkboxes below were never ticked, so do not read them as status. Current state and next work are in `docs/development/overhaul-status.md`.
+>
+> Superseded parts:
+> - Task 8's feature flag was dropped (ADR 0004 decision 1).
+> - The tech stack line is out of date. The build now uses AGP 9, Kotlin 2.4 and Room 2.8 (see `gradle/libs.versions.toml`).
+> - The "unresolved decisions" were settled: supported database versions 9 to 24, and the legacy timestamp policy in `docs/development/v2-workout-history.md`. Branch protection is unavailable on the private free plan.
+> - `docs/development/private-repository.md` (Task 1) was never written. The repository facts are in the paragraph under Task 1.
 
 **Goal:** Establish a private, reproducible, data-safe foundation for an offline personal calisthenics trainer, then introduce a unified durable workout model and UX without losing v1.26.0 data.
 

@@ -33,6 +33,8 @@ After a database version bump:
 
 All files were generated with Room 2.6.1 (`androidx.room:room-compiler` through KSP 2.0.21-1.0.28), Kotlin 2.0.21, AGP 8.13.0, and Gradle 8.13, with `./gradlew :app:kspDebugKotlin`. Every historical commit below uses that same toolchain.
 
+Since PR #41 the build uses Room 2.8.5, AGP 9 and Kotlin 2.4. With it, `scripts/check-room-schemas.sh` regenerates `24.json` unchanged (checked 2026-09-29).
+
 Historical schemas were produced by `scripts/recover-historical-room-schema.sh <commit> <version> <output-dir>`. It checks out the commit in a disposable worktree and makes only two temporary changes there: `exportSchema = true` in `AppDatabase.kt`, and a `ksp { arg("room.schemaLocation", ...) }` block in `app/build.gradle.kts`. No other build change was needed for any version.
 
 Each source commit is the commit that introduced the version. Across the full history of all refs, the entity classes and the `@Database` declaration have exactly one variant for each of versions 9–20, so every commit at a given version generates the same schema. Version 21 has three variants before this directory was added, plus the current sources with `exportSchema = true`; all generate the same file.
