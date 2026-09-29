@@ -531,11 +531,11 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         exercises: List<Exercise>,
         expandedGroups: Set<String>
     ): List<GroupWithExercises> {
-        // 0. お気に入りグループ（先頭に追加、0件でも表示）
-        // 固定キーを使用（UI側で翻訳）
+        // 0. Favourites first, shown only once something is marked as a favourite.
+        // A fixed key; the UI translates it.
         val favoriteGroupKey = FAVORITE_GROUP_KEY
         val favoriteExercises = exercises.filter { it.isFavorite }.sortedBy { it.displayOrder }
-        val favoriteGroup = listOf(
+        val favoriteGroup = if (favoriteExercises.isEmpty()) emptyList() else listOf(
             GroupWithExercises(
                 groupName = favoriteGroupKey,
                 exercises = favoriteExercises,

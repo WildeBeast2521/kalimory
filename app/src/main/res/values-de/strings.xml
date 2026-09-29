@@ -642,7 +642,6 @@
     <string name="interval_settings_format">%1$ds × %2$d Übungen × %3$d Runden</string>
     <string name="interval_total_time">Geschätzte Zeit</string>
     <string name="interval_total_time_format">~%1$d Min. %2$d Sek.</string>
-    <string name="interval_confirm_title">Bestätigung</string>
     <string name="interval_start_workout">Training starten</string>
     <string name="interval_start">Start</string>
     <string name="interval_get_ready">Mach dich bereit</string>

@@ -646,7 +646,6 @@
     <string name="interval_settings_format">%1$d秒 × %2$d个动作 × %3$d轮</string>
     <string name="interval_total_time">预计时间</string>
     <string name="interval_total_time_format">约%1$d分%2$d秒</string>
-    <string name="interval_confirm_title">确认</string>
     <string name="interval_start_workout">开始训练</string>
     <string name="interval_start">开始</string>
     <string name="interval_get_ready">准备好</string>

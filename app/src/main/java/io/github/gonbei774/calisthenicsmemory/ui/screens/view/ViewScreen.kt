@@ -726,7 +726,9 @@ fun FilterBottomSheetContent(
 
         // スクロール可能な階層表示
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            // The last rows scroll clear of the system navigation bar.
+            contentPadding = WindowInsets.navigationBars.asPaddingValues()
         ) {
             // 全て表示
             if (searchQuery.isEmpty()) {

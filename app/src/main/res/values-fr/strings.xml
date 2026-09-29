@@ -643,7 +643,6 @@
     <string name="interval_settings_format">%1$ds × %2$d exercices × %3$d tours</string>
     <string name="interval_total_time">Temps estimé</string>
     <string name="interval_total_time_format">~%1$d min %2$d sec</string>
-    <string name="interval_confirm_title">Confirmer</string>
     <string name="interval_start_workout">Démarrer l\'entraînement</string>
     <string name="interval_start">Démarrer</string>
     <string name="interval_get_ready">Préparez-vous</string>

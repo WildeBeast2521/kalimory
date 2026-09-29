@@ -4,18 +4,20 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Program runs use the in-workout kit. Branch `work/program-run-kit`, based on master `5f03984`.
+Small audit fixes. Branch `work/small-audit-fixes`, based on master `bdd1221`.
 
-- **Set screens:** the five program set screens use `WorkoutHeader`, `CountDisplay`, `TimerDial`, `StepButton` and `WorkoutPrimaryButton`, the same as the single workout.
-- **Header:** `ProgramSetHeader` shows the exercise, "Set 2/6" within that exercise (with side), a round caption for loops (`WorkoutHeader` gains `caption`), and one segment per set of the exercise. It replaces the program-wide "1/10" from the audit.
-- **Get ready:** it uses the kit's header, status, dial and skip.
-- **Rest:** it gains the "Set N done" badge, the kit dial (220 dp, so the next-exercise card and Skip fit), and the shared −10/+10 buttons. The "Next" card shows "Set 2/3 - Right" within the exercise.
-- **Shared parts:** `WorkoutStatus`, `WorkoutSkipButton` and `RestAdjustButtons` move into the kit and are used by the single and program steps.
-- **Strings:** the orphaned `set_progress` strings are removed.
+- **Favorite group:** hidden until something is marked as a favourite. It came from the shared `prepareHierarchicalData`, so every exercise list is covered.
+- **Progress exercise sheet:** its list pads for the navigation bar, so the last rows scroll clear of it.
+- **Per-exercise rest:** it reads "Rest 60s" instead of "Interval 60s" in English, Japanese (休憩) and Ukrainian (Відпочинок). The other locales already said rest.
+- **Interval confirm screen:** its title is the routine's name instead of "Confirm". The duplicate heading in the body is removed, along with the `interval_confirm_title` string.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- screenshots of a program with a two-round loop: set, get ready and rest.
+- screenshots of the Progress sheet and the interval confirm screen.
+
+## Previous phase: program runs use the in-workout kit (merged)
+
+PR #65 merged as `bdd1221`.
 
 ## Previous phase: Baseline Profiles and Macrobenchmark (merged)
 
@@ -116,17 +118,17 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 **Train and Library:**
 - Done in PR #54: (S) A program with no exercises shows "~0 min".
 - (S) Estimates disagree between screens for the same program (~12, ~13 and ~16 min, depending on the screen and the prefill mode). Label them consistently, or explain the difference.
-- Done in PR #57: the exercise list title. Still open: (S) an empty "Favorite" group is shown.
+- Done in PR #57: the exercise list title. Done in PR #66: the empty "Favorite" group is hidden.
 - (S) Program list rows have no summary (exercise count, estimate), and tapping a row does nothing.
 - (S) The interval list shows no total duration.
-- (S/M) Per-exercise "Interval 60s" means rest, and clashes with Interval mode. Say "Rest" everywhere.
+- Done in PR #66: per-exercise rest now reads "Rest" where it said "Interval".
 - (M) Show when each exercise or program was last done.
 
 **Workouts:**
 - (S) Single-workout setup can leave Start disabled with no reason (an empty rep duration or target). Use defaults, or say what is missing.
 - (S) The program start screen has settings expanded, and Start is a small top-bar action. Make Start a large bottom button and collapse the settings.
 - Done in PR #65: the program run shows "Set 1/6" within the exercise.
-- Done in PR #62: the two interval Start buttons, the missing spaces, and "NEXT" in capitals. Still open: (S) the generic "Confirm" title.
+- Done in PR #62: the two interval Start buttons, the missing spaces, and "NEXT" in capitals. Done in PR #66: the "Confirm" title.
 - Program runs use the kit (PR #65). The interval run keeps its own timer screen for now; it is already on theme roles.
 - Done in PR #53: (M) Record ("Log a past workout") behaves like a live session: a "NOW" badge, and every set must be completed before Record is enabled. For logging the past, allow saving all sets as shown.
 - (L, owner-approved, after the item above) Log a past workout with several exercises in one session. The v2 model supports this, and ManualWorkoutWriter handles one exercise today.
@@ -136,7 +138,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - Done in PR #55: (S) "1 sets"; the plural is missing.
 - Done in PR #55: (S) Dates show as "2026-09-25"; use the locale's format.
 - Done in PR #55: (S) "6reps" is missing a space. The right and left sides use arbitrary colours (green and purple).
-- (S) The exercise filter sheet on Progress lets its lower rows sit under the system navigation bar.
+- Done in PR #66: the Progress exercise sheet pads for the navigation bar.
 - (S/M) Graph starts empty until an exercise is picked; default to the most recent exercise.
 - (M) "1 Week" is a rolling seven days, while Today uses the calendar week and the first-day setting.
 - (M) The Challenge tab does not say how to set a challenge, and overlaps with the progression goals.
@@ -210,6 +212,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #63: Settings links point to this repository.
 - PR #64: Baseline Profiles and Macrobenchmark.
 - PR #65: program runs use the in-workout kit.
+- PR #66: small audit fixes.
 
 ## Owner direction for later (2026-09-27)
 
