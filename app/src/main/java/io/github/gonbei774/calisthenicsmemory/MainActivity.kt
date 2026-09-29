@@ -43,7 +43,6 @@ import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
@@ -77,7 +76,6 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.CsvDataManagementScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ShareHubScreen
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalFirstDayOfWeekSetting
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
 class MainActivity : ComponentActivity() {
@@ -260,7 +258,6 @@ fun CalisthenicsMemoryApp(
     // Screen.Home shows this destination, so "back to Home" returns to the tab the user came from.
     var primaryDestination by rememberSaveable { mutableStateOf(PrimaryDestination.TODAY) }
     val snackbarHostState = remember { SnackbarHostState() }
-    val appColors = LocalAppColors.current
 
     // Snackbar message handling
     val snackbarMessage by viewModel.snackbarMessage.collectAsState()
@@ -300,14 +297,7 @@ fun CalisthenicsMemoryApp(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            appColors.backgroundGradientStart,
-                            appColors.backgroundGradientEnd
-                        )
-                    )
-                )
+                .background(MaterialTheme.colorScheme.background)
                 .padding(paddingValues)
         ) {
             when (currentScreen) {
