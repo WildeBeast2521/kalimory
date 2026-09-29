@@ -282,7 +282,7 @@ private fun ProgramListItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .combinedClickable(
-                        onClick = { },
+                        onClick = onEdit,
                         onLongClick = { showContextMenu = true }
                     ),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
