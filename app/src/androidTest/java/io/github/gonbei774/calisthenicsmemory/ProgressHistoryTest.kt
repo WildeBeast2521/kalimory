@@ -35,6 +35,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import io.github.gonbei774.calisthenicsmemory.ui.screens.view.formatStoredDate
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -107,7 +108,8 @@ class ProgressHistoryTest {
             rule.onAllNodesWithText(exerciseName).fetchSemanticsNodes().size == 2
         }
 
-        val today = LocalDate.now().toString()
+        // Dates are shown in the device's locale, followed by the stored minute.
+        val today = formatStoredDate(LocalDate.now().toString(), context.resources.configuration.locales[0])
         rule.onNodeWithText("$today 06:00").assertExists()
         rule.onNodeWithText("$today 20:00").assertExists()
         // Both sessions can be edited and deleted.
@@ -135,7 +137,7 @@ class ProgressHistoryTest {
         rule.waitUntil(STARTUP_TIMEOUT_MS) {
             rule.onAllNodesWithText(exerciseName).fetchSemanticsNodes().size == 1
         }
-        rule.onNodeWithText("${LocalDate.now()} 06:00").assertExists()
+        rule.onNodeWithText("${formatStoredDate(LocalDate.now().toString(), context.resources.configuration.locales[0])} 06:00").assertExists()
         runBlocking { assertNull(database.workoutSessionDao().session(sessionId)) }
     }
 

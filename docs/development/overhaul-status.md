@@ -4,20 +4,28 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Today polish, from the audit. Branch `work/today-polish`, based on master `0cc58c9`.
+Progress redesign. Branch `work/progress-redesign`, based on master `d37a656`.
 
-- **Program details:** program heroes and rows on Today, and program rows on Train, show "3 exercise(s) · ~12 min". The summary comes from `rememberProgramSummaries`, in `ui/screens/train/ProgramSummaries.kt`.
-- **Empty programs** say "No exercises yet". On Train, their row opens the program editor instead of starting.
-- **Due exercises** show their target ("3 sets × 20 sec") when the exercise has one.
-- **Due and extra resume rows** sit on one surface with a trailing start mark, like Train.
-- **Spacing:** Due and Done use the shared `Section`, which keeps a heading close to its rows and leaves more space between sections. `TrainSection` moved to `TodayParts` as `Section`.
-- **Done-today chips** no longer use tabular figures, so "15" no longer reads as "1 5".
-- **Strings:** one new string, `program_no_exercises`, in all 10 locales.
+- **Header:** the same large "Progress" title as the other destinations replaces the purple bar. Tabs and filter chips use theme roles and default Material chips. The selected exercise chip shows a close icon instead of a text "x".
+- **Colours:** all four tabs (Calendar, List, Graph, Challenge) move off `AppColors` and the purple and orange accents, onto `CalmPalette` roles; training marks are spruce, "done". GraphView reads colours into a local `cs` for its Canvas drawing. The weight, distance and assistance legend colours stay, to match the charts.
+- **Calendar heat:** light container colour for lighter days, full spruce for heavier ones, each with readable text.
+- **Bugs from the audit, fixed:**
+  - the week label left out today, because `DateUtils.formatDateRange` treats the end as exclusive;
+  - "1 sets" is now a `set_count` plural in all 10 locales;
+  - dates show in the user's locale ("Sep 29, 2026"), followed by the stored minute unchanged;
+  - "6reps" now reads "6 reps", in List and on the Graph axis. `value_with_unit` keeps Japanese and Chinese without a space.
+  - the selected Graph chip had dark text on spruce.
+- **Test:** `ProgressHistoryTest` now expects the localised date.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- screenshots of Today and Train with synthetic data, including an empty program;
-- tapping the empty program opens its editor.
+- screenshots of Calendar (week and month), List, Graph and Challenge with synthetic data.
+
+Seen but not fixed: the exercise filter sheet's lower rows sit under the system navigation bar (it existed before). This is recorded under Improvement ideas.
+
+## Previous phase: Today polish (merged)
+
+PR #54 merged as `d37a656`.
 
 ## Previous phase: Record saves sets as entered (merged)
 
@@ -90,10 +98,11 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - (L, owner-approved, after the item above) Log a past workout with several exercises in one session. The v2 model supports this, and ManualWorkoutWriter handles one exercise today.
 
 **Progress (feeds its redesign):**
-- (S) The week label reads "Sep 22 – 27" while the strip shows the 22nd to the 28th; check whether today is left out.
-- (S) "1 sets"; the plural is missing.
-- (S) Dates show as "2026-09-25"; use the locale's format.
-- (S) "6reps" is missing a space. The right and left sides use arbitrary colours (green and purple).
+- Done in PR #55: (S) The week label reads "Sep 22 – 27" while the strip shows the 22nd to the 28th; check whether today is left out.
+- Done in PR #55: (S) "1 sets"; the plural is missing.
+- Done in PR #55: (S) Dates show as "2026-09-25"; use the locale's format.
+- Done in PR #55: (S) "6reps" is missing a space. The right and left sides use arbitrary colours (green and purple).
+- (S) The exercise filter sheet on Progress lets its lower rows sit under the system navigation bar.
 - (S/M) Graph starts empty until an exercise is picked; default to the most recent exercise.
 - (M) "1 Week" is a rolling seven days, while Today uses the calendar week and the first-day setting.
 - (M) The Challenge tab does not say how to set a challenge, and overlaps with the progression goals.
@@ -155,6 +164,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #52: last backup time and keep-screen-on default.
 - PR #53: Record saves sets as entered.
 - PR #54: Today polish.
+- PR #55: Progress redesign.
 
 ## Owner direction for later (2026-09-27)
 

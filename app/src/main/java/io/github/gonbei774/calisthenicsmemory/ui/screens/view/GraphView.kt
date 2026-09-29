@@ -101,7 +101,7 @@ fun GraphView(
     selectedExerciseFilter: Exercise?,
     selectedPeriod: Period?
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     var selectedGraphType by remember { mutableStateOf(GraphType.Average) }
     var isDistanceInverted by remember { mutableStateOf(false) }
 
@@ -117,12 +117,12 @@ fun GraphView(
                 Text(
                     text = stringResource(R.string.no_exercises_registered),
                     fontSize = 18.sp,
-                    color = appColors.textSecondary
+                    color = cs.onSurfaceVariant
                 )
                 Text(
                     text = stringResource(R.string.add_exercises_in_settings),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary
+                    color = cs.onSurfaceVariant
                 )
             }
         }
@@ -141,12 +141,12 @@ fun GraphView(
                 Text(
                     text = stringResource(R.string.select_exercise_please),
                     fontSize = 18.sp,
-                    color = appColors.textSecondary
+                    color = cs.onSurfaceVariant
                 )
                 Text(
                     text = stringResource(R.string.select_from_top),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary
+                    color = cs.onSurfaceVariant
                 )
             }
         }
@@ -164,7 +164,7 @@ fun GraphView(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = appColors.cardBackground
+                    containerColor = cs.surfaceContainerLow
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
@@ -182,10 +182,10 @@ fun GraphView(
                             onClick = { selectedGraphType = type },
                             label = { Text(stringResource(type.displayNameResId)) },
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = Purple600,
-                                selectedLabelColor = appColors.textPrimary,
-                                containerColor = appColors.cardBackgroundSecondary,
-                                labelColor = appColors.textTertiary
+                                selectedContainerColor = cs.secondaryContainer,
+                                selectedLabelColor = cs.onSecondaryContainer,
+                                containerColor = cs.surfaceContainerHigh,
+                                labelColor = cs.onSurfaceVariant
                             )
                         )
                     }
@@ -203,10 +203,10 @@ fun GraphView(
                                 )
                             },
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = Blue600,
-                                selectedLabelColor = appColors.textPrimary,
-                                containerColor = appColors.cardBackgroundSecondary,
-                                labelColor = appColors.textTertiary
+                                selectedContainerColor = cs.secondaryContainer,
+                                selectedLabelColor = cs.onSecondaryContainer,
+                                containerColor = cs.surfaceContainerHigh,
+                                labelColor = cs.onSurfaceVariant
                             )
                         )
                     }
@@ -216,7 +216,7 @@ fun GraphView(
 
         // グラフ
         item {
-            val unit = stringResource(if (selectedExerciseFilter!!.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+            val unit = unitSuffix(stringResource(if (selectedExerciseFilter!!.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds))
             val graphData = remember(selectedExerciseFilter, records, selectedPeriod, selectedGraphType, unit) {
                 prepareGraphData(
                     exercise = selectedExerciseFilter!!,
@@ -718,7 +718,7 @@ fun LineChart(
     isDistanceInverted: Boolean = false,
     allTimeDistanceRange: Pair<Float, Float>? = null
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val hasDistanceData = data.any { it.distanceCm != null }
 
     Card(
@@ -726,7 +726,7 @@ fun LineChart(
             .fillMaxWidth()
             .height(if (hasDistanceData) 340.dp else 300.dp),
         colors = CardDefaults.cardColors(
-            containerColor = appColors.cardBackground
+            containerColor = cs.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -744,12 +744,12 @@ fun LineChart(
                             Text(
                                 text = stringResource(R.string.no_data),
                                 fontSize = 16.sp,
-                                color = appColors.textSecondary
+                                color = cs.onSurfaceVariant
                             )
                             Text(
                                 text = stringResource(R.string.record_training_for_exercise),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary
+                                color = cs.onSurfaceVariant
                             )
                         }
                     }
@@ -777,12 +777,12 @@ fun LineChart(
                     Box(
                         modifier = Modifier
                             .size(8.dp)
-                            .background(Green400, CircleShape)
+                            .background(cs.primary, CircleShape)
                     )
                     Text(
                         text = " ${stringResource(R.string.legend_reps)}",
                         fontSize = 12.sp,
-                        color = appColors.textSecondary
+                        color = cs.onSurfaceVariant
                     )
 
                     Spacer(modifier = Modifier.width(24.dp))
@@ -791,12 +791,12 @@ fun LineChart(
                     Box(
                         modifier = Modifier
                             .size(8.dp)
-                            .background(Blue600, CircleShape)
+                            .background(cs.secondary, CircleShape)
                     )
                     Text(
                         text = " ${stringResource(if (isDistanceInverted) R.string.legend_distance_inverted else R.string.legend_distance)}",
                         fontSize = 12.sp,
-                        color = appColors.textSecondary
+                        color = cs.onSurfaceVariant
                     )
                 }
             }
@@ -812,7 +812,7 @@ fun SimpleLineChart(
     isDistanceInverted: Boolean = false,
     allTimeDistanceRange: Pair<Float, Float>? = null
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     // Unilateral判定
     val isUnilateral = data.any { it.valueLeft != null }
 
@@ -821,7 +821,7 @@ fun SimpleLineChart(
     val hasDistanceData = distanceValues.isNotEmpty()
 
     // 単位文字列を取得（@Composable関数内でのみ取得可能）
-    val unit = stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+    val unit = unitSuffix(stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds))
 
     Canvas(
         modifier = Modifier
@@ -887,7 +887,7 @@ fun SimpleLineChart(
             val y = topPadding + graphHeight - ((labelValue - minValue) / range * graphHeight)
 
             drawLine(
-                color = appColors.border.copy(alpha = 0.3f),
+                color = cs.outlineVariant.copy(alpha = 0.3f),
                 start = Offset(leftPadding, y),
                 end = Offset(size.width - rightPadding, y),
                 strokeWidth = 1.dp.toPx()
@@ -960,7 +960,7 @@ fun SimpleLineChart(
         // 右側の線を描画（緑）
         drawPath(
             path = pathRight,
-            color = Green400,
+            color = cs.primary,
             style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
         )
 
@@ -993,7 +993,7 @@ fun SimpleLineChart(
             // 左側の線を描画（紫）
             drawPath(
                 path = pathLeft,
-                color = Purple600,
+                color = cs.primary,
                 style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
             )
         }
@@ -1008,13 +1008,13 @@ fun SimpleLineChart(
                 val y = topPadding + graphHeight - ((point.value - minValue) / range * graphHeight)
 
                 drawCircle(
-                    color = appColors.textPrimary.copy(alpha = 0.4f),
+                    color = cs.onSurface.copy(alpha = 0.4f),
                     radius = 6.dp.toPx(),
                     center = Offset(x, y)
                 )
 
                 drawCircle(
-                    color = Green400.copy(alpha = 0.6f),
+                    color = cs.primary.copy(alpha = 0.6f),
                     radius = 4.dp.toPx(),
                     center = Offset(x, y)
                 )
@@ -1035,13 +1035,13 @@ fun SimpleLineChart(
                         val y = topPadding + graphHeight - ((leftValue - minValue) / range * graphHeight)
 
                         drawCircle(
-                            color = appColors.textPrimary.copy(alpha = 0.4f),
+                            color = cs.onSurface.copy(alpha = 0.4f),
                             radius = 6.dp.toPx(),
                             center = Offset(x, y)
                         )
 
                         drawCircle(
-                            color = Purple600.copy(alpha = 0.6f),
+                            color = cs.primary.copy(alpha = 0.6f),
                             radius = 4.dp.toPx(),
                             center = Offset(x, y)
                         )
@@ -1052,7 +1052,7 @@ fun SimpleLineChart(
             }
         }
 
-        // 距離線の描画（Blue600）
+        // 距離線の描画（cs.secondary）
         if (hasDistanceData) {
             val pathDistance = Path()
             var isFirstDistancePoint = true
@@ -1087,7 +1087,7 @@ fun SimpleLineChart(
 
             drawPath(
                 path = pathDistance,
-                color = Blue600,
+                color = cs.secondary,
                 style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
             )
 
@@ -1107,13 +1107,13 @@ fun SimpleLineChart(
                         }
 
                         drawCircle(
-                            color = appColors.textPrimary.copy(alpha = 0.4f),
+                            color = cs.onSurface.copy(alpha = 0.4f),
                             radius = 6.dp.toPx(),
                             center = Offset(x, y)
                         )
 
                         drawCircle(
-                            color = Blue600.copy(alpha = 0.6f),
+                            color = cs.secondary.copy(alpha = 0.6f),
                             radius = 4.dp.toPx(),
                             center = Offset(x, y)
                         )
@@ -1153,7 +1153,7 @@ fun VolumeChart(
     period: Period?,
     allTimeVolumeMax: Float
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val isUnilateral = data.any { it.volumeLeft != null }
     val volumeLabel = stringResource(R.string.legend_volume)
 
@@ -1162,7 +1162,7 @@ fun VolumeChart(
             .fillMaxWidth()
             .height(300.dp),
         colors = CardDefaults.cardColors(
-            containerColor = appColors.cardBackground
+            containerColor = cs.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -1180,12 +1180,12 @@ fun VolumeChart(
                             Text(
                                 text = stringResource(R.string.no_data),
                                 fontSize = 16.sp,
-                                color = appColors.textSecondary
+                                color = cs.onSurfaceVariant
                             )
                             Text(
                                 text = stringResource(R.string.record_weight_for_graph),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary
+                                color = cs.onSurfaceVariant
                             )
                         }
                     }
@@ -1212,35 +1212,35 @@ fun VolumeChart(
                         Box(
                             modifier = Modifier
                                 .size(8.dp)
-                                .background(Green400, CircleShape)
+                                .background(cs.primary, CircleShape)
                         )
                         Text(
                             text = " ${stringResource(R.string.right_short)}",
                             fontSize = 12.sp,
-                            color = appColors.textSecondary
+                            color = cs.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         Box(
                             modifier = Modifier
                                 .size(8.dp)
-                                .background(Purple600, CircleShape)
+                                .background(cs.primary, CircleShape)
                         )
                         Text(
                             text = " ${stringResource(R.string.left_short)}",
                             fontSize = 12.sp,
-                            color = appColors.textSecondary
+                            color = cs.onSurfaceVariant
                         )
                     } else {
                         // Bilateral: ボリューム
                         Box(
                             modifier = Modifier
                                 .size(8.dp)
-                                .background(Green400, CircleShape)
+                                .background(cs.primary, CircleShape)
                         )
                         Text(
                             text = " $volumeLabel",
                             fontSize = 12.sp,
-                            color = appColors.textSecondary
+                            color = cs.onSurfaceVariant
                         )
                     }
                 }
@@ -1255,7 +1255,7 @@ fun SimpleVolumeChart(
     period: Period?,
     allTimeVolumeMax: Float
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val isUnilateral = data.any { it.volumeLeft != null }
 
     Canvas(
@@ -1304,7 +1304,7 @@ fun SimpleVolumeChart(
             val y = topPadding + graphHeight - (labelValue / range * graphHeight)
 
             drawLine(
-                color = appColors.border.copy(alpha = 0.3f),
+                color = cs.outlineVariant.copy(alpha = 0.3f),
                 start = Offset(leftPadding, y),
                 end = Offset(size.width - rightPadding, y),
                 strokeWidth = 1.dp.toPx()
@@ -1351,7 +1351,7 @@ fun SimpleVolumeChart(
 
         drawPath(
             path = pathRight,
-            color = Green400,
+            color = cs.primary,
             style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
         )
 
@@ -1383,7 +1383,7 @@ fun SimpleVolumeChart(
 
             drawPath(
                 path = pathLeft,
-                color = Purple600,
+                color = cs.primary,
                 style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
             )
         }
@@ -1398,13 +1398,13 @@ fun SimpleVolumeChart(
                 val y = topPadding + graphHeight - (point.volumeRight / range * graphHeight)
 
                 drawCircle(
-                    color = appColors.textPrimary.copy(alpha = 0.4f),
+                    color = cs.onSurface.copy(alpha = 0.4f),
                     radius = 6.dp.toPx(),
                     center = Offset(x, y)
                 )
 
                 drawCircle(
-                    color = Green400.copy(alpha = 0.6f),
+                    color = cs.primary.copy(alpha = 0.6f),
                     radius = 4.dp.toPx(),
                     center = Offset(x, y)
                 )
@@ -1425,13 +1425,13 @@ fun SimpleVolumeChart(
                         val y = topPadding + graphHeight - (leftValue / range * graphHeight)
 
                         drawCircle(
-                            color = appColors.textPrimary.copy(alpha = 0.4f),
+                            color = cs.onSurface.copy(alpha = 0.4f),
                             radius = 6.dp.toPx(),
                             center = Offset(x, y)
                         )
 
                         drawCircle(
-                            color = Purple600.copy(alpha = 0.6f),
+                            color = cs.primary.copy(alpha = 0.6f),
                             radius = 4.dp.toPx(),
                             center = Offset(x, y)
                         )
@@ -1472,7 +1472,7 @@ fun AssistanceChart(
     allTimeAssistanceRange: Pair<Float, Float>,
     allRecordsDateRange: Pair<LocalDate, LocalDate>? = null
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val assistanceLabel = stringResource(R.string.legend_assistance)
 
     Card(
@@ -1480,7 +1480,7 @@ fun AssistanceChart(
             .fillMaxWidth()
             .height(300.dp),
         colors = CardDefaults.cardColors(
-            containerColor = appColors.cardBackground
+            containerColor = cs.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -1498,12 +1498,12 @@ fun AssistanceChart(
                             Text(
                                 text = stringResource(R.string.no_data),
                                 fontSize = 16.sp,
-                                color = appColors.textSecondary
+                                color = cs.onSurfaceVariant
                             )
                             Text(
                                 text = stringResource(R.string.record_assistance_for_graph),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary
+                                color = cs.onSurfaceVariant
                             )
                         }
                     }
@@ -1529,12 +1529,12 @@ fun AssistanceChart(
                     Box(
                         modifier = Modifier
                             .size(8.dp)
-                            .background(Amber500, CircleShape)
+                            .background(cs.tertiary, CircleShape)
                     )
                     Text(
                         text = " $assistanceLabel",
                         fontSize = 12.sp,
-                        color = appColors.textSecondary
+                        color = cs.onSurfaceVariant
                     )
                 }
             }
@@ -1549,7 +1549,7 @@ fun SimpleAssistanceChart(
     allTimeAssistanceRange: Pair<Float, Float>,
     allRecordsDateRange: Pair<LocalDate, LocalDate>? = null
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Canvas(
         modifier = Modifier
             .fillMaxSize()
@@ -1599,7 +1599,7 @@ fun SimpleAssistanceChart(
             val y = topPadding + graphHeight - ((labelValue - adjustedMin) / range * graphHeight)
 
             drawLine(
-                color = appColors.border.copy(alpha = 0.3f),
+                color = cs.outlineVariant.copy(alpha = 0.3f),
                 start = Offset(leftPadding, y),
                 end = Offset(size.width - rightPadding, y),
                 strokeWidth = 1.dp.toPx()
@@ -1617,7 +1617,7 @@ fun SimpleAssistanceChart(
             )
         }
 
-        // 線の描画（Amber500）
+        // 線の描画（cs.tertiary）
         val path = Path()
         var isFirstPoint = true
 
@@ -1642,7 +1642,7 @@ fun SimpleAssistanceChart(
 
         drawPath(
             path = path,
-            color = Amber500,
+            color = cs.tertiary,
             style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round)
         )
 
@@ -1656,13 +1656,13 @@ fun SimpleAssistanceChart(
                 val y = topPadding + graphHeight - ((point.assistanceKg - adjustedMin) / range * graphHeight)
 
                 drawCircle(
-                    color = appColors.textPrimary.copy(alpha = 0.4f),
+                    color = cs.onSurface.copy(alpha = 0.4f),
                     radius = 6.dp.toPx(),
                     center = Offset(x, y)
                 )
 
                 drawCircle(
-                    color = Amber500.copy(alpha = 0.6f),
+                    color = cs.tertiary.copy(alpha = 0.6f),
                     radius = 4.dp.toPx(),
                     center = Offset(x, y)
                 )
@@ -1720,7 +1720,7 @@ fun WeightChart(
     allTimeWeightRange: Pair<Float, Float>,
     allRecordsDateRange: Pair<LocalDate, LocalDate>? = null
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     val weightLabel = stringResource(R.string.max_weight)
 
     Card(
@@ -1728,7 +1728,7 @@ fun WeightChart(
             .fillMaxWidth()
             .height(300.dp),
         colors = CardDefaults.cardColors(
-            containerColor = appColors.cardBackground
+            containerColor = cs.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -1746,12 +1746,12 @@ fun WeightChart(
                             Text(
                                 text = stringResource(R.string.no_data),
                                 fontSize = 16.sp,
-                                color = appColors.textSecondary
+                                color = cs.onSurfaceVariant
                             )
                             Text(
                                 text = stringResource(R.string.record_weight_for_graph),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary
+                                color = cs.onSurfaceVariant
                             )
                         }
                     }
@@ -1782,7 +1782,7 @@ fun WeightChart(
                     Text(
                         text = " $weightLabel",
                         fontSize = 12.sp,
-                        color = appColors.textSecondary
+                        color = cs.onSurfaceVariant
                     )
                 }
             }
@@ -1797,7 +1797,7 @@ fun SimpleWeightChart(
     allTimeWeightRange: Pair<Float, Float>,
     allRecordsDateRange: Pair<LocalDate, LocalDate>? = null
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Canvas(
         modifier = Modifier
             .fillMaxSize()
@@ -1845,7 +1845,7 @@ fun SimpleWeightChart(
             val y = topPadding + graphHeight - ((labelValue - adjustedMin) / range * graphHeight)
 
             drawLine(
-                color = appColors.border.copy(alpha = 0.3f),
+                color = cs.outlineVariant.copy(alpha = 0.3f),
                 start = Offset(leftPadding, y),
                 end = Offset(size.width - rightPadding, y),
                 strokeWidth = 1.dp.toPx()
@@ -1902,7 +1902,7 @@ fun SimpleWeightChart(
                 val y = topPadding + graphHeight - ((point.maxWeightKg - adjustedMin) / range * graphHeight)
 
                 drawCircle(
-                    color = appColors.textPrimary.copy(alpha = 0.4f),
+                    color = cs.onSurface.copy(alpha = 0.4f),
                     radius = 6.dp.toPx(),
                     center = Offset(x, y)
                 )
@@ -2052,11 +2052,11 @@ fun StatisticsSummary(
     statistics: Statistics,
     exercise: Exercise
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = appColors.cardBackground
+            containerColor = cs.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -2065,7 +2065,7 @@ fun StatisticsSummary(
                 text = stringResource(R.string.statistics_summary),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary,
+                color = cs.onSurface,
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
@@ -2073,10 +2073,10 @@ fun StatisticsSummary(
                 Text(
                     text = stringResource(R.string.no_data),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary
+                    color = cs.onSurfaceVariant
                 )
             } else {
-                val unit = stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                val unit = unitSuffix(stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds))
                 val isUnilateral = statistics.averageLeft != null
 
                 // 総セット数
@@ -2120,7 +2120,7 @@ fun StatisticsSummary(
                 // 荷重統計（weightTrackingEnabled時のみ）
                 if (exercise.weightTrackingEnabled && (statistics.maxDailyVolume != null || statistics.maxWeight != null)) {
                     Spacer(modifier = Modifier.height(8.dp))
-                    HorizontalDivider(color = appColors.divider)
+                    HorizontalDivider(color = cs.outlineVariant)
                     Spacer(modifier = Modifier.height(8.dp))
 
                     // ボリューム統計（左右別表示 or 単一表示）
@@ -2169,7 +2169,7 @@ fun StatItem(
     value: String,
     valueColor: Color? = null
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -2179,13 +2179,13 @@ fun StatItem(
         Text(
             text = label,
             fontSize = 14.sp,
-            color = appColors.textSecondary
+            color = cs.onSurfaceVariant
         )
         Text(
             text = value,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = valueColor ?: appColors.textTertiary
+            color = valueColor ?: cs.onSurfaceVariant
         )
     }
 }
@@ -2197,7 +2197,7 @@ fun StatItemDual(
     valueRight: String,
     valueLeft: String
 ) {
-    val appColors = LocalAppColors.current
+    val cs = MaterialTheme.colorScheme
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -2208,7 +2208,7 @@ fun StatItemDual(
         Text(
             text = label,
             fontSize = 14.sp,
-            color = appColors.textSecondary
+            color = cs.onSurfaceVariant
         )
 
         Row(
@@ -2219,18 +2219,18 @@ fun StatItemDual(
                 text = valueRight,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Green400
+                color = cs.primary
             )
             Text(
                 text = "|",
                 fontSize = 14.sp,
-                color = appColors.border
+                color = cs.outlineVariant
             )
             Text(
                 text = valueLeft,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Purple600
+                color = cs.primary
             )
         }
     }
@@ -2372,3 +2372,10 @@ fun calculateStatistics(
         )
     }
 }
+
+/**
+ * The unit as it follows a number in this language: " reps" with a space in most languages,
+ * "回" with none in Japanese. Taken from value_with_unit so translators control the spacing.
+ */
+@Composable
+private fun unitSuffix(unit: String): String = stringResource(R.string.value_with_unit, 0, unit).substringAfter('0')

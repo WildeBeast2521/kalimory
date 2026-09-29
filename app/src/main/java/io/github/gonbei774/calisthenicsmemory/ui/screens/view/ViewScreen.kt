@@ -65,7 +65,6 @@ sealed class RecordItem(val date: String, val time: String) {
 fun ViewScreen(
     viewModel: TrainingViewModel,
 ) {
-    val appColors = LocalAppColors.current
     val exercises by viewModel.exercises.collectAsState()
     val records by viewModel.history.collectAsState()
     val intervalRecords by viewModel.intervalHistory.collectAsState()
@@ -174,32 +173,19 @@ fun ViewScreen(
     }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            Surface(
+            // The same large title as the other primary destinations.
+            Text(
+                text = stringResource(R.string.nav_progress),
+                style = MaterialTheme.typography.displaySmall,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                color = Purple600
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text(
-                        text = stringResource(R.string.nav_progress),
-                        modifier = Modifier.semantics { heading() },
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                }
-            }
+                    .semantics { heading() }
+                    .padding(start = Spacing.l, end = Spacing.l, top = Spacing.xl, bottom = Spacing.s)
+            )
         },
-
-        ) { paddingValues ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -216,8 +202,8 @@ fun ViewScreen(
                 val minTabWidth = maxWidth / tabTitles.size
                 ScrollableTabRow(
                     selectedTabIndex = pagerState.currentPage,
-                    containerColor = appColors.cardBackground,
-                    contentColor = appColors.textPrimary,
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                     edgePadding = 0.dp
                 ) {
                     tabTitles.forEachIndexed { index, title ->
@@ -226,12 +212,7 @@ fun ViewScreen(
                             onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
                             modifier = Modifier.widthIn(min = minTabWidth),
                             text = {
-                                Text(
-                                    title,
-                                    fontSize = 16.sp,
-                                    fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Normal,
-                                    maxLines = 1
-                                )
+                                Text(title, style = MaterialTheme.typography.titleSmall, maxLines = 1)
                             }
                         )
                     }
@@ -241,12 +222,12 @@ fun ViewScreen(
             // フィルターチップ（全タブで表示、一行に並べる）
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                color = appColors.cardBackground
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(horizontal = Spacing.l, vertical = Spacing.s)
                         .horizontalScroll(rememberScrollState()),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -262,14 +243,10 @@ fun ViewScreen(
                                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(stringResource(R.string.close_x))
+                                    Icon(AppIcons.Close, contentDescription = null, modifier = Modifier.size(16.dp))
                                     Text(selectedExerciseFilter!!.name)
                                 }
                             },
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = Purple600,
-                                selectedLabelColor = appColors.textPrimary
-                            )
                         )
                     } else {
                         // 未選択時は選択画面を開くボタンを表示
@@ -289,10 +266,6 @@ fun ViewScreen(
                                     Text(stringResource(R.string.select_exercise_filter))
                                 }
                             },
-                            colors = FilterChipDefaults.filterChipColors(
-                                containerColor = appColors.cardBackgroundSecondary,
-                                labelColor = appColors.textPrimary
-                            )
                         )
                     }
 
@@ -304,12 +277,6 @@ fun ViewScreen(
                                 selectedPeriod = if (selectedPeriod == period) null else period
                             },
                             label = { Text(stringResource(period.displayNameResId)) },
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = Purple600,
-                                selectedLabelColor = appColors.textPrimary,
-                                containerColor = appColors.cardBackgroundSecondary,
-                                labelColor = appColors.textTertiary
-                            )
                         )
                     }
                 }
@@ -415,11 +382,11 @@ fun ViewScreen(
         val record = item.record
         AlertDialog(
             onDismissRequest = { showIntervalDeleteDialog = null },
-            containerColor = appColors.cardBackground,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     stringResource(R.string.delete_confirmation),
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
@@ -430,7 +397,7 @@ fun ViewScreen(
                         record.programName,
                         record.date
                     ),
-                    color = appColors.textTertiary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             confirmButton = {
@@ -440,12 +407,12 @@ fun ViewScreen(
                     else viewModel.deleteIntervalRecord(record.id)
                     showIntervalDeleteDialog = null
                 }) {
-                    Text(stringResource(R.string.delete), color = Red600)
+                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showIntervalDeleteDialog = null }) {
-                    Text(stringResource(R.string.cancel), color = appColors.textSecondary)
+                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         )
@@ -455,7 +422,6 @@ fun ViewScreen(
     showIntervalEditDialog?.let { item ->
         IntervalRecordEditDialog(
             record = item.record,
-            appColors = appColors,
             onDismiss = { showIntervalEditDialog = null },
             onConfirm = { updatedRecord ->
                 val sessionId = item.v2SessionId
@@ -485,7 +451,7 @@ fun ViewScreen(
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text(
                         text = stringResource(R.string.set_number_format, record.setNumber),
-                        color = appColors.textSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
 
@@ -607,7 +573,7 @@ fun ViewScreen(
                 }
             )
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.delete_session), color = Red600) },
+                text = { Text(stringResource(R.string.delete_session), color = MaterialTheme.colorScheme.error) },
                 onClick = {
                     showDeleteDialog = session
                     showContextMenu = null
@@ -677,7 +643,7 @@ fun ViewScreen(
                         showDeleteDialog = null
                     },
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = Red600
+                        contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
                     Text(stringResource(R.string.delete))
@@ -701,7 +667,6 @@ fun FilterBottomSheetContent(
     onExerciseSelected: (Exercise?) -> Unit,
     onClearFilter: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     var expandedGroups by remember { mutableStateOf(setOf<String?>()) }
     var searchQuery by remember { mutableStateOf("") }
 
@@ -719,7 +684,7 @@ fun FilterBottomSheetContent(
             text = stringResource(R.string.select_exercise),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = appColors.textPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
@@ -730,12 +695,12 @@ fun FilterBottomSheetContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
-            placeholder = { Text(stringResource(R.string.search_exercise), color = appColors.textSecondary) },
+            placeholder = { Text(stringResource(R.string.search_exercise), color = MaterialTheme.colorScheme.onSurfaceVariant) },
             leadingIcon = {
                 Icon(
                     AppIcons.Search,
                     contentDescription = stringResource(R.string.search),
-                    tint = appColors.textSecondary
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             trailingIcon = {
@@ -744,17 +709,17 @@ fun FilterBottomSheetContent(
                         Icon(
                             AppIcons.Close,
                             contentDescription = stringResource(R.string.clear),
-                            tint = appColors.textSecondary
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = appColors.textPrimary,
-                unfocusedTextColor = appColors.textPrimary,
-                focusedBorderColor = Purple600,
-                unfocusedBorderColor = appColors.border,
-                cursorColor = Purple600
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                cursorColor = MaterialTheme.colorScheme.primary
             ),
             singleLine = true
         )
@@ -796,7 +761,7 @@ fun FilterBottomSheetContent(
                                     expandedGroups + group.groupName
                                 }
                             },
-                            color = appColors.cardBackground,
+                            color = MaterialTheme.colorScheme.surfaceContainerLow,
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             Row(
@@ -818,12 +783,12 @@ fun FilterBottomSheetContent(
                                         },
                                         fontSize = 16.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = appColors.textPrimary
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
                                         text = "(${group.exercises.size})",
                                         fontSize = 14.sp,
-                                        color = appColors.textSecondary
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                                 Icon(
@@ -833,7 +798,7 @@ fun FilterBottomSheetContent(
                                         AppIcons.Forward
                                     },
                                     contentDescription = null,
-                                    tint = appColors.textSecondary
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -870,13 +835,12 @@ fun FilterExerciseItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val appColors = LocalAppColors.current
     Surface(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         onClick = onClick,
-        color = if (isSelected) Purple600.copy(alpha = 0.2f) else Color.Transparent,
+        color = if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f) else Color.Transparent,
         shape = MaterialTheme.shapes.medium
     ) {
         Row(
@@ -890,7 +854,7 @@ fun FilterExerciseItem(
                 Text(
                     text = exercise.name,
                     fontSize = 16.sp,
-                    color = if (isSelected) Purple600 else appColors.textPrimary,
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                 )
 
@@ -902,7 +866,7 @@ fun FilterExerciseItem(
                 ) {
                     // お気に入り
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFFFD700))
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.tertiary)
                     }
 
                     // レベル
@@ -911,7 +875,7 @@ fun FilterExerciseItem(
                             text = stringResource(R.string.level_format, exercise.sortOrder),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Blue600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
 
@@ -920,7 +884,7 @@ fun FilterExerciseItem(
                         text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                     // Unilateral
@@ -929,7 +893,7 @@ fun FilterExerciseItem(
                             text = stringResource(R.string.one_sided),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Purple600
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -939,7 +903,7 @@ fun FilterExerciseItem(
                 Icon(
                     imageVector = AppIcons.Search,
                     contentDescription = null,
-                    tint = Purple600
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -954,13 +918,12 @@ fun FilterTextItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val appColors = LocalAppColors.current
     Surface(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         onClick = onClick,
-        color = if (isSelected) Purple600.copy(alpha = 0.2f) else Color.Transparent,
+        color = if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f) else Color.Transparent,
         shape = MaterialTheme.shapes.medium
     ) {
         Row(
@@ -973,7 +936,7 @@ fun FilterTextItem(
             Text(
                 text = text,
                 fontSize = 16.sp,
-                color = if (isSelected) Purple600 else appColors.textPrimary,
+                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
             )
 
@@ -981,7 +944,7 @@ fun FilterTextItem(
                 Icon(
                     imageVector = AppIcons.Search,
                     contentDescription = null,
-                    tint = Purple600
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -1000,7 +963,6 @@ fun ChallengeView(
     selectedPeriod: Period?,
     onExerciseClick: (Exercise) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     // ViewModelを取得（階層データ用）
     val viewModel: TrainingViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
@@ -1051,7 +1013,7 @@ fun ChallengeView(
                         stringResource(R.string.no_exercises_in_period, stringResource(selectedPeriod.displayNameResId))
                     },
                     fontSize = 18.sp,
-                    color = appColors.textSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -1083,7 +1045,7 @@ fun ChallengeView(
                             },
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = appColors.textSecondary,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
                         )
                     }
@@ -1135,7 +1097,6 @@ fun ChallengeExerciseCard(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     val hasChallenge = exercise.targetSets != null && exercise.targetValue != null
 
     // 課題ありの場合、ステータスを計算（期間を考慮）
@@ -1162,7 +1123,7 @@ fun ChallengeExerciseCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) appColors.cardBackgroundSelected else appColors.cardBackground
+            containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
         ),
         shape = RoundedCornerShape(12.dp),
         onClick = onClick
@@ -1184,7 +1145,7 @@ fun ChallengeExerciseCard(
                         text = stringResource(R.string.level_format, exercise.sortOrder),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Blue600
+                        color = MaterialTheme.colorScheme.secondary
                     )
                 }
 
@@ -1194,7 +1155,7 @@ fun ChallengeExerciseCard(
                     fontSize = 18.sp,
                     modifier = Modifier.weight(1f), //takes up available space in the middle without taking space of checkmark icon
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 // 達成マーク
@@ -1220,14 +1181,14 @@ fun ChallengeExerciseCard(
                         modifier = Modifier
                             .weight(1f)
                             .height(8.dp),
-                        color = Purple600,
-                        trackColor = appColors.cardBackground,
+                        color = MaterialTheme.colorScheme.primary,
+                        trackColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     )
                     Text(
                         text = "${status.achievementRate}%",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
 
@@ -1237,12 +1198,12 @@ fun ChallengeExerciseCard(
                         text = "${stringResource(R.string.challenge_best)} $actualTotal$unit",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
                         text = " / ${stringResource(R.string.challenge_target_label)} ${exercise.targetSets}×${exercise.targetValue}$unit",
                         fontSize = 13.sp,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
@@ -1259,13 +1220,13 @@ fun ChallengeExerciseCard(
                         text = stringResource(R.string.challenge_clear_days, clearData.clearCount, clearData.totalDays),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     if (lastRecordDate != null) {
                         Text(
                             text = stringResource(R.string.last_record_short, lastRecordDate),
                             fontSize = 12.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -1274,7 +1235,7 @@ fun ChallengeExerciseCard(
                 Text(
                     text = stringResource(R.string.no_challenge_set),
                     fontSize = 14.sp,
-                    color = appColors.textSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -1451,9 +1412,9 @@ fun ChallengeHeatStrip(data: ClearDayData) {
     ) {
         data.states.forEach { state ->
             val color = when (state) {
-                DayClearState.Clear -> Purple600
-                DayClearState.Trained -> Purple600.copy(alpha = 0.40f)
-                DayClearState.Rest -> Purple600.copy(alpha = 0.12f)
+                DayClearState.Clear -> MaterialTheme.colorScheme.primary
+                DayClearState.Trained -> MaterialTheme.colorScheme.primary.copy(alpha = 0.40f)
+                DayClearState.Rest -> MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
             }
             Box(
                 modifier = Modifier

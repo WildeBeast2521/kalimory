@@ -59,8 +59,8 @@
     <string name="group_deleted">Групу видалено</string>
     <string name="delete_program">Видалити програму</string>
     <string name="reps_or_seconds">%s</string>
-    <string name="right_value_short">П: %1$d%2$s</string>
-    <string name="left_value_short">Л: %1$d%2$s</string>
+    <string name="right_value_short">П: %1$d %2$s</string>
+    <string name="left_value_short">Л: %1$d %2$s</string>
     <string name="date_format">Дата: %s</string>
     <string name="time_format">Час: %s</string>
     <string name="time_label">Час</string>
@@ -105,7 +105,6 @@
     <string name="no_exercises_add_with_plus">Вправ ще немає.\nДодайте першу за допомогою кнопки + нижче</string>
     <string name="date_with_label">Дата: %s</string>
     <string name="time_with_label">Час: %s</string>
-    <string name="close_x">×</string>
     <string name="create_group_title">Створити нову групу</string>
     <string name="add_exercise_title">Додати нову вправу</string>
     <string name="multiplication_sign">×</string>
@@ -792,4 +791,11 @@
     <string name="record_all_sets">Записати всі (%1$d)</string>
     <string name="record_only_done_sets">Лише позначені (%1$d)</string>
     <string name="program_no_exercises">Вправ ще немає</string>
+    <plurals name="set_count">
+        <item quantity="one">%d підхід</item>
+        <item quantity="few">%d підходи</item>
+        <item quantity="many">%d підходів</item>
+        <item quantity="other">%d підходу</item>
+    </plurals>
+    <string name="value_with_unit">%1$d %2$s</string>
 </resources>

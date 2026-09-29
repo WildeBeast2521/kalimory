@@ -81,9 +81,9 @@
     <string name="right">Destra</string>
     <string name="left">Sinistra</string>
     <string name="right_value">Destra (%s)</string>
-    <string name="right_value_short">D: %1$d%2$s</string>
+    <string name="right_value_short">D: %1$d %2$s</string>
     <string name="left_value">Sinistra (%s)</string>
-    <string name="left_value_short">S: %1$d%2$s</string>
+    <string name="left_value_short">S: %1$d %2$s</string>
     <string name="set_number_format">Serie %d</string>
     <string name="set_number_with_unit" formatted="false">Serie %d (%s)</string>
     <string name="date_format">Data: %s</string>
@@ -281,7 +281,6 @@
     <string name="set_number_display">Serie %d</string>
     <string name="date_with_label">Data: %s</string>
     <string name="time_with_label">Ora: %s</string>
-    <string name="close_x">×</string>
     <string name="select_exercise_filter">Seleziona Esercizio</string>
     <string name="target_display_short">Obiettivo: %1$d serie × %2$d%3$s%4$s</string>
     <string name="edit_exercise_title">Modifica Esercizio</string>
@@ -791,4 +790,10 @@
     <string name="record_all_sets">Registra tutte (%1$d)</string>
     <string name="record_only_done_sets">Solo segnate (%1$d)</string>
     <string name="program_no_exercises">Ancora nessun esercizio</string>
+    <plurals name="set_count">
+        <item quantity="one">%d serie</item>
+        <item quantity="many">%d di serie</item>
+        <item quantity="other">%d serie</item>
+    </plurals>
+    <string name="value_with_unit">%1$d %2$s</string>
 </resources>

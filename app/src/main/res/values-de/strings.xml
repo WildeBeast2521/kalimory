@@ -81,9 +81,9 @@
     <string name="right">Rechts</string>
     <string name="left">Links</string>
     <string name="right_value">Rechts (%s)</string>
-    <string name="right_value_short">R: %1$d%2$s</string>
+    <string name="right_value_short">R: %1$d %2$s</string>
     <string name="left_value">Links (%s)</string>
-    <string name="left_value_short">L: %1$d%2$s</string>
+    <string name="left_value_short">L: %1$d %2$s</string>
     <string name="set_number_format">Satz %d</string>
     <string name="set_number_with_unit" formatted="false">Satz %d (%s)</string>
     <string name="date_format">Datum: %s</string>
@@ -276,7 +276,6 @@
     <string name="set_number_display">Satz %d</string>
     <string name="date_with_label">Datum: %s</string>
     <string name="time_with_label">Uhrzeit: %s</string>
-    <string name="close_x">×</string>
     <string name="select_exercise_filter">Übung auswählen</string>
     <string name="target_display_short">Ziel: %1$d Sätze × %2$d%3$s%4$s</string>
     <string name="edit_exercise_title">Übung bearbeiten</string>
@@ -817,4 +816,9 @@
     <string name="record_all_sets">Alle speichern (%1$d)</string>
     <string name="record_only_done_sets">Nur markierte (%1$d)</string>
     <string name="program_no_exercises">Noch keine Übungen</string>
+    <plurals name="set_count">
+        <item quantity="one">%d Satz</item>
+        <item quantity="other">%d Sätze</item>
+    </plurals>
+    <string name="value_with_unit">%1$d %2$s</string>
 </resources>
