@@ -4,20 +4,36 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Settings links point to this repository (owner decision, 2026-09-29). Branch `work/repo-links`, based on master `5f529d6`.
+Baseline Profiles and a Macrobenchmark module. Branch `work/baseline-profiles`, based on master `cf0865d`.
 
-- **Links:**
-  - "Source Code" and "Report issue on GitHub" open `github.com/WildeBeast2521/CalisthenicsMemory`;
-  - the Codeberg issue row is removed, along with its string.
-  - The repository is private for now, so these links work only for people with access until it is published.
-- **Attribution:** it stays. The author row keeps Gonbei774, and a new "Original project" row, in all 10 locales, opens the upstream Codeberg repository.
-- **Icon:** the "<>" text glyph becomes the Material Symbol `code` (`AppIcons.SourceCode`).
+- **`:baselineprofile`** (`com.android.test` with `androidx.baselineprofile` 1.5.0), the one module the rollout plan called for:
+  - `BaselineProfileGenerator` records a cold start and a visit to each destination;
+  - `StartupBenchmark` measures cold start and tab switching, each without and with the profile.
+  - Emulator runs are allowed with `androidx.benchmark.suppressErrors=EMULATOR`; their numbers are only comparable with each other.
+- **App:** `profileinstaller` 1.4.1 installs the profile on devices without Play cloud profiles (F-Droid). The generated profile is committed at `app/src/release/generated/baselineProfiles/`.
+- **Signing:** benchmark and non-minified release copies are signed with the debug key through the variant API, because the repository has no keystore.
+- **Regenerating:** run `./gradlew :app:generateBaselineProfile` on a rooted emulator (API 28+; `adb root`). Use `ANDROID_SERIAL`.
 
-Owner note for the end-of-redesign review: the UI is "good, but not exceptional"; it needs more pizazz and to feel special, with animations and motion. Finish the remaining work first, then bring a motion and delight proposal.
+Measured (release build, median of 10; emulators render in software, so absolute frame times are high):
+
+| Metric | API 29 emulator | API 36 emulator |
+|:---|:---|:---|
+| Cold start, time to initial display | 1306 ms without, 1360 to 1364 ms with (ranges overlap: no measurable change) | 1334 ms without, 1330 ms with (no change) |
+| Tab switching, frame CPU time | not measurable (no frame timeline below API 31; the test skips) | P50 79 to 74 ms, P90 120 to 95 ms (−21%), P99 399 to 180 ms (−55%) |
+
+So on emulators the profile helps smoothness, not start-up. Start-up gains need a real ARM device.
+
+The "4 s blank screen" seen in the audit was a debug build; release reaches its first frame in about 1.3 s on these emulators.
+
+**Reproducibility:** two clean builds produced identical `assets/dexopt/baseline.prof` and `baseline.profm` (same SHA-256), so F-Droid reproducible builds are unaffected.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- a screenshot of the App info section.
+- the benchmarks above.
+
+## Previous phase: Settings links point to this repository (merged)
+
+PR #63 merged as `cf0865d`.
 
 ## Previous phase: workout run copy fixes (merged)
 
@@ -147,7 +163,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - The other known limitations are technical safeguards, not product gaps.
 
 **Performance:**
-- (M) A cold start on the API 29 emulator showed a blank screen for about 4 seconds. Baseline Profiles and a Macrobenchmark are already planned; measure before judging.
+- Measured in PR #64. The 4 s was a debug build; release takes about 1.3 s on emulators. The Baseline Profile cuts tab-switching jank (P99 −55% on API 36). Frame timing inside a workout needs seeded data (follow-up).
 
 ## Previous phase: in-workout redesign (merged)
 
@@ -202,6 +218,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #61: remove AppColors.
 - PR #62: workout run copy fixes.
 - PR #63: Settings links point to this repository.
+- PR #64: Baseline Profiles and Macrobenchmark.
 
 ## Owner direction for later (2026-09-27)
 

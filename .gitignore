@@ -8,6 +8,7 @@
 # ビルド生成物
 /build
 /app/build
+/baselineprofile/build
 /captures
 
 # その他

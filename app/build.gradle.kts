@@ -8,6 +8,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.mikepenz.aboutlibraries.plugin.android")
+    alias(libs.plugins.androidx.baselineprofile)
 }
 
 // AboutLibraries: exclude timestamp for reproducible builds
@@ -93,6 +94,17 @@ android {
     }
 }
 
+// The Baseline Profile plugin adds benchmark and non-minified copies of release. Without a
+// keystore in the repository they are signed with the debug key so they can be installed.
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        val type = variant.buildType.orEmpty()
+        if (type.startsWith("benchmark") || type.startsWith("nonMinified")) {
+            variant.signingConfig.setConfig(android.signingConfigs.getByName("debug"))
+        }
+    }
+}
+
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
@@ -141,6 +153,10 @@ dependencies {
     // Reorderable (drag and drop)
     implementation("sh.calvin.reorderable:reorderable:3.0.0")
 
+    // Installs the Baseline Profile on devices without Play Store cloud profiles (F-Droid).
+    implementation(libs.androidx.profileinstaller)
+    baselineProfile(project(":baselineprofile"))
+
     // Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
@@ -148,7 +164,7 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.mockito:mockito-core:5.7.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation("androidx.room:room-testing:2.8.5")
