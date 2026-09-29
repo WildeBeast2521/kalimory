@@ -46,6 +46,8 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.ui.screens.formatRecordsForClipboard
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.describe
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.rememberProgramSummaries
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
@@ -112,11 +114,28 @@ fun TodayScreen(
             .sortedBy { (_, sets) -> sets.first().time }
     }
 
+    val programSummaries = rememberProgramSummaries(viewModel, programs, exercises)
+    val exercisesById = remember(exercises) { exercises.associateBy { it.id } }
     val workoutLabel = stringResource(R.string.home_workout)
+    val repsUnit = stringResource(R.string.unit_reps)
+    val secondsUnit = stringResource(R.string.unit_seconds)
+    // What a due exercise asks for (3 sets × 12 reps), when it has a target.
+    @Composable
+    fun exerciseDetail(exerciseId: Long): String {
+        val exercise = exercisesById[exerciseId] ?: return workoutLabel
+        val sets = exercise.targetSets ?: return workoutLabel
+        val value = exercise.targetValue ?: return workoutLabel
+        val unit = if (exercise.type == "Dynamic") repsUnit else secondsUnit
+        val format = if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format
+        return stringResource(format, sets, value, unit)
+    }
     val programLabel = stringResource(R.string.today_kind_program)
     val intervalLabel = stringResource(R.string.interval_label)
     val groupLabel = stringResource(R.string.group)
     val savedForLater = stringResource(R.string.today_saved_for_later)
+    // How big a program is (3 exercise(s) · ~13 min); "Program" until that is known.
+    @Composable
+    fun programDetail(programId: Long): String = programSummaries[programId].describe().ifEmpty { programLabel }
 
     data class Item(val icon: ImageVector, val name: String, val kind: String, val open: () -> Unit)
 
@@ -135,9 +154,9 @@ fun TodayScreen(
     }
     val dueItems = dueTasks.mapNotNull { task ->
         val (icon, name, kind) = when (task.type) {
-            TodoTask.TYPE_EXERCISE -> Triple(AppIcons.Done, exerciseNames[task.referenceId], workoutLabel)
+            TodoTask.TYPE_EXERCISE -> Triple(AppIcons.Done, exerciseNames[task.referenceId], exerciseDetail(task.referenceId))
             TodoTask.TYPE_GROUP -> Triple(AppIcons.FavoriteFilled, groupNames[task.referenceId], groupLabel)
-            TodoTask.TYPE_PROGRAM -> Triple(AppIcons.Program, programNames[task.referenceId], programLabel)
+            TodoTask.TYPE_PROGRAM -> Triple(AppIcons.Program, programNames[task.referenceId], programDetail(task.referenceId))
             TodoTask.TYPE_INTERVAL -> Triple(AppIcons.Interval, intervalNames[task.referenceId], intervalLabel)
             // Tasks whose target is gone or whose type is unknown stay visible on the To Do screen.
             else -> return@mapNotNull null
@@ -151,7 +170,7 @@ fun TodayScreen(
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = Spacing.l, vertical = Spacing.xl),
-        verticalArrangement = Arrangement.spacedBy(Spacing.l),
+        verticalArrangement = Arrangement.spacedBy(Spacing.xl),
     ) {
         // Date and title
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -195,28 +214,24 @@ fun TodayScreen(
                 stringResource(R.string.today_start), AppIcons.Workout, emphasised = false, onClick = onOpenTrain,
             )
         }
-        resumeItems.drop(1).forEach { TodayRow(it.icon, it.name, it.kind, onClick = it.open) }
+        if (resumeItems.size > 1) {
+            RowGroup { resumeItems.drop(1).forEach { TodayRow(it.icon, it.name, it.kind, trailing = AppIcons.Play, onClick = it.open) } }
+        }
 
         // What else is due; the hero already shows the first when nothing waits to be resumed.
         val otherDue = if (heroFromDue) dueItems.drop(1) else dueItems
         if (otherDue.isNotEmpty() || !heroFromDue) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                SectionHeading(stringResource(R.string.today_due_title), Modifier.weight(1f))
-                TextButton(onClick = onOpenToDo) { Text(stringResource(R.string.today_all_todos)) }
-            }
-            if (otherDue.isEmpty()) {
-                Text(stringResource(R.string.today_due_none), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            } else {
-                Column { otherDue.forEach { TodayRow(it.icon, it.name, it.kind, onClick = it.open) } }
+            Section(stringResource(R.string.today_due_title), onOpenToDo, stringResource(R.string.today_all_todos)) {
+                if (otherDue.isEmpty()) {
+                    Text(stringResource(R.string.today_due_none), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                } else {
+                    RowGroup { otherDue.forEach { TodayRow(it.icon, it.name, it.kind, trailing = AppIcons.Play, onClick = it.open) } }
+                }
             }
         }
 
         // What was done today, as chalk tallies.
-        if (doneToday.isNotEmpty()) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                SectionHeading(stringResource(R.string.today_done_title), Modifier.weight(1f))
-                TextButton(onClick = onOpenHistory) { Text(stringResource(R.string.today_see_progress)) }
-            }
+        if (doneToday.isNotEmpty()) Section(stringResource(R.string.today_done_title), onOpenHistory, stringResource(R.string.today_see_progress)) {
             // Long-press copies a plain-text summary, as the old dashboard card did.
             val clipboard = LocalClipboardManager.current
             val summary = remember(doneToday, exercises) { formatRecordsForClipboard(doneToday.flatMap { it.second }, exercises) }
@@ -256,7 +271,7 @@ private fun DoneRow(name: String, values: List<String>) {
                 Surface(shape = MaterialTheme.shapes.small, color = MaterialTheme.colorScheme.secondaryContainer) {
                     Text(
                         value,
-                        style = MaterialTheme.typography.labelLarge.copy(fontFeatureSettings = "tnum"),
+                        style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         modifier = Modifier.padding(horizontal = Spacing.m, vertical = Spacing.xs),
                     )

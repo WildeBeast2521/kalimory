@@ -45,6 +45,10 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.Locale
+import io.github.gonbei774.calisthenicsmemory.R
+import androidx.compose.ui.res.stringResource
+import androidx.compose.material3.TextButton
+import androidx.compose.foundation.layout.heightIn
 
 /** A heading for a section of Today. */
 @Composable
@@ -255,5 +259,19 @@ internal fun HeroCard(
             ) { Text(action, style = MaterialTheme.typography.labelLarge) }
         }
       }
+    }
+}
+
+/** A heading kept close to its rows, with a way to see and edit everything in it when there is one. */
+@Composable
+internal fun Section(title: String, onOpenAll: (() -> Unit)?, actionLabel: String? = null, content: @Composable () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+        Row(Modifier.heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
+            SectionHeading(title, Modifier.weight(1f))
+            if (onOpenAll != null) {
+                TextButton(onClick = onOpenAll) { Text(actionLabel ?: stringResource(R.string.train_see_all)) }
+            }
+        }
+        content()
     }
 }

@@ -351,6 +351,7 @@ fun CalisthenicsMemoryApp(
                             viewModel = viewModel,
                             // fromToday returns to the primary destination (here Train) on back.
                             onStartProgram = { id -> currentScreen = Screen.ProgramExecution(id, fromToday = true) },
+                            onEditProgram = { id -> currentScreen = Screen.ProgramEdit(id) },
                             onStartInterval = { id -> currentScreen = Screen.IntervalExecution(id, fromToday = true) },
                             onStartWorkout = { currentScreen = Screen.Workout() },
                             onRecordManually = { currentScreen = Screen.Record() },
