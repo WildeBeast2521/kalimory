@@ -60,6 +60,8 @@ import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
 import io.github.gonbei774.calisthenicsmemory.service.WorkoutTimerService
 import io.github.gonbei774.calisthenicsmemory.ui.components.single.*
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.SetDoneBadge
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutSkipButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutStatus
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.TimerDial
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutHeader
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutTone
@@ -1795,7 +1797,7 @@ fun StartIntervalStep(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        StepStatus(stringResource(R.string.preparing), WorkoutTone.prepare)
+        WorkoutStatus(stringResource(R.string.preparing), WorkoutTone.prepare)
 
         Spacer(modifier = Modifier.height(Spacing.xl))
 
@@ -1809,27 +1811,7 @@ fun StartIntervalStep(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        SkipButton(onSkip)
-    }
-}
-
-/** What is happening now (getting ready, resting), in the colour of that state. */
-@Composable
-private fun StepStatus(text: String, color: Color) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.headlineMedium,
-        color = color
-    )
-}
-
-/** Skipping the rest of a timer: a quiet action, below the main one. */
-@Composable
-private fun SkipButton(onSkip: () -> Unit) {
-    TextButton(onClick = onSkip, modifier = Modifier.heightIn(min = 48.dp)) {
-        Icon(AppIcons.SkipNext, contentDescription = null)
-        Spacer(Modifier.width(Spacing.s))
-        Text(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
+        WorkoutSkipButton(onSkip)
     }
 }
 
@@ -1901,7 +1883,7 @@ fun IntervalStep(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        StepStatus(stringResource(R.string.interval_label), WorkoutTone.rest)
+        WorkoutStatus(stringResource(R.string.interval_label), WorkoutTone.rest)
 
         nextSet?.let {
             val nextSideText = when (it.side) {
@@ -1957,7 +1939,7 @@ fun IntervalStep(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        SkipButton(onSkip)
+        WorkoutSkipButton(onSkip)
     }
 }
 

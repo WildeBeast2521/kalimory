@@ -490,8 +490,6 @@
     <string name="loop_round_current">Раунд %1$d/%2$d</string>
     <string name="loop_empty">Щоб додати вправу, натисніть +</string>
     <string name="loop_round_rest">Відпочинок раунду</string>
-    <string name="set_progress">%1$d/%2$d</string>
-    <string name="set_progress_with_side">%1$d/%2$d – %3$s</string>
     <string name="warning_title">Попередження</string>
     <string name="export_csv_template">Експорт шаблону введення</string>
     <string name="csv_template_description">Завантажити шаблон для запису</string>
