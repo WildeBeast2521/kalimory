@@ -333,12 +333,27 @@ fun ViewScreen(
                         )
                     }
                     2 -> {
-                        GraphView(
-                            exercises = exercises,
-                            records = records,
-                            selectedExerciseFilter = selectedExerciseFilter,
-                            selectedPeriod = selectedPeriod
-                        )
+                        // With no exercise chosen, the graph shows the most recently trained one.
+                        val graphExercise = selectedExerciseFilter ?: remember(records, exercises) {
+                            records.maxByOrNull { "${it.date} ${it.time}" }
+                                ?.let { latest -> exercises.find { it.id == latest.exerciseId } }
+                        }
+                        Column {
+                            if (selectedExerciseFilter == null && graphExercise != null) {
+                                Text(
+                                    text = stringResource(R.string.graph_latest_exercise, graphExercise.name),
+                                    style = MaterialTheme.typography.titleSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp)
+                                )
+                            }
+                            GraphView(
+                                exercises = exercises,
+                                records = records,
+                                selectedExerciseFilter = graphExercise,
+                                selectedPeriod = selectedPeriod
+                            )
+                        }
                     }
                     3 -> {
                         ChallengeView(

@@ -113,10 +113,7 @@ fun TrainScreen(
                         TodayRow(
                             AppIcons.Interval,
                             interval.name,
-                            stringResource(
-                                R.string.interval_summary_format,
-                                intervalCounts[interval.id] ?: 0, interval.workSeconds, interval.restSeconds, interval.rounds,
-                            ),
+                            intervalSummary(interval, intervalCounts[interval.id] ?: 0),
                             trailing = AppIcons.Play,
                         ) { onStartInterval(interval.id) }
                     }

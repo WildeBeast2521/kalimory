@@ -790,4 +790,5 @@
     </plurals>
     <string name="value_with_unit">%1$d%2$s</string>
     <string name="app_original_project">原始项目</string>
+    <string name="graph_latest_exercise">最近：%1$s</string>
 </resources>
