@@ -1272,12 +1272,14 @@ fun SettingsStep(
     val context = LocalContext.current
     val workoutPrefs = remember { WorkoutPreferences(context) }
 
-    var sets by remember { mutableStateOf("") }
-    var targetValue by remember { mutableStateOf("") }
+    // Start ready to go: the exercise's own targets, or the defaults Start already falls back to
+    // (3 sets × 10, 5 s per rep), so Start is never disabled without a visible reason.
+    var sets by remember { mutableStateOf((exercise.targetSets ?: 3).toString()) }
+    var targetValue by remember { mutableStateOf((exercise.targetValue ?: 10).toString()) }
     var repDuration by remember {
         mutableStateOf(
-            if (exercise.type == "Dynamic" && exercise.repDuration != null) {
-                exercise.repDuration.toString()
+            if (exercise.type == "Dynamic") {
+                (exercise.repDuration ?: 5).toString()
             } else {
                 ""
             }
