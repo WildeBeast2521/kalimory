@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "CalisthenicsMemory"
 include(":app")
+// Generates the app's Baseline Profile and measures start-up and frames (Macrobenchmark).
+include(":baselineprofile")
