@@ -12,6 +12,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -48,7 +50,6 @@ fun SettingsScreenNew(
     firstDayOfWeek: java.time.DayOfWeek? = null,
     onFirstDayOfWeekChange: (java.time.DayOfWeek?) -> Unit = {}
 ) {
-    val appColors = LocalAppColors.current
     val context = LocalContext.current
 
     Scaffold(
@@ -57,7 +58,7 @@ fun SettingsScreenNew(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Slate600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -69,14 +70,14 @@ fun SettingsScreenNew(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = stringResource(R.string.settings),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.semantics { heading() }
                     )
                 }
             }
@@ -104,13 +105,13 @@ fun SettingsScreenNew(
                         text = stringResource(R.string.section_language),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         text = stringResource(R.string.section_language_description),
                         fontSize = 14.sp,
-                        color = appColors.textSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         lineHeight = 20.sp
                     )
                 }
@@ -128,9 +129,9 @@ fun SettingsScreenNew(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = { showLanguageDialog = true }
                 ) {
                     Row(
@@ -146,7 +147,7 @@ fun SettingsScreenNew(
                                 text = stringResource(R.string.language_setting),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(
@@ -154,7 +155,7 @@ fun SettingsScreenNew(
                                     selectedLanguage.getDisplayName(currentLocale)
                                 ),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -178,9 +179,9 @@ fun SettingsScreenNew(
                                         modifier = Modifier.fillMaxWidth(),
                                         colors = CardDefaults.cardColors(
                                             containerColor = if (selectedLanguage == language) {
-                                                Purple600.copy(alpha = 0.3f)
+                                                MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
                                             } else {
-                                                appColors.cardBackgroundSecondary
+                                                MaterialTheme.colorScheme.surfaceContainerHigh
                                             }
                                         ),
                                         onClick = {
@@ -197,7 +198,7 @@ fun SettingsScreenNew(
                                         Text(
                                             text = language.getDisplayName(currentLocale),
                                             modifier = Modifier.padding(16.dp),
-                                            color = appColors.textPrimary,
+                                            color = MaterialTheme.colorScheme.onSurface,
                                             fontSize = 16.sp
                                         )
                                     }
@@ -228,13 +229,13 @@ fun SettingsScreenNew(
                         text = stringResource(R.string.section_theme),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         text = stringResource(R.string.section_theme_description),
                         fontSize = 14.sp,
-                        color = appColors.textSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         lineHeight = 20.sp
                     )
                 }
@@ -253,9 +254,9 @@ fun SettingsScreenNew(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = { showThemeDialog = true }
                 ) {
                     Row(
@@ -271,12 +272,12 @@ fun SettingsScreenNew(
                                 text = stringResource(R.string.theme_setting),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.current_theme, themeDisplayName),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -305,9 +306,9 @@ fun SettingsScreenNew(
                                         modifier = Modifier.fillMaxWidth(),
                                         colors = CardDefaults.cardColors(
                                             containerColor = if (currentTheme == theme) {
-                                                Purple600.copy(alpha = 0.3f)
+                                                MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
                                             } else {
-                                                appColors.cardBackgroundSecondary
+                                                MaterialTheme.colorScheme.surfaceContainerHigh
                                             }
                                         ),
                                         onClick = {
@@ -318,7 +319,7 @@ fun SettingsScreenNew(
                                         Text(
                                             text = displayName,
                                             modifier = Modifier.padding(16.dp),
-                                            color = appColors.textPrimary,
+                                            color = MaterialTheme.colorScheme.onSurface,
                                             fontSize = 16.sp
                                         )
                                     }
@@ -339,8 +340,8 @@ fun SettingsScreenNew(
                 item {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
-                        shape = RoundedCornerShape(12.dp)
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+                        shape = MaterialTheme.shapes.large
                     ) {
                         Row(
                             modifier = Modifier
@@ -354,12 +355,12 @@ fun SettingsScreenNew(
                                     text = stringResource(R.string.dynamic_color_title),
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.dynamic_color_description),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(top = 4.dp)
                                 )
                             }
@@ -379,8 +380,8 @@ fun SettingsScreenNew(
                 val current = firstDayOfWeek?.let(::dayName) ?: automaticLabel
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
-                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+                    shape = MaterialTheme.shapes.large,
                     onClick = { showDialog = true }
                 ) {
                     Row(
@@ -396,12 +397,12 @@ fun SettingsScreenNew(
                                 text = stringResource(R.string.first_day_of_week),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = current,
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -456,13 +457,13 @@ fun SettingsScreenNew(
                         text = stringResource(R.string.section_workout_settings),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         text = stringResource(R.string.section_workout_settings_description),
                         fontSize = 14.sp,
-                        color = appColors.textSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         lineHeight = 20.sp
                     )
                 }
@@ -489,9 +490,9 @@ fun SettingsScreenNew(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackground
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                         ),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = MaterialTheme.shapes.large
                     ) {
                         Row(
                             modifier = Modifier
@@ -506,12 +507,12 @@ fun SettingsScreenNew(
                                     text = stringResource(R.string.settings_prefill_previous),
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.settings_prefill_previous_description),
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(top = 4.dp)
                                 )
                             }
@@ -520,13 +521,7 @@ fun SettingsScreenNew(
                                 onCheckedChange = { enabled ->
                                     prefillEnabled = enabled
                                     workoutPrefs.setPrefillPreviousRecordEnabled(enabled)
-                                },
-                                colors = SwitchDefaults.colors(
-                                    checkedThumbColor = appColors.switchThumb,
-                                    checkedTrackColor = Orange600,
-                                    uncheckedThumbColor = appColors.switchThumb,
-                                    uncheckedTrackColor = Slate600
-                                )
+                                }
                             )
                         }
                     }
@@ -535,9 +530,9 @@ fun SettingsScreenNew(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackground
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                         ),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = MaterialTheme.shapes.large,
                         onClick = { if (startCountdownEnabled) showStartCountdownDialog = true }
                     ) {
                         Row(
@@ -553,12 +548,12 @@ fun SettingsScreenNew(
                                     text = stringResource(R.string.start_countdown_setting),
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.current_start_countdown, startCountdown),
                                     fontSize = 14.sp,
-                                    color = if (startCountdownEnabled) appColors.textSecondary else appColors.textSecondary.copy(alpha = 0.5f),
+                                    color = if (startCountdownEnabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                                     modifier = Modifier.padding(top = 4.dp)
                                 )
                             }
@@ -567,13 +562,7 @@ fun SettingsScreenNew(
                                 onCheckedChange = { enabled ->
                                     startCountdownEnabled = enabled
                                     workoutPrefs.setStartCountdownEnabled(enabled)
-                                },
-                                colors = SwitchDefaults.colors(
-                                    checkedThumbColor = appColors.switchThumb,
-                                    checkedTrackColor = Orange600,
-                                    uncheckedThumbColor = appColors.switchThumb,
-                                    uncheckedTrackColor = Slate600
-                                )
+                                }
                             )
                         }
                     }
@@ -582,9 +571,9 @@ fun SettingsScreenNew(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackground
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                         ),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = MaterialTheme.shapes.large,
                         onClick = { if (setIntervalEnabled) showSetIntervalDialog = true }
                     ) {
                         Column {
@@ -601,12 +590,12 @@ fun SettingsScreenNew(
                                         text = stringResource(R.string.set_interval_setting),
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = appColors.textPrimary
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
                                         text = stringResource(R.string.current_set_interval, setInterval),
                                         fontSize = 14.sp,
-                                        color = if (setIntervalEnabled) appColors.textSecondary else appColors.textSecondary.copy(alpha = 0.5f),
+                                        color = if (setIntervalEnabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                                         modifier = Modifier.padding(top = 4.dp)
                                     )
                                 }
@@ -615,20 +604,14 @@ fun SettingsScreenNew(
                                     onCheckedChange = { enabled ->
                                         setIntervalEnabled = enabled
                                         workoutPrefs.setSetIntervalEnabled(enabled)
-                                    },
-                                    colors = SwitchDefaults.colors(
-                                        checkedThumbColor = appColors.switchThumb,
-                                        checkedTrackColor = Orange600,
-                                        uncheckedThumbColor = appColors.switchThumb,
-                                        uncheckedTrackColor = Slate600
-                                    )
+                                    }
                                 )
                             }
                             // 注意書き
                             Text(
                                 text = stringResource(R.string.set_interval_note),
                                 fontSize = 12.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(start = 68.dp, end = 20.dp, bottom = 16.dp)
                             )
                         }
@@ -638,9 +621,9 @@ fun SettingsScreenNew(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackground
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                         ),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = MaterialTheme.shapes.large
                     ) {
                         Column {
                             Row(
@@ -656,12 +639,12 @@ fun SettingsScreenNew(
                                         text = stringResource(R.string.flash_notification_setting),
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = appColors.textPrimary
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
                                         text = stringResource(R.string.flash_notification_description),
                                         fontSize = 14.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 4.dp)
                                     )
                                 }
@@ -670,13 +653,7 @@ fun SettingsScreenNew(
                                     onCheckedChange = { enabled ->
                                         flashNotificationEnabled = enabled
                                         workoutPrefs.setFlashNotificationEnabled(enabled)
-                                    },
-                                    colors = SwitchDefaults.colors(
-                                        checkedThumbColor = appColors.switchThumb,
-                                        checkedTrackColor = Orange600,
-                                        uncheckedThumbColor = appColors.switchThumb,
-                                        uncheckedTrackColor = Slate600
-                                    )
+                                    }
                                 )
                             }
                         }
@@ -686,9 +663,9 @@ fun SettingsScreenNew(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackground
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                         ),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = MaterialTheme.shapes.large
                     ) {
                         Column {
                             Row(
@@ -704,12 +681,12 @@ fun SettingsScreenNew(
                                         text = stringResource(R.string.keep_screen_on_setting),
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = appColors.textPrimary
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
                                         text = stringResource(R.string.keep_screen_on_description),
                                         fontSize = 14.sp,
-                                        color = appColors.textSecondary,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 4.dp)
                                     )
                                 }
@@ -718,13 +695,7 @@ fun SettingsScreenNew(
                                     onCheckedChange = { enabled ->
                                         keepScreenOnEnabled = enabled
                                         workoutPrefs.setKeepScreenOnEnabled(enabled)
-                                    },
-                                    colors = SwitchDefaults.colors(
-                                        checkedThumbColor = appColors.switchThumb,
-                                        checkedTrackColor = Orange600,
-                                        uncheckedThumbColor = appColors.switchThumb,
-                                        uncheckedTrackColor = Slate600
-                                    )
+                                    }
                                 )
                             }
                         }
@@ -751,9 +722,9 @@ fun SettingsScreenNew(
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = Orange600,
-                                    focusedLabelColor = Orange600,
-                                    cursorColor = Orange600
+                                    focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                                    focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                                    cursorColor = MaterialTheme.colorScheme.tertiary
                                 )
                             )
                         },
@@ -766,7 +737,7 @@ fun SettingsScreenNew(
                                     showStartCountdownDialog = false
                                 },
                                 colors = ButtonDefaults.textButtonColors(
-                                    contentColor = Orange600
+                                    contentColor = MaterialTheme.colorScheme.tertiary
                                 )
                             ) {
                                 Text(stringResource(R.string.save))
@@ -809,9 +780,9 @@ fun SettingsScreenNew(
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = Orange600,
-                                    focusedLabelColor = Orange600,
-                                    cursorColor = Orange600
+                                    focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                                    focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                                    cursorColor = MaterialTheme.colorScheme.tertiary
                                 )
                             )
                         },
@@ -825,7 +796,7 @@ fun SettingsScreenNew(
                                     showSetIntervalDialog = false
                                 },
                                 colors = ButtonDefaults.textButtonColors(
-                                    contentColor = Orange600
+                                    contentColor = MaterialTheme.colorScheme.tertiary
                                 )
                             ) {
                                 Text(stringResource(R.string.save))
@@ -850,7 +821,7 @@ fun SettingsScreenNew(
                     text = stringResource(R.string.data_management),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
@@ -860,9 +831,9 @@ fun SettingsScreenNew(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = { onNavigateToBackup() }
                 ) {
                     Row(
@@ -878,17 +849,17 @@ fun SettingsScreenNew(
                                 text = stringResource(R.string.section_full_backup),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.section_full_backup_description),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp),
                                 maxLines = 2
                             )
                         }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = appColors.textSecondary)
+                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -898,9 +869,9 @@ fun SettingsScreenNew(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = { onNavigateToCsvDataManagement() }
                 ) {
                     Row(
@@ -916,17 +887,17 @@ fun SettingsScreenNew(
                                 text = stringResource(R.string.section_partial_data_management),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.section_partial_data_management_description),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp),
                                 maxLines = 2
                             )
                         }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = appColors.textSecondary)
+                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -936,9 +907,9 @@ fun SettingsScreenNew(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = { onNavigateToShareHub() }
                 ) {
                     Row(
@@ -954,17 +925,17 @@ fun SettingsScreenNew(
                                 text = stringResource(R.string.share_section_title),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.share_section_description),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp),
                                 maxLines = 2
                             )
                         }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = appColors.textSecondary)
+                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -984,13 +955,13 @@ fun SettingsScreenNew(
                         text = stringResource(R.string.section_app_info),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         text = stringResource(R.string.section_app_info_description),
                         fontSize = 14.sp,
-                        color = appColors.textSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         lineHeight = 20.sp
                     )
                 }
@@ -1001,9 +972,9 @@ fun SettingsScreenNew(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = MaterialTheme.shapes.large
                 ) {
                     Column(
                         modifier = Modifier
@@ -1020,12 +991,12 @@ fun SettingsScreenNew(
                                 text = stringResource(R.string.app_name),
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.app_description),
                                 fontSize = 14.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -1039,19 +1010,19 @@ fun SettingsScreenNew(
                             Icon(
                                 imageVector = AppIcons.Info,
                                 contentDescription = null,
-                                tint = appColors.textSecondary,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.size(24.dp)
                             )
                             Column {
                                 Text(
                                     text = stringResource(R.string.app_version),
                                     fontSize = 16.sp,
-                                    color = appColors.textPrimary
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = BuildConfig.VERSION_NAME,
                                     fontSize = 14.sp,
-                                    color = appColors.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -1070,13 +1041,13 @@ fun SettingsScreenNew(
                             Text(
                                 text = "<>",
                                 fontSize = 20.sp,
-                                color = appColors.textSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
                                 text = stringResource(R.string.app_source_code),
                                 fontSize = 16.sp,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
 
@@ -1092,7 +1063,7 @@ fun SettingsScreenNew(
                             Text(
                                 text = stringResource(R.string.open_source_licenses),
                                 fontSize = 16.sp,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -1104,9 +1075,9 @@ fun SettingsScreenNew(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = MaterialTheme.shapes.large
                 ) {
                     Column(
                         modifier = Modifier
@@ -1118,7 +1089,7 @@ fun SettingsScreenNew(
                         Text(
                             text = stringResource(R.string.app_author),
                             fontSize = 14.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         // 開発者
@@ -1130,13 +1101,13 @@ fun SettingsScreenNew(
                             Icon(
                                 imageVector = AppIcons.Exercise,
                                 contentDescription = null,
-                                tint = appColors.textSecondary,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.size(24.dp)
                             )
                             Text(
                                 text = "Gonbei774",
                                 fontSize = 16.sp,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -1148,9 +1119,9 @@ fun SettingsScreenNew(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = appColors.cardBackground
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = MaterialTheme.shapes.large
                 ) {
                     Column(
                         modifier = Modifier
@@ -1162,7 +1133,7 @@ fun SettingsScreenNew(
                         Text(
                             text = stringResource(R.string.app_feedback),
                             fontSize = 14.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
                         // Codebergで問題を報告
@@ -1180,7 +1151,7 @@ fun SettingsScreenNew(
                             Text(
                                 text = stringResource(R.string.report_issue_codeberg),
                                 fontSize = 16.sp,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
 
@@ -1199,7 +1170,7 @@ fun SettingsScreenNew(
                             Text(
                                 text = stringResource(R.string.report_issue_github),
                                 fontSize = 16.sp,
-                                color = appColors.textPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }

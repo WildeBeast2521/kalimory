@@ -4,24 +4,20 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Progress redesign. Branch `work/progress-redesign`, based on master `d37a656`.
+Settings on the calm theme. Branch `work/settings-redesign`, based on master `79675a6`.
 
-- **Header:** the same large "Progress" title as the other destinations replaces the purple bar. Tabs and filter chips use theme roles and default Material chips. The selected exercise chip shows a close icon instead of a text "x".
-- **Colours:** all four tabs (Calendar, List, Graph, Challenge) move off `AppColors` and the purple and orange accents, onto `CalmPalette` roles; training marks are spruce, "done". GraphView reads colours into a local `cs` for its Canvas drawing. The weight, distance and assistance legend colours stay, to match the charts.
-- **Calendar heat:** light container colour for lighter days, full spruce for heavier ones, each with readable text.
-- **Bugs from the audit, fixed:**
-  - the week label left out today, because `DateUtils.formatDateRange` treats the end as exclusive;
-  - "1 sets" is now a `set_count` plural in all 10 locales;
-  - dates show in the user's locale ("Sep 29, 2026"), followed by the stored minute unchanged;
-  - "6reps" now reads "6 reps", in List and on the Graph axis. `value_with_unit` keeps Japanese and Chinese without a space.
-  - the selected Graph chip had dark text on spruce.
-- **Test:** `ProgressHistoryTest` now expects the localised date.
+- **Top bar:** the slate top bar becomes a quiet surface with a heading title.
+- **Colours:** cards and text use theme roles through the mapping script (`AppColors` and the Slate palette are gone from this file).
+- **Switches:** the five orange-track switch overrides are removed, so the switches use Material 3 defaults on the palette.
+- **Shapes:** cards use `MaterialTheme.shapes.large`.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- screenshots of Calendar (week and month), List, Graph and Challenge with synthetic data.
+- screenshots of the top, the workout section and App info.
 
-Seen but not fixed: the exercise filter sheet's lower rows sit under the system navigation bar (it existed before). This is recorded under Improvement ideas.
+## Previous phase: Progress redesign (merged)
+
+PR #55 merged as `79675a6`.
 
 ## Previous phase: Today polish (merged)
 
@@ -109,6 +105,7 @@ The audit was a user walkthrough on the API 29 emulator with synthetic data. It 
 - (L) Trends and personal bests (progression system).
 
 **Settings:**
+- (S, owner) "Report issue on Codeberg/GitHub" and "Source Code" point to the upstream project. For this fork, should reports go to this repository, or stay upstream with attribution? The owner decides. Upstream attribution (author Gonbei774) stays either way.
 - "Keep screen on" now defaults to on: owner-approved, done in PR #52.
 - (M) Changing the language needs a restart. Per-app language (AndroidX) could apply it at once.
 
@@ -165,6 +162,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #53: Record saves sets as entered.
 - PR #54: Today polish.
 - PR #55: Progress redesign.
+- PR #56: Settings on the calm theme.
 
 ## Owner direction for later (2026-09-27)
 
