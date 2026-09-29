@@ -660,8 +660,8 @@
     <string name="interval_round_format">Round %1$d / %2$d</string>
     <string name="interval_round_complete_format">Round %d completato!</string>
     <string name="interval_round_header_format">Round %1$d</string>
-    <string name="interval_next">PROSSIMO</string>
-    <string name="interval_next_round">PROSSIMO ROUND</string>
+    <string name="interval_next">Prossimo</string>
+    <string name="interval_next_round">Prossimo round</string>
     <string name="interval_skip">Salta</string>
     <string name="interval_skipped_format">Saltati: %1$d esercizi</string>
     <string name="interval_skipped_label">(saltato)</string>

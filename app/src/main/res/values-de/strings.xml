@@ -656,8 +656,8 @@
     <string name="interval_round_format">Runde %1$d / %2$d</string>
     <string name="interval_round_complete_format">Runde %d abgeschlossen!</string>
     <string name="interval_round_header_format">Runde %1$d</string>
-    <string name="interval_next">NÄCHSTE</string>
-    <string name="interval_next_round">NÄCHSTE RUNDE</string>
+    <string name="interval_next">Nächste</string>
+    <string name="interval_next_round">Nächste Runde</string>
     <string name="interval_skip">Überspringen</string>
     <string name="interval_skipped_format">Übersprungen: %1$d Übungen</string>
     <string name="interval_skipped_label">(übersprungen)</string>

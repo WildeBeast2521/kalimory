@@ -696,20 +696,7 @@ private fun IntervalConfirmContent(
                         color = cs.onSurface,
                         modifier = Modifier.weight(1f)
                     )
-                    TextButton(onClick = onStart) {
-                        Icon(
-                            AppIcons.Play,
-                            contentDescription = null,
-                            tint = cs.onSurface,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = stringResource(R.string.program_start),
-                            color = cs.onSurface,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                    // The large Start button at the bottom is the one way to begin.
                 }
             }
         }
@@ -745,20 +732,20 @@ private fun IntervalConfirmContent(
                     ) {
                         ConfirmSettingRow(
                             label = stringResource(R.string.interval_work_seconds),
-                            value = "${program.workSeconds}${stringResource(R.string.interval_seconds_suffix)}"
+                            value = stringResource(R.string.value_with_unit, program.workSeconds, stringResource(R.string.interval_seconds_suffix))
                         )
                         ConfirmSettingRow(
                             label = stringResource(R.string.interval_rest_seconds),
-                            value = "${program.restSeconds}${stringResource(R.string.interval_seconds_suffix)}"
+                            value = stringResource(R.string.value_with_unit, program.restSeconds, stringResource(R.string.interval_seconds_suffix))
                         )
                         ConfirmSettingRow(
                             label = stringResource(R.string.interval_rounds),
-                            value = "${program.rounds}${stringResource(R.string.interval_rounds_suffix)}"
+                            value = stringResource(R.string.value_with_unit, program.rounds, stringResource(R.string.interval_rounds_suffix))
                         )
                         if (program.roundRestSeconds > 0) {
                             ConfirmSettingRow(
                                 label = stringResource(R.string.interval_round_rest_seconds),
-                                value = "${program.roundRestSeconds}${stringResource(R.string.interval_seconds_suffix)}"
+                                value = stringResource(R.string.value_with_unit, program.roundRestSeconds, stringResource(R.string.interval_seconds_suffix))
                             )
                         }
                         HorizontalDivider(
