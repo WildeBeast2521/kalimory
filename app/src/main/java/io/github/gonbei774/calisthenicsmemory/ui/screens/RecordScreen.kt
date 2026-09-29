@@ -104,7 +104,8 @@ fun RecordScreen(
 
     var comment by remember { mutableStateOf("") }
 
-    val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    // Shown in the user's locale; the record itself stores the ISO date.
+    val dateFormatter = DateTimeFormatter.ofLocalizedDate(java.time.format.FormatStyle.MEDIUM)
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
     // initialExerciseから来た場合（ToDo経由）のプリフィル
@@ -234,7 +235,6 @@ fun ExerciseSelectionScreen(
     onNavigateBack: () -> Unit,
     onExerciseSelected: (Exercise) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     // ViewModelを取得
     val viewModel: TrainingViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
@@ -262,7 +262,7 @@ fun ExerciseSelectionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Green600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -274,14 +274,14 @@ fun ExerciseSelectionScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = stringResource(R.string.training_record),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -301,12 +301,12 @@ fun ExerciseSelectionScreen(
                     Text(
                         text = stringResource(R.string.no_exercises_registered),
                         fontSize = 18.sp,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Button(
                         onClick = onNavigateBack,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Blue600
+                            containerColor = MaterialTheme.colorScheme.secondary
                         )
                     ) {
                         Text(stringResource(R.string.go_to_settings))
@@ -324,7 +324,7 @@ fun ExerciseSelectionScreen(
                     text = stringResource(R.string.select_exercise),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
@@ -338,14 +338,14 @@ fun ExerciseSelectionScreen(
                     placeholder = {
                         Text(
                             text = stringResource(R.string.search_placeholder),
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     },
                     leadingIcon = {
                         Icon(
                             AppIcons.Search,
                             contentDescription = null,
-                            tint = appColors.textSecondary
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     },
                     trailingIcon = {
@@ -354,20 +354,20 @@ fun ExerciseSelectionScreen(
                                 Icon(
                                     AppIcons.Close,
                                     contentDescription = stringResource(R.string.clear),
-                                    tint = appColors.textSecondary
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedTextColor = appColors.textPrimary,
-                        focusedContainerColor = appColors.cardBackground,
-                        unfocusedContainerColor = appColors.cardBackground,
-                        focusedBorderColor = Green600,
-                        unfocusedBorderColor = appColors.border,
-                        cursorColor = Green600
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                        cursorColor = MaterialTheme.colorScheme.primary
                     ),
                     shape = RoundedCornerShape(8.dp)
                 )
@@ -382,7 +382,7 @@ fun ExerciseSelectionScreen(
                             item {
                                 Text(
                                     text = stringResource(R.string.no_results),
-                                    color = appColors.textSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(16.dp)
                                 )
                             }
@@ -434,10 +434,9 @@ fun HierarchicalExerciseGroup(
     onExpandToggle: () -> Unit,
     onExerciseSelected: (Exercise) -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackground),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         shape = RoundedCornerShape(12.dp)
     ) {
         Column {
@@ -461,7 +460,7 @@ fun HierarchicalExerciseGroup(
                         Icon(
                             imageVector = if (isExpanded) AppIcons.ExpandMore else AppIcons.Forward,
                             contentDescription = null,
-                            tint = appColors.textPrimary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = when (group.groupName) {
@@ -471,12 +470,12 @@ fun HierarchicalExerciseGroup(
                             },
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = appColors.textPrimary
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = stringResource(R.string.exercises_count, group.exercises.size),
                             fontSize = 14.sp,
-                            color = appColors.textSecondary
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -511,10 +510,9 @@ fun ExerciseSelectionItem(
     exercise: Exercise,
     onClick: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = appColors.cardBackgroundSecondary),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(8.dp),
         onClick = onClick
     ) {
@@ -530,7 +528,7 @@ fun ExerciseSelectionItem(
                     text = exercise.name,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = appColors.textPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 FlowRow(
@@ -540,7 +538,7 @@ fun ExerciseSelectionItem(
                 ) {
                     // お気に入り
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFFFD700))
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.tertiary)
                     }
 
                     // レベル（課題設定がある場合のみ）
@@ -549,7 +547,7 @@ fun ExerciseSelectionItem(
                             text = stringResource(R.string.level_format, exercise.sortOrder),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Blue600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
 
@@ -558,7 +556,7 @@ fun ExerciseSelectionItem(
                         text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appColors.textSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                     // Unilateral
@@ -567,7 +565,7 @@ fun ExerciseSelectionItem(
                             text = stringResource(R.string.one_sided),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Purple600
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
 
@@ -577,7 +575,7 @@ fun ExerciseSelectionItem(
                             text = stringResource(R.string.legend_weight),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Amber500
+                            color = MaterialTheme.colorScheme.tertiary
                         )
                     }
                     if (exercise.distanceTrackingEnabled) {
@@ -585,7 +583,7 @@ fun ExerciseSelectionItem(
                             text = stringResource(R.string.legend_distance),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Cyan600
+                            color = MaterialTheme.colorScheme.secondary
                         )
                     }
                     if (exercise.assistanceTrackingEnabled) {
@@ -614,7 +612,7 @@ fun ExerciseSelectionItem(
                             ),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Green400
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -623,7 +621,7 @@ fun ExerciseSelectionItem(
             Icon(
                 AppIcons.Back,
                 contentDescription = stringResource(R.string.select),
-                tint = Green400,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.rotate(180f)
             )
         }
@@ -659,7 +657,6 @@ fun WorkoutInputScreen(
     onTimeSelected: (LocalTime) -> Unit,
     viewModel: TrainingViewModel
 ) {
-    val appColors = LocalAppColors.current
     val groups by viewModel.groups.collectAsState()
     // Unilateral判定
     val isUnilateral = exercise.laterality == "Unilateral"
@@ -958,7 +955,7 @@ fun WorkoutInputScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = Green600
+                color = MaterialTheme.colorScheme.background
             ) {
                 Row(
                     modifier = Modifier
@@ -970,14 +967,14 @@ fun WorkoutInputScreen(
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = exercise.name,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -997,7 +994,7 @@ fun WorkoutInputScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = appColors.cardBackground.copy(alpha = 0.6f)
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.6f)
                         ),
                         shape = RoundedCornerShape(12.dp)
                     ) {
@@ -1016,7 +1013,7 @@ fun WorkoutInputScreen(
                                     stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
                                 ),
                                 fontSize = 16.sp,
-                                color = Green400,
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -1053,8 +1050,8 @@ fun WorkoutInputScreen(
                             .fillMaxWidth()
                             .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Green600,
-                            disabledContainerColor = Slate600
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            disabledContainerColor = MaterialTheme.colorScheme.outline
                         ),
                         enabled = exercise.targetSets != null || exercise.targetValue != null,
                         shape = RoundedCornerShape(8.dp)
@@ -1081,8 +1078,7 @@ fun WorkoutInputScreen(
                     val status = setStatuses.getOrElse(index) { SetStatus.PENDING }
                     SetCardContainer(
                         status = status,
-                        onActivate = { markCurrent(index) },
-                        appColors = appColors
+                        onActivate = { markCurrent(index) }
                     ) {
                         Column(
                             modifier = Modifier.padding(16.dp),
@@ -1100,8 +1096,7 @@ fun WorkoutInputScreen(
                                         SetStatus.CURRENT -> completeCurrent()
                                         SetStatus.PENDING -> {}
                                     }
-                                },
-                                appColors = appColors
+                                }
                             )
 
                             // 回数/秒数（左右別）グループ
@@ -1112,7 +1107,7 @@ fun WorkoutInputScreen(
                                     text = stringResource(if (exercise.type == "Dynamic") R.string.reps_label else R.string.time_label),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = appColors.textSecondary
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Column(
                                     modifier = Modifier.padding(start = 12.dp),
@@ -1133,7 +1128,7 @@ fun WorkoutInputScreen(
                                             }
                                         },
                                         keyboardType = KeyboardType.Number,
-                                        accentColor = Green600,
+                                        accentColor = MaterialTheme.colorScheme.primary,
                                         decrementEnabled = rightCurrent > 0,
                                         onDecrement = {
                                             val current = setValuesRight.getOrElse(index) { "" }.toIntOrNull() ?: 0
@@ -1153,7 +1148,6 @@ fun WorkoutInputScreen(
                                             setValuesRight = newList
                                             true
                                         },
-                                        appColors = appColors,
                                         previousText = previousAnnotation(
                                             previousSession?.let { it.getOrNull(index)?.valueRight?.toString() ?: "—" }
                                         )
@@ -1174,7 +1168,7 @@ fun WorkoutInputScreen(
                                             }
                                         },
                                         keyboardType = KeyboardType.Number,
-                                        accentColor = Purple600,
+                                        accentColor = MaterialTheme.colorScheme.primary,
                                         decrementEnabled = leftCurrent > 0,
                                         onDecrement = {
                                             val current = setValuesLeft.getOrElse(index) { "" }.toIntOrNull() ?: 0
@@ -1194,7 +1188,6 @@ fun WorkoutInputScreen(
                                             setValuesLeft = newList
                                             true
                                         },
-                                        appColors = appColors,
                                         previousText = previousAnnotation(
                                             previousSession?.let { it.getOrNull(index)?.valueLeft?.toString() ?: "—" }
                                         )
@@ -1218,7 +1211,6 @@ fun WorkoutInputScreen(
                                 onAssistanceChange = { i, v ->
                                     assistanceInputs = assistanceInputs.toMutableList().also { it[i] = v }
                                 },
-                                appColors = appColors,
                                 previousSession = previousSession
                             )
 
@@ -1238,8 +1230,7 @@ fun WorkoutInputScreen(
                     val status = setStatuses.getOrElse(index) { SetStatus.PENDING }
                     SetCardContainer(
                         status = status,
-                        onActivate = { markCurrent(index) },
-                        appColors = appColors
+                        onActivate = { markCurrent(index) }
                     ) {
                         Column(
                             modifier = Modifier.padding(16.dp),
@@ -1257,8 +1248,7 @@ fun WorkoutInputScreen(
                                         SetStatus.CURRENT -> completeCurrent()
                                         SetStatus.PENDING -> {}
                                     }
-                                },
-                                appColors = appColors
+                                }
                             )
                             run {
                                 val biCurrent = setValues.getOrElse(index) { "" }.toIntOrNull() ?: 0
@@ -1269,7 +1259,7 @@ fun WorkoutInputScreen(
                                         onSetValueChange(index, value)
                                     },
                                     keyboardType = KeyboardType.Number,
-                                    accentColor = Green600,
+                                    accentColor = MaterialTheme.colorScheme.primary,
                                     decrementEnabled = biCurrent > 0,
                                     onDecrement = {
                                         val current = setValues.getOrElse(index) { "" }.toIntOrNull() ?: 0
@@ -1283,7 +1273,6 @@ fun WorkoutInputScreen(
                                         onSetValueChange(index, (current + 1).toString())
                                         true
                                     },
-                                    appColors = appColors,
                                     previousText = previousAnnotation(
                                         previousSession?.let { it.getOrNull(index)?.valueRight?.toString() ?: "—" }
                                     )
@@ -1306,7 +1295,6 @@ fun WorkoutInputScreen(
                                 onAssistanceChange = { i, v ->
                                     assistanceInputs = assistanceInputs.toMutableList().also { it[i] = v }
                                 },
-                                appColors = appColors,
                                 previousSession = previousSession
                             )
 
@@ -1337,7 +1325,7 @@ fun WorkoutInputScreen(
                             onAddSet()
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = Green600)
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(
                             AppIcons.Add,
@@ -1356,7 +1344,7 @@ fun WorkoutInputScreen(
                     onClick = { onShowDatePicker(true) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = appColors.textPrimary
+                        contentColor = MaterialTheme.colorScheme.onSurface
                     )
                 ) {
                     Text(stringResource(R.string.date_format, selectedDate.format(dateFormatter)))
@@ -1369,7 +1357,7 @@ fun WorkoutInputScreen(
                     onClick = { onShowTimePicker(true) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = appColors.textPrimary
+                        contentColor = MaterialTheme.colorScheme.onSurface
                     )
                 ) {
                     Text(stringResource(R.string.time_format, selectedTime.format(timeFormatter)))
@@ -1387,13 +1375,13 @@ fun WorkoutInputScreen(
                         .height(120.dp),
                     maxLines = 3,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Green600,
-                        unfocusedBorderColor = appColors.border,
-                        focusedLabelColor = Green600,
-                        unfocusedLabelColor = appColors.textSecondary,
-                        cursorColor = Green600,
-                        focusedTextColor = appColors.textPrimary,
-                        unfocusedTextColor = appColors.textPrimary
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        cursorColor = MaterialTheme.colorScheme.primary,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                     )
                 )
             }
@@ -1414,8 +1402,8 @@ fun WorkoutInputScreen(
                         .height(56.dp),
                     enabled = enteredCount > 0,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Green600,
-                        disabledContainerColor = appColors.cardBackgroundDisabled
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest
                     ),
                     shape = RoundedCornerShape(12.dp)
                 ) {
@@ -1433,14 +1421,14 @@ fun WorkoutInputScreen(
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(999.dp))
-                            .background(Color.White.copy(alpha = 0.25f))
+                            .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.25f))
                             .padding(horizontal = 8.dp, vertical = 2.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.record_done_count, enteredCount, numberOfSets),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }
@@ -1452,18 +1440,18 @@ fun WorkoutInputScreen(
     if (showDiscardDialog) {
         AlertDialog(
             onDismissRequest = { showDiscardDialog = false },
-            containerColor = appColors.cardBackground,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.discard_changes_title),
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
                     text = stringResource(R.string.discard_changes_message),
-                    color = appColors.textTertiary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             confirmButton = {
@@ -1473,7 +1461,7 @@ fun WorkoutInputScreen(
                         onNavigateBack()
                     }
                 ) {
-                    Text(stringResource(R.string.discard), color = Red600)
+                    Text(stringResource(R.string.discard), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
@@ -1488,18 +1476,18 @@ fun WorkoutInputScreen(
     if (showIncompleteDialog) {
         AlertDialog(
             onDismissRequest = { showIncompleteDialog = false },
-            containerColor = appColors.cardBackground,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.record_mixed_title),
-                    color = appColors.textPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             },
             text = {
                 Text(
                     text = stringResource(R.string.record_mixed_message, doneCount, enteredCount),
-                    color = appColors.textTertiary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             confirmButton = {
@@ -1509,7 +1497,7 @@ fun WorkoutInputScreen(
                         doRecord(false)
                     }
                 ) {
-                    Text(stringResource(R.string.record_all_sets, enteredCount), color = Green600)
+                    Text(stringResource(R.string.record_all_sets, enteredCount), color = MaterialTheme.colorScheme.primary)
                 }
             },
             dismissButton = {
@@ -1596,7 +1584,6 @@ private fun PerSetTrackingFields(
     onDistanceChange: (Int, String) -> Unit,
     onWeightChange: (Int, String) -> Unit,
     onAssistanceChange: (Int, String) -> Unit,
-    appColors: io.github.gonbei774.calisthenicsmemory.ui.theme.AppColors,
     previousSession: List<HistorySet>? = null
 ) {
     // 距離
@@ -1614,7 +1601,7 @@ private fun PerSetTrackingFields(
                 }
             },
             keyboardType = KeyboardType.Number,
-            accentColor = Blue600,
+            accentColor = MaterialTheme.colorScheme.secondary,
             decrementEnabled = distanceCurrent > 0,
             onDecrement = {
                 val current = distanceInputs.getOrElse(index) { "" }.toIntOrNull() ?: 0
@@ -1628,7 +1615,6 @@ private fun PerSetTrackingFields(
                 onDistanceChange(index, (current + 1).toString())
                 true
             },
-            appColors = appColors,
             previousText = previousAnnotation(
                 previousSession?.let { it.getOrNull(index)?.distanceCm?.toString() ?: "—" }
             )
@@ -1653,7 +1639,7 @@ private fun PerSetTrackingFields(
                 }
             },
             keyboardType = KeyboardType.Decimal,
-            accentColor = Orange600,
+            accentColor = MaterialTheme.colorScheme.primary,
             decrementEnabled = weightCurrent > 0.0,
             onDecrement = {
                 val current = weightInputs.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0
@@ -1667,7 +1653,6 @@ private fun PerSetTrackingFields(
                 onWeightChange(index, formatStepKg(current + 1.0))
                 true
             },
-            appColors = appColors,
             previousText = previousAnnotation(
                 previousSession?.let { it.getOrNull(index)?.weightG?.let { g -> formatStepKg(g / 1000.0) } ?: "—" }
             )
@@ -1692,7 +1677,7 @@ private fun PerSetTrackingFields(
                 }
             },
             keyboardType = KeyboardType.Decimal,
-            accentColor = Amber500,
+            accentColor = MaterialTheme.colorScheme.tertiary,
             decrementEnabled = assistCurrent > 0.0,
             onDecrement = {
                 val current = assistanceInputs.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0
@@ -1706,7 +1691,6 @@ private fun PerSetTrackingFields(
                 onAssistanceChange(index, formatStepKg(current + 1.0))
                 true
             },
-            appColors = appColors,
             previousText = previousAnnotation(
                 previousSession?.let { it.getOrNull(index)?.assistanceG?.let { g -> formatStepKg(g / 1000.0) } ?: "—" }
             )
@@ -1749,8 +1733,7 @@ private fun SetCardHeader(
     canRemove: Boolean,
     canComplete: Boolean,
     onRemove: () -> Unit,
-    onToggleCheck: () -> Unit,
-    appColors: io.github.gonbei774.calisthenicsmemory.ui.theme.AppColors
+    onToggleCheck: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -1767,14 +1750,14 @@ private fun SetCardHeader(
             text = stringResource(R.string.set_number_format, index + 1),
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = if (status == SetStatus.PENDING) appColors.textSecondary else appColors.textPrimary
+            color = if (status == SetStatus.PENDING) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface
         )
         Spacer(modifier = Modifier.width(8.dp))
         when (status) {
             SetStatus.CURRENT -> NowBadge()
             SetStatus.DONE -> Text(
                 text = stringResource(R.string.set_done_label),
-                color = Green600,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.ExtraBold,
                 letterSpacing = 1.2.sp
@@ -1792,7 +1775,7 @@ private fun SetCardHeader(
                 Icon(
                     AppIcons.Close,
                     contentDescription = stringResource(R.string.delete),
-                    tint = if (canRemove) appColors.textSecondary else appColors.cardBackgroundDisabled,
+                    tint = if (canRemove) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.surfaceContainerHighest,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -1825,8 +1808,8 @@ private fun RepeatableStepButton(
 ) {
     val scope = rememberCoroutineScope()
     val currentOnStep by rememberUpdatedState(onStep)
-    val containerColor = if (enabled) Green600 else Slate700
-    val textColor = if (enabled) Color.White else Slate500
+    val containerColor = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHighest
+    val textColor = if (enabled) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.outline
     Box(
         modifier = Modifier
             .size(size)
@@ -1874,7 +1857,6 @@ private fun InlineStepperRow(
     decrementEnabled: Boolean,
     onDecrement: () -> Boolean,
     onIncrement: () -> Boolean,
-    appColors: io.github.gonbei774.calisthenicsmemory.ui.theme.AppColors,
     previousText: String? = null
 ) {
     Row(
@@ -1885,7 +1867,7 @@ private fun InlineStepperRow(
         Text(
             text = label,
             fontSize = 14.sp,
-            color = appColors.textSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         RepeatableStepButton(
@@ -1906,7 +1888,7 @@ private fun InlineStepperRow(
             textStyle = TextStyle(
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = appColors.textPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
             ),
             cursorBrush = SolidColor(accentColor)
@@ -1923,7 +1905,7 @@ private fun InlineStepperRow(
             Text(
                 text = previousText,
                 fontSize = 12.sp,
-                color = appColors.textTertiary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.End,
                 maxLines = 1,
                 modifier = Modifier.widthIn(min = 56.dp)

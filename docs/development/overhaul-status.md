@@ -4,17 +4,22 @@ Durable handoff for the multi-session overhaul. Update at every verified checkpo
 
 ## Current phase
 
-Library editors on the calm theme. Branch `work/library-editors-theme`, based on master `6d1619e`.
+To Do and Record on the calm theme. Branch `work/todo-record-theme`, based on master `ed4acdd`.
 
-- **Screens:** the exercise list (`CreateScreen`), the program list and editor (with their dialogs, loop components and exercise items), and the interval list and editor.
-- **Top bars and buttons:** coloured top bars become quiet surfaces. Floating add buttons use Material defaults (primary container).
-- **Colours:** in these screens orange marked the main action, so it maps to primary. `AppColors` and the Slate palette map to theme roles. Text on primary, secondary and error containers uses the matching on-colour, so dark theme stays readable.
-- **Kept:** the assistance legend colour (pink).
-- **Title:** the exercise list is titled "Exercises and groups" instead of "Exercise Creation" (an audit item). The unused `exercise_creation` string is removed.
+- **Screens:** `ToDoScreen`, `RecordScreen` and `WorkoutSetCard` map `AppColors` and the palette to theme roles.
+- **Top bars:** they become quiet surfaces; To Do loses its amber gradient.
+- **Buttons:** To Do's start buttons stay brass (tertiary, "active") with onTertiary text. Record's green actions become primary.
+- **Contrast:** text and icons on filled containers use the matching on-colour, so dark theme stays readable.
+- **Record's date** shows in the user's locale; the stored value is unchanged.
+- **Tooling:** the mapping script now drops explicit palette imports and `appColors` parameters and arguments.
 
 Verification:
 - the full local gate (131/131 instrumented tests on API 29);
-- screenshots of the exercise list, the program list and editor, and the interval list.
+- screenshots of To Do and Record.
+
+## Previous phase: Library editors on the calm theme (merged)
+
+PR #57 merged as `ed4acdd`.
 
 ## Previous phase: Settings on the calm theme (merged)
 
@@ -169,6 +174,7 @@ Once Actions runs again, re-run CI on `master`, clear this list, and go back to 
 - PR #55: Progress redesign.
 - PR #56: Settings on the calm theme.
 - PR #57: Library editors on the calm theme.
+- PR #58: To Do and Record on the calm theme.
 
 ## Owner direction for later (2026-09-27)
 
