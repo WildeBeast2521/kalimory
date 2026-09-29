@@ -551,7 +551,7 @@
     <string name="program_exercise_count">%d種目</string>
     <string name="program_sets_format">%dセット</string>
     <string name="program_target_format">%1$d%2$s</string>
-    <string name="program_interval_format">インターバル %d秒</string>
+    <string name="program_interval_format">休憩 %d秒</string>
     <string name="delete_program">プログラムを削除</string>
     <string name="delete_program_warning">「%s」を削除しますか？</string>
     <string name="duplicate_program">複製</string>
@@ -707,7 +707,6 @@
     <string name="interval_rounds_suffix">周</string>
 
     <!-- Interval Execution -->
-    <string name="interval_confirm_title">確認</string>
     <string name="interval_total_time">推定時間</string>
     <string name="interval_total_time_format">約%1$d分%2$d秒</string>
     <string name="interval_start_workout">ワークアウト開始</string>

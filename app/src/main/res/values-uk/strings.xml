@@ -181,7 +181,7 @@
     <string name="already_in_use_format">«%1$s (%2$s)» вже використовується</string>
     <string name="program_target_format">%1$d %2$s</string>
     <string name="interval_label">Інтервал</string>
-    <string name="program_interval_format">Інтервал %d с</string>
+    <string name="program_interval_format">Відпочинок %d с</string>
     <string name="app_feedback">Зворотний зв’язок</string>
     <string name="codeberg_description">Основний репозиторій</string>
     <string name="tab_list">Список</string>
@@ -586,7 +586,6 @@
     <string name="interval_duplicated">Програму продублювано</string>
     <string name="interval_seconds_suffix">с</string>
     <string name="interval_rounds_suffix">раундів</string>
-    <string name="interval_confirm_title">Підтвердження</string>
     <string name="interval_total_time_format">~%1$d хв %2$d с</string>
     <string name="interval_start_workout">Почати тренування</string>
     <string name="interval_get_ready">Приготуйтеся</string>

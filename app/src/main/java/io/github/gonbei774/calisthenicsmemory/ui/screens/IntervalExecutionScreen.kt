@@ -690,7 +690,7 @@ private fun IntervalConfirmContent(
                         )
                     }
                     Text(
-                        text = stringResource(R.string.interval_confirm_title),
+                        text = program.name,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = cs.onSurface,
@@ -709,15 +709,6 @@ private fun IntervalConfirmContent(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // Program name
-            item {
-                Text(
-                    text = program.name,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = cs.onSurface
-                )
-            }
-
             // Settings summary
             item {
                 Card(

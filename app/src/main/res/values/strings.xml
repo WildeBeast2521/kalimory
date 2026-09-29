@@ -567,7 +567,7 @@
     <string name="program_exercise_count">%d exercise(s)</string>
     <string name="program_sets_format">%d sets</string>
     <string name="program_target_format">%1$d %2$s</string>
-    <string name="program_interval_format">Interval %ds</string>
+    <string name="program_interval_format">Rest %ds</string>
     <string name="delete_program">Delete Program</string>
     <string name="delete_program_warning">Delete \"%s\"?</string>
     <string name="duplicate_program">Duplicate</string>
@@ -703,7 +703,6 @@
     <string name="interval_rounds_suffix">rounds</string>
 
     <!-- Interval Execution -->
-    <string name="interval_confirm_title">Confirm</string>
     <string name="interval_total_time">Estimated Time</string>
     <string name="interval_total_time_format">~%1$d min %2$d sec</string>
     <string name="interval_start_workout">Start Workout</string>
