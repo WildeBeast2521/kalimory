@@ -45,6 +45,6 @@ Tests: `WorkoutReducerTest` (16), `WorkoutTimerRecoveryTest` (6), and `WorkoutCh
 ## Remaining notes
 
 - The notification shows a fixed text. Showing the live step and remaining time is optional polish, not part of Task 6.
-- `util/WakeLockManager.kt` is unused. Removing it is listed in the open small fixes in `overhaul-status.md`. (`WorkoutScreen.ExecutingStep` is already gone.)
+- The unused `util/WakeLockManager.kt` and `WorkoutScreen.ExecutingStep` are removed (PR #83). `WorkoutTimerService` owns the only wake lock.
 - `WorkoutTimerService` is an adapter, and its wake-lock release is tested (see "Integration").
 - The manual protocol ran on floor_api29 (API 29): screen off, background, kill, reboot and clock change, with the results above. No run on an API 26 device is recorded.
