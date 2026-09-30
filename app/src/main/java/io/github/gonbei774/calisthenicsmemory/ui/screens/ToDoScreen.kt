@@ -792,12 +792,12 @@ private fun GroupTaskCard(
                             } else if (showStartButton) {
                                 Button(
                                     onClick = { showModeDialog = true },
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                     shape = RoundedCornerShape(8.dp),
                                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                                     modifier = Modifier.height(32.dp)
                                 ) {
-                                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onTertiary)
+                                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onPrimary)
                                 }
                             }
                         }
@@ -809,7 +809,7 @@ private fun GroupTaskCard(
                                 title = {
                                     Text(
                                         text = exercise.name,
-                                        color = MaterialTheme.colorScheme.onTertiary,
+                                        color = MaterialTheme.colorScheme.onPrimary,
                                         fontWeight = FontWeight.Bold
                                     )
                                 },
@@ -922,7 +922,7 @@ private fun ExerciseTaskCard(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(11.dp), tint = MaterialTheme.colorScheme.tertiary)
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(11.dp), tint = MaterialTheme.colorScheme.secondary)
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                         Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
@@ -963,12 +963,12 @@ private fun ExerciseTaskCard(
             if (showStartButton) {
                 Button(
                     onClick = onStart,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                     modifier = Modifier.height(32.dp)
                 ) {
-                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onTertiary)
+                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         }
@@ -1083,12 +1083,12 @@ private fun ProgramTaskCard(
             if (showStartButton) {
                 Button(
                     onClick = onNavigate,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                     modifier = Modifier.height(32.dp)
                 ) {
-                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onTertiary)
+                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         }
@@ -1174,12 +1174,12 @@ private fun IntervalTaskCard(
             if (showStartButton) {
                 Button(
                     onClick = onNavigate,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                     modifier = Modifier.height(32.dp)
                 ) {
-                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onTertiary)
+                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         }
@@ -1276,7 +1276,7 @@ private fun AddItemsDialog(
                 ) {
                     Text(
                         text = stringResource(R.string.add),
-                        color = if (hasSelection) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant
+                        color = if (hasSelection) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -1287,7 +1287,7 @@ private fun AddItemsDialog(
                 ScrollableTabRow(
                     selectedTabIndex = pagerState.currentPage,
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                    contentColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.primary,
                     edgePadding = 0.dp
                 ) {
                     tabTitles.forEachIndexed { index, title ->
@@ -1299,7 +1299,7 @@ private fun AddItemsDialog(
                                 Text(
                                     text = title,
                                     fontSize = 13.sp,
-                                    color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                    color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
@@ -1423,9 +1423,9 @@ private fun ExercisesTabContent(
                     unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                     focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
-                    cursorColor = MaterialTheme.colorScheme.tertiary
+                    cursorColor = MaterialTheme.colorScheme.primary
                 ),
                 shape = RoundedCornerShape(8.dp)
             )
@@ -1553,7 +1553,7 @@ private fun GroupsTabContent(
                                 checked = group.id in selectedIds,
                                 onCheckedChange = { onToggle(group.id) },
                                 colors = CheckboxDefaults.colors(
-                                    checkedColor = MaterialTheme.colorScheme.tertiary,
+                                    checkedColor = MaterialTheme.colorScheme.primary,
                                     uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
@@ -1645,7 +1645,7 @@ private fun ProgramsTabContent(
                             checked = program.id in selectedIds,
                             onCheckedChange = { onToggle(program.id) },
                             colors = CheckboxDefaults.colors(
-                                checkedColor = MaterialTheme.colorScheme.tertiary,
+                                checkedColor = MaterialTheme.colorScheme.primary,
                                 uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
@@ -1707,7 +1707,7 @@ private fun IntervalsTabContent(
                             checked = program.id in selectedIds,
                             onCheckedChange = { onToggle(program.id) },
                             colors = CheckboxDefaults.colors(
-                                checkedColor = MaterialTheme.colorScheme.tertiary,
+                                checkedColor = MaterialTheme.colorScheme.primary,
                                 uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
@@ -1798,7 +1798,7 @@ fun AddExerciseGroup(
                         checked = allSelected,
                         onCheckedChange = { onGroupToggle(exerciseIds) },
                         colors = CheckboxDefaults.colors(
-                            checkedColor = MaterialTheme.colorScheme.tertiary,
+                            checkedColor = MaterialTheme.colorScheme.primary,
                             uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     )
@@ -1826,7 +1826,7 @@ fun AddExerciseGroup(
                                 checked = exercise.id in selectedExercises,
                                 onCheckedChange = { onExerciseToggle(exercise.id) },
                                 colors = CheckboxDefaults.colors(
-                                    checkedColor = MaterialTheme.colorScheme.tertiary,
+                                    checkedColor = MaterialTheme.colorScheme.primary,
                                     uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
@@ -1844,7 +1844,7 @@ fun AddExerciseGroup(
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
                                     if (exercise.isFavorite) {
-                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.tertiary)
+                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
                                     }
                                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                                         Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
@@ -1857,7 +1857,7 @@ fun AddExerciseGroup(
                                         Text(text = stringResource(R.string.one_sided), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                                     }
                                     if (exercise.weightTrackingEnabled) {
-                                        Text(text = stringResource(R.string.legend_weight), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.tertiary)
+                                        Text(text = stringResource(R.string.legend_weight), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                                     }
                                     if (exercise.distanceTrackingEnabled) {
                                         Text(text = stringResource(R.string.legend_distance), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
@@ -1908,7 +1908,7 @@ fun SearchResultExerciseItem(
                 checked = isSelected,
                 onCheckedChange = { onToggle(exercise.id) },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colorScheme.tertiary,
+                    checkedColor = MaterialTheme.colorScheme.primary,
                     uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )
@@ -1925,7 +1925,7 @@ fun SearchResultExerciseItem(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.tertiary)
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                         Text(text = stringResource(R.string.level_format, exercise.sortOrder), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
@@ -1938,7 +1938,7 @@ fun SearchResultExerciseItem(
                         Text(text = stringResource(R.string.one_sided), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                     }
                     if (exercise.weightTrackingEnabled) {
-                        Text(text = stringResource(R.string.legend_weight), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.tertiary)
+                        Text(text = stringResource(R.string.legend_weight), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                     }
                     if (exercise.distanceTrackingEnabled) {
                         Text(text = stringResource(R.string.legend_distance), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.secondary)
@@ -1975,7 +1975,7 @@ private fun RepeatDaysLabel(repeatDays: String) {
     Text(
         text = dayNames.joinToString(" "),
         fontSize = 10.sp,
-        color = MaterialTheme.colorScheme.tertiary,
+        color = MaterialTheme.colorScheme.primary,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(top = 2.dp)
     )
@@ -2018,7 +2018,7 @@ private fun RepeatDaysDialog(
                     Surface(
                         modifier = Modifier.size(40.dp),
                         shape = RoundedCornerShape(20.dp),
-                        color = if (isSelected) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.surfaceContainerHigh,
+                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHigh,
                         onClick = {
                             selectedDays = if (isSelected) selectedDays - dayNum else selectedDays + dayNum
                         }
@@ -2028,7 +2028,7 @@ private fun RepeatDaysDialog(
                                 text = dayName,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = if (isSelected) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurfaceVariant
+                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -2040,7 +2040,7 @@ private fun RepeatDaysDialog(
                 val result = selectedDays.sorted().joinToString(",")
                 onSave(result)
             }) {
-                Text(stringResource(R.string.todo_repeat_save), color = MaterialTheme.colorScheme.tertiary)
+                Text(stringResource(R.string.todo_repeat_save), color = MaterialTheme.colorScheme.primary)
             }
         }
     )

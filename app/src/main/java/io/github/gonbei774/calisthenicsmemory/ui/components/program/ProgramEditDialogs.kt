@@ -242,7 +242,7 @@ private fun ProgramExerciseSelectItem(
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.tertiary)
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
                     }
                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                         Text(
@@ -271,7 +271,7 @@ private fun ProgramExerciseSelectItem(
                             text = stringResource(R.string.legend_weight),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.tertiary
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                     if (exercise.distanceTrackingEnabled) {
@@ -401,7 +401,7 @@ private fun ProgramSelectExerciseGroup(
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
                                     if (exercise.isFavorite) {
-                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.tertiary)
+                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
                                     }
                                     if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
                                         Text(
@@ -430,7 +430,7 @@ private fun ProgramSelectExerciseGroup(
                                             text = stringResource(R.string.legend_weight),
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.tertiary
+                                            color = MaterialTheme.colorScheme.primary
                                         )
                                     }
                                     if (exercise.distanceTrackingEnabled) {

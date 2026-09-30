@@ -101,10 +101,10 @@ fun LoopBlock(
                             text = stringResource(R.string.loop_round_format, loop.rounds),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.tertiary,
+                            color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
                                 .background(
-                                    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.2f),
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                                     shape = RoundedCornerShape(4.dp)
                                 )
                                 .padding(horizontal = 8.dp, vertical = 2.dp)
@@ -177,7 +177,7 @@ fun LoopBlock(
                                 )
                                 .border(
                                     width = 1.dp,
-                                    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.3f),
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
                                     shape = RoundedCornerShape(8.dp)
                                 )
                                 .padding(16.dp),
@@ -215,10 +215,10 @@ fun LoopBlock(
                         onClick = onAddExercise,
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.tertiary
+                            contentColor = MaterialTheme.colorScheme.primary
                         ),
                         border = ButtonDefaults.outlinedButtonBorder.copy(
-                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.tertiary, MaterialTheme.colorScheme.tertiary))
+                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary))
                         )
                     ) {
                         Icon(
@@ -350,7 +350,7 @@ private fun LoopExerciseItemWithDrag(
                 .fillMaxWidth()
                 .border(
                     width = 2.dp,
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(8.dp)
                 ),
             colors = CardDefaults.cardColors(

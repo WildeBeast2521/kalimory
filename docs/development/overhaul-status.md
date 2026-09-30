@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-30, at PR #73.
+Last reviewed: 2026-09-30, at PR #74.
 
 ## Where things stand
 
@@ -48,7 +48,14 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
      - `WorkoutSummaryBuilder` is pure and unit-tested. A best is the highest single set compared with all earlier history. Weighted, assisted and distance sets are left out.
      - The last session appears as a plain fact, "Last time: 72 reps", not a signed difference. The first emulator run showed "−56" after a one-set workout, which read as a scolding.
      - The "sets recorded" snackbar for single and program workouts is gone, because the summary confirms the save.
-   - **Still to do with SP:** the "Done today" totals on Today.
+   - **Done in PR #74: SP and the "Done today" totals.**
+     - Today opens with this week's sets as a large rolling number, for example "11 sets this week". It uses proportional figures, because tabular ones split "11". The "Done today" card starts with totals ("8 sets, 93 reps").
+     - Brass now means only in-progress or achievement: workout states, today's ring, personal bests and fully completed interval workouts. About 100 other uses changed:
+       - favourite stars and interval markers became stone (secondary);
+       - zero-value warnings moved to the secondary container;
+       - text-field focus, checkboxes, tabs, To Do start buttons and loop tags became spruce (primary).
+     - In the dark theme, a running timer dial glows faintly in its own colour. The summary rings are too small for a glow to show, so they have none.
+     - `TodayScreenTest` now scrolls to the resume card before tapping it, because the hero number pushes it lower.
    - **Seen, not fixed:** the review screen before saving also says "Workout Complete", so the phrase appears twice in a row. Retitle it.
    - SP: a large "this week" number on Today, brass kept for in-progress and personal bests only, and a soft glow in dark mode.
 3. **M1:** tapping a day in the week strip shows that day's history. **M3:** show when each exercise and program was last done.
@@ -90,7 +97,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #73. PR #70 changed documentation only.
+PRs #34 to #74. PR #70 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -100,7 +107,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #73: 349 unit tests, 133 instrumented tests on `floor_api29` (API 29), and "Lint found 6 warnings" (baselined dependency-version notices).
+- Expected as of PR #74: 349 unit tests, 133 instrumented tests on `floor_api29` (API 29), and "Lint found 6 warnings" (baselined dependency-version notices).
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

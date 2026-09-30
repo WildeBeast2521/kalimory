@@ -50,6 +50,10 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.train.describe
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.rememberProgramSummaries
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+import io.github.gonbei774.calisthenicsmemory.ui.theme.WorkoutNumerals
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RollingNumber
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import kotlinx.coroutines.Dispatchers
@@ -195,6 +199,24 @@ fun TodayScreen(
         val trainedThisWeek = week.count { it in trainedDays }
         val weekSummary = stringResource(R.string.today_week_summary, trainedThisWeek, week.size)
         Column {
+            // The week's work as one big number: the anchor of the page.
+            val weekDates = remember(week) { week.map { it.toString() }.toSet() }
+            val setsThisWeek = remember(history, weekDates) { history.count { it.date in weekDates } }
+            val setsLabel = pluralStringResource(R.plurals.today_week_sets, setsThisWeek)
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                modifier = Modifier.clearAndSetSemantics { contentDescription = "$setsThisWeek $setsLabel" },
+            ) {
+                // Proportional figures: tabular ones leave a gap inside "11" at this size.
+                RollingNumber("$setsThisWeek", style = WorkoutNumerals.copy(fontSize = 64.sp, lineHeight = 68.sp, fontFeatureSettings = "pnum"), color = MaterialTheme.colorScheme.onBackground)
+                Text(
+                    setsLabel,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(start = Spacing.s, bottom = Spacing.m),
+                )
+            }
+            Spacer(Modifier.height(Spacing.m))
             WeekStrip(week, trainedDays, today, locale, weekSummary)
             Spacer(Modifier.height(Spacing.s))
             Text(weekSummary, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -247,6 +269,16 @@ fun TodayScreen(
                     }),
             ) {
                 Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
+                    // Today's totals first: sets, then reps and time held where there are any.
+                    val todaySets = doneToday.flatMap { it.second }
+                    val reps = todaySets.filter { exercisesById[it.exerciseId]?.type == "Dynamic" }.sumOf { it.valueRight + (it.valueLeft ?: 0) }
+                    val held = todaySets.filter { exercisesById[it.exerciseId]?.type == "Isometric" }.sumOf { it.valueRight + (it.valueLeft ?: 0) }
+                    val totals = buildList {
+                        add(pluralStringResource(R.plurals.set_count, todaySets.size, todaySets.size))
+                        if (reps > 0) add(stringResource(R.string.value_with_unit, reps, repsUnit))
+                        if (held > 0) add(stringResource(R.string.value_with_unit, held, secondsUnit))
+                    }
+                    Text(totals.joinToString(", "), style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)
                     doneToday.forEach { (exerciseId, sets) ->
                         val name = exerciseNames[exerciseId] ?: return@forEach
                         val values = sets.map { set -> set.valueLeft?.let { "R${set.valueRight} L$it" } ?: set.valueRight.toString() }

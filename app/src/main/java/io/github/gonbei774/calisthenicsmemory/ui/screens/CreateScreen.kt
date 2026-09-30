@@ -659,7 +659,7 @@ fun ExerciseItemCompactContent(
             ) {
                 // お気に入り
                 if (exercise.isFavorite) {
-                    Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.tertiary)
+                    Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
                 }
 
                 // レベル（課題設定がある場合のみ）
@@ -696,7 +696,7 @@ fun ExerciseItemCompactContent(
                         text = stringResource(R.string.legend_weight),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.tertiary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
                 if (exercise.distanceTrackingEnabled) {
@@ -979,7 +979,7 @@ fun UnifiedAddDialog(
                                         } else {
                                             stringResource(R.string.add_to_favorites)
                                         },
-                                        tint = if (isFavorite) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurface
+                                        tint = if (isFavorite) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface
                                     )
                                 }
                             }

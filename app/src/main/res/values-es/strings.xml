@@ -858,4 +858,10 @@
     <string name="summary_last_time">La última vez: %1$s</string>
     <string name="summary_new_best">Nuevo récord: %1$s, %2$s</string>
     <string name="summary_done">Hecho</string>
+    <!-- The label after the week's set count on Today; the number is shown separately. -->
+    <plurals name="today_week_sets">
+        <item quantity="one">serie esta semana</item>
+        <item quantity="many">series esta semana</item>
+        <item quantity="other">series esta semana</item>
+    </plurals>
 </resources>

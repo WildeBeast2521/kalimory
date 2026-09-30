@@ -538,7 +538,7 @@ fun ExerciseSelectionItem(
                 ) {
                     // お気に入り
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.tertiary)
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
                     }
 
                     // レベル（課題設定がある場合のみ）
@@ -575,7 +575,7 @@ fun ExerciseSelectionItem(
                             text = stringResource(R.string.legend_weight),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.tertiary
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                     if (exercise.distanceTrackingEnabled) {
@@ -1677,7 +1677,7 @@ private fun PerSetTrackingFields(
                 }
             },
             keyboardType = KeyboardType.Decimal,
-            accentColor = MaterialTheme.colorScheme.tertiary,
+            accentColor = MaterialTheme.colorScheme.primary,
             decrementEnabled = assistCurrent > 0.0,
             onDecrement = {
                 val current = assistanceInputs.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0

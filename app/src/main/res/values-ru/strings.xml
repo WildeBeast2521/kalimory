@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="ok">ОК</string>
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
@@ -180,4 +180,11 @@
     <string name="summary_last_time">В прошлый раз: %1$s</string>
     <string name="summary_new_best">Новый рекорд: %1$s, %2$s</string>
     <string name="summary_done">Готово</string>
+    <!-- The label after the week's set count on Today; the number is shown separately. -->
+    <plurals name="today_week_sets" tools:ignore="ImpliedQuantity">
+        <item quantity="one">подход за неделю</item>
+        <item quantity="few">подхода за неделю</item>
+        <item quantity="many">подходов за неделю</item>
+        <item quantity="other">подхода за неделю</item>
+    </plurals>
 </resources>

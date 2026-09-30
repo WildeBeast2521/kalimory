@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -98,7 +99,8 @@ class TodayScreenTest {
     @Test
     fun resumingOpensTheWorkoutScreensOwnResumeOffer() {
         launch()
-        rule.onAllNodesWithText(exerciseName)[0].performClick()
+        // The week's hero number can push the resume card below the fold on small screens.
+        rule.onAllNodesWithText(exerciseName)[0].performScrollTo().performClick()
         rule.onNodeWithText(text(R.string.interval_resume_title)).assertExists()
         rule.onAllNodesWithTag(PRIMARY_NAVIGATION_BAR_TAG).assertCountEquals(0)
     }

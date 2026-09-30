@@ -731,7 +731,7 @@ fun ProgramExecutionScreen(
             if (isLoading || currentStep == null) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
-                    color = MaterialTheme.colorScheme.tertiary
+                    color = MaterialTheme.colorScheme.primary
                 )
             } else {
                 when (val step = currentStep) {
