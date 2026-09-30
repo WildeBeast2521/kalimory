@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
 import io.github.gonbei774.calisthenicsmemory.data.BackupDao
+import io.github.gonbei774.calisthenicsmemory.data.progression.ChainPlacement
 import io.github.gonbei774.calisthenicsmemory.data.BackupSnapshot
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
@@ -158,7 +159,21 @@ class BackupService(
             if (it.programId !in intervalProgramIds) return "Interval program exercise ${it.id} references missing interval program ${it.programId}"
             if (it.exerciseId !in exerciseIds) return "Interval program exercise ${it.id} references missing exercise ${it.exerciseId}"
         }
-        return validateV2(data, exerciseIds)
+        validateV2(data, exerciseIds)?.let { return it }
+        return validateProgression(data, exerciseIds)
+    }
+
+    /**
+     * Format 11 (ADR 0007): a catalogue step links to at most one exercise, and each placement
+     * names an existing exercise once. Both are enforced by the database.
+     */
+    private fun validateProgression(data: BackupData, exerciseIds: Set<Long>): String? {
+        duplicateKey("exercise catalogue id", data.exercises.mapNotNull { it.catalogId })?.let { return it }
+        duplicateId("chain placement", data.chainPlacements.map { it.exerciseId })?.let { return it }
+        data.chainPlacements.firstOrNull { it.exerciseId !in exerciseIds }?.let {
+            return "Chain placement references missing exercise ${it.exerciseId}"
+        }
+        return null
     }
 
     /** v2 history (format 9): ids, codes, foreign keys, and unique keys the database enforces. */
@@ -262,7 +277,7 @@ class BackupService(
     companion object {
         const val APP_NAME = "CalisthenicsMemory"
         const val MIN_VERSION = 1
-        const val CURRENT_VERSION = 10
+        const val CURRENT_VERSION = 11
     }
 }
 
@@ -271,7 +286,7 @@ private fun BackupSnapshot.toBackupData(exportDate: String) = BackupData(
     exportDate = exportDate,
     app = BackupService.APP_NAME,
     groups = groups.map { ExportGroup(it.id, it.name, it.displayOrder) },
-    exercises = exercises.map { ExportExercise(it.id, it.name, it.type, it.group, it.sortOrder, it.displayOrder, it.laterality, it.targetSets, it.targetValue, it.isFavorite, it.restInterval, it.repDuration, it.distanceTrackingEnabled, it.weightTrackingEnabled, it.assistanceTrackingEnabled, it.description) },
+    exercises = exercises.map { ExportExercise(it.id, it.name, it.type, it.group, it.sortOrder, it.displayOrder, it.laterality, it.targetSets, it.targetValue, it.isFavorite, it.restInterval, it.repDuration, it.distanceTrackingEnabled, it.weightTrackingEnabled, it.assistanceTrackingEnabled, it.description, it.catalogId) },
     records = records.map { ExportRecord(it.id, it.exerciseId, it.valueRight, it.valueLeft, it.setNumber, it.date, it.time, it.comment, it.distanceCm, it.weightG, it.assistanceG) },
     programs = programs.map { ExportProgram(it.id, it.name) },
     programExercises = programExercises.map { ExportProgramExercise(it.id, it.programId, it.exerciseId, it.sortOrder, it.sets, it.targetValue, it.intervalSeconds, it.loopId) },
@@ -283,11 +298,12 @@ private fun BackupSnapshot.toBackupData(exportDate: String) = BackupData(
     workoutSessions = workoutSessions.map { it.toExport() },
     sessionExercises = sessionExercises.map { it.toExport() },
     setEntries = setEntries.map { it.toExport() },
+    chainPlacements = chainPlacements.map { ExportChainPlacement(it.exerciseId, it.chainId, it.afterStepId) },
 )
 
 private fun BackupData.toSnapshot() = BackupSnapshot(
     groups.map { ExerciseGroup(it.id, it.name, it.displayOrder) },
-    exercises.map { Exercise(it.id, it.name, it.type, it.group, it.sortOrder, it.displayOrder, it.laterality, it.targetSets, it.targetValue, it.isFavorite, it.restInterval, it.repDuration, it.distanceTrackingEnabled, it.weightTrackingEnabled, it.assistanceTrackingEnabled, it.description) },
+    exercises.map { Exercise(it.id, it.name, it.type, it.group, it.sortOrder, it.displayOrder, it.laterality, it.targetSets, it.targetValue, it.isFavorite, it.restInterval, it.repDuration, it.distanceTrackingEnabled, it.weightTrackingEnabled, it.assistanceTrackingEnabled, it.description, it.catalogId) },
     records.map { TrainingRecord(it.id, it.exerciseId, it.valueRight, it.valueLeft, it.setNumber, it.date, it.time, it.comment, it.distanceCm, it.weightG, it.assistanceG) },
     programs.map { Program(it.id, it.name) },
     programExercises.map { ProgramExercise(it.id, it.programId, it.exerciseId, it.sortOrder, it.sets, it.targetValue, it.intervalSeconds, it.loopId) },
@@ -299,6 +315,7 @@ private fun BackupData.toSnapshot() = BackupSnapshot(
     workoutSessions.map { it.toEntity() },
     sessionExercises.map { it.toEntity() },
     setEntries.map { it.toEntity() },
+    chainPlacements.map { ChainPlacement(it.exerciseId, it.chainId, it.afterStepId) },
 )
 
 private fun BackupData.summary() = BackupSummary(

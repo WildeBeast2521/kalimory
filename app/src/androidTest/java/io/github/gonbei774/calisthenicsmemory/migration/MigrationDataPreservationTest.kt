@@ -8,6 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -274,6 +275,36 @@ class MigrationDataPreservationTest {
             listOf(listOf<Any?>(20L, 10L, 8L, 60L)),
             db.rows("SELECT intervalWorkSeconds, intervalRestSeconds, intervalRounds, intervalRoundRestSeconds FROM workout_sessions"),
         )
+        db.close()
+    }
+
+    @Test
+    fun migrate24To25KeepsExercisesUnlinkedAndAddsChainPlacements() {
+        val db = migrate(24, 25) {
+            it.execSQL(
+                "INSERT INTO exercises (id, name, type, sortOrder, displayOrder, laterality, isFavorite, distanceTrackingEnabled, weightTrackingEnabled, assistanceTrackingEnabled) " +
+                    "VALUES (900, 'Kept push-up', 'Dynamic', 2, 0, 'Bilateral', 0, 0, 0, 0)"
+            )
+        }
+        // Existing exercises are unchanged and have no catalogue link.
+        assertEquals(
+            listOf(listOf<Any?>("Kept push-up", 2L, null)),
+            db.rows("SELECT name, sortOrder, catalogId FROM exercises WHERE id = 900"),
+        )
+        // A catalogue step links to at most one exercise.
+        db.execSQL("UPDATE exercises SET catalogId = 'push.push_up' WHERE id = 900")
+        db.execSQL(
+            "INSERT INTO exercises (id, name, type, sortOrder, displayOrder, laterality, isFavorite, distanceTrackingEnabled, weightTrackingEnabled, assistanceTrackingEnabled) " +
+                "VALUES (901, 'Other', 'Dynamic', 0, 0, 'Bilateral', 0, 0, 0, 0)"
+        )
+        val duplicate = runCatching { db.execSQL("UPDATE exercises SET catalogId = 'push.push_up' WHERE id = 901") }
+        assertTrue("a second link to one step must be refused", duplicate.isFailure)
+        // Placements live in the new table and go with their exercise.
+        db.execSQL("PRAGMA foreign_keys = ON")
+        db.execSQL("INSERT INTO chain_placements (exerciseId, chainId, afterStepId) VALUES (901, 'push', 'push.push_up')")
+        assertEquals(listOf(listOf<Any?>(901L, "push", "push.push_up")), db.rows("SELECT exerciseId, chainId, afterStepId FROM chain_placements"))
+        db.execSQL("DELETE FROM exercises WHERE id = 901")
+        assertEquals(emptyList<List<Any?>>(), db.rows("SELECT exerciseId FROM chain_placements"))
         db.close()
     }
 }

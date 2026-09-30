@@ -72,7 +72,16 @@ data class BackupData(
     val todoTasks: List<ExportTodoTask> = emptyList(),                            // v8で追加
     val workoutSessions: List<ExportWorkoutSession> = emptyList(),                // v9で追加（v2 履歴）
     val sessionExercises: List<ExportSessionExercise> = emptyList(),              // v9で追加
-    val setEntries: List<ExportSetEntry> = emptyList()                            // v9で追加
+    val setEntries: List<ExportSetEntry> = emptyList(),                           // v9で追加
+    val chainPlacements: List<ExportChainPlacement> = emptyList(),                // v11: custom exercises in built-in chains
+)
+
+/** Format 11: a custom exercise placed in a built-in chain (ADR 0007). */
+@Serializable
+data class ExportChainPlacement(
+    val exerciseId: Long,
+    val chainId: String,
+    val afterStepId: String? = null,
 )
 
 @Serializable
@@ -99,7 +108,8 @@ data class ExportExercise(
     val distanceTrackingEnabled: Boolean = false,  // 距離入力を有効化（v3で追加）
     val weightTrackingEnabled: Boolean = false,    // 荷重入力を有効化（v3で追加）
     val assistanceTrackingEnabled: Boolean = false, // アシスト入力を有効化（v6で追加）
-    val description: String? = null                // 種目の説明文（v6で追加）
+    val description: String? = null,               // 種目の説明文（v6で追加）
+    val catalogId: String? = null,                 // Format 11: the catalogue step it was added from (ADR 0007)
 )
 
 @Serializable

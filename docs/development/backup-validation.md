@@ -6,7 +6,7 @@ Rule: every JSON backup this app exports must restore on this app. Import follow
 
 ## Rejected (the database itself could not hold them)
 
-- Wrong `app` or a backup version outside 1–10.
+- Wrong `app` or a backup version outside 1–11.
 - Non-positive or duplicate ids in any collection.
 - A duplicate group name or a duplicate exercise name/type pair (unique indexes).
 - References backed by foreign keys: a record, program exercise, or interval program exercise pointing at a missing exercise or program; a program loop pointing at a missing program; a program exercise pointing at a missing loop.
@@ -47,3 +47,10 @@ Format 9 adds `workoutSessions`, `sessionExercises`, and `setEntries`. Enum valu
 ## Format 10: interval settings
 
 Format 10 adds four optional fields to each workout session: `intervalWorkSeconds`, `intervalRestSeconds`, `intervalRounds` and `intervalRoundRestSeconds`. They mirror database version 24 and record the interval settings an `INTERVAL_TEMPLATE` workout ran with; other sessions leave them out. A format 9 file restores with them empty. Older app versions reject format 10 files as unsupported rather than dropping the settings. A negative setting is accepted and reported as `V2_NEGATIVE_VALUE`, like a negative set value.
+
+## Format 11: progression links
+
+Format 11 (ADR 0007) adds an optional `catalogId` to each exercise, linking it to a catalogue step, and a `chainPlacements` list placing custom exercises in built-in chains. These mirror database version 25.
+- **Rejected:** a `catalogId` shared by two exercises (a unique index), a duplicate or non-positive placement `exerciseId`, and a placement whose exercise is missing (a foreign key).
+- **Unknown ids:** an unknown catalogue or chain id will be reported as an anomaly and kept once the catalogue exists (phase 2), because a newer catalogue may define it.
+- **Older backups:** a format 1–10 backup restores with no links or placements. Older app versions reject format 11 as unsupported rather than dropping the links.

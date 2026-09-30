@@ -2,6 +2,8 @@
 package io.github.gonbei774.calisthenicsmemory.data
 
 import android.content.Context
+import io.github.gonbei774.calisthenicsmemory.data.progression.ChainPlacement
+import io.github.gonbei774.calisthenicsmemory.data.progression.ChainPlacementDao
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -15,8 +17,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class, WorkoutSessionEntity::class, SessionExerciseEntity::class, SetEntryEntity::class],
-    version = 24,
+    entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class, WorkoutSessionEntity::class, SessionExerciseEntity::class, SetEntryEntity::class, ChainPlacement::class],
+    version = 25,
     exportSchema = true
 )
 @TypeConverters(WorkoutTypeConverters::class)
@@ -34,6 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun intervalRecordDao(): IntervalRecordDao
     abstract fun backupDao(): BackupDao
     abstract fun workoutSessionDao(): WorkoutSessionDao
+    abstract fun chainPlacementDao(): ChainPlacementDao
 
     companion object {
         @Volatile
@@ -56,7 +59,7 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // Must equal the version in @Database; MigrationRegistrationTest checks it against the schemas.
-        const val CURRENT_VERSION = 24
+        const val CURRENT_VERSION = 25
 
         // The production configuration. Migration tests open their databases through it.
         // Unsupported installed versions are refused before Room can modify the file, and
@@ -441,6 +444,21 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Version 25: the progression data model (ADR 0007): a library exercise's link to a catalogue
+        // step, and custom exercises placed in built-in chains. Additive only.
+        val MIGRATION_24_25 = object : Migration(24, 25) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE `exercises` ADD COLUMN `catalogId` TEXT")
+                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_exercises_catalogId` ON `exercises` (`catalogId`)")
+                database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `chain_placements` (`exerciseId` INTEGER NOT NULL, `chainId` TEXT NOT NULL, " +
+                        "`afterStepId` TEXT, PRIMARY KEY(`exerciseId`), FOREIGN KEY(`exerciseId`) REFERENCES `exercises`(`id`) " +
+                        "ON UPDATE NO ACTION ON DELETE CASCADE )"
+                )
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_chain_placements_chainId` ON `chain_placements` (`chainId`)")
+            }
+        }
+
         // Oldest installed database version that can migrate to the current version.
         // See docs/development/supported-database-versions.md.
         const val OLDEST_SUPPORTED_VERSION = 9
@@ -463,6 +481,7 @@ abstract class AppDatabase : RoomDatabase() {
             MIGRATION_21_22,
             MIGRATION_22_23,
             MIGRATION_23_24,
+            MIGRATION_24_25,
         )
     }
 }

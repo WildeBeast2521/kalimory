@@ -142,7 +142,7 @@ class BackupRoundTripTest {
 
         val exported = BackupService(source.backupDao()).export()
         val json = (exported as BackupResult.Success).value.json
-        assertTrue(json.contains("\"version\":10"))
+        assertTrue(json.contains("\"version\":11"))
         assertTrue(json.contains("\"intervalRoundRestSeconds\":60"))
         val parsed = BackupService(target.backupDao()).parse(json)
         assertTrue("parse: $parsed", parsed is BackupResult.Success)
@@ -152,6 +152,33 @@ class BackupRoundTripTest {
         assertEquals(2, restored.value.setEntries)
 
         assertEquals(v2History, target.backupDao().snapshot())
+    }
+
+    // Format 11 (ADR 0007): catalogue links and a custom exercise placed in a built-in chain.
+    private val progression = BackupSnapshot(
+        groups = listOf(ExerciseGroup(1, "Pull", 0)),
+        exercises = listOf(
+            Exercise(1, "Pull-up", "Dynamic", "Pull", catalogId = "pull.pull_up"),
+            Exercise(2, "Towel pull-up", "Dynamic", "Pull"),
+        ),
+        records = emptyList(), programs = emptyList(), programExercises = emptyList(), programLoops = emptyList(),
+        intervalPrograms = emptyList(), intervalProgramExercises = emptyList(), intervalRecords = emptyList(), todoTasks = emptyList(),
+        chainPlacements = listOf(io.github.gonbei774.calisthenicsmemory.data.progression.ChainPlacement(2, "pull", "pull.pull_up")),
+    )
+
+    @Test
+    fun catalogueLinksAndPlacementsRestoreExactly() = runBlocking {
+        source.backupDao().replaceAll(progression)
+
+        val json = (BackupService(source.backupDao()).export() as BackupResult.Success).value.json
+        assertTrue(json.contains("\"catalogId\":\"pull.pull_up\""))
+        assertTrue(json.contains("\"chainPlacements\""))
+        val parsed = BackupService(target.backupDao()).parse(json)
+        assertTrue("parse: $parsed", parsed is BackupResult.Success)
+        val restored = BackupService(target.backupDao()).restore((parsed as BackupResult.Success).value.data)
+        assertTrue("restore: $restored", restored is BackupResult.Success)
+
+        assertEquals(progression, target.backupDao().snapshot())
     }
 
     @Test
