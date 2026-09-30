@@ -882,4 +882,18 @@
     <plurals name="record_save_exercises">
         <item quantity="other">%d種目を記録</item>
     </plurals>
+    <!-- Restoring the raw database from a recovery file. -->
+    <string name="recovery_restore_button">リカバリーファイルから復元</string>
+    <string name="recovery_restore_title">データを置き換えますか？</string>
+    <string name="recovery_restore_message">リカバリーファイル内のデータベースで現在のデータを置き換えます。現在のデータはアプリ内に保管され、以後のリカバリーファイルのエクスポートに含まれます。</string>
+    <string name="recovery_restore_confirm">復元</string>
+    <string name="recovery_restore_done">復元しました。アプリを再起動します。</string>
+    <string name="recovery_rejected_no_database">このファイルには Calisthenics Memory のデータベースがありません。</string>
+    <string name="recovery_rejected_too_large">リカバリーファイルとしては大きすぎます。</string>
+    <string name="recovery_rejected_version">このデータベースはバージョン %1$d で、このアプリでは開けません。</string>
+    <string name="recovery_rejected_damaged">このデータベースは破損しているため復元できません。</string>
+    <string name="recovery_rejected_unreadable">ファイルを読み込めませんでした：%1$s</string>
+    <string name="recovery_restore_failed">復元を完了できませんでした（%1$s）。データは変更されていません。アプリを再起動します。</string>
+    <string name="recovery_section_title">リカバリーファイル</string>
+    <string name="recovery_section_description">データを開けないときにアプリがエクスポートするリカバリーファイルから、データベースをそのまま復元します。それ以外は JSON バックアップを使ってください。</string>
 </resources>

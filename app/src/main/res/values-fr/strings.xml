@@ -820,4 +820,18 @@
         <item quantity="many">Enregistrer %d d\'exercices</item>
         <item quantity="other">Enregistrer %d exercices</item>
     </plurals>
+    <!-- Restoring the raw database from a recovery file. -->
+    <string name="recovery_restore_button">Restaurer depuis un fichier de récupération</string>
+    <string name="recovery_restore_title">Remplacer vos données ?</string>
+    <string name="recovery_restore_message">La base de données du fichier de récupération remplace vos données actuelles. Vos données actuelles sont conservées dans l\'application et incluses dans les exports de fichiers de récupération ultérieurs.</string>
+    <string name="recovery_restore_confirm">Restaurer</string>
+    <string name="recovery_restore_done">Restauré. L\'application va redémarrer.</string>
+    <string name="recovery_rejected_no_database">Ce fichier ne contient aucune base de données Calisthenics Memory.</string>
+    <string name="recovery_rejected_too_large">Ce fichier est trop volumineux pour être un fichier de récupération.</string>
+    <string name="recovery_rejected_version">Cette base de données est en version %1$d, que cette application ne peut pas ouvrir.</string>
+    <string name="recovery_rejected_damaged">Cette base de données est endommagée et ne peut pas être restaurée.</string>
+    <string name="recovery_rejected_unreadable">Le fichier n\'a pas pu être lu : %1$s</string>
+    <string name="recovery_restore_failed">La restauration n\'a pas abouti (%1$s). Vos données sont inchangées. L\'application va redémarrer.</string>
+    <string name="recovery_section_title">Fichier de récupération</string>
+    <string name="recovery_section_description">Restaure la base de données brute depuis un fichier de récupération, que l\'application propose d\'exporter lorsqu\'elle ne peut pas ouvrir vos données. Pour tout le reste, utilisez une sauvegarde JSON.</string>
 </resources>

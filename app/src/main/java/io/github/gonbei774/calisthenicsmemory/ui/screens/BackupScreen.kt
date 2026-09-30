@@ -341,6 +341,23 @@ fun BackupScreen(
                 }
             }
 
+            // Raw database restore, for recovery files the app exports when it cannot open its data.
+            item {
+                Column(modifier = Modifier.padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = stringResource(R.string.recovery_section_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = stringResource(R.string.recovery_section_description),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    RecoveryRestoreButton()
+                }
+            }
+
             // ローディング表示
             if (isLoading) {
                 item {

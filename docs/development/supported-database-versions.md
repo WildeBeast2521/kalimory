@@ -24,7 +24,13 @@ This policy concerns the installed Room database schema version only. It is sepa
 
 ## Corrupt databases
 
-SQLite's default corruption handling deletes the database file. `AppDatabase.build` replaces it with `CorruptionPreservingOpenHelperFactory`: on a corruption report, the database and its `-wal`, `-shm`, and `-journal` files are copied once into `<name>.corrupt` next to the database, and the live file is kept. The error still reaches the caller. The first copy is never overwritten. At start-up, `DatabaseStartupCheck` opens the database before any screen uses it. When the database is unsupported, fails to open, or has an unacknowledged corruption copy, `DatabaseUnavailableScreen` explains what happened. It lets the user export the database, its sidecar files, and the corruption copy as a zip through the Storage Access Framework. Restoring from such a zip needs manual assistance.
+SQLite's default corruption handling deletes the database file. `AppDatabase.build` replaces it with `CorruptionPreservingOpenHelperFactory`: on a corruption report, the database and its `-wal`, `-shm`, and `-journal` files are copied once into `<name>.corrupt` next to the database, and the live file is kept. The error still reaches the caller. The first copy is never overwritten. At start-up, `DatabaseStartupCheck` opens the database before any screen uses it. When the database is unsupported, fails to open, or has an unacknowledged corruption copy, `DatabaseUnavailableScreen` explains what happened. It lets the user export the database, its sidecar files, the corruption copy and any files an earlier restore replaced, as a zip through the Storage Access Framework.
+
+Such a zip can be restored in the app, from that screen or from Settings › Complete Backup (`RecoveryRestore`).
+- Only the database and its sidecar files are taken from the zip, into a staging folder.
+- The staged copy must pass `PRAGMA integrity_check` and carry a version from 9 to the current one. Its write-ahead log is folded into the main file.
+- The current files are then moved into `<name>.before-restore-<time>/`, never deleted, and the staged file takes their place. If a move fails, it is rolled back.
+- The app restarts, and Room migrates an older version as on any open.
 
 ## Rationale
 

@@ -57,16 +57,18 @@ internal fun restoreMissingGroups(database: AppDatabase) {
     }
 }
 
-/** Collects the raw database files, and any corruption copy, for a user-initiated export. */
+/** Collects the raw database files, any corruption copy and restored-over files, for a user-initiated export. */
 internal object DatabaseFileExport {
     private val SIDECAR_SUFFIXES = listOf("", "-wal", "-shm", "-journal")
 
     /** Zip entry name to file, for the database, its sidecars, and the corruption copy. */
     fun entries(database: File): List<Pair<String, File>> {
         val live = SIDECAR_SUFFIXES.map { File(database.path + it) }.filter { it.isFile }.map { it.name to it }
-        val quarantine = DatabaseQuarantine.directoryFor(database)
-        val copies = quarantine.listFiles().orEmpty().filter { it.isFile }.sortedBy { it.name }
-            .map { "${quarantine.name}/${it.name}" to it }
+        // The corruption copy and the files earlier restores replaced travel with the export.
+        val kept = listOf(DatabaseQuarantine.directoryFor(database)) + RecoveryRestore.beforeRestoreDirectories(database)
+        val copies = kept.flatMap { directory ->
+            directory.listFiles().orEmpty().filter { it.isFile }.sortedBy { it.name }.map { "${directory.name}/${it.name}" to it }
+        }
         return live + copies
     }
 
