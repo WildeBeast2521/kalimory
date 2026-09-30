@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-30, at PR #75.
+Last reviewed: 2026-09-30, at PR #76.
 
 ## Where things stand
 
@@ -60,12 +60,15 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
    - SP: a large "this week" number on Today, brass kept for in-progress and personal bests only, and a soft glow in dark mode.
 3. **M1, done in PR #75:** tapping a day up to today in Today's week strip opens Progress › Calendar with that day selected (`ViewScreen(focusDate)`).
    - Each day is an equal-width cell, a button that names the full date and whether it was trained. `TodayScreenTest.tappingADayOpensItsHistoryInProgress` covers it.
-   - Progress "1 Week" still shows a rolling seven days (Thu to Wed) while Today shows the calendar week. M6 fixes that.
    - **M3:** show when each exercise and program was last done.
 4. **L1:** log a past workout with several exercises. `ManualWorkoutWriter` handles one exercise today; the v2 model supports more.
 5. **M5:** restore from a recovery zip inside the app.
 6. **Also approved:**
-   - M6: Progress "1 Week" follows the calendar week and the first-day setting, as Today does.
+   - M6, done in PR #76:
+     - `Period.startDate(today, firstDay)` makes "1 Week" the calendar week from the user's first day. It applies to the Calendar, List, Graph (charts and statistics) and Challenge, so "this week" means the same everywhere. For example, the Progress week total now matches Today's hero number.
+     - The Calendar's week row shows the whole week, with later days still to come.
+     - `calculateStatistics` had also counted 8 days. That is fixed, and `PeriodStartTest` covers the helper.
+     - Seen, not fixed: future days in the Calendar week row look like empty past days. Today outlines them instead.
    - L2: interval runs on the workout kit.
    - The small fixes listed below.
 
@@ -100,7 +103,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #75. PR #70 changed documentation only.
+PRs #34 to #76. PR #70 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -110,7 +113,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #75: 349 unit tests, 134 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #76: 352 unit tests, 134 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

@@ -1,6 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import android.text.format.DateUtils
+import io.github.gonbei774.calisthenicsmemory.ui.screens.today.weekOf
+import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -48,6 +50,7 @@ fun CalendarView(
     focusDate: LocalDate? = null,
     onFocusShown: () -> Unit = {},
 ) {
+    val firstDay = firstDayOfWeek()
 
     // 種目ID → Lv (sortOrder) マップ
     val exerciseLevelMap = remember(exercises) {
@@ -85,7 +88,7 @@ fun CalendarView(
     val statsRange = remember(items, selectedPeriod, selectedDate, today) {
         when {
             selectedDate != null -> selectedDate!! to selectedDate!!
-            selectedPeriod != null -> today.minusDays(selectedPeriod.days.toLong() - 1) to today
+            selectedPeriod != null -> selectedPeriod.startDate(today, firstDay) to today
             else -> {
                 val earliest = items.mapNotNull {
                     try { LocalDate.parse(it.date) } catch (_: Exception) { null }
@@ -119,10 +122,8 @@ fun CalendarView(
 
     if (selectedPeriod == Period.OneWeek) {
         // 週間表示（1週間フィルター時）
-        val weekDays = remember(today) {
-            val startOfWeek = today.minusDays(6)
-            (0L..6L).map { startOfWeek.plusDays(it) }
-        }
+        // The calendar week, as on Today, so later days show as still to come.
+        val weekDays = remember(today, firstDay) { weekOf(today, firstDay) }
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -208,7 +209,7 @@ fun CalendarView(
                 }
             }
             val periodStart = selectedPeriod?.let {
-                YearMonth.from(today.minusDays(it.days.toLong() - 1))
+                YearMonth.from(it.startDate(today, firstDay))
             }
             val earliest = when {
                 periodStart != null -> periodStart
@@ -308,8 +309,9 @@ private fun MonthGrid(
     selectedPeriod: Period? = null,
     onDateClick: (LocalDate) -> Unit
 ) {
+    val firstDay = firstDayOfWeek()
     val cutoffDate = remember(selectedPeriod, today) {
-        selectedPeriod?.let { today.minusDays(it.days.toLong() - 1) }
+        selectedPeriod?.let { it.startDate(today, firstDay) }
     }
 
     Column {
@@ -324,7 +326,6 @@ private fun MonthGrid(
 
         // 曜日ヘッダー
         val locale = LocalConfiguration.current.locales[0]
-        val firstDay = firstDayOfWeek()
         Row(modifier = Modifier.fillMaxWidth()) {
             weekDaysFrom(firstDay).forEach { day ->
                 Text(
