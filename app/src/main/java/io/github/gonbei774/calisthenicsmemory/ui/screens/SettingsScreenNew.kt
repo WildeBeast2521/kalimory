@@ -479,6 +479,7 @@ fun SettingsScreenNew(
                 var setIntervalEnabled by remember { mutableStateOf(workoutPrefs.isSetIntervalEnabled()) }
                 var flashNotificationEnabled by remember { mutableStateOf(workoutPrefs.isFlashNotificationEnabled()) }
                 var keepScreenOnEnabled by remember { mutableStateOf(workoutPrefs.isKeepScreenOnEnabled()) }
+                var setDoneVibrationEnabled by remember { mutableStateOf(workoutPrefs.isSetDoneVibrationEnabled()) }
                 var showStartCountdownDialog by remember { mutableStateOf(false) }
                 var showSetIntervalDialog by remember { mutableStateOf(false) }
 
@@ -698,6 +699,46 @@ fun SettingsScreenNew(
                                     }
                                 )
                             }
+                        }
+                    }
+
+                    // セット完了時の振動
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+                        ),
+                        shape = MaterialTheme.shapes.large
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(20.dp),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(AppIcons.Vibration, contentDescription = null, modifier = Modifier.size(32.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(R.string.set_done_vibration_setting),
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = stringResource(R.string.set_done_vibration_description),
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                            Switch(
+                                checked = setDoneVibrationEnabled,
+                                onCheckedChange = { enabled ->
+                                    setDoneVibrationEnabled = enabled
+                                    workoutPrefs.setSetDoneVibrationEnabled(enabled)
+                                }
+                            )
                         }
                     }
                 }

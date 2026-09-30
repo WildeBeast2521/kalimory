@@ -31,6 +31,7 @@ keyboard_arrow_down
 keyboard_arrow_up
 language
 light_mode
+vibration
 list_alt
 menu
 more_vert

@@ -456,6 +456,8 @@
     <string name="flash_notification_description">Hacer parpadear el LED sincronizado con los sonidos durante el entrenamiento</string>
     <string name="keep_screen_on_setting">Mantener pantalla encendida</string>
     <string name="keep_screen_on_description">Mantener la pantalla encendida durante el entrenamiento para ver la cuenta regresiva</string>
+    <string name="set_done_vibration_setting">Vibrar al terminar una serie</string>
+    <string name="set_done_vibration_description">Una breve vibración confirma cada serie terminada</string>
     <!-- To Do Screen -->
     <string name="todo_title">Pendientes</string>
     <string name="todo_empty">Toca + para añadir ejercicios</string>

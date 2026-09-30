@@ -477,6 +477,8 @@
     <string name="flash_notification_description">Flash LED in sync with sounds during workout</string>
     <string name="keep_screen_on_setting">Keep Screen On</string>
     <string name="keep_screen_on_description">Keep screen on during workout to view countdown</string>
+    <string name="set_done_vibration_setting">Vibrate When a Set Is Done</string>
+    <string name="set_done_vibration_description">A short vibration confirms each finished set</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Timer Settings (Optional)</string>
     <string name="timer_settings_description">Configure timers for this exercise. Leave blank to use default settings.</string>

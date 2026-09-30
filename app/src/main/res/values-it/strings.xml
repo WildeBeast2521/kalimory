@@ -456,6 +456,8 @@
     <string name="flash_notification_description">Lampeggiare il LED sincronizzato con i suoni durante l\'allenamento</string>
     <string name="keep_screen_on_setting">Mantieni schermo acceso</string>
     <string name="keep_screen_on_description">Mantieni lo schermo acceso durante l\'allenamento per visualizzare il conto alla rovescia</string>
+    <string name="set_done_vibration_setting">Vibra alla fine di una serie</string>
+    <string name="set_done_vibration_description">Una breve vibrazione conferma ogni serie completata</string>
     <!-- To Do Screen -->
     <string name="todo_title">Da fare</string>
     <string name="todo_empty">Tocca + per aggiungere esercizi</string>

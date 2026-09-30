@@ -456,6 +456,8 @@
     <string name="flash_notification_description">训练时LED与声音同步闪烁</string>
     <string name="keep_screen_on_setting">保持屏幕常亮</string>
     <string name="keep_screen_on_description">训练时保持屏幕常亮以显示倒计时</string>
+    <string name="set_done_vibration_setting">完成一组时振动</string>
+    <string name="set_done_vibration_description">每完成一组都会短暂振动确认</string>
     <!-- To Do Screen -->
     <string name="todo_title">待办事项</string>
     <string name="todo_empty">点击 + 添加动作</string>

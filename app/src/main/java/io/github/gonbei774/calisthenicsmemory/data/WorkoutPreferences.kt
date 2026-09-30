@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 /**
  * ワークアウト設定の保存・読み込みを管理するクラス
@@ -108,6 +109,15 @@ class WorkoutPreferences(context: Context) {
         prefs.edit().putBoolean(KEY_KEEP_SCREEN_ON_ENABLED, enabled).apply()
     }
 
+    /** A short vibration when a set is done (default: on). The system's touch feedback setting still applies. */
+    fun isSetDoneVibrationEnabled(): Boolean {
+        return prefs.getBoolean(KEY_SET_DONE_VIBRATION_ENABLED, true)
+    }
+
+    fun setSetDoneVibrationEnabled(enabled: Boolean) {
+        prefs.edit { putBoolean(KEY_SET_DONE_VIBRATION_ENABLED, enabled) }
+    }
+
     /**
      * 前回記録のプリフィルの有効/無効を取得
      * 記録画面とワークアウト画面の両方に適用される
@@ -197,6 +207,7 @@ class WorkoutPreferences(context: Context) {
         private const val KEY_SET_INTERVAL_ENABLED = "set_interval_enabled"
         private const val KEY_FLASH_NOTIFICATION_ENABLED = "flash_notification_enabled"
         private const val KEY_KEEP_SCREEN_ON_ENABLED = "keep_screen_on_enabled"
+        private const val KEY_SET_DONE_VIBRATION_ENABLED = "set_done_vibration_enabled"
         private const val KEY_PREFILL_PREVIOUS_RECORD = "prefill_previous_record"
         private const val KEY_TIMER_MODE_AUTO = "timer_mode_auto"
         private const val KEY_DYNAMIC_COUNT_SOUND_ENABLED = "dynamic_count_sound_enabled"
