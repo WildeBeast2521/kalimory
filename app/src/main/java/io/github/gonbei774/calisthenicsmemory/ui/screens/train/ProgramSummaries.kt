@@ -60,7 +60,8 @@ fun intervalSummary(interval: IntervalProgram, exerciseCount: Int): String {
         R.string.interval_summary_format, exerciseCount, interval.workSeconds, interval.restSeconds, interval.rounds,
     )
     val seconds = ProgramTimeEstimator.estimateIntervalSeconds(interval, exerciseCount)
-    return if (seconds > 0) summary + " · " + stringResource(R.string.program_estimated_time, (seconds + 59) / 60) else summary
+    // Rounded like program estimates, so both kinds of list read the same way.
+    return if (seconds > 0) summary + " · " + stringResource(R.string.program_estimated_time, ProgramTimeEstimator.formatMinutes(seconds)) else summary
 }
 
 /** "Last done Sep 27", or "Done today"; null when never done. */

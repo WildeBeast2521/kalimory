@@ -596,7 +596,6 @@
     <string name="interval_full_complete_format">%1$d / %2$d раундів завершено</string>
     <string name="interval_pause">Пауза</string>
     <string name="interval_resume">Продовжити</string>
-    <string name="interval_skip">Пропустити</string>
     <string name="interval_skipped_label">(пропущено)</string>
     <string name="interval_skipped_format">Пропущено: %1$d вправ</string>
     <string name="interval_stop">Стоп</string>
@@ -616,8 +615,8 @@
     <string name="interval_no_record_note">У цьому режимі час і повторення не реєструються</string>
     <string name="interval_work_seconds">Час виконання</string>
     <string name="interval_rest_seconds">Час відпочинку</string>
-    <string name="interval_work_label">ТРЕНУВАННЯ</string>
-    <string name="interval_rest_label">ВІДПОЧИНОК</string>
+    <string name="interval_work_label">Тренування</string>
+    <string name="interval_rest_label">Відпочинок</string>
     <string name="interval_next">Наступний</string>
     <string name="interval_next_round">Наступний раунд</string>
     <string name="interval_ended_title">Завершено</string>

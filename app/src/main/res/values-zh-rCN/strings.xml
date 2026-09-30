@@ -659,7 +659,6 @@
     <string name="interval_round_header_format">第%1$d轮</string>
     <string name="interval_next">下一个</string>
     <string name="interval_next_round">下一轮</string>
-    <string name="interval_skip">跳过</string>
     <string name="interval_skipped_format">已跳过：%1$d个动作</string>
     <string name="interval_skipped_label">（已跳过）</string>
     <string name="interval_not_executed">（未执行）</string>

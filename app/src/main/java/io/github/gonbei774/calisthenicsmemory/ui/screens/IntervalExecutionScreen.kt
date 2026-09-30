@@ -1,6 +1,14 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.material3.OutlinedButton
+import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutTone
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutStatus
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutSkipButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutHeader
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.TimerDial
 import androidx.activity.compose.BackHandler
 import android.view.WindowManager
 import androidx.compose.foundation.Canvas
@@ -875,64 +883,18 @@ private fun IntervalPrepareContent(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Top: "Get Ready!"
-        Text(
-            text = stringResource(R.string.interval_get_ready),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = cs.onSurface,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-
         Spacer(modifier = Modifier.weight(1f))
 
-        // Center: timer（タップで一時停止/再開）
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(240.dp)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { onPauseToggle() }
-        ) {
-            Canvas(modifier = Modifier.size(240.dp)) {
-                drawArc(
-                    color = cs.tertiary.copy(alpha = 0.2f),
-                    startAngle = -90f,
-                    sweepAngle = 360f,
-                    useCenter = false,
-                    style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
-                )
-                drawArc(
-                    color = cs.tertiary.copy(alpha = if (isPaused) 0.3f else 1f),
-                    startAngle = -90f,
-                    sweepAngle = 360f * progress,
-                    useCenter = false,
-                    style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
-                )
-            }
-
-            Text(
-                text = "$remainingSeconds",
-                fontSize = 80.sp,
-                fontWeight = FontWeight.Bold,
-                color = cs.tertiary,
-                modifier = Modifier.alpha(if (isPaused) 0.2f else 1f)
-            )
-            if (isPaused) {
-                val iconColor = cs.onSurface
-                Canvas(modifier = Modifier.size(56.dp)) {
-                    val path = Path().apply {
-                        moveTo(size.width * 0.25f, size.height * 0.15f)
-                        lineTo(size.width * 0.85f, size.height * 0.5f)
-                        lineTo(size.width * 0.25f, size.height * 0.85f)
-                        close()
-                    }
-                    drawPath(path, color = iconColor.copy(alpha = 0.9f))
-                }
-            }
-        }
+        // The same parts as single and program runs: status, then the dial (tap to pause).
+        WorkoutStatus(stringResource(R.string.interval_get_ready), WorkoutTone.prepare)
+        Spacer(modifier = Modifier.height(Spacing.xl))
+        TimerDial(
+            progress = progress,
+            value = "$remainingSeconds",
+            accent = WorkoutTone.prepare,
+            paused = isPaused,
+            onToggle = onPauseToggle,
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -945,10 +907,9 @@ private fun IntervalPrepareContent(
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(
-                        text = "${stringResource(R.string.interval_next)}",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = cs.tertiary
+                        text = stringResource(R.string.interval_next),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = cs.secondary
                     )
                     Text(
                         text = firstExercise.name,
@@ -1009,91 +970,34 @@ private fun IntervalTimerContent(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Top: exercise name or phase label
-        if (exerciseName != null) {
-            Text(
-                text = exerciseName,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = cs.onSurface,
-                modifier = Modifier.padding(top = 8.dp)
-            )
+        // The exercise and where the run is, with one segment per round.
+        val position = if (exerciseName != null) {
+            stringResource(R.string.interval_exercise_format, exerciseIndex + 1, exercises.size) +
+                " · " + stringResource(R.string.interval_round_format, round, program.rounds)
         } else {
-            Text(
-                text = phaseLabel,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = cs.onSurface,
-                modifier = Modifier.padding(top = 8.dp)
-            )
+            roundCompleteMessage ?: stringResource(R.string.interval_round_format, round, program.rounds)
         }
-
-        // Sub info
-        Text(
-            text = if (exerciseName != null) {
-                stringResource(
-                    R.string.interval_exercise_format,
-                    exerciseIndex + 1,
-                    exercises.size
-                ) + " · " + stringResource(R.string.interval_round_format, round, program.rounds)
-            } else {
-                if (roundCompleteMessage != null) roundCompleteMessage
-                else stringResource(R.string.interval_round_format, round, program.rounds)
-            },
-            fontSize = 16.sp,
-            color = cs.onSurfaceVariant,
-            modifier = Modifier.padding(top = 8.dp)
+        WorkoutHeader(
+            exerciseName = exerciseName ?: phaseLabel,
+            setLabel = position,
+            setNumber = round,
+            totalSets = program.rounds,
+            accent = phaseColor,
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // Circular timer（タップで一時停止/再開）
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(240.dp)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { onPauseToggle() }
-        ) {
-            Canvas(modifier = Modifier.size(240.dp)) {
-                drawArc(
-                    color = phaseColor.copy(alpha = 0.2f),
-                    startAngle = -90f,
-                    sweepAngle = 360f,
-                    useCenter = false,
-                    style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
-                )
-                drawArc(
-                    color = phaseColor.copy(alpha = if (isPaused) 0.3f else 1f),
-                    startAngle = -90f,
-                    sweepAngle = 360f * progress,
-                    useCenter = false,
-                    style = Stroke(width = 12.dp.toPx(), cap = StrokeCap.Round)
-                )
-            }
-
-            Text(
-                text = "$remainingSeconds",
-                fontSize = 80.sp,
-                fontWeight = FontWeight.Bold,
-                color = phaseColor,
-                modifier = Modifier.alpha(if (isPaused) 0.2f else 1f)
-            )
-            if (isPaused) {
-                val iconColor = cs.onSurface
-                Canvas(modifier = Modifier.size(56.dp)) {
-                    val path = Path().apply {
-                        moveTo(size.width * 0.25f, size.height * 0.15f)
-                        lineTo(size.width * 0.85f, size.height * 0.5f)
-                        lineTo(size.width * 0.25f, size.height * 0.85f)
-                        close()
-                    }
-                    drawPath(path, color = iconColor.copy(alpha = 0.9f))
-                }
-            }
-        }
+        WorkoutStatus(phaseLabel, phaseColor)
+        Spacer(modifier = Modifier.height(Spacing.l))
+        TimerDial(
+            progress = progress,
+            value = "$remainingSeconds",
+            accent = phaseColor,
+            paused = isPaused,
+            onToggle = onPauseToggle,
+            // Smaller than elsewhere: this screen also shows what comes next and two actions.
+            size = 220.dp,
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -1156,38 +1060,22 @@ private fun IntervalTimerContent(
         ) {
             // Stop
             if (onStop != null) {
-                Button(
+                // Stopping ends the run early (it is saved), so it is visible but not loud.
+                OutlinedButton(
                     onClick = onStop,
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = cs.error),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = cs.error),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp)
+                        .heightIn(min = 48.dp)
                 ) {
-                    Text(
-                        text = stringResource(R.string.interval_stop),
-                        fontSize = 15.sp,
-                        color = cs.onError
-                    )
+                    Text(text = stringResource(R.string.interval_stop), style = MaterialTheme.typography.titleMedium)
                 }
             }
 
-            // Row 2: Skip
+            // Skip is the quiet action, as in the other runs.
             if (onSkip != null) {
-                Button(
-                    onClick = onSkip,
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = phaseColor),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.interval_skip),
-                        fontSize = 15.sp,
-                        color = contentColorFor(phaseColor)
-                    )
-                }
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { WorkoutSkipButton(onSkip) }
             }
         }
     }
