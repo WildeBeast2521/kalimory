@@ -1,6 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
+import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
+import java.time.DayOfWeek
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -69,6 +71,7 @@ fun ViewScreen(
     focusDate: LocalDate? = null,
     onFocusShown: () -> Unit = {},
 ) {
+    val firstDay = firstDayOfWeek()
     val exercises by viewModel.exercises.collectAsState()
     val records by viewModel.history.collectAsState()
     val intervalRecords by viewModel.intervalHistory.collectAsState()
@@ -136,7 +139,7 @@ fun ViewScreen(
         // 期間フィルター
         if (selectedPeriod != null) {
             val today = java.time.LocalDate.now()
-            val cutoffDate = today.minusDays(selectedPeriod!!.days.toLong() - 1)
+            val cutoffDate = selectedPeriod!!.startDate(today, firstDay)
 
             filtered = filtered.filter { session ->
                 try {
@@ -157,7 +160,7 @@ fun ViewScreen(
             emptyList()
         } else if (selectedPeriod != null) {
             val today = java.time.LocalDate.now()
-            val cutoffDate = today.minusDays(selectedPeriod!!.days.toLong() - 1)
+            val cutoffDate = selectedPeriod!!.startDate(today, firstDay)
             intervalRecords.filter { item ->
                 try {
                     val recordDate = java.time.LocalDate.parse(item.record.date)
@@ -989,6 +992,7 @@ fun ChallengeView(
     selectedPeriod: Period?,
     onExerciseClick: (Exercise) -> Unit
 ) {
+    val firstDay = firstDayOfWeek()
     // ViewModelを取得（階層データ用）
     val viewModel: TrainingViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
@@ -1005,7 +1009,7 @@ fun ChallengeView(
         // 期間フィルター（nullの場合は全期間）
         if (selectedPeriod != null) {
             val today = java.time.LocalDate.now()
-            val cutoffDate = today.minusDays(selectedPeriod!!.days.toLong() - 1)
+            val cutoffDate = selectedPeriod!!.startDate(today, firstDay)
 
             // 期間内に記録がある種目のみを抽出
             val exerciseIdsWithRecords = records.filter { record ->
@@ -1123,19 +1127,20 @@ fun ChallengeExerciseCard(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
+    val firstDay = firstDayOfWeek()
     val hasChallenge = exercise.targetSets != null && exercise.targetValue != null
 
     // 課題ありの場合、ステータスを計算（期間を考慮）
     val status = if (hasChallenge) {
         remember(exercise, records, selectedPeriod) {
-            calculateChallengeStatus(exercise, records, selectedPeriod)
+            calculateChallengeStatus(exercise, records, selectedPeriod, firstDay = firstDay)
         }
     } else null
 
     // 日単位のクリア状況（ヒートストリップ用）
     val clearData = if (hasChallenge) {
         remember(exercise, records, selectedPeriod) {
-            calculateClearDays(exercise, records, selectedPeriod)
+            calculateClearDays(exercise, records, selectedPeriod, firstDay = firstDay)
         }
     } else null
 
@@ -1193,7 +1198,7 @@ fun ChallengeExerciseCard(
             // 課題ありの場合
             if (hasChallenge && status != null && clearData != null) {
                 val progress = (status.achievementRate / 100f).coerceIn(0f, 1f)
-                val actualTotal = calculateActualTotal(exercise, records, selectedPeriod)
+                val actualTotal = calculateActualTotal(exercise, records, selectedPeriod, firstDay = firstDay)
                 val unit = stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
 
                 // プログレスバー + 達成率
@@ -1272,7 +1277,8 @@ fun ChallengeExerciseCard(
 fun calculateActualTotal(
     exercise: Exercise,
     records: List<HistorySet>,
-    period: Period? = null
+    period: Period? = null,
+    firstDay: DayOfWeek
 ): Int {
     val targetSets = exercise.targetSets ?: return 0
     var exerciseRecords = records.filter { it.exerciseId == exercise.id }
@@ -1280,7 +1286,7 @@ fun calculateActualTotal(
     // 期間フィルター適用（指定されている場合）
     if (period != null) {
         val today = java.time.LocalDate.now()
-        val cutoffDate = today.minusDays(period.days.toLong() - 1)
+        val cutoffDate = period.startDate(today, firstDay)
         exerciseRecords = exerciseRecords.filter { record ->
             try {
                 val recordDate = java.time.LocalDate.parse(record.date)
@@ -1373,7 +1379,8 @@ private fun sessionAchievementRate(
 fun calculateClearDays(
     exercise: Exercise,
     records: List<HistorySet>,
-    period: Period?
+    period: Period?,
+    firstDay: DayOfWeek
 ): ClearDayData {
     val targetSets = exercise.targetSets
     val targetValue = exercise.targetValue
@@ -1388,7 +1395,7 @@ fun calculateClearDays(
 
     // 開始日：期間指定があればその起点、なければ最初の記録日
     val startDate = if (period != null) {
-        today.minusDays(period.days.toLong() - 1)
+        period.startDate(today, firstDay)
     } else {
         exerciseRecords
             .mapNotNull { try { java.time.LocalDate.parse(it.date) } catch (e: Exception) { null } }
@@ -1457,7 +1464,8 @@ fun ChallengeHeatStrip(data: ClearDayData) {
 fun calculateChallengeStatus(
     exercise: Exercise,
     records: List<HistorySet>,
-    period: Period? = null
+    period: Period? = null,
+    firstDay: DayOfWeek
 ): ChallengeStatus {
     val targetSets = exercise.targetSets ?: return ChallengeStatus(
         level = exercise.sortOrder,
@@ -1478,7 +1486,7 @@ fun calculateChallengeStatus(
     // 期間フィルター適用（指定されている場合）
     if (period != null) {
         val today = java.time.LocalDate.now()
-        val cutoffDate = today.minusDays(period.days.toLong() - 1)
+        val cutoffDate = period.startDate(today, firstDay)
         exerciseRecords = exerciseRecords.filter { record ->
             try {
                 val recordDate = java.time.LocalDate.parse(record.date)

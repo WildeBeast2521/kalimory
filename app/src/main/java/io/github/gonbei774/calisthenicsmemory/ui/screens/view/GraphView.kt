@@ -1,6 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import androidx.compose.ui.graphics.toArgb
+import io.github.gonbei774.calisthenicsmemory.ui.screens.today.weekOf
+import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
+import java.time.DayOfWeek
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
@@ -68,6 +71,15 @@ enum class Period(val days: Int, val displayNameResId: Int) {
     ThreeMonths(90, R.string.period_three_months)
 }
 
+/**
+ * The first day [this] period covers, up to and including [today]. One week is the calendar
+ * week from the user's first day of the week, as on Today; the longer periods count back.
+ */
+fun Period.startDate(today: LocalDate, firstDay: DayOfWeek): LocalDate = when (this) {
+    Period.OneWeek -> weekOf(today, firstDay).first()
+    else -> today.minusDays(days.toLong() - 1)
+}
+
 enum class GraphType(val displayNameResId: Int) {
     Average(R.string.graph_type_average),
     Max(R.string.graph_type_max),
@@ -102,6 +114,7 @@ fun GraphView(
     selectedExerciseFilter: Exercise?,
     selectedPeriod: Period?
 ) {
+    val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
     var selectedGraphType by remember { mutableStateOf(GraphType.Average) }
     var isDistanceInverted by remember { mutableStateOf(false) }
@@ -224,7 +237,8 @@ fun GraphView(
                     records = records,
                     period = selectedPeriod,
                     graphType = selectedGraphType,
-                    unit = unit
+                    unit = unit,
+                    firstDay = firstDay
                 )
             }
 
@@ -256,7 +270,8 @@ fun GraphView(
                     prepareVolumeData(
                         exercise = selectedExerciseFilter,
                         records = records,
-                        period = selectedPeriod
+                        period = selectedPeriod,
+                        firstDay = firstDay
                     )
                 }
 
@@ -264,7 +279,8 @@ fun GraphView(
                     val allVolumeData = prepareVolumeData(
                         exercise = selectedExerciseFilter,
                         records = records,
-                        period = null
+                        period = null,
+                        firstDay = firstDay
                     )
                     val maxRight = allVolumeData.maxOfOrNull { it.volumeRight } ?: 0f
                     val maxLeft = allVolumeData.mapNotNull { it.volumeLeft }.maxOrNull() ?: 0f
@@ -284,7 +300,8 @@ fun GraphView(
                     prepareWeightData(
                         exercise = selectedExerciseFilter,
                         records = records,
-                        period = selectedPeriod
+                        period = selectedPeriod,
+                        firstDay = firstDay
                     )
                 }
 
@@ -292,7 +309,8 @@ fun GraphView(
                     val allWeightData = prepareWeightData(
                         exercise = selectedExerciseFilter,
                         records = records,
-                        period = null
+                        period = null,
+                        firstDay = firstDay
                     )
                     if (allWeightData.isNotEmpty()) {
                         Pair(
@@ -333,7 +351,8 @@ fun GraphView(
                     prepareAssistanceData(
                         exercise = selectedExerciseFilter,
                         records = records,
-                        period = selectedPeriod
+                        period = selectedPeriod,
+                        firstDay = firstDay
                     )
                 }
 
@@ -341,7 +360,8 @@ fun GraphView(
                     val allAssistanceData = prepareAssistanceData(
                         exercise = selectedExerciseFilter,
                         records = records,
-                        period = null
+                        period = null,
+                        firstDay = firstDay
                     )
                     if (allAssistanceData.isNotEmpty()) {
                         Pair(
@@ -381,7 +401,8 @@ fun GraphView(
                 calculateStatistics(
                     exercise = selectedExerciseFilter!!,
                     records = records,
-                    period = selectedPeriod
+                    period = selectedPeriod,
+                    firstDay = firstDay
                 )
             }
 
@@ -399,7 +420,8 @@ fun prepareGraphData(
     records: List<HistorySet>,
     period: Period?,
     graphType: GraphType,
-    unit: String
+    unit: String,
+    firstDay: DayOfWeek
 ): List<GraphDataPoint> {
     // 対象種目の記録を抽出
     val exerciseRecords = records.filter { it.exerciseId == exercise.id }
@@ -413,7 +435,7 @@ fun prepareGraphData(
     val filteredRecords = if (period == null) {
         exerciseRecords
     } else {
-        val cutoffDate = today.minusDays(period.days.toLong() - 1)
+        val cutoffDate = period.startDate(today, firstDay)
         exerciseRecords.filter { record ->
             try {
                 val recordDate = LocalDate.parse(record.date)
@@ -510,7 +532,8 @@ fun prepareGraphData(
 fun prepareVolumeData(
     exercise: Exercise,
     records: List<HistorySet>,
-    period: Period?
+    period: Period?,
+    firstDay: DayOfWeek
 ): List<VolumeDataPoint> {
     // 荷重トラッキングが無効な場合は空リスト
     if (!exercise.weightTrackingEnabled) {
@@ -529,7 +552,7 @@ fun prepareVolumeData(
     val filteredRecords = if (period == null) {
         exerciseRecords
     } else {
-        val cutoffDate = today.minusDays(period.days.toLong() - 1)
+        val cutoffDate = period.startDate(today, firstDay)
         exerciseRecords.filter { record ->
             try {
                 val recordDate = LocalDate.parse(record.date)
@@ -589,7 +612,8 @@ fun prepareVolumeData(
 fun prepareAssistanceData(
     exercise: Exercise,
     records: List<HistorySet>,
-    period: Period?
+    period: Period?,
+    firstDay: DayOfWeek
 ): List<AssistanceDataPoint> {
     // アシストトラッキングが無効な場合は空リスト
     if (!exercise.assistanceTrackingEnabled) {
@@ -608,7 +632,7 @@ fun prepareAssistanceData(
     val filteredRecords = if (period == null) {
         exerciseRecords
     } else {
-        val cutoffDate = today.minusDays(period.days.toLong() - 1)
+        val cutoffDate = period.startDate(today, firstDay)
         exerciseRecords.filter { record ->
             try {
                 val recordDate = LocalDate.parse(record.date)
@@ -654,7 +678,8 @@ fun prepareAssistanceData(
 fun prepareWeightData(
     exercise: Exercise,
     records: List<HistorySet>,
-    period: Period?
+    period: Period?,
+    firstDay: DayOfWeek
 ): List<WeightDataPoint> {
     // 荷重トラッキングが無効な場合は空リスト
     if (!exercise.weightTrackingEnabled) {
@@ -673,7 +698,7 @@ fun prepareWeightData(
     val filteredRecords = if (period == null) {
         exerciseRecords
     } else {
-        val cutoffDate = today.minusDays(period.days.toLong() - 1)
+        val cutoffDate = period.startDate(today, firstDay)
         exerciseRecords.filter { record ->
             try {
                 val recordDate = LocalDate.parse(record.date)
@@ -813,6 +838,7 @@ fun SimpleLineChart(
     isDistanceInverted: Boolean = false,
     allTimeDistanceRange: Pair<Float, Float>? = null
 ) {
+    val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
     // Unilateral判定
     val isUnilateral = data.any { it.valueLeft != null }
@@ -876,7 +902,7 @@ fun SimpleLineChart(
                 today.minusDays(30)
             }
         } else {
-            today.minusDays(period.days.toLong() - 1)
+            period.startDate(today, firstDay)
         }
         val endDate = today
 
@@ -1256,6 +1282,7 @@ fun SimpleVolumeChart(
     period: Period?,
     allTimeVolumeMax: Float
 ) {
+    val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
     val isUnilateral = data.any { it.volumeLeft != null }
 
@@ -1293,7 +1320,7 @@ fun SimpleVolumeChart(
                 today.minusDays(30)
             }
         } else {
-            today.minusDays(period.days.toLong() - 1)
+            period.startDate(today, firstDay)
         }
         val endDate = today
 
@@ -1550,6 +1577,7 @@ fun SimpleAssistanceChart(
     allTimeAssistanceRange: Pair<Float, Float>,
     allRecordsDateRange: Pair<LocalDate, LocalDate>? = null
 ) {
+    val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
     Canvas(
         modifier = Modifier
@@ -1588,7 +1616,7 @@ fun SimpleAssistanceChart(
                 today.minusDays(30)
             }
         } else {
-            today.minusDays(period.days.toLong() - 1)
+            period.startDate(today, firstDay)
         }
         val endDate = today
 
@@ -1798,6 +1826,7 @@ fun SimpleWeightChart(
     allTimeWeightRange: Pair<Float, Float>,
     allRecordsDateRange: Pair<LocalDate, LocalDate>? = null
 ) {
+    val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
     Canvas(
         modifier = Modifier
@@ -1835,7 +1864,7 @@ fun SimpleWeightChart(
                 today.minusDays(30)
             }
         } else {
-            today.minusDays(period.days.toLong() - 1)
+            period.startDate(today, firstDay)
         }
         val endDate = today
 
@@ -2234,7 +2263,8 @@ fun StatItemDual(
 fun calculateStatistics(
     exercise: Exercise,
     records: List<HistorySet>,
-    period: Period?
+    period: Period?,
+    firstDay: DayOfWeek
 ): Statistics {
     val exerciseRecords = records.filter { it.exerciseId == exercise.id }
 
@@ -2246,7 +2276,7 @@ fun calculateStatistics(
     val filteredRecords = if (period == null) {
         exerciseRecords
     } else {
-        val cutoffDate = LocalDate.now().minusDays(period.days.toLong())
+        val cutoffDate = period.startDate(LocalDate.now(), firstDay)
         exerciseRecords.filter {
             try {
                 LocalDate.parse(it.date) >= cutoffDate
