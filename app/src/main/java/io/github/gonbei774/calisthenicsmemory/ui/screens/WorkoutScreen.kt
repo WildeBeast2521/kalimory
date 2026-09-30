@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.lastDoneText
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -721,6 +722,7 @@ fun ExerciseSelectionStep(
     val exercises by viewModel.exercises.collectAsState()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
     val expandedGroups by viewModel.expandedGroups.collectAsState()
+    val lastDone by viewModel.lastDone.collectAsState()
 
     // Search state
     var searchQuery by remember { mutableStateOf("") }
@@ -835,6 +837,7 @@ fun ExerciseSelectionStep(
                         val group = hierarchicalData[index]
                         WorkoutHierarchicalGroup(
                             group = group,
+                            lastDone = lastDone.exercises,
                             isExpanded = if (group.groupName != null) {
                                 group.groupName in expandedGroups
                             } else {
@@ -857,6 +860,7 @@ fun ExerciseSelectionStep(
 @Composable
 fun WorkoutHierarchicalGroup(
     group: TrainingViewModel.GroupWithExercises,
+    lastDone: Map<Long, java.time.LocalDate>,
     isExpanded: Boolean,
     onExpandToggle: () -> Unit,
     onExerciseSelected: (Exercise) -> Unit
@@ -921,6 +925,7 @@ fun WorkoutHierarchicalGroup(
                     group.exercises.forEach { exercise ->
                         WorkoutExerciseItem(
                             exercise = exercise,
+                            lastDone = lastDoneText(lastDone[exercise.id]),
                             onClick = { onExerciseSelected(exercise) }
                         )
                     }
@@ -935,7 +940,8 @@ fun WorkoutHierarchicalGroup(
 @Composable
 fun WorkoutExerciseItem(
     exercise: Exercise,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    lastDone: String? = null,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -1043,6 +1049,14 @@ fun WorkoutExerciseItem(
                             fontWeight = FontWeight.Bold
                         )
                     }
+                }
+                if (lastDone != null) {
+                    Text(
+                        lastDone,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
                 }
             }
 

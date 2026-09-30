@@ -194,7 +194,7 @@ internal fun ShapeBadge(icon: ImageVector, container: Color, content: Color, org
 
 /** One tappable row: badge, name and what it is. */
 @Composable
-internal fun TodayRow(icon: ImageVector, name: String, kind: String, trailing: ImageVector? = null, onClick: () -> Unit) {
+internal fun TodayRow(icon: ImageVector, name: String, kind: String, trailing: ImageVector? = null, note: String? = null, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -208,6 +208,9 @@ internal fun TodayRow(icon: ImageVector, name: String, kind: String, trailing: I
         Column(Modifier.weight(1f)) {
             Text(name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(kind, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            if (note != null) {
+                Text(note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
         }
         if (trailing != null) {
             Icon(trailing, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)

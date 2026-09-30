@@ -8,6 +8,13 @@ import kotlinx.coroutines.flow.Flow
 import androidx.room.Transaction
 import androidx.room.Update
 
+/** When a program or interval program last ran, from the v2 sessions that name it. */
+data class TemplateLastRun(
+    val sourceType: WorkoutSourceType,
+    val sourceTemplateId: Long,
+    val lastStartedAtEpochMillis: Long,
+)
+
 /** A workout with its exercises and their sets, in order. */
 data class WorkoutSessionGraph(
     val session: WorkoutSessionEntity,
@@ -166,6 +173,20 @@ interface WorkoutSessionDao {
         """
     )
     suspend fun hasV2OnlySetStartedBetween(exerciseId: Long, startMillis: Long, endMillis: Long): Boolean
+
+    /**
+     * The latest start of each program and interval program. Legacy records carry no program
+     * link, so runs saved before v2 are not counted rather than guessed from names.
+     */
+    @Query(
+        """
+        SELECT sourceType, sourceTemplateId, MAX(startedAtEpochMillis) AS lastStartedAtEpochMillis
+        FROM workout_sessions
+        WHERE sourceTemplateId IS NOT NULL
+        GROUP BY sourceType, sourceTemplateId
+        """
+    )
+    fun observeTemplateLastRuns(): Flow<List<TemplateLastRun>>
 
     /** Reads one workout consistently. */
     @Transaction

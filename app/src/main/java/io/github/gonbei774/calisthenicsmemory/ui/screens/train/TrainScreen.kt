@@ -55,6 +55,7 @@ fun TrainScreen(
     val intervalPrograms by viewModel.intervalPrograms.collectAsState()
 
     val programSummaries = rememberProgramSummaries(viewModel, programs, exercises)
+    val lastDone by viewModel.lastDone.collectAsState()
     val intervalCounts = remember { mutableStateMapOf<Long, Int>() }
     LaunchedEffect(intervalPrograms) {
         intervalPrograms.forEach { intervalCounts[it.id] = viewModel.getIntervalProgramExercisesSync(it.id).size }
@@ -98,6 +99,7 @@ fun TrainScreen(
                             program.name,
                             programSummaries[program.id].describe(),
                             trailing = if (empty) AppIcons.Forward else AppIcons.Play,
+                            note = lastDoneText(lastDone.programs[program.id]),
                         ) { if (empty) onEditProgram(program.id) else onStartProgram(program.id) }
                     }
                 }
@@ -115,6 +117,7 @@ fun TrainScreen(
                             interval.name,
                             intervalSummary(interval, intervalCounts[interval.id] ?: 0),
                             trailing = AppIcons.Play,
+                            note = lastDoneText(lastDone.intervals[interval.id]),
                         ) { onStartInterval(interval.id) }
                     }
                 }

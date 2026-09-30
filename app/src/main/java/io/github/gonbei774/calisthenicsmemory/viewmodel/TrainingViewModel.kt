@@ -31,6 +31,7 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.V2HistoryEditor
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSummary
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSummaryBuilder
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSourceType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -242,6 +243,28 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             started = SharingStarted.Eagerly,
             initialValue = emptyList()
         )
+
+    /**
+     * The day each exercise, program and interval program was last done: exercises from the
+     * merged history, programs from the v2 sessions that name them.
+     */
+    val lastDone: StateFlow<LastDone> = combine(
+        history,
+        database.workoutSessionDao().observeTemplateLastRuns()
+    ) { sets, runs ->
+        val zone = ZoneId.systemDefault()
+        fun day(millis: Long) = java.time.Instant.ofEpochMilli(millis).atZone(zone).toLocalDate()
+        LastDone(
+            exercises = sets.groupBy { it.exerciseId }
+                .mapValues { (_, s) -> s.maxOf { it.date } }
+                .mapNotNull { (id, date) -> runCatching { LocalDate.parse(date) }.getOrNull()?.let { id to it } }
+                .toMap(),
+            programs = runs.filter { it.sourceType == WorkoutSourceType.PROGRAM_TEMPLATE }
+                .associate { it.sourceTemplateId to day(it.lastStartedAtEpochMillis) },
+            intervals = runs.filter { it.sourceType == WorkoutSourceType.INTERVAL_TEMPLATE }
+                .associate { it.sourceTemplateId to day(it.lastStartedAtEpochMillis) },
+        )
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, LastDone())
 
     // Snackbar message (UiMessage型で言語変更に追従)
     private val _snackbarMessage = MutableStateFlow<UiMessage?>(null)
@@ -2298,3 +2321,10 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     }
 
 }
+
+/** The day each thing was last done; missing when it never was (or only before v2, for programs). */
+data class LastDone(
+    val exercises: Map<Long, LocalDate> = emptyMap(),
+    val programs: Map<Long, LocalDate> = emptyMap(),
+    val intervals: Map<Long, LocalDate> = emptyMap(),
+)
