@@ -6,7 +6,11 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "exercises",
-    indices = [Index(value = ["name", "type"], unique = true)]
+    indices = [
+        Index(value = ["name", "type"], unique = true),
+        // At most one library exercise per catalogue step (ADR 0007); unlinked exercises are null.
+        Index(value = ["catalogId"], unique = true),
+    ]
 )
 data class Exercise(
     @PrimaryKey(autoGenerate = true)
@@ -25,5 +29,7 @@ data class Exercise(
     val distanceTrackingEnabled: Boolean = false,  // 距離入力を有効化
     val weightTrackingEnabled: Boolean = false,    // 荷重入力を有効化
     val assistanceTrackingEnabled: Boolean = false, // アシスト入力を有効化
-    val description: String? = null               // 種目の説明文（最大120文字）
+    val description: String? = null,              // 種目の説明文（最大120文字）
+    /** The catalogue step this exercise was added from, such as "push.incline" (ADR 0007). */
+    val catalogId: String? = null,
 )

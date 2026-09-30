@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import io.github.gonbei774.calisthenicsmemory.data.progression.ChainPlacement
 import io.github.gonbei774.calisthenicsmemory.data.v2.SessionExerciseEntity
 import io.github.gonbei774.calisthenicsmemory.data.v2.SetEntryEntity
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSessionEntity
@@ -23,6 +24,7 @@ data class BackupSnapshot(
     val workoutSessions: List<WorkoutSessionEntity> = emptyList(),
     val sessionExercises: List<SessionExerciseEntity> = emptyList(),
     val setEntries: List<SetEntryEntity> = emptyList(),
+    val chainPlacements: List<ChainPlacement> = emptyList(),
 )
 
 @Dao
@@ -67,10 +69,19 @@ interface BackupDao {
     @Query("SELECT * FROM set_entries ORDER BY id")
     suspend fun setEntries(): List<SetEntryEntity>
 
+    @Query("SELECT * FROM chain_placements ORDER BY exerciseId")
+    suspend fun chainPlacements(): List<ChainPlacement>
+
+    @Query("DELETE FROM chain_placements")
+    suspend fun deleteChainPlacements()
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertChainPlacements(items: List<ChainPlacement>)
+
     suspend fun snapshot(): BackupSnapshot = BackupSnapshot(
         groups(), exercises(), records(), programs(), programExercises(), programLoops(),
         intervalPrograms(), intervalProgramExercises(), intervalRecords(), todoTasks(),
-        workoutSessions(), sessionExercises(), setEntries(),
+        workoutSessions(), sessionExercises(), setEntries(), chainPlacements(),
     )
 
     @Query("DELETE FROM set_entries")
@@ -156,6 +167,7 @@ interface BackupDao {
         // Children first. Keep this explicit so any failed insert rolls the whole transaction back.
         deleteSetEntries()
         deleteSessionExercises()
+        deleteChainPlacements()
         deleteWorkoutSessions()
         deleteTodoTasks()
         deleteRecords()
@@ -183,5 +195,7 @@ interface BackupDao {
         insertWorkoutSessions(snapshot.workoutSessions)
         insertSessionExercises(snapshot.sessionExercises)
         insertSetEntries(snapshot.setEntries)
+        // Placements reference exercises.
+        insertChainPlacements(snapshot.chainPlacements)
     }
 }

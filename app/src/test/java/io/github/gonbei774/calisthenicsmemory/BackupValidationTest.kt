@@ -221,4 +221,38 @@ class BackupValidationTest {
         val detached = base.copy(sessionExercises = listOf(base.sessionExercises.first().copy(exerciseId = null, groupId = null)))
         assertAcceptedWith(detached)
     }
+
+    // Format 11 (ADR 0007): catalogue links and custom exercises placed in built-in chains.
+    private fun validV11() = validV10().let { base ->
+        base.copy(
+            version = 11,
+            exercises = base.exercises.mapIndexed { index, e -> if (index == 0) e.copy(catalogId = "pull.pull_up") else e } +
+                ExportExercise(90, "Towel pull-up", "Dynamic", null, 0, laterality = "Bilateral"),
+            chainPlacements = listOf(ExportChainPlacement(90, "pull", afterStepId = "pull.pull_up")),
+        )
+    }
+
+    @Test fun `accepts a version 11 backup with catalogue links and placements`() {
+        val result = service.parse(json.encodeToString(validV11()))
+        assertTrue("Expected success, got $result", result is BackupResult.Success)
+        assertEquals(ParsedBackup(validV11(), emptyList()), (result as BackupResult.Success).value)
+    }
+
+    @Test fun `rejects what the progression tables would refuse`() {
+        val base = validV11()
+        assertInvalid(
+            base.copy(exercises = base.exercises.map { if (it.id == 90L) it.copy(catalogId = "pull.pull_up") else it }),
+            "catalogue id",
+        )
+        assertInvalid(base.copy(chainPlacements = base.chainPlacements + ExportChainPlacement(90, "pull")), "chain placement")
+        assertInvalid(base.copy(chainPlacements = listOf(ExportChainPlacement(404, "pull"))), "missing exercise 404")
+    }
+
+    @Test fun `an older backup restores with no links`() {
+        val result = service.parse(json.encodeToString(validV10()))
+        assertTrue(result is BackupResult.Success)
+        result as BackupResult.Success
+        assertTrue(result.value.data.exercises.all { it.catalogId == null })
+        assertTrue(result.value.data.chainPlacements.isEmpty())
+    }
 }

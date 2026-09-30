@@ -2,13 +2,13 @@
 
 ## Decision
 
-The current Room database version is **24**. The supported installed Room database source versions are exactly **9 through 24**, inclusive.
+The current Room database version is **25**. The supported installed Room database source versions are exactly **9 through 25**, inclusive.
 
-`app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt` declares version 24 and registers the contiguous path (`AppDatabase.ALL_MIGRATIONS`):
+`app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt` declares version 25 and registers the contiguous path (`AppDatabase.ALL_MIGRATIONS`):
 
-`MIGRATION_9_10` → `MIGRATION_10_11` → `MIGRATION_11_12` → `MIGRATION_12_13` → `MIGRATION_13_14` → `MIGRATION_14_15` → `MIGRATION_15_16` → `MIGRATION_16_17` → `MIGRATION_17_18` → `MIGRATION_18_19` → `MIGRATION_19_20` → `MIGRATION_20_21` → `MIGRATION_21_22` → `MIGRATION_22_23` → `MIGRATION_23_24`.
+`MIGRATION_9_10` → `MIGRATION_10_11` → `MIGRATION_11_12` → `MIGRATION_12_13` → `MIGRATION_13_14` → `MIGRATION_14_15` → `MIGRATION_15_16` → `MIGRATION_16_17` → `MIGRATION_17_18` → `MIGRATION_18_19` → `MIGRATION_19_20` → `MIGRATION_20_21` → `MIGRATION_21_22` → `MIGRATION_22_23` → `MIGRATION_23_24` → `MIGRATION_24_25`.
 
-Version 22 only adds the v2 workout tables (`workout_sessions`, `session_exercises`, `set_entries`; ADR 0002). Every table from version 21 is unchanged, as the committed schemas `21.json` and `22.json` show. Version 23 only replaces the unique index on `set_entries.legacyTrainingRecordId` with one on `(legacyTrainingRecordId, side)`. One legacy unilateral record holds both sides, so it converts to one entry per side. Version 24 only adds four nullable columns to `workout_sessions` (`intervalWorkSeconds`, `intervalRestSeconds`, `intervalRounds`, `intervalRoundRestSeconds`) for the settings of interval workouts.
+Version 22 only adds the v2 workout tables (`workout_sessions`, `session_exercises`, `set_entries`; ADR 0002). Every table from version 21 is unchanged, as the committed schemas `21.json` and `22.json` show. Version 23 only replaces the unique index on `set_entries.legacyTrainingRecordId` with one on `(legacyTrainingRecordId, side)`. One legacy unilateral record holds both sides, so it converts to one entry per side. Version 24 only adds four nullable columns to `workout_sessions` (`intervalWorkSeconds`, `intervalRestSeconds`, `intervalRounds`, `intervalRoundRestSeconds`) for the settings of interval workouts. Version 25 only adds a nullable `catalogId` column to `exercises` with a unique index, and the new `chain_placements` table (ADR 0007).
 
 The following installed databases are unsupported and must fail closed:
 
@@ -18,7 +18,7 @@ The following installed databases are unsupported and must fail closed:
 
 Neither destructive migration fallback nor destructive downgrade fallback is permitted.
 
-`AppDatabase.build` enforces this before Room opens the file: `InstalledDatabaseVersion` reads `user_version` from the SQLite header and throws `UnsupportedDatabaseVersionException` for a version outside 9–24, leaving the database and its journal files byte-identical. Without this check, Room's switch to WAL mode rewrites header bytes of a rollback-journal database before the missing migration is detected. When a non-empty `-wal` or `-journal` file exists, the header alone is not authoritative; the check then defers to Room, which still fails closed without migrating, although SQLite may apply the pending journal to the main file.
+`AppDatabase.build` enforces this before Room opens the file: `InstalledDatabaseVersion` reads `user_version` from the SQLite header and throws `UnsupportedDatabaseVersionException` for a version outside 9–25, leaving the database and its journal files byte-identical. Without this check, Room's switch to WAL mode rewrites header bytes of a rollback-journal database before the missing migration is detected. When a non-empty `-wal` or `-journal` file exists, the header alone is not authoritative; the check then defers to Room, which still fails closed without migrating, although SQLite may apply the pending journal to the main file.
 
 This policy concerns the installed Room database schema version only. It is separate from the JSON backup format and its versions 1–10; a JSON backup version does not establish support for the correspondingly numbered Room database version.
 
@@ -53,11 +53,12 @@ Support begins at version 9 because it is the earliest source in the contiguous 
 | 21 | `eeaa5ae4` |
 | 22 | `bd8f3e9`: additive v2 workout tables |
 | 23 | per-side unique legacy link on `set_entries` |
-| 24 | PR #34 (current): interval settings on `workout_sessions` |
+| 24 | PR #34: interval settings on `workout_sessions` |
+| 25 | PR #88 (current): progression links, `exercises.catalogId` and `chain_placements` |
 
 ## Required evidence
 
-This declaration owns the migration fixture and matrix coverage for every supported source version 9–24 through the current version 24. Coverage must use representative historical database fixtures and validate each complete registered path, not merely individual migration constants.
+This declaration owns the migration fixture and matrix coverage for every supported source version 9–25 through the current version 25. Coverage must use representative historical database fixtures and validate each complete registered path, not merely individual migration constants.
 
 The table above records provenance, not a claim that migration tests currently pass.
 
