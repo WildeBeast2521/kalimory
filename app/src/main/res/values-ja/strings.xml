@@ -722,7 +722,6 @@
     <string name="interval_round_complete_format">%d周目完了！</string>
     <string name="interval_pause">一時停止</string>
     <string name="interval_resume">再開</string>
-    <string name="interval_skip">スキップ</string>
     <string name="interval_stop">終了</string>
     <string name="interval_complete_title">完了</string>
     <string name="interval_ended_title">終了</string>

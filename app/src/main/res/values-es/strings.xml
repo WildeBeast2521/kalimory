@@ -647,8 +647,8 @@
     <string name="interval_start_workout">Iniciar entrenamiento</string>
     <string name="interval_start">Iniciar</string>
     <string name="interval_get_ready">Prepárate</string>
-    <string name="interval_work_label">TRABAJO</string>
-    <string name="interval_rest_label">DESCANSO</string>
+    <string name="interval_work_label">Trabajo</string>
+    <string name="interval_rest_label">Descanso</string>
     <string name="interval_round_rest_label">Descanso entre rondas</string>
     <string name="interval_exercise_format">Ejercicio %1$d / %2$d</string>
     <string name="interval_round_format">Ronda %1$d / %2$d</string>
@@ -656,7 +656,6 @@
     <string name="interval_round_header_format">Ronda %1$d</string>
     <string name="interval_next">Siguiente</string>
     <string name="interval_next_round">Siguiente ronda</string>
-    <string name="interval_skip">Saltar</string>
     <string name="interval_skipped_format">Saltados: %1$d ejercicios</string>
     <string name="interval_skipped_label">(saltado)</string>
     <string name="interval_not_executed">(no ejecutado)</string>
