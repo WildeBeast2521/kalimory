@@ -866,4 +866,7 @@
     </plurals>
     <!-- A day in Today's week strip, read by screen readers: the full date, then that it was trained. -->
     <string name="today_day_trained">%1$s: entrenado</string>
+    <!-- When an exercise or program was last done, under its name in lists. -->
+    <string name="last_done">Última vez: %1$s</string>
+    <string name="last_done_today">Hecho hoy</string>
 </resources>

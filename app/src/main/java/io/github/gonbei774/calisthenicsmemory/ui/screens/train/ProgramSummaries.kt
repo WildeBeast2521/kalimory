@@ -6,7 +6,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import android.text.format.DateUtils
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import java.time.LocalDate
+import java.time.ZoneId
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalProgram
@@ -55,4 +59,16 @@ fun intervalSummary(interval: IntervalProgram, exerciseCount: Int): String {
     )
     val seconds = ProgramTimeEstimator.estimateIntervalSeconds(interval, exerciseCount)
     return if (seconds > 0) summary + " · " + stringResource(R.string.program_estimated_time, (seconds + 59) / 60) else summary
+}
+
+/** "Last done Sep 27", or "Done today"; null when never done. */
+@Composable
+fun lastDoneText(date: LocalDate?): String? {
+    date ?: return null
+    val today = LocalDate.now()
+    if (date == today) return stringResource(R.string.last_done_today)
+    // Short and localised; the year appears only when it is not this year.
+    val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+    val formatted = DateUtils.formatDateTime(LocalContext.current, millis, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_MONTH)
+    return stringResource(R.string.last_done, formatted)
 }

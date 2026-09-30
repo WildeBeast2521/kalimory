@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.describe
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.lastDoneText
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.rememberProgramSummaries
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -39,6 +40,7 @@ fun ProgramListScreen(
     onNavigateToResume: (Long) -> Unit = onNavigateToExecute  // デフォルトは通常実行と同じ
 ) {
     val programs by viewModel.programs.collectAsState()
+    val lastDone by viewModel.lastDone.collectAsState()
     val exercises by viewModel.exercises.collectAsState()
     val programSummaries = rememberProgramSummaries(viewModel, programs, exercises)
     val context = LocalContext.current
@@ -178,6 +180,7 @@ fun ProgramListScreen(
                             ProgramListItem(
                                 program = program,
                                 summary = programSummaries[program.id].describe(),
+                                lastDone = lastDoneText(lastDone.programs[program.id]),
                                 hasSavedState = savedProgramId == program.id,
                                 onEdit = { onNavigateToEdit(program.id) },
                                 onExecute = { onNavigateToExecute(program.id) },
@@ -198,6 +201,7 @@ fun ProgramListScreen(
 private fun ProgramListItem(
     program: Program,
     summary: String,
+    lastDone: String?,
     hasSavedState: Boolean,
     onEdit: () -> Unit,
     onExecute: () -> Unit,
@@ -309,6 +313,9 @@ private fun ProgramListItem(
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
+                        }
+                        if (lastDone != null) {
+                            Text(lastDone, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
 

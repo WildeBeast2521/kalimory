@@ -50,6 +50,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.train.describe
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.rememberProgramSummaries
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.lastDoneText
 import io.github.gonbei774.calisthenicsmemory.ui.theme.WorkoutNumerals
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RollingNumber
 import androidx.compose.ui.res.pluralStringResource
@@ -142,7 +143,8 @@ fun TodayScreen(
     @Composable
     fun programDetail(programId: Long): String = programSummaries[programId].describe().ifEmpty { programLabel }
 
-    data class Item(val icon: ImageVector, val name: String, val kind: String, val open: () -> Unit)
+    val lastDone by viewModel.lastDone.collectAsState()
+    data class Item(val icon: ImageVector, val name: String, val kind: String, val note: String? = null, val open: () -> Unit)
 
     val resumeItems = resumable.map { workout ->
         when (workout) {
@@ -166,7 +168,14 @@ fun TodayScreen(
             // Tasks whose target is gone or whose type is unknown stay visible on the To Do screen.
             else -> return@mapNotNull null
         }
-        name?.let { Item(icon, it, kind) { onOpenTask(task) } }
+        // What is due is easier to judge knowing when it was last done.
+        val note = when (task.type) {
+            TodoTask.TYPE_EXERCISE -> lastDoneText(lastDone.exercises[task.referenceId])
+            TodoTask.TYPE_PROGRAM -> lastDoneText(lastDone.programs[task.referenceId])
+            TodoTask.TYPE_INTERVAL -> lastDoneText(lastDone.intervals[task.referenceId])
+            else -> null
+        }
+        name?.let { Item(icon, it, kind, note) { onOpenTask(task) } }
     }
 
     Column(
@@ -248,7 +257,7 @@ fun TodayScreen(
                 if (otherDue.isEmpty()) {
                     Text(stringResource(R.string.today_due_none), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 } else {
-                    RowGroup { otherDue.forEach { TodayRow(it.icon, it.name, it.kind, trailing = AppIcons.Play, onClick = it.open) } }
+                    RowGroup { otherDue.forEach { TodayRow(it.icon, it.name, it.kind, trailing = AppIcons.Play, note = it.note, onClick = it.open) } }
                 }
             }
         }

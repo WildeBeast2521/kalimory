@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.intervalSummary
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.lastDoneText
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -34,6 +35,7 @@ fun IntervalListScreen(
     onNavigateToExecute: (Long) -> Unit
 ) {
     val programs by viewModel.intervalPrograms.collectAsState()
+    val lastDone by viewModel.lastDone.collectAsState()
 
     // Load exercise counts for each program
     val exerciseCounts = remember { mutableStateMapOf<Long, Int>() }
@@ -177,6 +179,7 @@ fun IntervalListScreen(
                             IntervalProgramListItem(
                                 program = program,
                                 exerciseCount = exerciseCounts[program.id] ?: 0,
+                                lastDone = lastDoneText(lastDone.intervals[program.id]),
                                 onEdit = { onNavigateToEdit(program.id) },
                                 onExecute = { onNavigateToExecute(program.id) },
                                 onDelete = { viewModel.deleteIntervalProgram(program.id) },
@@ -195,6 +198,7 @@ fun IntervalListScreen(
 private fun IntervalProgramListItem(
     program: IntervalProgram,
     exerciseCount: Int,
+    lastDone: String?,
     onEdit: () -> Unit,
     onExecute: () -> Unit,
     onDelete: () -> Unit,
@@ -304,6 +308,9 @@ private fun IntervalProgramListItem(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(top = 2.dp)
                         )
+                        if (lastDone != null) {
+                            Text(lastDone, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
                     }
 
                     // Edit button
