@@ -6,6 +6,8 @@ import java.time.DayOfWeek
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -234,11 +236,25 @@ fun ViewScreen(
                 modifier = Modifier.fillMaxWidth(),
                 color = MaterialTheme.colorScheme.background
             ) {
+                // Chips scroll to the screen edge, and the edge fades while more lie beyond it,
+                // so a clipped chip reads as "scroll for more".
+                val chipScroll = rememberScrollState()
+                val fade = MaterialTheme.colorScheme.background
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = Spacing.l, vertical = Spacing.s)
-                        .horizontalScroll(rememberScrollState()),
+                        .drawWithContent {
+                            drawContent()
+                            if (chipScroll.canScrollForward) {
+                                val width = 32.dp.toPx()
+                                drawRect(
+                                    Brush.horizontalGradient(listOf(fade.copy(alpha = 0f), fade), startX = size.width - width, endX = size.width),
+                                    topLeft = androidx.compose.ui.geometry.Offset(size.width - width, 0f),
+                                )
+                            }
+                        }
+                        .horizontalScroll(chipScroll)
+                        .padding(horizontal = Spacing.l, vertical = Spacing.s),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {

@@ -221,7 +221,6 @@
     <string name="next_set_format_with_side">Siguiente: Serie %1$d/%2$d - %3$s</string>
     <string name="minus_10sec">-10 seg</string>
     <string name="plus_10sec">+10 seg</string>
-    <string name="workout_complete">Entrenamiento Completado</string>
     <string name="comment_label">Comentario</string>
     <string name="record_workout">Registrar</string>
     <string name="set_number">Serie %d</string>
@@ -557,7 +556,7 @@
     <string name="previous_reps_format">Anterior: %d reps</string>
     <string name="previous_time_format">Anterior: %ds</string>
     <string name="reps_unit">reps</string>
-    <string name="program_result_zero_warning">Hay series con valor 0. Las series con valor cero para ejercicios bilaterales, y las series donde ambos lados son 0 para ejercicios unilaterales, no se guardarán.</string>
+    <string name="program_result_zero_warning">Las series en 0 se guardan como omitidas y no aparecen en tu historial.</string>
     <!-- Sound Settings (Program Confirm) -->
     <string name="sound_settings_section">Ajustes de sonido</string>
     <string name="dynamic_count_sound_label">Sonido de conteo</string>
@@ -891,4 +890,5 @@
     <string name="recovery_restore_failed">La restauración no terminó (%1$s). Tus datos no han cambiado. La app se reiniciará ahora.</string>
     <string name="recovery_section_title">Archivo de recuperación</string>
     <string name="recovery_section_description">Restaura la base de datos original desde un archivo de recuperación, que la app ofrece exportar cuando no puede abrir tus datos. Para todo lo demás, usa una copia de seguridad JSON.</string>
+    <string name="workout_review_title">Revisa tus series</string>
 </resources>

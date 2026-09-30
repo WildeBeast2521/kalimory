@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-30, at PR #79.
+Last reviewed: 2026-09-30, at PR #80.
 
 ## Where things stand
 
@@ -82,18 +82,23 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
      - `calculateStatistics` had also counted 8 days. That is fixed, and `PeriodStartTest` covers the helper.
      - Seen, not fixed: future days in the Calendar week row look like empty past days. Today outlines them instead.
    - L2: interval runs on the workout kit.
-   - The small fixes listed below.
 
 - **Not doing:** M4, changing the language without a restart.
 - **Waiting for the progression system (PG):** weekly goals (Today's "This week: 2 of 7"), the Challenge tab's purpose, and trends and personal bests in depth.
 
 ## Open small fixes
 
-- Estimates disagree between screens for the same program (about 12, 13 and 16 min). Label them consistently, or explain the difference.
-- The Graph axis says "1 reps"; the unit suffix is not pluralised.
-- The period chips on Progress clip at the screen edge, with no hint that they scroll.
-- `program_result_zero_warning` says zero-value sets "will not be saved". v2 stores them as skipped sets and hides them from history. Reword it in every locale.
+Done in PR #80:
+- Program estimates agree everywhere. Every screen now uses the start countdown setting and the same rounding (`ProgramTimeEstimator.startCountdownSeconds`, `formatMinutes`). The start screen differs only when a run's values change.
+- The Graph axis shows numbers only and names the unit once, so "1 reps" is gone.
+- The Progress period chips scroll to the screen edge and fade while more lie beyond.
+- The screen before saving is titled "Check your sets", so "Workout Complete" no longer appears twice.
+- Future days in the Calendar week row are faint and cannot be selected.
+- `program_result_zero_warning` now says 0 sets are saved as skipped and hidden from history. It is in all 10 locales.
+
+Still open:
 - `util/WakeLockManager.kt` is unused. Remove it in a cleanup change.
+- Predictive back that scrubs the screen slide, and a gliding navigation indicator (from MO).
 
 Log new ideas here while working. Small ones become their own slice; ask the owner before larger features.
 
@@ -115,7 +120,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #79. PR #70 changed documentation only.
+PRs #34 to #80. PR #70 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -125,7 +130,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #79: 354 unit tests, 140 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #80: 354 unit tests, 140 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

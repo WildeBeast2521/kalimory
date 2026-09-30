@@ -249,8 +249,7 @@
     <string name="next_set_format_with_side">次: セット %1$d/%2$d - %3$s</string>
     <string name="minus_10sec">-10秒</string>
     <string name="plus_10sec">+10秒</string>
-    <string name="workout_complete">ワークアウト完了</string>
-    <string name="program_result_zero_warning">0のセットが存在します。両側種目の0セット、および片側種目の両側0セットは保存されません。</string>
+    <string name="program_result_zero_warning">0のセットはスキップとして保存され、履歴には表示されません。</string>
     <string name="comment_label">コメント</string>
     <string name="record_workout">記録する</string>
     <string name="add_extra_set_button">もう1セット追加</string>
@@ -896,4 +895,5 @@
     <string name="recovery_restore_failed">復元を完了できませんでした（%1$s）。データは変更されていません。アプリを再起動します。</string>
     <string name="recovery_section_title">リカバリーファイル</string>
     <string name="recovery_section_description">データを開けないときにアプリがエクスポートするリカバリーファイルから、データベースをそのまま復元します。それ以外は JSON バックアップを使ってください。</string>
+    <string name="workout_review_title">セットを確認</string>
 </resources>

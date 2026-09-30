@@ -441,7 +441,7 @@ fun ProgramEditScreen(
                         )
                         if (programListItems.isNotEmpty()) {
                             val estimatedMinutes = remember(programExercises, programLoops, exerciseMap) {
-                                val countdownSeconds = if (workoutPreferences.isStartCountdownEnabled()) workoutPreferences.getStartCountdown() else 0
+                                val countdownSeconds = ProgramTimeEstimator.startCountdownSeconds(workoutPreferences)
                                 val seconds = ProgramTimeEstimator.estimateSeconds(programExercises, programLoops, exerciseMap, countdownSeconds)
                                 ProgramTimeEstimator.formatMinutes(seconds)
                             }

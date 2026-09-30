@@ -29,14 +29,16 @@ fun rememberProgramSummaries(
     exercises: List<Exercise>,
 ): Map<Long, ProgramSummary> {
     var summaries by remember { mutableStateOf(emptyMap<Long, ProgramSummary>()) }
+    val context = androidx.compose.ui.platform.LocalContext.current
     LaunchedEffect(programs, exercises) {
+        val countdown = ProgramTimeEstimator.startCountdownSeconds(io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences(context))
         val byId = exercises.associateBy { it.id }
         summaries = programs.associate { program ->
             val pes = viewModel.getProgramExercisesSync(program.id)
             val loops = viewModel.getProgramLoopsSync(program.id)
             val used = pes.mapNotNull { pe -> byId[pe.exerciseId]?.let { pe.exerciseId to it } }.toMap()
-            val seconds = ProgramTimeEstimator.estimateSeconds(pes, loops, used, startCountdownSeconds = 0)
-            program.id to ProgramSummary(pes.size, (seconds + 59) / 60)
+            val seconds = ProgramTimeEstimator.estimateSeconds(pes, loops, used, countdown)
+            program.id to ProgramSummary(pes.size, ProgramTimeEstimator.formatMinutes(seconds))
         }
     }
     return summaries

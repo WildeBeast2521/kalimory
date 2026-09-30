@@ -221,7 +221,6 @@
     <string name="next_set_format_with_side">Prossima: Serie %1$d/%2$d - %3$s</string>
     <string name="minus_10sec">-10 sec</string>
     <string name="plus_10sec">+10 sec</string>
-    <string name="workout_complete">Allenamento Completato</string>
     <string name="comment_label">Commento</string>
     <string name="record_workout">Registra</string>
     <string name="set_number">Serie %d</string>
@@ -557,7 +556,7 @@
     <string name="previous_reps_format">Precedente: %d reps</string>
     <string name="previous_time_format">Precedente: %ds</string>
     <string name="reps_unit">reps</string>
-    <string name="program_result_zero_warning">Ci sono serie con valore 0. Le serie a zero per gli esercizi bilaterali, e le serie in cui entrambi i lati sono 0 per gli esercizi unilaterali, non verranno salvate.</string>
+    <string name="program_result_zero_warning">Le serie a 0 vengono salvate come saltate e non compaiono nella cronologia.</string>
     <!-- Sound Settings (Program Confirm) -->
     <string name="sound_settings_section">Impostazioni audio</string>
     <string name="dynamic_count_sound_label">Suono conteggio</string>
@@ -837,4 +836,5 @@
     <string name="recovery_restore_failed">Il ripristino non è stato completato (%1$s). I tuoi dati non sono cambiati. L\'app ora si riavvierà.</string>
     <string name="recovery_section_title">File di recupero</string>
     <string name="recovery_section_description">Ripristina il database originale da un file di recupero, che l\'app propone di esportare quando non riesce ad aprire i tuoi dati. Per tutto il resto, usa un backup JSON.</string>
+    <string name="workout_review_title">Controlla le serie</string>
 </resources>

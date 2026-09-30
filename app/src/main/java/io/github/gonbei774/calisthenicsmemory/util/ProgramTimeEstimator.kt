@@ -53,6 +53,13 @@ object ProgramTimeEstimator {
         return total
     }
 
+    /**
+     * The start countdown a program run adds before each set, as the user set it. Every screen
+     * estimates with it, so one program shows the same time everywhere.
+     */
+    fun startCountdownSeconds(preferences: io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences): Int =
+        if (preferences.isStartCountdownEnabled()) preferences.getStartCountdown() else 0
+
     fun formatMinutes(seconds: Int): Int =
         (seconds / 60.0).roundToInt().coerceAtLeast(1)
 
