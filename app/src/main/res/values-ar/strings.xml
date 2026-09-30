@@ -72,4 +72,13 @@
     <string name="graph_latest_exercise">الأحدث: %1$s</string>
     <string name="set_done_vibration_setting">الاهتزاز عند إنهاء مجموعة</string>
     <string name="set_done_vibration_description">اهتزاز قصير يؤكد كل مجموعة منتهية</string>
+    <!-- Workout summary -->
+    <string name="workout_summary_title">اكتمل التمرين</string>
+    <string name="summary_sets">المجموعات</string>
+    <string name="summary_reps">التكرارات</string>
+    <string name="summary_hold">الثبات</string>
+    <string name="summary_time">الوقت</string>
+    <string name="summary_last_time">المرة الماضية: %1$s</string>
+    <string name="summary_new_best">رقم قياسي جديد: %1$s، %2$s</string>
+    <string name="summary_done">تم</string>
 </resources>

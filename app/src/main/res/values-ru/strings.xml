@@ -171,4 +171,13 @@
     <string name="graph_latest_exercise">Последнее: %1$s</string>
     <string name="set_done_vibration_setting">Вибрация после подхода</string>
     <string name="set_done_vibration_description">Короткая вибрация подтверждает каждый завершённый подход</string>
+    <!-- Workout summary -->
+    <string name="workout_summary_title">Тренировка завершена</string>
+    <string name="summary_sets">Подходы</string>
+    <string name="summary_reps">Повторы</string>
+    <string name="summary_hold">Удержание</string>
+    <string name="summary_time">Время</string>
+    <string name="summary_last_time">В прошлый раз: %1$s</string>
+    <string name="summary_new_best">Новый рекорд: %1$s, %2$s</string>
+    <string name="summary_done">Готово</string>
 </resources>

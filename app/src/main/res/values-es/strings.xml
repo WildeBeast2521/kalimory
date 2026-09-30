@@ -849,4 +849,13 @@
     <string name="value_with_unit">%1$d %2$s</string>
     <string name="app_original_project">Proyecto original</string>
     <string name="graph_latest_exercise">Último: %1$s</string>
+    <!-- Workout summary -->
+    <string name="workout_summary_title">Entrenamiento completado</string>
+    <string name="summary_sets">Series</string>
+    <string name="summary_reps">Repeticiones</string>
+    <string name="summary_hold">Mantenido</string>
+    <string name="summary_time">Tiempo</string>
+    <string name="summary_last_time">La última vez: %1$s</string>
+    <string name="summary_new_best">Nuevo récord: %1$s, %2$s</string>
+    <string name="summary_done">Hecho</string>
 </resources>

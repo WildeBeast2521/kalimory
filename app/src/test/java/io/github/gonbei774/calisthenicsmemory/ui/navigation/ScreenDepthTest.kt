@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.navigation
 
 import io.github.gonbei774.calisthenicsmemory.Screen
+import io.github.gonbei774.calisthenicsmemory.workoutExit
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -28,5 +29,13 @@ class ScreenDepthTest {
         assertBack(Screen.Record(), Screen.Home)
         assertBack(Screen.Workout(fromToDo = true), Screen.ToDo)
         assertBack(Screen.Workout(fromToDo = true, fromToday = true), Screen.Home)
+    }
+
+    @Test fun `the workout summary slides back to wherever the workout returns`() {
+        listOf(
+            Screen.Workout(), Screen.Workout(fromToDo = true),
+            Screen.ProgramExecution(1), Screen.ProgramExecution(1, fromToDo = true), Screen.ProgramExecution(1, fromToday = true),
+            Screen.IntervalExecution(1), Screen.IntervalExecution(1, fromToDo = true), Screen.IntervalExecution(1, fromToday = true),
+        ).forEach { workout -> assertBack(Screen.WorkoutSummary(1), workout.workoutExit()!!) }
     }
 }

@@ -25,6 +25,8 @@ internal fun Screen.depth(): Int = when (this) {
     is Screen.ProgramEdit, is Screen.IntervalEdit,
     Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub -> 2
     Screen.CommunityShareExport -> 3
+    // Always deeper than where the workout returned, so it slides in and Done slides back.
+    is Screen.WorkoutSummary -> 4
 }
 
 // Material's emphasized curves: entering content decelerates, leaving content accelerates.

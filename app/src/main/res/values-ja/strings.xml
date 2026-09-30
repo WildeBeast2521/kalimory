@@ -858,4 +858,13 @@
     <string name="value_with_unit">%1$d%2$s</string>
     <string name="app_original_project">元のプロジェクト</string>
     <string name="graph_latest_exercise">最新: %1$s</string>
+    <!-- Workout summary -->
+    <string name="workout_summary_title">ワークアウト完了</string>
+    <string name="summary_sets">セット</string>
+    <string name="summary_reps">レップ</string>
+    <string name="summary_hold">キープ</string>
+    <string name="summary_time">時間</string>
+    <string name="summary_last_time">前回：%1$s</string>
+    <string name="summary_new_best">自己ベスト：%1$s、%2$s</string>
+    <string name="summary_done">完了</string>
 </resources>
