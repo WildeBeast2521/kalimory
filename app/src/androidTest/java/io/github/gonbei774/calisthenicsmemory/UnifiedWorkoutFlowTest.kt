@@ -194,6 +194,10 @@ class UnifiedWorkoutFlowTest {
         val sets = database.workoutSessionDao().sessionGraph(session.id)!!.exercises.single().second
         assertEquals(listOf(SetEntryStatus.COMPLETED, SetEntryStatus.COMPLETED), sets.map { it.status })
         assertNull(SingleSessionCheckpoint.file(context.filesDir).load())
+        // The summary follows the save, and Done returns to where the workout started.
+        waitForText(text(R.string.workout_summary_title))
+        rule.onNodeWithText(text(R.string.summary_done)).performClick()
+        waitForText(text(PrimaryDestination.TRAIN.label))
     }
 
     @Test
@@ -244,6 +248,7 @@ class UnifiedWorkoutFlowTest {
         assertEquals(programId, session.sourceTemplateId)
         val sets = database.workoutSessionDao().sessionGraph(session.id)!!.exercises.single().second
         assertEquals(listOf(3, 3), sets.map { it.repetitions })
+        waitForText(text(R.string.workout_summary_title))
     }
 
     @Test

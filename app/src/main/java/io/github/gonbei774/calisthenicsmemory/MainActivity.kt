@@ -60,6 +60,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.navigation.tabTransition
 import io.github.gonbei774.calisthenicsmemory.ui.screens.library.LibraryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.ResumableWorkout
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.TodayScreen
+import io.github.gonbei774.calisthenicsmemory.ui.screens.summary.WorkoutSummaryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.TrainScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.RecordScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.CreateScreen
@@ -218,7 +219,6 @@ fun UiMessage.toMessageString(): String {
             stringResource(R.string.already_in_use_format, name, typeLabel)
         }
         is UiMessage.SetsRecorded -> stringResource(R.string.sets_recorded, count)
-        is UiMessage.ProgramSetsRecorded -> stringResource(R.string.sets_recorded, totalCount)
         is UiMessage.RecordUpdated -> stringResource(R.string.record_updated)
         is UiMessage.RecordDeleted -> stringResource(R.string.record_deleted)
         is UiMessage.GroupCreated -> stringResource(R.string.group_created)
@@ -265,6 +265,17 @@ fun CalisthenicsMemoryApp(
     // Screen.Home shows this destination, so "back to Home" returns to the tab the user came from.
     var primaryDestination by rememberSaveable { mutableStateOf(PrimaryDestination.TODAY) }
     val snackbarHostState = remember { SnackbarHostState() }
+
+    // After a live workout is saved, its summary opens on top of wherever the workout returned.
+    var summaryReturn by remember { mutableStateOf<Screen>(Screen.Home) }
+    val finishedWorkout by viewModel.finishedWorkout.collectAsState()
+    LaunchedEffect(finishedWorkout) {
+        val sessionId = finishedWorkout ?: return@LaunchedEffect
+        if (currentScreen is Screen.WorkoutSummary) return@LaunchedEffect
+        // The save can land before the workout screen has left.
+        summaryReturn = currentScreen.workoutExit() ?: currentScreen
+        currentScreen = Screen.WorkoutSummary(sessionId)
+    }
 
     // Snackbar message handling
     val snackbarMessage by viewModel.snackbarMessage.collectAsState()
@@ -451,7 +462,7 @@ fun CalisthenicsMemoryApp(
                     }
                     is Screen.Workout -> {
                         val workoutScreen = screen
-                        val backDestination = if (workoutScreen.fromToDo && !workoutScreen.fromToday) Screen.ToDo else Screen.Home
+                        val backDestination = screen.workoutExit()!!
                         BackHandler { currentScreen = backDestination }
                         WorkoutScreen(
                             viewModel = viewModel,
@@ -486,11 +497,7 @@ fun CalisthenicsMemoryApp(
                     }
                     is Screen.ProgramExecution -> {
                         val execScreen = screen
-                        val backDestination = when {
-                            execScreen.fromToday -> Screen.Home
-                            execScreen.fromToDo -> Screen.ToDo
-                            else -> Screen.ProgramList
-                        }
+                        val backDestination = screen.workoutExit()!!
                         BackHandler { currentScreen = backDestination }
                         ProgramExecutionScreen(
                             viewModel = viewModel,
@@ -528,11 +535,7 @@ fun CalisthenicsMemoryApp(
                     }
                     is Screen.IntervalExecution -> {
                         val execScreen = screen
-                        val backDestination = when {
-                            execScreen.fromToday -> Screen.Home
-                            execScreen.fromToDo -> Screen.ToDo
-                            else -> Screen.IntervalList
-                        }
+                        val backDestination = screen.workoutExit()!!
                         BackHandler { currentScreen = backDestination }
                         IntervalExecutionScreen(
                             viewModel = viewModel,
@@ -575,6 +578,14 @@ fun CalisthenicsMemoryApp(
                             onNavigateToCommunityShareExport = { currentScreen = Screen.CommunityShareExport }
                         )
                     }
+                    is Screen.WorkoutSummary -> {
+                        val finish = {
+                            viewModel.dismissWorkoutSummary()
+                            currentScreen = summaryReturn
+                        }
+                        BackHandler(onBack = finish)
+                        WorkoutSummaryScreen(viewModel = viewModel, sessionId = screen.sessionId, onDone = finish)
+                    }
                 }
             }
         }
@@ -605,6 +616,23 @@ sealed class Screen {
     object Backup : Screen()
     object CsvDataManagement : Screen()
     object ShareHub : Screen()
+    data class WorkoutSummary(val sessionId: Long) : Screen()
+}
+
+/** Where a workout screen goes when it ends or the user leaves it; null for other screens. */
+internal fun Screen.workoutExit(): Screen? = when (this) {
+    is Screen.Workout -> if (fromToDo && !fromToday) Screen.ToDo else Screen.Home
+    is Screen.ProgramExecution -> when {
+        fromToday -> Screen.Home
+        fromToDo -> Screen.ToDo
+        else -> Screen.ProgramList
+    }
+    is Screen.IntervalExecution -> when {
+        fromToday -> Screen.Home
+        fromToDo -> Screen.ToDo
+        else -> Screen.IntervalList
+    }
+    else -> null
 }
 
 private val ScreenSaver = mapSaver(
@@ -654,6 +682,10 @@ private val ScreenSaver = mapSaver(
                 Screen.Backup -> put("type", "Backup")
                 Screen.CsvDataManagement -> put("type", "CsvDataManagement")
                 Screen.ShareHub -> put("type", "ShareHub")
+                is Screen.WorkoutSummary -> {
+                    put("type", "WorkoutSummary")
+                    put("sessionId", screen.sessionId)
+                }
             }
         }
     },
@@ -695,6 +727,7 @@ private val ScreenSaver = mapSaver(
             "Backup" -> Screen.Backup
             "CsvDataManagement" -> Screen.CsvDataManagement
             "ShareHub" -> Screen.ShareHub
+            "WorkoutSummary" -> Screen.WorkoutSummary(map["sessionId"] as Long)
             else -> Screen.Home
         }
     }

@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-30, at PR #72.
+Last reviewed: 2026-09-30, at PR #73.
 
 ## Where things stand
 
@@ -42,7 +42,14 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
      - Frame timing inside a workout is still unmeasured. The benchmark journeys do not start a workout.
    - **Still open from MO:** predictive-back scrubbing, and a gliding navigation indicator.
 2. **M2 with SP.**
-   - M2: a workout summary screen after the last set. Rings close, totals count up, the week dot fills, and a personal best appears in brass. There is no confetti. It includes the "Done today" totals and a comparison with the last session.
+   - **Done in PR #73: the workout summary.**
+     - After a live single, program or interval workout is saved, `Screen.WorkoutSummary` opens over wherever the workout returns. Done or Back goes there.
+     - What it shows: the totals count up (sets, reps, time held, minutes), each exercise's ring closes, today fills in on the week strip, and a new personal best lands in brass.
+     - `WorkoutSummaryBuilder` is pure and unit-tested. A best is the highest single set compared with all earlier history. Weighted, assisted and distance sets are left out.
+     - The last session appears as a plain fact, "Last time: 72 reps", not a signed difference. The first emulator run showed "−56" after a one-set workout, which read as a scolding.
+     - The "sets recorded" snackbar for single and program workouts is gone, because the summary confirms the save.
+   - **Still to do with SP:** the "Done today" totals on Today.
+   - **Seen, not fixed:** the review screen before saving also says "Workout Complete", so the phrase appears twice in a row. Retitle it.
    - SP: a large "this week" number on Today, brass kept for in-progress and personal bests only, and a soft glow in dark mode.
 3. **M1:** tapping a day in the week strip shows that day's history. **M3:** show when each exercise and program was last done.
 4. **L1:** log a past workout with several exercises. `ManualWorkoutWriter` handles one exercise today; the v2 model supports more.
@@ -83,7 +90,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #72. PR #70 changed documentation only.
+PRs #34 to #73. PR #70 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -93,7 +100,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #72: 340 unit tests, 133 instrumented tests on `floor_api29` (API 29), and "Lint found 6 warnings" (baselined dependency-version notices).
+- Expected as of PR #73: 349 unit tests, 133 instrumented tests on `floor_api29` (API 29), and "Lint found 6 warnings" (baselined dependency-version notices).
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

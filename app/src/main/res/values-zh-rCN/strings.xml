@@ -793,4 +793,13 @@
     <string name="value_with_unit">%1$d%2$s</string>
     <string name="app_original_project">原始项目</string>
     <string name="graph_latest_exercise">最近：%1$s</string>
+    <!-- Workout summary -->
+    <string name="workout_summary_title">训练完成</string>
+    <string name="summary_sets">组数</string>
+    <string name="summary_reps">次数</string>
+    <string name="summary_hold">保持</string>
+    <string name="summary_time">时长</string>
+    <string name="summary_last_time">上次：%1$s</string>
+    <string name="summary_new_best">新纪录：%1$s，%2$s</string>
+    <string name="summary_done">完成</string>
 </resources>

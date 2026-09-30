@@ -32,6 +32,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -63,10 +65,18 @@ internal fun SectionHeading(text: String, modifier: Modifier = Modifier) {
 
 /**
  * The week so far, one mark per day: filled where you trained, outlined where you did not,
- * today ringed. Reading it takes a glance, which is all Today should ask.
+ * today ringed. Reading it takes a glance, which is all Today should ask. [todayFill] runs from
+ * 0 to 1 to grow today's mark into place as a moment (the workout summary); elsewhere it is 1.
  */
 @Composable
-internal fun WeekStrip(days: List<LocalDate>, trained: Set<LocalDate>, today: LocalDate, locale: Locale, description: String) {
+internal fun WeekStrip(
+    days: List<LocalDate>,
+    trained: Set<LocalDate>,
+    today: LocalDate,
+    locale: Locale,
+    description: String,
+    todayFill: Float = 1f,
+) {
     Row(
         modifier = Modifier.fillMaxWidth().clearAndSetSemantics { contentDescription = description },
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -91,6 +101,11 @@ internal fun WeekStrip(days: List<LocalDate>, trained: Set<LocalDate>, today: Lo
                         .clip(CircleShape)
                         .then(
                             when {
+                                done && isToday -> todayFill.coerceIn(0f, 1f).let { fill ->
+                                    Modifier
+                                        .graphicsLayer { scaleX = 0.5f + 0.5f * fill; scaleY = scaleX }
+                                        .background(lerp(MaterialTheme.colorScheme.surfaceContainerHigh, MaterialTheme.colorScheme.primary, fill))
+                                }
                                 done -> Modifier.background(MaterialTheme.colorScheme.primary)
                                 future -> Modifier.border(1.5.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
                                 else -> Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh)

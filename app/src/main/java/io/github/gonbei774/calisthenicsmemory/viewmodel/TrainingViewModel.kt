@@ -29,6 +29,8 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkout
 import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.V2HistoryEditor
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSummary
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSummaryBuilder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -1356,6 +1358,20 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    // The session a live workout just saved; the app shows its summary, then clears this.
+    private val _finishedWorkout = MutableStateFlow<Long?>(null)
+    val finishedWorkout: StateFlow<Long?> = _finishedWorkout.asStateFlow()
+
+    fun dismissWorkoutSummary() {
+        _finishedWorkout.value = null
+    }
+
+    /** Reads a saved workout and the history before it; null when the session is gone. */
+    suspend fun loadWorkoutSummary(sessionId: Long): WorkoutSummary? = withContext(Dispatchers.IO) {
+        val graph = database.workoutSessionDao().sessionGraph(sessionId) ?: return@withContext null
+        WorkoutSummaryBuilder.build(graph, CompatibilityHistory.read(database, ZoneId.systemDefault()))
+    }
+
     /**
      * Saves a finished single-exercise workout as one v2 session, then, when it came from a
      * to-do, completes that to-do. They run in that order, so the group check sees the new sets.
@@ -1363,9 +1379,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun recordSingleWorkout(workout: SingleWorkout, completeTodo: Boolean) {
         viewModelScope.launch {
             try {
-                if (SingleWorkoutWriter.write(database, workout) != null) {
-                    _snackbarMessage.value = UiMessage.SetsRecorded(workout.completedSetCount)
-                }
+                // The summary that follows confirms the save.
+                SingleWorkoutWriter.write(database, workout)?.let { _finishedWorkout.value = it }
                 if (completeTodo) completeTodoTask(TodoTask.TYPE_EXERCISE, workout.exerciseId)
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
@@ -1377,9 +1392,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun recordProgramWorkout(run: ProgramRun) {
         viewModelScope.launch {
             try {
-                if (ProgramWorkoutWriter.write(database, run) != null) {
-                    _snackbarMessage.value = UiMessage.ProgramSetsRecorded(run.completedSetCount)
-                }
+                ProgramWorkoutWriter.write(database, run)?.let { _finishedWorkout.value = it }
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
@@ -1951,7 +1964,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     /** Saves a finished or stopped interval workout as one v2 session. */
     suspend fun recordIntervalWorkout(run: IntervalRun) {
         try {
-            IntervalWorkoutWriter.write(database, run)
+            _finishedWorkout.value = IntervalWorkoutWriter.write(database, run)
         } catch (e: Exception) {
             _snackbarMessage.value = UiMessage.ErrorOccurred
         }

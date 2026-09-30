@@ -853,4 +853,13 @@
     <string name="value_with_unit">%1$d %2$s</string>
     <string name="app_original_project">Original project</string>
     <string name="graph_latest_exercise">Latest: %1$s</string>
+    <!-- Workout summary -->
+    <string name="workout_summary_title">Workout complete</string>
+    <string name="summary_sets">Sets</string>
+    <string name="summary_reps">Reps</string>
+    <string name="summary_hold">Held</string>
+    <string name="summary_time">Time</string>
+    <string name="summary_last_time">Last time: %1$s</string>
+    <string name="summary_new_best">New best: %1$s, %2$s</string>
+    <string name="summary_done">Done</string>
 </resources>
