@@ -806,4 +806,6 @@
     <plurals name="today_week_sets">
         <item quantity="other">组（本周）</item>
     </plurals>
+    <!-- A day in Today's week strip, read by screen readers: the full date, then that it was trained. -->
+    <string name="today_day_trained">%1$s：已训练</string>
 </resources>

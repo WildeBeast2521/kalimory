@@ -867,4 +867,6 @@
         <item quantity="one">set this week</item>
         <item quantity="other">sets this week</item>
     </plurals>
+    <!-- A day in Today's week strip, read by screen readers: the full date, then that it was trained. -->
+    <string name="today_day_trained">%1$s: trained</string>
 </resources>

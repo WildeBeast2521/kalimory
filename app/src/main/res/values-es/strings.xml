@@ -864,4 +864,6 @@
         <item quantity="many">series esta semana</item>
         <item quantity="other">series esta semana</item>
     </plurals>
+    <!-- A day in Today's week strip, read by screen readers: the full date, then that it was trained. -->
+    <string name="today_day_trained">%1$s: entrenado</string>
 </resources>

@@ -90,4 +90,6 @@
         <item quantity="many">مجموعة هذا الأسبوع</item>
         <item quantity="other">مجموعة هذا الأسبوع</item>
     </plurals>
+    <!-- A day in Today's week strip, read by screen readers: the full date, then that it was trained. -->
+    <string name="today_day_trained">%1$s: تم التمرين</string>
 </resources>

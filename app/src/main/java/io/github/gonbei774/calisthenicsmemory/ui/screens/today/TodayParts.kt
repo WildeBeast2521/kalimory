@@ -27,6 +27,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import java.time.format.FormatStyle
+import java.time.format.DateTimeFormatter
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
@@ -67,6 +72,7 @@ internal fun SectionHeading(text: String, modifier: Modifier = Modifier) {
  * The week so far, one mark per day: filled where you trained, outlined where you did not,
  * today ringed. Reading it takes a glance, which is all Today should ask. [todayFill] runs from
  * 0 to 1 to grow today's mark into place as a moment (the workout summary); elsewhere it is 1.
+ * With [onDayClick], each day up to today opens that day's history.
  */
 @Composable
 internal fun WeekStrip(
@@ -76,16 +82,32 @@ internal fun WeekStrip(
     locale: Locale,
     description: String,
     todayFill: Float = 1f,
+    onDayClick: ((LocalDate) -> Unit)? = null,
 ) {
+    val trainedLabel = stringResource(R.string.today_day_trained)
     Row(
-        modifier = Modifier.fillMaxWidth().clearAndSetSemantics { contentDescription = description },
-        horizontalArrangement = Arrangement.SpaceBetween,
+        // Without taps the strip reads as one summary; with them, each day speaks for itself.
+        modifier = Modifier.fillMaxWidth().then(
+            if (onDayClick == null) Modifier.clearAndSetSemantics { contentDescription = description } else Modifier
+        ),
     ) {
         days.forEach { day ->
             val done = day in trained
             val isToday = day == today
             val future = day.isAfter(today)
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            val tap = if (onDayClick != null && !future) {
+                val date = day.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale))
+                Modifier
+                    .clip(MaterialTheme.shapes.medium)
+                    .clickable(role = Role.Button) { onDayClick(day) }
+                    .clearAndSetSemantics {
+                        contentDescription = if (done) String.format(trainedLabel, date) else date
+                        role = Role.Button
+                        onClick { onDayClick(day); true }
+                    }
+            } else Modifier
+            // Equal cells, so each day's touch target is as wide as the row allows.
+            Column(Modifier.weight(1f).then(tap).padding(vertical = Spacing.xs), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = day.dayOfWeek.getDisplayName(TextStyle.NARROW, locale),
                     style = MaterialTheme.typography.labelMedium,

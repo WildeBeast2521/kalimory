@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import java.time.LocalDate
 import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,6 +65,9 @@ sealed class RecordItem(val date: String, val time: String) {
 @Composable
 fun ViewScreen(
     viewModel: TrainingViewModel,
+    // A day to show on the calendar, as when Today's week strip is tapped; cleared once shown.
+    focusDate: LocalDate? = null,
+    onFocusShown: () -> Unit = {},
 ) {
     val exercises by viewModel.exercises.collectAsState()
     val records by viewModel.history.collectAsState()
@@ -72,6 +76,9 @@ fun ViewScreen(
 
     // ViewModeの状態（HorizontalPager用）
     val pagerState = rememberPagerState(pageCount = { 4 })
+    LaunchedEffect(focusDate) {
+        if (focusDate != null) pagerState.scrollToPage(0)
+    }
     val coroutineScope = rememberCoroutineScope()
     val currentMode = when (pagerState.currentPage) {
         0 -> ViewMode.Calendar
@@ -296,7 +303,9 @@ fun ViewScreen(
                             selectedPeriod = selectedPeriod,
                             onExerciseClick = { exercise ->
                                 selectedExerciseFilter = exercise
-                            }
+                            },
+                            focusDate = focusDate,
+                            onFocusShown = onFocusShown,
                         )
                     }
                     1 -> {
