@@ -815,4 +815,12 @@
     <!-- When an exercise or program was last done, under its name in lists. -->
     <string name="last_done">Ultima volta: %1$s</string>
     <string name="last_done_today">Fatto oggi</string>
+    <!-- Logging several exercises as one past workout. -->
+    <string name="record_add_exercise">Aggiungi un altro esercizio</string>
+    <string name="record_in_this_workout">In questo allenamento</string>
+    <plurals name="record_save_exercises">
+        <item quantity="one">Registra %d esercizio</item>
+        <item quantity="many">Registra %d esercizi</item>
+        <item quantity="other">Registra %d esercizi</item>
+    </plurals>
 </resources>

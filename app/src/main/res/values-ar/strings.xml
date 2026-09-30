@@ -95,4 +95,15 @@
     <!-- When an exercise or program was last done, under its name in lists. -->
     <string name="last_done">آخر مرة: %1$s</string>
     <string name="last_done_today">تم اليوم</string>
+    <!-- Logging several exercises as one past workout. -->
+    <string name="record_add_exercise">إضافة تمرين آخر</string>
+    <string name="record_in_this_workout">في هذا التمرين</string>
+    <plurals name="record_save_exercises">
+        <item quantity="zero">تسجيل %d تمارين</item>
+        <item quantity="one">تسجيل تمرين واحد</item>
+        <item quantity="two">تسجيل تمرينين</item>
+        <item quantity="few">تسجيل %d تمارين</item>
+        <item quantity="many">تسجيل %d تمرينًا</item>
+        <item quantity="other">تسجيل %d تمرين</item>
+    </plurals>
 </resources>

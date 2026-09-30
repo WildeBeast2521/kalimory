@@ -89,15 +89,38 @@ object ManualWorkoutWriter {
         )
     }
 
+    /**
+     * Several exercises logged together as one past workout: one session at the first entry's
+     * date, time and comment, with each entry as an exercise occurrence in the order entered.
+     * The entries share the workout's date and time, which the screen keeps for all of them.
+     */
+    fun rows(workouts: List<ManualWorkout>, zone: ZoneId): ProgramWorkoutRows {
+        require(workouts.isNotEmpty()) { "Nothing to record" }
+        val first = workouts.first()
+        require(workouts.all { it.date == first.date && it.time == first.time }) { "Entries of one workout share its date and time" }
+        val parts = workouts.map { rows(it, zone) }
+        return ProgramWorkoutRows(
+            session = parts.first().session,
+            exercises = parts.mapIndexed { index, part -> part.exercise.copy(orderIndex = index) to part.sets },
+        )
+    }
+
     /** Writes the entry as one session in one transaction; returns its id, or null when there is no set. */
-    suspend fun write(database: AppDatabase, workout: ManualWorkout, zone: ZoneId): Long? {
-        if (workout.sets.isEmpty()) return null
-        val rows = rows(workout, zone)
+    suspend fun write(database: AppDatabase, workout: ManualWorkout, zone: ZoneId): Long? =
+        write(database, listOf(workout), zone)
+
+    /** Writes the entries as one session in one transaction; entries without sets are left out. */
+    suspend fun write(database: AppDatabase, workouts: List<ManualWorkout>, zone: ZoneId): Long? {
+        val withSets = workouts.filter { it.sets.isNotEmpty() }
+        if (withSets.isEmpty()) return null
+        val rows = rows(withSets, zone)
         val dao = database.workoutSessionDao()
         return database.withTransaction {
             val sessionId = dao.insertSession(rows.session)
-            val exerciseId = dao.insertSessionExercise(rows.exercise.copy(workoutSessionId = sessionId))
-            dao.insertSetEntries(rows.sets.map { it.copy(sessionExerciseId = exerciseId) })
+            rows.exercises.forEach { (exercise, sets) ->
+                val exerciseId = dao.insertSessionExercise(exercise.copy(workoutSessionId = sessionId))
+                dao.insertSetEntries(sets.map { it.copy(sessionExerciseId = exerciseId) })
+            }
             sessionId
         }
     }

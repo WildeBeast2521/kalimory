@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-30, at PR #77.
+Last reviewed: 2026-09-30, at PR #78.
 
 ## Where things stand
 
@@ -65,7 +65,12 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
      - Sources: exercises from the merged history; programs and interval programs from `observeTemplateLastRuns` over the v2 sessions that name them.
      - Program runs saved before v2 carry no program link, so they are not counted rather than guessed from names.
      - `TemplateLastRunTest` covers the query.
-4. **L1:** log a past workout with several exercises. `ManualWorkoutWriter` handles one exercise today; the v2 model supports more.
+4. **L1, done in PR #78:** log a past workout with several exercises.
+   - "Add another exercise" on the entry screen sets the current exercise aside and returns to the list.
+   - An "In this workout" card lists what is already entered. The list's "Record N exercises" button, or Record on the next exercise, saves them all as one MANUAL session with one occurrence per exercise, in order (`ManualWorkoutWriter.write(list)`).
+   - Every entry takes the workout's current date, time and comment when it is recorded, so a date changed on a later exercise applies to all.
+   - Leaving the list with exercises set aside asks before discarding them.
+   - Tests: `ManualWorkoutWriterTest` (2 new) and `UnifiedWorkoutFlowTest.pastWorkoutWithSeveralExercisesIsOneSession`.
 5. **M5:** restore from a recovery zip inside the app.
 6. **Also approved:**
    - M6, done in PR #76:
@@ -107,7 +112,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #77. PR #70 changed documentation only.
+PRs #34 to #78. PR #70 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -117,7 +122,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #77: 352 unit tests, 135 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #78: 354 unit tests, 136 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

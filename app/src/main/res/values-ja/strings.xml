@@ -876,4 +876,10 @@
     <!-- When an exercise or program was last done, under its name in lists. -->
     <string name="last_done">前回 %1$s</string>
     <string name="last_done_today">今日実施済み</string>
+    <!-- Logging several exercises as one past workout. -->
+    <string name="record_add_exercise">種目を追加</string>
+    <string name="record_in_this_workout">このワークアウト</string>
+    <plurals name="record_save_exercises">
+        <item quantity="other">%d種目を記録</item>
+    </plurals>
 </resources>

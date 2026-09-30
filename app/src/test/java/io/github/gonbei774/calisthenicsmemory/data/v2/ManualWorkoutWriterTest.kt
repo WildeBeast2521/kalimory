@@ -71,4 +71,22 @@ class ManualWorkoutWriterTest {
         )
         assertEquals(ZonedDateTime.of(2025, 6, 1, 18, 30, 0, 0, zone).toInstant().toEpochMilli(), rows.session.startedAtEpochMillis)
     }
+
+    @Test fun `several exercises become one session with occurrences in the order entered`() {
+        val pullUps = workout(listOf(ManualSet(8, null, null, null, null), ManualSet(7, null, null, null, null)))
+        val plank = workout(listOf(ManualSet(60, null, null, null, null)), kind = ExerciseKind.ISOMETRIC)
+            .copy(exerciseId = 9, exerciseName = "Plank")
+        val rows = ManualWorkoutWriter.rows(listOf(pullUps, plank), zone)
+        assertEquals(ZonedDateTime.of(2025, 6, 1, 18, 30, 0, 0, zone).toInstant().toEpochMilli(), rows.session.startedAtEpochMillis)
+        assertEquals(listOf("Pull-up", "Plank"), rows.exercises.map { it.first.exerciseNameSnapshot })
+        assertEquals(listOf(0, 1), rows.exercises.map { it.first.orderIndex })
+        assertEquals(listOf(8, 7), rows.exercises[0].second.map { it.repetitions })
+        assertEquals(listOf(60_000L), rows.exercises[1].second.map { it.durationMillis })
+    }
+
+    @Test fun `entries of one workout must share its date and time`() {
+        val a = workout(listOf(ManualSet(8, null, null, null, null)))
+        val b = a.copy(time = LocalTime.of(19, 0))
+        assertThrows(IllegalArgumentException::class.java) { ManualWorkoutWriter.rows(listOf(a, b), zone) }
+    }
 }

@@ -1423,13 +1423,20 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     }
 
     /** Saves sets entered by hand as one v2 session, then completes the to-do it came from, in that order. */
-    fun recordManualWorkout(workout: ManualWorkout, completeTodo: Boolean) {
+    fun recordManualWorkout(workout: ManualWorkout, completeTodo: Boolean) =
+        recordManualWorkouts(listOf(workout), completeTodoFor = workout.exerciseId.takeIf { completeTodo })
+
+    /**
+     * Saves one or more exercises entered by hand as one v2 session, then completes the to-do
+     * the entry came from, in that order.
+     */
+    fun recordManualWorkouts(workouts: List<ManualWorkout>, completeTodoFor: Long?) {
         viewModelScope.launch {
             try {
-                if (ManualWorkoutWriter.write(database, workout, ZoneId.systemDefault()) != null) {
-                    _snackbarMessage.value = UiMessage.SetsRecorded(workout.sets.size)
+                if (ManualWorkoutWriter.write(database, workouts, ZoneId.systemDefault()) != null) {
+                    _snackbarMessage.value = UiMessage.SetsRecorded(workouts.sumOf { it.sets.size })
                 }
-                if (completeTodo) completeTodoTask(TodoTask.TYPE_EXERCISE, workout.exerciseId)
+                if (completeTodoFor != null) completeTodoTask(TodoTask.TYPE_EXERCISE, completeTodoFor)
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }

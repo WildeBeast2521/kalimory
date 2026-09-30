@@ -294,6 +294,34 @@ class UnifiedWorkoutFlowTest {
     }
 
     @Test
+    fun pastWorkoutWithSeveralExercisesIsOneSession() = runBlocking {
+        launchAndOpenTrain()
+        rule.onNodeWithText(text(R.string.home_record)).performScrollTo().performClick()
+        repeat(2) { round ->
+            // The group stays open after the first pick.
+            if (rule.onAllNodesWithText(exerciseName).fetchSemanticsNodes().isEmpty()) {
+                waitForText(text(R.string.no_group))
+                rule.onNodeWithText(text(R.string.no_group)).performClick()
+            }
+            waitForText(exerciseName)
+            rule.onNodeWithText(exerciseName).performClick()
+            waitForText(text(R.string.apply_exercise_settings))
+            rule.onNodeWithText(text(R.string.apply_exercise_settings)).performClick()
+            // The first exercise is set aside; the second records the workout.
+            val action = text(if (round == 0) R.string.record_add_exercise else R.string.record_button)
+            rule.onNode(hasScrollAction()).performScrollToNode(hasText(action))
+            rule.onNodeWithText(action).performClick()
+        }
+
+        rule.waitUntil(TIMEOUT_MS) { runBlocking { newSessions().isNotEmpty() } }
+        val session = newSessions().single()
+        assertEquals(WorkoutSourceType.MANUAL, session.sourceType)
+        val exercises = database.workoutSessionDao().sessionGraph(session.id)!!.exercises
+        assertEquals(listOf(0, 1), exercises.map { it.first.orderIndex })
+        assertEquals(listOf(listOf(3, 3), listOf(3, 3)), exercises.map { (_, sets) -> sets.map { it.repetitions } })
+    }
+
+    @Test
     fun intervalWorkoutIsSavedAsOneSession() = runBlocking {
         openFromToday(TodoTask.TYPE_INTERVAL, intervalProgramId, intervalName())
         waitForText(text(R.string.interval_start_workout))

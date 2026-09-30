@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
+import androidx.compose.ui.res.pluralStringResource
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -87,6 +88,9 @@ fun RecordScreen(
         )
     }
     var selectedExercise by remember(initialExercise) { mutableStateOf<Exercise?>(initialExercise) }
+    // Exercises already entered when several are logged as one workout.
+    var staged by remember { mutableStateOf(listOf<ManualWorkout>()) }
+    val completeTodoFor = initialExerciseId.takeIf { fromToDo }
     var numberOfSets by remember { mutableIntStateOf(1) }
     var setValues by remember { mutableStateOf(List(1) { "" }) }
 
@@ -103,6 +107,10 @@ fun RecordScreen(
     var showTimePicker by remember { mutableStateOf(false) }
 
     var comment by remember { mutableStateOf("") }
+    // One workout has one date, time and comment: whatever the screens show when it is recorded.
+    val asOneWorkout: (List<ManualWorkout>) -> List<ManualWorkout> = { entries ->
+        entries.map { it.copy(date = selectedDate, time = selectedTime, comment = comment) }
+    }
 
     // Shown in the user's locale; the record itself stores the ISO date.
     val dateFormatter = DateTimeFormatter.ofLocalizedDate(java.time.format.FormatStyle.MEDIUM)
@@ -140,11 +148,19 @@ fun RecordScreen(
             ExerciseSelectionScreen(
                 exercises = exercises,
                 onNavigateBack = onNavigateBack,
+                staged = staged,
+                onRecordStaged = {
+                    viewModel.recordManualWorkouts(asOneWorkout(staged), completeTodoFor)
+                    onNavigateBack()
+                },
                 onExerciseSelected = { exercise ->
                     selectedExercise = exercise
-                    comment = ""
-                    selectedDate = LocalDate.now()
-                    selectedTime = LocalTime.now()
+                    // The next exercise of the same workout keeps its date, time and comment.
+                    if (staged.isEmpty()) {
+                        comment = ""
+                        selectedDate = LocalDate.now()
+                        selectedTime = LocalTime.now()
+                    }
 
                     // 前回セッションを取得（「前回」表示は設定に関係なく常に行う）
                     coroutineScope.launch {
@@ -185,8 +201,9 @@ fun RecordScreen(
                 timeFormatter = timeFormatter,
                 fromToDo = fromToDo,
                 onNavigateBack = {
-                    // If from ToDo, go back to ToDo; otherwise go to exercise selection
-                    if (fromToDo) {
+                    // If from ToDo, go back to ToDo; otherwise go to exercise selection. With
+                    // exercises set aside, the list is where the workout is recorded or dropped.
+                    if (fromToDo && staged.isEmpty()) {
                         onNavigateBack()
                     } else {
                         currentStep = RecordStep.SelectExercise
@@ -223,7 +240,17 @@ fun RecordScreen(
                 onShowTimePicker = { showTimePicker = it },
                 onDateSelected = { selectedDate = it },
                 onTimeSelected = { selectedTime = it },
-                viewModel = viewModel
+                viewModel = viewModel,
+                staged = staged,
+                onAddExercise = { workout ->
+                    staged = staged + workout
+                    currentStep = RecordStep.SelectExercise
+                    selectedExercise = null
+                },
+                onRecord = { workout ->
+                    viewModel.recordManualWorkouts(asOneWorkout(staged + workout), completeTodoFor)
+                    onNavigateBack()
+                }
             )
         }
     }
@@ -233,8 +260,30 @@ fun RecordScreen(
 fun ExerciseSelectionScreen(
     exercises: List<Exercise>,
     onNavigateBack: () -> Unit,
-    onExerciseSelected: (Exercise) -> Unit
+    onExerciseSelected: (Exercise) -> Unit,
+    staged: List<ManualWorkout> = emptyList(),
+    onRecordStaged: () -> Unit = {},
 ) {
+    // With exercises set aside, leaving would drop them, so ask first.
+    var showDiscardDialog by remember { mutableStateOf(false) }
+    val leave: () -> Unit = { if (staged.isNotEmpty()) showDiscardDialog = true else onNavigateBack() }
+    BackHandler(enabled = staged.isNotEmpty()) { showDiscardDialog = true }
+    if (showDiscardDialog) {
+        AlertDialog(
+            onDismissRequest = { showDiscardDialog = false },
+            title = { Text(stringResource(R.string.discard_changes_title)) },
+            text = { Text(stringResource(R.string.discard_changes_message)) },
+            confirmButton = {
+                TextButton(onClick = { showDiscardDialog = false; onNavigateBack() }) {
+                    Text(stringResource(R.string.discard), color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDiscardDialog = false }) { Text(stringResource(R.string.cancel)) }
+            },
+        )
+    }
+
     // ViewModelを取得
     val viewModel: TrainingViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
@@ -270,7 +319,7 @@ fun ExerciseSelectionScreen(
                         .padding(horizontal = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = onNavigateBack) {
+                    IconButton(onClick = leave) {
                         Icon(
                             AppIcons.Back,
                             contentDescription = stringResource(R.string.back),
@@ -283,6 +332,25 @@ fun ExerciseSelectionScreen(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
+                }
+            }
+        },
+        bottomBar = {
+            // Record what was entered so far, without adding another exercise.
+            if (staged.isNotEmpty()) {
+                Surface(color = MaterialTheme.colorScheme.background) {
+                    Button(
+                        onClick = onRecordStaged,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                            .padding(16.dp)
+                            .height(56.dp),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Icon(AppIcons.Check, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
+                        Text(pluralStringResource(R.plurals.record_save_exercises, staged.size, staged.size), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
         }
@@ -655,7 +723,11 @@ fun WorkoutInputScreen(
     onShowTimePicker: (Boolean) -> Unit,
     onDateSelected: (LocalDate) -> Unit,
     onTimeSelected: (LocalTime) -> Unit,
-    viewModel: TrainingViewModel
+    viewModel: TrainingViewModel,
+    // Exercises already entered for this workout, and what to do with this one when done.
+    staged: List<ManualWorkout> = emptyList(),
+    onAddExercise: (ManualWorkout) -> Unit = {},
+    onRecord: (ManualWorkout) -> Unit = {},
 ) {
     val groups by viewModel.groups.collectAsState()
     // Unilateral判定
@@ -808,7 +880,12 @@ fun WorkoutInputScreen(
     // システム戻る・スワイプ戻りを横取り（最内の BackHandler が優先される）
     BackHandler { handleBack() }
 
-    // Records the sets with a value; with onlyDone, only those also ticked as done.
+    // Records the sets with a value; with onlyDone, only those also ticked as done. With another
+    // exercise to follow, this one is set aside and the workout carries on.
+    var addingExercise by remember { mutableStateOf(false) }
+    val finish: (ManualWorkout) -> Unit = { workout ->
+        if (addingExercise) onAddExercise(workout) else onRecord(workout)
+    }
     val doRecord: (Boolean) -> Unit = { onlyDone ->
         if (isUnilateral) {
             // Unilateral: 完了(DONE)かつ有効なセットのindexを決定 → 全リストを同じindexでフィルタ
@@ -834,16 +911,14 @@ fun WorkoutInputScreen(
                     parseWeightG(assistanceInputs.getOrElse(i) { "" })
                 }
 
-                viewModel.recordManualWorkout(
+                finish(
                     manualWorkout(
                         exercise, groups, selectedDate, selectedTime, comment,
                         valuesRight.indices.map { i ->
                             ManualSet(valuesRight[i], valuesLeft[i], distancesCm[i], weightsG[i], assistancesG[i])
                         }
-                    ),
-                    completeTodo = fromToDo
+                    )
                 )
-                onNavigateBack()
             }
         } else {
             // Bilateral: 完了(DONE)かつ有効なセットのindexを決定 → 全リストを同じindexでフィルタ
@@ -863,16 +938,14 @@ fun WorkoutInputScreen(
                     parseWeightG(assistanceInputs.getOrElse(i) { "" })
                 }
 
-                viewModel.recordManualWorkout(
+                finish(
                     manualWorkout(
                         exercise, groups, selectedDate, selectedTime, comment,
                         values.indices.map { i ->
                             ManualSet(values[i], null, distancesCm[i], weightsG[i], assistancesG[i])
                         }
-                    ),
-                    completeTodo = fromToDo
+                    )
                 )
-                onNavigateBack()
             }
         }
     }
@@ -909,7 +982,7 @@ fun WorkoutInputScreen(
         if (pendingScrollToNewSet) {
             val hasTargetCard = exercise.targetSets != null && exercise.targetValue != null
             val hasApplyButton = exercise.targetSets != null || exercise.targetValue != null
-            val headerCount = (if (hasTargetCard) 1 else 0) + (if (hasApplyButton) 1 else 0)
+            val headerCount = (if (staged.isNotEmpty()) 1 else 0) + (if (hasTargetCard) 1 else 0) + (if (hasApplyButton) 1 else 0)
             val newSetIndex = headerCount + numberOfSets - 1
             recordListState.animateScrollToItem(newSetIndex)
             pendingScrollToNewSet = false
@@ -922,7 +995,7 @@ fun WorkoutInputScreen(
         if (target != null) {
             val hasTargetCard = exercise.targetSets != null && exercise.targetValue != null
             val hasApplyButton = exercise.targetSets != null || exercise.targetValue != null
-            val headerCount = (if (hasTargetCard) 1 else 0) + (if (hasApplyButton) 1 else 0)
+            val headerCount = (if (staged.isNotEmpty()) 1 else 0) + (if (hasTargetCard) 1 else 0) + (if (hasApplyButton) 1 else 0)
             recordListState.animateScrollToItem(headerCount + target)
             pendingScrollToSetIndex = null
         }
@@ -988,6 +1061,12 @@ fun WorkoutInputScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Exercises already entered for this workout; they are recorded together with this one.
+            if (staged.isNotEmpty()) {
+                item {
+                    StagedExercises(staged)
+                }
+            }
             // 目標表示
             if (exercise.targetSets != null && exercise.targetValue != null) {
                 item {
@@ -1431,6 +1510,23 @@ fun WorkoutInputScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
+                }
+            }
+
+            // Log several exercises as one workout: set this one aside and pick the next.
+            item {
+                OutlinedButton(
+                    onClick = {
+                        addingExercise = true
+                        doRecord(false)
+                        addingExercise = false
+                    },
+                    enabled = enteredCount > 0,
+                    modifier = Modifier.fillMaxWidth().height(48.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(AppIcons.Add, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
+                    Text(stringResource(R.string.record_add_exercise))
                 }
             }
         }
@@ -1910,6 +2006,20 @@ private fun InlineStepperRow(
                 maxLines = 1,
                 modifier = Modifier.widthIn(min = 56.dp)
             )
+        }
+    }
+}
+
+/** The exercises set aside for this workout, with their sets, above the one being entered. */
+@Composable
+private fun StagedExercises(staged: List<ManualWorkout>) {
+    Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceContainerLow, modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(stringResource(R.string.record_in_this_workout), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            staged.forEach { workout ->
+                val values = workout.sets.joinToString(", ") { set -> set.valueLeft?.let { "${set.valueRight}/$it" } ?: "${set.valueRight}" }
+                Text("${workout.exerciseName}: $values", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+            }
         }
     }
 }
