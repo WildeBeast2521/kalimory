@@ -23,7 +23,11 @@ import org.junit.runner.RunWith
 /** The four primary destinations: switching, back behavior, secondary screens, and recreation. */
 @RunWith(AndroidJUnit4::class)
 class PrimaryNavigationTest {
-    @get:Rule
+    // Before the app launches: the welcome guide would otherwise open first.
+    @get:Rule(order = 0)
+    val welcomeSeen = WelcomeSeenRule()
+
+    @get:Rule(order = 1)
     val rule = createAndroidComposeRule<MainActivity>()
 
     /** The shell appears only after the start-up database check, which runs off the main thread. */

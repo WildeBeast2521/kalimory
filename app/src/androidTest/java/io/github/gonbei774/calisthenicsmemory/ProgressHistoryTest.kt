@@ -42,7 +42,11 @@ import java.time.ZoneId
 /** Progress shows legacy and v2-only workouts together, and offers edit actions only for legacy ones. */
 @RunWith(AndroidJUnit4::class)
 class ProgressHistoryTest {
-    @get:Rule
+    // Before the app launches: the welcome guide would otherwise open first.
+    @get:Rule(order = 0)
+    val welcomeSeen = WelcomeSeenRule()
+
+    @get:Rule(order = 1)
     val rule = createEmptyComposeRule()
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext

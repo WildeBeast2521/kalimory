@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-30, at PR #84.
+Last reviewed: 2026-09-30, at PR #85.
 
 ## Where things stand
 
@@ -111,17 +111,20 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
 - `SoundFilesTest` keeps the ducking windows equal to the sound lengths.
 - Not heard by a person in this session: the owner listened on the review page, and the shipped files come from the same generator.
 
-## Onboarding (plan approved 2026-09-30, not started)
+## Onboarding (done in PR #85)
 
-Start only when the owner says so. The approved plan is:
-- A four-page welcome guide shown once on first launch, with Skip always available. It can be reopened from Settings › "Welcome guide".
+- `WelcomeGuide` is a four-page welcome, built to the plan the owner approved on 2026-09-30, minus the sounds and vibration explanation.
+- It shows once on first launch (`OnboardingPreferences`), and upgrades from upstream see it too. Skip is always there, and Back steps to the previous page. Settings › "Welcome guide" reopens it.
 - Pages:
-  1. What the app is: private, no account, offline.
+  1. What the app is.
   2. The four places.
-  3. How a workout runs, without explaining the sounds or vibration.
-  4. Your data and backups, then "Add your first exercise" or "Go to Today".
-- Pictures are built from the app's own icons. Strings in 10 locales.
-- Tests: a first-launch test, and existing tests mark the guide as seen.
+  3. How a workout runs, pictured with the real `TimerDial`.
+  4. Your data, where the backup path is built from the app's own Settings and backup labels. It ends with "Add your first exercise" (opens Library › Exercises) or "Go to Today".
+- Strings are in all 10 locales. Pages have headings and announce their position.
+- Tests:
+  - `WelcomeGuideTest` covers first launch, Skip, the next launch, walking to the end and reopening from Settings.
+  - `WelcomeSeenRule` keeps the other launch tests on Today.
+  - The Baseline Profile journeys tap Skip on a fresh install.
 
 ## Open small fixes
 
@@ -156,7 +159,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #84. PR #70 changed documentation only.
+PRs #34 to #85. PR #70 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -166,7 +169,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #84: 356 unit tests, 141 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #85: 356 unit tests, 143 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

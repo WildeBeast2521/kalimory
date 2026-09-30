@@ -6,9 +6,16 @@ import androidx.test.uiautomator.Until
 
 const val PACKAGE = "io.github.gonbei774.calisthenicsmemory"
 private const val TIMEOUT_MS = 5_000L
+private const val GUIDE_TIMEOUT_MS = 1_500L
 
-/** Waits until the primary navigation bar is on screen: Today has drawn its first frame. */
+/**
+ * Waits until the primary navigation bar is on screen: Today has drawn its first frame. A fresh
+ * install first shows the welcome guide, which is skipped.
+ */
 fun MacrobenchmarkScope.waitForToday() {
+    if (device.wait(Until.hasObject(By.text("Skip")), GUIDE_TIMEOUT_MS) == true) {
+        device.findObject(By.text("Skip"))?.click()
+    }
     device.wait(Until.hasObject(By.text("Train")), TIMEOUT_MS)
 }
 

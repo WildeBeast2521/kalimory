@@ -38,7 +38,11 @@ import org.junit.runner.RunWith
 /** Today lists unfinished workouts and due to-dos from real saved state, and opens the owning screens. */
 @RunWith(AndroidJUnit4::class)
 class TodayScreenTest {
-    @get:Rule
+    // Before the app launches: the welcome guide would otherwise open first.
+    @get:Rule(order = 0)
+    val welcomeSeen = WelcomeSeenRule()
+
+    @get:Rule(order = 1)
     val rule = createEmptyComposeRule()
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext

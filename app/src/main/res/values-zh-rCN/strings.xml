@@ -830,4 +830,27 @@
     <string name="recovery_section_title">恢复文件</string>
     <string name="recovery_section_description">从恢复文件还原原始数据库，应用无法打开数据时会提供导出恢复文件。其他情况请使用 JSON 备份。</string>
     <string name="workout_review_title">确认各组</string>
+    <!-- The welcome guide shown on first launch. -->
+    <string name="guide_skip">跳过</string>
+    <string name="guide_next">下一步</string>
+    <string name="guide_add_exercise">添加第一个动作</string>
+    <string name="guide_go_to_today">前往“今天”</string>
+    <string name="guide_page_position">第 %1$d 页，共 %2$d 页</string>
+    <string name="guide_welcome_title">欢迎使用 Calisthenics Memory</string>
+    <string name="guide_welcome_body">一个安静的地方，用来计划、进行和记录你的自重训练。无需账户，也不联网：你的训练都保存在这部手机上。</string>
+    <string name="guide_places_title">四个地方</string>
+    <string name="guide_place_today">本周概况、接下来要做的，以及今天完成的。</string>
+    <string name="guide_place_train">开始训练：单个动作、训练计划或间歇训练。也可以补记之前的训练。</string>
+    <string name="guide_place_progress">以日历、列表和图表查看历史，还有挑战。</string>
+    <string name="guide_place_library">你的动作、训练计划、间歇训练，以及设置。</string>
+    <string name="guide_workout_title">训练如何进行</string>
+    <string name="guide_workout_sets_title">一组接一组</string>
+    <string name="guide_workout_sets">计数或使用计时器，组间有休息。</string>
+    <string name="guide_workout_pause_title">随时暂停</string>
+    <string name="guide_workout_pause">点按圆环即可暂停，再点一次继续。</string>
+    <string name="guide_workout_summary_title">查看完成情况</string>
+    <string name="guide_workout_summary">结束时，总结会显示总量和新纪录。</string>
+    <string name="guide_data_title">数据归你所有</string>
+    <string name="guide_data_body">在 %1$s 中备份全部数据，并可在任何手机上恢复。除非你导出，数据不会离开这部手机。</string>
+    <string name="settings_welcome_guide">欢迎指南</string>
 </resources>

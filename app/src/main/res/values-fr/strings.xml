@@ -833,4 +833,27 @@
     <string name="recovery_section_title">Fichier de récupération</string>
     <string name="recovery_section_description">Restaure la base de données brute depuis un fichier de récupération, que l\'application propose d\'exporter lorsqu\'elle ne peut pas ouvrir vos données. Pour tout le reste, utilisez une sauvegarde JSON.</string>
     <string name="workout_review_title">Vérifiez vos séries</string>
+    <!-- The welcome guide shown on first launch. -->
+    <string name="guide_skip">Passer</string>
+    <string name="guide_next">Suivant</string>
+    <string name="guide_add_exercise">Ajouter votre premier exercice</string>
+    <string name="guide_go_to_today">Aller à Aujourd\'hui</string>
+    <string name="guide_page_position">Page %1$d sur %2$d</string>
+    <string name="guide_welcome_title">Bienvenue dans Calisthenics Memory</string>
+    <string name="guide_welcome_body">Un endroit calme pour planifier, réaliser et garder la trace de vos entraînements au poids du corps. Pas de compte, rien en ligne : vos séances restent sur ce téléphone.</string>
+    <string name="guide_places_title">Quatre espaces</string>
+    <string name="guide_place_today">Votre semaine en un coup d\'œil, la suite et ce que vous avez fait aujourd\'hui.</string>
+    <string name="guide_place_train">Lancez une séance : un exercice, un programme ou des intervalles. Vous pouvez aussi noter une séance passée.</string>
+    <string name="guide_place_progress">Votre historique en calendrier, en liste et en graphiques, avec les défis.</string>
+    <string name="guide_place_library">Vos exercices, programmes et routines d\'intervalles, et les paramètres.</string>
+    <string name="guide_workout_title">Déroulement d\'une séance</string>
+    <string name="guide_workout_sets_title">Série après série</string>
+    <string name="guide_workout_sets">Comptez vos répétitions ou lancez un minuteur, avec un repos entre les séries.</string>
+    <string name="guide_workout_pause_title">Pause à tout moment</string>
+    <string name="guide_workout_pause">Touchez l\'anneau pour mettre en pause, puis touchez-le à nouveau pour reprendre.</string>
+    <string name="guide_workout_summary_title">Voyez ce que vous avez fait</string>
+    <string name="guide_workout_summary">À la fin, un résumé affiche vos totaux et tout nouveau record.</string>
+    <string name="guide_data_title">Vos données vous appartiennent</string>
+    <string name="guide_data_body">Sauvegardez tout depuis %1$s et restaurez-le sur n\'importe quel téléphone. Rien ne quitte ce téléphone sauf si vous l\'exportez.</string>
+    <string name="settings_welcome_guide">Guide de bienvenue</string>
 </resources>
