@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-30, at PR #81.
+Last reviewed: 2026-09-30, at PR #82.
 
 ## Where things stand
 
@@ -29,7 +29,9 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
      - Tab-switch benchmark on API 36 (median of 10), against master: per-frame CPU time P50 +5%, P90 +8%, P99 −23%. The crossfade draws two screens briefly. On this software-rendered emulator every frame overruns either way.
    - **Differences from the review page:**
      - The navigation indicator keeps Material's own grow-in animation rather than gliding between tabs. A glide needs a custom bar.
-     - Predictive back, where the back swipe scrubs the slide, is not done. Every screen declares its own back destination and side effects in `MainActivity`, so scrubbing needs those moved into one place first. That is a follow-up.
+     - Predictive back, done in PR #82: `MainActivity` computes every screen's `backTarget` in one place, and a `PredictiveBackHandler` scrubs a `SeekableTransitionState`. Releasing commits; cancelling animates back. Handlers inside screens still take precedence.
+     - `PrimaryNavigationTest.predictiveBackCanBeCancelledOrCompleted` drives it through the dispatcher.
+     - A live edge swipe on the API 36 emulator was not checked, because its software-rendered System UI stopped responding.
    - **Done in PR #72, in the workout kit, so single and program runs both get it:**
      - `RollingNumber` rolls changed digits up on dials and counts.
      - The last three seconds of a countdown pulse the ring.
@@ -102,7 +104,7 @@ Done in PR #80:
 
 Still open:
 - `util/WakeLockManager.kt` is unused. Remove it in a cleanup change.
-- Predictive back that scrubs the screen slide, and a gliding navigation indicator (from MO).
+- A gliding navigation indicator (from MO). It needs a custom bar; Material's grow-in animation is used meanwhile.
 
 Log new ideas here while working. Small ones become their own slice; ask the owner before larger features.
 
@@ -124,7 +126,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #81. PR #70 changed documentation only.
+PRs #34 to #82. PR #70 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -134,7 +136,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #81: 354 unit tests, 140 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #82: 354 unit tests, 141 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

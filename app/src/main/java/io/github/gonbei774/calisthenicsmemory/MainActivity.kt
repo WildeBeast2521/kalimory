@@ -5,6 +5,12 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.CancellationException
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.animation.core.rememberTransition
+import androidx.compose.animation.core.SeekableTransitionState
+import androidx.activity.compose.PredictiveBackHandler
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -295,6 +301,43 @@ fun CalisthenicsMemoryApp(
         }
     }
 
+    // Back for every screen in one place. Handlers inside a screen (dialogs, workout steps) are
+    // registered later and still take precedence.
+    val backTarget: Screen? = when (val screen = currentScreen) {
+        Screen.Home -> null
+        Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList -> Screen.Home
+        Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub -> Screen.Settings
+        Screen.CommunityShareExport -> Screen.ShareHub
+        is Screen.Record -> if (screen.fromToDo) Screen.ToDo else Screen.Home
+        is Screen.ProgramEdit -> Screen.ProgramList
+        is Screen.IntervalEdit -> Screen.IntervalList
+        is Screen.Workout, is Screen.ProgramExecution, is Screen.IntervalExecution -> screen.workoutExit()
+        is Screen.WorkoutSummary -> summaryReturn
+    }
+    val goBack: (Screen) -> Unit = { target ->
+        when (currentScreen) {
+            Screen.Create -> viewModel.saveGroupOrder()
+            is Screen.WorkoutSummary -> viewModel.dismissWorkoutSummary()
+            else -> Unit
+        }
+        currentScreen = target
+    }
+    val screenState = remember { SeekableTransitionState(currentScreen) }
+    val screens = rememberTransition(screenState, label = "screen")
+    LaunchedEffect(currentScreen) { screenState.animateTo(currentScreen) }
+    val backScope = rememberCoroutineScope()
+    PredictiveBackHandler(enabled = backTarget != null) { progress ->
+        val target = backTarget ?: return@PredictiveBackHandler
+        try {
+            progress.collect { event -> screenState.seekTo(event.progress, target) }
+            goBack(target)
+        } catch (e: CancellationException) {
+            // The gesture was abandoned: settle back on the screen that is still current.
+            backScope.launch { screenState.animateTo(screenState.currentState) }
+            throw e
+        }
+    }
+
     val showPrimaryNavigation = currentScreen is Screen.Home
     Scaffold(
         bottomBar = {
@@ -325,12 +368,11 @@ fun CalisthenicsMemoryApp(
                 .padding(paddingValues)
         ) {
             // The screen being left keeps its own state while it animates out, so each branch reads
-            // `screen`, never `currentScreen`.
-            AnimatedContent(
-                targetState = currentScreen,
+            // `screen`, never `currentScreen`. The transition is seekable, so the back gesture can
+            // drag the slide and let go to finish or cancel it.
+            screens.AnimatedContent(
                 transitionSpec = { screenTransition(forward = targetState.depth() >= initialState.depth()) },
                 modifier = Modifier.fillMaxSize(),
-                label = "screen",
             ) { screen ->
                 when (screen) {
                     is Screen.Home -> {
@@ -405,7 +447,6 @@ fun CalisthenicsMemoryApp(
                         }
                     }
                     is Screen.ToDo -> {
-                        BackHandler { currentScreen = Screen.Home }
                         ToDoScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = Screen.Home },
@@ -424,10 +465,6 @@ fun CalisthenicsMemoryApp(
                         )
                     }
                     is Screen.Create -> {
-                        BackHandler {
-                            viewModel.saveGroupOrder()
-                            currentScreen = Screen.Home
-                        }
                         CreateScreen(
                             viewModel = viewModel,
                             onNavigateBack = {
@@ -437,7 +474,6 @@ fun CalisthenicsMemoryApp(
                         )
                     }
                     is Screen.Settings -> {
-                        BackHandler { currentScreen = Screen.Home }
                         SettingsScreenNew(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = Screen.Home },
@@ -454,7 +490,6 @@ fun CalisthenicsMemoryApp(
                         )
                     }
                     is Screen.Licenses -> {
-                        BackHandler { currentScreen = Screen.Settings }
                         LicensesScreen(
                             onNavigateBack = { currentScreen = Screen.Settings }
                         )
@@ -462,7 +497,6 @@ fun CalisthenicsMemoryApp(
                     is Screen.Record -> {
                         val recordScreen = screen
                         val backDestination = if (recordScreen.fromToDo) Screen.ToDo else Screen.Home
-                        BackHandler { currentScreen = backDestination }
                         RecordScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = backDestination },
@@ -473,7 +507,6 @@ fun CalisthenicsMemoryApp(
                     is Screen.Workout -> {
                         val workoutScreen = screen
                         val backDestination = screen.workoutExit()!!
-                        BackHandler { currentScreen = backDestination }
                         WorkoutScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = backDestination },
@@ -482,7 +515,6 @@ fun CalisthenicsMemoryApp(
                         )
                     }
                     is Screen.ProgramList -> {
-                        BackHandler { currentScreen = Screen.Home }
                         ProgramListScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = Screen.Home },
@@ -497,7 +529,6 @@ fun CalisthenicsMemoryApp(
                     }
                     is Screen.ProgramEdit -> {
                         val editScreen = screen
-                        BackHandler { currentScreen = Screen.ProgramList }
                         ProgramEditScreen(
                             viewModel = viewModel,
                             programId = editScreen.programId,
@@ -508,7 +539,6 @@ fun CalisthenicsMemoryApp(
                     is Screen.ProgramExecution -> {
                         val execScreen = screen
                         val backDestination = screen.workoutExit()!!
-                        BackHandler { currentScreen = backDestination }
                         ProgramExecutionScreen(
                             viewModel = viewModel,
                             programId = execScreen.programId,
@@ -523,7 +553,6 @@ fun CalisthenicsMemoryApp(
                         )
                     }
                     is Screen.IntervalList -> {
-                        BackHandler { currentScreen = Screen.Home }
                         IntervalListScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = Screen.Home },
@@ -535,7 +564,6 @@ fun CalisthenicsMemoryApp(
                     }
                     is Screen.IntervalEdit -> {
                         val editScreen = screen
-                        BackHandler { currentScreen = Screen.IntervalList }
                         IntervalEditScreen(
                             viewModel = viewModel,
                             programId = editScreen.programId,
@@ -546,7 +574,6 @@ fun CalisthenicsMemoryApp(
                     is Screen.IntervalExecution -> {
                         val execScreen = screen
                         val backDestination = screen.workoutExit()!!
-                        BackHandler { currentScreen = backDestination }
                         IntervalExecutionScreen(
                             viewModel = viewModel,
                             programId = execScreen.programId,
@@ -560,28 +587,24 @@ fun CalisthenicsMemoryApp(
                         )
                     }
                     is Screen.CommunityShareExport -> {
-                        BackHandler { currentScreen = Screen.ShareHub }
                         CommunityShareExportScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = Screen.ShareHub }
                         )
                     }
                     is Screen.Backup -> {
-                        BackHandler { currentScreen = Screen.Settings }
                         BackupScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = Screen.Settings }
                         )
                     }
                     is Screen.CsvDataManagement -> {
-                        BackHandler { currentScreen = Screen.Settings }
                         CsvDataManagementScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = Screen.Settings }
                         )
                     }
                     is Screen.ShareHub -> {
-                        BackHandler { currentScreen = Screen.Settings }
                         ShareHubScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = Screen.Settings },
@@ -593,7 +616,6 @@ fun CalisthenicsMemoryApp(
                             viewModel.dismissWorkoutSummary()
                             currentScreen = summaryReturn
                         }
-                        BackHandler(onBack = finish)
                         WorkoutSummaryScreen(viewModel = viewModel, sessionId = screen.sessionId, onDone = finish)
                     }
                 }

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import androidx.activity.BackEventCompat
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
@@ -78,6 +79,34 @@ class PrimaryNavigationTest {
         rule.onNodeWithTag(PRIMARY_NAVIGATION_BAR_TAG).assertDoesNotExist()
 
         pressBack()
+        assertShowing(PrimaryDestination.LIBRARY)
+    }
+
+    /** The back gesture drags the slide: letting go early cancels it, finishing it goes back. */
+    @Test
+    fun predictiveBackCanBeCancelledOrCompleted() {
+        tab(PrimaryDestination.LIBRARY).performClick()
+        rule.onNode(hasText(text(R.string.program_list_title)) and hasAnyAncestor(hasTestTag(PRIMARY_NAVIGATION_BAR_TAG)).not())
+            .performClick()
+        rule.onNodeWithTag(PRIMARY_NAVIGATION_BAR_TAG).assertDoesNotExist()
+        val dispatcher = rule.activity.onBackPressedDispatcher
+
+        // Halfway, then abandoned: the program list stays.
+        rule.runOnUiThread {
+            dispatcher.dispatchOnBackStarted(BackEventCompat(0f, 0f, 0f, BackEventCompat.EDGE_LEFT))
+            dispatcher.dispatchOnBackProgressed(BackEventCompat(200f, 0f, 0.5f, BackEventCompat.EDGE_LEFT))
+            dispatcher.dispatchOnBackCancelled()
+        }
+        rule.waitForIdle()
+        rule.onNodeWithTag(PRIMARY_NAVIGATION_BAR_TAG).assertDoesNotExist()
+
+        // Dragged and released: back to Library.
+        rule.runOnUiThread {
+            dispatcher.dispatchOnBackStarted(BackEventCompat(0f, 0f, 0f, BackEventCompat.EDGE_LEFT))
+            dispatcher.dispatchOnBackProgressed(BackEventCompat(400f, 0f, 0.8f, BackEventCompat.EDGE_LEFT))
+            dispatcher.onBackPressed()
+        }
+        rule.waitForIdle()
         assertShowing(PrimaryDestination.LIBRARY)
     }
 
