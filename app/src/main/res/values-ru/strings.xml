@@ -169,4 +169,6 @@
     <string name="value_with_unit">%1$d %2$s</string>
     <string name="app_original_project">Исходный проект</string>
     <string name="graph_latest_exercise">Последнее: %1$s</string>
+    <string name="set_done_vibration_setting">Вибрация после подхода</string>
+    <string name="set_done_vibration_description">Короткая вибрация подтверждает каждый завершённый подход</string>
 </resources>

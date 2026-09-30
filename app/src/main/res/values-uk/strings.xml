@@ -243,6 +243,8 @@
     <string name="training_days_format">Тренування %s</string>
     <string name="csv_import_more_items">... і ще %d</string>
     <string name="keep_screen_on_description">Тримати екран увімкненим під час тренування, щоб бачити відлік часу</string>
+    <string name="set_done_vibration_setting">Вібрувати після підходу</string>
+    <string name="set_done_vibration_description">Коротка вібрація підтверджує кожен завершений підхід</string>
     <string name="keep_screen_on_setting">Тримати екран увімкненим</string>
     <string name="report_issue_github">Повідомити про помилку на GitHub</string>
     <string name="todo_drag_to_reorder">Перетягніть, щоб змінити порядок</string>

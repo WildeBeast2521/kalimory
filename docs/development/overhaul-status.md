@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-30, at PR #71.
+Last reviewed: 2026-09-30, at PR #72.
 
 ## Where things stand
 
@@ -30,7 +30,17 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
    - **Differences from the review page:**
      - The navigation indicator keeps Material's own grow-in animation rather than gliding between tabs. A glide needs a custom bar.
      - Predictive back, where the back swipe scrubs the slide, is not done. Every screen declares its own back destination and side effects in `MainActivity`, so scrubbing needs those moved into one place first. That is a follow-up.
-   - **Next slice:** timer and count digits roll, a finished set turns spruce with a drawn tick and a haptic (with a setting to turn vibration off), and buttons change shape when pressed.
+   - **Done in PR #72, in the workout kit, so single and program runs both get it:**
+     - `RollingNumber` rolls changed digits up on dials and counts.
+     - The last three seconds of a countdown pulse the ring.
+     - The count and the set segments ease into their new colours.
+     - `SetDoneBadge` draws its tick and fires a `Confirm` haptic. The new Settings switch "Vibrate When a Set Is Done" (on by default, 10 locales) turns the haptic off. `SetDoneHapticTest` covers the setting.
+     - The main workout button and the step buttons squeeze their corners when pressed (`ButtonShapes`, `IconButtonDefaults.shapes()`).
+   - **Verification:**
+     - Checked on the API 29 emulator at an animator scale of 3.
+     - That emulator logs no vibrations at all, so the haptic is proven by the test with a recording `HapticFeedback`, not on a device.
+     - Frame timing inside a workout is still unmeasured. The benchmark journeys do not start a workout.
+   - **Still open from MO:** predictive-back scrubbing, and a gliding navigation indicator.
 2. **M2 with SP.**
    - M2: a workout summary screen after the last set. Rings close, totals count up, the week dot fills, and a personal best appears in brass. There is no confetti. It includes the "Done today" totals and a comparison with the last session.
    - SP: a large "this week" number on Today, brass kept for in-progress and personal bests only, and a soft glow in dark mode.
@@ -73,7 +83,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #71. PR #70 changed documentation only.
+PRs #34 to #72. PR #70 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -83,7 +93,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #71: 340 unit tests, 131 instrumented tests on `floor_api29` (API 29), and "Lint found 6 warnings" (baselined dependency-version notices).
+- Expected as of PR #72: 340 unit tests, 133 instrumented tests on `floor_api29` (API 29), and "Lint found 6 warnings" (baselined dependency-version notices).
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

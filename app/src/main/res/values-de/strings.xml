@@ -453,6 +453,8 @@
     <string name="flash_notification_description">LED synchron mit Tönen während des Trainings blinken lassen</string>
     <string name="keep_screen_on_setting">Bildschirm anlassen</string>
     <string name="keep_screen_on_description">Bildschirm während des Trainings anlassen, um den Countdown anzuzeigen</string>
+    <string name="set_done_vibration_setting">Vibrieren nach jedem Satz</string>
+    <string name="set_done_vibration_description">Eine kurze Vibration bestätigt jeden beendeten Satz</string>
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
     <string name="todo_empty">Tippe + um Übungen hinzuzufügen</string>

@@ -2,7 +2,16 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.workout
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Canvas
@@ -22,6 +31,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonShapes
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
@@ -32,27 +43,39 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.text
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalmPalette
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -128,18 +151,21 @@ private fun SetSegments(setNumber: Int, totalSets: Int, accent: Color, modifier:
         horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
     ) {
         for (number in 1..totalSets) {
+            // A segment eases into its new state as a set finishes.
+            val color by animateColorAsState(
+                when {
+                    number < setNumber -> done
+                    number == setNumber -> accent
+                    else -> upcoming
+                },
+                label = "set segment",
+            )
             Box(
                 Modifier
                     .weight(1f)
                     .height(6.dp)
                     .clip(MaterialTheme.shapes.extraSmall)
-                    .background(
-                        when {
-                            number < setNumber -> done
-                            number == setNumber -> accent
-                            else -> upcoming
-                        }
-                    )
+                    .background(color)
             )
         }
     }
@@ -164,6 +190,15 @@ fun TimerDial(
     val track = MaterialTheme.colorScheme.surfaceContainerHighest
     val toggleLabel = stringResource(if (paused) R.string.resume_button else R.string.pause_button)
     val pausedLabel = stringResource(R.string.pause_button)
+    // The last three seconds of a countdown each give the ring a short pulse, with the beeps.
+    val pulse = remember { Animatable(1f) }
+    val finalSeconds = !paused && value.toIntOrNull() in 1..3
+    LaunchedEffect(value, finalSeconds) {
+        if (finalSeconds) {
+            pulse.snapTo(1.35f)
+            pulse.animateTo(1f, tween(360))
+        }
+    }
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -182,7 +217,7 @@ fun TimerDial(
             },
     ) {
         Canvas(Modifier.size(size)) {
-            val stroke = 16.dp.toPx()
+            val stroke = 16.dp.toPx() * pulse.value
             val inset = stroke / 2
             val arcSize = androidx.compose.ui.geometry.Size(this.size.width - stroke, this.size.height - stroke)
             val topLeft = androidx.compose.ui.geometry.Offset(inset, inset)
@@ -198,13 +233,39 @@ fun TimerDial(
             )
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
+            RollingNumber(
                 value,
                 style = WorkoutNumerals,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.alpha(if (paused) 0.4f else 1f),
+                // The dial already announces the value.
+                modifier = Modifier.alpha(if (paused) 0.4f else 1f).clearAndSetSemantics {},
             )
             if (paused) PausedMark()
+        }
+    }
+}
+
+/**
+ * A number whose changed digits roll up into place, like a mechanical counter. Digits are
+ * matched from the right, so "10" to "9" moves only the digits that change.
+ */
+@Composable
+fun RollingNumber(text: String, style: TextStyle, color: Color, modifier: Modifier = Modifier) {
+    Row(modifier) {
+        text.forEachIndexed { index, char ->
+            key(text.length - index) {
+                AnimatedContent(
+                    targetState = char,
+                    transitionSpec = {
+                        (slideInVertically(tween(260)) { it / 2 } + fadeIn(tween(200))) togetherWith
+                            (slideOutVertically(tween(200)) { -it / 2 } + fadeOut(tween(150))) using
+                            SizeTransform(clip = false)
+                    },
+                    label = "digit",
+                ) { digit ->
+                    Text(digit.toString(), style = style, color = color)
+                }
+            }
         }
     }
 }
@@ -235,10 +296,16 @@ fun CountDisplay(
     } else Modifier
     Column(modifier.then(tap), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(verticalAlignment = Alignment.Bottom, modifier = Modifier.alpha(if (paused) 0.4f else 1f)) {
-            Text(
+            val countColor by animateColorAsState(
+                if (reached) WorkoutTone.done else MaterialTheme.colorScheme.onSurface,
+                label = "count",
+            )
+            RollingNumber(
                 "$value",
                 style = if (compact) WorkoutNumerals else WorkoutNumerals.copy(fontSize = 120.sp, lineHeight = 124.sp),
-                color = if (reached) WorkoutTone.done else MaterialTheme.colorScheme.onSurface,
+                color = countColor,
+                // One text node for the whole number, not one per digit.
+                modifier = Modifier.clearAndSetSemantics { text = AnnotatedString("$value") },
             )
             if (unit != null) {
                 Text(
@@ -316,6 +383,8 @@ fun RestAdjustButtons(onMinus: () -> Unit, onPlus: () -> Unit) {
 fun StepButton(icon: ImageVector, contentDescription: String, enabled: Boolean = true, onClick: () -> Unit) {
     FilledTonalIconButton(
         onClick = onClick,
+        // Pressing squeezes the circle into a rounded square (Material 3 Expressive).
+        shapes = IconButtonDefaults.shapes(),
         enabled = enabled,
         modifier = Modifier.size(64.dp),
     ) {
@@ -329,7 +398,8 @@ fun WorkoutPrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier =
     Button(
         onClick = onClick,
         modifier = modifier.fillMaxWidth().heightIn(min = 64.dp),
-        shape = MaterialTheme.shapes.large,
+        // Pressing squeezes the corners, so the main action answers the thumb.
+        shapes = ButtonShapes(shape = MaterialTheme.shapes.large, pressedShape = MaterialTheme.shapes.small),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -344,14 +414,24 @@ fun WorkoutPrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier =
 }
 
 /**
- * The expressive moment (ADR 0004): after a completed set, a badge with a check springs in
- * at the start of the rest. Animations follow the system "remove animations" setting.
+ * The expressive moment (ADR 0004): after a completed set, a badge springs in at the start of
+ * the rest, its tick draws itself, and a short vibration confirms the set unless the user
+ * turned that off. Animations follow the system "remove animations" setting.
  */
 @Composable
 fun SetDoneBadge(label: String, modifier: Modifier = Modifier) {
     val scale = remember { Animatable(0.4f) }
+    val tick = remember { Animatable(0f) }
+    val haptics = LocalHapticFeedback.current
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
+        if (WorkoutPreferences(context).isSetDoneVibrationEnabled()) {
+            haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+        }
         scale.animateTo(1f, spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessMediumLow))
+    }
+    LaunchedEffect(Unit) {
+        tick.animateTo(1f, tween(360, delayMillis = 120))
     }
     Row(
         modifier = modifier,
@@ -364,8 +444,17 @@ fun SetDoneBadge(label: String, modifier: Modifier = Modifier) {
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.size(56.dp).graphicsLayer { scaleX = scale.value; scaleY = scale.value },
         ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(AppIcons.Check, contentDescription = null, modifier = Modifier.size(28.dp))
+            val tickColor = MaterialTheme.colorScheme.onPrimaryContainer
+            Canvas(Modifier.size(28.dp)) {
+                val path = Path().apply {
+                    moveTo(size.width * 0.2f, size.height * 0.53f)
+                    lineTo(size.width * 0.4f, size.height * 0.72f)
+                    lineTo(size.width * 0.8f, size.height * 0.3f)
+                }
+                val measure = PathMeasure().apply { setPath(path, false) }
+                val drawn = Path()
+                measure.getSegment(0f, measure.length * tick.value, drawn, true)
+                drawPath(drawn, tickColor, style = Stroke(3.dp.toPx(), cap = StrokeCap.Round, join = androidx.compose.ui.graphics.StrokeJoin.Round))
             }
         }
         Text(label, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)
