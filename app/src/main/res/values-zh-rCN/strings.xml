@@ -811,4 +811,10 @@
     <!-- When an exercise or program was last done, under its name in lists. -->
     <string name="last_done">上次：%1$s</string>
     <string name="last_done_today">今天已完成</string>
+    <!-- Logging several exercises as one past workout. -->
+    <string name="record_add_exercise">再添加一个动作</string>
+    <string name="record_in_this_workout">本次训练</string>
+    <plurals name="record_save_exercises">
+        <item quantity="other">记录 %d 个动作</item>
+    </plurals>
 </resources>

@@ -818,4 +818,13 @@
     <!-- When an exercise or program was last done, under its name in lists. -->
     <string name="last_done">Останній раз: %1$s</string>
     <string name="last_done_today">Зроблено сьогодні</string>
+    <!-- Logging several exercises as one past workout. -->
+    <string name="record_add_exercise">Додати вправу</string>
+    <string name="record_in_this_workout">У цьому тренуванні</string>
+    <plurals name="record_save_exercises">
+        <item quantity="one">Записати %d вправу</item>
+        <item quantity="few">Записати %d вправи</item>
+        <item quantity="many">Записати %d вправ</item>
+        <item quantity="other">Записати %d вправи</item>
+    </plurals>
 </resources>
