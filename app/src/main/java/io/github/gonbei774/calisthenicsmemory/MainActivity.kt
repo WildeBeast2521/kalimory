@@ -264,6 +264,8 @@ fun CalisthenicsMemoryApp(
     var currentScreen by rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.Home) }
     // Screen.Home shows this destination, so "back to Home" returns to the tab the user came from.
     var primaryDestination by rememberSaveable { mutableStateOf(PrimaryDestination.TODAY) }
+    // A day Today asked Progress to show; Progress clears it once shown.
+    var progressFocus by remember { mutableStateOf<java.time.LocalDate?>(null) }
     val snackbarHostState = remember { SnackbarHostState() }
 
     // After a live workout is saved, its summary opens on top of wherever the workout returned.
@@ -370,7 +372,11 @@ fun CalisthenicsMemoryApp(
                                     onOpenToDo = { currentScreen = Screen.ToDo },
                                     onOpenHistory = { primaryDestination = PrimaryDestination.PROGRESS },
                                     onOpenSettings = { currentScreen = Screen.Settings },
-                                    onOpenTrain = { primaryDestination = PrimaryDestination.TRAIN }
+                                    onOpenTrain = { primaryDestination = PrimaryDestination.TRAIN },
+                                    onOpenDay = { day ->
+                                        progressFocus = day
+                                        primaryDestination = PrimaryDestination.PROGRESS
+                                    }
                                 )
                                 PrimaryDestination.TRAIN -> TrainScreen(
                                     viewModel = viewModel,
@@ -383,7 +389,11 @@ fun CalisthenicsMemoryApp(
                                     onOpenPrograms = { currentScreen = Screen.ProgramList },
                                     onOpenIntervals = { currentScreen = Screen.IntervalList }
                                 )
-                                PrimaryDestination.PROGRESS -> ViewScreen(viewModel = viewModel)
+                                PrimaryDestination.PROGRESS -> ViewScreen(
+                                    viewModel = viewModel,
+                                    focusDate = progressFocus,
+                                    onFocusShown = { progressFocus = null }
+                                )
                                 PrimaryDestination.LIBRARY -> LibraryScreen(
                                     viewModel = viewModel,
                                     onOpenExercises = { currentScreen = Screen.Create },

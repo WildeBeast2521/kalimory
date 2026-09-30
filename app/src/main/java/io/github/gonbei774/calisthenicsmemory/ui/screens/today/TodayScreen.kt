@@ -76,6 +76,7 @@ fun TodayScreen(
     onOpenHistory: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenTrain: () -> Unit = {},
+    onOpenDay: (LocalDate) -> Unit = {},
 ) {
     val context = LocalContext.current
     val locale = LocalConfiguration.current.locales[0]
@@ -217,7 +218,7 @@ fun TodayScreen(
                 )
             }
             Spacer(Modifier.height(Spacing.m))
-            WeekStrip(week, trainedDays, today, locale, weekSummary)
+            WeekStrip(week, trainedDays, today, locale, weekSummary, onDayClick = onOpenDay)
             Spacer(Modifier.height(Spacing.s))
             Text(weekSummary, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }

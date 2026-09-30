@@ -1,6 +1,13 @@
 package io.github.gonbei774.calisthenicsmemory
 
 import androidx.compose.ui.test.assertCountEquals
+import java.time.format.FormatStyle
+import java.time.format.DateTimeFormatter
+import java.time.LocalDate
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
+import androidx.compose.ui.test.isSelected
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isHeading
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
@@ -20,7 +27,9 @@ import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PRIMARY_NAVIGATION_BAR_TAG
 import io.github.gonbei774.calisthenicsmemory.ui.screens.SingleSessionCheckpoint
 import kotlinx.coroutines.runBlocking
+import io.github.gonbei774.calisthenicsmemory.ui.screens.view.formatDate
 import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -97,6 +106,19 @@ class TodayScreenTest {
     }
 
     @Test
+    fun tappingADayOpensItsHistoryInProgress() {
+        launch()
+        // Today's cell names the full date; trained or not, it opens that day on the Progress calendar.
+        val date = LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(context.resources.configuration.locales[0]))
+        rule.onNode(hasContentDescription(date, substring = true) and hasClickAction()).performClick()
+        rule.onNode(hasText(text(PrimaryDestination.PROGRESS.label)) and isHeading()).assertExists()
+        rule.onNode(hasText(text(R.string.tab_calendar)) and isSelected()).assertExists()
+        // The stats narrow from the week to that one day.
+        val locale = context.resources.configuration.locales[0]
+        rule.onAllNodesWithText(formatDate(LocalDate.now(), locale)).fetchSemanticsNodes().isNotEmpty().let(::assertTrue)
+    }
+
+    @Test
     fun resumingOpensTheWorkoutScreensOwnResumeOffer() {
         launch()
         // The week's hero number can push the resume card below the fold on small screens.
@@ -111,7 +133,7 @@ class TodayScreenTest {
         savedProgram.clear()
         launch()
         rule.onNodeWithText(text(R.string.today_resume_title)).assertDoesNotExist()
-        rule.onNodeWithText(exerciseName).performClick()
+        rule.onNodeWithText(exerciseName).performScrollTo().performClick()
         rule.onAllNodesWithTag(PRIMARY_NAVIGATION_BAR_TAG).assertCountEquals(0)
 
         pressBack()

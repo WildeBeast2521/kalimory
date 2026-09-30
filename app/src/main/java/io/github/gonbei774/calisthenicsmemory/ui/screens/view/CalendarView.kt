@@ -44,7 +44,9 @@ fun CalendarView(
     exercises: List<Exercise>,
     selectedExerciseFilter: Exercise?,
     selectedPeriod: Period?,
-    onExerciseClick: (Exercise) -> Unit
+    onExerciseClick: (Exercise) -> Unit,
+    focusDate: LocalDate? = null,
+    onFocusShown: () -> Unit = {},
 ) {
 
     // 種目ID → Lv (sortOrder) マップ
@@ -71,6 +73,12 @@ fun CalendarView(
     }
 
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
+    LaunchedEffect(focusDate) {
+        if (focusDate != null) {
+            selectedDate = focusDate
+            onFocusShown()
+        }
+    }
     val today = remember { LocalDate.now() }
     val exerciseMap = remember(exercises) { exercises.associateBy { it.id } }
 
