@@ -836,4 +836,27 @@
     <string name="recovery_section_title">File di recupero</string>
     <string name="recovery_section_description">Ripristina il database originale da un file di recupero, che l\'app propone di esportare quando non riesce ad aprire i tuoi dati. Per tutto il resto, usa un backup JSON.</string>
     <string name="workout_review_title">Controlla le serie</string>
+    <!-- The welcome guide shown on first launch. -->
+    <string name="guide_skip">Salta</string>
+    <string name="guide_next">Avanti</string>
+    <string name="guide_add_exercise">Aggiungi il primo esercizio</string>
+    <string name="guide_go_to_today">Vai a Oggi</string>
+    <string name="guide_page_position">Pagina %1$d di %2$d</string>
+    <string name="guide_welcome_title">Benvenuto in Calisthenics Memory</string>
+    <string name="guide_welcome_body">Un posto tranquillo per pianificare, svolgere e ricordare i tuoi allenamenti a corpo libero. Nessun account e niente online: i tuoi allenamenti restano su questo telefono.</string>
+    <string name="guide_places_title">Quattro sezioni</string>
+    <string name="guide_place_today">La tua settimana a colpo d\'occhio, cosa viene dopo e cosa hai fatto oggi.</string>
+    <string name="guide_place_train">Inizia un allenamento: un esercizio, un programma o gli intervalli. Puoi anche registrarne uno fatto in precedenza.</string>
+    <string name="guide_place_progress">La tua cronologia come calendario, elenco e grafici, più le sfide.</string>
+    <string name="guide_place_library">I tuoi esercizi, programmi e routine a intervalli, e le impostazioni.</string>
+    <string name="guide_workout_title">Come si svolge un allenamento</string>
+    <string name="guide_workout_sets_title">Serie dopo serie</string>
+    <string name="guide_workout_sets">Conta le ripetizioni o usa un timer, con un recupero tra le serie.</string>
+    <string name="guide_workout_pause_title">Pausa quando vuoi</string>
+    <string name="guide_workout_pause">Tocca l\'anello per mettere in pausa e toccalo di nuovo per continuare.</string>
+    <string name="guide_workout_summary_title">Guarda cosa hai fatto</string>
+    <string name="guide_workout_summary">Alla fine, un riepilogo mostra i totali e ogni nuovo record.</string>
+    <string name="guide_data_title">I tuoi dati sono tuoi</string>
+    <string name="guide_data_body">Esegui il backup di tutto da %1$s e ripristinalo su qualsiasi telefono. Nulla lascia questo telefono a meno che tu non lo esporti.</string>
+    <string name="settings_welcome_guide">Guida di benvenuto</string>
 </resources>

@@ -895,4 +895,27 @@
     <string name="recovery_section_title">リカバリーファイル</string>
     <string name="recovery_section_description">データを開けないときにアプリがエクスポートするリカバリーファイルから、データベースをそのまま復元します。それ以外は JSON バックアップを使ってください。</string>
     <string name="workout_review_title">セットを確認</string>
+    <!-- The welcome guide shown on first launch. -->
+    <string name="guide_skip">スキップ</string>
+    <string name="guide_next">次へ</string>
+    <string name="guide_add_exercise">最初の種目を追加</string>
+    <string name="guide_go_to_today">「今日」へ</string>
+    <string name="guide_page_position">%2$d ページ中 %1$d ページ目</string>
+    <string name="guide_welcome_title">Calisthenics Memory へようこそ</string>
+    <string name="guide_welcome_body">自重トレーニングを計画し、実行し、記録するための落ち着いた場所です。アカウントは不要で、オンラインにもなりません。ワークアウトはこの端末に保存されます。</string>
+    <string name="guide_places_title">4 つの場所</string>
+    <string name="guide_place_today">今週の様子、次にやること、今日やったこと。</string>
+    <string name="guide_place_train">ワークアウトを開始：1 種目、プログラム、インターバル。過去のワークアウトも記録できます。</string>
+    <string name="guide_place_progress">履歴をカレンダー、リスト、グラフで。チャレンジもここに。</string>
+    <string name="guide_place_library">種目、プログラム、インターバル、そして設定。</string>
+    <string name="guide_workout_title">ワークアウトの流れ</string>
+    <string name="guide_workout_sets_title">セットごとに</string>
+    <string name="guide_workout_sets">回数を数えるかタイマーを使い、セット間には休憩が入ります。</string>
+    <string name="guide_workout_pause_title">いつでも一時停止</string>
+    <string name="guide_workout_pause">リングをタップすると一時停止、もう一度タップで再開します。</string>
+    <string name="guide_workout_summary_title">やったことを確認</string>
+    <string name="guide_workout_summary">最後にまとめが表示され、合計と自己ベストがわかります。</string>
+    <string name="guide_data_title">データはあなたのもの</string>
+    <string name="guide_data_body">%1$s からすべてをバックアップし、どの端末にも復元できます。エクスポートしない限り、データがこの端末から出ることはありません。</string>
+    <string name="settings_welcome_guide">ウェルカムガイド</string>
 </resources>

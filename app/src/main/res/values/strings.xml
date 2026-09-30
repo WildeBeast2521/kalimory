@@ -892,4 +892,27 @@
     <string name="recovery_section_title">Recovery file</string>
     <string name="recovery_section_description">Restore the raw database from a recovery file, which the app offers to export when it cannot open your data. For everything else, use a JSON backup.</string>
     <string name="workout_review_title">Check your sets</string>
+    <!-- The welcome guide shown on first launch. -->
+    <string name="guide_skip">Skip</string>
+    <string name="guide_next">Next</string>
+    <string name="guide_add_exercise">Add your first exercise</string>
+    <string name="guide_go_to_today">Go to Today</string>
+    <string name="guide_page_position">Page %1$d of %2$d</string>
+    <string name="guide_welcome_title">Welcome to Calisthenics Memory</string>
+    <string name="guide_welcome_body">A calm place to plan, run and remember your bodyweight training. There is no account and nothing goes online: your workouts stay on this phone.</string>
+    <string name="guide_places_title">Four places</string>
+    <string name="guide_place_today">Your week at a glance, what is next, and what you did today.</string>
+    <string name="guide_place_train">Start a workout: one exercise, a program or intervals. You can also log one you did earlier.</string>
+    <string name="guide_place_progress">Your history as a calendar, a list and graphs, plus challenges.</string>
+    <string name="guide_place_library">Your exercises, programs and interval routines, and Settings.</string>
+    <string name="guide_workout_title">How a workout runs</string>
+    <string name="guide_workout_sets_title">Set by set</string>
+    <string name="guide_workout_sets">Count your reps or run a timer, with a rest between sets.</string>
+    <string name="guide_workout_pause_title">Pause any time</string>
+    <string name="guide_workout_pause">Tap the ring to pause, and tap again to carry on.</string>
+    <string name="guide_workout_summary_title">See what you did</string>
+    <string name="guide_workout_summary">At the end, a summary shows your totals and any new best.</string>
+    <string name="guide_data_title">Your data stays yours</string>
+    <string name="guide_data_body">Back up everything from %1$s and restore it on any phone. Nothing leaves this phone unless you export it.</string>
+    <string name="settings_welcome_guide">Welcome guide</string>
 </resources>

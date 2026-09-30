@@ -24,6 +24,8 @@ import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.data.AppTheme
 import io.github.gonbei774.calisthenicsmemory.data.LanguagePreferences
 import io.github.gonbei774.calisthenicsmemory.data.ThemePreferences
+import io.github.gonbei774.calisthenicsmemory.data.OnboardingPreferences
+import io.github.gonbei774.calisthenicsmemory.ui.screens.onboarding.WelcomeGuide
 import java.util.Locale
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -267,6 +269,7 @@ fun CalisthenicsMemoryApp(
     onFirstDayOfWeekChange: (java.time.DayOfWeek?) -> Unit = {}
 ) {
     val viewModel: TrainingViewModel = viewModel()
+    val context = androidx.compose.ui.platform.LocalContext.current
     var currentScreen by rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.Home) }
     // Screen.Home shows this destination, so "back to Home" returns to the tab the user came from.
     var primaryDestination by rememberSaveable { mutableStateOf(PrimaryDestination.TODAY) }
@@ -336,6 +339,20 @@ fun CalisthenicsMemoryApp(
             backScope.launch { screenState.animateTo(screenState.currentState) }
             throw e
         }
+    }
+
+    // The welcome guide: once on first launch, and again from Settings.
+    val onboarding = remember { OnboardingPreferences(context) }
+    var showWelcome by rememberSaveable { mutableStateOf(!onboarding.isWelcomeSeen()) }
+    if (showWelcome) {
+        val close: (Screen) -> Unit = { next ->
+            onboarding.markWelcomeSeen()
+            showWelcome = false
+            primaryDestination = PrimaryDestination.TODAY
+            currentScreen = next
+        }
+        WelcomeGuide(onFinish = { close(Screen.Home) }, onAddExercise = { close(Screen.Create) })
+        return
     }
 
     val showPrimaryNavigation = currentScreen is Screen.Home
@@ -478,6 +495,7 @@ fun CalisthenicsMemoryApp(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = Screen.Home },
                             onNavigateToLicenses = { currentScreen = Screen.Licenses },
+                            onOpenWelcomeGuide = { showWelcome = true },
                             onNavigateToBackup = { currentScreen = Screen.Backup },
                             onNavigateToCsvDataManagement = { currentScreen = Screen.CsvDataManagement },
                             onNavigateToShareHub = { currentScreen = Screen.ShareHub },

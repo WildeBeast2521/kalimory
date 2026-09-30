@@ -859,4 +859,27 @@
     <string name="recovery_section_title">Wiederherstellungsdatei</string>
     <string name="recovery_section_description">Stellt die Datenbank direkt aus einer Wiederherstellungsdatei wieder her, die die App zum Export anbietet, wenn sie deine Daten nicht öffnen kann. Für alles andere nutze eine JSON-Sicherung.</string>
     <string name="workout_review_title">Sätze prüfen</string>
+    <!-- The welcome guide shown on first launch. -->
+    <string name="guide_skip">Überspringen</string>
+    <string name="guide_next">Weiter</string>
+    <string name="guide_add_exercise">Erste Übung hinzufügen</string>
+    <string name="guide_go_to_today">Zu „Heute“</string>
+    <string name="guide_page_position">Seite %1$d von %2$d</string>
+    <string name="guide_welcome_title">Willkommen bei Calisthenics Memory</string>
+    <string name="guide_welcome_body">Ein ruhiger Ort, um dein Training mit dem eigenen Körpergewicht zu planen, durchzuführen und festzuhalten. Kein Konto, keine Internetverbindung: Deine Trainings bleiben auf diesem Handy.</string>
+    <string name="guide_places_title">Vier Bereiche</string>
+    <string name="guide_place_today">Deine Woche auf einen Blick, was als Nächstes ansteht und was du heute gemacht hast.</string>
+    <string name="guide_place_train">Starte ein Training: eine Übung, ein Programm oder Intervalle. Du kannst auch ein früheres Training nachtragen.</string>
+    <string name="guide_place_progress">Dein Verlauf als Kalender, Liste und Diagramme, dazu Challenges.</string>
+    <string name="guide_place_library">Deine Übungen, Programme und Intervallroutinen sowie die Einstellungen.</string>
+    <string name="guide_workout_title">So läuft ein Training</string>
+    <string name="guide_workout_sets_title">Satz für Satz</string>
+    <string name="guide_workout_sets">Zähle deine Wiederholungen oder nutze einen Timer, mit Pausen zwischen den Sätzen.</string>
+    <string name="guide_workout_pause_title">Jederzeit pausieren</string>
+    <string name="guide_workout_pause">Tippe auf den Ring, um zu pausieren, und erneut, um weiterzumachen.</string>
+    <string name="guide_workout_summary_title">Sieh, was du geschafft hast</string>
+    <string name="guide_workout_summary">Am Ende zeigt eine Zusammenfassung deine Summen und jede neue Bestleistung.</string>
+    <string name="guide_data_title">Deine Daten gehören dir</string>
+    <string name="guide_data_body">Sichere alles unter %1$s und stelle es auf jedem Handy wieder her. Nichts verlässt dieses Handy, außer du exportierst es.</string>
+    <string name="settings_welcome_guide">Willkommensanleitung</string>
 </resources>

@@ -217,4 +217,27 @@
     <string name="recovery_section_description">Восстанавливает исходную базу данных из файла восстановления, который приложение предлагает экспортировать, когда не может открыть ваши данные. Для всего остального используйте резервную копию JSON.</string>
     <string name="workout_review_title">Проверьте подходы</string>
     <string name="program_result_zero_warning">Подходы с 0 сохраняются как пропущенные и не показываются в истории.</string>
+    <!-- The welcome guide shown on first launch. -->
+    <string name="guide_skip">Пропустить</string>
+    <string name="guide_next">Далее</string>
+    <string name="guide_add_exercise">Добавить первое упражнение</string>
+    <string name="guide_go_to_today">Перейти в «Сегодня»</string>
+    <string name="guide_page_position">Страница %1$d из %2$d</string>
+    <string name="guide_welcome_title">Добро пожаловать в Calisthenics Memory</string>
+    <string name="guide_welcome_body">Спокойное место, чтобы планировать, выполнять и запоминать тренировки с собственным весом. Без аккаунта и без интернета: ваши тренировки остаются на этом телефоне.</string>
+    <string name="guide_places_title">Четыре раздела</string>
+    <string name="guide_place_today">Ваша неделя одним взглядом, что дальше и что вы сделали сегодня.</string>
+    <string name="guide_place_train">Начните тренировку: одно упражнение, программу или интервалы. Можно также записать прошлую тренировку.</string>
+    <string name="guide_place_progress">Ваша история в календаре, списке и графиках, а также челленджи.</string>
+    <string name="guide_place_library">Ваши упражнения, программы, интервальные тренировки и настройки.</string>
+    <string name="guide_workout_title">Как проходит тренировка</string>
+    <string name="guide_workout_sets_title">Подход за подходом</string>
+    <string name="guide_workout_sets">Считайте повторения или включите таймер, с отдыхом между подходами.</string>
+    <string name="guide_workout_pause_title">Пауза в любой момент</string>
+    <string name="guide_workout_pause">Нажмите на кольцо, чтобы поставить на паузу, и ещё раз, чтобы продолжить.</string>
+    <string name="guide_workout_summary_title">Смотрите, что сделано</string>
+    <string name="guide_workout_summary">В конце сводка покажет итоги и новые рекорды.</string>
+    <string name="guide_data_title">Ваши данные — ваши</string>
+    <string name="guide_data_body">Сохраните всё через %1$s и восстановите на любом телефоне. Ничто не покидает этот телефон, пока вы сами не экспортируете.</string>
+    <string name="settings_welcome_guide">Приветственный гид</string>
 </resources>

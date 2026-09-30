@@ -40,6 +40,7 @@ fun SettingsScreenNew(
     viewModel: TrainingViewModel,
     onNavigateBack: () -> Unit,
     onNavigateToLicenses: () -> Unit = {},
+    onOpenWelcomeGuide: () -> Unit = {},
     onNavigateToBackup: () -> Unit = {},
     onNavigateToCsvDataManagement: () -> Unit = {},
     onNavigateToShareHub: () -> Unit = {},
@@ -1103,6 +1104,22 @@ fun SettingsScreenNew(
                             Icon(AppIcons.Document, contentDescription = null, modifier = Modifier.size(20.dp))
                             Text(
                                 text = stringResource(R.string.open_source_licenses),
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+
+                        // The welcome guide from the first launch, again.
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onOpenWelcomeGuide() },
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(AppIcons.Info, contentDescription = null, modifier = Modifier.size(20.dp))
+                            Text(
+                                text = stringResource(R.string.settings_welcome_guide),
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface
                             )

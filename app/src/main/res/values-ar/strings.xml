@@ -122,4 +122,27 @@
     <string name="recovery_section_description">يستعيد قاعدة البيانات الأصلية من ملف استرداد يعرض التطبيق تصديره عندما لا يستطيع فتح بياناتك. لكل ما عدا ذلك، استخدم نسخة JSON الاحتياطية.</string>
     <string name="workout_review_title">راجع مجموعاتك</string>
     <string name="program_result_zero_warning">تُحفظ المجموعات ذات القيمة 0 كمتخطاة ولا تظهر في سجلك.</string>
+    <!-- The welcome guide shown on first launch. -->
+    <string name="guide_skip">تخطٍّ</string>
+    <string name="guide_next">التالي</string>
+    <string name="guide_add_exercise">أضف أول تمرين</string>
+    <string name="guide_go_to_today">الانتقال إلى «اليوم»</string>
+    <string name="guide_page_position">الصفحة %1$d من %2$d</string>
+    <string name="guide_welcome_title">مرحبًا بك في Calisthenics Memory</string>
+    <string name="guide_welcome_body">مكان هادئ لتخطيط تمارين وزن الجسم وأدائها وتذكّرها. لا حساب ولا اتصال بالإنترنت: تبقى تمارينك على هذا الهاتف.</string>
+    <string name="guide_places_title">أربعة أقسام</string>
+    <string name="guide_place_today">أسبوعك في لمحة، وما التالي، وما أنجزته اليوم.</string>
+    <string name="guide_place_train">ابدأ تمرينًا: تمرين واحد أو برنامج أو فترات. ويمكنك أيضًا تسجيل تمرين أديته من قبل.</string>
+    <string name="guide_place_progress">سجلّك في تقويم وقائمة ورسوم بيانية، مع التحديات.</string>
+    <string name="guide_place_library">تمارينك وبرامجك وروتينات الفترات، والإعدادات.</string>
+    <string name="guide_workout_title">كيف يسير التمرين</string>
+    <string name="guide_workout_sets_title">مجموعة تلو الأخرى</string>
+    <string name="guide_workout_sets">عُدّ تكراراتك أو شغّل مؤقتًا، مع راحة بين المجموعات.</string>
+    <string name="guide_workout_pause_title">توقّف متى شئت</string>
+    <string name="guide_workout_pause">المس الحلقة للإيقاف المؤقت، والمسها مجددًا للمتابعة.</string>
+    <string name="guide_workout_summary_title">اطّلع على ما أنجزته</string>
+    <string name="guide_workout_summary">في النهاية، يعرض الملخص مجاميعك وأي رقم قياسي جديد.</string>
+    <string name="guide_data_title">بياناتك ملك لك</string>
+    <string name="guide_data_body">احفظ نسخة من كل شيء من %1$s واستعِدها على أي هاتف. لا يغادر شيء هذا الهاتف ما لم تصدّره.</string>
+    <string name="settings_welcome_guide">دليل الترحيب</string>
 </resources>

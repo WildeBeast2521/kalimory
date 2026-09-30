@@ -49,7 +49,11 @@ import org.junit.runner.RunWith
  */
 @RunWith(AndroidJUnit4::class)
 class UnifiedWorkoutFlowTest {
-    @get:Rule
+    // Before the app launches: the welcome guide would otherwise open first.
+    @get:Rule(order = 0)
+    val welcomeSeen = WelcomeSeenRule()
+
+    @get:Rule(order = 1)
     val rule = createEmptyComposeRule()
 
     private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
