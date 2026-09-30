@@ -1,6 +1,6 @@
 # Progression system: research and options
 
-- **Status:** Research, for the owner to decide. No code yet. The brief is `docs/plans/future-progression-system-brief.md`.
+- **Status:** Decided on 2026-10-01. The owner accepted the recommendations, with the refinements recorded in ADRs 0005 to 0008. The brief is `docs/plans/future-progression-system-brief.md`.
 - **Date:** 2026-10-01
 - **Owner-facing page:** https://claude.ai/artifact/PE43qfu7eVcwi5M8meKnWe (private), with the same content, a live demonstration prototype and the questions.
 

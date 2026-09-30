@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-01, at PR #86.
+Last reviewed: 2026-10-01, at PR #87.
 
 ## Where things stand
 
@@ -92,17 +92,26 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
 - **Not doing:** M4, changing the language without a restart.
 - **Waiting for the progression system (PG):** weekly goals (Today's "This week: 2 of 7"), the Challenge tab's purpose, and trends and personal bests in depth.
 
-## Progression system (research, 2026-10-01)
+## Progression system (decided 2026-10-01)
 
-- The research and options are in `docs/plans/2026-10-01-progression-system-research.md`, and the owner page is https://claude.ai/artifact/PE43qfu7eVcwi5M8meKnWe.
-- They cover:
-  - models (chains, a skill tree, or chains plus skill links);
-  - catalogue licensing: write our own, since free-exercise-db's provenance is unclear and wger's data is mixed CC BY-SA 3.0 and 4.0;
-  - the `catalogId` link;
-  - daily and weekly goals;
-  - Progressions in place of Challenge;
-  - demonstrations: our own keyframe figure, prototyped on the page, or Lottie via Glaxnimate.
-- **Waiting for the owner's answers, P1 to P10, before any ADR or code.**
+- **Research:** `docs/plans/2026-10-01-progression-system-research.md`. The owner page is https://claude.ai/artifact/PE43qfu7eVcwi5M8meKnWe.
+- **Owner answers:**
+  - The recommended options (P1–P10) are accepted.
+  - free-exercise-db supplies facts only (names, muscles, equipment, level); instructions are rewritten and its photos are not used.
+  - Demonstrations are a human figure with the worked muscles in red, plus a muscle map.
+  - The system never restricts the user.
+- **Decisions:**
+  - ADR 0005: the progression model and the freedom rule.
+  - ADR 0006: catalogue content, licensing, format and ids. Sources are recorded in `docs/catalogue-sources.md`.
+  - ADR 0007: the data model. Database 25 adds `catalogId` and `chain_placements`; backup format 11.
+  - ADR 0008: demonstrations. A muscle map, and our own keyframe figure with red working muscles.
+- **Phases:**
+  1. Data model (next, PR #88).
+  2. Catalogue v1, core chains.
+  3. Progressions screen in place of Challenge, and "add from catalogue".
+  4. Suggestions and the weekly goal.
+  5. Demonstrations.
+  6. Expansion: skills, the remaining chains, trends.
 
 ## Workout sounds (owner decisions, 2026-09-30)
 
@@ -171,7 +180,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #86. PRs #70 and #86 changed documentation only.
+PRs #34 to #87. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
