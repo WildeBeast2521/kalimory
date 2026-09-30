@@ -1,0 +1,16 @@
+# Catalogue sources
+
+Where the content of the built-in exercise catalogue comes from (ADR 0006). Update this file whenever content from a new source is used.
+
+| Content | Source | Licence | What is used |
+|:---|:---|:---|:---|
+| Exercise names, primary and secondary muscles, equipment, force, mechanic, level | [free-exercise-db](https://github.com/yuhonas/free-exercise-db) | Unlicense (public domain) | Facts only. No instructions text and no photos, because their origin is unclear. |
+| Descriptions, form cues, standards, chains and difficulty | Written for this project | GPL-3.0-or-later | Everything |
+| Exercises missing from free-exercise-db (pistol squat, levers, planche, L-sit, muscle-up, hollow body, Nordic curl, archer variations and others) | Written for this project | GPL-3.0-or-later | Everything |
+| Muscle map body regions | An MIT-licensed open body map, to be chosen and recorded here when adopted (ADR 0008) | MIT | Region outlines, adapted to Compose paths |
+| Figure keyframes | Written for this project | GPL-3.0-or-later | Everything |
+
+Not used, and why:
+- **wger exercise data:** mixed CC BY-SA 3.0 and 4.0. Only 4.0 is compatible with GPLv3.
+- **Convict Conditioning, Overcoming Gravity:** all rights reserved. Their ideas (steps with standards, one difficulty scale) are general practice, but their text, tables and numbers are not copied.
+- **r/bodyweightfitness wiki:** no explicit licence. Used only as a reference for common practice.
