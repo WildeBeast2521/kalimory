@@ -879,4 +879,18 @@
         <item quantity="one">Record %d exercise</item>
         <item quantity="other">Record %d exercises</item>
     </plurals>
+    <!-- Restoring the raw database from a recovery file. -->
+    <string name="recovery_restore_button">Restore from a recovery file</string>
+    <string name="recovery_restore_title">Replace your data?</string>
+    <string name="recovery_restore_message">The database in the recovery file replaces your current data. Your current data is kept inside the app, and later recovery file exports include it.</string>
+    <string name="recovery_restore_confirm">Restore</string>
+    <string name="recovery_restore_done">Restored. The app will restart now.</string>
+    <string name="recovery_rejected_no_database">This file holds no Calisthenics Memory database.</string>
+    <string name="recovery_rejected_too_large">This file is too large to be a recovery file.</string>
+    <string name="recovery_rejected_version">This database has version %1$d, which this app cannot open.</string>
+    <string name="recovery_rejected_damaged">This database is damaged and cannot be restored.</string>
+    <string name="recovery_rejected_unreadable">The file could not be read: %1$s</string>
+    <string name="recovery_restore_failed">The restore did not finish (%1$s). Your data is unchanged. The app will restart now.</string>
+    <string name="recovery_section_title">Recovery file</string>
+    <string name="recovery_section_description">Restore the raw database from a recovery file, which the app offers to export when it cannot open your data. For everything else, use a JSON backup.</string>
 </resources>

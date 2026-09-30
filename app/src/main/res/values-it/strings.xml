@@ -823,4 +823,18 @@
         <item quantity="many">Registra %d esercizi</item>
         <item quantity="other">Registra %d esercizi</item>
     </plurals>
+    <!-- Restoring the raw database from a recovery file. -->
+    <string name="recovery_restore_button">Ripristina da un file di recupero</string>
+    <string name="recovery_restore_title">Sostituire i tuoi dati?</string>
+    <string name="recovery_restore_message">Il database nel file di recupero sostituisce i tuoi dati attuali. I dati attuali restano conservati nell\'app e sono inclusi nelle esportazioni successive dei file di recupero.</string>
+    <string name="recovery_restore_confirm">Ripristina</string>
+    <string name="recovery_restore_done">Ripristinato. L\'app ora si riavvierà.</string>
+    <string name="recovery_rejected_no_database">Questo file non contiene un database di Calisthenics Memory.</string>
+    <string name="recovery_rejected_too_large">Questo file è troppo grande per essere un file di recupero.</string>
+    <string name="recovery_rejected_version">Questo database ha la versione %1$d, che questa app non può aprire.</string>
+    <string name="recovery_rejected_damaged">Questo database è danneggiato e non può essere ripristinato.</string>
+    <string name="recovery_rejected_unreadable">Impossibile leggere il file: %1$s</string>
+    <string name="recovery_restore_failed">Il ripristino non è stato completato (%1$s). I tuoi dati non sono cambiati. L\'app ora si riavvierà.</string>
+    <string name="recovery_section_title">File di recupero</string>
+    <string name="recovery_section_description">Ripristina il database originale da un file di recupero, che l\'app propone di esportare quando non riesce ad aprire i tuoi dati. Per tutto il resto, usa un backup JSON.</string>
 </resources>

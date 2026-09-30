@@ -106,4 +106,18 @@
         <item quantity="many">تسجيل %d تمرينًا</item>
         <item quantity="other">تسجيل %d تمرين</item>
     </plurals>
+    <!-- Restoring the raw database from a recovery file. -->
+    <string name="recovery_restore_button">الاستعادة من ملف استرداد</string>
+    <string name="recovery_restore_title">استبدال بياناتك؟</string>
+    <string name="recovery_restore_message">ستحل قاعدة البيانات الموجودة في ملف الاسترداد محل بياناتك الحالية. تُحفظ بياناتك الحالية داخل التطبيق وتُضمَّن في عمليات تصدير ملفات الاسترداد اللاحقة.</string>
+    <string name="recovery_restore_confirm">استعادة</string>
+    <string name="recovery_restore_done">تمت الاستعادة. سيُعاد تشغيل التطبيق الآن.</string>
+    <string name="recovery_rejected_no_database">لا يحتوي هذا الملف على قاعدة بيانات Calisthenics Memory.</string>
+    <string name="recovery_rejected_too_large">هذا الملف كبير جدًا ليكون ملف استرداد.</string>
+    <string name="recovery_rejected_version">إصدار قاعدة البيانات هذه هو %1$d، ولا يستطيع هذا التطبيق فتحه.</string>
+    <string name="recovery_rejected_damaged">قاعدة البيانات هذه تالفة ولا يمكن استعادتها.</string>
+    <string name="recovery_rejected_unreadable">تعذرت قراءة الملف: %1$s</string>
+    <string name="recovery_restore_failed">لم تكتمل الاستعادة (%1$s). بياناتك لم تتغير. سيُعاد تشغيل التطبيق الآن.</string>
+    <string name="recovery_section_title">ملف الاسترداد</string>
+    <string name="recovery_section_description">يستعيد قاعدة البيانات الأصلية من ملف استرداد يعرض التطبيق تصديره عندما لا يستطيع فتح بياناتك. لكل ما عدا ذلك، استخدم نسخة JSON الاحتياطية.</string>
 </resources>

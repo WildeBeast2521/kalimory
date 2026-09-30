@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-30, at PR #78.
+Last reviewed: 2026-09-30, at PR #79.
 
 ## Where things stand
 
@@ -71,7 +71,10 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
    - Every entry takes the workout's current date, time and comment when it is recorded, so a date changed on a later exercise applies to all.
    - Leaving the list with exercises set aside asks before discarding them.
    - Tests: `ManualWorkoutWriterTest` (2 new) and `UnifiedWorkoutFlowTest.pastWorkoutWithSeveralExercisesIsOneSession`.
-5. **M5:** restore from a recovery zip inside the app.
+5. **M5, done in PR #79:** restore from a recovery zip inside the app, on the recovery screen and in Settings › Complete Backup.
+   - The zip is staged and checked first: supported version and integrity. The current files are kept in a `before-restore` folder, which later recovery exports include.
+   - A failed move is rolled back, and the app restarts.
+   - `RecoveryRestoreTest` (4 tests) and an emulator walkthrough through the system file picker cover it.
 6. **Also approved:**
    - M6, done in PR #76:
      - `Period.startDate(today, firstDay)` makes "1 Week" the calendar week from the user's first day. It applies to the Calendar, List, Graph (charts and statistics) and Challenge, so "this week" means the same everywhere. For example, the Progress week total now matches Today's hero number.
@@ -112,7 +115,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #78. PR #70 changed documentation only.
+PRs #34 to #79. PR #70 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -122,7 +125,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #78: 354 unit tests, 136 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #79: 354 unit tests, 140 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.
@@ -133,7 +136,6 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ## Known limitations
 
 - Corruption found after start-up can still crash that screen. The next start shows the recovery screen.
-- A recovery zip can only be restored manually (M5 above).
 - When a non-empty `-wal` or `-journal` file exists, the header guard defers to Room. Room fails closed, but SQLite may apply the pending journal.
 - Migrations 13→14, 14→15 and 18→19 drop and rebuild tables. They are safe because Room enables `foreign_keys` only in `onOpen`, after migrations. Tests cover this.
 - Legacy writers remain: the CSV record import and the history editor for legacy rows. `V2Backfill` has not run. It belongs to the later step that retires `training_records`.

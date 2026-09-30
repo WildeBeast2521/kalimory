@@ -49,6 +49,12 @@ abstract class AppDatabase : RoomDatabase() {
 
         const val DATABASE_NAME = "bodyweight_trainer_database"
 
+        /** Closes the open database so its files can be replaced by a restore; the app restarts after. */
+        internal fun closeForRestore() = synchronized(this) {
+            INSTANCE?.close()
+            INSTANCE = null
+        }
+
         // Must equal the version in @Database; MigrationRegistrationTest checks it against the schemas.
         const val CURRENT_VERSION = 24
 

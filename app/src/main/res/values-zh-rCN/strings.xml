@@ -817,4 +817,18 @@
     <plurals name="record_save_exercises">
         <item quantity="other">记录 %d 个动作</item>
     </plurals>
+    <!-- Restoring the raw database from a recovery file. -->
+    <string name="recovery_restore_button">从恢复文件还原</string>
+    <string name="recovery_restore_title">替换你的数据？</string>
+    <string name="recovery_restore_message">恢复文件中的数据库将替换当前数据。当前数据会保存在应用内，并包含在之后导出的恢复文件中。</string>
+    <string name="recovery_restore_confirm">还原</string>
+    <string name="recovery_restore_done">已还原。应用将重新启动。</string>
+    <string name="recovery_rejected_no_database">此文件不包含 Calisthenics Memory 数据库。</string>
+    <string name="recovery_rejected_too_large">此文件过大，不是恢复文件。</string>
+    <string name="recovery_rejected_version">此数据库版本为 %1$d，本应用无法打开。</string>
+    <string name="recovery_rejected_damaged">此数据库已损坏，无法还原。</string>
+    <string name="recovery_rejected_unreadable">无法读取文件：%1$s</string>
+    <string name="recovery_restore_failed">还原未完成（%1$s）。你的数据未改变。应用将重新启动。</string>
+    <string name="recovery_section_title">恢复文件</string>
+    <string name="recovery_section_description">从恢复文件还原原始数据库，应用无法打开数据时会提供导出恢复文件。其他情况请使用 JSON 备份。</string>
 </resources>

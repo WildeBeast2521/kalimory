@@ -827,4 +827,18 @@
         <item quantity="many">Записати %d вправ</item>
         <item quantity="other">Записати %d вправи</item>
     </plurals>
+    <!-- Restoring the raw database from a recovery file. -->
+    <string name="recovery_restore_button">Відновити з файлу відновлення</string>
+    <string name="recovery_restore_title">Замінити ваші дані?</string>
+    <string name="recovery_restore_message">База даних із файлу відновлення замінить поточні дані. Поточні дані збережуться в застосунку й увійдуть до наступних експортів файлів відновлення.</string>
+    <string name="recovery_restore_confirm">Відновити</string>
+    <string name="recovery_restore_done">Відновлено. Застосунок зараз перезапуститься.</string>
+    <string name="recovery_rejected_no_database">У цьому файлі немає бази даних Calisthenics Memory.</string>
+    <string name="recovery_rejected_too_large">Файл завеликий для файлу відновлення.</string>
+    <string name="recovery_rejected_version">Версія цієї бази даних — %1$d, цей застосунок не може її відкрити.</string>
+    <string name="recovery_rejected_damaged">База даних пошкоджена й не може бути відновлена.</string>
+    <string name="recovery_rejected_unreadable">Не вдалося прочитати файл: %1$s</string>
+    <string name="recovery_restore_failed">Відновлення не завершено (%1$s). Ваші дані не змінилися. Застосунок зараз перезапуститься.</string>
+    <string name="recovery_section_title">Файл відновлення</string>
+    <string name="recovery_section_description">Відновлює вихідну базу даних із файлу відновлення, який застосунок пропонує експортувати, коли не може відкрити ваші дані. Для всього іншого використовуйте резервну копію JSON.</string>
 </resources>

@@ -39,9 +39,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
- * Shown instead of the app when the database cannot be used. Nothing here deletes
- * or modifies data; the user can only export the raw files or, when the database
- * itself opens, continue.
+ * Shown instead of the app when the database cannot be used. Nothing here deletes data:
+ * the user can export the raw files, restore a recovery file (which keeps the current files
+ * aside), or, when the database itself opens, continue.
  */
 @Composable
 fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Unit) {
@@ -111,6 +111,8 @@ fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Uni
             Text(stringResource(R.string.db_export_files))
         }
         exportResult?.let { Text(text = it, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface) }
+        // A recovery file exported earlier, or from another install, can replace these files.
+        RecoveryRestoreButton()
         if (state == DatabaseStartupState.CorruptionReported) {
             OutlinedButton(onClick = onContinue, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.db_continue))

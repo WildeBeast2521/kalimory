@@ -877,4 +877,18 @@
         <item quantity="many">Registrar %d ejercicios</item>
         <item quantity="other">Registrar %d ejercicios</item>
     </plurals>
+    <!-- Restoring the raw database from a recovery file. -->
+    <string name="recovery_restore_button">Restaurar desde un archivo de recuperación</string>
+    <string name="recovery_restore_title">¿Reemplazar tus datos?</string>
+    <string name="recovery_restore_message">La base de datos del archivo de recuperación reemplaza tus datos actuales. Tus datos actuales se guardan dentro de la app y se incluyen en las exportaciones de archivos de recuperación posteriores.</string>
+    <string name="recovery_restore_confirm">Restaurar</string>
+    <string name="recovery_restore_done">Restaurado. La app se reiniciará ahora.</string>
+    <string name="recovery_rejected_no_database">Este archivo no contiene una base de datos de Calisthenics Memory.</string>
+    <string name="recovery_rejected_too_large">Este archivo es demasiado grande para ser un archivo de recuperación.</string>
+    <string name="recovery_rejected_version">Esta base de datos tiene la versión %1$d, que esta app no puede abrir.</string>
+    <string name="recovery_rejected_damaged">Esta base de datos está dañada y no se puede restaurar.</string>
+    <string name="recovery_rejected_unreadable">No se pudo leer el archivo: %1$s</string>
+    <string name="recovery_restore_failed">La restauración no terminó (%1$s). Tus datos no han cambiado. La app se reiniciará ahora.</string>
+    <string name="recovery_section_title">Archivo de recuperación</string>
+    <string name="recovery_section_description">Restaura la base de datos original desde un archivo de recuperación, que la app ofrece exportar cuando no puede abrir tus datos. Para todo lo demás, usa una copia de seguridad JSON.</string>
 </resources>

@@ -846,4 +846,18 @@
         <item quantity="one">%d Übung speichern</item>
         <item quantity="other">%d Übungen speichern</item>
     </plurals>
+    <!-- Restoring the raw database from a recovery file. -->
+    <string name="recovery_restore_button">Aus einer Wiederherstellungsdatei wiederherstellen</string>
+    <string name="recovery_restore_title">Daten ersetzen?</string>
+    <string name="recovery_restore_message">Die Datenbank in der Wiederherstellungsdatei ersetzt deine aktuellen Daten. Deine aktuellen Daten bleiben in der App erhalten und sind in späteren Exporten von Wiederherstellungsdateien enthalten.</string>
+    <string name="recovery_restore_confirm">Wiederherstellen</string>
+    <string name="recovery_restore_done">Wiederhergestellt. Die App startet jetzt neu.</string>
+    <string name="recovery_rejected_no_database">Diese Datei enthält keine Calisthenics-Memory-Datenbank.</string>
+    <string name="recovery_rejected_too_large">Diese Datei ist zu groß für eine Wiederherstellungsdatei.</string>
+    <string name="recovery_rejected_version">Diese Datenbank hat Version %1$d, die diese App nicht öffnen kann.</string>
+    <string name="recovery_rejected_damaged">Diese Datenbank ist beschädigt und kann nicht wiederhergestellt werden.</string>
+    <string name="recovery_rejected_unreadable">Die Datei konnte nicht gelesen werden: %1$s</string>
+    <string name="recovery_restore_failed">Die Wiederherstellung wurde nicht abgeschlossen (%1$s). Deine Daten sind unverändert. Die App startet jetzt neu.</string>
+    <string name="recovery_section_title">Wiederherstellungsdatei</string>
+    <string name="recovery_section_description">Stellt die Datenbank direkt aus einer Wiederherstellungsdatei wieder her, die die App zum Export anbietet, wenn sie deine Daten nicht öffnen kann. Für alles andere nutze eine JSON-Sicherung.</string>
 </resources>
