@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-09-30, at PR #85.
+Last reviewed: 2026-10-01, at PR #86.
 
 ## Where things stand
 
@@ -92,6 +92,18 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
 - **Not doing:** M4, changing the language without a restart.
 - **Waiting for the progression system (PG):** weekly goals (Today's "This week: 2 of 7"), the Challenge tab's purpose, and trends and personal bests in depth.
 
+## Progression system (research, 2026-10-01)
+
+- The research and options are in `docs/plans/2026-10-01-progression-system-research.md`, and the owner page is https://claude.ai/artifact/PE43qfu7eVcwi5M8meKnWe.
+- They cover:
+  - models (chains, a skill tree, or chains plus skill links);
+  - catalogue licensing: write our own, since free-exercise-db's provenance is unclear and wger's data is mixed CC BY-SA 3.0 and 4.0;
+  - the `catalogId` link;
+  - daily and weekly goals;
+  - Progressions in place of Challenge;
+  - demonstrations: our own keyframe figure, prototyped on the page, or Lottie via Glaxnimate.
+- **Waiting for the owner's answers, P1 to P10, before any ADR or code.**
+
 ## Workout sounds (owner decisions, 2026-09-30)
 
 - Review page: https://claude.ai/artifact/BYcDwNk4adB5YgSH2v5Uqz. The owner answered: "Same as you recommend."
@@ -159,7 +171,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #85. PR #70 changed documentation only.
+PRs #34 to #86. PRs #70 and #86 changed documentation only.
 
 ## How to verify (the local gate)
 

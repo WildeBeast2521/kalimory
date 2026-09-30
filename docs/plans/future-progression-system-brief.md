@@ -1,6 +1,6 @@
 # Future plan brief: exercise progression system
 
-- **Status:** Brief only. Not started. The owner asked for this to be planned in depth before any work begins.
+- **Status:** Research written on 2026-10-01 (`docs/plans/2026-10-01-progression-system-research.md`), waiting for the owner's answers (P1 to P10). No code yet.
 - **Recorded:** 2026-09-27
 
 ## What the owner wants
