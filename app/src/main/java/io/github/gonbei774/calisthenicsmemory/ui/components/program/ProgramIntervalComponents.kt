@@ -68,7 +68,7 @@ internal fun ProgramStartIntervalStep(
         if (shown < lastShown) {
             lastShown = shown
             if (shown in 1..3) {
-                soundPlayer.playBeep()
+                soundPlayer.playCountdown()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -155,7 +155,7 @@ internal fun ProgramIntervalStep(
         if (shown < lastShown) {
             lastShown = shown
             if (shown in 1..3) {
-                soundPlayer.playBeep()
+                soundPlayer.playCountdown()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }

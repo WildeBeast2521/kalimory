@@ -447,7 +447,7 @@ fun IntervalExecutionScreen(
             if (state.stepIndex == lastStepIndex && shown != lastShownSeconds && shown in 1..3 &&
                 state.timer is StepTimer.Running
             ) {
-                soundPlayer.playBeep()
+                soundPlayer.playCountdown()
                 if (isFlashEnabled) launch { flashController.flashShort() }
             }
             lastStepIndex = state.stepIndex

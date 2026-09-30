@@ -84,7 +84,7 @@ internal fun ProgramExecutingStepDynamicManual(
                 soundPlayer.playSetComplete()
             } else if (isCountSoundEnabled) {
                 // 途中のレップは短いビープ（設定ONの場合のみ）
-                soundPlayer.playBeep()
+                soundPlayer.playRep()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -222,7 +222,7 @@ internal fun ProgramExecutingStepIsometricManual(
         if (isIntervalSoundEnabled && intervalSeconds > 0) {
             val lastMultiple = second / intervalSeconds * intervalSeconds
             if (lastMultiple > announcedSecond && lastMultiple < currentSet.targetValue) {
-                soundPlayer.playBeep()
+                soundPlayer.playHoldTick()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -367,7 +367,7 @@ internal fun ProgramExecutingStepIsometricAuto(
         if (isIntervalSoundEnabled && intervalSeconds > 0) {
             val lastMultiple = second / intervalSeconds * intervalSeconds
             if (lastMultiple > announcedSecond && lastMultiple < currentSet.targetValue) {
-                soundPlayer.playBeep()
+                soundPlayer.playHoldTick()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -487,7 +487,7 @@ internal fun ProgramExecutingStepDynamicAuto(
                 onSetComplete(maxOf(currentSet.targetValue, 1))
             } else if (isCountSoundEnabled) {
                 // 途中のレップは短いビープ（設定ONの場合のみ）
-                soundPlayer.playBeep()
+                soundPlayer.playRep()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }

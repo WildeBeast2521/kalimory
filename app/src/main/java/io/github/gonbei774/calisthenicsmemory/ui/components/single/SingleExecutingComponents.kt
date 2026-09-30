@@ -66,7 +66,7 @@ fun SingleExecutingStepDynamicManual(
                 }
                 soundPlayer.playSetComplete()
             } else if (isCountSoundEnabled) {
-                soundPlayer.playBeep()
+                soundPlayer.playRep()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -210,7 +210,7 @@ fun SingleExecutingStepDynamicAuto(
                 currentSet.isCompleted = true
                 onSetComplete(session)
             } else if (isCountSoundEnabled) {
-                soundPlayer.playBeep()
+                soundPlayer.playRep()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -393,7 +393,7 @@ fun SingleExecutingStepIsometricManual(
         if (isIntervalSoundEnabled && intervalSeconds > 0) {
             val lastMultiple = second / intervalSeconds * intervalSeconds
             if (lastMultiple > announcedSecond && lastMultiple < currentSet.targetValue) {
-                soundPlayer.playBeep()
+                soundPlayer.playHoldTick()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -530,7 +530,7 @@ fun SingleExecutingStepIsometricAuto(
         if (isIntervalSoundEnabled && intervalSeconds > 0) {
             val lastMultiple = second / intervalSeconds * intervalSeconds
             if (lastMultiple > announcedSecond && lastMultiple < currentSet.targetValue) {
-                soundPlayer.playBeep()
+                soundPlayer.playHoldTick()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
