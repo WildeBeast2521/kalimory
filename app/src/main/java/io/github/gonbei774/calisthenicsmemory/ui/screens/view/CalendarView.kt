@@ -530,7 +530,7 @@ private fun DayCell(
                     .size(6.dp)
                     .align(Alignment.TopEnd)
                     .offset(x = (-3).dp, y = 3.dp)
-                    .background(MaterialTheme.colorScheme.tertiary, CircleShape)
+                    .background(MaterialTheme.colorScheme.secondary, CircleShape)
             )
         }
     }
@@ -594,7 +594,7 @@ private fun WeekDayCell(
                     .size(6.dp)
                     .align(Alignment.TopEnd)
                     .offset(x = (-4).dp, y = 4.dp)
-                    .background(MaterialTheme.colorScheme.tertiary, CircleShape)
+                    .background(MaterialTheme.colorScheme.secondary, CircleShape)
             )
         }
     }
@@ -732,13 +732,13 @@ private fun IntervalSummaryRow(
             Box(
                 modifier = Modifier
                     .size(8.dp)
-                    .background(MaterialTheme.colorScheme.tertiary, CircleShape)
+                    .background(MaterialTheme.colorScheme.secondary, CircleShape)
             )
             Column {
                 Text(
                     text = record.programName,
                     fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.secondary,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

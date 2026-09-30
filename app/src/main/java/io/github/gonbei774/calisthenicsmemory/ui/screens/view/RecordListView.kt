@@ -288,7 +288,7 @@ fun SessionCard(
                                         Text(
                                             text = stringResource(R.string.weight_display_format, record.weightG!! / 1000.0f),
                                             fontSize = 13.sp,
-                                            color = MaterialTheme.colorScheme.tertiary,
+                                            color = MaterialTheme.colorScheme.primary,
                                             fontWeight = FontWeight.Bold
                                         )
                                     }
@@ -296,7 +296,7 @@ fun SessionCard(
                                         Text(
                                             text = stringResource(R.string.assistance_display_format, record.assistanceG!! / 1000.0f),
                                             fontSize = 13.sp,
-                                            color = MaterialTheme.colorScheme.tertiary,
+                                            color = MaterialTheme.colorScheme.primary,
                                             fontWeight = FontWeight.Bold
                                         )
                                     }
@@ -612,7 +612,7 @@ fun IntervalRecordCard(
                         text = record.programName,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.tertiary
+                        color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
                         text = displayDateTime(record.date, record.time),
@@ -850,11 +850,11 @@ fun IntervalRecordEditDialog(
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = MaterialTheme.colorScheme.onSurface,
                         unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        focusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
                         unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        cursorColor = MaterialTheme.colorScheme.tertiary
+                        cursorColor = MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -869,7 +869,7 @@ fun IntervalRecordEditDialog(
                     )
                 )
             }) {
-                Text(stringResource(R.string.save), color = MaterialTheme.colorScheme.tertiary)
+                Text(stringResource(R.string.save), color = MaterialTheme.colorScheme.primary)
             }
         },
         dismissButton = {

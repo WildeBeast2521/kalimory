@@ -763,9 +763,9 @@ fun SettingsScreenNew(
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                    focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                                    cursorColor = MaterialTheme.colorScheme.tertiary
+                                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                    cursorColor = MaterialTheme.colorScheme.primary
                                 )
                             )
                         },
@@ -778,7 +778,7 @@ fun SettingsScreenNew(
                                     showStartCountdownDialog = false
                                 },
                                 colors = ButtonDefaults.textButtonColors(
-                                    contentColor = MaterialTheme.colorScheme.tertiary
+                                    contentColor = MaterialTheme.colorScheme.primary
                                 )
                             ) {
                                 Text(stringResource(R.string.save))
@@ -821,9 +821,9 @@ fun SettingsScreenNew(
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                    focusedLabelColor = MaterialTheme.colorScheme.tertiary,
-                                    cursorColor = MaterialTheme.colorScheme.tertiary
+                                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                    cursorColor = MaterialTheme.colorScheme.primary
                                 )
                             )
                         },
@@ -837,7 +837,7 @@ fun SettingsScreenNew(
                                     showSetIntervalDialog = false
                                 },
                                 colors = ButtonDefaults.textButtonColors(
-                                    contentColor = MaterialTheme.colorScheme.tertiary
+                                    contentColor = MaterialTheme.colorScheme.primary
                                 )
                             ) {
                                 Text(stringResource(R.string.save))

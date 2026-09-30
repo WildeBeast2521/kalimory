@@ -53,7 +53,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -188,6 +190,8 @@ fun TimerDial(
     size: Dp = 264.dp,
 ) {
     val track = MaterialTheme.colorScheme.surfaceContainerHighest
+    // In the dark theme a running dial glows faintly in its own colour, so the screen feels lit.
+    val glow = MaterialTheme.colorScheme.background.luminance() < 0.5f && !paused
     val toggleLabel = stringResource(if (paused) R.string.resume_button else R.string.pause_button)
     val pausedLabel = stringResource(R.string.pause_button)
     // The last three seconds of a countdown each give the ring a short pulse, with the beeps.
@@ -221,6 +225,9 @@ fun TimerDial(
             val inset = stroke / 2
             val arcSize = androidx.compose.ui.geometry.Size(this.size.width - stroke, this.size.height - stroke)
             val topLeft = androidx.compose.ui.geometry.Offset(inset, inset)
+            if (glow) {
+                drawCircle(Brush.radialGradient(listOf(accent.copy(alpha = 0.22f), Color.Transparent)), radius = this.size.minDimension / 2)
+            }
             drawArc(track, -90f, 360f, false, topLeft, arcSize, style = Stroke(stroke))
             drawArc(
                 accent.copy(alpha = if (paused) 0.35f else 1f),

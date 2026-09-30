@@ -829,4 +829,9 @@
     <string name="summary_last_time">Letztes Mal: %1$s</string>
     <string name="summary_new_best">Neue Bestleistung: %1$s, %2$s</string>
     <string name="summary_done">Fertig</string>
+    <!-- The label after the week's set count on Today; the number is shown separately. -->
+    <plurals name="today_week_sets">
+        <item quantity="one">Satz diese Woche</item>
+        <item quantity="other">Sätze diese Woche</item>
+    </plurals>
 </resources>

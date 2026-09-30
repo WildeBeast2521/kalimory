@@ -223,7 +223,7 @@ fun CommunityShareExportScreen(
                         onClick = { showPreviewDialog = true },
                         enabled = totalSelected > 0 && !isExporting,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary,
+                            containerColor = MaterialTheme.colorScheme.primary,
                             disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
                         shape = RoundedCornerShape(12.dp),
@@ -233,7 +233,7 @@ fun CommunityShareExportScreen(
                             text = if (totalSelected > 0) stringResource(R.string.share_export_button_with_count, totalSelected) else stringResource(R.string.share_export_button),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (totalSelected > 0) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurfaceVariant
+                            color = if (totalSelected > 0) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -251,7 +251,7 @@ fun CommunityShareExportScreen(
                 ScrollableTabRow(
                     selectedTabIndex = pagerState.currentPage,
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                    contentColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.primary,
                     edgePadding = 0.dp
                 ) {
                     tabTitles.forEachIndexed { index, title ->
@@ -263,7 +263,7 @@ fun CommunityShareExportScreen(
                                 Text(
                                     text = title,
                                     fontSize = 13.sp,
-                                    color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                    color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
@@ -396,11 +396,11 @@ fun CommunityShareExportScreen(
                         exportLauncher.launch(fileName)
                     },
                     enabled = !isExporting,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         text = if (isExporting) stringResource(R.string.share_exporting) else stringResource(R.string.share_export_button),
-                        color = MaterialTheme.colorScheme.onTertiary
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             },
@@ -458,7 +458,7 @@ private fun ProgramsExportTab(
                             checked = program.id in selectedIds,
                             onCheckedChange = { onToggle(program.id) },
                             colors = CheckboxDefaults.colors(
-                                checkedColor = MaterialTheme.colorScheme.tertiary,
+                                checkedColor = MaterialTheme.colorScheme.primary,
                                 uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
@@ -529,7 +529,7 @@ private fun IntervalsExportTab(
                             checked = interval.id in selectedIds,
                             onCheckedChange = { onToggle(interval.id) },
                             colors = CheckboxDefaults.colors(
-                                checkedColor = MaterialTheme.colorScheme.tertiary,
+                                checkedColor = MaterialTheme.colorScheme.primary,
                                 uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
@@ -595,7 +595,7 @@ private fun ExercisesExportTab(
                         text = groupName.ifEmpty { stringResource(R.string.share_ungrouped) },
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.tertiary,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 4.dp)
                     )
                 }
@@ -620,7 +620,7 @@ private fun ExercisesExportTab(
                                 onCheckedChange = { if (!isIncluded) onToggle(exercise.id) },
                                 enabled = !isIncluded,
                                 colors = CheckboxDefaults.colors(
-                                    checkedColor = if (isIncluded) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.tertiary,
+                                    checkedColor = if (isIncluded) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.primary,
                                     uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                     disabledCheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -647,7 +647,7 @@ private fun ExercisesExportTab(
                                     ) {
                                         // お気に入り
                                         if (exercise.isFavorite) {
-                                            Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(11.dp), tint = MaterialTheme.colorScheme.tertiary)
+                                            Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(11.dp), tint = MaterialTheme.colorScheme.secondary)
                                         }
 
                                         // レベル（課題設定がある場合のみ）
@@ -684,7 +684,7 @@ private fun ExercisesExportTab(
                                                 text = stringResource(R.string.legend_weight),
                                                 fontSize = 11.sp,
                                                 fontWeight = FontWeight.Bold,
-                                                color = MaterialTheme.colorScheme.tertiary
+                                                color = MaterialTheme.colorScheme.primary
                                             )
                                         }
                                         if (exercise.distanceTrackingEnabled) {

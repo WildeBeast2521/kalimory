@@ -965,7 +965,7 @@ fun WorkoutExerciseItem(
                 ) {
                     // お気に入り
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.tertiary)
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
                     }
 
                     // レベル
@@ -1002,7 +1002,7 @@ fun WorkoutExerciseItem(
                             text = stringResource(R.string.legend_weight),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.tertiary
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                     if (exercise.distanceTrackingEnabled) {
@@ -2071,12 +2071,12 @@ fun ConfirmationStep(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 12.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
             ) {
                 Text(
                     text = stringResource(R.string.program_result_zero_warning),
                     fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.padding(12.dp)
                 )
             }
@@ -3005,7 +3005,7 @@ fun WorkoutSearchResultItem(
                 ) {
                     // お気に入り
                     if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.tertiary)
+                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
                     }
 
                     // レベル
@@ -3042,7 +3042,7 @@ fun WorkoutSearchResultItem(
                             text = stringResource(R.string.legend_weight),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.tertiary
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                     if (exercise.distanceTrackingEnabled) {

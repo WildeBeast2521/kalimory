@@ -483,7 +483,7 @@ fun BackupScreen(
                         Text(
                             text = stringResource(R.string.import_anomalies_notice, importAnomalyCount),
                             fontSize = 14.sp,
-                            color = MaterialTheme.colorScheme.tertiary,
+                            color = MaterialTheme.colorScheme.primary,
                             lineHeight = 20.sp
                         )
                     }
