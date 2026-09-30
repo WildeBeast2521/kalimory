@@ -219,7 +219,6 @@
     <string name="next_set_format_with_side">Nächster: Satz %1$d/%2$d - %3$s</string>
     <string name="minus_10sec">-10 Sek.</string>
     <string name="plus_10sec">+10 Sek.</string>
-    <string name="workout_complete">Training abgeschlossen</string>
     <string name="comment_label">Kommentar</string>
     <string name="record_workout">Aufzeichnen</string>
     <string name="set_number">Satz %d</string>
@@ -554,7 +553,7 @@
     <string name="previous_reps_format">Vorherig: %d Wdh.</string>
     <string name="previous_time_format">Vorherig: %ds</string>
     <string name="reps_unit">Wdh.</string>
-    <string name="program_result_zero_warning">Es gibt Sätze mit dem Wert 0. Null-Sätze für bilaterale Übungen und Sätze, bei denen beide Seiten 0 sind für unilaterale Übungen, werden nicht gespeichert.</string>
+    <string name="program_result_zero_warning">Sätze mit 0 werden als übersprungen gespeichert und nicht im Verlauf angezeigt.</string>
     <!-- Sound Settings (Program Confirm) -->
     <string name="sound_settings_section">Toneinstellungen</string>
     <string name="dynamic_count_sound_label">Zählton</string>
@@ -860,4 +859,5 @@
     <string name="recovery_restore_failed">Die Wiederherstellung wurde nicht abgeschlossen (%1$s). Deine Daten sind unverändert. Die App startet jetzt neu.</string>
     <string name="recovery_section_title">Wiederherstellungsdatei</string>
     <string name="recovery_section_description">Stellt die Datenbank direkt aus einer Wiederherstellungsdatei wieder her, die die App zum Export anbietet, wenn sie deine Daten nicht öffnen kann. Für alles andere nutze eine JSON-Sicherung.</string>
+    <string name="workout_review_title">Sätze prüfen</string>
 </resources>

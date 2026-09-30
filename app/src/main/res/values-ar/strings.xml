@@ -120,4 +120,6 @@
     <string name="recovery_restore_failed">لم تكتمل الاستعادة (%1$s). بياناتك لم تتغير. سيُعاد تشغيل التطبيق الآن.</string>
     <string name="recovery_section_title">ملف الاسترداد</string>
     <string name="recovery_section_description">يستعيد قاعدة البيانات الأصلية من ملف استرداد يعرض التطبيق تصديره عندما لا يستطيع فتح بياناتك. لكل ما عدا ذلك، استخدم نسخة JSON الاحتياطية.</string>
+    <string name="workout_review_title">راجع مجموعاتك</string>
+    <string name="program_result_zero_warning">تُحفظ المجموعات ذات القيمة 0 كمتخطاة ولا تظهر في سجلك.</string>
 </resources>

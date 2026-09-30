@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import android.text.format.DateUtils
+import androidx.compose.ui.draw.alpha
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.weekOf
 import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
 import androidx.compose.foundation.background
@@ -151,7 +152,8 @@ fun CalendarView(
                             onClick = {
                                 selectedDate = if (selectedDate == date) null else date
                             },
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
+                            future = date.isAfter(today)
                         )
                     }
                 }
@@ -553,7 +555,8 @@ private fun WeekDayCell(
     level: Int,
     hasInterval: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    future: Boolean = false,
 ) {
     val locale = LocalConfiguration.current.locales[0]
     val dayOfWeekText = date.dayOfWeek.getDisplayName(TextStyle.SHORT, locale)
@@ -569,7 +572,9 @@ private fun WeekDayCell(
             .then(
                 if (isSelected) Modifier.border(2.dp, MaterialTheme.colorScheme.onSurface, shape) else Modifier
             )
-            .clickable(onClick = onClick)
+            // Days still to come are faint and hold nothing to select, as on Today.
+            .clickable(enabled = !future, onClick = onClick)
+            .alpha(if (future) 0.4f else 1f)
             .padding(vertical = 8.dp)
     ) {
         // 曜日 + 日付（中央）

@@ -221,7 +221,6 @@
     <string name="next_set_format_with_side">下一组：第%1$d/%2$d组 - %3$s</string>
     <string name="minus_10sec">-10秒</string>
     <string name="plus_10sec">+10秒</string>
-    <string name="workout_complete">训练完成</string>
     <string name="comment_label">备注</string>
     <string name="record_workout">记录</string>
     <string name="set_number">第%d组</string>
@@ -557,7 +556,7 @@
     <string name="previous_reps_format">上次：%d次</string>
     <string name="previous_time_format">上次：%d秒</string>
     <string name="reps_unit">次</string>
-    <string name="program_result_zero_warning">存在值为0的组数。双侧动作的0值组数，以及单侧动作中两侧都为0的组数，将不会被保存。</string>
+    <string name="program_result_zero_warning">值为0的组会记为跳过，不会显示在历史中。</string>
     <!-- Sound Settings (Program Confirm) -->
     <string name="sound_settings_section">声音设置</string>
     <string name="dynamic_count_sound_label">计数音效</string>
@@ -831,4 +830,5 @@
     <string name="recovery_restore_failed">还原未完成（%1$s）。你的数据未改变。应用将重新启动。</string>
     <string name="recovery_section_title">恢复文件</string>
     <string name="recovery_section_description">从恢复文件还原原始数据库，应用无法打开数据时会提供导出恢复文件。其他情况请使用 JSON 备份。</string>
+    <string name="workout_review_title">确认各组</string>
 </resources>

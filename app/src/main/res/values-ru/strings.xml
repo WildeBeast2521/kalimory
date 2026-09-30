@@ -215,4 +215,6 @@
     <string name="recovery_restore_failed">Восстановление не завершено (%1$s). Ваши данные не изменились. Приложение сейчас перезапустится.</string>
     <string name="recovery_section_title">Файл восстановления</string>
     <string name="recovery_section_description">Восстанавливает исходную базу данных из файла восстановления, который приложение предлагает экспортировать, когда не может открыть ваши данные. Для всего остального используйте резервную копию JSON.</string>
+    <string name="workout_review_title">Проверьте подходы</string>
+    <string name="program_result_zero_warning">Подходы с 0 сохраняются как пропущенные и не показываются в истории.</string>
 </resources>

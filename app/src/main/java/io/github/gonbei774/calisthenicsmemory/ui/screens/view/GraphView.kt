@@ -920,7 +920,8 @@ fun SimpleLineChart(
                 strokeWidth = 1.dp.toPx()
             )
 
-            val labelText = "${labelValue.toInt()}$unit"
+            // Numbers only; the unit is named once above the axis, so "1 reps" never appears.
+            val labelText = "${labelValue.toInt()}"
 
             drawContext.canvas.nativeCanvas.drawText(
                 labelText,
@@ -931,6 +932,12 @@ fun SimpleLineChart(
                 }
             )
         }
+        drawContext.canvas.nativeCanvas.drawText(
+            unit.trim(),
+            leftPadding - 8.dp.toPx(),
+            topPadding - 12.dp.toPx(),
+            textPaint.apply { textAlign = Paint.Align.RIGHT }
+        )
 
         // 右Y軸ラベル描画（距離）- 底部のラベルはスキップしてX軸との干渉を回避
         if (hasDistanceData) {

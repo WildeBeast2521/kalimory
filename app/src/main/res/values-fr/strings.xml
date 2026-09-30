@@ -221,7 +221,6 @@
     <string name="next_set_format_with_side">Suivant : Série %1$d/%2$d - %3$s</string>
     <string name="minus_10sec">-10 sec.</string>
     <string name="plus_10sec">+10 sec.</string>
-    <string name="workout_complete">Entraînement Terminé</string>
     <string name="comment_label">Commentaire</string>
     <string name="record_workout">Enregistrer</string>
     <string name="set_number">Série %d</string>
@@ -557,7 +556,7 @@
     <string name="previous_reps_format">Précédent : %d reps</string>
     <string name="previous_time_format">Précédent : %ds</string>
     <string name="reps_unit">reps</string>
-    <string name="program_result_zero_warning">Des séries avec une valeur de 0 existent. Les séries à zéro pour les exercices bilatéraux, et les séries où les deux côtés sont à 0 pour les exercices unilatéraux, ne seront pas enregistrées.</string>
+    <string name="program_result_zero_warning">Les séries à 0 sont enregistrées comme passées et n\'apparaissent pas dans l\'historique.</string>
     <!-- Sound Settings (Program Confirm) -->
     <string name="sound_settings_section">Paramètres sonores</string>
     <string name="dynamic_count_sound_label">Son de comptage</string>
@@ -834,4 +833,5 @@
     <string name="recovery_restore_failed">La restauration n\'a pas abouti (%1$s). Vos données sont inchangées. L\'application va redémarrer.</string>
     <string name="recovery_section_title">Fichier de récupération</string>
     <string name="recovery_section_description">Restaure la base de données brute depuis un fichier de récupération, que l\'application propose d\'exporter lorsqu\'elle ne peut pas ouvrir vos données. Pour tout le reste, utilisez une sauvegarde JSON.</string>
+    <string name="workout_review_title">Vérifiez vos séries</string>
 </resources>

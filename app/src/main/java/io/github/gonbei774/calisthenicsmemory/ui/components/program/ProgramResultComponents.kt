@@ -51,7 +51,7 @@ internal fun ProgramResultStep(
             .padding(16.dp)
     ) {
         Text(
-            text = stringResource(R.string.workout_complete),
+            text = stringResource(R.string.workout_review_title),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface
