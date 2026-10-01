@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-01, at PR #98.
+Last reviewed: 2026-10-01, at PR #99.
 
 ## Where things stand
 
@@ -163,7 +163,15 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - Lats and middle back share the drawing's one upper-back region.
        - The map is decorative: the same muscles are listed as text below it.
        - Tests: `MuscleMapTest`.
-     - Next: the animated figure (ADR 0008, decision 2).
+     - The owner chose the figure's look on 2026-10-01:
+       - a three-quarter view, turned about 35 degrees and seen slightly from above, with near limbs darker, far limbs lighter and a floor shadow;
+       - a body built from visible muscle shapes, with the worked ones in red.
+     - Done in PR #99, stage 1 of 3: the engine, previewed in debug builds only.
+       - `data/figure/` holds a 3D skeleton solved from joint angles, with hands or feet pinned by a two-bone solver; keyframed motions eased between poses; and an orthographic camera. Each motion can turn the camera, for example push-ups at 55 degrees.
+       - `FigureView` draws depth-sorted tapered limbs with near/far shading and a floor shadow. With "Remove animations" on, it shows the hardest pose, still.
+       - Settings → "Figure preview (debug)" exists in debug builds only. It shows the sample squat and push-up, with camera sliders.
+       - Tests: `SkeletonTest`.
+     - Next: stage 2, the muscle shapes with red highlights; then stage 3, motions for all 53 steps, shown on each step's sheet.
   6. Expansion: skills, the remaining chains, trends.
 
 ## Workout sounds (owner decisions, 2026-09-30)
@@ -233,7 +241,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #98. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #99. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -243,7 +251,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #98: 399 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #99: 406 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.
