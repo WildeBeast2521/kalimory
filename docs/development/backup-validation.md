@@ -32,6 +32,7 @@ The database can hold these values, and older versions or interrupted operations
 | `TODO_INVALID_REPEAT_DAYS` | `repeatDays` is not empty or distinct day numbers 1–7. Readers skip the malformed tokens (`TodoTask.parseRepeatDays`). |
 | `PROGRAM_EXERCISE_FOREIGN_LOOP` | A program exercise uses a loop that belongs to another program. |
 | `V2_NEGATIVE_VALUE` | A v2 set entry has a negative metric or target. The app never writes one; Room cannot declare a CHECK constraint. |
+| `UNKNOWN_CATALOGUE_ID` | An exercise or chain placement names a catalogue step or chain this app does not know, likely from a newer catalogue (format 11). |
 | `V2_LEGACY_RECORD_MISSING` | A v2 set entry is linked to a legacy record that is not in the backup. The compatibility history treats linked entries as copies, so this set would not show. |
 
 `BackupRoundTripTest` exports a database that holds each anomaly, restores the backup, and compares the two snapshots.
@@ -52,5 +53,5 @@ Format 10 adds four optional fields to each workout session: `intervalWorkSecond
 
 Format 11 (ADR 0007) adds an optional `catalogId` to each exercise, linking it to a catalogue step, and a `chainPlacements` list placing custom exercises in built-in chains. These mirror database version 25.
 - **Rejected:** a `catalogId` shared by two exercises (a unique index), a duplicate or non-positive placement `exerciseId`, and a placement whose exercise is missing (a foreign key).
-- **Unknown ids:** an unknown catalogue or chain id will be reported as an anomaly and kept once the catalogue exists (phase 2), because a newer catalogue may define it.
+- **Unknown ids:** an unknown catalogue step or chain id is kept and reported as `UNKNOWN_CATALOGUE_ID`, because a newer catalogue may define it.
 - **Older backups:** a format 1–10 backup restores with no links or placements. Older app versions reject format 11 as unsupported rather than dropping the links.
