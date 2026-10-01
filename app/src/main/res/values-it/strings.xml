@@ -763,6 +763,10 @@
     <string name="today_start_workout">Inizia un allenamento</string>
     <string name="today_start_workout_detail">Scegli un esercizio, un programma o un intervallo.</string>
     <string name="today_week_summary">Questa settimana: %1$d su %2$d</string>
+    <string name="today_week_goal_met">Questa settimana: %1$d su %2$d. Obiettivo raggiunto</string>
+    <string name="weekly_goal">Obiettivo settimanale</string>
+    <string name="weekly_goal_off">Disattivato</string>
+    <string name="weekly_goal_days">%1$d su 7 giorni</string>
     <string name="today_done_title">Fatto oggi</string>
     <string name="today_see_progress">Vedi progressi</string>
     <string name="first_day_of_week">Primo giorno della settimana</string>

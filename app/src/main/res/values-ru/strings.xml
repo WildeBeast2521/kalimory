@@ -139,6 +139,10 @@
     <string name="today_start_workout">Начать тренировку</string>
     <string name="today_start_workout_detail">Выберите упражнение, программу или интервал.</string>
     <string name="today_week_summary">На этой неделе: %1$d из %2$d</string>
+    <string name="today_week_goal_met">На этой неделе: %1$d из %2$d. Цель достигнута</string>
+    <string name="weekly_goal">Цель на неделю</string>
+    <string name="weekly_goal_off">Выкл.</string>
+    <string name="weekly_goal_days">%1$d из 7 дней</string>
     <string name="today_done_title">Сделано сегодня</string>
     <string name="today_see_progress">Смотреть прогресс</string>
     <string name="first_day_of_week">Первый день недели</string>

@@ -207,7 +207,13 @@ fun TodayScreen(
         }
 
         val trainedThisWeek = week.count { it in trainedDays }
-        val weekSummary = stringResource(R.string.today_week_summary, trainedThisWeek, week.size)
+        val goal = viewModel.weeklyGoal.collectAsState().value
+        // With a weekly goal the week counts against it ("2 of 4"), else against its seven days.
+        val weekSummary = when {
+            goal == null -> stringResource(R.string.today_week_summary, trainedThisWeek, week.size)
+            trainedThisWeek >= goal -> stringResource(R.string.today_week_goal_met, trainedThisWeek, goal)
+            else -> stringResource(R.string.today_week_summary, trainedThisWeek, goal)
+        }
         Column {
             // The week's work as one big number: the anchor of the page.
             val weekDates = remember(week) { week.map { it.toString() }.toSet() }
