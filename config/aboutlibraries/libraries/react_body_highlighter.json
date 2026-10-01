@@ -1,0 +1,18 @@
+{
+  "uniqueId": "art:react-body-highlighter",
+  "artifactVersion": "2.0.5",
+  "name": "react-body-highlighter (body outlines)",
+  "description": "The front and back body outlines of the muscle map. Copyright (c) 2020 GV79.",
+  "website": "https://github.com/GV79/react-body-highlighter",
+  "developers": [
+    {
+      "name": "GV79"
+    }
+  ],
+  "scm": {
+    "url": "https://github.com/GV79/react-body-highlighter"
+  },
+  "licenses": [
+    "MIT"
+  ]
+}

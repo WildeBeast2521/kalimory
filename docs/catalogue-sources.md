@@ -14,7 +14,7 @@ The catalogue's single source is `scripts/catalogue/catalogue_spec.py`. `scripts
 | Exercise names, primary and secondary muscles, equipment, force, mechanic, level | [free-exercise-db](https://github.com/yuhonas/free-exercise-db) | Unlicense (public domain) | Facts only. No instructions text and no photos, because their origin is unclear. |
 | Descriptions, form cues, standards, chains and difficulty | Written for this project | GPL-3.0-or-later | Everything |
 | Exercises missing from free-exercise-db (pistol squat, levers, planche, L-sit, muscle-up, hollow body, Nordic curl, archer variations and others) | Written for this project | GPL-3.0-or-later | Everything |
-| Muscle map body regions | An MIT-licensed open body map, to be chosen and recorded here when adopted (ADR 0008) | MIT | Region outlines, adapted to Compose paths |
+| Muscle map body regions | [react-body-highlighter](https://github.com/GV79/react-body-highlighter) 2.0.5 (npm tarball sha256 `c15467a8fcf48193896ecbaef1eb98ff260e50021cea3454313ff1016f59e2cb`), Copyright (c) 2020 GV79 | MIT | Polygon outlines only, converted by `scripts/musclemap/generate_body_map.py` into `ui/components/muscles/BodyMapData.kt`, which carries the MIT notice. Listed in Open Source Licenses. |
 | Figure keyframes | Written for this project | GPL-3.0-or-later | Everything |
 
 Not used, and why:

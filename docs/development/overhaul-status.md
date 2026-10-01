@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-01, at PR #97.
+Last reviewed: 2026-10-01, at PR #98.
 
 ## Where things stand
 
@@ -157,7 +157,13 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - The rules are pure functions in `data/progression/Suggestions.kt`.
        - Tests: `SuggestionsTest` (unit) and `TodaySuggestionsTest`.
        - Done in PR #95: starting a suggestion opens the workout at the suggested sets and value. It comes before the exercise's own target and the "previous record" pre-fill, and the user can still change it. It applies only to the suggested exercise, not to one picked after going back.
-  5. Demonstrations.
+  5. Demonstrations: in progress.
+     - Done in PR #98: the muscle map on each step's sheet. It shows the body from the front and the back, with the main muscles in red and the helping muscles in lighter red.
+       - The outlines come from react-body-highlighter (MIT). They are recorded in `docs/catalogue-sources.md` and listed in Open Source Licenses.
+       - Lats and middle back share the drawing's one upper-back region.
+       - The map is decorative: the same muscles are listed as text below it.
+       - Tests: `MuscleMapTest`.
+     - Next: the animated figure (ADR 0008, decision 2).
   6. Expansion: skills, the remaining chains, trends.
 
 ## Workout sounds (owner decisions, 2026-09-30)
@@ -227,7 +233,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #97. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #98. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -237,7 +243,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #97: 396 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #98: 399 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.
