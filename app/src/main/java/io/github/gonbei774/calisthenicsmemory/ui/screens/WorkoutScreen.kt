@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.font.FontWeight
@@ -137,7 +138,8 @@ fun WorkoutScreen(
     viewModel: TrainingViewModel,
     onNavigateBack: () -> Unit,
     initialExerciseId: Long? = null,
-    fromToDo: Boolean = false
+    fromToDo: Boolean = false,
+    suggestedTarget: Standard? = null
 ) {
     val exercises by viewModel.exercises.collectAsState()
     val groups by viewModel.groups.collectAsState()
@@ -358,6 +360,8 @@ fun WorkoutScreen(
                         SettingsStep(
                             exercise = exercise,
                             viewModel = viewModel,
+                            // Only for the suggested exercise, not one picked after going back.
+                            suggestedTarget = suggestedTarget.takeIf { exercise.id == initialExerciseId },
                             onStartWorkout = { session ->
                                 currentStep = if (session.startInterval > 0) {
                                     WorkoutStep.StartInterval(session, 0)
@@ -1281,15 +1285,17 @@ fun SettingsStep(
     exercise: Exercise,
     viewModel: TrainingViewModel,
     onStartWorkout: (WorkoutSession) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    suggestedTarget: Standard? = null
 ) {
     val context = LocalContext.current
     val workoutPrefs = remember { WorkoutPreferences(context) }
 
     // Start ready to go: the exercise's own targets, or the defaults Start already falls back to
     // (3 sets × 10, 5 s per rep), so Start is never disabled without a visible reason.
-    var sets by remember { mutableStateOf((exercise.targetSets ?: 3).toString()) }
-    var targetValue by remember { mutableStateOf((exercise.targetValue ?: 10).toString()) }
+    // A suggestion from Today (ADR 0005, decision 4) comes first; the user can still change it.
+    var sets by remember { mutableStateOf((suggestedTarget?.sets ?: exercise.targetSets ?: 3).toString()) }
+    var targetValue by remember { mutableStateOf((suggestedTarget?.value ?: exercise.targetValue ?: 10).toString()) }
     var repDuration by remember {
         mutableStateOf(
             if (exercise.type == "Dynamic") {
@@ -1343,11 +1349,14 @@ fun SettingsStep(
         val prevSession = viewModel.getLatestSession(exercise.id)
         previousSessionRecords = prevSession
         if (workoutPrefs.isPrefillPreviousRecordEnabled() && prevSession.isNotEmpty()) {
-            // セット数をプリフィル
-            sets = prevSession.size.toString()
-            // 目標値（前回値の最大値）をプリフィル
-            val maxValue = prevSession.maxOf { it.valueRight }
-            targetValue = maxValue.toString()
+            // The suggested target already builds on the last session, so it is kept.
+            if (suggestedTarget == null) {
+                // セット数をプリフィル
+                sets = prevSession.size.toString()
+                // 目標値（前回値の最大値）をプリフィル
+                val maxValue = prevSession.maxOf { it.valueRight }
+                targetValue = maxValue.toString()
+            }
             // 距離をプリフィル（トラッキング有効時）
             if (exercise.distanceTrackingEnabled) {
                 prevSession.firstOrNull()?.distanceCm?.let {

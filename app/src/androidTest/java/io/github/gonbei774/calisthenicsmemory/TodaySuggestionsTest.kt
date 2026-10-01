@@ -1,9 +1,11 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasAnySibling
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasScrollAction
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -50,7 +52,10 @@ class TodaySuggestionsTest {
     fun seed(): Unit = runBlocking {
         prefs.setShowSuggestions(true)
         database.exerciseDao().getExerciseByCatalogId(step.id)?.let { database.exerciseDao().updateExercise(it.copy(catalogId = null)) }
-        exerciseId = database.exerciseDao().insertExercise(Exercise(name = exerciseName, type = "Dynamic", catalogId = step.id))
+        // Its own target differs from the step's working standard, so the test sees which one is used.
+        exerciseId = database.exerciseDao().insertExercise(
+            Exercise(name = exerciseName, type = "Dynamic", targetSets = 5, targetValue = 25, catalogId = step.id)
+        )
     }
 
     @After
@@ -66,8 +71,11 @@ class TodaySuggestionsTest {
         rule.waitUntil(TIMEOUT_MS) { rule.onAllNodesWithText(text(R.string.nav_train)).fetchSemanticsNodes().isNotEmpty() }
     }
 
-    private fun scrollTo(label: String) =
+    // Rows appear once the library and history have loaded; Today composes them all, on screen or not.
+    private fun scrollTo(label: String) {
+        rule.waitUntil(TIMEOUT_MS) { rule.onAllNodes(hasText(label)).fetchSemanticsNodes().isNotEmpty() }
         rule.onNode(hasScrollAction()).performScrollToNode(hasText(label))
+    }
 
     @Test
     fun aFollowedChainIsSuggestedAndCanBeDismissedForTheDay() {
@@ -86,10 +94,24 @@ class TodaySuggestionsTest {
     }
 
     @Test
+    fun startingASuggestionOpensTheWorkoutAtItsTarget() {
+        launch()
+        scrollTo(exerciseName)
+        rule.onNodeWithText(exerciseName).performClick()
+        rule.waitForIdle()
+
+        // An untrained step starts at its working standard, not the exercise's own 5 × 25.
+        rule.onAllNodes(hasSetTextAction() and hasText("25")).assertCountEquals(0)
+        rule.onAllNodes(hasSetTextAction() and hasText("${step.working.sets}")).fetchSemanticsNodes().isNotEmpty().let(::assertTrue)
+        rule.onAllNodes(hasSetTextAction() and hasText("${step.working.value}")).fetchSemanticsNodes().isNotEmpty().let(::assertTrue)
+    }
+
+    @Test
     fun turningSuggestionsOffInSettingsHidesThem() {
         launch()
         rule.onNode(hasContentDescription(text(R.string.settings))).performClick()
-        scrollTo(text(R.string.settings_suggestions))
+        // Settings is a lazy list; the row exists once scrolled to.
+        rule.onNode(hasScrollAction()).performScrollToNode(hasText(text(R.string.settings_suggestions)))
         rule.onNodeWithText(text(R.string.settings_suggestions)).performClick()
         scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
         rule.waitForIdle()
