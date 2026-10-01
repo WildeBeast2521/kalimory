@@ -65,6 +65,8 @@ import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBar
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.depth
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.screenTransition
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.tabTransition
+import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.CatalogueChainScreen
+import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.CatalogueScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.library.LibraryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.ResumableWorkout
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.TodayScreen
@@ -255,6 +257,9 @@ fun UiMessage.toMessageString(): String {
         is UiMessage.CommunityShareImportError -> "Import error: $errorMessage"
         is UiMessage.FileTooLarge -> "File too large: ${sizeMb}MB (limit: ${limitMb}MB)"
         is UiMessage.WrongFileType -> "Wrong file type: $detected (expected: $expected)"
+        is UiMessage.CatalogueAdded -> stringResource(R.string.catalogue_added, name)
+        is UiMessage.CatalogueLinked -> stringResource(R.string.catalogue_linked, name)
+        is UiMessage.CatalogueNameTaken -> stringResource(R.string.catalogue_name_taken, name)
         is UiMessage.ErrorOccurred -> stringResource(R.string.error_occurred)
     }
 }
@@ -308,7 +313,8 @@ fun CalisthenicsMemoryApp(
     // registered later and still take precedence.
     val backTarget: Screen? = when (val screen = currentScreen) {
         Screen.Home -> null
-        Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList -> Screen.Home
+        Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList, Screen.Catalogue -> Screen.Home
+        is Screen.CatalogueChain -> Screen.Catalogue
         Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub -> Screen.Settings
         Screen.CommunityShareExport -> Screen.ShareHub
         is Screen.Record -> if (screen.fromToDo) Screen.ToDo else Screen.Home
@@ -458,6 +464,7 @@ fun CalisthenicsMemoryApp(
                                     onOpenExercises = { currentScreen = Screen.Create },
                                     onOpenPrograms = { currentScreen = Screen.ProgramList },
                                     onOpenIntervals = { currentScreen = Screen.IntervalList },
+                                    onOpenCatalogue = { currentScreen = Screen.Catalogue },
                                     onOpenSettings = { currentScreen = Screen.Settings }
                                 )
                             }
@@ -530,6 +537,20 @@ fun CalisthenicsMemoryApp(
                             onNavigateBack = { currentScreen = backDestination },
                             initialExerciseId = workoutScreen.exerciseId,
                             fromToDo = workoutScreen.fromToDo
+                        )
+                    }
+                    is Screen.Catalogue -> {
+                        CatalogueScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = Screen.Home },
+                            onOpenChain = { chainId -> currentScreen = Screen.CatalogueChain(chainId) }
+                        )
+                    }
+                    is Screen.CatalogueChain -> {
+                        CatalogueChainScreen(
+                            viewModel = viewModel,
+                            chainId = screen.chainId,
+                            onNavigateBack = { currentScreen = Screen.Catalogue }
                         )
                     }
                     is Screen.ProgramList -> {
@@ -667,6 +688,8 @@ sealed class Screen {
     object CsvDataManagement : Screen()
     object ShareHub : Screen()
     data class WorkoutSummary(val sessionId: Long) : Screen()
+    object Catalogue : Screen()
+    data class CatalogueChain(val chainId: String) : Screen()
 }
 
 /** Where a workout screen goes when it ends or the user leaves it; null for other screens. */
@@ -736,6 +759,11 @@ private val ScreenSaver = mapSaver(
                     put("type", "WorkoutSummary")
                     put("sessionId", screen.sessionId)
                 }
+                Screen.Catalogue -> put("type", "Catalogue")
+                is Screen.CatalogueChain -> {
+                    put("type", "CatalogueChain")
+                    put("chainId", screen.chainId)
+                }
             }
         }
     },
@@ -778,6 +806,8 @@ private val ScreenSaver = mapSaver(
             "CsvDataManagement" -> Screen.CsvDataManagement
             "ShareHub" -> Screen.ShareHub
             "WorkoutSummary" -> Screen.WorkoutSummary(map["sessionId"] as Long)
+            "Catalogue" -> Screen.Catalogue
+            "CatalogueChain" -> Screen.CatalogueChain(map["chainId"] as String)
             else -> Screen.Home
         }
     }

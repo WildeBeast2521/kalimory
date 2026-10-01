@@ -140,6 +140,17 @@ sealed class UiMessage {
     /** ファイル種別の誤り */
     data class WrongFileType(val detected: String, val expected: String) : UiMessage()
 
+    // ===== Catalogue =====
+
+    /** A catalogue step became a new library exercise */
+    data class CatalogueAdded(val name: String) : UiMessage()
+
+    /** An existing exercise of the same name was linked to a catalogue step */
+    data class CatalogueLinked(val name: String) : UiMessage()
+
+    /** An exercise of that name is already linked to another step; nothing changed */
+    data class CatalogueNameTaken(val name: String) : UiMessage()
+
     // ===== エラー =====
 
     /** 一般的なエラー */
