@@ -1,6 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.figure
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,7 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.figure.SampleMotions
+import io.github.gonbei774.calisthenicsmemory.data.figure.StepMotions
 import io.github.gonbei774.calisthenicsmemory.ui.components.figure.FigureView
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -40,8 +44,15 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
  */
 @Composable
 fun FigurePreviewScreen(onNavigateBack: () -> Unit) {
+    // The samples, then every catalogue step that has a motion, named by its id.
+    val samples = remember {
+        SampleMotions.all + StepMotions.stepIds.sorted().mapNotNull { id ->
+            val step = Catalogue.step(id) ?: return@mapNotNull null
+            SampleMotions.Sample(id, StepMotions.forStep(id)!!, step.primaryMuscles, step.secondaryMuscles)
+        }
+    }
     var selected by remember { mutableIntStateOf(0) }
-    val sample = SampleMotions.all[selected]
+    val sample = samples[selected]
     val motion = sample.motion
     var yaw by remember(selected) { mutableFloatStateOf(motion.camera.yaw) }
     var pitch by remember(selected) { mutableFloatStateOf(motion.camera.pitch) }
@@ -54,8 +65,11 @@ fun FigurePreviewScreen(onNavigateBack: () -> Unit) {
             }
             Text("Figure preview", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)
         }
-        Row(Modifier.padding(horizontal = Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-            SampleMotions.all.forEachIndexed { index, item ->
+        Row(
+            Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.s),
+        ) {
+            samples.forEachIndexed { index, item ->
                 FilterChip(selected = index == selected, onClick = { selected = index }, label = { Text(item.name) })
             }
         }

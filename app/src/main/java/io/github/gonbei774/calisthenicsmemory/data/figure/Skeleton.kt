@@ -166,7 +166,18 @@ object SkeletonSolver {
                 bendSign = 1f,
             )
             val wrist = arm.second
-            val hand = wrist + (wrist - arm.first).normalized() * Proportions.HAND
+            val handPin = if (left) pose.leftHandPin else pose.rightHandPin
+            val forearm = (wrist - arm.first).normalized()
+            val handDirection = if (handPin == null) {
+                forearm
+            } else {
+                // A pinned hand lies flat on its support, fingers pointing along the body: forward on
+                // the floor, up on a wall.
+                var flat = (torso.up - forearm * torso.up.dot(forearm)).normalized()
+                if (handPin.y < 0.05f && flat.y < 0f) flat = Vec3(flat.x, 0f, flat.z).normalized()
+                flat
+            }
+            val hand = wrist + handDirection * Proportions.HAND
             joints[if (left) Joint.LEFT_SHOULDER else Joint.RIGHT_SHOULDER] = shoulder
             joints[if (left) Joint.LEFT_ELBOW else Joint.RIGHT_ELBOW] = arm.first
             joints[if (left) Joint.LEFT_WRIST else Joint.RIGHT_WRIST] = wrist
