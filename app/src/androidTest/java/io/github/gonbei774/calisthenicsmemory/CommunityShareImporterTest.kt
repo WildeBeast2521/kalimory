@@ -77,6 +77,28 @@ class CommunityShareImporterTest {
     }
 
     @Test
+    fun newExercisesKeepTheirCatalogueLinkUnlessTheStepIsTakenHere() = runBlocking {
+        database.exerciseDao().insertExercise(Exercise(name = "My chin-ups", type = "Dynamic", catalogId = "pull.chin"))
+        val linked = CommunityShareContent(
+            exercises = listOf(
+                ShareExercise("Pull-up", "Dynamic", catalogId = "pull.full"),
+                ShareExercise("Chin-up", "Dynamic", catalogId = "pull.chin"),
+                ShareExercise("Plank", "Isometric", catalogId = "core.plank"),
+            )
+        )
+
+        CommunityShareImporter(database).import(linked)
+
+        val byName = snapshot().exercises.associateBy { it.name }
+        assertEquals("pull.full", byName.getValue("Pull-up").catalogId)
+        // The step is already linked here, so the new exercise comes in unlinked.
+        assertEquals(null, byName.getValue("Chin-up").catalogId)
+        assertEquals("pull.chin", byName.getValue("My chin-ups").catalogId)
+        // An existing exercise is never changed by an import.
+        assertEquals(null, byName.getValue("Plank").catalogId)
+    }
+
+    @Test
     fun aFailurePartWayThroughLeavesNoPartialImport() {
         val before = snapshot()
         // Fail the last step, after groups, exercises, and programs have been written.

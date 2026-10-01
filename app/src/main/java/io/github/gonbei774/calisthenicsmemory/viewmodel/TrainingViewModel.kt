@@ -2203,7 +2203,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                     distanceTrackingEnabled = exercise.distanceTrackingEnabled,
                     weightTrackingEnabled = exercise.weightTrackingEnabled,
                     assistanceTrackingEnabled = exercise.assistanceTrackingEnabled,
-                    description = exercise.description
+                    description = exercise.description,
+                    catalogId = exercise.catalogId
                 )
                 exercise.group?.let { groupNames.add(it) }
             }

@@ -68,7 +68,9 @@ class CommunityShareImporter(private val database: AppDatabase) {
                         distanceTrackingEnabled = shareExercise.distanceTrackingEnabled,
                         weightTrackingEnabled = shareExercise.weightTrackingEnabled,
                         assistanceTrackingEnabled = shareExercise.assistanceTrackingEnabled,
-                        description = shareExercise.description?.take(120)
+                        description = shareExercise.description?.take(120),
+                        // Linked only when no exercise here holds that step yet; existing ones are left as they are.
+                        catalogId = shareExercise.catalogId?.takeIf { database.exerciseDao().getExerciseByCatalogId(it) == null }
                     )
                     val newId = database.exerciseDao().insertExercise(newExercise)
                     exerciseIdMap[key] = newId
