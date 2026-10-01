@@ -158,12 +158,12 @@ class BackupRoundTripTest {
     private val progression = BackupSnapshot(
         groups = listOf(ExerciseGroup(1, "Pull", 0)),
         exercises = listOf(
-            Exercise(1, "Pull-up", "Dynamic", "Pull", catalogId = "pull.pull_up"),
+            Exercise(1, "Pull-up", "Dynamic", "Pull", catalogId = "pull.full"),
             Exercise(2, "Towel pull-up", "Dynamic", "Pull"),
         ),
         records = emptyList(), programs = emptyList(), programExercises = emptyList(), programLoops = emptyList(),
         intervalPrograms = emptyList(), intervalProgramExercises = emptyList(), intervalRecords = emptyList(), todoTasks = emptyList(),
-        chainPlacements = listOf(io.github.gonbei774.calisthenicsmemory.data.progression.ChainPlacement(2, "pull", "pull.pull_up")),
+        chainPlacements = listOf(io.github.gonbei774.calisthenicsmemory.data.progression.ChainPlacement(2, "pull", "pull.full")),
     )
 
     @Test
@@ -171,7 +171,7 @@ class BackupRoundTripTest {
         source.backupDao().replaceAll(progression)
 
         val json = (BackupService(source.backupDao()).export() as BackupResult.Success).value.json
-        assertTrue(json.contains("\"catalogId\":\"pull.pull_up\""))
+        assertTrue(json.contains("\"catalogId\":\"pull.full\""))
         assertTrue(json.contains("\"chainPlacements\""))
         val parsed = BackupService(target.backupDao()).parse(json)
         assertTrue("parse: $parsed", parsed is BackupResult.Success)

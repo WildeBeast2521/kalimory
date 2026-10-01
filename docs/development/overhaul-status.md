@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-01, at PR #88.
+Last reviewed: 2026-10-01, at PR #89.
 
 ## Where things stand
 
@@ -109,7 +109,12 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
   1. Data model: done in PR #88. It adds database 25 (`exercises.catalogId` with a unique index, and `chain_placements`) and backup format 11, with `ChainPlacementDao`.
      - Tests: a 24→25 migration test, a format 11 round trip, and validation tests.
      - Deferred to phase 3: community share carrying `catalogId`.
-     - Deferred to phase 2: anomalies for unknown catalogue ids.
+     - Anomalies for unknown catalogue ids: done in PR #89.
+  2. Catalogue v1, core chains: in progress.
+     - Done in PR #89: 9 chains and 53 steps (push-up, handstand push-up, dip, pull-up, row, squat, hip hinge, core, leg raise), generated from `scripts/catalogue/catalogue_spec.py`.
+     - Every step has a difficulty, working and move-on standards, muscles, equipment, a description and cues, all in our own words.
+     - `CatalogueTest` enforces the ADR 0006 rules. Backups report `UNKNOWN_CATALOGUE_ID`.
+     - English only so far: `catalogue_strings.xml` allows missing translations until the translation slice.
   2. Catalogue v1, core chains.
   3. Progressions screen in place of Challenge, and "add from catalogue".
   4. Suggestions and the weekly goal.
@@ -183,7 +188,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #88. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #89. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -193,7 +198,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #88: 359 unit tests, 148 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #89: 368 unit tests, 148 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

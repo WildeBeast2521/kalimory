@@ -2,6 +2,13 @@
 
 Where the content of the built-in exercise catalogue comes from (ADR 0006). Update this file whenever content from a new source is used.
 
+The catalogue's single source is `scripts/catalogue/catalogue_spec.py`. `scripts/catalogue/generate_catalogue.py` turns it into `data/catalogue/Catalogue.kt` and `res/values/catalogue_strings.xml`.
+
+**Catalogue v1, core chains (PR #89):**
+- 9 chains and 53 steps: push-up, handstand push-up, dip, pull-up, row, squat, hip hinge, core and leg raise.
+- Every name, description, cue, standard and difficulty is written for this project.
+- free-exercise-db served only as a checklist and a cross-check for muscle groups. None of its text was copied.
+
 | Content | Source | Licence | What is used |
 |:---|:---|:---|:---|
 | Exercise names, primary and secondary muscles, equipment, force, mechanic, level | [free-exercise-db](https://github.com/yuhonas/free-exercise-db) | Unlicense (public domain) | Facts only. No instructions text and no photos, because their origin is unclear. |

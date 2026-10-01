@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
 import io.github.gonbei774.calisthenicsmemory.data.BackupDao
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.progression.ChainPlacement
 import io.github.gonbei774.calisthenicsmemory.data.BackupSnapshot
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
@@ -64,6 +65,11 @@ enum class BackupAnomalyKind {
      * compatibility history hides such entries as copies, so the set would not show.
      */
     V2_LEGACY_RECORD_MISSING,
+    /**
+     * An exercise or chain placement names a catalogue step or chain this app does not know,
+     * likely from a newer catalogue. Kept, so the link works again once the catalogue has it.
+     */
+    UNKNOWN_CATALOGUE_ID,
 }
 
 data class BackupAnomaly(val kind: BackupAnomalyKind, val entityId: Long, val detail: String)
@@ -259,6 +265,20 @@ class BackupService(
                     "Todo task ${it.id} references missing ${it.type.lowercase()} ${it.referenceId}",
                 )
                 true -> Unit
+            }
+        }
+        data.exercises.forEach {
+            if (it.catalogId != null && Catalogue.step(it.catalogId) == null) {
+                anomalies += BackupAnomaly(BackupAnomalyKind.UNKNOWN_CATALOGUE_ID, it.id, "Exercise ${it.id} links to unknown catalogue step ${it.catalogId}")
+            }
+        }
+        data.chainPlacements.forEach {
+            val chain = Catalogue.chain(it.chainId)
+            if (chain == null || (it.afterStepId != null && chain.steps.none { step -> step.id == it.afterStepId })) {
+                anomalies += BackupAnomaly(
+                    BackupAnomalyKind.UNKNOWN_CATALOGUE_ID, it.exerciseId,
+                    "Exercise ${it.exerciseId} is placed in unknown chain ${it.chainId} after ${it.afterStepId}",
+                )
             }
         }
         return anomalies

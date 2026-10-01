@@ -226,9 +226,9 @@ class BackupValidationTest {
     private fun validV11() = validV10().let { base ->
         base.copy(
             version = 11,
-            exercises = base.exercises.mapIndexed { index, e -> if (index == 0) e.copy(catalogId = "pull.pull_up") else e } +
+            exercises = base.exercises.mapIndexed { index, e -> if (index == 0) e.copy(catalogId = "pull.full") else e } +
                 ExportExercise(90, "Towel pull-up", "Dynamic", null, 0, laterality = "Bilateral"),
-            chainPlacements = listOf(ExportChainPlacement(90, "pull", afterStepId = "pull.pull_up")),
+            chainPlacements = listOf(ExportChainPlacement(90, "pull", afterStepId = "pull.full")),
         )
     }
 
@@ -241,7 +241,7 @@ class BackupValidationTest {
     @Test fun `rejects what the progression tables would refuse`() {
         val base = validV11()
         assertInvalid(
-            base.copy(exercises = base.exercises.map { if (it.id == 90L) it.copy(catalogId = "pull.pull_up") else it }),
+            base.copy(exercises = base.exercises.map { if (it.id == 90L) it.copy(catalogId = "pull.full") else it }),
             "catalogue id",
         )
         assertInvalid(base.copy(chainPlacements = base.chainPlacements + ExportChainPlacement(90, "pull")), "chain placement")
@@ -254,5 +254,17 @@ class BackupValidationTest {
         result as BackupResult.Success
         assertTrue(result.value.data.exercises.all { it.catalogId == null })
         assertTrue(result.value.data.chainPlacements.isEmpty())
+    }
+
+    @Test fun `unknown catalogue ids are kept and reported`() {
+        val base = validV11()
+        assertAcceptedWith(
+            base.copy(
+                exercises = base.exercises.map { if (it.id == 90L) it.copy(catalogId = "push.from_the_future") else it },
+                chainPlacements = listOf(ExportChainPlacement(90, "levers", afterStepId = null)),
+            ),
+            BackupAnomalyKind.UNKNOWN_CATALOGUE_ID to 90L,
+            BackupAnomalyKind.UNKNOWN_CATALOGUE_ID to 90L,
+        )
     }
 }
