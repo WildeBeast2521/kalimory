@@ -789,6 +789,10 @@
     <string name="today_start_workout">Training starten</string>
     <string name="today_start_workout_detail">Wähle eine Übung, ein Programm oder ein Intervall.</string>
     <string name="today_week_summary">Diese Woche: %1$d von %2$d</string>
+    <string name="today_week_goal_met">Diese Woche: %1$d von %2$d. Ziel erreicht</string>
+    <string name="weekly_goal">Wochenziel</string>
+    <string name="weekly_goal_off">Aus</string>
+    <string name="weekly_goal_days">%1$d von 7 Tagen</string>
     <string name="today_done_title">Heute erledigt</string>
     <string name="today_see_progress">Fortschritt ansehen</string>
     <string name="first_day_of_week">Erster Tag der Woche</string>

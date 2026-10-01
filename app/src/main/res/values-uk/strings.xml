@@ -764,6 +764,10 @@
     <string name="today_start_workout">Почати тренування</string>
     <string name="today_start_workout_detail">Оберіть вправу, програму або інтервал.</string>
     <string name="today_week_summary">Цього тижня: %1$d з %2$d</string>
+    <string name="today_week_goal_met">Цього тижня: %1$d з %2$d. Мету досягнуто</string>
+    <string name="weekly_goal">Мета на тиждень</string>
+    <string name="weekly_goal_off">Вимк.</string>
+    <string name="weekly_goal_days">%1$d з 7 днів</string>
     <string name="today_done_title">Зроблено сьогодні</string>
     <string name="today_see_progress">Переглянути прогрес</string>
     <string name="first_day_of_week">Перший день тижня</string>

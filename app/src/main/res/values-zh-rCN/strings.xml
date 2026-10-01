@@ -763,6 +763,10 @@
     <string name="today_start_workout">开始训练</string>
     <string name="today_start_workout_detail">选择一个动作、计划或间歇训练。</string>
     <string name="today_week_summary">本周：%1$d / %2$d</string>
+    <string name="today_week_goal_met">本周：%1$d / %2$d，已达成目标</string>
+    <string name="weekly_goal">每周目标</string>
+    <string name="weekly_goal_off">关闭</string>
+    <string name="weekly_goal_days">每周 %1$d 天</string>
     <string name="today_done_title">今日完成</string>
     <string name="today_see_progress">查看进度</string>
     <string name="first_day_of_week">每周第一天</string>

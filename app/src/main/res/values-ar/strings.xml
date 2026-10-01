@@ -38,6 +38,10 @@
     <string name="today_start_workout">ابدأ تمرينًا</string>
     <string name="today_start_workout_detail">اختر تمرينًا أو برنامجًا أو فاصلًا زمنيًا.</string>
     <string name="today_week_summary">هذا الأسبوع: %1$d من %2$d</string>
+    <string name="today_week_goal_met">هذا الأسبوع: %1$d من %2$d. تحقّق الهدف</string>
+    <string name="weekly_goal">الهدف الأسبوعي</string>
+    <string name="weekly_goal_off">إيقاف</string>
+    <string name="weekly_goal_days">%1$d من 7 أيام</string>
     <string name="today_done_title">أُنجز اليوم</string>
     <string name="today_see_progress">عرض التقدم</string>
     <string name="first_day_of_week">أول يوم في الأسبوع</string>

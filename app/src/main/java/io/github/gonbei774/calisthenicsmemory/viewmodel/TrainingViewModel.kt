@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
+import io.github.gonbei774.calisthenicsmemory.data.ProgressionPreferences
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueAddResult
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueLibrary
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
@@ -225,6 +226,16 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     private val intervalProgramExerciseDao = database.intervalProgramExerciseDao()
     private val intervalRecordDao = database.intervalRecordDao()
     private val backupService = BackupService(database.backupDao())
+    private val progressionPrefs = ProgressionPreferences(application)
+
+    // Training days a week the user aims for; Today counts the week against it.
+    private val _weeklyGoal = MutableStateFlow(progressionPrefs.weeklyGoal())
+    val weeklyGoal: StateFlow<Int?> = _weeklyGoal.asStateFlow()
+
+    fun setWeeklyGoal(days: Int?) {
+        progressionPrefs.setWeeklyGoal(days)
+        _weeklyGoal.value = progressionPrefs.weeklyGoal()
+    }
 
     companion object {
         // お気に入りグループの固定キー（UI側で翻訳される）

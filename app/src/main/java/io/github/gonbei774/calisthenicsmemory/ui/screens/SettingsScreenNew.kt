@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.BuildConfig
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.ProgressionPreferences
 import io.github.gonbei774.calisthenicsmemory.data.AppLanguage
 import io.github.gonbei774.calisthenicsmemory.data.AppTheme
 import io.github.gonbei774.calisthenicsmemory.data.LanguagePreferences
@@ -432,6 +433,75 @@ fun SettingsScreenNew(
                                         RadioButton(selected = day == firstDayOfWeek, onClick = null)
                                         Spacer(modifier = Modifier.width(12.dp))
                                         Text(label)
+                                    }
+                                }
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = { showDialog = false }) { Text(stringResource(R.string.close)) }
+                        }
+                    )
+                }
+            }
+
+            // Weekly goal (ADR 0005, decision 6): training days a week, which Today counts against.
+            item {
+                var showDialog by remember { mutableStateOf(false) }
+                val weeklyGoal by viewModel.weeklyGoal.collectAsState()
+                @Composable
+                fun label(days: Int?) =
+                    if (days == null) stringResource(R.string.weekly_goal_off) else stringResource(R.string.weekly_goal_days, days)
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+                    shape = MaterialTheme.shapes.large,
+                    onClick = { showDialog = true }
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(AppIcons.Done, contentDescription = null, modifier = Modifier.size(32.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.weekly_goal),
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = label(weeklyGoal),
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                    }
+                }
+                if (showDialog) {
+                    val options: List<Int?> = listOf<Int?>(null) + ProgressionPreferences.WEEKLY_GOAL_RANGE
+                    AlertDialog(
+                        onDismissRequest = { showDialog = false },
+                        title = { Text(stringResource(R.string.weekly_goal), fontWeight = FontWeight.Bold) },
+                        text = {
+                            Column {
+                                options.forEach { days ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                viewModel.setWeeklyGoal(days)
+                                                showDialog = false
+                                            }
+                                            .padding(vertical = 12.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        RadioButton(selected = days == weeklyGoal, onClick = null)
+                                        Spacer(modifier = Modifier.width(12.dp))
+                                        Text(label(days))
                                     }
                                 }
                             }

@@ -828,6 +828,10 @@
     <string name="today_start_workout">トレーニングを始める</string>
     <string name="today_start_workout_detail">種目、プログラム、インターバルを選びましょう。</string>
     <string name="today_week_summary">今週: %2$d日中%1$d日</string>
+    <string name="today_week_goal_met">今週: %2$d日中%1$d日。目標達成</string>
+    <string name="weekly_goal">週の目標</string>
+    <string name="weekly_goal_off">オフ</string>
+    <string name="weekly_goal_days">週%1$d日</string>
     <string name="today_done_title">今日の記録</string>
     <string name="today_see_progress">進捗を見る</string>
     <string name="first_day_of_week">週の始まり</string>
