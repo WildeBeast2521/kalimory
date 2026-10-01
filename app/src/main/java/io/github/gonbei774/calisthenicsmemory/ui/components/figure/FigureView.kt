@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -27,6 +28,7 @@ import io.github.gonbei774.calisthenicsmemory.data.figure.FigureCamera
 import io.github.gonbei774.calisthenicsmemory.data.figure.FigureMotion
 import io.github.gonbei774.calisthenicsmemory.data.figure.Joint
 import io.github.gonbei774.calisthenicsmemory.data.figure.Projected
+import io.github.gonbei774.calisthenicsmemory.data.figure.Prop
 import io.github.gonbei774.calisthenicsmemory.data.figure.SkeletonSolver
 import io.github.gonbei774.calisthenicsmemory.data.figure.SolvedSkeleton
 import io.github.gonbei774.calisthenicsmemory.data.figure.Vec3
@@ -72,9 +74,10 @@ fun FigureView(
     val red = MaterialTheme.colorScheme.error
     val colors = FigureColors(body, background, shadow, red, red.copy(alpha = 0.45f).compositeOver(body))
 
-    Canvas(modifier) {
+    // Framed on the figure; large props such as a wall are cut at the edges.
+    Canvas(modifier.clipToBounds()) {
         val pose = progress?.let(motion::poseAt) ?: motion.stillPose
-        drawFigure(SkeletonSolver.solve(pose), camera, bounds, colors, primary, secondary)
+        drawFigure(SkeletonSolver.solve(pose), camera, bounds, colors, primary, secondary, motion.props)
     }
 }
 
@@ -134,6 +137,7 @@ private fun DrawScope.drawFigure(
     colors: FigureColors,
     primary: Set<Muscle>,
     secondary: Set<Muscle>,
+    props: List<Prop>,
 ) {
     val scale = min(size.width / (bounds.maxX - bounds.minX), size.height / (bounds.maxY - bounds.minY))
     val offsetX = (size.width - (bounds.maxX - bounds.minX) * scale) / 2
@@ -148,6 +152,9 @@ private fun DrawScope.drawFigure(
         val b = skeleton[s.to]
         capsule(screen(Vec3(a.x, 0f, a.z)), screen(Vec3(b.x, 0f, b.z)), s.fromRadius * scale * 1.2f, s.toRadius * scale * 1.2f, floorShade)
     }
+
+    // Equipment first: the figure leans on it or stands on it, so it sits behind.
+    props.forEach { prop -> drawProp(prop, camera, ::screen, colors) }
 
     val muscles = FigureMuscles.place(skeleton) { from, to ->
         segments.first { it.from == from && it.to == to }.let { it.fromRadius to it.toRadius }
@@ -194,6 +201,28 @@ private fun DrawScope.drawFigure(
             val halfWidth = radius * placed.shape.width * scale * (0.3f + 0.7f * facing) * 0.85f
             lens(screen(placed.start), screen(placed.end), halfWidth, shade(base, depth), shade(lerp(colors.body, colors.shadow, 0.25f), depth))
         }
+    }
+}
+
+/** A box seen from the camera: only the faces turned towards the viewer, lit from above. */
+private fun DrawScope.drawProp(prop: Prop, camera: FigureCamera, screen: (Vec3) -> Offset, colors: FigureColors) {
+    val (a, b) = prop.min to prop.max
+    fun corner(x: Boolean, y: Boolean, z: Boolean) = Vec3(if (x) b.x else a.x, if (y) b.y else a.y, if (z) b.z else a.z)
+    val faces = listOf(
+        Vec3.UP to listOf(corner(false, true, false), corner(true, true, false), corner(true, true, true), corner(false, true, true)),
+        Vec3.FORWARD to listOf(corner(false, false, true), corner(true, false, true), corner(true, true, true), corner(false, true, true)),
+        Vec3.BACK to listOf(corner(false, false, false), corner(true, false, false), corner(true, true, false), corner(false, true, false)),
+        Vec3.RIGHT to listOf(corner(true, false, false), corner(true, false, true), corner(true, true, true), corner(true, true, false)),
+        Vec3.RIGHT * -1f to listOf(corner(false, false, false), corner(false, false, true), corner(false, true, true), corner(false, true, false)),
+    )
+    val toward = camera.towardViewer
+    faces.filter { (normal, _) -> normal.dot(toward) > 0f }.forEach { (normal, corners) ->
+        val light = if (normal == Vec3.UP) 0.18f else 0.32f
+        val path = Path().apply {
+            corners.map(screen).forEachIndexed { i, p -> if (i == 0) moveTo(p.x, p.y) else lineTo(p.x, p.y) }
+            close()
+        }
+        drawPath(path, lerp(colors.background, colors.shadow, light))
     }
 }
 

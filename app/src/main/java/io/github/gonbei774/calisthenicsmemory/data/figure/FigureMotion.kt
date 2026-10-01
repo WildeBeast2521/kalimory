@@ -3,6 +3,9 @@ package io.github.gonbei774.calisthenicsmemory.data.figure
 import kotlin.math.cos
 import kotlin.math.PI
 
+/** Equipment the figure uses, such as a bench or a wall: a box between two opposite corners. */
+data class Prop(val min: Vec3, val max: Vec3)
+
 /** A pose at a point in the loop, from 0 (start) to 1 (end, which should match the start). */
 data class Keyframe(val at: Float, val pose: FigurePose)
 
@@ -14,6 +17,10 @@ data class FigureMotion(
     val keyframes: List<Keyframe>,
     val durationMillis: Int,
     val camera: FigureCamera = FigureCamera(),
+    /** Where in the loop the hardest point is, shown when animations are off. */
+    val stillAt: Float = 0.5f,
+    /** The bench, wall or bar the motion uses, drawn behind the figure. */
+    val props: List<Prop> = emptyList(),
 ) {
     init {
         require(keyframes.size >= 2) { "A motion needs at least two keyframes" }
@@ -32,7 +39,7 @@ data class FigureMotion(
     }
 
     /** The pose shown when animations are off: the hardest point of the movement. */
-    val stillPose: FigurePose get() = keyframes[keyframes.size / 2].pose
+    val stillPose: FigurePose get() = poseAt(stillAt)
 
     companion object {
         /** Slow at both ends, like a controlled repetition. */
