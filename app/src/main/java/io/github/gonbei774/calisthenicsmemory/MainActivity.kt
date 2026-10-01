@@ -68,6 +68,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.navigation.screenTransition
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.tabTransition
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
 import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.CatalogueChainScreen
+import io.github.gonbei774.calisthenicsmemory.ui.screens.figure.FigurePreviewScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.CatalogueScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.library.LibraryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.ResumableWorkout
@@ -319,7 +320,7 @@ fun CalisthenicsMemoryApp(
         Screen.Home -> null
         Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList, Screen.Catalogue -> Screen.Home
         is Screen.CatalogueChain -> if (screen.fromHome) Screen.Home else Screen.Catalogue
-        Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub -> Screen.Settings
+        Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub, Screen.FigurePreview -> Screen.Settings
         Screen.CommunityShareExport -> Screen.ShareHub
         is Screen.Record -> if (screen.fromToDo) Screen.ToDo else Screen.Home
         is Screen.ProgramEdit -> Screen.ProgramList
@@ -513,6 +514,7 @@ fun CalisthenicsMemoryApp(
                             onNavigateBack = { currentScreen = Screen.Home },
                             onNavigateToLicenses = { currentScreen = Screen.Licenses },
                             onOpenWelcomeGuide = { showWelcome = true },
+                            onOpenFigurePreview = { currentScreen = Screen.FigurePreview },
                             onNavigateToBackup = { currentScreen = Screen.Backup },
                             onNavigateToCsvDataManagement = { currentScreen = Screen.CsvDataManagement },
                             onNavigateToShareHub = { currentScreen = Screen.ShareHub },
@@ -549,6 +551,9 @@ fun CalisthenicsMemoryApp(
                             fromToDo = workoutScreen.fromToDo,
                             suggestedTarget = workoutScreen.suggestedTarget
                         )
+                    }
+                    is Screen.FigurePreview -> {
+                        FigurePreviewScreen(onNavigateBack = { currentScreen = Screen.Settings })
                     }
                     is Screen.Catalogue -> {
                         CatalogueScreen(
@@ -706,6 +711,8 @@ sealed class Screen {
     object ShareHub : Screen()
     data class WorkoutSummary(val sessionId: Long) : Screen()
     object Catalogue : Screen()
+    // Debug builds only: the demonstration figure's authoring screen.
+    object FigurePreview : Screen()
     // fromHome: opened from Today or Progressions, so back returns there.
     data class CatalogueChain(val chainId: String, val fromHome: Boolean = false) : Screen()
 }
@@ -780,6 +787,7 @@ private val ScreenSaver = mapSaver(
                     put("sessionId", screen.sessionId)
                 }
                 Screen.Catalogue -> put("type", "Catalogue")
+                Screen.FigurePreview -> put("type", "FigurePreview")
                 is Screen.CatalogueChain -> {
                     put("type", "CatalogueChain")
                     put("chainId", screen.chainId)
@@ -831,6 +839,7 @@ private val ScreenSaver = mapSaver(
             "ShareHub" -> Screen.ShareHub
             "WorkoutSummary" -> Screen.WorkoutSummary(map["sessionId"] as Long)
             "Catalogue" -> Screen.Catalogue
+            "FigurePreview" -> Screen.FigurePreview
             "CatalogueChain" -> Screen.CatalogueChain(map["chainId"] as String, map["fromHome"] as? Boolean ?: false)
             else -> Screen.Home
         }

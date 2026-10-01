@@ -24,7 +24,7 @@ internal fun Screen.depth(): Int = when (this) {
     is Screen.ProgramExecution -> if (fromToday) 1 else 2
     is Screen.IntervalExecution -> if (fromToday) 1 else 2
     is Screen.ProgramEdit, is Screen.IntervalEdit,
-    Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub -> 2
+    Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub, Screen.FigurePreview -> 2
     Screen.CommunityShareExport -> 3
     // Always deeper than where the workout returned, so it slides in and Done slides back.
     is Screen.WorkoutSummary -> 4

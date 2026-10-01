@@ -21,9 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
-import io.github.gonbei774.calisthenicsmemory.BuildConfig
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.semantics.Role
+import io.github.gonbei774.calisthenicsmemory.BuildConfig
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.ProgressionPreferences
 import io.github.gonbei774.calisthenicsmemory.data.AppLanguage
@@ -44,6 +44,7 @@ fun SettingsScreenNew(
     onNavigateBack: () -> Unit,
     onNavigateToLicenses: () -> Unit = {},
     onOpenWelcomeGuide: () -> Unit = {},
+    onOpenFigurePreview: () -> Unit = {},
     onNavigateToBackup: () -> Unit = {},
     onNavigateToCsvDataManagement: () -> Unit = {},
     onNavigateToShareHub: () -> Unit = {},
@@ -1230,6 +1231,20 @@ fun SettingsScreenNew(
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
+                        }
+
+                        // Debug builds only: the demonstration figure's authoring screen (ADR 0008).
+                        if (BuildConfig.DEBUG) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { onOpenFigurePreview() },
+                                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(AppIcons.Exercise, contentDescription = null, modifier = Modifier.size(20.dp))
+                                Text(text = "Figure preview (debug)", fontSize = 16.sp, color = MaterialTheme.colorScheme.onSurface)
+                            }
                         }
                     }
                 }
