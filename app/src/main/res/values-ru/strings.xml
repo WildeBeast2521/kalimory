@@ -143,6 +143,16 @@
     <string name="weekly_goal">Цель на неделю</string>
     <string name="weekly_goal_off">Выкл.</string>
     <string name="weekly_goal_days">%1$d из 7 дней</string>
+    <string name="today_suggested_title">Предложено на сегодня</string>
+    <string name="suggestion_target">%1$s, цель %2$s</string>
+    <string name="suggestion_first">Первая тренировка на этом шаге</string>
+    <string name="suggestion_last">В прошлый раз: %1$s</string>
+    <string name="suggestion_next_step">Новый шаг: вы выполнили норматив предыдущего</string>
+    <string name="suggestion_add_next">Готовы к этому шагу. Добавьте его из каталога</string>
+    <string name="suggestion_easier">Застряли? %1$s — более лёгкий вариант</string>
+    <string name="suggestion_dismiss">Не сегодня</string>
+    <string name="settings_suggestions">Предложения на экране «Сегодня»</string>
+    <string name="settings_suggestions_description">Предлагает, что тренировать дальше, по вашим прогрессиям. Ничего не меняется, пока вы сами не начнёте.</string>
     <string name="today_done_title">Сделано сегодня</string>
     <string name="today_see_progress">Смотреть прогресс</string>
     <string name="first_day_of_week">Первый день недели</string>

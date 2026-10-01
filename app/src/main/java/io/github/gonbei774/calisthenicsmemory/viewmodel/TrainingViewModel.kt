@@ -237,6 +237,26 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         _weeklyGoal.value = progressionPrefs.weeklyGoal()
     }
 
+    // Today's suggestions (ADR 0005, decision 5): shown unless turned off; dismissed chains wait for tomorrow.
+    private val _showSuggestions = MutableStateFlow(progressionPrefs.showSuggestions())
+    val showSuggestions: StateFlow<Boolean> = _showSuggestions.asStateFlow()
+
+    fun setShowSuggestions(show: Boolean) {
+        progressionPrefs.setShowSuggestions(show)
+        _showSuggestions.value = show
+    }
+
+    // Bumped on each dismissal so Today reads the dismissed chains for its own date again.
+    private val _dismissals = MutableStateFlow(0)
+    val dismissals: StateFlow<Int> = _dismissals.asStateFlow()
+
+    fun dismissedChains(date: java.time.LocalDate): Set<String> = progressionPrefs.dismissedChains(date.toString())
+
+    fun dismissSuggestion(date: java.time.LocalDate, chainId: String) {
+        progressionPrefs.dismissChain(date.toString(), chainId)
+        _dismissals.value++
+    }
+
     companion object {
         // お気に入りグループの固定キー（UI側で翻訳される）
         const val FAVORITE_GROUP_KEY = "★FAVORITES"

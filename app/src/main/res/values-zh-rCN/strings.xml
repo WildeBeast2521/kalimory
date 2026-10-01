@@ -767,6 +767,16 @@
     <string name="weekly_goal">每周目标</string>
     <string name="weekly_goal_off">关闭</string>
     <string name="weekly_goal_days">每周 %1$d 天</string>
+    <string name="today_suggested_title">今日建议</string>
+    <string name="suggestion_target">%1$s，目标 %2$s</string>
+    <string name="suggestion_first">这一步的第一次训练</string>
+    <string name="suggestion_last">上次：%1$s</string>
+    <string name="suggestion_next_step">新的一步：你已达到上一步的标准</string>
+    <string name="suggestion_add_next">可以开始这一步了。请从目录中添加</string>
+    <string name="suggestion_easier">遇到瓶颈？%1$s 是更简单的选择</string>
+    <string name="suggestion_dismiss">今天不练</string>
+    <string name="settings_suggestions">在“今天”显示建议</string>
+    <string name="settings_suggestions_description">根据你的进阶建议接下来练什么。除非你开始，否则不会改变任何内容。</string>
     <string name="today_done_title">今日完成</string>
     <string name="today_see_progress">查看进度</string>
     <string name="first_day_of_week">每周第一天</string>

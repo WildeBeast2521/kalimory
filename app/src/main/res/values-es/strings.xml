@@ -821,6 +821,16 @@
     <string name="weekly_goal">Objetivo semanal</string>
     <string name="weekly_goal_off">Desactivado</string>
     <string name="weekly_goal_days">%1$d de 7 días</string>
+    <string name="today_suggested_title">Sugerido hoy</string>
+    <string name="suggestion_target">%1$s, objetivo %2$s</string>
+    <string name="suggestion_first">Primera sesión en este paso</string>
+    <string name="suggestion_last">La última vez: %1$s</string>
+    <string name="suggestion_next_step">Paso nuevo: cumpliste el estándar del anterior</string>
+    <string name="suggestion_add_next">Listo para este paso. Añádelo desde el catálogo</string>
+    <string name="suggestion_easier">¿Estancado? %1$s es una opción más fácil</string>
+    <string name="suggestion_dismiss">Hoy no</string>
+    <string name="settings_suggestions">Sugerencias en Hoy</string>
+    <string name="settings_suggestions_description">Sugiere qué entrenar a continuación según tus progresiones. Nada cambia a menos que lo inicies.</string>
     <string name="today_done_title">Hecho hoy</string>
     <string name="today_see_progress">Ver progreso</string>
     <string name="first_day_of_week">Primer día de la semana</string>
