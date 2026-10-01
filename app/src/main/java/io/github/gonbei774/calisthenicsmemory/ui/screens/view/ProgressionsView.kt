@@ -34,10 +34,12 @@ internal fun LazyListScope.progressionsSection(
     progressions: List<ChainProgress>,
     onOpenChain: (String) -> Unit,
     onOpenCatalogue: () -> Unit,
+    // Steps are in the library, but the user stopped following all their chains.
+    allUnfollowed: Boolean = false,
 ) {
     item { ProgressionsHeading(stringResource(R.string.progressions_yours)) }
     if (progressions.isEmpty()) {
-        item { EmptyProgressions(onOpenCatalogue) }
+        item { EmptyProgressions(allUnfollowed, onOpenCatalogue) }
     } else {
         items(progressions, key = { it.chain.id }) { progress ->
             ChainCard(progress) { onOpenChain(progress.chain.id) }
@@ -57,11 +59,11 @@ private fun ProgressionsHeading(text: String) {
 }
 
 @Composable
-private fun EmptyProgressions(onOpenCatalogue: () -> Unit) {
+private fun EmptyProgressions(allUnfollowed: Boolean, onOpenCatalogue: () -> Unit) {
     Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceContainerLow) {
         Column(Modifier.fillMaxWidth().padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
             Text(
-                stringResource(R.string.progressions_empty),
+                stringResource(if (allUnfollowed) R.string.progressions_none_followed else R.string.progressions_empty),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface,
             )

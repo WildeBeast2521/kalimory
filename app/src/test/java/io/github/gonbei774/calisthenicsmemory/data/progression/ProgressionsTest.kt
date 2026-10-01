@@ -91,4 +91,9 @@ class ProgressionsTest {
         val result = Progressions.chains(listOf(exercise(1, oneArm.id)), emptyList()).single()
         assertNull(result.next)
     }
+
+    @Test fun `a chain the user stopped following is left out`() {
+        val exercises = listOf(exercise(1, chinUp.id), exercise(2, "push.full"))
+        assertEquals(listOf("push"), Progressions.chains(exercises, emptyList(), unfollowed = setOf("pull")).map { it.chain.id })
+    }
 }

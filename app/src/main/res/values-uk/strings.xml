@@ -891,6 +891,8 @@
     <string name="catalogue_needs">Потрібно</string>
     <string name="catalogue_no_equipment">Без інвентарю</string>
     <string name="catalogue_how_to">Як виконувати</string>
+    <string name="catalogue_follow">Стежити за цією прогресією</string>
+    <string name="catalogue_follow_description">Показувати її в «Прогресіях» і в пропозиціях на екрані «Сьогодні»</string>
     <string name="standard_reps">%1$d × %2$d</string>
     <string name="standard_seconds">%1$d × %2$d с</string>
     <string name="muscle_abdominals">Прес</string>
@@ -922,6 +924,7 @@
     <string name="progressions_yours">Ваші прогресії</string>
     <string name="progressions_targets">Цілі</string>
     <string name="progressions_empty">Додайте крок із каталогу вправ, щоб стежити тут за прогресією.</string>
+    <string name="progressions_none_followed">Ви не стежите за жодною прогресією. Відкрийте її в каталозі, щоб знову стежити.</string>
     <string name="progressions_browse">Переглянути каталог</string>
     <string name="progressions_step_of">Крок %1$d з %2$d</string>
     <string name="progressions_not_trained">Ще не тренувалися</string>

@@ -941,6 +941,8 @@
     <string name="catalogue_needs">Necesita</string>
     <string name="catalogue_no_equipment">Sin equipo</string>
     <string name="catalogue_how_to">Cómo hacerlo</string>
+    <string name="catalogue_follow">Seguir esta progresión</string>
+    <string name="catalogue_follow_description">Mostrarla en Progresiones y en las sugerencias de Hoy</string>
     <string name="standard_reps">%1$d × %2$d</string>
     <string name="standard_seconds">%1$d × %2$d s</string>
     <string name="muscle_abdominals">Abdominales</string>
@@ -972,6 +974,7 @@
     <string name="progressions_yours">Tus progresiones</string>
     <string name="progressions_targets">Objetivos</string>
     <string name="progressions_empty">Añade un paso del catálogo de ejercicios para seguir aquí su progresión.</string>
+    <string name="progressions_none_followed">No sigues ninguna progresión. Abre una en el catálogo para volver a seguirla.</string>
     <string name="progressions_browse">Explorar el catálogo</string>
     <string name="progressions_step_of">Paso %1$d de %2$d</string>
     <string name="progressions_not_trained">Aún sin entrenar</string>

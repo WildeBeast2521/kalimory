@@ -887,6 +887,8 @@
     <string name="catalogue_needs">Serve</string>
     <string name="catalogue_no_equipment">Nessuna attrezzatura</string>
     <string name="catalogue_how_to">Come si fa</string>
+    <string name="catalogue_follow">Segui questa progressione</string>
+    <string name="catalogue_follow_description">Mostrala in Progressioni e nei suggerimenti di Oggi</string>
     <string name="standard_reps">%1$d × %2$d</string>
     <string name="standard_seconds">%1$d × %2$d s</string>
     <string name="muscle_abdominals">Addominali</string>
@@ -918,6 +920,7 @@
     <string name="progressions_yours">Le tue progressioni</string>
     <string name="progressions_targets">Obiettivi</string>
     <string name="progressions_empty">Aggiungi un passo dal catalogo degli esercizi per seguirne qui la progressione.</string>
+    <string name="progressions_none_followed">Non segui nessuna progressione. Aprine una nel catalogo per seguirla di nuovo.</string>
     <string name="progressions_browse">Sfoglia il catalogo</string>
     <string name="progressions_step_of">Passo %1$d di %2$d</string>
     <string name="progressions_not_trained">Non ancora allenato</string>

@@ -47,6 +47,7 @@ object Suggestions {
         exercises: List<Exercise>,
         history: List<HistorySet>,
         dismissedChains: Set<String> = emptySet(),
+        unfollowedChains: Set<String> = emptySet(),
     ): List<Suggestion> {
         val progressions = Progressions.chains(exercises, history)
         val byCatalogId = exercises.filter { it.catalogId != null }.associateBy { it.catalogId!! }
@@ -65,7 +66,8 @@ object Suggestions {
             .toSet()
 
         return progressions
-            .filter { it.chain.id !in dismissedChains && it.chain.pattern !in restingPatterns }
+            // Training in a chain no longer followed still rests its movement pattern.
+            .filter { it.chain.id !in dismissedChains && it.chain.id !in unfollowedChains && it.chain.pattern !in restingPatterns }
             .sortedWith(compareBy(nullsFirst()) { lastTrained[it.chain.id] })
             .map { suggest(it, byCatalogId, historyByExercise) }
     }

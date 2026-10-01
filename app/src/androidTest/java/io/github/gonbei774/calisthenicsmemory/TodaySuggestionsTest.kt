@@ -3,6 +3,7 @@ package io.github.gonbei774.calisthenicsmemory
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasAnySibling
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasSetTextAction
@@ -19,6 +20,7 @@ import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgressionPreferences
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -63,6 +65,7 @@ class TodaySuggestionsTest {
         if (::scenario.isInitialized) scenario.close()
         database.exerciseDao().deleteExerciseAndTodoTasks(database.exerciseDao().getExerciseById(exerciseId)!!)
         prefs.setShowSuggestions(true)
+        prefs.setFollowed(step.chainId, true)
         context.getSharedPreferences("progression_preferences", 0).edit().remove("dismissed_date").remove("dismissed_chains").commit()
     }
 
@@ -104,6 +107,29 @@ class TodaySuggestionsTest {
         rule.onAllNodes(hasSetTextAction() and hasText("25")).assertCountEquals(0)
         rule.onAllNodes(hasSetTextAction() and hasText("${step.working.sets}")).fetchSemanticsNodes().isNotEmpty().let(::assertTrue)
         rule.onAllNodes(hasSetTextAction() and hasText("${step.working.value}")).fetchSemanticsNodes().isNotEmpty().let(::assertTrue)
+    }
+
+    @Test
+    fun unfollowingTheChainInTheCatalogueStopsItsSuggestion() {
+        launch()
+        scrollTo(exerciseName)
+        rule.onNode(hasText(text(PrimaryDestination.LIBRARY.label)) and hasClickAction()).performClick()
+        rule.onNodeWithText(text(R.string.library_catalogue)).performClick()
+        rule.onNode(hasScrollAction()).performScrollToNode(hasText(text(Catalogue.chain(step.chainId)!!.name)))
+        rule.onNodeWithText(text(Catalogue.chain(step.chainId)!!.name)).performClick()
+        rule.onNodeWithText(text(R.string.catalogue_follow)).performClick()
+        assertTrue(step.chainId in prefs.unfollowedChains())
+
+        // Back to Library, then Today.
+        repeat(2) {
+            scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+            rule.waitForIdle()
+        }
+        val today = hasText(text(PrimaryDestination.TODAY.label)) and hasClickAction()
+        rule.waitUntil(TIMEOUT_MS) { rule.onAllNodes(today).fetchSemanticsNodes().isNotEmpty() }
+        rule.onNode(today).performClick()
+        rule.waitForIdle()
+        rule.onNodeWithText(exerciseName).assertDoesNotExist()
     }
 
     @Test
