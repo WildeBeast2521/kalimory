@@ -41,7 +41,9 @@ data class ShareExercise(
     val distanceTrackingEnabled: Boolean = false,
     val weightTrackingEnabled: Boolean = false,
     val assistanceTrackingEnabled: Boolean = false,
-    val description: String? = null
+    val description: String? = null,
+    /** The catalogue step it is linked to (ADR 0007); older apps ignore it. */
+    val catalogId: String? = null
 )
 
 @Serializable
@@ -109,6 +111,8 @@ private const val MAX_DESCRIPTION_LENGTH = 60
 private const val MAX_NUMERIC_VALUE = 999
 private val VALID_EXERCISE_TYPES = setOf("Dynamic", "Isometric")
 private val VALID_LATERALITY = setOf("Bilateral", "Unilateral")
+private const val MAX_CATALOG_ID_LENGTH = 64
+private val CATALOG_ID_PATTERN = Regex("^[a-z0-9_]+\\.[a-z0-9_]+$")
 
 fun validateCommunityShareContent(data: CommunityShareData): List<String> {
     val errors = mutableListOf<String>()
@@ -139,6 +143,7 @@ fun validateCommunityShareContent(data: CommunityShareData): List<String> {
 
     // 種目のバリデーション
     val exerciseKeys = mutableSetOf<String>()
+    val catalogIds = mutableSetOf<String>()
     content.exercises.forEachIndexed { index, exercise ->
         if (exercise.name.isBlank()) {
             errors.add("exercises[$index]: name is empty")
@@ -170,6 +175,14 @@ fun validateCommunityShareContent(data: CommunityShareData): List<String> {
         exercise.repDuration?.let {
             if (it <= 0 || it > MAX_NUMERIC_VALUE) {
                 errors.add("exercises[$index]: repDuration out of range (1-$MAX_NUMERIC_VALUE)")
+            }
+        }
+        // A step id from a newer catalogue is kept; a malformed or repeated one is not.
+        exercise.catalogId?.let {
+            if (it.length > MAX_CATALOG_ID_LENGTH || !CATALOG_ID_PATTERN.matches(it)) {
+                errors.add("exercises[$index]: invalid catalogId '$it'")
+            } else if (!catalogIds.add(it)) {
+                errors.add("exercises[$index]: duplicate catalogId '$it'")
             }
         }
         // グループ参照チェック
