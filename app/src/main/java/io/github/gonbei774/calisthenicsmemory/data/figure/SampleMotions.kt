@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.data.figure
 
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -60,5 +61,11 @@ object SampleMotions {
         )
     }
 
-    val all: List<Pair<String, FigureMotion>> = listOf("Squat" to squat, "Push-up" to pushUp)
+    /** A sample with the muscles it works, as a catalogue step would give them. */
+    data class Sample(val name: String, val motion: FigureMotion, val primary: Set<Muscle>, val secondary: Set<Muscle>)
+
+    val all: List<Sample> = listOf(
+        Sample("Squat", squat, setOf(Muscle.QUADRICEPS, Muscle.GLUTES), setOf(Muscle.HAMSTRINGS, Muscle.CALVES, Muscle.LOWER_BACK)),
+        Sample("Push-up", pushUp, setOf(Muscle.CHEST, Muscle.TRICEPS), setOf(Muscle.SHOULDERS, Muscle.ABDOMINALS)),
+    )
 }

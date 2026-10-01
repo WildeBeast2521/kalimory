@@ -25,6 +25,10 @@ data class FigureCamera(val yaw: Float = DEFAULT_YAW, val pitch: Float = DEFAULT
         return Projected(-x1, y2, z2)
     }
 
+    /** The world direction pointing from the figure towards the viewer; surfaces facing it are seen. */
+    val towardViewer: Vec3
+        get() = Vec3(-sin(yaw.rad()) * cos(pitch.rad()), sin(pitch.rad()), cos(yaw.rad()) * cos(pitch.rad()))
+
     companion object {
         const val DEFAULT_YAW = 35f
         const val DEFAULT_PITCH = 12f

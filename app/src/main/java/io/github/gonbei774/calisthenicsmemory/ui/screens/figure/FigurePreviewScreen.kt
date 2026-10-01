@@ -41,7 +41,8 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 @Composable
 fun FigurePreviewScreen(onNavigateBack: () -> Unit) {
     var selected by remember { mutableIntStateOf(0) }
-    val motion = SampleMotions.all[selected].second
+    val sample = SampleMotions.all[selected]
+    val motion = sample.motion
     var yaw by remember(selected) { mutableFloatStateOf(motion.camera.yaw) }
     var pitch by remember(selected) { mutableFloatStateOf(motion.camera.pitch) }
     var playing by remember { mutableStateOf(true) }
@@ -54,13 +55,15 @@ fun FigurePreviewScreen(onNavigateBack: () -> Unit) {
             Text("Figure preview", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)
         }
         Row(Modifier.padding(horizontal = Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-            SampleMotions.all.forEachIndexed { index, (name, _) ->
-                FilterChip(selected = index == selected, onClick = { selected = index }, label = { Text(name) })
+            SampleMotions.all.forEachIndexed { index, item ->
+                FilterChip(selected = index == selected, onClick = { selected = index }, label = { Text(item.name) })
             }
         }
         FigureView(
             motion,
             Modifier.fillMaxWidth().weight(1f).padding(Spacing.l),
+            primary = sample.primary,
+            secondary = sample.secondary,
             playing = playing,
             camera = motion.camera.copy(yaw = yaw, pitch = pitch),
         )
