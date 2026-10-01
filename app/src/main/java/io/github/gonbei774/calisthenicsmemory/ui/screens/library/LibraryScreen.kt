@@ -27,19 +27,24 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.RowGroup
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.ShapeBadge
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
-/** User-owned definitions (ADR 0001): exercises and groups, programs, intervals, and settings. */
+/**
+ * User-owned definitions (ADR 0001): exercises and groups, programs, intervals, the built-in
+ * catalogue to add from, and settings.
+ */
 @Composable
 fun LibraryScreen(
     viewModel: TrainingViewModel,
     onOpenExercises: () -> Unit,
     onOpenPrograms: () -> Unit,
     onOpenIntervals: () -> Unit,
+    onOpenCatalogue: () -> Unit,
     onOpenSettings: () -> Unit,
 ) {
     val exercises by viewModel.exercises.collectAsState()
@@ -64,6 +69,9 @@ fun LibraryScreen(
             LibraryRow(AppIcons.Exercise, stringResource(R.string.library_exercises), exercises.size, onOpenExercises)
             LibraryRow(AppIcons.Program, stringResource(R.string.program_list_title), programs.size, onOpenPrograms)
             LibraryRow(AppIcons.Interval, stringResource(R.string.interval_list_title), intervalPrograms.size, onOpenIntervals)
+        }
+        RowGroup {
+            LibraryRow(AppIcons.List, stringResource(R.string.library_catalogue), Catalogue.steps.size, onOpenCatalogue)
         }
         RowGroup {
             LibraryRow(AppIcons.Settings, stringResource(R.string.settings), null, onOpenSettings)

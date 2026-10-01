@@ -4,6 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueAddResult
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueLibrary
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStepText
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.Program
@@ -297,6 +301,22 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             UiMessage.BackupSaved
         } else {
             UiMessage.BackupFailed
+        }
+    }
+
+    /** Adds a catalogue step to the library, or links the user's exercise of the same name (ADR 0007). */
+    fun addFromCatalogue(step: CatalogueStep, name: String, description: String, chainName: String) {
+        viewModelScope.launch {
+            _snackbarMessage.value = try {
+                when (CatalogueLibrary.add(database, step, CatalogueStepText(name, description, chainName))) {
+                    is CatalogueAddResult.Added -> UiMessage.CatalogueAdded(name)
+                    is CatalogueAddResult.Linked -> UiMessage.CatalogueLinked(name)
+                    is CatalogueAddResult.NameTaken -> UiMessage.CatalogueNameTaken(name)
+                    is CatalogueAddResult.AlreadyInLibrary -> return@launch
+                }
+            } catch (e: Exception) {
+                UiMessage.ErrorOccurred
+            }
         }
     }
 

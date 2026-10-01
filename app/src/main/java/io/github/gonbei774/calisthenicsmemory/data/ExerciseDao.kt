@@ -15,6 +15,13 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercises WHERE name = :name AND type = :type LIMIT 1")
     suspend fun getExerciseByNameAndType(name: String, type: String): Exercise?
 
+    /** Same name ignoring ASCII case, as adding an exercise checks for duplicates. */
+    @Query("SELECT * FROM exercises WHERE name = :name COLLATE NOCASE AND type = :type ORDER BY id LIMIT 1")
+    suspend fun findExerciseByNameIgnoringCase(name: String, type: String): Exercise?
+
+    @Query("SELECT * FROM exercises WHERE catalogId = :catalogId LIMIT 1")
+    suspend fun getExerciseByCatalogId(catalogId: String): Exercise?
+
     @Query("SELECT * FROM exercises WHERE `group` = :groupName ORDER BY displayOrder ASC")
     suspend fun getExercisesByGroup(groupName: String): List<Exercise>
 
