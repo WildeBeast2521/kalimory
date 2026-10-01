@@ -30,3 +30,6 @@ CLAUDE.md
 
 # 開発用ドキュメント・テストデータ（非公開）
 dev-docs/
+# Python bytecode from the generator scripts
+__pycache__/
+*.pyc

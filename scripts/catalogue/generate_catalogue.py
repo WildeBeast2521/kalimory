@@ -86,8 +86,9 @@ open(xml, "w").write('''<?xml version="1.0" encoding="utf-8"?>
 <!--
     The built-in exercise catalogue (ADR 0006), written for this project. Each step has a name, a
     description (_desc) and form cues, one per line (_cues). Generated with Catalogue.kt by scripts/catalogue/generate_catalogue.py.
-    Translations follow in their own change, so missing translations are allowed here until then.
+    Translations are written by hand in res/values-*/catalogue_strings.xml. When an entry here is
+    added or changed, update every translation too; CatalogueTranslationTest checks they match.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+<resources>
 ''' + "\n".join(strings) + "\n</resources>\n")
 print("steps", sum(len(c[3]) for c in CHAINS), "strings", len(strings))

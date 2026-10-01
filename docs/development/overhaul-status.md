@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-01, at PR #95.
+Last reviewed: 2026-10-01, at PR #96.
 
 ## Where things stand
 
@@ -114,7 +114,8 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
      - Done in PR #89: 9 chains and 53 steps (push-up, handstand push-up, dip, pull-up, row, squat, hip hinge, core, leg raise), generated from `scripts/catalogue/catalogue_spec.py`.
      - Every step has a difficulty, working and move-on standards, muscles, equipment, a description and cues, all in our own words.
      - `CatalogueTest` enforces the ADR 0006 rules. Backups report `UNKNOWN_CATALOGUE_ID`.
-     - English only so far: `catalogue_strings.xml` allows missing translations until the translation slice.
+     - Translated in PR #96 into all nine other languages (`res/values-*/catalogue_strings.xml`, written by hand). The missing-translation allowance is gone, and `CatalogueTranslationTest` checks that every locale has every string, with the same number of cue lines. The generator only writes English, so a changed entry must be updated in each locale too.
+     - These translations were written without a native speaker's review; Weblate contributors can improve them.
   3. Progressions screen in place of Challenge, and "add from catalogue": done.
      - Done in PR #90: Library has an "Exercise catalogue" row. It lists the chains, each chain lists its steps easiest first, and a step opens a sheet with its description, cues, muscles, equipment and standards.
      - "Add to my exercises" (`CatalogueLibrary`) makes an ordinary exercise: the chain becomes its group, the difficulty its level, the move-on standard its target. An exercise with the same name and kind (ignoring case) is linked instead of duplicated; one already linked to another step is left alone.
@@ -222,7 +223,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #95. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #96. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -232,7 +233,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #95: 391 unit tests, 161 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #96: 394 unit tests, 161 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.
