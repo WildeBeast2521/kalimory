@@ -832,6 +832,16 @@
     <string name="weekly_goal">週の目標</string>
     <string name="weekly_goal_off">オフ</string>
     <string name="weekly_goal_days">週%1$d日</string>
+    <string name="today_suggested_title">今日のおすすめ</string>
+    <string name="suggestion_target">%1$s、目標 %2$s</string>
+    <string name="suggestion_first">このステップの初回</string>
+    <string name="suggestion_last">前回: %1$s</string>
+    <string name="suggestion_next_step">新しいステップ: 前のステップの基準を達成しました</string>
+    <string name="suggestion_add_next">このステップに進めます。カタログから追加してください</string>
+    <string name="suggestion_easier">伸び悩み中? %1$sはより易しい選択肢です</string>
+    <string name="suggestion_dismiss">今日はしない</string>
+    <string name="settings_suggestions">「今日」におすすめを表示</string>
+    <string name="settings_suggestions_description">プログレッションから次に行う内容を提案します。開始しない限り何も変わりません。</string>
     <string name="today_done_title">今日の記録</string>
     <string name="today_see_progress">進捗を見る</string>
     <string name="first_day_of_week">週の始まり</string>

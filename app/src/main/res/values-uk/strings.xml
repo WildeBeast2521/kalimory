@@ -768,6 +768,16 @@
     <string name="weekly_goal">Мета на тиждень</string>
     <string name="weekly_goal_off">Вимк.</string>
     <string name="weekly_goal_days">%1$d з 7 днів</string>
+    <string name="today_suggested_title">Запропоновано на сьогодні</string>
+    <string name="suggestion_target">%1$s, мета %2$s</string>
+    <string name="suggestion_first">Перше тренування на цьому кроці</string>
+    <string name="suggestion_last">Минулого разу: %1$s</string>
+    <string name="suggestion_next_step">Новий крок: ви виконали норматив попереднього</string>
+    <string name="suggestion_add_next">Готові до цього кроку. Додайте його з каталогу</string>
+    <string name="suggestion_easier">Застрягли? %1$s — легший варіант</string>
+    <string name="suggestion_dismiss">Не сьогодні</string>
+    <string name="settings_suggestions">Пропозиції на екрані «Сьогодні»</string>
+    <string name="settings_suggestions_description">Пропонує, що тренувати далі, за вашими прогресіями. Нічого не змінюється, доки ви самі не почнете.</string>
     <string name="today_done_title">Зроблено сьогодні</string>
     <string name="today_see_progress">Переглянути прогрес</string>
     <string name="first_day_of_week">Перший день тижня</string>

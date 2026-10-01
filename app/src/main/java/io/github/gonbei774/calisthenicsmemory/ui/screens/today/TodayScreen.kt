@@ -5,6 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -44,6 +45,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
+import io.github.gonbei774.calisthenicsmemory.data.progression.Suggestion
+import io.github.gonbei774.calisthenicsmemory.data.progression.SuggestionReason
+import io.github.gonbei774.calisthenicsmemory.data.progression.Suggestions
+import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.standardText
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.ui.screens.formatRecordsForClipboard
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.describe
@@ -78,6 +83,8 @@ fun TodayScreen(
     onOpenSettings: () -> Unit,
     onOpenTrain: () -> Unit = {},
     onOpenDay: (LocalDate) -> Unit = {},
+    onStartExercise: (Long) -> Unit = {},
+    onOpenChain: (String) -> Unit = {},
 ) {
     val context = LocalContext.current
     val locale = LocalConfiguration.current.locales[0]
@@ -268,6 +275,26 @@ fun TodayScreen(
             }
         }
 
+        // What to train from the user's progressions (ADR 0005, decision 5): suggestions only.
+        val showSuggestions by viewModel.showSuggestions.collectAsState()
+        val dismissals by viewModel.dismissals.collectAsState()
+        val suggestions = remember(exercises, history, today, dismissals, showSuggestions) {
+            if (!showSuggestions) emptyList()
+            else Suggestions.forDay(today, exercises, history, viewModel.dismissedChains(today))
+        }
+        if (suggestions.isNotEmpty()) Section(stringResource(R.string.today_suggested_title), null) {
+            RowGroup {
+                suggestions.forEach { suggestion ->
+                    val exerciseId = suggestion.exercise?.id
+                    SuggestionRow(
+                        suggestion,
+                        onStart = { if (exerciseId != null) onStartExercise(exerciseId) else onOpenChain(suggestion.chain.id) },
+                        onDismiss = { viewModel.dismissSuggestion(today, suggestion.chain.id) },
+                    )
+                }
+            }
+        }
+
         // What was done today, as chalk tallies.
         if (doneToday.isNotEmpty()) Section(stringResource(R.string.today_done_title), onOpenHistory, stringResource(R.string.today_see_progress)) {
             // Long-press copies a plain-text summary, as the old dashboard card did.
@@ -325,6 +352,38 @@ private fun DoneRow(name: String, values: List<String>) {
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun SuggestionRow(suggestion: Suggestion, onStart: () -> Unit, onDismiss: () -> Unit) {
+    val name = suggestion.exercise?.name ?: stringResource(suggestion.step.name)
+    val target = stringResource(
+        R.string.suggestion_target,
+        stringResource(suggestion.chain.name),
+        standardText(suggestion.target, suggestion.step.kind),
+    )
+    val note = suggestion.easier?.let { stringResource(R.string.suggestion_easier, stringResource(it.name)) }
+        ?: when (suggestion.reason) {
+            SuggestionReason.FIRST_SESSION -> stringResource(R.string.suggestion_first)
+            SuggestionReason.CONTINUE -> stringResource(R.string.suggestion_last, suggestion.lastSession!!.values.joinToString(", "))
+            SuggestionReason.NEXT_STEP -> stringResource(R.string.suggestion_next_step)
+            SuggestionReason.NEXT_STEP_NOT_ADDED -> stringResource(R.string.suggestion_add_next)
+        }
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(Modifier.weight(1f)) {
+            TodayRow(
+                AppIcons.Exercise,
+                name,
+                target,
+                trailing = if (suggestion.exercise != null) AppIcons.Play else AppIcons.Forward,
+                note = note,
+                onClick = onStart,
+            )
+        }
+        IconButton(onClick = onDismiss) {
+            Icon(AppIcons.Close, contentDescription = stringResource(R.string.suggestion_dismiss), tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

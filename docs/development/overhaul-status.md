@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-01, at PR #93.
+Last reviewed: 2026-10-01, at PR #94.
 
 ## Where things stand
 
@@ -136,12 +136,22 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - Validation rejects a malformed id or two exercises with the same id. It keeps an id this catalogue does not know.
        - Import links a new exercise only when no exercise here holds that step. Existing exercises are never changed by an import.
        - Tests: `CommunityShareCatalogIdTest` (unit) and `CommunityShareImporterTest`.
-  4. Suggestions and the weekly goal: in progress.
+  4. Suggestions and the weekly goal: done.
      - Done in PR #93: the weekly goal.
        - Settings → "Weekly goal" offers Off, or 2 to 6 of 7 days. It is kept in `ProgressionPreferences`, not in backups, like the other settings.
        - With a goal, Today reads "This week: 2 of 4", and "Goal reached" once it is met. Without one it shows days trained of 7, as before.
        - Tests: `WeeklyGoalTest`.
-     - Next: today's suggestion and the setting to hide suggestions.
+     - Done in PR #94: today's suggestions.
+       - Today has a "Suggested today" section: one row per followed chain, least recently trained first. Each row shows the step, its chain and target, and why.
+       - A chain rests when it, or another chain of the same movement pattern, was trained today or yesterday. History holds dates, not hours, so rest is counted in days.
+       - The target is double progression: the weakest of the counted sets plus one rep, or 5 s for a hold, up to the move-on standard. When fewer sets than the standard were done, all sets aim at the weakest first.
+       - Once the standard is met, the next step is suggested at its working standard. If that step is not in the library, the row opens its chain.
+       - After two sessions short of the working standard, the row names the easier step. It is only offered.
+       - Tapping a row starts the exercise. The close button dismisses the chain until tomorrow.
+       - Settings → "Suggestions on Today" turns them off entirely.
+       - The rules are pure functions in `data/progression/Suggestions.kt`.
+       - Tests: `SuggestionsTest` (unit) and `TodaySuggestionsTest`.
+       - Known gap: the workout screen still pre-fills from the exercise's own settings, not from the suggested target.
   5. Demonstrations.
   6. Expansion: skills, the remaining chains, trends.
 
@@ -212,7 +222,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #93. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #94. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -222,7 +232,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #93: 381 unit tests, 158 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #94: 391 unit tests, 160 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

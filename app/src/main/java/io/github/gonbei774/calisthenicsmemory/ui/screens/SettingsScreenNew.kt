@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.BuildConfig
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.semantics.Role
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.ProgressionPreferences
 import io.github.gonbei774.calisthenicsmemory.data.AppLanguage
@@ -510,6 +512,41 @@ fun SettingsScreenNew(
                             TextButton(onClick = { showDialog = false }) { Text(stringResource(R.string.close)) }
                         }
                     )
+                }
+            }
+
+            // Today's suggestions (ADR 0005, decision 1): on by default, and hidden entirely when off.
+            item {
+                val showSuggestions by viewModel.showSuggestions.collectAsState()
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+                    shape = MaterialTheme.shapes.large
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .toggleable(value = showSuggestions, role = Role.Switch, onValueChange = viewModel::setShowSuggestions)
+                            .padding(20.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.settings_suggestions),
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = stringResource(R.string.settings_suggestions_description),
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                        Switch(checked = showSuggestions, onCheckedChange = null)
+                    }
                 }
             }
 

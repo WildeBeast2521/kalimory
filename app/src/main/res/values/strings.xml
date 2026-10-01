@@ -825,6 +825,16 @@
     <string name="weekly_goal">Weekly goal</string>
     <string name="weekly_goal_off">Off</string>
     <string name="weekly_goal_days">%1$d of 7 days</string>
+    <string name="today_suggested_title">Suggested today</string>
+    <string name="suggestion_target">%1$s, aim for %2$s</string>
+    <string name="suggestion_first">First session at this step</string>
+    <string name="suggestion_last">Last time: %1$s</string>
+    <string name="suggestion_next_step">New step: you met the standard before it</string>
+    <string name="suggestion_add_next">Ready for this step. Add it from the catalogue</string>
+    <string name="suggestion_easier">Feeling stuck? %1$s is an easier option</string>
+    <string name="suggestion_dismiss">Not today</string>
+    <string name="settings_suggestions">Suggestions on Today</string>
+    <string name="settings_suggestions_description">Suggest what to train next from your progressions. Nothing changes unless you start it.</string>
     <string name="today_done_title">Done today</string>
     <string name="today_see_progress">See progress</string>
     <string name="first_day_of_week">First day of the week</string>

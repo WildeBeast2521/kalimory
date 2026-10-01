@@ -793,6 +793,16 @@
     <string name="weekly_goal">Wochenziel</string>
     <string name="weekly_goal_off">Aus</string>
     <string name="weekly_goal_days">%1$d von 7 Tagen</string>
+    <string name="today_suggested_title">Heute vorgeschlagen</string>
+    <string name="suggestion_target">%1$s, Ziel %2$s</string>
+    <string name="suggestion_first">Erste Einheit auf dieser Stufe</string>
+    <string name="suggestion_last">Letztes Mal: %1$s</string>
+    <string name="suggestion_next_step">Neue Stufe: Du hast den Standard der vorigen erreicht</string>
+    <string name="suggestion_add_next">Bereit für diese Stufe. Füge sie aus dem Katalog hinzu</string>
+    <string name="suggestion_easier">Kommst du nicht weiter? %1$s ist leichter</string>
+    <string name="suggestion_dismiss">Heute nicht</string>
+    <string name="settings_suggestions">Vorschläge auf „Heute“</string>
+    <string name="settings_suggestions_description">Schlägt vor, was du aus deinen Progressionen als Nächstes trainierst. Nichts ändert sich, solange du es nicht startest.</string>
     <string name="today_done_title">Heute erledigt</string>
     <string name="today_see_progress">Fortschritt ansehen</string>
     <string name="first_day_of_week">Erster Tag der Woche</string>

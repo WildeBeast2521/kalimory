@@ -42,6 +42,16 @@
     <string name="weekly_goal">الهدف الأسبوعي</string>
     <string name="weekly_goal_off">إيقاف</string>
     <string name="weekly_goal_days">%1$d من 7 أيام</string>
+    <string name="today_suggested_title">مقترح اليوم</string>
+    <string name="suggestion_target">%1$s، الهدف %2$s</string>
+    <string name="suggestion_first">أول جلسة في هذه الخطوة</string>
+    <string name="suggestion_last">آخر مرة: %1$s</string>
+    <string name="suggestion_next_step">خطوة جديدة: حقّقت معيار الخطوة السابقة</string>
+    <string name="suggestion_add_next">جاهز لهذه الخطوة. أضفها من الكتالوج</string>
+    <string name="suggestion_easier">متعثّر؟ %1$s خيار أسهل</string>
+    <string name="suggestion_dismiss">ليس اليوم</string>
+    <string name="settings_suggestions">الاقتراحات في «اليوم»</string>
+    <string name="settings_suggestions_description">يقترح ما تتدرّب عليه تاليًا من تدرّجاتك. لا يتغيّر شيء ما لم تبدأه.</string>
     <string name="today_done_title">أُنجز اليوم</string>
     <string name="today_see_progress">عرض التقدم</string>
     <string name="first_day_of_week">أول يوم في الأسبوع</string>
