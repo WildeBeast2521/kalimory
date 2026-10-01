@@ -56,6 +56,7 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.Equipment
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
 import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
+import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.MuscleMap
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.RowGroup
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -246,6 +247,10 @@ private fun StepDetails(step: CatalogueStep, inLibrary: Boolean, onAdd: () -> Un
             }
         }
 
+        // Decorative: the muscles are listed as text right below it.
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            MuscleMap(step.primaryMuscles, step.secondaryMuscles, Modifier.fillMaxWidth(0.75f))
+        }
         Section(stringResource(R.string.catalogue_works)) { Muscles(step.primaryMuscles, strong = true) }
         if (step.secondaryMuscles.isNotEmpty()) {
             Section(stringResource(R.string.catalogue_also)) { Muscles(step.secondaryMuscles, strong = false) }
