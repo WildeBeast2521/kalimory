@@ -242,7 +242,6 @@
     <!-- Common Labels -->
     <string name="tab_list">列表</string>
     <string name="tab_graph">图表</string>
-    <string name="tab_challenge">挑战</string>
     <string name="tab_calendar">日历</string>
     <string name="search_placeholder">搜索</string>
     <string name="no_results">未找到结果</string>
@@ -895,4 +894,15 @@
     <string name="equipment_resistance_band">弹力带</string>
     <string name="equipment_slider">毛巾或滑盘</string>
     <string name="equipment_anchor">脚踝固定物</string>
+    <string name="tab_progressions">进阶</string>
+    <string name="progressions_yours">你的进阶</string>
+    <string name="progressions_targets">目标</string>
+    <string name="progressions_empty">从动作目录添加一个步骤，即可在这里跟踪它的进阶。</string>
+    <string name="progressions_browse">浏览目录</string>
+    <string name="progressions_step_of">第 %1$d 步，共 %2$d 步</string>
+    <string name="progressions_not_trained">尚未训练</string>
+    <string name="progressions_last">上次训练：%1$s</string>
+    <string name="progressions_ready">可以进入下一步</string>
+    <string name="progressions_next">下一步：%1$s</string>
+    <string name="progressions_top">已是这条进阶的最高一步</string>
 </resources>

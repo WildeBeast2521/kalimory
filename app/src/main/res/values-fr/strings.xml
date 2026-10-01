@@ -242,7 +242,6 @@
     <!-- Common Labels -->
     <string name="tab_list">Liste</string>
     <string name="tab_graph">Graphique</string>
-    <string name="tab_challenge">Défi</string>
     <string name="tab_calendar">Calendrier</string>
     <string name="search_placeholder">Rechercher</string>
     <string name="no_results">Aucun résultat trouvé</string>
@@ -898,4 +897,15 @@
     <string name="equipment_resistance_band">Bande élastique</string>
     <string name="equipment_slider">Serviette ou glisseurs</string>
     <string name="equipment_anchor">Point d\'ancrage pour les chevilles</string>
+    <string name="tab_progressions">Progressions</string>
+    <string name="progressions_yours">Vos progressions</string>
+    <string name="progressions_targets">Objectifs</string>
+    <string name="progressions_empty">Ajoutez une étape du catalogue d\'exercices pour suivre sa progression ici.</string>
+    <string name="progressions_browse">Parcourir le catalogue</string>
+    <string name="progressions_step_of">Étape %1$d sur %2$d</string>
+    <string name="progressions_not_trained">Pas encore entraîné</string>
+    <string name="progressions_last">Dernière séance : %1$s</string>
+    <string name="progressions_ready">Prêt pour l\'étape suivante</string>
+    <string name="progressions_next">Ensuite : %1$s</string>
+    <string name="progressions_top">Sommet de cette chaîne</string>
 </resources>

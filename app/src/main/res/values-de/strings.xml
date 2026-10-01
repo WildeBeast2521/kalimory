@@ -240,7 +240,6 @@
     <!-- Common Labels -->
     <string name="tab_list">Liste</string>
     <string name="tab_graph">Diagramm</string>
-    <string name="tab_challenge">Herausforderung</string>
     <string name="tab_calendar">Kalender</string>
     <string name="search_placeholder">Suchen</string>
     <string name="clear">Löschen</string>
@@ -924,4 +923,15 @@
     <string name="equipment_resistance_band">Widerstandsband</string>
     <string name="equipment_slider">Handtuch oder Gleitpads</string>
     <string name="equipment_anchor">Fußfixierung</string>
+    <string name="tab_progressions">Progressionen</string>
+    <string name="progressions_yours">Deine Progressionen</string>
+    <string name="progressions_targets">Ziele</string>
+    <string name="progressions_empty">Füge eine Stufe aus dem Übungskatalog hinzu, um ihre Progression hier zu verfolgen.</string>
+    <string name="progressions_browse">Katalog durchsuchen</string>
+    <string name="progressions_step_of">Stufe %1$d von %2$d</string>
+    <string name="progressions_not_trained">Noch nicht trainiert</string>
+    <string name="progressions_last">Letzte Einheit: %1$s</string>
+    <string name="progressions_ready">Bereit für die nächste Stufe</string>
+    <string name="progressions_next">Als Nächstes: %1$s</string>
+    <string name="progressions_top">Höchste Stufe dieser Kette</string>
 </resources>

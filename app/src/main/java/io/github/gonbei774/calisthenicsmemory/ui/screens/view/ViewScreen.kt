@@ -37,6 +37,8 @@ import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySource
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
+import io.github.gonbei774.calisthenicsmemory.data.progression.ChainProgress
+import io.github.gonbei774.calisthenicsmemory.data.progression.Progressions
 import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
@@ -72,6 +74,10 @@ fun ViewScreen(
     // A day to show on the calendar, as when Today's week strip is tapped; cleared once shown.
     focusDate: LocalDate? = null,
     onFocusShown: () -> Unit = {},
+    page: Int = 0,
+    onPageChange: (Int) -> Unit = {},
+    onOpenChain: (String) -> Unit = {},
+    onOpenCatalogue: () -> Unit = {},
 ) {
     val firstDay = firstDayOfWeek()
     val exercises by viewModel.exercises.collectAsState()
@@ -80,7 +86,8 @@ fun ViewScreen(
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
 
     // ViewModeの状態（HorizontalPager用）
-    val pagerState = rememberPagerState(pageCount = { 4 })
+    val pagerState = rememberPagerState(initialPage = page, pageCount = { 4 })
+    LaunchedEffect(pagerState.currentPage) { onPageChange(pagerState.currentPage) }
     LaunchedEffect(focusDate) {
         if (focusDate != null) pagerState.scrollToPage(0)
     }
@@ -208,7 +215,7 @@ fun ViewScreen(
                 stringResource(R.string.tab_calendar),
                 stringResource(R.string.tab_list),
                 stringResource(R.string.tab_graph),
-                stringResource(R.string.tab_challenge)
+                stringResource(R.string.tab_progressions)
             )
             BoxWithConstraints {
                 val minTabWidth = maxWidth / tabTitles.size
@@ -384,9 +391,13 @@ fun ViewScreen(
                         }
                     }
                     3 -> {
+                        val progressions = remember(exercises, records) { Progressions.chains(exercises, records) }
                         ChallengeView(
                             exercises = exercises,
                             records = records,
+                            progressions = progressions,
+                            onOpenChain = onOpenChain,
+                            onOpenCatalogue = onOpenCatalogue,
                             selectedExerciseFilter = selectedExerciseFilter,
                             selectedPeriod = selectedPeriod,
                             onExerciseClick = { exercise ->
@@ -1004,6 +1015,9 @@ fun FilterTextItem(
 fun ChallengeView(
     exercises: List<Exercise>,
     records: List<HistorySet>,
+    progressions: List<ChainProgress>,
+    onOpenChain: (String) -> Unit,
+    onOpenCatalogue: () -> Unit,
     selectedExerciseFilter: Exercise?,
     selectedPeriod: Period?,
     onExerciseClick: (Exercise) -> Unit
@@ -1043,15 +1057,17 @@ fun ChallengeView(
         filtered
     }
 
-    if (filteredExercises.isEmpty()) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        // Followed chains first; the exercise targets the Challenge tab showed stay below (ADR 0005).
+        progressionsSection(progressions, onOpenChain, onOpenCatalogue)
+
+        if (filteredExercises.isEmpty()) {
+            item {
                 Text(
                     text = if (selectedPeriod == null) {
                         stringResource(R.string.no_exercises_available)
@@ -1062,14 +1078,7 @@ fun ChallengeView(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-        }
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
+        } else {
             hierarchicalData.forEach { group ->
                 // 種目を1つに絞り込んでいるときは、お気に入りグループには出さず
                 // その種目が属する実グループのみに表示する（重複表示の防止）

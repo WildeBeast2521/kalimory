@@ -274,7 +274,6 @@
     <!-- Common Labels -->
     <string name="tab_list">一覧</string>
     <string name="tab_graph">グラフ</string>
-    <string name="tab_challenge">課題</string>
     <string name="tab_calendar">カレンダー</string>
     <string name="stats_total_sets">合計セット数</string>
     <string name="stats_exercise_count">種目数</string>
@@ -960,4 +959,15 @@
     <string name="equipment_resistance_band">チューブ</string>
     <string name="equipment_slider">タオルやスライダー</string>
     <string name="equipment_anchor">足首を固定するもの</string>
+    <string name="tab_progressions">プログレッション</string>
+    <string name="progressions_yours">あなたのプログレッション</string>
+    <string name="progressions_targets">目標</string>
+    <string name="progressions_empty">種目カタログからステップを追加すると、ここで進み具合を確認できます。</string>
+    <string name="progressions_browse">カタログを見る</string>
+    <string name="progressions_step_of">ステップ %1$d / %2$d</string>
+    <string name="progressions_not_trained">まだトレーニングしていません</string>
+    <string name="progressions_last">前回: %1$s</string>
+    <string name="progressions_ready">次のステップに進めます</string>
+    <string name="progressions_next">次: %1$s</string>
+    <string name="progressions_top">このチェーンの最上位</string>
 </resources>

@@ -282,4 +282,15 @@
     <string name="equipment_resistance_band">Резиновая лента</string>
     <string name="equipment_slider">Полотенце или слайдеры</string>
     <string name="equipment_anchor">Фиксация для лодыжек</string>
+    <string name="tab_progressions">Прогрессии</string>
+    <string name="progressions_yours">Ваши прогрессии</string>
+    <string name="progressions_targets">Цели</string>
+    <string name="progressions_empty">Добавьте шаг из каталога упражнений, чтобы следить здесь за прогрессией.</string>
+    <string name="progressions_browse">Открыть каталог</string>
+    <string name="progressions_step_of">Шаг %1$d из %2$d</string>
+    <string name="progressions_not_trained">Ещё не тренировались</string>
+    <string name="progressions_last">Последняя тренировка: %1$s</string>
+    <string name="progressions_ready">Можно переходить к следующему шагу</string>
+    <string name="progressions_next">Далее: %1$s</string>
+    <string name="progressions_top">Вершина этой цепочки</string>
 </resources>
