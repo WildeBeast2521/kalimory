@@ -242,7 +242,6 @@
     <!-- Common Labels -->
     <string name="tab_list">Lista</string>
     <string name="tab_graph">Gráfica</string>
-    <string name="tab_challenge">Desafío</string>
     <string name="tab_calendar">Calendario</string>
     <string name="search_placeholder">Buscar</string>
     <string name="no_results">No se encontraron resultados</string>
@@ -955,4 +954,15 @@
     <string name="equipment_resistance_band">Banda elástica</string>
     <string name="equipment_slider">Toalla o deslizadores</string>
     <string name="equipment_anchor">Sujeción para los tobillos</string>
+    <string name="tab_progressions">Progresiones</string>
+    <string name="progressions_yours">Tus progresiones</string>
+    <string name="progressions_targets">Objetivos</string>
+    <string name="progressions_empty">Añade un paso del catálogo de ejercicios para seguir aquí su progresión.</string>
+    <string name="progressions_browse">Explorar el catálogo</string>
+    <string name="progressions_step_of">Paso %1$d de %2$d</string>
+    <string name="progressions_not_trained">Aún sin entrenar</string>
+    <string name="progressions_last">Última sesión: %1$s</string>
+    <string name="progressions_ready">Listo para el siguiente paso</string>
+    <string name="progressions_next">Siguiente: %1$s</string>
+    <string name="progressions_top">Cima de esta cadena</string>
 </resources>

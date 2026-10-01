@@ -49,6 +49,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.mapSaver
@@ -280,6 +281,8 @@ fun CalisthenicsMemoryApp(
     var primaryDestination by rememberSaveable { mutableStateOf(PrimaryDestination.TODAY) }
     // A day Today asked Progress to show; Progress clears it once shown.
     var progressFocus by remember { mutableStateOf<java.time.LocalDate?>(null) }
+    // The Progress tab shown, kept while a screen opened from it is on top.
+    var progressPage by rememberSaveable { mutableIntStateOf(0) }
     val snackbarHostState = remember { SnackbarHostState() }
 
     // After a live workout is saved, its summary opens on top of wherever the workout returned.
@@ -314,7 +317,7 @@ fun CalisthenicsMemoryApp(
     val backTarget: Screen? = when (val screen = currentScreen) {
         Screen.Home -> null
         Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList, Screen.Catalogue -> Screen.Home
-        is Screen.CatalogueChain -> Screen.Catalogue
+        is Screen.CatalogueChain -> if (screen.fromProgress) Screen.Home else Screen.Catalogue
         Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub -> Screen.Settings
         Screen.CommunityShareExport -> Screen.ShareHub
         is Screen.Record -> if (screen.fromToDo) Screen.ToDo else Screen.Home
@@ -457,7 +460,11 @@ fun CalisthenicsMemoryApp(
                                 PrimaryDestination.PROGRESS -> ViewScreen(
                                     viewModel = viewModel,
                                     focusDate = progressFocus,
-                                    onFocusShown = { progressFocus = null }
+                                    onFocusShown = { progressFocus = null },
+                                    page = progressPage,
+                                    onPageChange = { progressPage = it },
+                                    onOpenChain = { chainId -> currentScreen = Screen.CatalogueChain(chainId, fromProgress = true) },
+                                    onOpenCatalogue = { currentScreen = Screen.Catalogue }
                                 )
                                 PrimaryDestination.LIBRARY -> LibraryScreen(
                                     viewModel = viewModel,
@@ -550,7 +557,7 @@ fun CalisthenicsMemoryApp(
                         CatalogueChainScreen(
                             viewModel = viewModel,
                             chainId = screen.chainId,
-                            onNavigateBack = { currentScreen = Screen.Catalogue }
+                            onNavigateBack = { currentScreen = if (screen.fromProgress) Screen.Home else Screen.Catalogue }
                         )
                     }
                     is Screen.ProgramList -> {
@@ -689,7 +696,8 @@ sealed class Screen {
     object ShareHub : Screen()
     data class WorkoutSummary(val sessionId: Long) : Screen()
     object Catalogue : Screen()
-    data class CatalogueChain(val chainId: String) : Screen()
+    // fromProgress: opened from a Progressions card, so back returns there.
+    data class CatalogueChain(val chainId: String, val fromProgress: Boolean = false) : Screen()
 }
 
 /** Where a workout screen goes when it ends or the user leaves it; null for other screens. */
@@ -763,6 +771,7 @@ private val ScreenSaver = mapSaver(
                 is Screen.CatalogueChain -> {
                     put("type", "CatalogueChain")
                     put("chainId", screen.chainId)
+                    put("fromProgress", screen.fromProgress)
                 }
             }
         }
@@ -807,7 +816,7 @@ private val ScreenSaver = mapSaver(
             "ShareHub" -> Screen.ShareHub
             "WorkoutSummary" -> Screen.WorkoutSummary(map["sessionId"] as Long)
             "Catalogue" -> Screen.Catalogue
-            "CatalogueChain" -> Screen.CatalogueChain(map["chainId"] as String)
+            "CatalogueChain" -> Screen.CatalogueChain(map["chainId"] as String, map["fromProgress"] as? Boolean ?: false)
             else -> Screen.Home
         }
     }

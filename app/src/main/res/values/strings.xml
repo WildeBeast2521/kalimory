@@ -280,7 +280,6 @@
     <!-- Common Labels -->
     <string name="tab_list">List</string>
     <string name="tab_graph">Graph</string>
-    <string name="tab_challenge">Challenge</string>
     <string name="tab_calendar">Calendar</string>
     <string name="stats_total_sets">Total Sets</string>
     <string name="stats_exercise_count">Exercises</string>
@@ -957,4 +956,15 @@
     <string name="equipment_resistance_band">Resistance band</string>
     <string name="equipment_slider">Towel or sliders</string>
     <string name="equipment_anchor">Ankle anchor</string>
+    <string name="tab_progressions">Progressions</string>
+    <string name="progressions_yours">Your progressions</string>
+    <string name="progressions_targets">Targets</string>
+    <string name="progressions_empty">Add a step from the exercise catalogue to follow its progression here.</string>
+    <string name="progressions_browse">Browse the catalogue</string>
+    <string name="progressions_step_of">Step %1$d of %2$d</string>
+    <string name="progressions_not_trained">Not trained yet</string>
+    <string name="progressions_last">Last session: %1$s</string>
+    <string name="progressions_ready">Ready for the next step</string>
+    <string name="progressions_next">Next: %1$s</string>
+    <string name="progressions_top">Top of this chain</string>
 </resources>

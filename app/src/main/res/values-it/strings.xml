@@ -242,7 +242,6 @@
     <!-- Common Labels -->
     <string name="tab_list">Elenco</string>
     <string name="tab_graph">Grafico</string>
-    <string name="tab_challenge">Obiettivo</string>
     <string name="tab_calendar">Calendario</string>
     <string name="search_placeholder">Cerca</string>
     <string name="no_results">Nessun risultato trovato</string>
@@ -901,4 +900,15 @@
     <string name="equipment_resistance_band">Elastico</string>
     <string name="equipment_slider">Asciugamano o slider</string>
     <string name="equipment_anchor">Fermo per le caviglie</string>
+    <string name="tab_progressions">Progressioni</string>
+    <string name="progressions_yours">Le tue progressioni</string>
+    <string name="progressions_targets">Obiettivi</string>
+    <string name="progressions_empty">Aggiungi un passo dal catalogo degli esercizi per seguirne qui la progressione.</string>
+    <string name="progressions_browse">Sfoglia il catalogo</string>
+    <string name="progressions_step_of">Passo %1$d di %2$d</string>
+    <string name="progressions_not_trained">Non ancora allenato</string>
+    <string name="progressions_last">Ultima sessione: %1$s</string>
+    <string name="progressions_ready">Pronto per il passo successivo</string>
+    <string name="progressions_next">Prossimo: %1$s</string>
+    <string name="progressions_top">Cima di questa catena</string>
 </resources>

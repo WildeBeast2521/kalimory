@@ -224,7 +224,6 @@
     <string name="csv_import_error_label">Помилки</string>
     <string name="no_challenge_set">Немає встановлених викликів</string>
     <string name="challenge">Виклик</string>
-    <string name="tab_challenge">Виклик</string>
     <string name="tab_calendar">Календар</string>
     <string name="program_use_all_challenge">Усі виклики</string>
     <string name="no_exercises_in_period">Жодних вправ не виконано за %s</string>
@@ -905,4 +904,15 @@
     <string name="equipment_resistance_band">Гумова стрічка</string>
     <string name="equipment_slider">Рушник або слайдери</string>
     <string name="equipment_anchor">Фіксація для щиколоток</string>
+    <string name="tab_progressions">Прогресії</string>
+    <string name="progressions_yours">Ваші прогресії</string>
+    <string name="progressions_targets">Цілі</string>
+    <string name="progressions_empty">Додайте крок із каталогу вправ, щоб стежити тут за прогресією.</string>
+    <string name="progressions_browse">Переглянути каталог</string>
+    <string name="progressions_step_of">Крок %1$d з %2$d</string>
+    <string name="progressions_not_trained">Ще не тренувалися</string>
+    <string name="progressions_last">Останнє тренування: %1$s</string>
+    <string name="progressions_ready">Можна переходити до наступного кроку</string>
+    <string name="progressions_next">Далі: %1$s</string>
+    <string name="progressions_top">Вершина цього ланцюжка</string>
 </resources>

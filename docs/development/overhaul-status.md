@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-01, at PR #90.
+Last reviewed: 2026-10-01, at PR #91.
 
 ## Where things stand
 
@@ -90,7 +90,7 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
      - Interval list estimates round like program estimates.
 
 - **Not doing:** M4, changing the language without a restart.
-- **Waiting for the progression system (PG):** weekly goals (Today's "This week: 2 of 7"), the Challenge tab's purpose, and trends and personal bests in depth.
+- **Waiting for the progression system (PG):** weekly goals (Today's "This week: 2 of 7"), and trends and personal bests in depth. The Challenge tab became Progressions in PR #91.
 
 ## Progression system (decided 2026-10-01)
 
@@ -115,11 +115,23 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
      - Every step has a difficulty, working and move-on standards, muscles, equipment, a description and cues, all in our own words.
      - `CatalogueTest` enforces the ADR 0006 rules. Backups report `UNKNOWN_CATALOGUE_ID`.
      - English only so far: `catalogue_strings.xml` allows missing translations until the translation slice.
-  3. Progressions screen in place of Challenge, and "add from catalogue": in progress.
+  3. Progressions screen in place of Challenge, and "add from catalogue": done, except community share.
      - Done in PR #90: Library has an "Exercise catalogue" row. It lists the chains, each chain lists its steps easiest first, and a step opens a sheet with its description, cues, muscles, equipment and standards.
      - "Add to my exercises" (`CatalogueLibrary`) makes an ordinary exercise: the chain becomes its group, the difficulty its level, the move-on standard its target. An exercise with the same name and kind (ignoring case) is linked instead of duplicated; one already linked to another step is left alone.
      - Tests: `CatalogueLibraryTest`.
-     - Next: the Progressions tab, and community share carrying `catalogId`.
+     - Done in PR #91: the Challenge tab is now "Progressions".
+       - "Your progressions" lists every chain with a step in the library. Each card shows the current step, how close the latest session came to the move-on standard, and the next step. A card opens its chain.
+       - The current step is the hardest linked step that has been trained, or the easiest linked step before any training.
+       - The move-on standard is the exercise's own target when set, so a target the user changed counts.
+       - It is met when enough sets each reach the value. Progress counts the best sets, each up to that value.
+       - The card then reads "Ready for the next step". It only suggests; nothing is locked.
+       - The exercise targets the Challenge tab showed are kept below, under "Targets".
+       - The rules are pure functions in `data/progression/ChainProgress.kt` (`Progressions`).
+       - The Progress tab is remembered while a chain opened from it is on top.
+       - Tests: `ProgressionsTest` (unit) and `ProgressionsViewTest`.
+     - Followed chains are the chains with a step in the library for now. An explicit follow setting (ADR 0007, decision 4) comes with suggestions in phase 4.
+     - Custom exercises placed in built-in chains (`chain_placements`) are not shown yet; there is no screen to place them.
+     - Still to do: community share carrying `catalogId`.
   4. Suggestions and the weekly goal.
   5. Demonstrations.
   6. Expansion: skills, the remaining chains, trends.
@@ -191,7 +203,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #90. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #91. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -201,7 +213,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #90: 368 unit tests, 153 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #91: 377 unit tests, 155 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

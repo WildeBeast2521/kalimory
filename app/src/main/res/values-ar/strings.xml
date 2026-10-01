@@ -187,4 +187,15 @@
     <string name="equipment_resistance_band">حبل مقاومة</string>
     <string name="equipment_slider">منشفة أو منزلقات</string>
     <string name="equipment_anchor">مثبت للكاحلين</string>
+    <string name="tab_progressions">التدرّجات</string>
+    <string name="progressions_yours">تدرّجاتك</string>
+    <string name="progressions_targets">الأهداف</string>
+    <string name="progressions_empty">أضف خطوة من كتالوج التمارين لتتابع تدرّجها هنا.</string>
+    <string name="progressions_browse">تصفّح الكتالوج</string>
+    <string name="progressions_step_of">الخطوة %1$d من %2$d</string>
+    <string name="progressions_not_trained">لم تتدرّب عليها بعد</string>
+    <string name="progressions_last">آخر جلسة: %1$s</string>
+    <string name="progressions_ready">جاهز للخطوة التالية</string>
+    <string name="progressions_next">التالي: %1$s</string>
+    <string name="progressions_top">قمة هذه السلسلة</string>
 </resources>
