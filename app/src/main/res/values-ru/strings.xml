@@ -269,6 +269,8 @@
     <string name="catalogue_needs">Нужно</string>
     <string name="catalogue_no_equipment">Без инвентаря</string>
     <string name="catalogue_how_to">Как выполнять</string>
+    <string name="catalogue_follow">Следить за этой прогрессией</string>
+    <string name="catalogue_follow_description">Показывать её в «Прогрессиях» и в предложениях на экране «Сегодня»</string>
     <string name="standard_reps">%1$d × %2$d</string>
     <string name="standard_seconds">%1$d × %2$d с</string>
     <string name="muscle_abdominals">Пресс</string>
@@ -300,6 +302,7 @@
     <string name="progressions_yours">Ваши прогрессии</string>
     <string name="progressions_targets">Цели</string>
     <string name="progressions_empty">Добавьте шаг из каталога упражнений, чтобы следить здесь за прогрессией.</string>
+    <string name="progressions_none_followed">Вы не следите ни за одной прогрессией. Откройте её в каталоге, чтобы снова следить.</string>
     <string name="progressions_browse">Открыть каталог</string>
     <string name="progressions_step_of">Шаг %1$d из %2$d</string>
     <string name="progressions_not_trained">Ещё не тренировались</string>

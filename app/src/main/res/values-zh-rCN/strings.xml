@@ -881,6 +881,8 @@
     <string name="catalogue_needs">需要</string>
     <string name="catalogue_no_equipment">无需器械</string>
     <string name="catalogue_how_to">动作要领</string>
+    <string name="catalogue_follow">关注这条进阶</string>
+    <string name="catalogue_follow_description">在“进阶”和“今天”的建议中显示</string>
     <string name="standard_reps">%1$d × %2$d</string>
     <string name="standard_seconds">%1$d × %2$d 秒</string>
     <string name="muscle_abdominals">腹肌</string>
@@ -912,6 +914,7 @@
     <string name="progressions_yours">你的进阶</string>
     <string name="progressions_targets">目标</string>
     <string name="progressions_empty">从动作目录添加一个步骤，即可在这里跟踪它的进阶。</string>
+    <string name="progressions_none_followed">你没有关注任何进阶。在目录中打开一条即可重新关注。</string>
     <string name="progressions_browse">浏览目录</string>
     <string name="progressions_step_of">第 %1$d 步，共 %2$d 步</string>
     <string name="progressions_not_trained">尚未训练</string>

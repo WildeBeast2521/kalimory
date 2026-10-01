@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-01, at PR #96.
+Last reviewed: 2026-10-01, at PR #97.
 
 ## Where things stand
 
@@ -130,7 +130,11 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - The rules are pure functions in `data/progression/ChainProgress.kt` (`Progressions`).
        - The Progress tab is remembered while a chain opened from it is on top.
        - Tests: `ProgressionsTest` (unit) and `ProgressionsViewTest`.
-     - Followed chains are the chains with a step in the library for now. An explicit follow setting (ADR 0007, decision 4) comes with suggestions in phase 4.
+     - Following, done in PR #97:
+       - A chain with a step in the library is followed unless the user turns off "Follow this progression" on its catalogue screen.
+       - Unfollowed chains leave Progressions and Today's suggestions. Their training still rests the movement pattern.
+       - With every chain unfollowed, Progressions says so instead of pointing to adding a step.
+       - The preference stores the unfollowed chain ids; ADR 0007 records this.
      - Custom exercises placed in built-in chains (`chain_placements`) are not shown yet; there is no screen to place them.
      - Done in PR #92: community share carries `catalogId`.
        - Export writes each exercise's link. Older apps ignore the field, so the share format stays at version 1.
@@ -223,7 +227,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #96. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #97. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -233,7 +237,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #96: 394 unit tests, 161 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #97: 396 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

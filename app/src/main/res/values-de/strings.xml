@@ -910,6 +910,8 @@
     <string name="catalogue_needs">Benötigt</string>
     <string name="catalogue_no_equipment">Keine Ausrüstung</string>
     <string name="catalogue_how_to">So geht es</string>
+    <string name="catalogue_follow">Dieser Progression folgen</string>
+    <string name="catalogue_follow_description">In „Progressionen“ und in den Vorschlägen auf „Heute“ zeigen</string>
     <string name="standard_reps">%1$d × %2$d</string>
     <string name="standard_seconds">%1$d × %2$d s</string>
     <string name="muscle_abdominals">Bauch</string>
@@ -941,6 +943,7 @@
     <string name="progressions_yours">Deine Progressionen</string>
     <string name="progressions_targets">Ziele</string>
     <string name="progressions_empty">Füge eine Stufe aus dem Übungskatalog hinzu, um ihre Progression hier zu verfolgen.</string>
+    <string name="progressions_none_followed">Du folgst keiner Progression. Öffne eine im Katalog, um ihr wieder zu folgen.</string>
     <string name="progressions_browse">Katalog durchsuchen</string>
     <string name="progressions_step_of">Stufe %1$d von %2$d</string>
     <string name="progressions_not_trained">Noch nicht trainiert</string>

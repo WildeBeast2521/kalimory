@@ -391,13 +391,16 @@ fun ViewScreen(
                         }
                     }
                     3 -> {
-                        val progressions = remember(exercises, records) { Progressions.chains(exercises, records) }
+                        val unfollowed by viewModel.unfollowedChains.collectAsState()
+                        val progressions = remember(exercises, records, unfollowed) { Progressions.chains(exercises, records, unfollowed) }
+                        val allUnfollowed = progressions.isEmpty() && exercises.any { it.catalogId != null }
                         ChallengeView(
                             exercises = exercises,
                             records = records,
                             progressions = progressions,
                             onOpenChain = onOpenChain,
                             onOpenCatalogue = onOpenCatalogue,
+                            allUnfollowed = allUnfollowed,
                             selectedExerciseFilter = selectedExerciseFilter,
                             selectedPeriod = selectedPeriod,
                             onExerciseClick = { exercise ->
@@ -1018,6 +1021,7 @@ fun ChallengeView(
     progressions: List<ChainProgress>,
     onOpenChain: (String) -> Unit,
     onOpenCatalogue: () -> Unit,
+    allUnfollowed: Boolean = false,
     selectedExerciseFilter: Exercise?,
     selectedPeriod: Period?,
     onExerciseClick: (Exercise) -> Unit
@@ -1064,7 +1068,7 @@ fun ChallengeView(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Followed chains first; the exercise targets the Challenge tab showed stay below (ADR 0005).
-        progressionsSection(progressions, onOpenChain, onOpenCatalogue)
+        progressionsSection(progressions, onOpenChain, onOpenCatalogue, allUnfollowed)
 
         if (filteredExercises.isEmpty()) {
             item {

@@ -25,6 +25,7 @@ ADR 0005 defines the progression model and ADR 0006 the catalogue. The user's li
    An exercise sits in at most one built-in chain; its group and level still describe its place in the user's own chains.
 
 4. **Preferences, not tables, for settings.** The followed chains, the weekly goal, and "hide suggestions" are small settings kept in SharedPreferences, like the other workout settings. Followed chains are stored by chain id.
+   - As built (PR #97): a chain with a step in the library is followed unless the user stops following it, so the preference stores the *unfollowed* chain ids. Adding a step follows its chain without another tap.
 
 5. **Database version 25, backup format 11.**
    - Migration 24→25 adds the column, its unique index and the table. Nothing is rewritten.

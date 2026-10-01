@@ -69,4 +69,12 @@ class ProgressionsViewTest {
         rule.onNodeWithText("Browse the catalogue").performClick()
         assertEquals(true, browsed)
     }
+
+    @Test
+    fun withEveryChainUnfollowedItSaysSo() {
+        rule.setContent {
+            LazyColumn { progressionsSection(emptyList(), {}, {}, allUnfollowed = true) }
+        }
+        rule.onNodeWithText("You are not following any progression. Open one in the catalogue to follow it again.").assertIsDisplayed()
+    }
 }

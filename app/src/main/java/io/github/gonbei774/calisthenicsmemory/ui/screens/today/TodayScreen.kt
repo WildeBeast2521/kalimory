@@ -279,9 +279,10 @@ fun TodayScreen(
         // What to train from the user's progressions (ADR 0005, decision 5): suggestions only.
         val showSuggestions by viewModel.showSuggestions.collectAsState()
         val dismissals by viewModel.dismissals.collectAsState()
-        val suggestions = remember(exercises, history, today, dismissals, showSuggestions) {
+        val unfollowed by viewModel.unfollowedChains.collectAsState()
+        val suggestions = remember(exercises, history, today, dismissals, showSuggestions, unfollowed) {
             if (!showSuggestions) emptyList()
-            else Suggestions.forDay(today, exercises, history, viewModel.dismissedChains(today))
+            else Suggestions.forDay(today, exercises, history, viewModel.dismissedChains(today), unfollowed)
         }
         if (suggestions.isNotEmpty()) Section(stringResource(R.string.today_suggested_title), null) {
             RowGroup {

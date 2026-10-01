@@ -30,15 +30,15 @@ data class ChainProgress(
 
 /**
  * The Progressions view as pure functions of the library, the history and the catalogue (ADR 0005).
- * A chain is followed when one of its steps is in the library. Nothing here locks anything: it only
- * describes where the user stands.
+ * A chain is followed when one of its steps is in the library, unless the user stopped following it.
+ * Nothing here locks anything: it only describes where the user stands.
  */
 object Progressions {
 
-    fun chains(exercises: List<Exercise>, history: List<HistorySet>): List<ChainProgress> {
+    fun chains(exercises: List<Exercise>, history: List<HistorySet>, unfollowed: Set<String> = emptySet()): List<ChainProgress> {
         val byCatalogId = exercises.filter { it.catalogId != null }.associateBy { it.catalogId!! }
         val historyByExercise = history.groupBy { it.exerciseId }
-        return Catalogue.chains.mapNotNull { chain ->
+        return Catalogue.chains.filter { it.id !in unfollowed }.mapNotNull { chain ->
             val linked = chain.steps.filter { it.id in byCatalogId }
             if (linked.isEmpty()) return@mapNotNull null
             val sessionsByStep = linked.associateWith { step ->

@@ -31,6 +31,17 @@ class ProgressionPreferences(context: Context) {
         }
     }
 
+    /**
+     * Chains the user stopped following (ADR 0007, decision 4). A chain with a step in the library is
+     * followed unless it is listed here, so adding a step follows its chain without another tap.
+     */
+    fun unfollowedChains(): Set<String> = prefs.getStringSet(KEY_UNFOLLOWED_CHAINS, null).orEmpty()
+
+    fun setFollowed(chainId: String, followed: Boolean) {
+        val chains = if (followed) unfollowedChains() - chainId else unfollowedChains() + chainId
+        prefs.edit { putStringSet(KEY_UNFOLLOWED_CHAINS, chains) }
+    }
+
     companion object {
         val WEEKLY_GOAL_RANGE = 2..6
         private const val PREFS_NAME = "progression_preferences"
@@ -38,5 +49,6 @@ class ProgressionPreferences(context: Context) {
         private const val KEY_SHOW_SUGGESTIONS = "show_suggestions"
         private const val KEY_DISMISSED_DATE = "dismissed_date"
         private const val KEY_DISMISSED_CHAINS = "dismissed_chains"
+        private const val KEY_UNFOLLOWED_CHAINS = "unfollowed_chains"
     }
 }

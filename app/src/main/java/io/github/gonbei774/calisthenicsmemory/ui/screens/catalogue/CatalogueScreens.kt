@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,6 +31,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -41,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -84,7 +87,12 @@ fun CatalogueChainScreen(viewModel: TrainingViewModel, chainId: String, onNaviga
     var open by remember { mutableStateOf<CatalogueStep?>(null) }
     val chainName = stringResource(chain.name)
 
+    val unfollowed by viewModel.unfollowedChains.collectAsState()
     CatalogueScaffold(chainName, onNavigateBack) {
+        // Following only matters once a step is in the library (ADR 0007, decision 4).
+        if (chain.steps.any { it.id in linked }) {
+            item { FollowRow(followed = chain.id !in unfollowed) { viewModel.setChainFollowed(chain.id, it) } }
+        }
         item {
             RowGroup {
                 chain.steps.forEach { step -> StepRow(step, step.id in linked) { open = step } }
@@ -152,6 +160,30 @@ private fun ChainRow(chain: CatalogueChain, inLibrary: Int, onClick: () -> Unit)
             }
         }
         Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+}
+
+@Composable
+private fun FollowRow(followed: Boolean, onChange: (Boolean) -> Unit) {
+    Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceContainerLow) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .toggleable(value = followed, role = Role.Switch, onValueChange = onChange)
+                .padding(horizontal = Spacing.l, vertical = Spacing.m),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.catalogue_follow), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+                Text(
+                    stringResource(R.string.catalogue_follow_description),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Spacer(Modifier.width(Spacing.l))
+            Switch(checked = followed, onCheckedChange = null)
+        }
     }
 }
 

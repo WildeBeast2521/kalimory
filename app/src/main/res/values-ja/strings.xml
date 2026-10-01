@@ -946,6 +946,8 @@
     <string name="catalogue_needs">必要なもの</string>
     <string name="catalogue_no_equipment">器具なし</string>
     <string name="catalogue_how_to">やり方</string>
+    <string name="catalogue_follow">このプログレッションをフォロー</string>
+    <string name="catalogue_follow_description">プログレッションと「今日」のおすすめに表示します</string>
     <string name="standard_reps">%1$d × %2$d</string>
     <string name="standard_seconds">%1$d × %2$d 秒</string>
     <string name="muscle_abdominals">腹筋</string>
@@ -977,6 +979,7 @@
     <string name="progressions_yours">あなたのプログレッション</string>
     <string name="progressions_targets">目標</string>
     <string name="progressions_empty">種目カタログからステップを追加すると、ここで進み具合を確認できます。</string>
+    <string name="progressions_none_followed">フォロー中のプログレッションはありません。カタログで開くと再びフォローできます。</string>
     <string name="progressions_browse">カタログを見る</string>
     <string name="progressions_step_of">ステップ %1$d / %2$d</string>
     <string name="progressions_not_trained">まだトレーニングしていません</string>

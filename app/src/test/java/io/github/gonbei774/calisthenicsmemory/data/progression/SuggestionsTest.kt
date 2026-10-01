@@ -102,4 +102,14 @@ class SuggestionsTest {
         // Still a suggestion for the current step: the easier one is only offered.
         assertEquals(chin, suggestion.step)
     }
+
+    @Test fun `an unfollowed chain is not suggested, but its training still rests the pattern`() {
+        // Dip is no longer followed, yet a dip yesterday still rests the handstand push-up (both vertical pushes).
+        val exercises = listOf(exercise(1, "dip.bench"), exercise(2, "vpush.pike"), exercise(3, "row.incline"))
+        val history = session(1, "2026-09-30", 10)
+
+        val chains = Suggestions.forDay(today, exercises, history, unfollowedChains = setOf("dip")).map { it.chain.id }
+
+        assertEquals(listOf("row"), chains)
+    }
 }

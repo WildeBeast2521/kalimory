@@ -246,6 +246,15 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         _showSuggestions.value = show
     }
 
+    // Chains the user stopped following; Progressions and Today's suggestions leave them out.
+    private val _unfollowedChains = MutableStateFlow(progressionPrefs.unfollowedChains())
+    val unfollowedChains: StateFlow<Set<String>> = _unfollowedChains.asStateFlow()
+
+    fun setChainFollowed(chainId: String, followed: Boolean) {
+        progressionPrefs.setFollowed(chainId, followed)
+        _unfollowedChains.value = progressionPrefs.unfollowedChains()
+    }
+
     // Bumped on each dismissal so Today reads the dismissed chains for its own date again.
     private val _dismissals = MutableStateFlow(0)
     val dismissals: StateFlow<Int> = _dismissals.asStateFlow()
