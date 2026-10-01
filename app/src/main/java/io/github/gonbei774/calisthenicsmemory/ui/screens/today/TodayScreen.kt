@@ -45,6 +45,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
 import io.github.gonbei774.calisthenicsmemory.data.progression.Suggestion
 import io.github.gonbei774.calisthenicsmemory.data.progression.SuggestionReason
 import io.github.gonbei774.calisthenicsmemory.data.progression.Suggestions
@@ -83,7 +84,7 @@ fun TodayScreen(
     onOpenSettings: () -> Unit,
     onOpenTrain: () -> Unit = {},
     onOpenDay: (LocalDate) -> Unit = {},
-    onStartExercise: (Long) -> Unit = {},
+    onStartExercise: (Long, Standard) -> Unit = { _, _ -> },
     onOpenChain: (String) -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -288,7 +289,7 @@ fun TodayScreen(
                     val exerciseId = suggestion.exercise?.id
                     SuggestionRow(
                         suggestion,
-                        onStart = { if (exerciseId != null) onStartExercise(exerciseId) else onOpenChain(suggestion.chain.id) },
+                        onStart = { if (exerciseId != null) onStartExercise(exerciseId, suggestion.target) else onOpenChain(suggestion.chain.id) },
                         onDismiss = { viewModel.dismissSuggestion(today, suggestion.chain.id) },
                     )
                 }

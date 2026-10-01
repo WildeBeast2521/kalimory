@@ -66,6 +66,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBar
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.depth
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.screenTransition
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.tabTransition
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
 import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.CatalogueChainScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.CatalogueScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.library.LibraryScreen
@@ -413,7 +414,7 @@ fun CalisthenicsMemoryApp(
                             when (destination) {
                                 PrimaryDestination.TODAY -> TodayScreen(
                                     viewModel = viewModel,
-                                    onStartExercise = { id -> currentScreen = Screen.Workout(exerciseId = id, fromToday = true) },
+                                    onStartExercise = { id, target -> currentScreen = Screen.Workout(exerciseId = id, fromToday = true, suggestedTarget = target) },
                                     onOpenChain = { chainId -> currentScreen = Screen.CatalogueChain(chainId, fromHome = true) },
                                     onResume = { workout ->
                                         currentScreen = when (workout) {
@@ -545,7 +546,8 @@ fun CalisthenicsMemoryApp(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = backDestination },
                             initialExerciseId = workoutScreen.exerciseId,
-                            fromToDo = workoutScreen.fromToDo
+                            fromToDo = workoutScreen.fromToDo,
+                            suggestedTarget = workoutScreen.suggestedTarget
                         )
                     }
                     is Screen.Catalogue -> {
@@ -680,7 +682,13 @@ sealed class Screen {
     object Licenses : Screen()
     data class Record(val exerciseId: Long? = null, val fromToDo: Boolean = false) : Screen()
     // fromToday: opened from the Today destination, so back returns there.
-    data class Workout(val exerciseId: Long? = null, val fromToDo: Boolean = false, val fromToday: Boolean = false) : Screen()
+    // suggestedTarget: sets and value from Today's suggestion, which the settings step starts at.
+    data class Workout(
+        val exerciseId: Long? = null,
+        val fromToDo: Boolean = false,
+        val fromToday: Boolean = false,
+        val suggestedTarget: Standard? = null
+    ) : Screen()
     object ProgramList : Screen()
     data class ProgramEdit(val programId: Long?) : Screen()
     data class ProgramExecution(
@@ -739,6 +747,8 @@ private val ScreenSaver = mapSaver(
                     put("exerciseId", screen.exerciseId ?: -1L)
                     put("fromToDo", screen.fromToDo)
                     put("fromToday", screen.fromToday)
+                    put("suggestedSets", screen.suggestedTarget?.sets ?: -1)
+                    put("suggestedValue", screen.suggestedTarget?.value ?: -1)
                 }
                 is Screen.ProgramEdit -> {
                     put("type", "ProgramEdit")
@@ -793,7 +803,10 @@ private val ScreenSaver = mapSaver(
             "Workout" -> Screen.Workout(
                 exerciseId = (map["exerciseId"] as Long).takeIf { it != -1L },
                 fromToDo = map["fromToDo"] as Boolean,
-                fromToday = map["fromToday"] as? Boolean ?: false
+                fromToday = map["fromToday"] as? Boolean ?: false,
+                suggestedTarget = (map["suggestedSets"] as? Int)?.takeIf { it > 0 }?.let { sets ->
+                    (map["suggestedValue"] as? Int)?.takeIf { it > 0 }?.let { Standard(sets, it) }
+                }
             )
             "ProgramEdit" -> Screen.ProgramEdit(
                 programId = (map["programId"] as Long).takeIf { it != -1L }
