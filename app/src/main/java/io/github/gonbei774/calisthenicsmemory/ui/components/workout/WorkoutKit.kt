@@ -2,6 +2,9 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.workout
 
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.material3.WavyProgressIndicatorDefaults
+import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColorAsState
@@ -220,25 +223,25 @@ fun TimerDial(
                 if (paused) stateDescription = pausedLabel
             },
     ) {
-        Canvas(Modifier.size(size)) {
-            val stroke = 16.dp.toPx() * pulse.value
-            val inset = stroke / 2
-            val arcSize = androidx.compose.ui.geometry.Size(this.size.width - stroke, this.size.height - stroke)
-            val topLeft = androidx.compose.ui.geometry.Offset(inset, inset)
-            if (glow) {
+        if (glow) {
+            Canvas(Modifier.size(size)) {
                 drawCircle(Brush.radialGradient(listOf(accent.copy(alpha = 0.22f), Color.Transparent)), radius = this.size.minDimension / 2)
             }
-            drawArc(track, -90f, 360f, false, topLeft, arcSize, style = Stroke(stroke))
-            drawArc(
-                accent.copy(alpha = if (paused) 0.35f else 1f),
-                -90f,
-                360f * progress.coerceIn(0f, 1f),
-                false,
-                topLeft,
-                arcSize,
-                style = Stroke(stroke, cap = StrokeCap.Round),
-            )
         }
+        // Expressive wavy ring: it ripples while the clock runs and lies flat when paused.
+        val stroke = with(LocalDensity.current) { Stroke(16.dp.toPx() * pulse.value, cap = StrokeCap.Round) }
+        CircularWavyProgressIndicator(
+            progress = { progress.coerceIn(0f, 1f) },
+            modifier = Modifier.size(size).clearAndSetSemantics {},
+            color = accent.copy(alpha = if (paused) 0.35f else 1f),
+            trackColor = track,
+            stroke = stroke,
+            trackStroke = stroke,
+            // A long, slow wave keeps the dial calm.
+            amplitude = { if (paused) 0f else WavyProgressIndicatorDefaults.indicatorAmplitude(it) },
+            wavelength = 84.dp,
+            waveSpeed = 24.dp,
+        )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             RollingNumber(
                 value,

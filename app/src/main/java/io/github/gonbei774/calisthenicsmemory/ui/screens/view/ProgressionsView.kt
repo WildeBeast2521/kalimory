@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -99,7 +99,7 @@ private fun ChainCard(progress: ChainProgress, onClick: () -> Unit) {
             }
             Text(progress.exercise.name, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)
             // Brass while working towards the standard, spruce once it has been met (ADR 0004).
-            LinearProgressIndicator(
+            LinearWavyProgressIndicator(
                 progress = { progress.percent / 100f },
                 modifier = Modifier.fillMaxWidth(),
                 color = if (progress.mastered) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary,

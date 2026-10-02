@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.material3.LoadingIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -394,7 +395,7 @@ fun CsvDataManagementScreen(
                             .padding(32.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator(
+                        LoadingIndicator(
                             color = MaterialTheme.colorScheme.primary
                         )
                     }

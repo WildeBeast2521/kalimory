@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import androidx.compose.material3.LinearWavyProgressIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
 import java.time.DayOfWeek
@@ -1236,11 +1237,9 @@ fun ChallengeExerciseCard(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    LinearProgressIndicator(
+                    LinearWavyProgressIndicator(
                         progress = { progress },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(8.dp),
+                        modifier = Modifier.weight(1f),
                         color = MaterialTheme.colorScheme.primary,
                         trackColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     )
