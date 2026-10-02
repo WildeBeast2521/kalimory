@@ -274,11 +274,6 @@ private fun StepDetails(step: CatalogueStep, inLibrary: Boolean, onAdd: () -> Un
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
-                Text(
-                    stringResource(R.string.catalogue_builds_on_note),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
             }
         }
 

@@ -911,7 +911,6 @@
     <string name="catalogue_no_equipment">Keine Ausrüstung</string>
     <string name="catalogue_how_to">So geht es</string>
     <string name="catalogue_builds_on">Baut auf</string>
-    <string name="catalogue_builds_on_note">Hilfreich vorher. Nichts ist gesperrt.</string>
     <string name="catalogue_follow">Dieser Progression folgen</string>
     <string name="catalogue_follow_description">In „Progressionen“ und in den Vorschlägen auf „Heute“ zeigen</string>
     <string name="standard_reps">%1$d × %2$d</string>

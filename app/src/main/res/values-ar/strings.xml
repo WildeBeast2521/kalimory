@@ -175,7 +175,6 @@
     <string name="catalogue_no_equipment">بدون معدات</string>
     <string name="catalogue_how_to">طريقة الأداء</string>
     <string name="catalogue_builds_on">يُبنى على</string>
-    <string name="catalogue_builds_on_note">من المفيد إتقانه أولًا. لا شيء مقفل.</string>
     <string name="catalogue_follow">متابعة هذا التدرّج</string>
     <string name="catalogue_follow_description">عرضه في «التدرّجات» وفي اقتراحات «اليوم»</string>
     <string name="standard_reps">%1$d × %2$d</string>

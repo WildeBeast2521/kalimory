@@ -942,7 +942,6 @@
     <string name="catalogue_no_equipment">Sin equipo</string>
     <string name="catalogue_how_to">Cómo hacerlo</string>
     <string name="catalogue_builds_on">Se apoya en</string>
-    <string name="catalogue_builds_on_note">Conviene dominarlo antes. Nada está bloqueado.</string>
     <string name="catalogue_follow">Seguir esta progresión</string>
     <string name="catalogue_follow_description">Mostrarla en Progresiones y en las sugerencias de Hoy</string>
     <string name="standard_reps">%1$d × %2$d</string>

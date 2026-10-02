@@ -885,7 +885,6 @@
     <string name="catalogue_no_equipment">Sans matériel</string>
     <string name="catalogue_how_to">Comment le faire</string>
     <string name="catalogue_builds_on">S\'appuie sur</string>
-    <string name="catalogue_builds_on_note">Utile à maîtriser avant. Rien n\'est bloqué.</string>
     <string name="catalogue_follow">Suivre cette progression</string>
     <string name="catalogue_follow_description">L\'afficher dans Progressions et dans les suggestions d\'Aujourd\'hui</string>
     <string name="standard_reps">%1$d × %2$d</string>

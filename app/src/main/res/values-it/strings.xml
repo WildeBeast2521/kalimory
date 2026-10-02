@@ -888,7 +888,6 @@
     <string name="catalogue_no_equipment">Nessuna attrezzatura</string>
     <string name="catalogue_how_to">Come si fa</string>
     <string name="catalogue_builds_on">Si basa su</string>
-    <string name="catalogue_builds_on_note">Utile da padroneggiare prima. Niente è bloccato.</string>
     <string name="catalogue_follow">Segui questa progressione</string>
     <string name="catalogue_follow_description">Mostrala in Progressioni e nei suggerimenti di Oggi</string>
     <string name="standard_reps">%1$d × %2$d</string>
