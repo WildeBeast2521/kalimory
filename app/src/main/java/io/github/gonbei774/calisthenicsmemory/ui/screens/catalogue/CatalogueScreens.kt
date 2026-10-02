@@ -42,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
@@ -55,10 +56,13 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Equipment
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
+import io.github.gonbei774.calisthenicsmemory.data.progression.Progressions
+import io.github.gonbei774.calisthenicsmemory.data.progression.StepJourney
 import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.MuscleMap
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.RowGroup
+import io.github.gonbei774.calisthenicsmemory.ui.screens.view.formatStoredDate
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
@@ -89,6 +93,8 @@ fun CatalogueChainScreen(viewModel: TrainingViewModel, chainId: String, onNaviga
     val chainName = stringResource(chain.name)
 
     val unfollowed by viewModel.unfollowedChains.collectAsState()
+    val history by viewModel.history.collectAsState()
+    val journey = remember(exercises, history) { Progressions.journey(chain, exercises, history).associateBy { it.step.id } }
     CatalogueScaffold(chainName, onNavigateBack) {
         // Following only matters once a step is in the library (ADR 0007, decision 4).
         if (chain.steps.any { it.id in linked }) {
@@ -96,7 +102,7 @@ fun CatalogueChainScreen(viewModel: TrainingViewModel, chainId: String, onNaviga
         }
         item {
             RowGroup {
-                chain.steps.forEach { step -> StepRow(step, step.id in linked) { open = step } }
+                chain.steps.forEach { step -> StepRow(step, step.id in linked, journey[step.id]) { open = step } }
             }
         }
     }
@@ -199,7 +205,7 @@ private fun LevelBadge(level: Int) {
 }
 
 @Composable
-private fun StepRow(step: CatalogueStep, inLibrary: Boolean, onClick: () -> Unit) {
+private fun StepRow(step: CatalogueStep, inLibrary: Boolean, journey: StepJourney?, onClick: () -> Unit) {
     Row(
         Modifier.fillMaxWidth().clip(MaterialTheme.shapes.medium).clickable(onClick = onClick).padding(horizontal = Spacing.l, vertical = Spacing.m),
         verticalAlignment = Alignment.CenterVertically,
@@ -213,6 +219,17 @@ private fun StepRow(step: CatalogueStep, inLibrary: Boolean, onClick: () -> Unit
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            // The user's own climb, from stored dates only (phase 6 trends). Spruce once met (ADR 0004).
+            if (journey != null) {
+                val locale = LocalConfiguration.current.locales[0]
+                val started = formatStoredDate(journey.firstOn, locale)
+                Text(
+                    journey.metOn?.let { stringResource(R.string.catalogue_journey_met, started, formatStoredDate(it, locale)) }
+                        ?: stringResource(R.string.catalogue_journey_started, started),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (journey.metOn != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary,
+                )
+            }
         }
         if (inLibrary) {
             Icon(AppIcons.Check, contentDescription = stringResource(R.string.catalogue_in_library), tint = MaterialTheme.colorScheme.primary)

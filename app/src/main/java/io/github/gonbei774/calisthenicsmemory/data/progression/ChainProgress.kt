@@ -28,6 +28,15 @@ data class ChainProgress(
     val next: CatalogueStep?,
 )
 
+/** One trained step of a chain over time (phase 6 trends). Dates are stored dates, never invented. */
+data class StepJourney(
+    val step: CatalogueStep,
+    /** The first session of this step. */
+    val firstOn: String,
+    /** The first session that met the move-on standard, or null when none has. */
+    val metOn: String?,
+)
+
 /**
  * The Progressions view as pure functions of the library, the history and the catalogue (ADR 0005).
  * A chain is followed when one of its steps is in the library, unless the user stopped following it.
@@ -60,6 +69,19 @@ object Progressions {
                 mastered = sessions.any { meets(it, moveOn) },
                 next = chain.steps.getOrNull(chain.steps.indexOf(step) + 1),
             )
+        }
+    }
+
+    /** The chain's trained steps, easiest first, with when each was first trained and first met. */
+    fun journey(chain: CatalogueChain, exercises: List<Exercise>, history: List<HistorySet>): List<StepJourney> {
+        val byCatalogId = exercises.filter { it.catalogId != null }.associateBy { it.catalogId!! }
+        val historyByExercise = history.groupBy { it.exerciseId }
+        return chain.steps.mapNotNull { step ->
+            val exercise = byCatalogId[step.id] ?: return@mapNotNull null
+            val sessions = sessions(historyByExercise[exercise.id].orEmpty(), exercise.laterality == "Unilateral")
+            val first = sessions.firstOrNull() ?: return@mapNotNull null
+            val moveOn = moveOnFor(exercise, step)
+            StepJourney(step, first.date, sessions.firstOrNull { meets(it, moveOn) }?.date)
         }
     }
 

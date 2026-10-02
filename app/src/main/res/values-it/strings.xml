@@ -877,6 +877,8 @@
     <string name="catalogue_in_library_count">%1$d nella tua libreria</string>
     <string name="catalogue_add">Aggiungi ai miei esercizi</string>
     <string name="catalogue_in_library">Nella tua libreria</string>
+    <string name="catalogue_journey_started">Iniziato il %1$s</string>
+    <string name="catalogue_journey_met">Iniziato il %1$s, raggiunto il %2$s</string>
     <string name="catalogue_added">%1$s aggiunto ai tuoi esercizi</string>
     <string name="catalogue_linked">Il tuo %1$s ora è collegato al catalogo</string>
     <string name="catalogue_name_taken">Hai già un esercizio chiamato %1$s</string>

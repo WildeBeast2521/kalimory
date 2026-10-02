@@ -96,4 +96,25 @@ class ProgressionsTest {
         val exercises = listOf(exercise(1, chinUp.id), exercise(2, "push.full"))
         assertEquals(listOf("push"), Progressions.chains(exercises, emptyList(), unfollowed = setOf("pull")).map { it.chain.id })
     }
+
+    @Test fun `the journey dates when each step was first trained and first met`() {
+        val exercises = listOf(exercise(1, negative.id, targetSets = 1, targetValue = 5), exercise(2, chinUp.id), exercise(3, oneArm.id))
+        val history = listOf(
+            set(1, "2026-08-01", 3), set(1, "2026-08-10", 5), set(1, "2026-08-20", 6),
+            set(2, "2026-09-03", 4),
+        )
+
+        val journey = Progressions.journey(pull, exercises, history)
+
+        assertEquals(listOf(negative, chinUp), journey.map { it.step })
+        assertEquals("2026-08-01", journey[0].firstOn)
+        assertEquals("met first on 10 August, not later", "2026-08-10", journey[0].metOn)
+        assertEquals("2026-09-03", journey[1].firstOn)
+        assertNull(journey[1].metOn)
+    }
+
+    @Test fun `the journey is empty for untrained or unlinked chains`() {
+        assertTrue(Progressions.journey(pull, listOf(exercise(1, negative.id)), emptyList()).isEmpty())
+        assertTrue(Progressions.journey(pull, listOf(exercise(1, null)), listOf(set(1, "2026-08-01", 5))).isEmpty())
+    }
 }
