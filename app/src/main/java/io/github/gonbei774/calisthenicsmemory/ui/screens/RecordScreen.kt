@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.material3.TopAppBarDefaults
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.ui.res.pluralStringResource
 import androidx.activity.compose.BackHandler
@@ -305,36 +308,10 @@ fun ExerciseSelectionScreen(
         }
     }
 
+    val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
-        topBar = {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = leave) {
-                        Icon(
-                            AppIcons.Back,
-                            contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Text(
-                        text = stringResource(R.string.training_record),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-        },
+        modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
+        topBar = { CalmTopBar(title = stringResource(R.string.training_record), onBack = leave, scrollBehavior = topBarScroll) },
         bottomBar = {
             // Record what was entered so far, without adding another exercise.
             if (staged.isNotEmpty()) {
@@ -1022,36 +999,10 @@ fun WorkoutInputScreen(
         }
     }
 
+    val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
-        topBar = {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = handleBack) {
-                        Icon(
-                            AppIcons.Back,
-                            contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Text(
-                        text = exercise.name,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-        }
+        modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
+        topBar = { CalmTopBar(title = exercise.name, onBack = handleBack, scrollBehavior = topBarScroll) }
     ) { paddingValues ->
         LazyColumn(
             state = recordListState,

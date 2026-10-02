@@ -1,5 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.LoadingIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.activity.compose.BackHandler
@@ -282,48 +286,16 @@ fun ProgramEditScreen(
     val hasIncompleteExercises = programExercises.any { it.sets == 0 || it.targetValue == 0 }
     val isValid = name.isNotBlank() && programExercises.isNotEmpty() && !hasIncompleteExercises
 
+    val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
         topBar = {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                color = MaterialTheme.colorScheme.background
+            CalmTopBar(
+                title = stringResource(if (programId == null) R.string.new_program else R.string.edit_program),
+                onBack = { handleBackPress() },
+                scrollBehavior = topBarScroll,
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = { handleBackPress() }) {
-                        Icon(
-                            AppIcons.Back,
-                            contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Text(
-                        text = stringResource(
-                            if (programId == null) R.string.new_program else R.string.edit_program
-                        ),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.weight(1f)
-                    )
-                    // Save button
-                    TextButton(
-                        onClick = { saveProgram() },
-                        enabled = isValid
-                    ) {
-                        Text(
-                            text = stringResource(R.string.save),
-                            color = if (isValid) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
+                TopBarAction(stringResource(R.string.save), enabled = isValid) { saveProgram() }
             }
         }
     ) { paddingValues ->

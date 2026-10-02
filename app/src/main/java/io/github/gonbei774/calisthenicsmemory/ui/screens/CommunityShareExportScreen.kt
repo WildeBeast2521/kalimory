@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -179,36 +182,10 @@ fun CommunityShareExportScreen(
     val pagerState = rememberPagerState(pageCount = { tabTitles.size })
     val coroutineScope = rememberCoroutineScope()
 
+    val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
-        topBar = {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            AppIcons.Back,
-                            contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Text(
-                        text = stringResource(R.string.share_export_screen_title),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-        },
+        modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
+        topBar = { CalmTopBar(title = stringResource(R.string.share_export_screen_title), onBack = onNavigateBack, scrollBehavior = topBarScroll) },
         bottomBar = {
             BottomAppBar(
                 containerColor = MaterialTheme.colorScheme.surfaceContainerLow
