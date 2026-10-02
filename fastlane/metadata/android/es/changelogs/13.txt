@@ -1,3 +1,0 @@
-Añadido seguimiento de distancia y peso para ejercicios.
-Añadida opción "Mantener pantalla encendida" para el modo de entrenamiento.
-Mejorada la fiabilidad del temporizador usando Foreground Service.

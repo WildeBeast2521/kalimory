@@ -1,45 +1,34 @@
-A privacy-focused bodyweight training tracker. Customize everything — exercises, training methods, and workflow — to match your needs.
+Kalimory plans your bodyweight training, runs it with you, and remembers every set. There is no account, and nothing goes online: your workouts stay on your phone.
 
-No rigid templates. Adapt the app to your training style.
+<b>Today</b>
+• This week at a glance, what is due, and a suggestion for what to train next
+• Start any workout from one button
 
-<b>To Do</b>
+<b>Guided workouts</b>
+• Rep counting, hold timers and rest timers that keep going with the screen off
+• Programs of several exercises, which you can pause and resume later
+• Interval routines with timed work and rest
+• Log past workouts, with several exercises in one session
 
-• Plan your workout as a list, tap to jump directly
-• Schedule repeats by day of week to automate your weekly routine
+<b>101 steps in 19 progression chains</b>
+• From the wall push-up to the planche, the dead hang to the front lever, and the assisted squat to the pistol squat
+• Every step has form cues, a muscle map, the equipment it needs, and clear standards to start and to move on
+• Skills such as the muscle-up and the human flag show the steps they build on
+• Nothing is locked: train any step whenever you like
 
-<b>Record Mode</b>
+<b>Progressions</b>
+• For each chain you follow: your current step, how close you are to moving on, and the dates you started and met each step
 
-• Quickly log your workouts after training
+<b>Progress</b>
+• Calendar, lists, graphs, personal bests and a weekly goal
 
-<b>Workout Mode</b>
+<b>Your data, your files</b>
+• Complete JSON backups, CSV import and export, and recovery files if the database is ever damaged
 
-• Auto-guided training with built-in timers
-• Single: Timer-assisted rep counting and isometric hold tracking
-• Program: Create and run multi-exercise routines in sequence
-• Interval: Timed work/rest cycles with customizable rounds
-• Programs and intervals are built by freely combining your own exercises
+<b>Calm by design</b>
+• Light and dark themes, optional wallpaper colours, and ten languages
 
-<b>Exercise Creation</b>
+<b>Privacy</b>
+• No internet permission, no ads, no analytics and no crash reporting
 
-• Create any exercise with any name, organize into groups
-• Choose rep-based (dynamic) or time-based (isometric) tracking
-• Support for unilateral (one-sided) exercises
-• 10-level progressions to match your method
-• Optional distance, weight, and assistance tracking
-• Favorite exercises (★) for quick access
-• Add optional description notes to each exercise
-
-<b>Progress Tracking</b>
-
-• Calendar: See your training activity at a glance
-• List: Browse all sessions chronologically
-• Graph: Visualize trends with average/max/total stats
-• Challenge: Color-coded goal achievement tracking
-• Period filters (1 week, 1 month, 3 months)
-
-<b>Data Management</b>
-
-• Export/import in JSON/CSV format
-• Your data stays on your device, no internet required
-
-Convict Conditioning, StartBodyweight, RR (Recommended Routine), HIIT, circuit training — whatever your method, this app adapts to you.
+Kalimory began as a fork of Calisthenics Memory by Gonbei774 and is free software under the GPL-3.0.

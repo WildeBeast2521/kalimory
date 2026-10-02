@@ -1,2 +1,0 @@
-Correction du minuteur qui s'arrêtait lorsque l'écran était éteint.
-Correction du problème de build reproductible.

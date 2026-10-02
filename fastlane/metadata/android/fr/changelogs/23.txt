@@ -1,3 +1,0 @@
-Corrigé : L'état de l'application se réinitialisait lors de la rotation de l'appareil
-
-Contributors: SomeTr

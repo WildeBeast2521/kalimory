@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - Kalimory
+
+Kalimory is a fork of Calisthenics Memory with its own name, application ID (`io.github.wildebeast2521.kalimory`) and icon. It installs beside the original app; move your data with a complete backup.
+
+### Added
+- **Today**: this week at a glance, what is due, suggestions from your progressions, a weekly goal, and a start-workout button for every kind of workout
+- **Exercise catalogue**: 101 steps in 19 progression chains, with form cues, a muscle map, equipment, and starting and move-on standards, in all ten languages
+- **Progressions**: where you stand in each chain you follow, when you are ready for the next step, and the dates you started and met each step
+- **Workout summary** after every workout, with totals and new personal bests
+- Log a past workout with several exercises at once
+- Restore from a recovery file inside the app
+- A welcome guide on first launch
+- New workout sounds, and an optional vibration when a set is done
+
+### Changed
+- A complete redesign in Material 3 Expressive: four destinations (Today, Train, Progress, Library), one workout flow, calm colours with optional wallpaper colours, wavy progress indicators, connected button groups, flexible top bars and a floating rest toolbar
+- Workout timers survive the app being stopped and resume where they left off
+- Backups are written and restored atomically and validated before import
+
+### Removed
+- The Challenge tab, replaced by Progressions
+
+Versions 1.26.0 and earlier below are releases of the original Calisthenics Memory by Gonbei774.
+
 ## [1.26.0] - 2026-07-20
 
 ### Added

@@ -1,1 +1,0 @@
-Notificacion de flash LED agregada al completar series de entrenamiento. Seccion de informacion de la app rediseñada con mejor disposicion.

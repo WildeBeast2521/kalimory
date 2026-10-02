@@ -1,4 +1,0 @@
-Added distance graph with dual Y-axis display (invert toggle available).
-Added volume graph showing daily training volume (reps × weight).
-Added weight statistics: total volume, max/avg daily volume, max/avg weight.
-Improved training record editing for distance and weight values.
