@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-02, at PR #105.
+Last reviewed: 2026-10-02, at PR #106.
 
 ## Where things stand
 
@@ -199,7 +199,12 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
          - Debug builds accept `adb shell am start -n io.github.gonbei774.calisthenicsmemory/.MainActivity --es figure_step <step id>`, which opens the figure preview on that step for authoring checks.
        - Done in PR #105: the dip (4) and handstand push-up (5) chains, with parallel bars, a bench, and a wall with a cushion.
          - The pike push-ups are seen from the side, because the raised hips hide the head and arms from other angles.
-     - Next: the remaining 3 chains' motions (hip hinge, core, leg raise), then the muscular style.
+       - Done in PR #106: the hip hinge (6), core (4) and leg raise (5) chains. Every one of the 53 catalogue steps now has a motion, which `StepMotionsTest` enforces.
+         - Lying moves use a face-up body. In bridges the neck and arms counter-rotate, so the head and arms stay on the floor.
+         - Nordic curls kneel with the shins flat and the ankles under an anchor prop.
+         - Hanging leg raises keep the shoulders fixed under the pull-up bar.
+     - Stage 3 is complete. The figure is still debug-only.
+     - Next: the owner's muscular human style. After that, the figure goes on each step's sheet.
   6. Expansion: skills, the remaining chains, trends.
 
 ## Workout sounds (owner decisions, 2026-09-30)
@@ -269,7 +274,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #105. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #106. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -279,7 +284,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #105: 420 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #106: 422 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

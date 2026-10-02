@@ -6,15 +6,15 @@ package io.github.gonbei774.calisthenicsmemory.data.figure
  */
 internal object PullMotions {
 
-    private const val BAR = 2.2f
-    private val bar = Prop(Vec3(-0.75f, BAR, -0.02f), Vec3(0.75f, BAR + 0.035f, 0.02f))
+    const val BAR = 2.2f
+    val bar = Prop(Vec3(-0.75f, BAR, -0.02f), Vec3(0.75f, BAR + 0.035f, 0.02f))
 
     /** Shoulder to pelvis along a straight torso, with the shoulder's small drop below the neck. */
     private const val SHOULDER_ABOVE_PELVIS = Proportions.TORSO - 0.03f
     private const val ARM = Proportions.UPPER_ARM + Proportions.FOREARM
 
     /** Arms straight: the pelvis as high as straight arms allow, the grip [halfGrip] from the middle. */
-    private fun hangHeight(halfGrip: Float): Float {
+    fun hangHeight(halfGrip: Float): Float {
         val dx = halfGrip - Proportions.SHOULDER_HALF_WIDTH
         return BAR - kotlin.math.sqrt(ARM * ARM * 0.995f - dx * dx) - SHOULDER_ABOVE_PELVIS
     }
