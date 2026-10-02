@@ -665,6 +665,79 @@ object Catalogue {
                 ),
             ),
         ),
+        CatalogueChain(
+            "side", R.string.cat_chain_side, MovementPattern.CORE_LATERAL,
+            listOf(
+                CatalogueStep(
+                    "side.knee_plank", "side", R.string.cat_side_knee_plank, R.string.cat_side_knee_plank_desc, R.string.cat_side_knee_plank_cues,
+                    ISOMETRIC, UNILATERAL, difficulty = 1,
+                    working = Standard(3, 15), moveOn = Standard(3, 30),
+                    primaryMuscles = setOf(Muscle.ABDOMINALS), secondaryMuscles = setOf(Muscle.SHOULDERS, Muscle.GLUTES),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "side.plank", "side", R.string.cat_side_plank, R.string.cat_side_plank_desc, R.string.cat_side_plank_cues,
+                    ISOMETRIC, UNILATERAL, difficulty = 2,
+                    working = Standard(3, 20), moveOn = Standard(3, 45),
+                    primaryMuscles = setOf(Muscle.ABDOMINALS), secondaryMuscles = setOf(Muscle.SHOULDERS, Muscle.GLUTES),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "side.hip_lift", "side", R.string.cat_side_hip_lift, R.string.cat_side_hip_lift_desc, R.string.cat_side_hip_lift_cues,
+                    DYNAMIC, UNILATERAL, difficulty = 3,
+                    working = Standard(3, 8), moveOn = Standard(3, 15),
+                    primaryMuscles = setOf(Muscle.ABDOMINALS), secondaryMuscles = setOf(Muscle.SHOULDERS, Muscle.GLUTES),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "side.star", "side", R.string.cat_side_star, R.string.cat_side_star_desc, R.string.cat_side_star_cues,
+                    ISOMETRIC, UNILATERAL, difficulty = 4,
+                    working = Standard(3, 10), moveOn = Standard(3, 30),
+                    primaryMuscles = setOf(Muscle.ABDOMINALS), secondaryMuscles = setOf(Muscle.SHOULDERS, Muscle.GLUTES, Muscle.ABDUCTORS),
+                    equipment = emptySet(),
+                ),
+            ),
+        ),
+        CatalogueChain(
+            "human_flag", R.string.cat_chain_human_flag, MovementPattern.CORE_LATERAL,
+            listOf(
+                CatalogueStep(
+                    "human_flag.vertical", "human_flag", R.string.cat_human_flag_vertical, R.string.cat_human_flag_vertical_desc, R.string.cat_human_flag_vertical_cues,
+                    ISOMETRIC, UNILATERAL, difficulty = 6,
+                    working = Standard(3, 5), moveOn = Standard(3, 15),
+                    primaryMuscles = setOf(Muscle.LATS), secondaryMuscles = setOf(Muscle.SHOULDERS, Muscle.ABDOMINALS, Muscle.FOREARMS),
+                    equipment = setOf(Equipment.POLE), prerequisites = setOf("side.star", "pull.full"),
+                ),
+                CatalogueStep(
+                    "human_flag.tuck", "human_flag", R.string.cat_human_flag_tuck, R.string.cat_human_flag_tuck_desc, R.string.cat_human_flag_tuck_cues,
+                    ISOMETRIC, UNILATERAL, difficulty = 7,
+                    working = Standard(3, 5), moveOn = Standard(3, 15),
+                    primaryMuscles = setOf(Muscle.LATS), secondaryMuscles = setOf(Muscle.SHOULDERS, Muscle.ABDOMINALS, Muscle.FOREARMS),
+                    equipment = setOf(Equipment.POLE),
+                ),
+                CatalogueStep(
+                    "human_flag.one_leg", "human_flag", R.string.cat_human_flag_one_leg, R.string.cat_human_flag_one_leg_desc, R.string.cat_human_flag_one_leg_cues,
+                    ISOMETRIC, UNILATERAL, difficulty = 8,
+                    working = Standard(3, 5), moveOn = Standard(3, 15),
+                    primaryMuscles = setOf(Muscle.LATS), secondaryMuscles = setOf(Muscle.SHOULDERS, Muscle.ABDOMINALS, Muscle.GLUTES),
+                    equipment = setOf(Equipment.POLE),
+                ),
+                CatalogueStep(
+                    "human_flag.straddle", "human_flag", R.string.cat_human_flag_straddle, R.string.cat_human_flag_straddle_desc, R.string.cat_human_flag_straddle_cues,
+                    ISOMETRIC, UNILATERAL, difficulty = 9,
+                    working = Standard(3, 3), moveOn = Standard(3, 10),
+                    primaryMuscles = setOf(Muscle.LATS), secondaryMuscles = setOf(Muscle.SHOULDERS, Muscle.ABDOMINALS, Muscle.GLUTES),
+                    equipment = setOf(Equipment.POLE),
+                ),
+                CatalogueStep(
+                    "human_flag.full", "human_flag", R.string.cat_human_flag_full, R.string.cat_human_flag_full_desc, R.string.cat_human_flag_full_cues,
+                    ISOMETRIC, UNILATERAL, difficulty = 10,
+                    working = Standard(3, 3), moveOn = Standard(3, 8),
+                    primaryMuscles = setOf(Muscle.LATS), secondaryMuscles = setOf(Muscle.SHOULDERS, Muscle.ABDOMINALS, Muscle.GLUTES),
+                    equipment = setOf(Equipment.POLE),
+                ),
+            ),
+        ),
     )
 
     private val stepsById: Map<String, CatalogueStep> = chains.flatMap { it.steps }.associateBy { it.id }
