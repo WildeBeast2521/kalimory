@@ -31,6 +31,8 @@ data class FigureMotion(
     /** The pose at [progress] through the loop, eased in and out between keyframes. */
     fun poseAt(progress: Float): FigurePose {
         val t = progress.coerceIn(0f, 1f)
+        // The ends are the keyframes themselves, so the loop closes without rounding drift.
+        if (t >= 1f) return keyframes.last().pose
         val index = keyframes.indexOfLast { it.at <= t }.coerceAtMost(keyframes.size - 2)
         val from = keyframes[index]
         val to = keyframes[index + 1]
