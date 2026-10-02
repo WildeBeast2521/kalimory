@@ -1397,7 +1397,7 @@ suspend fun executeCsvImport(
 }
 
 /** This app's own repository: source code and issue reports. */
-private const val REPOSITORY_URL = "https://github.com/WildeBeast2521/CalisthenicsMemory"
+private const val REPOSITORY_URL = "https://github.com/WildeBeast2521/kalimory"
 
 /** The upstream project this app is based on. */
 private const val UPSTREAM_URL = "https://codeberg.org/Gonbei774/CalisthenicsMemory"
