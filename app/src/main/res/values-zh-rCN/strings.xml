@@ -882,7 +882,6 @@
     <string name="catalogue_no_equipment">无需器械</string>
     <string name="catalogue_how_to">动作要领</string>
     <string name="catalogue_builds_on">基础动作</string>
-    <string name="catalogue_builds_on_note">最好先掌握。不会锁定任何内容。</string>
     <string name="catalogue_follow">关注这条进阶</string>
     <string name="catalogue_follow_description">在“进阶”和“今天”的建议中显示</string>
     <string name="standard_reps">%1$d × %2$d</string>

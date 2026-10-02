@@ -892,7 +892,6 @@
     <string name="catalogue_no_equipment">Без інвентарю</string>
     <string name="catalogue_how_to">Як виконувати</string>
     <string name="catalogue_builds_on">Спирається на</string>
-    <string name="catalogue_builds_on_note">Корисно опанувати раніше. Нічого не заблоковано.</string>
     <string name="catalogue_follow">Стежити за цією прогресією</string>
     <string name="catalogue_follow_description">Показувати її в «Прогресіях» і в пропозиціях на екрані «Сьогодні»</string>
     <string name="standard_reps">%1$d × %2$d</string>

@@ -270,7 +270,6 @@
     <string name="catalogue_no_equipment">Без инвентаря</string>
     <string name="catalogue_how_to">Как выполнять</string>
     <string name="catalogue_builds_on">Опирается на</string>
-    <string name="catalogue_builds_on_note">Полезно освоить раньше. Ничего не заблокировано.</string>
     <string name="catalogue_follow">Следить за этой прогрессией</string>
     <string name="catalogue_follow_description">Показывать её в «Прогрессиях» и в предложениях на экране «Сегодня»</string>
     <string name="standard_reps">%1$d × %2$d</string>
