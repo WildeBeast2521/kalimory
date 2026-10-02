@@ -68,7 +68,6 @@ import io.github.gonbei774.calisthenicsmemory.ui.navigation.screenTransition
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.tabTransition
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
 import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.CatalogueChainScreen
-import io.github.gonbei774.calisthenicsmemory.ui.screens.figure.FigurePreviewScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.CatalogueScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.library.LibraryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.ResumableWorkout
@@ -278,11 +277,7 @@ fun CalisthenicsMemoryApp(
 ) {
     val viewModel: TrainingViewModel = viewModel()
     val context = androidx.compose.ui.platform.LocalContext.current
-    // Debug builds: `adb shell am start ... --es figure_step push.full` opens the figure preview on a step.
-    val figureStep = if (BuildConfig.DEBUG) (androidx.compose.ui.platform.LocalContext.current as? android.app.Activity)?.intent?.getStringExtra(FIGURE_STEP_EXTRA) else null
-    var currentScreen by rememberSaveable(stateSaver = ScreenSaver) {
-        mutableStateOf<Screen>(if (figureStep != null) Screen.FigurePreview else Screen.Home)
-    }
+    var currentScreen by rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.Home) }
     // Screen.Home shows this destination, so "back to Home" returns to the tab the user came from.
     var primaryDestination by rememberSaveable { mutableStateOf(PrimaryDestination.TODAY) }
     // A day Today asked Progress to show; Progress clears it once shown.
@@ -324,7 +319,7 @@ fun CalisthenicsMemoryApp(
         Screen.Home -> null
         Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList, Screen.Catalogue -> Screen.Home
         is Screen.CatalogueChain -> if (screen.fromHome) Screen.Home else Screen.Catalogue
-        Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub, Screen.FigurePreview -> Screen.Settings
+        Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub -> Screen.Settings
         Screen.CommunityShareExport -> Screen.ShareHub
         is Screen.Record -> if (screen.fromToDo) Screen.ToDo else Screen.Home
         is Screen.ProgramEdit -> Screen.ProgramList
@@ -518,7 +513,6 @@ fun CalisthenicsMemoryApp(
                             onNavigateBack = { currentScreen = Screen.Home },
                             onNavigateToLicenses = { currentScreen = Screen.Licenses },
                             onOpenWelcomeGuide = { showWelcome = true },
-                            onOpenFigurePreview = { currentScreen = Screen.FigurePreview },
                             onNavigateToBackup = { currentScreen = Screen.Backup },
                             onNavigateToCsvDataManagement = { currentScreen = Screen.CsvDataManagement },
                             onNavigateToShareHub = { currentScreen = Screen.ShareHub },
@@ -554,13 +548,6 @@ fun CalisthenicsMemoryApp(
                             initialExerciseId = workoutScreen.exerciseId,
                             fromToDo = workoutScreen.fromToDo,
                             suggestedTarget = workoutScreen.suggestedTarget
-                        )
-                    }
-                    is Screen.FigurePreview -> {
-                        FigurePreviewScreen(
-                            onNavigateBack = { currentScreen = Screen.Settings },
-                            initialStep = figureStep,
-                            initialStyle = if (BuildConfig.DEBUG) (androidx.compose.ui.platform.LocalContext.current as? android.app.Activity)?.intent?.getStringExtra(FIGURE_STYLE_EXTRA) else null,
                         )
                     }
                     is Screen.Catalogue -> {
@@ -687,12 +674,6 @@ fun CalisthenicsMemoryApp(
     }
 }
 
-/** Debug builds: the intent extra naming the step the figure preview opens on. */
-const val FIGURE_STEP_EXTRA = "figure_step"
-
-/** Debug builds: the intent extra naming the figure style the preview starts in, such as "SHADED". */
-const val FIGURE_STYLE_EXTRA = "figure_style"
-
 sealed class Screen {
     object Home : Screen()
     object ToDo : Screen()
@@ -725,8 +706,6 @@ sealed class Screen {
     object ShareHub : Screen()
     data class WorkoutSummary(val sessionId: Long) : Screen()
     object Catalogue : Screen()
-    // Debug builds only: the demonstration figure's authoring screen.
-    object FigurePreview : Screen()
     // fromHome: opened from Today or Progressions, so back returns there.
     data class CatalogueChain(val chainId: String, val fromHome: Boolean = false) : Screen()
 }
@@ -801,7 +780,6 @@ private val ScreenSaver = mapSaver(
                     put("sessionId", screen.sessionId)
                 }
                 Screen.Catalogue -> put("type", "Catalogue")
-                Screen.FigurePreview -> put("type", "FigurePreview")
                 is Screen.CatalogueChain -> {
                     put("type", "CatalogueChain")
                     put("chainId", screen.chainId)
@@ -853,7 +831,6 @@ private val ScreenSaver = mapSaver(
             "ShareHub" -> Screen.ShareHub
             "WorkoutSummary" -> Screen.WorkoutSummary(map["sessionId"] as Long)
             "Catalogue" -> Screen.Catalogue
-            "FigurePreview" -> Screen.FigurePreview
             "CatalogueChain" -> Screen.CatalogueChain(map["chainId"] as String, map["fromHome"] as? Boolean ?: false)
             else -> Screen.Home
         }
