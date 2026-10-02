@@ -63,6 +63,7 @@ import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
 import io.github.gonbei774.calisthenicsmemory.service.WorkoutTimerService
 import io.github.gonbei774.calisthenicsmemory.ui.components.single.*
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.SetDoneBadge
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RestToolbar
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutSkipButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutStatus
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.TimerDial
@@ -1907,31 +1908,20 @@ fun IntervalStep(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
-        // Changes only this rest; later rests keep the set duration.
-        Row(horizontalArrangement = Arrangement.spacedBy(Spacing.l)) {
-            FilledTonalButton(
-                onClick = {
-                    extraMillis -= minOf(10_000L, remainingMillis.coerceAtLeast(0))
-                    lastShown = countdownSeconds(session.intervalDuration * 1_000L + extraMillis - stopwatch.elapsedMillis)
-                },
-                modifier = Modifier.heightIn(min = 48.dp)
-            ) {
-                Text(stringResource(R.string.minus_10sec), style = MaterialTheme.typography.titleMedium)
-            }
-            FilledTonalButton(
-                onClick = {
-                    extraMillis += 10_000L
-                    lastShown = countdownSeconds(session.intervalDuration * 1_000L + extraMillis - stopwatch.elapsedMillis)
-                },
-                modifier = Modifier.heightIn(min = 48.dp)
-            ) {
-                Text(stringResource(R.string.plus_10sec), style = MaterialTheme.typography.titleMedium)
-            }
-        }
-
         Spacer(modifier = Modifier.weight(1f))
 
-        WorkoutSkipButton(onSkip)
+        // −10 s and +10 s change only this rest; later rests keep the set duration.
+        RestToolbar(
+            onMinus = {
+                extraMillis -= minOf(10_000L, remainingMillis.coerceAtLeast(0))
+                lastShown = countdownSeconds(session.intervalDuration * 1_000L + extraMillis - stopwatch.elapsedMillis)
+            },
+            onPlus = {
+                extraMillis += 10_000L
+                lastShown = countdownSeconds(session.intervalDuration * 1_000L + extraMillis - stopwatch.elapsedMillis)
+            },
+            onSkip = onSkip,
+        )
     }
 }
 

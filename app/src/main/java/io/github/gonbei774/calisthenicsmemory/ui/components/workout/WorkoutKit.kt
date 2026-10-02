@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.workout
 
+import androidx.compose.material3.HorizontalFloatingToolbar
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.material3.WavyProgressIndicatorDefaults
 import androidx.compose.material3.CircularWavyProgressIndicator
@@ -245,7 +246,9 @@ fun TimerDial(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             RollingNumber(
                 value,
-                style = WorkoutNumerals,
+                // Three digits (a 240 s rest) would touch the ring at full size, so they step down,
+                // scaled with the dial.
+                style = if (value.length >= 3) WorkoutNumerals.copy(fontSize = 72.sp * (size / 264.dp), lineHeight = 80.sp * (size / 264.dp)) else WorkoutNumerals,
                 color = MaterialTheme.colorScheme.onSurface,
                 // The dial already announces the value.
                 modifier = Modifier.alpha(if (paused) 0.4f else 1f).clearAndSetSemantics {},
@@ -375,15 +378,27 @@ fun WorkoutSkipButton(onSkip: () -> Unit) {
     }
 }
 
-/** A rest's −10 s and +10 s adjustments; they change only this rest. */
+/**
+ * A rest's controls as an Expressive floating toolbar at the bottom of the screen: −10 s and
+ * +10 s change only this rest, and Skip ends it.
+ */
 @Composable
-fun RestAdjustButtons(onMinus: () -> Unit, onPlus: () -> Unit) {
-    Row(horizontalArrangement = Arrangement.spacedBy(Spacing.l)) {
-        androidx.compose.material3.FilledTonalButton(onClick = onMinus, modifier = Modifier.heightIn(min = 48.dp)) {
+fun RestToolbar(onMinus: () -> Unit, onPlus: () -> Unit, onSkip: () -> Unit, modifier: Modifier = Modifier) {
+    HorizontalFloatingToolbar(expanded = true, modifier = modifier) {
+        androidx.compose.material3.TextButton(onClick = onMinus, modifier = Modifier.heightIn(min = 48.dp)) {
             Text(stringResource(R.string.minus_10sec), style = MaterialTheme.typography.titleMedium)
         }
-        androidx.compose.material3.FilledTonalButton(onClick = onPlus, modifier = Modifier.heightIn(min = 48.dp)) {
+        androidx.compose.material3.TextButton(onClick = onPlus, modifier = Modifier.heightIn(min = 48.dp)) {
             Text(stringResource(R.string.plus_10sec), style = MaterialTheme.typography.titleMedium)
+        }
+        androidx.compose.material3.FilledTonalButton(
+            onClick = onSkip,
+            shapes = ButtonDefaults.shapes(),
+            modifier = Modifier.heightIn(min = 48.dp),
+        ) {
+            Icon(AppIcons.SkipNext, contentDescription = null)
+            Spacer(Modifier.size(Spacing.s))
+            Text(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
         }
     }
 }

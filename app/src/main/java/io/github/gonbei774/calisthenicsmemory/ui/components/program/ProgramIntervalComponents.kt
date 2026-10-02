@@ -1,6 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
-import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RestAdjustButtons
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RestToolbar
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.SetDoneBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.TimerDial
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutSkipButton
@@ -222,16 +222,6 @@ internal fun ProgramIntervalStep(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
-        RestAdjustButtons(
-            onMinus = {
-                extraMillis -= minOf(10_000L, remainingMillis.coerceAtLeast(0))
-                lastShown = countdownSeconds(totalInterval * 1_000L + extraMillis - stopwatch.elapsedMillis)
-            },
-            onPlus = {
-                extraMillis += 10_000L
-                lastShown = countdownSeconds(totalInterval * 1_000L + extraMillis - stopwatch.elapsedMillis)
-            },
-        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -279,6 +269,16 @@ internal fun ProgramIntervalStep(
 
         Spacer(modifier = Modifier.height(Spacing.s))
 
-        WorkoutSkipButton(onSkip)
+        RestToolbar(
+            onMinus = {
+                extraMillis -= minOf(10_000L, remainingMillis.coerceAtLeast(0))
+                lastShown = countdownSeconds(totalInterval * 1_000L + extraMillis - stopwatch.elapsedMillis)
+            },
+            onPlus = {
+                extraMillis += 10_000L
+                lastShown = countdownSeconds(totalInterval * 1_000L + extraMillis - stopwatch.elapsedMillis)
+            },
+            onSkip = onSkip,
+        )
     }
 }
