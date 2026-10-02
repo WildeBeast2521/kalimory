@@ -60,6 +60,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.train.lastDoneText
 import io.github.gonbei774.calisthenicsmemory.ui.theme.WorkoutNumerals
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RollingNumber
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
@@ -191,7 +192,8 @@ fun TodayScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = Spacing.l, vertical = Spacing.xl),
+            // Extra room at the bottom so the start-workout button never covers the last row.
+            .padding(start = Spacing.l, end = Spacing.l, top = Spacing.xl, bottom = Spacing.xl + 88.dp),
         verticalArrangement = Arrangement.spacedBy(Spacing.xl),
     ) {
         // Date and title
