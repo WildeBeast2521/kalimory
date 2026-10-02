@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue
 
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.sharedChainTitle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -95,7 +96,7 @@ fun CatalogueChainScreen(viewModel: TrainingViewModel, chainId: String, onNaviga
     val unfollowed by viewModel.unfollowedChains.collectAsState()
     val history by viewModel.history.collectAsState()
     val journey = remember(exercises, history) { Progressions.journey(chain, exercises, history).associateBy { it.step.id } }
-    CatalogueScaffold(chainName, onNavigateBack) {
+    CatalogueScaffold(chainName, onNavigateBack, sharedChainId = chain.id) {
         // Following only matters once a step is in the library (ADR 0007, decision 4).
         if (chain.steps.any { it.id in linked }) {
             item { FollowRow(followed = chain.id !in unfollowed) { viewModel.setChainFollowed(chain.id, it) } }
@@ -120,7 +121,13 @@ fun CatalogueChainScreen(viewModel: TrainingViewModel, chainId: String, onNaviga
 }
 
 @Composable
-private fun CatalogueScaffold(title: String, onNavigateBack: () -> Unit, content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit) {
+private fun CatalogueScaffold(
+    title: String,
+    onNavigateBack: () -> Unit,
+    // The chain whose name glides into this title from where it was tapped.
+    sharedChainId: String? = null,
+    content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit,
+) {
     Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding()) {
         Row(Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onNavigateBack) {
@@ -132,7 +139,7 @@ private fun CatalogueScaffold(title: String, onNavigateBack: () -> Unit, content
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.semantics { heading() },
+                modifier = (if (sharedChainId != null) Modifier.sharedChainTitle(sharedChainId) else Modifier).semantics { heading() },
             )
         }
         LazyColumn(
@@ -151,7 +158,12 @@ private fun ChainRow(chain: CatalogueChain, inLibrary: Int, onClick: () -> Unit)
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
-            Text(stringResource(chain.name), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text(
+                stringResource(chain.name),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.sharedChainTitle(chain.id),
+            )
             // Where the chain begins and where it leads.
             Text(
                 stringResource(chain.steps.first().name) + " → " + stringResource(chain.steps.last().name),
