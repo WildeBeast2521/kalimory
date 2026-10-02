@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-02, at PR #114.
+Last reviewed: 2026-10-02, at PR #115.
 
 ## Where things stand
 
@@ -184,7 +184,13 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - Translated into all nine other languages.
        - The vertical flag builds on the star side plank and the pull-up.
        - The catalogue now has 17 chains and 91 steps.
-     - Next: the remaining chains (bridge and mobility, conditioning), then trends.
+     - Done in PR #115, chains batch 4: two chains and 10 steps.
+       - The chains: Back bridge (tabletop bridge to one-leg bridge) and Burpee (step-back burpee to tuck-jump burpee).
+       - The bridge shares the `HINGE` pattern, so it rests with hip work. New movement pattern `CONDITIONING` for the burpee.
+       - Translated into all nine other languages.
+       - The angled bridge builds on the glute bridge, and the push-up burpee on the push-up.
+       - The catalogue now has 19 chains and 101 steps.
+     - Next: trends.
 
 ## Workout sounds (owner decisions, 2026-09-30)
 
@@ -253,7 +259,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #114. PRs #70, #86, #87 and #108 changed documentation only, and #109 and #110 only build scripts. PRs #99 to #110 were removed again by #111.
+PRs #34 to #115. PRs #70, #86, #87 and #108 changed documentation only, and #109 and #110 only build scripts. PRs #99 to #110 were removed again by #111.
 
 ## How to verify (the local gate)
 
@@ -263,7 +269,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #114: 399 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #115: 399 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

@@ -59,6 +59,8 @@ enum class MovementPattern {
     CORE_ANTI_EXTENSION,
     CORE_FLEXION,
     CORE_LATERAL,
+    /** Whole-body work for breath and stamina. */
+    CONDITIONING,
 }
 
 /** Sets of reps, or of seconds for a hold. */
