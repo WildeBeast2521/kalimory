@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import androidx.compose.foundation.layout.Box
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.sharedChainTitle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -84,12 +86,14 @@ private fun ChainCard(progress: ChainProgress, onClick: () -> Unit) {
     ) {
         Column(Modifier.fillMaxWidth().padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    stringResource(progress.chain.name),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.weight(1f),
-                )
+                Box(Modifier.weight(1f)) {
+                    Text(
+                        stringResource(progress.chain.name),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.sharedChainTitle(progress.chain.id),
+                    )
+                }
                 Text(
                     stringResource(R.string.progressions_step_of, steps.indexOf(progress.step) + 1, steps.size),
                     style = MaterialTheme.typography.labelLarge.copy(fontFeatureSettings = "tnum"),

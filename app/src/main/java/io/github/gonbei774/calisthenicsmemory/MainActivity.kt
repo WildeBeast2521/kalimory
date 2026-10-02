@@ -1,5 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.LocalSharedTransitionScope
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.LocalScreenAnimationScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
@@ -409,10 +413,14 @@ fun CalisthenicsMemoryApp(
             // The screen being left keeps its own state while it animates out, so each branch reads
             // `screen`, never `currentScreen`. The transition is seekable, so the back gesture can
             // drag the slide and let go to finish or cancel it.
+            // Shared elements (a chain's name gliding into its screen) ride on the same transition.
+            SharedTransitionLayout {
+            CompositionLocalProvider(LocalSharedTransitionScope provides this) {
             screens.AnimatedContent(
                 transitionSpec = { screenTransition(forward = targetState.depth() >= initialState.depth()) },
                 modifier = Modifier.fillMaxSize(),
             ) { screen ->
+                CompositionLocalProvider(LocalScreenAnimationScope provides this) {
                 when (screen) {
                     is Screen.Home -> {
                         BackHandler(enabled = primaryDestination != PrimaryDestination.TODAY) {
@@ -681,6 +689,9 @@ fun CalisthenicsMemoryApp(
                         WorkoutSummaryScreen(viewModel = viewModel, sessionId = screen.sessionId, onDone = finish)
                     }
                 }
+                }
+            }
+            }
             }
         }
     }
