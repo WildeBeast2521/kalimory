@@ -1,130 +1,74 @@
 # Contributing
 
-Issues and suggestions are welcome!
+Bug reports, catalogue corrections and ideas are welcome. Please use the issue templates on this repository.
 
-## Issues
+## Ground rules
 
-- [Codeberg](https://codeberg.org/Gonbei774/CalisthenicsMemory/issues/) (main): Issues and Pull Requests
-- [GitHub](https://github.com/Gonbei774/CalisthenicsMemory/issues) (mirror): Issues only
+These keep the app what it is. Changes that break them cannot be accepted.
 
-### Language Policy
+- **Offline.** The app has no `INTERNET` permission and never will. No feature may need the network.
+- **No tracking.** No analytics, telemetry, ads, Firebase, Crashlytics or Google Play Services.
+- **Your data is safe.** Database migrations are additive only. Never invent timestamps or workout groupings that old data does not contain.
+- **Nothing is locked.** Progressions guide; they never stop anyone training what they want.
+- **Private data stays out of the repository.** Fixtures and examples use made-up data only. Never commit backups, exports, keystores, `local.properties` or tokens.
 
-(Trial) You may open issues in your native language.
-For issues in languages other than English, I will respond primarily in Japanese.
+## Before a pull request
 
-## Pull Requests
+Open an issue first for:
 
-Code contributions are welcome, but please follow these rules.
+- database schema changes;
+- new permissions;
+- new dependencies;
+- large features, such as a new screen or a changed workflow.
 
-### Prior Discussion Required
+Keep each pull request to one change, and use [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:` and so on). If you used an AI coding assistant, say so in the description.
 
-The following changes require **discussion via Issue before submitting a PR**:
+## Building and the local check
 
-- Database schema changes (tables, columns, foreign keys, indices)
-- Adding permissions
-- Adding new dependencies
-- Large new features (new screens, major workflow changes)
-
-I want to accept PRs as much as possible, so please discuss beforehand to ensure smooth merging.
-
-### One PR, One Feature
-
-Each pull request should focus on a single feature or fix.
-Mixing unrelated changes makes review difficult and increases risk.
-
-### AI Tool Users
-
-If you use AI coding assistants, please mention it in your PR description.
-
-### Prohibited (F-Droid Standards)
-
-This app is published on F-Droid. The following are prohibited:
-
-- Google Play Services
-- Firebase / Crashlytics
-- Proprietary advertising libraries
-- Tracking / analytics tools
-
-### Offline Principle
-
-CalisthenicsMemory is a fully offline app. Features requiring network communication will not be accepted.
-
-## How to Build
+Requires JDK 17 or later and the Android SDK. Instrumented tests run on an emulator; the project uses an API 29 image.
 
 ```bash
-git clone https://codeberg.org/Gonbei774/CalisthenicsMemory.git
-cd CalisthenicsMemory
 ./gradlew assembleDebug
+
+# The full check that every pull request must pass:
+./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-Requires JDK 17 or higher.
+Run `scripts/check-room-schemas.sh` when a Room schema changes. Do not regenerate lint baselines, weaken validation or skip tests to make the check pass.
 
-## Project Structure
+## Where things are
 
 ```
-.
-├── app/src/main/
-│   ├── java/.../calisthenicsmemory/
-│   │   ├── data/           # Data layer (Room, Repository)
-│   │   ├── viewmodel/      # ViewModel
-│   │   ├── ui/
-│   │   │   ├── components/ # Reusable UI components
-│   │   │   │   ├── common/
-│   │   │   │   ├── program/
-│   │   │   │   └── single/
-│   │   │   ├── screens/    # Screen Composables
-│   │   │   │   └── view/
-│   │   │   └── theme/      # Theme definitions
-│   │   ├── service/        # Foreground service
-│   │   └── util/           # Utilities
-│   └── res/
-│       ├── values*/        # Multi-language resources
-│       ├── drawable/       # Images
-│       └── xml/            # Configuration XML
-├── app/src/test/           # Unit tests
-├── app/src/androidTest/    # UI tests
-├── docs/readme/            # Multi-language READMEs
-├── examples/               # Sample data
-├── fastlane/               # Store metadata
-└── screenshots/            # Screenshots
+app/src/main/java/.../calisthenicsmemory/
+  data/          Room database, v2 workout model, backups, catalogue, progression logic
+  viewmodel/     TrainingViewModel
+  ui/            Compose screens, components and theme
+  service/       Foreground timer service
+  workout/       Workout sessions and checkpoints
+app/src/test/          Unit tests
+app/src/androidTest/   Instrumented tests
+app/schemas/           Exported Room schemas
+baselineprofile/       Baseline Profile generator
+docs/architecture/     Decision records (ADRs)
+docs/wiki/             User guide
+scripts/               Catalogue, muscle map, sound, icon and schema tools
+fastlane/              Store metadata
 ```
+
+## The exercise catalogue
+
+The catalogue is generated. Edit `scripts/catalogue/catalogue_spec.py`, then run:
+
+```bash
+python3 scripts/catalogue/generate_catalogue.py .
+```
+
+This writes `Catalogue.kt` and the English `catalogue_strings.xml`. Add the same keys to every `values-*/catalogue_strings.xml`; `CatalogueTranslationTest` and lint check that none are missing. Catalogue text must be written for this project. See `docs/catalogue-sources.md`.
 
 ## Translations
 
-Help translate Calisthenics Memory via [Weblate](https://translate.codeberg.org/projects/calisthenics-memory/):
-
-<a href="https://translate.codeberg.org/engage/calisthenics-memory/">
-<img src="https://translate.codeberg.org/widget/calisthenics-memory/multi-auto.svg" alt="Translation status" />
-</a>
-
-### Guidelines
-
-- Weblate is intended for natural, native-speaker translations
-- Some existing translations may still sound unnatural—corrections are welcome
-- Please do not use machine translation on Weblate
-
-If you'd like to add a new language, please open an [issue](https://codeberg.org/Gonbei774/CalisthenicsMemory/issues) before using machine translation. If you can provide a natural, native-speaker translation, you can proceed without opening an issue.
-
-### Source Strings
-
-Source strings (English) are managed in the repository, not Weblate.
-Translators cannot add, delete, or edit source strings.
-
-| Component | Source location |
-|-----------|-----------------|
-| App | [`app/src/main/res/values/strings.xml`](https://codeberg.org/Gonbei774/CalisthenicsMemory/src/branch/master/app/src/main/res/values/strings.xml) |
-| Fastlane | [`fastlane/metadata/android/en-US/`](https://codeberg.org/Gonbei774/CalisthenicsMemory/src/branch/master/fastlane/metadata/android/en-US) |
-
-### Fastlane Limits
-
-| Field | Limit | Note |
-|-------|-------|------|
-| title | 30 chars | Read-only |
-| short_description | 80 chars | |
-| full_description | 4000 chars | |
-
-Changelogs are excluded from translation on Weblate.
+The app ships in ten languages. English strings live in `app/src/main/res/values/`, and each language has its own `values-*` folder. Corrections from native speakers are especially welcome: open a catalogue or translation issue, or a pull request.
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the [GNU General Public License v3.0](LICENSE).
+By contributing, you agree that your contributions are licensed under the [GNU General Public License v3.0](LICENSE).

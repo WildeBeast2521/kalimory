@@ -1,117 +1,61 @@
 <p align="center">
-  <img src="icon.png" width="150" alt="Calisthenics Memory Icon">
+  <img src="icon.png" width="128" alt="">
 </p>
 
 <h1 align="center">Calisthenics Memory</h1>
 
-<p align="center">
-  <a href="https://codeberg.org/Gonbei774/CalisthenicsMemory/src/branch/master/docs/readme/README.ja.md">日本語</a>
-</p>
+<p align="center">A calm, offline place to plan, run and remember your bodyweight training.</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Android-8.0%2B-green.svg" alt="Android 8.0+">
+  <img src="https://img.shields.io/badge/Android-8.0%2B-green.svg" alt="Android 8.0 or later">
   <img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg" alt="License: GPL-3.0">
-  <a href="https://shields.rbtlog.dev/io.github.gonbei774.calisthenicsmemory"><img src="https://shields.rbtlog.dev/simple/io.github.gonbei774.calisthenicsmemory" alt="Reproducible Builds"></a>
-  <a href="https://translate.codeberg.org/engage/calisthenics-memory/"><img src="https://translate.codeberg.org/widget/calisthenics-memory/svg-badge.svg" alt="Translation status"></a>
 </p>
 
-## About
+No account, no internet permission, no ads, no analytics. Your workouts stay on your phone.
 
-A privacy-focused bodyweight training tracker. Customize everything to your liking.
+## What it does
 
-## Features
+- **Today.** This week at a glance, what is due, and suggestions for what to train next.
+- **Workouts.** Single exercises with rep counting and hold timers, multi-exercise programs you can pause and resume, and interval routines. Timers keep running with the screen off.
+- **Log past workouts**, with several exercises in one session.
+- **An exercise catalogue** of 101 steps in 19 progression chains, from the wall push-up to the planche. Each step has form cues, a muscle map, the equipment it needs, and a starting and a move-on standard. Skills name the steps they build on. Nothing is locked.
+- **Progressions.** For each chain you follow: your current step, how close you are to moving on, and the dates you started and met each step.
+- **Progress.** A calendar, lists, graphs, personal bests and a weekly goal.
+- **Your data, your files.** Complete JSON backups, CSV import and export, and recovery files if the database is ever damaged.
+- **Ten languages:** English, Arabic, Chinese (Simplified), French, German, Italian, Japanese, Russian, Spanish and Ukrainian.
+- Light and dark themes, with optional wallpaper colours.
 
-- **To Do** - Plan your workout, tap to jump directly, schedule repeats by day of week
-- **Record Mode** - Quick manual input
-- **Workout Mode** - Auto-guided with timer, set completion notification
-  - Single - Focus on one exercise
-  - Program - Create and run multi-exercise routines, flexible navigation
-  - Interval - Timed work/rest cycles with customizable rounds
-- **Exercise Creation** - Configure dynamic/isometric, unilateral/bilateral, intervals and more
-- **Progress Tracking** - Calendar, lists, graphs, challenge status
-- **Data Management** - Export/import in JSON/CSV
+## Documentation
 
-## Screenshots
-
-<p align="center">
-  <img src="screenshots/1.png" width="200">
-  <img src="screenshots/2.png" width="200">
-  <img src="screenshots/3.png" width="200">
-  <img src="screenshots/4.png" width="200">
-</p>
-<p align="center">
-  <img src="screenshots/5.png" width="200">
-  <img src="screenshots/6.png" width="200">
-  <img src="screenshots/7.png" width="200">
-  <img src="screenshots/8.png" width="200">
-</p>
-
-## Official Distribution
-
-This app is officially distributed only through F-Droid, IzzyOnDroid, and Codeberg Releases.
-We cannot guarantee the safety of APKs downloaded from any other source.
-
-<p align="center">
-  <a href="https://apt.izzysoft.de/fdroid/index/apk/io.github.gonbei774.calisthenicsmemory"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroidButtonGreyBorder_nofont.png" height="80" alt="Get it on IzzyOnDroid"></a>
-</p>
-
-<p align="center">
-  <a href="https://f-droid.org/packages/io.github.gonbei774.calisthenicsmemory/"><img src="https://fdroid.org/badge/get-it-on.png" height="119" alt="Get it on F-Droid"></a>
-</p>
-
-<p align="center">
-  <a href="https://codeberg.org/Gonbei774/CalisthenicsMemory/releases"><img src="https://get-it-on.codeberg.org/get-it-on-white-on-black.png" height="80" alt="Get it on Codeberg"></a>
-</p>
-
-### Verify Signature
-
-APK signing fingerprint (SHA-256):
-
-```
-18c00c347ea1001afcdd87258881d24d684047bbeb22c47fbe7b51499516ab54
-```
-
-How to verify:
-
-```bash
-apksigner verify --print-certs app-release.apk
-```
-
-### Verify Checksum
-
-SHA256 checksum: See `app-release.apk.sha256` on the release page.
-
-```bash
-sha256sum -c app-release.apk.sha256
-```
+The user guide lives in [`docs/wiki`](docs/wiki/Home.md). Design decisions are recorded as ADRs in [`docs/architecture`](docs/architecture).
 
 ## Permissions
 
-- `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE`, `WAKE_LOCK` - Run timer in background
-- `FLASHLIGHT` - Flash notification for rest intervals
+- `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE`, `WAKE_LOCK`: keep workout timers running in the background.
+- `FLASHLIGHT`: an optional flash at the end of a rest.
 
-See [IzzyOnDroid Permissions](https://android.izzysoft.de/applists/perms) for details.
+The app does not request `INTERNET`.
+
+## Building
+
+Requires JDK 17 or later and the Android SDK.
+
+```bash
+./gradlew assembleDebug
+```
+
+The full local check, run before every merge, is in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Bug reports, catalogue corrections and ideas are welcome through the issue templates. See [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
-### Translations
+## Credits
 
-Help translate the app on [Weblate](https://translate.codeberg.org/engage/calisthenics-memory/):
+This app began as a fork of [Calisthenics Memory by Gonbei774](https://codeberg.org/Gonbei774/CalisthenicsMemory), whose work and history are kept in this repository. It has since been substantially redesigned and extended. Thanks also to the original project's translators.
 
-<a href="https://translate.codeberg.org/engage/calisthenics-memory/">
-<img src="https://translate.codeberg.org/widget/calisthenics-memory/multi-auto.svg" alt="Translation status" />
-</a>
-
-## Wiki
-
-- [Getting Started](https://codeberg.org/Gonbei774/CalisthenicsMemory/wiki/Getting-Started)
+The muscle map outlines are adapted from react-body-highlighter (MIT). See [`docs/catalogue-sources.md`](docs/catalogue-sources.md) and the app's Open Source Licenses screen.
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0. See [LICENSE](LICENSE) for details.
-
----
-
-**Last Updated**: March 2, 2026
+GNU General Public License v3.0. See [LICENSE](LICENSE).

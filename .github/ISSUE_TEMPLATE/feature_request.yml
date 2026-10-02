@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest something new or a change to how the app works.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The app stays offline: no accounts, no internet permission, no ads, no analytics. Ideas that need any of these cannot be accepted.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What you are trying to do
+      description: The training situation, and what gets in the way today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+      description: How you picture it working. Rough is fine.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you do now instead

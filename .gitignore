@@ -1,35 +1,51 @@
-# Android Studio
+# Android Studio and Gradle
 *.iml
-.gradle
-/local.properties
-/.idea/
+.gradle/
+.idea/
+.kotlin/
+.externalNativeBuild
+.cxx
 .DS_Store
+local.properties
 
-# ビルド生成物
+# Build outputs
 /build
 /app/build
 /baselineprofile/build
 /captures
+*.apk
+*.aab
+*.idsig
+*.hprof
+*.trace
 
-# その他
-.externalNativeBuild
-.cxx
-local.properties
-
-# Keystore files (NEVER commit these!)
+# Signing material and secrets (never commit these)
 *.keystore
 *.jks
+*.p12
+*.pem
 keystore.properties
+.env
+*.env
 
-# Kotlin compiler logs
-.kotlin/
+# User data: backups, exports and app databases pulled from a device or emulator
+calisthenics_memory_backup_*.json
+calisthenics-memory-database-*.zip
+exercises_*.csv
+groups_*.csv
+records_*.csv
+record_template_*.csv
+share_*.json
+*.db
+*.db-shm
+*.db-wal
 
-# プロジェクト設定（Claude Code用、非公開）
+# Local tooling
 CLAUDE.md
 .claude/
-
-# 開発用ドキュメント・テストデータ（非公開）
+graphify-out/
 dev-docs/
+
 # Python bytecode from the generator scripts
 __pycache__/
 *.pyc
