@@ -71,6 +71,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.CatalogueChai
 import io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue.CatalogueScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.library.LibraryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.ResumableWorkout
+import io.github.gonbei774.calisthenicsmemory.ui.screens.today.StartWorkoutMenu
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.TodayScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.summary.WorkoutSummaryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.TrainScreen
@@ -376,6 +377,17 @@ fun CalisthenicsMemoryApp(
                 PrimaryNavigationBar(
                     selected = primaryDestination,
                     onSelect = { primaryDestination = it }
+                )
+            }
+        },
+        // Today's Expressive FAB menu: start any kind of workout from the home screen.
+        floatingActionButton = {
+            if (showPrimaryNavigation && primaryDestination == PrimaryDestination.TODAY) {
+                StartWorkoutMenu(
+                    onExercise = { currentScreen = Screen.Workout(fromToday = true) },
+                    onProgram = { currentScreen = Screen.ProgramList },
+                    onInterval = { currentScreen = Screen.IntervalList },
+                    onLogPast = { currentScreen = Screen.Record() },
                 )
             }
         },

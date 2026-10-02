@@ -13,6 +13,8 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -86,6 +88,8 @@ class TodaySuggestionsTest {
         scrollTo(exerciseName)
         rule.onNodeWithText(text(R.string.suggestion_first)).assertExists()
 
+        // Scroll the row clear of the floating start-workout button, as a person would.
+        rule.onNode(hasScrollAction()).performTouchInput { swipeUp() }
         // Other followed chains may be suggested too; dismiss the one beside this row.
         rule.onNode(
             hasContentDescription(text(R.string.suggestion_dismiss)) and
