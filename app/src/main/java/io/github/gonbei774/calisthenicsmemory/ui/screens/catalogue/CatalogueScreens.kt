@@ -364,5 +364,6 @@ internal fun equipmentLabel(equipment: Equipment): String = stringResource(
         Equipment.RESISTANCE_BAND -> R.string.equipment_resistance_band
         Equipment.SLIDER -> R.string.equipment_slider
         Equipment.ANCHOR -> R.string.equipment_anchor
+        Equipment.POLE -> R.string.equipment_pole
     }
 )

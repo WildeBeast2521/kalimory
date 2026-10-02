@@ -44,6 +44,8 @@ enum class Equipment {
     SLIDER,
     /** Something sturdy to hold the ankles down. */
     ANCHOR,
+    /** A vertical pole, a post or wall bars to grip. */
+    POLE,
 }
 
 /** The movement a chain trains; the same pattern rests about 48 hours between sessions (ADR 0005). */
@@ -56,6 +58,7 @@ enum class MovementPattern {
     HINGE,
     CORE_ANTI_EXTENSION,
     CORE_FLEXION,
+    CORE_LATERAL,
 }
 
 /** Sets of reps, or of seconds for a hold. */

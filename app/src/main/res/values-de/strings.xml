@@ -940,6 +940,7 @@
     <string name="equipment_resistance_band">Widerstandsband</string>
     <string name="equipment_slider">Handtuch oder Gleitpads</string>
     <string name="equipment_anchor">Fußfixierung</string>
+    <string name="equipment_pole">Senkrechte Stange</string>
     <string name="tab_progressions">Progressionen</string>
     <string name="progressions_yours">Deine Progressionen</string>
     <string name="progressions_targets">Ziele</string>

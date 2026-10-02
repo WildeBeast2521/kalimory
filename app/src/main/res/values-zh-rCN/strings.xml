@@ -911,6 +911,7 @@
     <string name="equipment_resistance_band">弹力带</string>
     <string name="equipment_slider">毛巾或滑盘</string>
     <string name="equipment_anchor">脚踝固定物</string>
+    <string name="equipment_pole">竖杆</string>
     <string name="tab_progressions">进阶</string>
     <string name="progressions_yours">你的进阶</string>
     <string name="progressions_targets">目标</string>
