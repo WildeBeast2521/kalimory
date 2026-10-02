@@ -265,6 +265,23 @@ private fun StepDetails(step: CatalogueStep, inLibrary: Boolean, onAdd: () -> Un
             )
         }
 
+        // Skills name the steps they build on (ADR 0005, decision 2): a hint, never a lock.
+        val buildsOn = step.prerequisites.mapNotNull { Catalogue.step(it) }
+        if (buildsOn.isNotEmpty()) {
+            Section(stringResource(R.string.catalogue_builds_on)) {
+                Text(
+                    buildsOn.map { stringResource(it.name) }.joinToString(", "),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    stringResource(R.string.catalogue_builds_on_note),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+
         Column {
             Text(stringResource(R.string.catalogue_start_at, standardText(step.working, step.kind)), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
             Text(stringResource(R.string.catalogue_move_on_at, standardText(step.moveOn, step.kind)), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)

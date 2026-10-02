@@ -943,6 +943,8 @@
     <string name="catalogue_needs">Needs</string>
     <string name="catalogue_no_equipment">No equipment</string>
     <string name="catalogue_how_to">How to do it</string>
+    <string name="catalogue_builds_on">Builds on</string>
+    <string name="catalogue_builds_on_note">Helpful to have first. Nothing is locked.</string>
     <string name="catalogue_follow">Follow this progression</string>
     <string name="catalogue_follow_description">Show it in Progressions and in Today\'s suggestions</string>
     <string name="standard_reps">%1$d × %2$d</string>

@@ -946,6 +946,8 @@
     <string name="catalogue_needs">必要なもの</string>
     <string name="catalogue_no_equipment">器具なし</string>
     <string name="catalogue_how_to">やり方</string>
+    <string name="catalogue_builds_on">土台になる種目</string>
+    <string name="catalogue_builds_on_note">先にできると役立ちます。何も制限されません。</string>
     <string name="catalogue_follow">このプログレッションをフォロー</string>
     <string name="catalogue_follow_description">プログレッションと「今日」のおすすめに表示します</string>
     <string name="standard_reps">%1$d × %2$d</string>

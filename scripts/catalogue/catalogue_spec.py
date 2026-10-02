@@ -1,4 +1,5 @@
-"""Catalogue v1 core chains: the single source for the generated Kotlin catalogue and its strings.
+"""The catalogue: the core chains (v1) and the skill chains (phase 6), the single source for the
+generated Kotlin catalogue and its strings.
 
 Every name, description, cue and standard here is written for this project (ADR 0006). Names and
 muscle groups are facts; free-exercise-db was used only as a checklist.
@@ -187,5 +188,52 @@ CHAINS = [
         ("toes_to_bar", "Toes to bar", D, B, 6, (3, 3), (3, 10), ["abdominals"], ["lats", "forearms"], ["PULL_UP_BAR"],
          "Hanging from a bar and raising straight legs all the way to touch the bar.",
          ["Press the bar down slightly with straight arms", "Lift your legs and curl your hips", "Lower under control"], []),
+    ]),
+
+    # ---- Skills (phase 6). Prerequisites are hints shown as "Builds on", never locks (ADR 0005). ----
+    ("handstand", "Handstand", "VERTICAL_PUSH", [
+        ("crow", "Crow pose", I, B, 3, (3, 10), (3, 30), ["shoulders"], ["forearms", "abdominals", "triceps"], [],
+         "Balancing on your hands with your knees resting on the backs of your upper arms. The first taste of weight on the hands.",
+         ["Hands flat, fingers spread, shoulder width", "Knees high on your upper arms", "Lean forward until your feet float"], []),
+        ("wall_walk", "Wall walk", D, B, 4, (3, 2), (3, 5), ["shoulders"], ["abdominals", "triceps"], ["WALL"],
+         "From a push-up position with your feet at a wall, walking your feet up the wall and your hands in, then back out.",
+         ["Small steps with hands and feet", "Keep your arms straight and your body tight", "Walk in only as far as you can control"], []),
+        ("kick_up", "Handstand kick-up", D, B, 5, (3, 5), (3, 10), ["shoulders"], ["abdominals"], [],
+         "Kicking up towards a handstand on open floor and finding the balance point for a moment, then stepping down.",
+         ["Hands shoulder width, eyes between them", "Kick with one leg, follow with the other", "Step down to the side if you go over"], ["vpush.wall_hold"]),
+        ("freestanding", "Freestanding handstand", I, B, 7, (3, 10), (3, 30), ["shoulders"], ["abdominals", "forearms", "traps"], [],
+         "Balancing upside down on your hands without a wall, body in one straight line.",
+         ["Push the floor away, shoulders by your ears", "Squeeze your legs together, toes pointed", "Steer with your fingertips"], ["vpush.wall_hold"]),
+    ]),
+    ("l_sit", "L-sit", "CORE_FLEXION", [
+        ("foot_supported", "Foot-supported L-sit", I, B, 2, (3, 10), (3, 30), ["abdominals"], ["triceps", "shoulders"], [],
+         "Sitting with your hands by your hips, pressing down to lift your hips while your heels stay on the floor.",
+         ["Hands flat beside your hips", "Push down and lift your hips", "Shoulders down, away from your ears"], []),
+        ("tuck", "Tuck L-sit", I, B, 4, (3, 10), (3, 30), ["abdominals"], ["triceps", "shoulders"], [],
+         "Holding yourself up on straight arms with your knees pulled into your chest.",
+         ["Arms locked straight", "Knees tight to your chest", "Press the floor or handles away"], []),
+        ("one_leg", "One-leg L-sit", I, B, 5, (3, 10), (3, 20), ["abdominals"], ["quadriceps", "triceps"], [],
+         "A tuck L-sit with one leg straightened out in front, changing legs each set.",
+         ["One knee tucked, the other leg straight", "Lift the straight leg level with your hips", "Change legs each set"], []),
+        ("full", "L-sit", I, B, 6, (3, 10), (3, 30), ["abdominals"], ["quadriceps", "triceps", "shoulders"], ["PARALLEL_BARS"],
+         "Holding yourself up on straight arms with both legs straight out in front, making an L.",
+         ["Legs straight and together, level with your hips", "Point your toes", "Keep pushing down through your hands"], ["dip.support"]),
+        ("v_sit", "V-sit", I, B, 9, (3, 5), (3, 15), ["abdominals"], ["quadriceps", "shoulders", "triceps"], [],
+         "From an L-sit, lifting your straight legs higher until your body makes a V.",
+         ["Lean your shoulders back a little", "Lift your legs as high as you can", "Keep your arms straight"], []),
+    ]),
+    ("muscle_up", "Muscle-up", "VERTICAL_PULL", [
+        ("high_pull", "Chest-to-bar pull-up", D, B, 6, (3, 3), (3, 8), ["lats"], ["biceps", "middle back"], ["PULL_UP_BAR"],
+         "A pull-up driven hard enough to bring your chest to the bar: the pull a muscle-up needs.",
+         ["Start each rep from a full hang", "Pull fast and drive your elbows down", "Touch the bar with your chest"], ["pull.full"]),
+        ("negative", "Muscle-up negative", D, B, 7, (3, 3), (3, 6), ["chest", "triceps"], ["lats", "shoulders"], ["PULL_UP_BAR"],
+         "From the top of the bar on straight arms, lowering slowly through the dip and the turn to a hang.",
+         ["Start on top with straight arms", "Lower through the dip slowly", "Keep the bar close as you turn under it"], ["dip.full"]),
+        ("band", "Band-assisted muscle-up", D, B, 7, (3, 2), (3, 5), ["lats", "triceps"], ["chest", "biceps"], ["PULL_UP_BAR", "RESISTANCE_BAND"],
+         "A full muscle-up with a band taking some of your weight through the pull and the turn.",
+         ["Pull high, towards your chest", "Lean your chest over the bar quickly", "Press up until your arms are straight"], []),
+        ("full", "Muscle-up", D, B, 8, (3, 1), (3, 5), ["lats", "triceps"], ["chest", "biceps", "shoulders"], ["PULL_UP_BAR"],
+         "Pulling yourself up from a hang and over the bar in one movement, finishing on straight arms above it.",
+         ["Pull explosively, the bar to your chest", "Turn your wrists and lean over the bar", "Press to straight arms"], ["pull.full", "dip.full"]),
     ]),
 ]
