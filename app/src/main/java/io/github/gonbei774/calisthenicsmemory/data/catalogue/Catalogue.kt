@@ -738,6 +738,86 @@ object Catalogue {
                 ),
             ),
         ),
+        CatalogueChain(
+            "bridge", R.string.cat_chain_bridge, MovementPattern.HINGE,
+            listOf(
+                CatalogueStep(
+                    "bridge.table", "bridge", R.string.cat_bridge_table, R.string.cat_bridge_table_desc, R.string.cat_bridge_table_cues,
+                    ISOMETRIC, BILATERAL, difficulty = 1,
+                    working = Standard(3, 15), moveOn = Standard(3, 30),
+                    primaryMuscles = setOf(Muscle.GLUTES), secondaryMuscles = setOf(Muscle.SHOULDERS, Muscle.HAMSTRINGS, Muscle.LOWER_BACK),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "bridge.angled", "bridge", R.string.cat_bridge_angled, R.string.cat_bridge_angled_desc, R.string.cat_bridge_angled_cues,
+                    ISOMETRIC, BILATERAL, difficulty = 3,
+                    working = Standard(3, 10), moveOn = Standard(3, 30),
+                    primaryMuscles = setOf(Muscle.LOWER_BACK), secondaryMuscles = setOf(Muscle.GLUTES, Muscle.SHOULDERS, Muscle.HAMSTRINGS),
+                    equipment = setOf(Equipment.BENCH), prerequisites = setOf("hinge.bridge"),
+                ),
+                CatalogueStep(
+                    "bridge.full", "bridge", R.string.cat_bridge_full, R.string.cat_bridge_full_desc, R.string.cat_bridge_full_cues,
+                    ISOMETRIC, BILATERAL, difficulty = 5,
+                    working = Standard(3, 10), moveOn = Standard(3, 30),
+                    primaryMuscles = setOf(Muscle.LOWER_BACK), secondaryMuscles = setOf(Muscle.GLUTES, Muscle.SHOULDERS, Muscle.TRICEPS, Muscle.HAMSTRINGS),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "bridge.push_up", "bridge", R.string.cat_bridge_push_up, R.string.cat_bridge_push_up_desc, R.string.cat_bridge_push_up_cues,
+                    DYNAMIC, BILATERAL, difficulty = 6,
+                    working = Standard(3, 5), moveOn = Standard(3, 12),
+                    primaryMuscles = setOf(Muscle.LOWER_BACK), secondaryMuscles = setOf(Muscle.GLUTES, Muscle.SHOULDERS, Muscle.TRICEPS, Muscle.HAMSTRINGS),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "bridge.one_leg", "bridge", R.string.cat_bridge_one_leg, R.string.cat_bridge_one_leg_desc, R.string.cat_bridge_one_leg_cues,
+                    ISOMETRIC, UNILATERAL, difficulty = 7,
+                    working = Standard(3, 5), moveOn = Standard(3, 15),
+                    primaryMuscles = setOf(Muscle.LOWER_BACK), secondaryMuscles = setOf(Muscle.GLUTES, Muscle.SHOULDERS, Muscle.TRICEPS, Muscle.HAMSTRINGS),
+                    equipment = emptySet(),
+                ),
+            ),
+        ),
+        CatalogueChain(
+            "burpee", R.string.cat_chain_burpee, MovementPattern.CONDITIONING,
+            listOf(
+                CatalogueStep(
+                    "burpee.step_back", "burpee", R.string.cat_burpee_step_back, R.string.cat_burpee_step_back_desc, R.string.cat_burpee_step_back_cues,
+                    DYNAMIC, BILATERAL, difficulty = 1,
+                    working = Standard(3, 6), moveOn = Standard(3, 12),
+                    primaryMuscles = setOf(Muscle.QUADRICEPS), secondaryMuscles = setOf(Muscle.CHEST, Muscle.SHOULDERS, Muscle.ABDOMINALS, Muscle.GLUTES),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "burpee.squat_thrust", "burpee", R.string.cat_burpee_squat_thrust, R.string.cat_burpee_squat_thrust_desc, R.string.cat_burpee_squat_thrust_cues,
+                    DYNAMIC, BILATERAL, difficulty = 2,
+                    working = Standard(3, 8), moveOn = Standard(3, 15),
+                    primaryMuscles = setOf(Muscle.QUADRICEPS), secondaryMuscles = setOf(Muscle.CHEST, Muscle.SHOULDERS, Muscle.ABDOMINALS, Muscle.GLUTES),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "burpee.full", "burpee", R.string.cat_burpee_full, R.string.cat_burpee_full_desc, R.string.cat_burpee_full_cues,
+                    DYNAMIC, BILATERAL, difficulty = 3,
+                    working = Standard(3, 8), moveOn = Standard(3, 15),
+                    primaryMuscles = setOf(Muscle.QUADRICEPS), secondaryMuscles = setOf(Muscle.CHEST, Muscle.SHOULDERS, Muscle.ABDOMINALS, Muscle.GLUTES, Muscle.CALVES),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "burpee.push_up", "burpee", R.string.cat_burpee_push_up, R.string.cat_burpee_push_up_desc, R.string.cat_burpee_push_up_cues,
+                    DYNAMIC, BILATERAL, difficulty = 4,
+                    working = Standard(3, 8), moveOn = Standard(3, 15),
+                    primaryMuscles = setOf(Muscle.QUADRICEPS), secondaryMuscles = setOf(Muscle.CHEST, Muscle.SHOULDERS, Muscle.TRICEPS, Muscle.ABDOMINALS, Muscle.GLUTES, Muscle.CALVES),
+                    equipment = emptySet(), prerequisites = setOf("push.full"),
+                ),
+                CatalogueStep(
+                    "burpee.tuck_jump", "burpee", R.string.cat_burpee_tuck_jump, R.string.cat_burpee_tuck_jump_desc, R.string.cat_burpee_tuck_jump_cues,
+                    DYNAMIC, BILATERAL, difficulty = 6,
+                    working = Standard(3, 6), moveOn = Standard(3, 12),
+                    primaryMuscles = setOf(Muscle.QUADRICEPS), secondaryMuscles = setOf(Muscle.CHEST, Muscle.SHOULDERS, Muscle.TRICEPS, Muscle.ABDOMINALS, Muscle.GLUTES, Muscle.CALVES),
+                    equipment = emptySet(),
+                ),
+            ),
+        ),
     )
 
     private val stepsById: Map<String, CatalogueStep> = chains.flatMap { it.steps }.associateBy { it.id }
