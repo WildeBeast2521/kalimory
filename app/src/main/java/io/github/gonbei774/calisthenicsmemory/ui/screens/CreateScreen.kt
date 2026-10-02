@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
@@ -1028,45 +1029,13 @@ fun UnifiedAddDialog(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Bold
                                 )
-                                Row(
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = 8.dp)
-                                ) {
-                                    val isExercise = creationType == "exercise"
-                                    val isGroup = creationType == "group"
-                                    OutlinedButton(
-                                        onClick = { creationType = "exercise" },
-                                        modifier = Modifier.weight(1f),
-                                        colors = ButtonDefaults.outlinedButtonColors(
-                                            containerColor = if (isExercise) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                            contentColor = if (isExercise) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                                        ),
-                                        border = BorderStroke(
-                                            1.dp,
-                                            if (isExercise) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
-                                        ),
-                                        shape = RoundedCornerShape(8.dp)
-                                    ) {
-                                        Text(stringResource(R.string.exercise))
-                                    }
-                                    OutlinedButton(
-                                        onClick = { creationType = "group" },
-                                        modifier = Modifier.weight(1f),
-                                        colors = ButtonDefaults.outlinedButtonColors(
-                                            containerColor = if (isGroup) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                            contentColor = if (isGroup) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                                        ),
-                                        border = BorderStroke(
-                                            1.dp,
-                                            if (isGroup) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
-                                        ),
-                                        shape = RoundedCornerShape(8.dp)
-                                    ) {
-                                        Text(stringResource(R.string.group))
-                                    }
-                                }
+                                ConnectedChoices(
+                                    options = listOf("exercise", "group"),
+                                    selected = creationType,
+                                    onSelect = { it?.let { type -> creationType = type } },
+                                    label = { stringResource(if (it == "group") R.string.group else R.string.exercise) },
+                                    modifier = Modifier.padding(top = 8.dp),
+                                )
                             }
                         }
                     }
@@ -1132,45 +1101,13 @@ fun UnifiedAddDialog(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Bold
                                     )
-                                    Row(
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(top = 8.dp)
-                                    ) {
-                                        val isDynamic = selectedType == "Dynamic"
-                                        val isIsometric = selectedType == "Isometric"
-                                        OutlinedButton(
-                                            onClick = { selectedType = "Dynamic" },
-                                            modifier = Modifier.weight(1f),
-                                            colors = ButtonDefaults.outlinedButtonColors(
-                                                containerColor = if (isDynamic) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                                contentColor = if (isDynamic) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                                            ),
-                                            border = BorderStroke(
-                                                1.dp,
-                                                if (isDynamic) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
-                                            ),
-                                            shape = RoundedCornerShape(8.dp)
-                                        ) {
-                                            Text(stringResource(R.string.exercise_type_dynamic))
-                                        }
-                                        OutlinedButton(
-                                            onClick = { selectedType = "Isometric" },
-                                            modifier = Modifier.weight(1f),
-                                            colors = ButtonDefaults.outlinedButtonColors(
-                                                containerColor = if (isIsometric) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                                contentColor = if (isIsometric) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                                            ),
-                                            border = BorderStroke(
-                                                1.dp,
-                                                if (isIsometric) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
-                                            ),
-                                            shape = RoundedCornerShape(8.dp)
-                                        ) {
-                                            Text(stringResource(R.string.exercise_type_isometric))
-                                        }
-                                    }
+                                    ConnectedChoices(
+                                        options = listOf("Dynamic", "Isometric"),
+                                        selected = selectedType,
+                                        onSelect = { it?.let { type -> selectedType = type } },
+                                        label = { stringResource(if (it == "Isometric") R.string.exercise_type_isometric else R.string.exercise_type_dynamic) },
+                                        modifier = Modifier.padding(top = 8.dp),
+                                    )
                                     Text(
                                         text = if (selectedType == "Isometric")
                                             stringResource(R.string.exercise_type_isometric_description)
@@ -1190,45 +1127,13 @@ fun UnifiedAddDialog(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Bold
                                     )
-                                    Row(
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(top = 8.dp)
-                                    ) {
-                                        val isBilateral = selectedLaterality == "Bilateral"
-                                        val isUnilateral = selectedLaterality == "Unilateral"
-                                        OutlinedButton(
-                                            onClick = { selectedLaterality = "Bilateral" },
-                                            modifier = Modifier.weight(1f),
-                                            colors = ButtonDefaults.outlinedButtonColors(
-                                                containerColor = if (isBilateral) MaterialTheme.colorScheme.secondary else Color.Transparent,
-                                                contentColor = if (isBilateral) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
-                                            ),
-                                            border = BorderStroke(
-                                                1.dp,
-                                                if (isBilateral) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant
-                                            ),
-                                            shape = RoundedCornerShape(8.dp)
-                                        ) {
-                                            Text(stringResource(R.string.bilateral_with_parenthesis))
-                                        }
-                                        OutlinedButton(
-                                            onClick = { selectedLaterality = "Unilateral" },
-                                            modifier = Modifier.weight(1f),
-                                            colors = ButtonDefaults.outlinedButtonColors(
-                                                containerColor = if (isUnilateral) MaterialTheme.colorScheme.secondary else Color.Transparent,
-                                                contentColor = if (isUnilateral) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
-                                            ),
-                                            border = BorderStroke(
-                                                1.dp,
-                                                if (isUnilateral) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant
-                                            ),
-                                            shape = RoundedCornerShape(8.dp)
-                                        ) {
-                                            Text(stringResource(R.string.unilateral_with_parenthesis))
-                                        }
-                                    }
+                                    ConnectedChoices(
+                                        options = listOf("Bilateral", "Unilateral"),
+                                        selected = selectedLaterality,
+                                        onSelect = { it?.let { laterality -> selectedLaterality = laterality } },
+                                        label = { stringResource(if (it == "Unilateral") R.string.unilateral_with_parenthesis else R.string.bilateral_with_parenthesis) },
+                                        modifier = Modifier.padding(top = 8.dp),
+                                    )
                                     Text(
                                         text = stringResource(
                                             if (selectedLaterality == "Bilateral") R.string.example_bilateral else R.string.example_unilateral

@@ -845,6 +845,7 @@
     <string name="today_see_progress">進捗を見る</string>
     <string name="first_day_of_week">週の始まり</string>
     <string name="first_day_of_week_automatic">自動（%1$s）</string>
+    <string name="first_day_of_week_auto">自動</string>
     <string name="train_no_programs">プログラムはまだありません</string>
     <string name="train_no_intervals">インターバルはまだありません</string>
     <string name="train_log_title">過去のトレーニングを記録</string>

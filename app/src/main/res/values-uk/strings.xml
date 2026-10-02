@@ -781,6 +781,7 @@
     <string name="today_see_progress">Переглянути прогрес</string>
     <string name="first_day_of_week">Перший день тижня</string>
     <string name="first_day_of_week_automatic">Автоматично (%1$s)</string>
+    <string name="first_day_of_week_auto">Авто</string>
     <string name="train_no_programs">Програм поки немає</string>
     <string name="train_no_intervals">Інтервальних тренувань поки немає</string>
     <string name="train_log_title">Записати минуле тренування</string>

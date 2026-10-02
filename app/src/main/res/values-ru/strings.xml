@@ -157,6 +157,7 @@
     <string name="today_see_progress">Смотреть прогресс</string>
     <string name="first_day_of_week">Первый день недели</string>
     <string name="first_day_of_week_automatic">Автоматически (%1$s)</string>
+    <string name="first_day_of_week_auto">Авто</string>
     <string name="train_no_programs">Программ пока нет</string>
     <string name="train_no_intervals">Интервальных тренировок пока нет</string>
     <string name="train_log_title">Записать прошедшую тренировку</string>

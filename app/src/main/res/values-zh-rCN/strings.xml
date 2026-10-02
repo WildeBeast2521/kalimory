@@ -780,6 +780,7 @@
     <string name="today_see_progress">查看进度</string>
     <string name="first_day_of_week">每周第一天</string>
     <string name="first_day_of_week_automatic">自动（%1$s）</string>
+    <string name="first_day_of_week_auto">自动</string>
     <string name="train_no_programs">暂无计划</string>
     <string name="train_no_intervals">暂无间歇训练</string>
     <string name="train_log_title">记录过去的训练</string>

@@ -780,6 +780,7 @@
     <string name="today_see_progress">Vedi progressi</string>
     <string name="first_day_of_week">Primo giorno della settimana</string>
     <string name="first_day_of_week_automatic">Automatico (%1$s)</string>
+    <string name="first_day_of_week_auto">Auto</string>
     <string name="train_no_programs">Ancora nessun programma</string>
     <string name="train_no_intervals">Ancora nessuna routine a intervalli</string>
     <string name="train_log_title">Registra un allenamento passato</string>

@@ -839,6 +839,7 @@
     <string name="today_see_progress">See progress</string>
     <string name="first_day_of_week">First day of the week</string>
     <string name="first_day_of_week_automatic">Automatic (%1$s)</string>
+    <string name="first_day_of_week_auto">Auto</string>
     <string name="train_no_programs">No programs yet</string>
     <string name="train_no_intervals">No interval routines yet</string>
     <string name="train_log_title">Log a past workout</string>
