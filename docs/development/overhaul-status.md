@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-02, at PR #102.
+Last reviewed: 2026-10-02, at PR #103.
 
 ## Where things stand
 
@@ -188,7 +188,12 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
          - Feet are pinned. A pole is drawn for the assisted steps and a bench for the Bulgarian split squat.
          - Single-leg steps hold the free leg by its angles.
          - `poseAt(1f)` now returns the last keyframe exactly, so loops close without rounding drift.
-     - Next: the remaining 7 chains' motions, then the muscular style.
+       - Done in PR #103: the pull-up chain, 9 steps.
+         - The hands are pinned to a bar prop. The body goes from a straight-arm hang to the chin over the bar, slightly behind it.
+         - Negatives lower slowly and return quickly. The archer pulls towards each hand in turn; the one-arm steps keep the free arm by the side.
+         - Elbows on an overhead grip now bend down and out, rather than backwards.
+         - The scapular pull-up shows as a small rise, because the skeleton has no shoulder shrug.
+     - Next: the remaining 6 chains' motions, then the muscular style.
   6. Expansion: skills, the remaining chains, trends.
 
 ## Workout sounds (owner decisions, 2026-09-30)
@@ -258,7 +263,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #102. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #103. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -268,7 +273,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #102: 416 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #103: 417 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.
