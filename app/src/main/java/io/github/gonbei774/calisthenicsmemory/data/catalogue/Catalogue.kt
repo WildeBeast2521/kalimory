@@ -432,6 +432,112 @@ object Catalogue {
                 ),
             ),
         ),
+        CatalogueChain(
+            "handstand", R.string.cat_chain_handstand, MovementPattern.VERTICAL_PUSH,
+            listOf(
+                CatalogueStep(
+                    "handstand.crow", "handstand", R.string.cat_handstand_crow, R.string.cat_handstand_crow_desc, R.string.cat_handstand_crow_cues,
+                    ISOMETRIC, BILATERAL, difficulty = 3,
+                    working = Standard(3, 10), moveOn = Standard(3, 30),
+                    primaryMuscles = setOf(Muscle.SHOULDERS), secondaryMuscles = setOf(Muscle.FOREARMS, Muscle.ABDOMINALS, Muscle.TRICEPS),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "handstand.wall_walk", "handstand", R.string.cat_handstand_wall_walk, R.string.cat_handstand_wall_walk_desc, R.string.cat_handstand_wall_walk_cues,
+                    DYNAMIC, BILATERAL, difficulty = 4,
+                    working = Standard(3, 2), moveOn = Standard(3, 5),
+                    primaryMuscles = setOf(Muscle.SHOULDERS), secondaryMuscles = setOf(Muscle.ABDOMINALS, Muscle.TRICEPS),
+                    equipment = setOf(Equipment.WALL),
+                ),
+                CatalogueStep(
+                    "handstand.kick_up", "handstand", R.string.cat_handstand_kick_up, R.string.cat_handstand_kick_up_desc, R.string.cat_handstand_kick_up_cues,
+                    DYNAMIC, BILATERAL, difficulty = 5,
+                    working = Standard(3, 5), moveOn = Standard(3, 10),
+                    primaryMuscles = setOf(Muscle.SHOULDERS), secondaryMuscles = setOf(Muscle.ABDOMINALS),
+                    equipment = emptySet(), prerequisites = setOf("vpush.wall_hold"),
+                ),
+                CatalogueStep(
+                    "handstand.freestanding", "handstand", R.string.cat_handstand_freestanding, R.string.cat_handstand_freestanding_desc, R.string.cat_handstand_freestanding_cues,
+                    ISOMETRIC, BILATERAL, difficulty = 7,
+                    working = Standard(3, 10), moveOn = Standard(3, 30),
+                    primaryMuscles = setOf(Muscle.SHOULDERS), secondaryMuscles = setOf(Muscle.ABDOMINALS, Muscle.FOREARMS, Muscle.TRAPS),
+                    equipment = emptySet(), prerequisites = setOf("vpush.wall_hold"),
+                ),
+            ),
+        ),
+        CatalogueChain(
+            "l_sit", R.string.cat_chain_l_sit, MovementPattern.CORE_FLEXION,
+            listOf(
+                CatalogueStep(
+                    "l_sit.foot_supported", "l_sit", R.string.cat_l_sit_foot_supported, R.string.cat_l_sit_foot_supported_desc, R.string.cat_l_sit_foot_supported_cues,
+                    ISOMETRIC, BILATERAL, difficulty = 2,
+                    working = Standard(3, 10), moveOn = Standard(3, 30),
+                    primaryMuscles = setOf(Muscle.ABDOMINALS), secondaryMuscles = setOf(Muscle.TRICEPS, Muscle.SHOULDERS),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "l_sit.tuck", "l_sit", R.string.cat_l_sit_tuck, R.string.cat_l_sit_tuck_desc, R.string.cat_l_sit_tuck_cues,
+                    ISOMETRIC, BILATERAL, difficulty = 4,
+                    working = Standard(3, 10), moveOn = Standard(3, 30),
+                    primaryMuscles = setOf(Muscle.ABDOMINALS), secondaryMuscles = setOf(Muscle.TRICEPS, Muscle.SHOULDERS),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "l_sit.one_leg", "l_sit", R.string.cat_l_sit_one_leg, R.string.cat_l_sit_one_leg_desc, R.string.cat_l_sit_one_leg_cues,
+                    ISOMETRIC, BILATERAL, difficulty = 5,
+                    working = Standard(3, 10), moveOn = Standard(3, 20),
+                    primaryMuscles = setOf(Muscle.ABDOMINALS), secondaryMuscles = setOf(Muscle.QUADRICEPS, Muscle.TRICEPS),
+                    equipment = emptySet(),
+                ),
+                CatalogueStep(
+                    "l_sit.full", "l_sit", R.string.cat_l_sit_full, R.string.cat_l_sit_full_desc, R.string.cat_l_sit_full_cues,
+                    ISOMETRIC, BILATERAL, difficulty = 6,
+                    working = Standard(3, 10), moveOn = Standard(3, 30),
+                    primaryMuscles = setOf(Muscle.ABDOMINALS), secondaryMuscles = setOf(Muscle.QUADRICEPS, Muscle.TRICEPS, Muscle.SHOULDERS),
+                    equipment = setOf(Equipment.PARALLEL_BARS), prerequisites = setOf("dip.support"),
+                ),
+                CatalogueStep(
+                    "l_sit.v_sit", "l_sit", R.string.cat_l_sit_v_sit, R.string.cat_l_sit_v_sit_desc, R.string.cat_l_sit_v_sit_cues,
+                    ISOMETRIC, BILATERAL, difficulty = 9,
+                    working = Standard(3, 5), moveOn = Standard(3, 15),
+                    primaryMuscles = setOf(Muscle.ABDOMINALS), secondaryMuscles = setOf(Muscle.QUADRICEPS, Muscle.SHOULDERS, Muscle.TRICEPS),
+                    equipment = emptySet(),
+                ),
+            ),
+        ),
+        CatalogueChain(
+            "muscle_up", R.string.cat_chain_muscle_up, MovementPattern.VERTICAL_PULL,
+            listOf(
+                CatalogueStep(
+                    "muscle_up.high_pull", "muscle_up", R.string.cat_muscle_up_high_pull, R.string.cat_muscle_up_high_pull_desc, R.string.cat_muscle_up_high_pull_cues,
+                    DYNAMIC, BILATERAL, difficulty = 6,
+                    working = Standard(3, 3), moveOn = Standard(3, 8),
+                    primaryMuscles = setOf(Muscle.LATS), secondaryMuscles = setOf(Muscle.BICEPS, Muscle.MIDDLE_BACK),
+                    equipment = setOf(Equipment.PULL_UP_BAR), prerequisites = setOf("pull.full"),
+                ),
+                CatalogueStep(
+                    "muscle_up.negative", "muscle_up", R.string.cat_muscle_up_negative, R.string.cat_muscle_up_negative_desc, R.string.cat_muscle_up_negative_cues,
+                    DYNAMIC, BILATERAL, difficulty = 7,
+                    working = Standard(3, 3), moveOn = Standard(3, 6),
+                    primaryMuscles = setOf(Muscle.CHEST, Muscle.TRICEPS), secondaryMuscles = setOf(Muscle.LATS, Muscle.SHOULDERS),
+                    equipment = setOf(Equipment.PULL_UP_BAR), prerequisites = setOf("dip.full"),
+                ),
+                CatalogueStep(
+                    "muscle_up.band", "muscle_up", R.string.cat_muscle_up_band, R.string.cat_muscle_up_band_desc, R.string.cat_muscle_up_band_cues,
+                    DYNAMIC, BILATERAL, difficulty = 7,
+                    working = Standard(3, 2), moveOn = Standard(3, 5),
+                    primaryMuscles = setOf(Muscle.LATS, Muscle.TRICEPS), secondaryMuscles = setOf(Muscle.CHEST, Muscle.BICEPS),
+                    equipment = setOf(Equipment.PULL_UP_BAR, Equipment.RESISTANCE_BAND),
+                ),
+                CatalogueStep(
+                    "muscle_up.full", "muscle_up", R.string.cat_muscle_up_full, R.string.cat_muscle_up_full_desc, R.string.cat_muscle_up_full_cues,
+                    DYNAMIC, BILATERAL, difficulty = 8,
+                    working = Standard(3, 1), moveOn = Standard(3, 5),
+                    primaryMuscles = setOf(Muscle.LATS, Muscle.TRICEPS), secondaryMuscles = setOf(Muscle.CHEST, Muscle.BICEPS, Muscle.SHOULDERS),
+                    equipment = setOf(Equipment.PULL_UP_BAR), prerequisites = setOf("pull.full", "dip.full"),
+                ),
+            ),
+        ),
     )
 
     private val stepsById: Map<String, CatalogueStep> = chains.flatMap { it.steps }.associateBy { it.id }

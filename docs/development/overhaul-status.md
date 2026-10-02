@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-02, at PR #111.
+Last reviewed: 2026-10-02, at PR #112.
 
 ## Where things stand
 
@@ -167,7 +167,13 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - It covered PRs #99 to #110: a procedural figure with motions for all 53 steps, then a pre-rendered 3D model.
        - Everything was removed in PR #111: the app code, the debug preview, the tests and `scripts/figure/`. The app is back to its state after PR #98.
        - ADR 0008 records the withdrawal. The local tools in `~/.local/share/figure-pipeline` were deleted.
-  6. Expansion: skills, the remaining chains, trends.
+  6. Expansion: skills, the remaining chains, trends. In progress.
+     - Done in PR #112, skills batch 1: three chains and 13 steps.
+       - The chains: Handstand (crow to freestanding), L-sit (foot-supported to V-sit) and Muscle-up (chest-to-bar pull-up to muscle-up).
+       - Translated into all nine other languages.
+       - Skills name prerequisites from other chains (for example, the muscle-up builds on the pull-up and the dip). The step sheet shows them under "Builds on", with "Helpful to have first. Nothing is locked." (ADR 0005, decision 2).
+       - The catalogue now has 12 chains and 66 steps.
+     - Next: the levers and the planche, then the human flag and the remaining chains, then trends.
 
 ## Workout sounds (owner decisions, 2026-09-30)
 
@@ -236,7 +242,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #111. PRs #70, #86, #87 and #108 changed documentation only, and #109 and #110 only build scripts. PRs #99 to #110 were removed again by #111.
+PRs #34 to #112. PRs #70, #86, #87 and #108 changed documentation only, and #109 and #110 only build scripts. PRs #99 to #110 were removed again by #111.
 
 ## How to verify (the local gate)
 
@@ -246,7 +252,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #111: 399 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #112: 399 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.
