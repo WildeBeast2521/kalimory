@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-02, at PR #107.
+Last reviewed: 2026-10-02, at PR #110.
 
 ## Where things stand
 
@@ -209,7 +209,12 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - `FigureStyle.SHADED`, the preview's default, lights the facets from above and paints the worked muscles on the surface with soft edges. `SCULPTED` (flat) and `MANNEQUIN` (stage 2) remain for comparison.
        - Debug builds accept `--es figure_style SHADED|SCULPTED|MANNEQUIN`.
        - Tests: `FigureBodyTest`.
-       - Honest assessment: it reads as a solid, shaded mannequin, not yet a muscular human. The owner is choosing the direction: more sculpting (muscle volumes), pre-rendered 3D frames (ADR 0008, decision 4), or drawn illustrations.
+       - Honest assessment: it reads as a solid, shaded mannequin, not yet a muscular human.
+     - The owner chose pre-rendered 3D on 2026-10-02 (ADR 0008 amendment, PR #108; plan `docs/plans/2026-10-02-figure-3d-pipeline.md`).
+     - Done in PR #110, the spike (scripts in `scripts/figure/`):
+       - Blender 4.2 LTS, MPFB2 and the MakeHuman CC0 assets are fetched with checksums into a private profile outside the repository.
+       - `build_body.py` builds a rigged muscular male with shorts and 17 muscle regions; `render_still.py` renders a still with the worked muscles in red.
+       - The look check is waiting for the owner. After it: the motion export, IK posing, sprite sheets and the app's player.
   6. Expansion: skills, the remaining chains, trends.
 
 ## Workout sounds (owner decisions, 2026-09-30)
