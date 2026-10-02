@@ -1,5 +1,6 @@
-"""Builds the demonstration body: a muscular MakeHuman male (CC0 assets) with the default rig,
-plain shorts cut from the body itself, and one colour attribute per catalogue muscle."""
+"""Builds the demonstration body: a muscular MakeHuman male (CC0 assets) with the default rig, in
+the owner's chosen look (2026-10-02): a plain grey anatomy model with the muscles drawn as a
+schematic (each muscle lighter, the grooves between them darker), and the worked muscles in red."""
 import bpy, bmesh, math, os
 from mathutils import Vector
 from bl_ext.user_default.mpfb.services.humanservice import HumanService
@@ -13,11 +14,6 @@ macros = TargetService.get_default_macro_info_dict()
 macros.update(gender=1.0, muscle=1.0, weight=0.72, age=0.45, height=0.55, proportions=1.0)
 body = HumanService.create_human(macro_detail_dict=macros, scale=0.1)
 body.name = "Body"
-skin = os.path.join(LocationService.get_user_data("skins"), "young_caucasian_male", "young_caucasian_male.mhmat")
-HumanService.set_character_skin(skin, body, skin_type="MAKESKIN")
-brow = os.path.join(LocationService.get_user_data("eyebrows"), "eyebrow001", "eyebrow001.mhclo")
-if os.path.exists(brow):
-    HumanService.add_mhclo_asset(brow, body, asset_type="Eyebrows", subdiv_levels=0)
 rig = HumanService.add_builtin_rig(body, "default")
 rig.name = "Rig"
 
@@ -86,61 +82,37 @@ for name in MUSCLES:
 # The attribute the shader reads, filled per exercise by the renderer: x = primary, y = secondary.
 mesh.attributes.new(name="worked", type="FLOAT2", domain="POINT")
 
-# Shorts: the body's faces from the waist to mid-thigh, pushed out a little, in a dark fabric.
-bpy.ops.object.select_all(action="DESELECT")
-body.select_set(True)
-bpy.context.view_layer.objects.active = body
-bpy.ops.object.duplicate()
-shorts = bpy.context.active_object
-shorts.name = "Shorts"
-for m in list(shorts.modifiers):
-    if m.type != "ARMATURE":
-        shorts.modifiers.remove(m)
-bm = bmesh.new()
-bm.from_mesh(shorts.data)
-waist = 0.555 * top
-hem = 0.40 * top
-# Only real skin: MakeHuman's helper geometry (tights, skirt) is not in the "body" group.
-deform = bm.verts.layers.deform.active
-body_index = groups["body"]
-remove = [v for v in bm.verts if not (hem < v.co.z < waist) or abs(v.co.x) > 0.25 or body_index not in v[deform]]
-bmesh.ops.delete(bm, geom=remove, context="VERTS")
-for v in bm.verts:
-    v.co += v.normal * 0.008
-bm.to_mesh(shorts.data)
-bm.free()
-mat = bpy.data.materials.new("Shorts")
-mat.use_nodes = True
-mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.05, 0.07, 0.08, 1)
-mat.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.8
-shorts.data.materials.clear()
-shorts.data.materials.append(mat)
-solid = shorts.modifiers.new("thick", "SOLIDIFY")
-solid.thickness = 0.004
+# The schematic: how much of each point lies inside some muscle, so grooves between muscles show.
+definition = [max(values[name][i] for name in MUSCLES) for i in range(len(mesh.vertices))]
+mesh.attributes.new(name="definition", type="FLOAT", domain="POINT")
+mesh.attributes["definition"].data.foreach_set("value", definition)
 
-# Skin shader: mix towards red where worked.
-for m in body.data.materials:
-    if not m or not m.use_nodes:
-        continue
-    nodes, links = m.node_tree.nodes, m.node_tree.links
-    bsdf = next((n for n in nodes if n.type == "BSDF_PRINCIPLED"), None)
-    if bsdf is None:
-        continue
-    color_in = bsdf.inputs["Base Color"]
-    source = color_in.links[0].from_socket if color_in.links else None
-    attr = nodes.new("ShaderNodeAttribute"); attr.attribute_name = "worked"
-    sep = nodes.new("ShaderNodeSeparateXYZ")
-    links.new(attr.outputs["Vector"], sep.inputs[0])
-    light = nodes.new("ShaderNodeMix"); light.data_type = "RGBA"; light.inputs["B"].default_value = (0.85, 0.35, 0.35, 1)
-    red = nodes.new("ShaderNodeMix"); red.data_type = "RGBA"; red.inputs["B"].default_value = (0.75, 0.05, 0.06, 1)
-    if source is not None:
-        links.new(source, light.inputs["A"])
-    else:
-        light.inputs["A"].default_value = color_in.default_value
-    links.new(sep.outputs["Y"], light.inputs["Factor"])
-    links.new(light.outputs["Result"], red.inputs["A"])
-    links.new(sep.outputs["X"], red.inputs["Factor"])
-    links.new(red.outputs["Result"], color_in)
+# One grey material for the whole body: darker in the grooves, lighter on the muscles, red where
+# worked (the renderer fills "worked": x = primary, y = secondary).
+mat = bpy.data.materials.new("Anatomy")
+mat.use_nodes = True
+nodes, links = mat.node_tree.nodes, mat.node_tree.links
+bsdf = nodes["Principled BSDF"]
+bsdf.inputs["Roughness"].default_value = 0.55
+defn = nodes.new("ShaderNodeAttribute"); defn.attribute_name = "definition"
+ramp = nodes.new("ShaderNodeValToRGB")
+ramp.color_ramp.elements[0].position = 0.25
+ramp.color_ramp.elements[0].color = (0.22, 0.24, 0.25, 1)
+ramp.color_ramp.elements[1].position = 0.75
+ramp.color_ramp.elements[1].color = (0.52, 0.55, 0.56, 1)
+links.new(defn.outputs["Fac"], ramp.inputs["Fac"])
+worked = nodes.new("ShaderNodeAttribute"); worked.attribute_name = "worked"
+sep = nodes.new("ShaderNodeSeparateXYZ")
+links.new(worked.outputs["Vector"], sep.inputs[0])
+light = nodes.new("ShaderNodeMix"); light.data_type = "RGBA"; light.inputs["B"].default_value = (0.85, 0.42, 0.42, 1)
+red = nodes.new("ShaderNodeMix"); red.data_type = "RGBA"; red.inputs["B"].default_value = (0.78, 0.06, 0.07, 1)
+links.new(ramp.outputs["Color"], light.inputs["A"])
+links.new(sep.outputs["Y"], light.inputs["Factor"])
+links.new(light.outputs["Result"], red.inputs["A"])
+links.new(sep.outputs["X"], red.inputs["Factor"])
+links.new(red.outputs["Result"], bsdf.inputs["Base Color"])
+body.data.materials.clear()
+body.data.materials.append(mat)
 
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(HERE, "figure.blend"))
-print("BUILT", body.name, rig.name, shorts.name, round(top, 3))
+print("BUILT", body.name, rig.name, round(top, 3))
