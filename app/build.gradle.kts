@@ -108,6 +108,8 @@ androidComponents {
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
+        // Material 3 Expressive components are used throughout the app (owner decision, 2026-10-02).
+        optIn.add("androidx.compose.material3.ExperimentalMaterial3ExpressiveApi")
     }
 }
 

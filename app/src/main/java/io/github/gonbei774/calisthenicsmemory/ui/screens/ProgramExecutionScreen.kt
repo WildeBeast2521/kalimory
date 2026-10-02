@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.material3.LoadingIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
@@ -729,7 +730,7 @@ fun ProgramExecutionScreen(
                 .padding(paddingValues)
         ) {
             if (isLoading || currentStep == null) {
-                CircularProgressIndicator(
+                LoadingIndicator(
                     modifier = Modifier.align(Alignment.Center),
                     color = MaterialTheme.colorScheme.primary
                 )

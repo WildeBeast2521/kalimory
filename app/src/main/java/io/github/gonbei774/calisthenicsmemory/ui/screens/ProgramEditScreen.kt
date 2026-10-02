@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.material3.LoadingIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -333,7 +334,7 @@ fun ProgramEditScreen(
                     .padding(paddingValues),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                LoadingIndicator(color = MaterialTheme.colorScheme.primary)
             }
         } else {
             // Number of header items before the exercise list (Program Name + Exercises Section)

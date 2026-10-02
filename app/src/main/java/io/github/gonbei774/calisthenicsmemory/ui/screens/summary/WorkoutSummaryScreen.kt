@@ -1,9 +1,10 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.summary
 
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -224,14 +225,16 @@ private fun ExerciseRow(exercise: ExerciseResult, interval: Boolean, delayMillis
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing.l),
     ) {
-        Canvas(Modifier.size(36.dp)) {
-            val stroke = 4.dp.toPx()
-            val inset = stroke / 2
-            val arcSize = androidx.compose.ui.geometry.Size(size.width - stroke, size.height - stroke)
-            val topLeft = androidx.compose.ui.geometry.Offset(inset, inset)
-            drawArc(track, -90f, 360f, false, topLeft, arcSize, style = Stroke(stroke))
-            drawArc(fill, -90f, 360f * ring.value, false, topLeft, arcSize, style = Stroke(stroke, cap = StrokeCap.Round))
-        }
+        val stroke = with(LocalDensity.current) { Stroke(4.dp.toPx(), cap = StrokeCap.Round) }
+        CircularWavyProgressIndicator(
+            progress = { ring.value },
+            modifier = Modifier.size(36.dp),
+            color = fill,
+            trackColor = track,
+            stroke = stroke,
+            trackStroke = stroke,
+            wavelength = 12.dp,
+        )
         Column(Modifier.weight(1f)) {
             Text(exercise.name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(setsLine, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)

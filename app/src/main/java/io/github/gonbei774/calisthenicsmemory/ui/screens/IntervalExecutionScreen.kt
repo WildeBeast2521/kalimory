@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.material3.LoadingIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.OutlinedButton
@@ -483,7 +484,7 @@ fun IntervalExecutionScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator(color = cs.tertiary)
+                LoadingIndicator(color = cs.tertiary)
             }
         }
 

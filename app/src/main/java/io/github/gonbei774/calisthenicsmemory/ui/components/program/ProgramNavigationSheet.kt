@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import androidx.compose.material3.LinearWavyProgressIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -230,14 +231,11 @@ private fun NavigationProgressSection(
                 fontWeight = FontWeight.SemiBold,
                 color = cs.onSurface
             )
-            LinearProgressIndicator(
+            LinearWavyProgressIndicator(
                 progress = { progress },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(6.dp),
+                modifier = Modifier.weight(1f),
                 color = cs.primary,
                 trackColor = cs.surfaceContainerHighest,
-                strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
             )
         }
     }
