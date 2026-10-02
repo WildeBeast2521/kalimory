@@ -5,7 +5,7 @@ import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.test.core.app.ActivityScenario
@@ -62,8 +62,8 @@ class WeeklyGoalTest {
         launch()
         rule.onNode(hasContentDescription(text(R.string.settings))).performClick()
         rule.onNode(hasScrollAction()).performScrollToNode(hasText(text(R.string.weekly_goal)))
-        rule.onNodeWithText(text(R.string.weekly_goal)).performClick()
-        rule.onNodeWithText(text(R.string.weekly_goal_days, 4)).performClick()
+        // The goal is a connected button group in place: "4" reads aloud as "4 of 7 days".
+        rule.onNodeWithContentDescription(text(R.string.weekly_goal_days, 4)).performClick()
         assertEquals(4, prefs.weeklyGoal())
 
         scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }

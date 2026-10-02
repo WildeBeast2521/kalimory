@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -304,15 +305,15 @@ fun ViewScreen(
                     }
 
                     // 期間フィルター（トグル式）
-                    listOf(Period.OneWeek, Period.OneMonth, Period.ThreeMonths).forEach { period ->
-                        FilterChip(
-                            selected = selectedPeriod == period,
-                            onClick = {
-                                selectedPeriod = if (selectedPeriod == period) null else period
-                            },
-                            label = { Text(stringResource(period.displayNameResId)) },
-                        )
-                    }
+                    // An Expressive connected group; tapping the selected period clears it.
+                    ConnectedChoices(
+                        options = listOf(Period.OneWeek, Period.OneMonth, Period.ThreeMonths),
+                        selected = selectedPeriod,
+                        onSelect = { selectedPeriod = it },
+                        label = { stringResource(it.displayNameResId) },
+                        allowNone = true,
+                        fill = false,
+                    )
                 }
             }
 

@@ -25,6 +25,7 @@ import io.github.gonbei774.calisthenicsmemory.BuildConfig
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.semantics.Role
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import io.github.gonbei774.calisthenicsmemory.data.ProgressionPreferences
 import io.github.gonbei774.calisthenicsmemory.data.AppLanguage
 import io.github.gonbei774.calisthenicsmemory.data.AppTheme
@@ -245,97 +246,44 @@ fun SettingsScreenNew(
                 }
             }
 
-            // テーマ選択カード
+            // Theme: an Expressive connected button group, chosen in place.
             item {
-                var showThemeDialog by remember { mutableStateOf(false) }
-
-                val themeDisplayName = when (currentTheme) {
+                @Composable
+                fun themeName(theme: AppTheme) = when (theme) {
                     AppTheme.SYSTEM -> stringResource(R.string.theme_system)
                     AppTheme.LIGHT -> stringResource(R.string.theme_light)
                     AppTheme.DARK -> stringResource(R.string.theme_dark)
                 }
-
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                     shape = MaterialTheme.shapes.large,
-                    onClick = { showThemeDialog = true }
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Theme, contentDescription = null, modifier = Modifier.size(32.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.theme_setting),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.current_theme, themeDisplayName),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
+                    Column(modifier = Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(AppIcons.Theme, contentDescription = null, modifier = Modifier.size(32.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(R.string.theme_setting),
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = stringResource(R.string.current_theme, themeName(currentTheme)),
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
                         }
+                        ConnectedChoices(
+                            options = AppTheme.entries,
+                            selected = currentTheme,
+                            onSelect = { it?.let(onThemeChange) },
+                            label = { themeName(it) },
+                        )
                     }
-                }
-
-                // テーマ選択ダイアログ
-                if (showThemeDialog) {
-                    AlertDialog(
-                        onDismissRequest = { showThemeDialog = false },
-                        title = {
-                            Text(
-                                text = stringResource(R.string.theme_setting),
-                                fontWeight = FontWeight.Bold
-                            )
-                        },
-                        text = {
-                            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                AppTheme.entries.forEach { theme ->
-                                    val displayName = when (theme) {
-                                        AppTheme.SYSTEM -> stringResource(R.string.theme_system)
-                                        AppTheme.LIGHT -> stringResource(R.string.theme_light)
-                                        AppTheme.DARK -> stringResource(R.string.theme_dark)
-                                    }
-                                    Card(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        colors = CardDefaults.cardColors(
-                                            containerColor = if (currentTheme == theme) {
-                                                MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                                            } else {
-                                                MaterialTheme.colorScheme.surfaceContainerHigh
-                                            }
-                                        ),
-                                        onClick = {
-                                            onThemeChange(theme)
-                                            showThemeDialog = false
-                                        }
-                                    ) {
-                                        Text(
-                                            text = displayName,
-                                            modifier = Modifier.padding(16.dp),
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            fontSize = 16.sp
-                                        )
-                                    }
-                                }
-                            }
-                        },
-                        confirmButton = {
-                            TextButton(onClick = { showThemeDialog = false }) {
-                                Text(stringResource(R.string.close))
-                            }
-                        }
-                    )
                 }
             }
 
@@ -376,79 +324,50 @@ fun SettingsScreenNew(
 
             // First day of the week, used by Today's week strip, the Progress calendar and To Do.
             item {
-                var showDialog by remember { mutableStateOf(false) }
                 val locale = LocalConfiguration.current.locales[0]
                 val automaticDay = java.time.temporal.WeekFields.of(locale).firstDayOfWeek
                 fun dayName(day: java.time.DayOfWeek) = day.getDisplayName(java.time.format.TextStyle.FULL, locale)
+                fun shortDay(day: java.time.DayOfWeek) = day.getDisplayName(java.time.format.TextStyle.SHORT, locale)
                 val automaticLabel = stringResource(R.string.first_day_of_week_automatic, dayName(automaticDay))
                 val current = firstDayOfWeek?.let(::dayName) ?: automaticLabel
+                // null stands for "Automatic", which follows the language's own week.
+                val options = listOf<java.time.DayOfWeek?>(null, java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.SATURDAY, java.time.DayOfWeek.SUNDAY)
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                     shape = MaterialTheme.shapes.large,
-                    onClick = { showDialog = true }
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Today, contentDescription = null, modifier = Modifier.size(32.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.first_day_of_week),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = current,
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                    }
-                }
-                if (showDialog) {
-                    val options: List<Pair<java.time.DayOfWeek?, String>> =
-                        listOf<Pair<java.time.DayOfWeek?, String>>(null to automaticLabel) +
-                            listOf(java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.SATURDAY, java.time.DayOfWeek.SUNDAY).map { it to dayName(it) }
-                    AlertDialog(
-                        onDismissRequest = { showDialog = false },
-                        title = { Text(stringResource(R.string.first_day_of_week), fontWeight = FontWeight.Bold) },
-                        text = {
-                            Column {
-                                options.forEach { (day, label) ->
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .clickable {
-                                                onFirstDayOfWeekChange(day)
-                                                showDialog = false
-                                            }
-                                            .padding(vertical = 12.dp),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        RadioButton(selected = day == firstDayOfWeek, onClick = null)
-                                        Spacer(modifier = Modifier.width(12.dp))
-                                        Text(label)
-                                    }
-                                }
+                    Column(modifier = Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(AppIcons.Today, contentDescription = null, modifier = Modifier.size(32.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(R.string.first_day_of_week),
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = current,
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
                             }
-                        },
-                        confirmButton = {
-                            TextButton(onClick = { showDialog = false }) { Text(stringResource(R.string.close)) }
                         }
-                    )
+                        ConnectedChoices(
+                            options = options,
+                            selected = firstDayOfWeek,
+                            onSelect = { day -> onFirstDayOfWeekChange(day) },
+                            label = { day -> day?.let(::shortDay) ?: stringResource(R.string.first_day_of_week_auto) },
+                            description = { day -> day?.let(::dayName) ?: automaticLabel },
+                        )
+                    }
                 }
             }
 
             // Weekly goal (ADR 0005, decision 6): training days a week, which Today counts against.
             item {
-                var showDialog by remember { mutableStateOf(false) }
                 val weeklyGoal by viewModel.weeklyGoal.collectAsState()
                 @Composable
                 fun label(days: Int?) =
@@ -457,61 +376,33 @@ fun SettingsScreenNew(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                     shape = MaterialTheme.shapes.large,
-                    onClick = { showDialog = true }
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Done, contentDescription = null, modifier = Modifier.size(32.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.weekly_goal),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = label(weeklyGoal),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                    }
-                }
-                if (showDialog) {
-                    val options: List<Int?> = listOf<Int?>(null) + ProgressionPreferences.WEEKLY_GOAL_RANGE
-                    AlertDialog(
-                        onDismissRequest = { showDialog = false },
-                        title = { Text(stringResource(R.string.weekly_goal), fontWeight = FontWeight.Bold) },
-                        text = {
-                            Column {
-                                options.forEach { days ->
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .clickable {
-                                                viewModel.setWeeklyGoal(days)
-                                                showDialog = false
-                                            }
-                                            .padding(vertical = 12.dp),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        RadioButton(selected = days == weeklyGoal, onClick = null)
-                                        Spacer(modifier = Modifier.width(12.dp))
-                                        Text(label(days))
-                                    }
-                                }
+                    Column(modifier = Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(AppIcons.Done, contentDescription = null, modifier = Modifier.size(32.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(R.string.weekly_goal),
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = label(weeklyGoal),
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
                             }
-                        },
-                        confirmButton = {
-                            TextButton(onClick = { showDialog = false }) { Text(stringResource(R.string.close)) }
                         }
-                    )
+                        ConnectedChoices(
+                            options = listOf<Int?>(null) + ProgressionPreferences.WEEKLY_GOAL_RANGE,
+                            selected = weeklyGoal,
+                            onSelect = { days -> viewModel.setWeeklyGoal(days) },
+                            label = { days -> days?.toString() ?: stringResource(R.string.weekly_goal_off) },
+                            description = { days -> label(days) },
+                        )
+                    }
                 }
             }
 

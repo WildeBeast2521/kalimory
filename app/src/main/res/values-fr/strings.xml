@@ -777,6 +777,7 @@
     <string name="today_see_progress">Voir la progression</string>
     <string name="first_day_of_week">Premier jour de la semaine</string>
     <string name="first_day_of_week_automatic">Automatique (%1$s)</string>
+    <string name="first_day_of_week_auto">Auto</string>
     <string name="train_no_programs">Aucun programme pour l\'instant</string>
     <string name="train_no_intervals">Aucune routine d\'intervalles pour l\'instant</string>
     <string name="train_log_title">Consigner une séance passée</string>

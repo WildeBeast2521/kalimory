@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
@@ -190,19 +191,13 @@ fun GraphView(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    GraphType.values().forEach { type ->
-                        FilterChip(
-                            selected = selectedGraphType == type,
-                            onClick = { selectedGraphType = type },
-                            label = { Text(stringResource(type.displayNameResId)) },
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = cs.secondaryContainer,
-                                selectedLabelColor = cs.onSecondaryContainer,
-                                containerColor = cs.surfaceContainerHigh,
-                                labelColor = cs.onSurfaceVariant
-                            )
-                        )
-                    }
+                    ConnectedChoices(
+                        options = GraphType.entries,
+                        selected = selectedGraphType,
+                        onSelect = { type -> type?.let { selectedGraphType = it } },
+                        label = { stringResource(it.displayNameResId) },
+                        fill = false,
+                    )
 
                     // 距離トラッキング有効時のみ反転トグルを表示
                     if (selectedExerciseFilter.distanceTrackingEnabled) {

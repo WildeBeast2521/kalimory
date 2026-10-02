@@ -56,6 +56,7 @@
     <string name="today_see_progress">عرض التقدم</string>
     <string name="first_day_of_week">أول يوم في الأسبوع</string>
     <string name="first_day_of_week_automatic">تلقائي (%1$s)</string>
+    <string name="first_day_of_week_auto">تلقائي</string>
     <string name="train_no_programs">لا توجد برامج بعد</string>
     <string name="train_no_intervals">لا توجد روتينات فواصل بعد</string>
     <string name="train_log_title">سجّل تمرينًا سابقًا</string>

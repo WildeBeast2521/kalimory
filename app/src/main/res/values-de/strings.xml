@@ -806,6 +806,7 @@
     <string name="today_see_progress">Fortschritt ansehen</string>
     <string name="first_day_of_week">Erster Tag der Woche</string>
     <string name="first_day_of_week_automatic">Automatisch (%1$s)</string>
+    <string name="first_day_of_week_auto">Auto</string>
     <string name="train_no_programs">Noch keine Programme</string>
     <string name="train_no_intervals">Noch keine Intervall-Routinen</string>
     <string name="train_log_title">Vergangenes Training eintragen</string>
