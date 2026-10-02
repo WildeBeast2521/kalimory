@@ -1,6 +1,6 @@
 """Synthesises the app's workout sounds (the "wood and brass" set) as 44.1 kHz mono WAV files.
 
-The owner chose this set on 2026-09-30 (docs/development/overhaul-status.md). The sounds are our
+The owner chose this set on 2026-09-30. The sounds are our
 own work, made by this script: pure Python, no samples, deterministic (seeded noise), all tuned to
 D major so they read as one family. scripts/sounds/build-sounds.sh encodes them into res/raw.
 

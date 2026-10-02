@@ -460,7 +460,6 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // Oldest installed database version that can migrate to the current version.
-        // See docs/development/supported-database-versions.md.
         const val OLDEST_SUPPORTED_VERSION = 9
 
         // Every registered migration, in order. Declared after the migrations so they
