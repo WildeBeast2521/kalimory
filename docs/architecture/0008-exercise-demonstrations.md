@@ -1,6 +1,6 @@
 # ADR 0008: Exercise demonstrations
 
-- **Status:** Accepted
+- **Status:** Accepted; amended on 2026-10-02 (pre-rendered 3D figure)
 - **Date:** 2026-10-01
 
 ## Context
@@ -31,6 +31,19 @@ The owner wants each exercise demonstrated in the standard fitness-app way: a hu
    - A small preview tool (a debug screen, or a web page generated from the same data) makes authoring about 150 exercises practical.
 
 4. **3D renders are a later, optional upgrade.** A MakeHuman body (exported models are CC0) animated in Blender could render realistic clips. It is kept for later: it costs much more time per exercise and roughly 20 to 40 MB of app size.
+
+## Amendment, 2026-10-02: pre-rendered 3D figure
+
+The procedural figure was built in stages (PRs #99 to #107): an engine, a muscle overlay, motions for all 53 steps, and a lofted, shaded body. The owner judged it "a mannequin" and wants "a human model which is at least muscular". On 2026-10-02 the owner chose **pre-rendered 3D**, over sculpted muscle volumes and drawn illustrations, accepting the costs below.
+
+- **Body:** a muscular male built from the MakeHuman system assets (CC0) with the MPFB2 Blender add-on. MPFB2 and Blender are build tools only and are never shipped.
+- **Motion:** the 53 motions already authored in `data/figure/` drive the rig. A JVM export writes each motion's joint positions per frame, and a headless Blender script poses the rig to them with inverse-kinematics targets.
+- **Muscles:** the worked muscles are tinted red on the skin (primary) or a lighter red (secondary), from vertex groups for each catalogue muscle.
+- **Output:** each step is rendered from its own camera angle into a small sprite sheet (transparent WebP), drawn in the app frame by frame. With "Remove animations" on, it shows the still frame. The engine's data stays the single source of the motion.
+- **Costs accepted:** a local Blender install, about 10 to 30 MB of app size, and colours that no longer follow the theme.
+- **Licences:** renders of CC0 assets made with GPL tools are our own output. They are recorded in `docs/catalogue-sources.md` when adopted.
+
+The procedural figure remains as the debug preview and as a fallback until the renders ship. The plan is `docs/plans/2026-10-02-figure-3d-pipeline.md`.
 
 ## Consequences
 
