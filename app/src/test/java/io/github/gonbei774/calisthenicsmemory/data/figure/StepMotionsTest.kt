@@ -11,7 +11,7 @@ class StepMotionsTest {
     private fun distance(a: Vec3, b: Vec3) = (a - b).length()
 
     /** Chains whose motions are done; each later chain joins this list. */
-    private val covered = listOf("push", "squat", "pull", "row", "dip", "vpush")
+    private val covered = listOf("push", "squat", "pull", "row", "dip", "vpush", "hinge", "core", "leg_raise")
 
     @Test fun `every step of a covered chain has a motion`() {
         covered.forEach { chain -> Catalogue.chain(chain)!!.steps.forEach { assertNotNull(it.id, StepMotions.forStep(it.id)) } }
@@ -52,6 +52,23 @@ class StepMotionsTest {
         val top = SkeletonSolver.solve(StepMotions.forStep("vpush.wall_hold")!!.poseAt(0f))
         assertTrue(top[Joint.HEAD].y > 0.2f)
         assertTrue("feet up", top[Joint.LEFT_ANKLE].y > 1.6f)
+    }
+
+    @Test fun `every catalogue step has a motion`() {
+        Catalogue.steps.forEach { assertNotNull(it.id, StepMotions.forStep(it.id)) }
+    }
+
+    @Test fun `bridges lift the hips and leg raises lift the feet`() {
+        listOf("hinge.bridge", "hinge.single_bridge", "hinge.hip_thrust").forEach { id ->
+            val motion = StepMotions.forStep(id)!!
+            assertTrue(id, motion.stillPose.pelvis.y > motion.poseAt(0f).pelvis.y + 0.2f)
+        }
+        listOf("leg_raise.lying_leg", "leg_raise.hanging_leg", "leg_raise.toes_to_bar").forEach { id ->
+            val motion = StepMotions.forStep(id)!!
+            val start = SkeletonSolver.solve(motion.poseAt(0f))[Joint.RIGHT_ANKLE].y
+            val raised = SkeletonSolver.solve(motion.stillPose)[Joint.RIGHT_ANKLE].y
+            assertTrue(id, raised > start + 0.6f)
+        }
     }
 
     @Test fun `squats lower the hips and stand back up`() {
