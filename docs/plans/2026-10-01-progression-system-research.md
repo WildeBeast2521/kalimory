@@ -1,6 +1,7 @@
 # Progression system: research and options
 
 - **Status:** Decided on 2026-10-01. The owner accepted the recommendations, with the refinements recorded in ADRs 0005 to 0008. The brief is `docs/plans/future-progression-system-brief.md`.
+- **Later change:** the animated figure in the demonstrations options was built and then withdrawn by the owner on 2026-10-02. Only the muscle map remains (ADR 0008).
 - **Date:** 2026-10-01
 - **Owner-facing page:** https://claude.ai/artifact/PE43qfu7eVcwi5M8meKnWe (private), with the same content, a live demonstration prototype and the questions.
 

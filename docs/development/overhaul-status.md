@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-02, at PR #110.
+Last reviewed: 2026-10-02, at PR #111.
 
 ## Where things stand
 
@@ -98,13 +98,13 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
 - **Owner answers:**
   - The recommended options (P1–P10) are accepted.
   - free-exercise-db supplies facts only (names, muscles, equipment, level); instructions are rewritten and its photos are not used.
-  - Demonstrations are a human figure with the worked muscles in red, plus a muscle map.
+  - Demonstrations: a muscle map with the worked muscles in red. An animated figure was planned and then withdrawn on 2026-10-02.
   - The system never restricts the user.
 - **Decisions:**
   - ADR 0005: the progression model and the freedom rule.
   - ADR 0006: catalogue content, licensing, format and ids. Sources are recorded in `docs/catalogue-sources.md`.
   - ADR 0007: the data model. Database 25 adds `catalogId` and `chain_placements`; backup format 11.
-  - ADR 0008: demonstrations. A muscle map, and our own keyframe figure with red working muscles.
+  - ADR 0008: demonstrations. A muscle map; the animated figure was withdrawn on 2026-10-02.
 - **Phases:**
   1. Data model: done in PR #88. It adds database 25 (`exercises.catalogId` with a unique index, and `chain_placements`) and backup format 11, with `ChainPlacementDao`.
      - Tests: a 24→25 migration test, a format 11 round trip, and validation tests.
@@ -157,66 +157,16 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - The rules are pure functions in `data/progression/Suggestions.kt`.
        - Tests: `SuggestionsTest` (unit) and `TodaySuggestionsTest`.
        - Done in PR #95: starting a suggestion opens the workout at the suggested sets and value. It comes before the exercise's own target and the "previous record" pre-fill, and the user can still change it. It applies only to the suggested exercise, not to one picked after going back.
-  5. Demonstrations: in progress.
+  5. Demonstrations: the muscle map only.
      - Done in PR #98: the muscle map on each step's sheet. It shows the body from the front and the back, with the main muscles in red and the helping muscles in lighter red.
        - The outlines come from react-body-highlighter (MIT). They are recorded in `docs/catalogue-sources.md` and listed in Open Source Licenses.
        - Lats and middle back share the drawing's one upper-back region.
        - The map is decorative: the same muscles are listed as text below it.
        - Tests: `MuscleMapTest`.
-     - The owner chose the figure's look on 2026-10-01:
-       - a three-quarter view, turned about 35 degrees and seen slightly from above, with near limbs darker, far limbs lighter and a floor shadow;
-       - a body built from visible muscle shapes, with the worked ones in red.
-     - Done in PR #99, stage 1 of 3: the engine, previewed in debug builds only.
-       - `data/figure/` holds a 3D skeleton solved from joint angles, with hands or feet pinned by a two-bone solver; keyframed motions eased between poses; and an orthographic camera. Each motion can turn the camera, for example push-ups at 55 degrees.
-       - `FigureView` draws depth-sorted tapered limbs with near/far shading and a floor shadow. With "Remove animations" on, it shows the hardest pose, still.
-       - Settings → "Figure preview (debug)" exists in debug builds only. It shows the sample squat and push-up, with camera sliders.
-       - Tests: `SkeletonTest`.
-     - Done in PR #100, stage 2: the muscles.
-       - `FigureMuscles` places a muscle lens on each body part for all 17 catalogue muscles, facing front, back, outward or inward. Lenses facing away from the camera are hidden, and those seen side-on narrow.
-       - Worked muscles are red and helping ones lighter red, as on the muscle map. A part that carries a worked muscle is tinted towards red, so it reads at a distance.
-       - The body is bulkier than in stage 1, so the muscles show.
-       - Tests: `FigureMusclesTest`.
-     - Owner feedback, 2026-10-02: stage 2 "looks like a mannequin". The owner wants "a human model which is at least muscular", to be reworked in a later session. Until then the figure stays in the debug preview, not in the user-facing UI.
-     - Stage 3 (motion data), in progress:
-       - Done in PR #101: the push-up chain. All 8 steps are built from one plank solver: the body turns about the toes or knees with the hands pinned, and the top and bottom come from the arm's reach.
-       - Props (`Prop`) are drawn behind the figure: a bench for the incline and decline push-ups, and a wall for the wall push-up (seen from the side and a little behind).
-       - Pinned hands now lie flat on their support.
-       - `FigureMotion.stillAt` sets the hardest point; the archer push-up's is a quarter of the way through.
-       - `StepMotions.forStep(id)` is the registry. The debug preview lists every step that has a motion.
-       - Tests: `StepMotionsTest` (pins held, nothing through the floor, loops closed, push-ups go down).
-       - Done in PR #102: the squat chain, 7 steps.
-         - Feet are pinned. A pole is drawn for the assisted steps and a bench for the Bulgarian split squat.
-         - Single-leg steps hold the free leg by its angles.
-         - `poseAt(1f)` now returns the last keyframe exactly, so loops close without rounding drift.
-       - Done in PR #103: the pull-up chain, 9 steps.
-         - The hands are pinned to a bar prop. The body goes from a straight-arm hang to the chin over the bar, slightly behind it.
-         - Negatives lower slowly and return quickly. The archer pulls towards each hand in turn; the one-arm steps keep the free arm by the side.
-         - Elbows on an overhead grip now bend down and out, rather than backwards.
-         - The scapular pull-up shows as a small rise, because the skeleton has no shoulder shrug.
-       - Done in PR #104: the row chain, 5 steps. Rows are the push-up plank turned over: leaning back from the heels, hands on a bar over the chest.
-         - The plank geometry now lives in a shared `Plank` helper.
-         - Elbows follow one rule: pulling (hand above the shoulder) bends them towards the floor; pushing bends them back.
-         - Debug builds accept `adb shell am start -n io.github.gonbei774.calisthenicsmemory/.MainActivity --es figure_step <step id>`, which opens the figure preview on that step for authoring checks.
-       - Done in PR #105: the dip (4) and handstand push-up (5) chains, with parallel bars, a bench, and a wall with a cushion.
-         - The pike push-ups are seen from the side, because the raised hips hide the head and arms from other angles.
-       - Done in PR #106: the hip hinge (6), core (4) and leg raise (5) chains. Every one of the 53 catalogue steps now has a motion, which `StepMotionsTest` enforces.
-         - Lying moves use a face-up body. In bridges the neck and arms counter-rotate, so the head and arms stay on the floor.
-         - Nordic curls kneel with the shins flat and the ankles under an anchor prop.
-         - Hanging leg raises keep the shoulders fixed under the pull-up bar.
-     - Stage 3 is complete. The figure is still debug-only.
-     - Done in PR #107: a first muscular style, still debug-only.
-       - `FigureBody` lofts each part from cross-section rings with muscle profiles: a V-tapered torso, deltoids, biceps, forearms, quads and calves, plus an egg-shaped head and flat hands and feet. Silhouettes stay true from any angle.
-       - `FigureStyle.SHADED`, the preview's default, lights the facets from above and paints the worked muscles on the surface with soft edges. `SCULPTED` (flat) and `MANNEQUIN` (stage 2) remain for comparison.
-       - Debug builds accept `--es figure_style SHADED|SCULPTED|MANNEQUIN`.
-       - Tests: `FigureBodyTest`.
-       - Honest assessment: it reads as a solid, shaded mannequin, not yet a muscular human.
-     - The owner chose pre-rendered 3D on 2026-10-02 (ADR 0008 amendment, PR #108; plan `docs/plans/2026-10-02-figure-3d-pipeline.md`).
-     - Done in PR #109, the spike (scripts in `scripts/figure/`):
-       - Blender 4.2 LTS, MPFB2 and the MakeHuman CC0 assets are fetched with checksums into a private profile outside the repository.
-       - `build_body.py` builds a rigged muscular male with shorts and 17 muscle regions; `render_still.py` renders a still with the worked muscles in red.
-       - Look check: the owner approved the approach, but wants a plain grey anatomy model with the muscle schematic and red highlights, not skin and shorts. Done in PR #110.
-       - The owner confirmed that the figure appears only as a demonstration (the step sheet), never during workouts. The phone only plays pre-rendered images.
-       - Next: the motion export, IK posing, sprite sheets and the app's player.
+     - The animated figure was withdrawn by the owner on 2026-10-02: "I don't want models. Forget that idea."
+       - It covered PRs #99 to #110: a procedural figure with motions for all 53 steps, then a pre-rendered 3D model.
+       - Everything was removed in PR #111: the app code, the debug preview, the tests and `scripts/figure/`. The app is back to its state after PR #98.
+       - ADR 0008 records the withdrawal. The local tools in `~/.local/share/figure-pipeline` were deleted.
   6. Expansion: skills, the remaining chains, trends.
 
 ## Workout sounds (owner decisions, 2026-09-30)
@@ -286,7 +236,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #110. PRs #70, #86, #87 and #108 changed documentation only, and #109 and #110 only build scripts.
+PRs #34 to #111. PRs #70, #86, #87 and #108 changed documentation only, and #109 and #110 only build scripts. PRs #99 to #110 were removed again by #111.
 
 ## How to verify (the local gate)
 
@@ -296,7 +246,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #107: 426 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #111: 399 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

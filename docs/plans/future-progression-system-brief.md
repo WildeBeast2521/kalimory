@@ -12,7 +12,7 @@ The biggest upgrade the app will get: a built-in progression system that helps a
 - **Categories.** Body area, movement pattern, equipment, and other groupings the plan finds useful.
 - **Custom exercises.** Keep letting users add their own, and let them place custom exercises in the categories and progressions.
 - **Daily goals.** Use the catalogue and progressions to set the goal for a day.
-- **Demonstrations.** Possibly an animated vector figure performing each exercise to show correct form.
+- **Demonstrations.** Possibly an animated vector figure performing each exercise to show correct form. (Tried and withdrawn on 2026-10-02; demonstrations are the muscle map and the step text, per ADR 0008.)
 
 ## Items moved here from the redesign review (2026-09-29)
 

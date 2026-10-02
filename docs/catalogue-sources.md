@@ -15,7 +15,6 @@ The catalogue's single source is `scripts/catalogue/catalogue_spec.py`. `scripts
 | Descriptions, form cues, standards, chains and difficulty | Written for this project | GPL-3.0-or-later | Everything |
 | Exercises missing from free-exercise-db (pistol squat, levers, planche, L-sit, muscle-up, hollow body, Nordic curl, archer variations and others) | Written for this project | GPL-3.0-or-later | Everything |
 | Muscle map body regions | [react-body-highlighter](https://github.com/GV79/react-body-highlighter) 2.0.5 (npm tarball sha256 `c15467a8fcf48193896ecbaef1eb98ff260e50021cea3454313ff1016f59e2cb`), Copyright (c) 2020 GV79 | MIT | Polygon outlines only, converted by `scripts/musclemap/generate_body_map.py` into `ui/components/muscles/BodyMapData.kt`, which carries the MIT notice. Listed in Open Source Licenses. |
-| Figure keyframes | Written for this project | GPL-3.0-or-later | Everything |
 
 Not used, and why:
 - **wger exercise data:** mixed CC BY-SA 3.0 and 4.0. Only 4.0 is compatible with GPLv3.
