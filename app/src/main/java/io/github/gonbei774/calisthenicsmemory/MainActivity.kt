@@ -278,7 +278,11 @@ fun CalisthenicsMemoryApp(
 ) {
     val viewModel: TrainingViewModel = viewModel()
     val context = androidx.compose.ui.platform.LocalContext.current
-    var currentScreen by rememberSaveable(stateSaver = ScreenSaver) { mutableStateOf<Screen>(Screen.Home) }
+    // Debug builds: `adb shell am start ... --es figure_step push.full` opens the figure preview on a step.
+    val figureStep = if (BuildConfig.DEBUG) (androidx.compose.ui.platform.LocalContext.current as? android.app.Activity)?.intent?.getStringExtra(FIGURE_STEP_EXTRA) else null
+    var currentScreen by rememberSaveable(stateSaver = ScreenSaver) {
+        mutableStateOf<Screen>(if (figureStep != null) Screen.FigurePreview else Screen.Home)
+    }
     // Screen.Home shows this destination, so "back to Home" returns to the tab the user came from.
     var primaryDestination by rememberSaveable { mutableStateOf(PrimaryDestination.TODAY) }
     // A day Today asked Progress to show; Progress clears it once shown.
@@ -553,7 +557,7 @@ fun CalisthenicsMemoryApp(
                         )
                     }
                     is Screen.FigurePreview -> {
-                        FigurePreviewScreen(onNavigateBack = { currentScreen = Screen.Settings })
+                        FigurePreviewScreen(onNavigateBack = { currentScreen = Screen.Settings }, initialStep = figureStep)
                     }
                     is Screen.Catalogue -> {
                         CatalogueScreen(
@@ -678,6 +682,9 @@ fun CalisthenicsMemoryApp(
         }
     }
 }
+
+/** Debug builds: the intent extra naming the step the figure preview opens on. */
+const val FIGURE_STEP_EXTRA = "figure_step"
 
 sealed class Screen {
     object Home : Screen()
