@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-02, at PR #116.
+Last reviewed: 2026-10-02, at PR #117.
 
 ## Where things stand
 
@@ -194,7 +194,28 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - A trained step shows "Started Aug 3, 2026", and once a session met its move-on standard, "Started Aug 3, 2026, met Aug 24, 2026" in spruce (ADR 0004).
        - The dates are stored session dates, never invented. The standard is the exercise's own target when set, as on the Progressions tab.
        - Pure function `Progressions.journey`, tested in `ProgressionsTest`.
-     - Phase 6 is done. Later ideas: a chart of the climb over time, and sets per movement pattern per week.
+     - Phase 6 is done. Later ideas are listed under "Later ideas" below.
+
+## Later ideas (recorded 2026-10-02, not scheduled)
+
+- A chart of each chain's climb over time, plotting the step difficulty by date.
+- Sets per movement pattern per week, against the evidence-based 10 or more.
+- A gliding navigation indicator (left over from MO).
+- Android device backup: `allowBackup` is true and both backup rule files are still Android's samples, so Google device backup may copy the app's data. Decide whether to exclude the database, or turn device backup off. The wiki's Privacy page states the current behaviour.
+
+## Release preparation (started 2026-10-02)
+
+- **Done in PR #117:**
+  - GitHub issue templates: bug report, feature request, and catalogue or translation. Blank issues are off. Each asks for no personal workout data.
+  - The user guide in `docs/wiki/` (Home, Getting started, Workouts, Progressions and the catalogue, Backups and your data, Privacy). GitHub wikis need a public repository or a paid plan, so the pages live in the repository for now.
+  - README and CONTRIBUTING rewritten for this fork, with upstream credit.
+  - Removed upstream-only files: `.forgejo/` issue templates, `.woodpecker.yml` (Codeberg CI), the upstream `screenshots/` and the Japanese README. They stay in git history.
+  - `.gitignore` rewritten in English. It adds APKs, bundles, signing files, `.env`, app databases, and the app's own backup and export file names. No tracked file is ignored by it, and no secret, keystore, database or backup appears anywhere in git history.
+- **Waiting for the owner:**
+  - The application ID, the app name and the logo.
+  - Whether `docs/plans/` and `docs/development/` stay public. They are internal notes with private review links.
+  - `fastlane/metadata` and `CHANGELOG.md` still describe upstream. Rewrite them once the name and ID are settled.
+  - `icon.png` is upstream's icon. Replace it with the new logo.
 
 ## Workout sounds (owner decisions, 2026-09-30)
 
@@ -263,7 +284,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #116. PRs #70, #86, #87 and #108 changed documentation only, and #109 and #110 only build scripts. PRs #99 to #110 were removed again by #111.
+PRs #34 to #117. PRs #70, #86, #87 and #108 changed documentation only, and #109 and #110 only build scripts. PRs #99 to #110 were removed again by #111.
 
 ## How to verify (the local gate)
 

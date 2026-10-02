@@ -1,0 +1,36 @@
+name: Exercise catalogue or translation
+description: A wrong cue, standard, muscle or translation, or a missing exercise.
+labels: ["catalogue"]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Chain and step
+      placeholder: Planche › Tuck planche
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of change
+      options:
+        - Description or cues
+        - Starting or move-on standard
+        - Muscles or equipment
+        - Order or difficulty
+        - Translation
+        - A missing step or chain
+    validations:
+      required: true
+  - type: input
+    id: language
+    attributes:
+      label: App language
+      description: Only for translations.
+  - type: textarea
+    id: change
+    attributes:
+      label: What it says now, and what it should say
+      description: For standards or muscles, say where the fact comes from. The catalogue's own text must stay original, so please do not paste text from other apps or books.
+    validations:
+      required: true
