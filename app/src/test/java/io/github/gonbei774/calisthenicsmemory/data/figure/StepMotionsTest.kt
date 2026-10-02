@@ -10,8 +10,20 @@ import org.junit.Test
 class StepMotionsTest {
     private fun distance(a: Vec3, b: Vec3) = (a - b).length()
 
-    @Test fun `every push-up step has a motion`() {
-        Catalogue.chain("push")!!.steps.forEach { assertNotNull(it.id, StepMotions.forStep(it.id)) }
+    /** Chains whose motions are done; each later chain joins this list. */
+    private val covered = listOf("push", "squat")
+
+    @Test fun `every step of a covered chain has a motion`() {
+        covered.forEach { chain -> Catalogue.chain(chain)!!.steps.forEach { assertNotNull(it.id, StepMotions.forStep(it.id)) } }
+    }
+
+    @Test fun `squats lower the hips and stand back up`() {
+        StepMotions.stepIds.filter { it.startsWith("squat.") }.forEach { id ->
+            val motion = StepMotions.forStep(id)!!
+            val top = motion.poseAt(0f).pelvis.y
+            val bottom = motion.stillPose.pelvis.y
+            assertTrue("$id goes down", bottom < top - 0.25f)
+        }
     }
 
     @Test fun `motions belong to real catalogue steps`() {
