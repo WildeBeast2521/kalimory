@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-02, at PR #110.
+Last reviewed: 2026-10-02, at PR #109.
 
 ## Where things stand
 
@@ -211,7 +211,7 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - Tests: `FigureBodyTest`.
        - Honest assessment: it reads as a solid, shaded mannequin, not yet a muscular human.
      - The owner chose pre-rendered 3D on 2026-10-02 (ADR 0008 amendment, PR #108; plan `docs/plans/2026-10-02-figure-3d-pipeline.md`).
-     - Done in PR #110, the spike (scripts in `scripts/figure/`):
+     - Done in PR #109, the spike (scripts in `scripts/figure/`):
        - Blender 4.2 LTS, MPFB2 and the MakeHuman CC0 assets are fetched with checksums into a private profile outside the repository.
        - `build_body.py` builds a rigged muscular male with shorts and 17 muscle regions; `render_still.py` renders a still with the worked muscles in red.
        - The look check is waiting for the owner. After it: the motion export, IK posing, sprite sheets and the app's player.
@@ -284,7 +284,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #107. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #109. PRs #70, #86, #87 and #108 changed documentation only, and #109 only build scripts.
 
 ## How to verify (the local gate)
 
