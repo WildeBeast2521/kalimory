@@ -1,4 +1,4 @@
-# Calisthenics Memory
+# Kalimory
 
 A calm, offline place to plan, run and remember bodyweight training. There is no account, and nothing leaves your phone.
 

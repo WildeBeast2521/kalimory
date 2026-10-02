@@ -126,7 +126,7 @@
     <string name="recovery_restore_message">ستحل قاعدة البيانات الموجودة في ملف الاسترداد محل بياناتك الحالية. تُحفظ بياناتك الحالية داخل التطبيق وتُضمَّن في عمليات تصدير ملفات الاسترداد اللاحقة.</string>
     <string name="recovery_restore_confirm">استعادة</string>
     <string name="recovery_restore_done">تمت الاستعادة. سيُعاد تشغيل التطبيق الآن.</string>
-    <string name="recovery_rejected_no_database">لا يحتوي هذا الملف على قاعدة بيانات Calisthenics Memory.</string>
+    <string name="recovery_rejected_no_database">لا يحتوي هذا الملف على قاعدة بيانات Kalimory.</string>
     <string name="recovery_rejected_too_large">هذا الملف كبير جدًا ليكون ملف استرداد.</string>
     <string name="recovery_rejected_version">إصدار قاعدة البيانات هذه هو %1$d، ولا يستطيع هذا التطبيق فتحه.</string>
     <string name="recovery_rejected_damaged">قاعدة البيانات هذه تالفة ولا يمكن استعادتها.</string>
@@ -142,7 +142,7 @@
     <string name="guide_add_exercise">أضف أول تمرين</string>
     <string name="guide_go_to_today">الانتقال إلى «اليوم»</string>
     <string name="guide_page_position">الصفحة %1$d من %2$d</string>
-    <string name="guide_welcome_title">مرحبًا بك في Calisthenics Memory</string>
+    <string name="guide_welcome_title">مرحبًا بك في Kalimory</string>
     <string name="guide_welcome_body">مكان هادئ لتخطيط تمارين وزن الجسم وأدائها وتذكّرها. لا حساب ولا اتصال بالإنترنت: تبقى تمارينك على هذا الهاتف.</string>
     <string name="guide_places_title">أربعة أقسام</string>
     <string name="guide_place_today">أسبوعك في لمحة، وما التالي، وما أنجزته اليوم.</string>

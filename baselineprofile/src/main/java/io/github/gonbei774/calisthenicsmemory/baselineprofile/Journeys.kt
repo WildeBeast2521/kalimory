@@ -4,7 +4,7 @@ import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Until
 
-const val PACKAGE = "io.github.gonbei774.calisthenicsmemory"
+const val PACKAGE = "io.github.wildebeast2521.kalimory"
 private const val TIMEOUT_MS = 5_000L
 private const val GUIDE_TIMEOUT_MS = 1_500L
 

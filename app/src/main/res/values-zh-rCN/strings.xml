@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">Calisthenics Memory</string>
     <!-- Common -->
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
@@ -834,7 +833,7 @@
     <string name="recovery_restore_message">恢复文件中的数据库将替换当前数据。当前数据会保存在应用内，并包含在之后导出的恢复文件中。</string>
     <string name="recovery_restore_confirm">还原</string>
     <string name="recovery_restore_done">已还原。应用将重新启动。</string>
-    <string name="recovery_rejected_no_database">此文件不包含 Calisthenics Memory 数据库。</string>
+    <string name="recovery_rejected_no_database">此文件不包含 Kalimory 数据库。</string>
     <string name="recovery_rejected_too_large">此文件过大，不是恢复文件。</string>
     <string name="recovery_rejected_version">此数据库版本为 %1$d，本应用无法打开。</string>
     <string name="recovery_rejected_damaged">此数据库已损坏，无法还原。</string>
@@ -849,7 +848,7 @@
     <string name="guide_add_exercise">添加第一个动作</string>
     <string name="guide_go_to_today">前往“今天”</string>
     <string name="guide_page_position">第 %1$d 页，共 %2$d 页</string>
-    <string name="guide_welcome_title">欢迎使用 Calisthenics Memory</string>
+    <string name="guide_welcome_title">欢迎使用 Kalimory</string>
     <string name="guide_welcome_body">一个安静的地方，用来计划、进行和记录你的自重训练。无需账户，也不联网：你的训练都保存在这部手机上。</string>
     <string name="guide_places_title">四个地方</string>
     <string name="guide_place_today">本周概况、接下来要做的，以及今天完成的。</string>

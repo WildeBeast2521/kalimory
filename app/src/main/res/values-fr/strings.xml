@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- App Name -->
-    <string name="app_name">Calisthenics Memory</string>
     <!-- Common -->
     <string name="ok">OK</string>
     <string name="cancel">Annuler</string>
@@ -837,7 +836,7 @@
     <string name="recovery_restore_message">La base de données du fichier de récupération remplace vos données actuelles. Vos données actuelles sont conservées dans l\'application et incluses dans les exports de fichiers de récupération ultérieurs.</string>
     <string name="recovery_restore_confirm">Restaurer</string>
     <string name="recovery_restore_done">Restauré. L\'application va redémarrer.</string>
-    <string name="recovery_rejected_no_database">Ce fichier ne contient aucune base de données Calisthenics Memory.</string>
+    <string name="recovery_rejected_no_database">Ce fichier ne contient aucune base de données Kalimory.</string>
     <string name="recovery_rejected_too_large">Ce fichier est trop volumineux pour être un fichier de récupération.</string>
     <string name="recovery_rejected_version">Cette base de données est en version %1$d, que cette application ne peut pas ouvrir.</string>
     <string name="recovery_rejected_damaged">Cette base de données est endommagée et ne peut pas être restaurée.</string>
@@ -852,7 +851,7 @@
     <string name="guide_add_exercise">Ajouter votre premier exercice</string>
     <string name="guide_go_to_today">Aller à Aujourd\'hui</string>
     <string name="guide_page_position">Page %1$d sur %2$d</string>
-    <string name="guide_welcome_title">Bienvenue dans Calisthenics Memory</string>
+    <string name="guide_welcome_title">Bienvenue dans Kalimory</string>
     <string name="guide_welcome_body">Un endroit calme pour planifier, réaliser et garder la trace de vos entraînements au poids du corps. Pas de compte, rien en ligne : vos séances restent sur ce téléphone.</string>
     <string name="guide_places_title">Quatre espaces</string>
     <string name="guide_place_today">Votre semaine en un coup d\'œil, la suite et ce que vous avez fait aujourd\'hui.</string>

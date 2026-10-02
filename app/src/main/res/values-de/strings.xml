@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">Calisthenics Memory</string>
     <!-- Common -->
     <string name="ok">OK</string>
     <string name="cancel">Abbrechen</string>
@@ -863,7 +862,7 @@
     <string name="recovery_restore_message">Die Datenbank in der Wiederherstellungsdatei ersetzt deine aktuellen Daten. Deine aktuellen Daten bleiben in der App erhalten und sind in späteren Exporten von Wiederherstellungsdateien enthalten.</string>
     <string name="recovery_restore_confirm">Wiederherstellen</string>
     <string name="recovery_restore_done">Wiederhergestellt. Die App startet jetzt neu.</string>
-    <string name="recovery_rejected_no_database">Diese Datei enthält keine Calisthenics-Memory-Datenbank.</string>
+    <string name="recovery_rejected_no_database">Diese Datei enthält keine Kalimory-Datenbank.</string>
     <string name="recovery_rejected_too_large">Diese Datei ist zu groß für eine Wiederherstellungsdatei.</string>
     <string name="recovery_rejected_version">Diese Datenbank hat Version %1$d, die diese App nicht öffnen kann.</string>
     <string name="recovery_rejected_damaged">Diese Datenbank ist beschädigt und kann nicht wiederhergestellt werden.</string>
@@ -878,7 +877,7 @@
     <string name="guide_add_exercise">Erste Übung hinzufügen</string>
     <string name="guide_go_to_today">Zu „Heute“</string>
     <string name="guide_page_position">Seite %1$d von %2$d</string>
-    <string name="guide_welcome_title">Willkommen bei Calisthenics Memory</string>
+    <string name="guide_welcome_title">Willkommen bei Kalimory</string>
     <string name="guide_welcome_body">Ein ruhiger Ort, um dein Training mit dem eigenen Körpergewicht zu planen, durchzuführen und festzuhalten. Kein Konto, keine Internetverbindung: Deine Trainings bleiben auf diesem Handy.</string>
     <string name="guide_places_title">Vier Bereiche</string>
     <string name="guide_place_today">Deine Woche auf einen Blick, was als Nächstes ansteht und was du heute gemacht hast.</string>

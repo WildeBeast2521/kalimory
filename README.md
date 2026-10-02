@@ -2,7 +2,7 @@
   <img src="icon.png" width="128" alt="">
 </p>
 
-<h1 align="center">Calisthenics Memory</h1>
+<h1 align="center">Kalimory</h1>
 
 <p align="center">A calm, offline place to plan, run and remember your bodyweight training.</p>
 
@@ -52,7 +52,7 @@ Bug reports, catalogue corrections and ideas are welcome through the issue templ
 
 ## Credits
 
-This app began as a fork of [Calisthenics Memory by Gonbei774](https://codeberg.org/Gonbei774/CalisthenicsMemory), whose work and history are kept in this repository. It has since been substantially redesigned and extended. Thanks also to the original project's translators.
+Kalimory began as a fork of [Calisthenics Memory by Gonbei774](https://codeberg.org/Gonbei774/CalisthenicsMemory), whose work and history are kept in this repository. It has since been substantially redesigned and extended. Thanks also to the original project's translators.
 
 The muscle map outlines are adapted from react-body-highlighter (MIT). See [Credits and sources](docs/wiki/Credits.md) and the app's Open Source Licenses screen.
 
