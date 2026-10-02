@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">Calisthenics Memory</string>
     <!-- Common -->
     <string name="ok">OK</string>
     <string name="cancel">キャンセル</string>
@@ -899,7 +898,7 @@
     <string name="recovery_restore_message">リカバリーファイル内のデータベースで現在のデータを置き換えます。現在のデータはアプリ内に保管され、以後のリカバリーファイルのエクスポートに含まれます。</string>
     <string name="recovery_restore_confirm">復元</string>
     <string name="recovery_restore_done">復元しました。アプリを再起動します。</string>
-    <string name="recovery_rejected_no_database">このファイルには Calisthenics Memory のデータベースがありません。</string>
+    <string name="recovery_rejected_no_database">このファイルには Kalimory のデータベースがありません。</string>
     <string name="recovery_rejected_too_large">リカバリーファイルとしては大きすぎます。</string>
     <string name="recovery_rejected_version">このデータベースはバージョン %1$d で、このアプリでは開けません。</string>
     <string name="recovery_rejected_damaged">このデータベースは破損しているため復元できません。</string>
@@ -914,7 +913,7 @@
     <string name="guide_add_exercise">最初の種目を追加</string>
     <string name="guide_go_to_today">「今日」へ</string>
     <string name="guide_page_position">%2$d ページ中 %1$d ページ目</string>
-    <string name="guide_welcome_title">Calisthenics Memory へようこそ</string>
+    <string name="guide_welcome_title">Kalimory へようこそ</string>
     <string name="guide_welcome_body">自重トレーニングを計画し、実行し、記録するための落ち着いた場所です。アカウントは不要で、オンラインにもなりません。ワークアウトはこの端末に保存されます。</string>
     <string name="guide_places_title">4 つの場所</string>
     <string name="guide_place_today">今週の様子、次にやること、今日やったこと。</string>

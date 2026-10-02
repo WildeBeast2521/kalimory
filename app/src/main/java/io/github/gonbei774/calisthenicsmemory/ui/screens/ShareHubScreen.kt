@@ -728,7 +728,7 @@ fun ShareHubScreen(
                             showBackupConfirmation = false
                             val dateTime = LocalDateTime.now()
                             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")
-                            val fileName = "calisthenics_memory_backup_${dateTime.format(formatter)}.json"
+                            val fileName = "kalimory_backup_${dateTime.format(formatter)}.json"
                             backupBeforeImportLauncher.launch(fileName)
                         },
                         modifier = Modifier

@@ -29,7 +29,7 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "io.github.gonbei774.calisthenicsmemory"
+        applicationId = "io.github.wildebeast2521.kalimory"
         minSdk = 26
         targetSdk = 35
         versionCode = 35

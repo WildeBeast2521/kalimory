@@ -221,7 +221,7 @@
     <string name="recovery_restore_message">База данных из файла восстановления заменит текущие данные. Текущие данные сохранятся внутри приложения и войдут в последующие экспорты файлов восстановления.</string>
     <string name="recovery_restore_confirm">Восстановить</string>
     <string name="recovery_restore_done">Восстановлено. Приложение сейчас перезапустится.</string>
-    <string name="recovery_rejected_no_database">В этом файле нет базы данных Calisthenics Memory.</string>
+    <string name="recovery_rejected_no_database">В этом файле нет базы данных Kalimory.</string>
     <string name="recovery_rejected_too_large">Файл слишком большой для файла восстановления.</string>
     <string name="recovery_rejected_version">Версия этой базы данных — %1$d, это приложение не может её открыть.</string>
     <string name="recovery_rejected_damaged">База данных повреждена и не может быть восстановлена.</string>
@@ -237,7 +237,7 @@
     <string name="guide_add_exercise">Добавить первое упражнение</string>
     <string name="guide_go_to_today">Перейти в «Сегодня»</string>
     <string name="guide_page_position">Страница %1$d из %2$d</string>
-    <string name="guide_welcome_title">Добро пожаловать в Calisthenics Memory</string>
+    <string name="guide_welcome_title">Добро пожаловать в Kalimory</string>
     <string name="guide_welcome_body">Спокойное место, чтобы планировать, выполнять и запоминать тренировки с собственным весом. Без аккаунта и без интернета: ваши тренировки остаются на этом телефоне.</string>
     <string name="guide_places_title">Четыре раздела</string>
     <string name="guide_place_today">Ваша неделя одним взглядом, что дальше и что вы сделали сегодня.</string>

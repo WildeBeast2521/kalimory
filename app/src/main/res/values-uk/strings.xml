@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Calisthenics Memory</string>
     <string name="ok">Гаразд</string>
     <string name="cancel">Скасувати</string>
     <string name="save">Зберегти</string>
@@ -844,7 +843,7 @@
     <string name="recovery_restore_message">База даних із файлу відновлення замінить поточні дані. Поточні дані збережуться в застосунку й увійдуть до наступних експортів файлів відновлення.</string>
     <string name="recovery_restore_confirm">Відновити</string>
     <string name="recovery_restore_done">Відновлено. Застосунок зараз перезапуститься.</string>
-    <string name="recovery_rejected_no_database">У цьому файлі немає бази даних Calisthenics Memory.</string>
+    <string name="recovery_rejected_no_database">У цьому файлі немає бази даних Kalimory.</string>
     <string name="recovery_rejected_too_large">Файл завеликий для файлу відновлення.</string>
     <string name="recovery_rejected_version">Версія цієї бази даних — %1$d, цей застосунок не може її відкрити.</string>
     <string name="recovery_rejected_damaged">База даних пошкоджена й не може бути відновлена.</string>
@@ -859,7 +858,7 @@
     <string name="guide_add_exercise">Додати першу вправу</string>
     <string name="guide_go_to_today">Перейти до «Сьогодні»</string>
     <string name="guide_page_position">Сторінка %1$d з %2$d</string>
-    <string name="guide_welcome_title">Ласкаво просимо до Calisthenics Memory</string>
+    <string name="guide_welcome_title">Ласкаво просимо до Kalimory</string>
     <string name="guide_welcome_body">Спокійне місце, щоб планувати, виконувати й запам’ятовувати тренування з власною вагою. Без облікового запису й без інтернету: ваші тренування залишаються на цьому телефоні.</string>
     <string name="guide_places_title">Чотири розділи</string>
     <string name="guide_place_today">Ваш тиждень одним поглядом, що далі і що ви зробили сьогодні.</string>

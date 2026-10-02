@@ -104,7 +104,7 @@ fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Uni
         Button(
             onClick = {
                 val stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"))
-                exportLauncher.launch("calisthenics-memory-database-$stamp.zip")
+                exportLauncher.launch("kalimory-database-$stamp.zip")
             },
             modifier = Modifier.fillMaxWidth()
         ) {

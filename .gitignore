@@ -29,6 +29,8 @@ keystore.properties
 *.env
 
 # User data: backups, exports and app databases pulled from a device or emulator
+kalimory_backup_*.json
+kalimory-database-*.zip
 calisthenics_memory_backup_*.json
 calisthenics-memory-database-*.zip
 exercises_*.csv

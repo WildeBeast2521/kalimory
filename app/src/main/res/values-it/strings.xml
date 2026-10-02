@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">Calisthenics Memory</string>
     <!-- Common -->
     <string name="ok">OK</string>
     <string name="cancel">Annulla</string>
@@ -840,7 +839,7 @@
     <string name="recovery_restore_message">Il database nel file di recupero sostituisce i tuoi dati attuali. I dati attuali restano conservati nell\'app e sono inclusi nelle esportazioni successive dei file di recupero.</string>
     <string name="recovery_restore_confirm">Ripristina</string>
     <string name="recovery_restore_done">Ripristinato. L\'app ora si riavvierà.</string>
-    <string name="recovery_rejected_no_database">Questo file non contiene un database di Calisthenics Memory.</string>
+    <string name="recovery_rejected_no_database">Questo file non contiene un database di Kalimory.</string>
     <string name="recovery_rejected_too_large">Questo file è troppo grande per essere un file di recupero.</string>
     <string name="recovery_rejected_version">Questo database ha la versione %1$d, che questa app non può aprire.</string>
     <string name="recovery_rejected_damaged">Questo database è danneggiato e non può essere ripristinato.</string>
@@ -855,7 +854,7 @@
     <string name="guide_add_exercise">Aggiungi il primo esercizio</string>
     <string name="guide_go_to_today">Vai a Oggi</string>
     <string name="guide_page_position">Pagina %1$d di %2$d</string>
-    <string name="guide_welcome_title">Benvenuto in Calisthenics Memory</string>
+    <string name="guide_welcome_title">Benvenuto in Kalimory</string>
     <string name="guide_welcome_body">Un posto tranquillo per pianificare, svolgere e ricordare i tuoi allenamenti a corpo libero. Nessun account e niente online: i tuoi allenamenti restano su questo telefono.</string>
     <string name="guide_places_title">Quattro sezioni</string>
     <string name="guide_place_today">La tua settimana a colpo d\'occhio, cosa viene dopo e cosa hai fatto oggi.</string>
