@@ -50,7 +50,7 @@ app/src/androidTest/   Instrumented tests
 app/schemas/           Exported Room schemas
 baselineprofile/       Baseline Profile generator
 docs/wiki/             User guide
-scripts/               Catalogue, muscle map, sound, icon and schema tools
+scripts/               Catalogue, muscle map, sound, icon, README image and schema tools
 fastlane/              Store metadata
 ```
 

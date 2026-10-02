@@ -20,6 +20,12 @@ Not used:
 - **Convict Conditioning and Overcoming Gravity:** all rights reserved. Stepped progressions with standards are common practice, but no text, tables or numbers were copied.
 - **The r/bodyweightfitness wiki:** no explicit licence. Used only as a reference for common practice.
 
+## Fonts and icons
+
+- **Onest** (SIL Open Font License 1.1) is the app's typeface. The README images draw their text from it.
+- **Material Symbols Rounded** (Apache-2.0) supply the app's icons and the README's feature icons.
+- The launcher icon, The Climb, was made for this project.
+
 ## Sounds
 
 The workout sounds are original, synthesised by `scripts/sounds/generate_workout_sounds.py`.
