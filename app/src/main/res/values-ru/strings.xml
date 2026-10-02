@@ -9,7 +9,6 @@
     <string name="create">Создать</string>
     <string name="back">Назад</string>
     <string name="close">Закрыть</string>
-    <string name="search">Поиск</string>
     <string name="select">Выбрать</string>
     <string name="settings">Настройки</string>
     <string name="comment">Комментарии</string>
@@ -243,7 +242,7 @@
     <string name="guide_places_title">Четыре раздела</string>
     <string name="guide_place_today">Ваша неделя одним взглядом, что дальше и что вы сделали сегодня.</string>
     <string name="guide_place_train">Начните тренировку: одно упражнение, программу или интервалы. Можно также записать прошлую тренировку.</string>
-    <string name="guide_place_progress">Ваша история в календаре, списке и графиках, а также челленджи.</string>
+    <string name="guide_place_progress">Ваша история в календаре, списке и графиках, а также ваши прогрессии.</string>
     <string name="guide_place_library">Ваши упражнения, программы, интервальные тренировки и настройки.</string>
     <string name="guide_workout_title">Как проходит тренировка</string>
     <string name="guide_workout_sets_title">Подход за подходом</string>

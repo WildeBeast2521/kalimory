@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.lastDoneText
 import androidx.activity.compose.BackHandler
@@ -762,45 +763,11 @@ fun ExerciseSelectionStep(
                 .padding(16.dp)
         ) {
             // Search field
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it },
+            CalmSearchField(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+                placeholder = stringResource(R.string.search_placeholder),
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = {
-                    Text(
-                        text = stringResource(R.string.search_placeholder),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        AppIcons.Search,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                },
-                trailingIcon = {
-                    if (searchQuery.isNotEmpty()) {
-                        IconButton(onClick = { searchQuery = "" }) {
-                            Icon(
-                                AppIcons.Close,
-                                contentDescription = stringResource(R.string.clear),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                },
-                singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
-                    cursorColor = MaterialTheme.colorScheme.primary
-                ),
-                shape = RoundedCornerShape(8.dp)
             )
 
             Spacer(modifier = Modifier.height(12.dp))

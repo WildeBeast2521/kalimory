@@ -11,7 +11,6 @@
     <string name="create">创建</string>
     <string name="back">返回</string>
     <string name="close">关闭</string>
-    <string name="search">搜索</string>
     <string name="select">选择</string>
     <string name="settings">设置</string>
     <string name="comment">备注</string>
@@ -854,7 +853,7 @@
     <string name="guide_places_title">四个地方</string>
     <string name="guide_place_today">本周概况、接下来要做的，以及今天完成的。</string>
     <string name="guide_place_train">开始训练：单个动作、训练计划或间歇训练。也可以补记之前的训练。</string>
-    <string name="guide_place_progress">以日历、列表和图表查看历史，还有挑战。</string>
+    <string name="guide_place_progress">以日历、列表和图表查看历史，还有你的进阶。</string>
     <string name="guide_place_library">你的动作、训练计划、间歇训练，以及设置。</string>
     <string name="guide_workout_title">训练如何进行</string>
     <string name="guide_workout_sets_title">一组接一组</string>

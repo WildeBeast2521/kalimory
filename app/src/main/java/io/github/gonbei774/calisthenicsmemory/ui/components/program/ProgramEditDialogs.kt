@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -76,47 +77,11 @@ fun AddExerciseToProgramDialog(
                         .fillMaxWidth()
                         .fillMaxHeight(0.7f)
                 ) {
-                    OutlinedTextField(
-                        value = searchQuery,
-                        onValueChange = { searchQuery = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                        placeholder = {
-                            Text(
-                                text = stringResource(R.string.search_placeholder),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        },
-                        leadingIcon = {
-                            Icon(
-                                AppIcons.Search,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        },
-                        trailingIcon = {
-                            if (searchQuery.isNotEmpty()) {
-                                IconButton(onClick = { searchQuery = "" }) {
-                                    Icon(
-                                        AppIcons.Close,
-                                        contentDescription = stringResource(R.string.clear),
-                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
-                            }
-                        },
-                        singleLine = true,
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                            cursorColor = MaterialTheme.colorScheme.primary
-                        ),
-                        shape = RoundedCornerShape(8.dp)
+                    CalmSearchField(
+                        query = searchQuery,
+                        onQueryChange = { searchQuery = it },
+                        placeholder = stringResource(R.string.search_placeholder),
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
                     )
 
                     LazyColumn(

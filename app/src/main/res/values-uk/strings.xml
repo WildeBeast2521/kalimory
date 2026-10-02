@@ -9,7 +9,6 @@
     <string name="create">Створити</string>
     <string name="back">Назад</string>
     <string name="close">Закрити</string>
-    <string name="search">Пошук</string>
     <string name="search_exercise">Шукати вправу...</string>
     <string name="search_placeholder">Пошук</string>
     <string name="select">Вибрати</string>
@@ -864,7 +863,7 @@
     <string name="guide_places_title">Чотири розділи</string>
     <string name="guide_place_today">Ваш тиждень одним поглядом, що далі і що ви зробили сьогодні.</string>
     <string name="guide_place_train">Почніть тренування: одну вправу, програму або інтервали. Можна також записати минуле тренування.</string>
-    <string name="guide_place_progress">Ваша історія в календарі, списку й графіках, а також челенджі.</string>
+    <string name="guide_place_progress">Ваша історія в календарі, списку й графіках, а також ваші прогресії.</string>
     <string name="guide_place_library">Ваші вправи, програми, інтервальні тренування та налаштування.</string>
     <string name="guide_workout_title">Як проходить тренування</string>
     <string name="guide_workout_sets_title">Підхід за підходом</string>
