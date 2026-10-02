@@ -936,6 +936,8 @@
     <string name="catalogue_in_library_count">ライブラリに %1$d 件</string>
     <string name="catalogue_add">自分の種目に追加</string>
     <string name="catalogue_in_library">ライブラリにあります</string>
+    <string name="catalogue_journey_started">%1$s に開始</string>
+    <string name="catalogue_journey_met">%1$s に開始、%2$s に達成</string>
     <string name="catalogue_added">%1$s を種目に追加しました</string>
     <string name="catalogue_linked">%1$s をカタログに紐付けました</string>
     <string name="catalogue_name_taken">%1$s という種目はすでにあります</string>

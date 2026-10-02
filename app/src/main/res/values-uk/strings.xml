@@ -881,6 +881,8 @@
     <string name="catalogue_in_library_count">%1$d у вашій бібліотеці</string>
     <string name="catalogue_add">Додати до моїх вправ</string>
     <string name="catalogue_in_library">У вашій бібліотеці</string>
+    <string name="catalogue_journey_started">Розпочато %1$s</string>
+    <string name="catalogue_journey_met">Розпочато %1$s, виконано %2$s</string>
     <string name="catalogue_added">%1$s додано до ваших вправ</string>
     <string name="catalogue_linked">Вашу вправу %1$s тепер пов’язано з каталогом</string>
     <string name="catalogue_name_taken">У вас уже є вправа «%1$s»</string>

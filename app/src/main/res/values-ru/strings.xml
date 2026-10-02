@@ -259,6 +259,8 @@
     <string name="catalogue_in_library_count">%1$d в вашей библиотеке</string>
     <string name="catalogue_add">Добавить в мои упражнения</string>
     <string name="catalogue_in_library">В вашей библиотеке</string>
+    <string name="catalogue_journey_started">Начато %1$s</string>
+    <string name="catalogue_journey_met">Начато %1$s, выполнено %2$s</string>
     <string name="catalogue_added">%1$s добавлено в ваши упражнения</string>
     <string name="catalogue_linked">Ваше упражнение %1$s теперь связано с каталогом</string>
     <string name="catalogue_name_taken">У вас уже есть упражнение «%1$s»</string>

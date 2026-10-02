@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-02, at PR #115.
+Last reviewed: 2026-10-02, at PR #116.
 
 ## Where things stand
 
@@ -167,7 +167,7 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - It covered PRs #99 to #110: a procedural figure with motions for all 53 steps, then a pre-rendered 3D model.
        - Everything was removed in PR #111: the app code, the debug preview, the tests and `scripts/figure/`. The app is back to its state after PR #98.
        - ADR 0008 records the withdrawal. The local tools in `~/.local/share/figure-pipeline` were deleted.
-  6. Expansion: skills, the remaining chains, trends. In progress.
+  6. Expansion: skills, the remaining chains, trends. Done.
      - Done in PR #112, skills batch 1: three chains and 13 steps.
        - The chains: Handstand (crow to freestanding), L-sit (foot-supported to V-sit) and Muscle-up (chest-to-bar pull-up to muscle-up).
        - Translated into all nine other languages.
@@ -190,7 +190,11 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
        - Translated into all nine other languages.
        - The angled bridge builds on the glute bridge, and the push-up burpee on the push-up.
        - The catalogue now has 19 chains and 101 steps.
-     - Next: trends.
+     - Done in PR #116, trends: each chain's step list dates the user's own climb.
+       - A trained step shows "Started Aug 3, 2026", and once a session met its move-on standard, "Started Aug 3, 2026, met Aug 24, 2026" in spruce (ADR 0004).
+       - The dates are stored session dates, never invented. The standard is the exercise's own target when set, as on the Progressions tab.
+       - Pure function `Progressions.journey`, tested in `ProgressionsTest`.
+     - Phase 6 is done. Later ideas: a chart of the climb over time, and sets per movement pattern per week.
 
 ## Workout sounds (owner decisions, 2026-09-30)
 
@@ -259,7 +263,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #115. PRs #70, #86, #87 and #108 changed documentation only, and #109 and #110 only build scripts. PRs #99 to #110 were removed again by #111.
+PRs #34 to #116. PRs #70, #86, #87 and #108 changed documentation only, and #109 and #110 only build scripts. PRs #99 to #110 were removed again by #111.
 
 ## How to verify (the local gate)
 
@@ -269,7 +273,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #115: 399 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #116: 401 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.

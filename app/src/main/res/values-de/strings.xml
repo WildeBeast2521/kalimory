@@ -900,6 +900,8 @@
     <string name="catalogue_in_library_count">%1$d in deiner Bibliothek</string>
     <string name="catalogue_add">Zu meinen Übungen hinzufügen</string>
     <string name="catalogue_in_library">In deiner Bibliothek</string>
+    <string name="catalogue_journey_started">Begonnen am %1$s</string>
+    <string name="catalogue_journey_met">Begonnen am %1$s, erreicht am %2$s</string>
     <string name="catalogue_added">%1$s zu deinen Übungen hinzugefügt</string>
     <string name="catalogue_linked">Deine Übung %1$s ist jetzt mit dem Katalog verknüpft</string>
     <string name="catalogue_name_taken">Du hast bereits eine Übung namens %1$s</string>

@@ -164,6 +164,8 @@
     <string name="catalogue_in_library_count">%1$d في مكتبتك</string>
     <string name="catalogue_add">أضف إلى تماريني</string>
     <string name="catalogue_in_library">في مكتبتك</string>
+    <string name="catalogue_journey_started">بدأت في %1$s</string>
+    <string name="catalogue_journey_met">بدأت في %1$s، وحققت المعيار في %2$s</string>
     <string name="catalogue_added">تمت إضافة %1$s إلى تمارينك</string>
     <string name="catalogue_linked">أصبح تمرينك %1$s مرتبطًا بالكتالوج</string>
     <string name="catalogue_name_taken">لديك بالفعل تمرين باسم %1$s</string>

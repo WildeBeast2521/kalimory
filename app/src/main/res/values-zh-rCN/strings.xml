@@ -871,6 +871,8 @@
     <string name="catalogue_in_library_count">库中有 %1$d 个</string>
     <string name="catalogue_add">添加到我的动作</string>
     <string name="catalogue_in_library">已在库中</string>
+    <string name="catalogue_journey_started">%1$s 开始</string>
+    <string name="catalogue_journey_met">%1$s 开始，%2$s 达标</string>
     <string name="catalogue_added">已将 %1$s 添加到你的动作</string>
     <string name="catalogue_linked">已将你的 %1$s 关联到目录</string>
     <string name="catalogue_name_taken">你已经有名为 %1$s 的动作</string>

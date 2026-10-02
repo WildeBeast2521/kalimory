@@ -933,6 +933,8 @@
     <string name="catalogue_in_library_count">%1$d in your library</string>
     <string name="catalogue_add">Add to my exercises</string>
     <string name="catalogue_in_library">In your library</string>
+    <string name="catalogue_journey_started">Started %1$s</string>
+    <string name="catalogue_journey_met">Started %1$s, met %2$s</string>
     <string name="catalogue_added">%1$s added to your exercises</string>
     <string name="catalogue_linked">Your %1$s is now linked to the catalogue</string>
     <string name="catalogue_name_taken">You already have an exercise named %1$s</string>
