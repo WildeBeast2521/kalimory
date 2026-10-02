@@ -161,10 +161,10 @@ object SkeletonSolver {
                 upper = Proportions.UPPER_ARM,
                 lower = Proportions.FOREARM,
                 pin = if (left) pose.leftHandPin else pose.rightHandPin,
-                // Elbows bend backwards and a little out; reaching overhead (a bar), they point down
-                // and out instead, as in a pull-up.
-                bendHint = if (((if (left) pose.leftHandPin else pose.rightHandPin)?.y ?: 0f) > shoulder.y) {
-                    torso.up * -1f + torso.right * (side.sign * 0.6f) + torso.forward * 0.2f
+                // Pushing (hand below the shoulder), elbows bend back and a little out. Pulling (hand
+                // above it: a bar), they point to the floor and out, in pull-ups and rows alike.
+                bendHint = if ((((if (left) pose.leftHandPin else pose.rightHandPin)?.y) ?: 0f) > shoulder.y) {
+                    Vec3.DOWN + torso.right * (side.sign * 0.6f)
                 } else {
                     torso.forward * -1f + torso.right * (side.sign * 0.4f)
                 },

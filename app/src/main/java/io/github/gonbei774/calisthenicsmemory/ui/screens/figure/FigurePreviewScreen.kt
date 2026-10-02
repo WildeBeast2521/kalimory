@@ -43,7 +43,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
  * camera, pause on a pose. Its text is English only because users never see it.
  */
 @Composable
-fun FigurePreviewScreen(onNavigateBack: () -> Unit) {
+fun FigurePreviewScreen(onNavigateBack: () -> Unit, initialStep: String? = null) {
     // The samples, then every catalogue step that has a motion, named by its id.
     val samples = remember {
         SampleMotions.all + StepMotions.stepIds.sorted().mapNotNull { id ->
@@ -51,7 +51,7 @@ fun FigurePreviewScreen(onNavigateBack: () -> Unit) {
             SampleMotions.Sample(id, StepMotions.forStep(id)!!, step.primaryMuscles, step.secondaryMuscles)
         }
     }
-    var selected by remember { mutableIntStateOf(0) }
+    var selected by remember { mutableIntStateOf(samples.indexOfFirst { it.name == initialStep }.coerceAtLeast(0)) }
     val sample = samples[selected]
     val motion = sample.motion
     var yaw by remember(selected) { mutableFloatStateOf(motion.camera.yaw) }

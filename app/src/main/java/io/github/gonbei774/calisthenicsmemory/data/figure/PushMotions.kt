@@ -1,8 +1,11 @@
 package io.github.gonbei774.calisthenicsmemory.data.figure
 
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import io.github.gonbei774.calisthenicsmemory.data.figure.Plank.Pivot
+import io.github.gonbei774.calisthenicsmemory.data.figure.Plank.knees
+import io.github.gonbei774.calisthenicsmemory.data.figure.Plank.pelvisAt
+import io.github.gonbei774.calisthenicsmemory.data.figure.Plank.pitchFor
+import io.github.gonbei774.calisthenicsmemory.data.figure.Plank.shoulderAt
+import io.github.gonbei774.calisthenicsmemory.data.figure.Plank.toes
 
 /**
  * The push-up chain's motions (ADR 0008, decision 3). Every variation is the same plank: a straight
@@ -11,58 +14,7 @@ import kotlin.math.sqrt
  */
 internal object PushMotions {
 
-    private const val SHOULDER_DROP = 0.03f
-    private const val ARM = Proportions.UPPER_ARM + Proportions.FOREARM
-
-    /** Where the plank turns: the toes on the floor or a bench, or the knees. */
-    private class Pivot(val point: Vec3, val toHip: Float, val feet: (FigurePose) -> FigurePose)
-
-    /** On the toes, feet [feetHalfWidth] from the middle; wider feet shorten the straight leg's reach. */
-    private fun toes(height: Float, z: Float = -0.82f, feetHalfWidth: Float = 0.1f): Pivot {
-        val spread = feetHalfWidth - Proportions.PELVIS_HALF_WIDTH
-        val leg = Proportions.THIGH + Proportions.SHIN
-        return Pivot(
-            point = Vec3(0f, height + Proportions.ANKLE_HEIGHT, z),
-            toHip = sqrt(leg * leg - spread * spread) * 0.995f,
-        ) { it.copy(leftFootPin = Vec3(-feetHalfWidth, height, z), rightFootPin = Vec3(feetHalfWidth, height, z)) }
-    }
-
-    /** On the knees, shins raised about 30 degrees, so the solver bends each knee onto the floor. */
-    private fun knees(z: Float = -0.43f): Pivot {
-        val knee = Vec3(0f, 0.06f, z)
-        val foot = knee + Vec3(0f, Proportions.SHIN * 0.5f - Proportions.ANKLE_HEIGHT, -Proportions.SHIN * 0.866f)
-        return Pivot(point = knee, toHip = Proportions.THIGH) {
-            it.copy(leftFootPin = foot + Vec3(-0.1f, 0f, 0f), rightFootPin = foot + Vec3(0.1f, 0f, 0f))
-        }
-    }
-
-    private fun pelvisAt(pivot: Pivot, pitch: Float) =
-        pivot.point + Vec3(0f, cos(pitch.rad()), sin(pitch.rad())) * pivot.toHip
-
-    private fun shoulderAt(pivot: Pivot, pitch: Float) =
-        pelvisAt(pivot, pitch) + Vec3(0f, cos(pitch.rad()), sin(pitch.rad())) * (Proportions.TORSO - SHOULDER_DROP)
-
-    /**
-     * The body pitch at which the shoulders are [reach] from the hand, searched from upright to
-     * [maxPitch].
-     */
-    private fun pitchFor(pivot: Pivot, hand: Vec3, reach: Float, maxPitch: Float): Float {
-        var best = 5f
-        var bestError = Float.MAX_VALUE
-        var pitch = 5f
-        while (pitch <= maxPitch) {
-            val s = shoulderAt(pivot, pitch)
-            val dx = hand.x - Proportions.SHOULDER_HALF_WIDTH
-            val d = sqrt(dx * dx + (hand.y - s.y) * (hand.y - s.y) + (hand.z - s.z) * (hand.z - s.z))
-            val error = kotlin.math.abs(d - reach)
-            if (error < bestError) {
-                bestError = error
-                best = pitch
-            }
-            pitch += 0.25f
-        }
-        return best
-    }
+    private const val ARM = Plank.ARM
 
     /**
      * A push-up variation. [handAt] places the right hand for a given top shoulder position (the
@@ -80,8 +32,8 @@ internal object PushMotions {
         maxPitch: Float = 88f,
     ): FigureMotion {
         val hand = handAt(shoulderAt(pivot, topPitch))
-        val top = pitchFor(pivot, hand, ARM * 0.97f, maxPitch)
-        val bottom = pitchFor(pivot, hand, bottomReach, maxPitch)
+        val top = pitchFor(pivot, hand, ARM * 0.97f, 5f..maxPitch)
+        val bottom = pitchFor(pivot, hand, bottomReach, 5f..maxPitch)
         fun pose(pitch: Float) = pivot.feet(
             FigurePose(
                 pelvis = pelvisAt(pivot, pitch),
@@ -167,7 +119,7 @@ internal object PushMotions {
 
 /** The demonstration for each catalogue step that has one so far (ADR 0008, decision 3). */
 object StepMotions {
-    private val all: Map<String, FigureMotion> = PushMotions.byStep + SquatMotions.byStep + PullMotions.byStep
+    private val all: Map<String, FigureMotion> = PushMotions.byStep + SquatMotions.byStep + PullMotions.byStep + RowMotions.byStep
 
     fun forStep(stepId: String): FigureMotion? = all[stepId]
 

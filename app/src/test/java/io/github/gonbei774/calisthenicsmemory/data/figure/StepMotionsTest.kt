@@ -11,7 +11,7 @@ class StepMotionsTest {
     private fun distance(a: Vec3, b: Vec3) = (a - b).length()
 
     /** Chains whose motions are done; each later chain joins this list. */
-    private val covered = listOf("push", "squat", "pull")
+    private val covered = listOf("push", "squat", "pull", "row")
 
     @Test fun `every step of a covered chain has a motion`() {
         covered.forEach { chain -> Catalogue.chain(chain)!!.steps.forEach { assertNotNull(it.id, StepMotions.forStep(it.id)) } }
@@ -24,6 +24,16 @@ class StepMotionsTest {
             val bar = motion.props.single().min.y
             assertTrue("$id reaches the bar", heads.max() > bar + 0.1f)
             assertTrue("$id hangs below it", heads.min() < bar)
+        }
+    }
+
+    @Test fun `rows pull the chest up to the bar`() {
+        StepMotions.stepIds.filter { it.startsWith("row.") }.forEach { id ->
+            val motion = StepMotions.forStep(id)!!
+            val hand = motion.poseAt(0f).rightHandPin!!
+            val start = SkeletonSolver.solve(motion.poseAt(0f))[Joint.CHEST]
+            val pulled = SkeletonSolver.solve(motion.stillPose)[Joint.CHEST]
+            assertTrue("$id chest rises towards the bar", (pulled - hand).length() < (start - hand).length() - 0.15f)
         }
     }
 
