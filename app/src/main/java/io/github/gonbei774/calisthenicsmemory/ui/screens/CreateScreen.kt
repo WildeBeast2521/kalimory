@@ -1,5 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.material3.TopAppBarDefaults
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
@@ -58,36 +62,10 @@ fun CreateScreen(
         SearchUtils.searchHierarchicalExercises(hierarchicalData, searchQuery)
     }
 
+    val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
-        topBar = {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            AppIcons.Back,
-                            contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Text(
-                        text = stringResource(R.string.library_exercises),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-        },
+        modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
+        topBar = { CalmTopBar(title = stringResource(R.string.library_exercises), onBack = onNavigateBack, scrollBehavior = topBarScroll) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { showAddDialog = true }
@@ -936,72 +914,43 @@ fun UnifiedAddDialog(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
+            val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
             Scaffold(
+                modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
                 topBar = {
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        color = MaterialTheme.colorScheme.background
+                    CalmTopBar(
+                        title = stringResource(
+                            when {
+                                exercise != null -> R.string.edit_exercise_title
+                                creationType == "group" -> R.string.create_group_title
+                                else -> R.string.add_exercise_title
+                            }
+                        ),
+                        onBack = onDismiss,
+                        scrollBehavior = topBarScroll,
+                        backIcon = AppIcons.Close,
+                        backDescription = stringResource(R.string.cancel),
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            IconButton(onClick = onDismiss) {
+                        // Favourite star, for exercises.
+                        if (creationType == "exercise") {
+                            IconToggleButton(checked = isFavorite, onCheckedChange = { isFavorite = it }) {
                                 Icon(
-                                    AppIcons.Close,
-                                    contentDescription = stringResource(R.string.cancel),
-                                    tint = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
-                            Text(
-                                text = stringResource(
-                                    when {
-                                        exercise != null -> R.string.edit_exercise_title
-                                        creationType == "group" -> R.string.create_group_title
-                                        else -> R.string.add_exercise_title
-                                    }
-                                ),
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.weight(1f)
-                            )
-                            // 星ボタン（種目作成・編集時に表示）
-                            if (creationType == "exercise") {
-                                IconButton(onClick = { isFavorite = !isFavorite }) {
-                                    Icon(
-                                        imageVector = if (isFavorite) AppIcons.FavoriteFilled else AppIcons.Favorite,
-                                        contentDescription = if (isFavorite) {
-                                            stringResource(R.string.remove_from_favorites)
-                                        } else {
-                                            stringResource(R.string.add_to_favorites)
-                                        },
-                                        tint = if (isFavorite) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface
-                                    )
-                                }
-                            }
-                            // 保存ボタン
-                            TextButton(
-                                onClick = onSave,
-                                enabled = isFormValid
-                            ) {
-                                Text(
-                                    text = stringResource(
-                                        when {
-                                            exercise != null -> R.string.save_button
-                                            creationType == "group" -> R.string.create_button
-                                            else -> R.string.add_button
-                                        }
-                                    ),
-                                    color = if (isFormValid) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                                    fontWeight = FontWeight.Bold
+                                    imageVector = if (isFavorite) AppIcons.FavoriteFilled else AppIcons.Favorite,
+                                    contentDescription = stringResource(if (isFavorite) R.string.remove_from_favorites else R.string.add_to_favorites),
                                 )
                             }
                         }
+                        TopBarAction(
+                            stringResource(
+                                when {
+                                    exercise != null -> R.string.save_button
+                                    creationType == "group" -> R.string.create_button
+                                    else -> R.string.add_button
+                                }
+                            ),
+                            enabled = isFormValid,
+                            onClick = onSave,
+                        )
                     }
                 },
                 containerColor = MaterialTheme.colorScheme.background

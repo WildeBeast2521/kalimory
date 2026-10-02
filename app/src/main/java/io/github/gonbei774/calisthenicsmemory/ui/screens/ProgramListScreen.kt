@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.material3.TopAppBarDefaults
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.describe
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.lastDoneText
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.rememberProgramSummaries
@@ -47,36 +50,10 @@ fun ProgramListScreen(
     val savedWorkoutState = remember { SavedWorkoutState(context) }
     val savedProgramId = savedWorkoutState.getSavedProgramId()
 
+    val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
-        topBar = {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            AppIcons.Back,
-                            contentDescription = stringResource(R.string.back),
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Text(
-                        text = stringResource(R.string.program_list_title),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-        },
+        modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
+        topBar = { CalmTopBar(title = stringResource(R.string.program_list_title), onBack = onNavigateBack, scrollBehavior = topBarScroll) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { onNavigateToEdit(null) }
