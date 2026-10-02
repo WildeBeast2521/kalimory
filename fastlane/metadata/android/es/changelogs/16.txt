@@ -1,5 +1,0 @@
-Añadido:
-- Autocompletar registro anterior al registrar series
-
-Corregido:
-- La sección de entrenamiento de hoy ahora se desplaza cuando el contenido es largo

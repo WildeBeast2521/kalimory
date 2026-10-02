@@ -1,1 +1,0 @@
-Correction du problème de build reproductible pour F-Droid en excluant l'horodatage des métadonnées AboutLibraries.

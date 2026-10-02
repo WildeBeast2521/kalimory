@@ -1,2 +1,0 @@
-• Navegación del modo programa: Guardar y salir, Saltar al ejercicio, Rehacer serie, Terminar antes
-• Pantalla de confirmación del programa: Mostrar valores anteriores, UI plegable, ajustes masivos

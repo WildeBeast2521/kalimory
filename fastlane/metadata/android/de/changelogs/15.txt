@@ -1,4 +1,0 @@
-To-Do-Funktion zur Trainingsplanung hinzugefügt.
-Übungen zur Liste hinzufügen, per Drag-and-Drop neu ordnen und durch Wischen löschen.
-Direkt von jeder Aufgabe zur Aufnahme- oder Workout-Ansicht wechseln.
-Vereinfachte Benutzeroberfläche der Aufnahmeliste.

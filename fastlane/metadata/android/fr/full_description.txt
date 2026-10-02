@@ -1,45 +1,34 @@
-Un tracker d'entraînement au poids du corps axé sur la confidentialité. Personnalisez tout — exercices, méthodes d'entraînement et flux de travail — selon vos besoins.
+Kalimory planifie votre entraînement au poids du corps, vous accompagne pendant la séance et se souvient de chaque série. Pas de compte, rien ne part en ligne : vos séances restent sur votre téléphone.
 
-Pas de modèles rigides. Adaptez l'application à votre style d'entraînement.
+<b>Aujourd'hui</b>
+• Votre semaine en un coup d'œil, ce qui est prévu et une suggestion pour la suite
+• Lancez n'importe quelle séance d'un seul bouton
 
-<b>À faire</b>
+<b>Séances guidées</b>
+• Comptage des répétitions, minuteurs de maintien et de repos qui continuent écran éteint
+• Programmes de plusieurs exercices, à mettre en pause et reprendre plus tard
+• Intervalles avec temps d'effort et de repos
+• Saisie des séances passées, avec plusieurs exercices par séance
 
-• Planifiez votre entraînement sous forme de liste, appuyez pour démarrer directement
-• Programmez des répétitions par jour de la semaine pour automatiser votre routine hebdomadaire
+<b>101 étapes dans 19 progressions</b>
+• De la pompe au mur à la planche, de la suspension au front lever, du squat assisté au pistol squat
+• Chaque étape a des conseils de technique, une carte des muscles, le matériel nécessaire et des standards clairs pour commencer et passer à la suite
+• Les figures comme le muscle-up et le drapeau humain indiquent sur quoi elles s'appuient
+• Rien n'est verrouillé : entraînez n'importe quelle étape quand vous voulez
 
-<b>Mode Enregistrement</b>
+<b>Progressions</b>
+• Pour chaque progression suivie : votre étape actuelle, ce qu'il reste avant la suivante et les dates où vous avez commencé et validé chaque étape
 
-• Enregistrez rapidement vos entraînements après l'effort
+<b>Progrès</b>
+• Calendrier, listes, graphiques, records personnels et objectif hebdomadaire
 
-<b>Mode Entraînement</b>
+<b>Vos données, vos fichiers</b>
+• Sauvegardes JSON complètes, import et export CSV, et fichiers de récupération si la base de données est endommagée
 
-• Entraînement auto-guidé avec minuteurs intégrés
-• Simple: Minuteur pour le comptage des répétitions et la mesure des exercices isométriques
-• Programme: Créez et exécutez des routines multi-exercices en séquence
-• Intervalle: Cycles travail/repos chronométrés avec rounds personnalisables
-• Les programmes et intervalles sont créés en combinant librement vos propres exercices
+<b>Calme par conception</b>
+• Thèmes clair et sombre, couleurs du fond d'écran en option et dix langues
 
-<b>Création d'Exercices</b>
+<b>Confidentialité</b>
+• Aucune permission internet, pas de publicité, pas d'analytique, pas de rapports de plantage
 
-• Créez n'importe quel exercice avec n'importe quel nom, organisez-les en groupes
-• Choisissez un suivi par répétitions (dynamique) ou par temps (isométrique)
-• Support pour les exercices unilatéraux
-• Progressions sur 10 niveaux adaptées à votre méthode
-• Suivi optionnel de la distance, du poids et de l'assistance
-• Exercices favoris (★) pour un accès rapide
-• Ajoutez des notes de description optionnelles à chaque exercice
-
-<b>Suivi des Progrès</b>
-
-• Calendrier: Visualisez votre activité d'entraînement en un coup d'œil
-• Liste: Parcourez toutes les sessions chronologiquement
-• Graphique: Visualisez les tendances avec les statistiques moyennes/max/totales
-• Défis: Suivi des objectifs avec indicateurs de couleur
-• Filtres par période (1 semaine, 1 mois, 3 mois)
-
-<b>Gestion des Données</b>
-
-• Exporter/importer au format JSON/CSV
-• Vos données restent sur votre appareil, aucune connexion Internet requise
-
-Convict Conditioning, StartBodyweight, RR (Recommended Routine), HIIT, entraînement en circuit — quelle que soit votre méthode, cette application s'adapte à vous.
+Kalimory est né d'un fork de Calisthenics Memory de Gonbei774 et est un logiciel libre sous GPL-3.0.

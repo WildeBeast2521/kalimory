@@ -1,4 +1,0 @@
-- Ajouter des paramètres de minuteur d'entraînement personnalisables
-- Améliorer la qualité de l'icône de l'application
-- Simplifier README et documentation
-- Améliorations UI/UX

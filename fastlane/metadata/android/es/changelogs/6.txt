@@ -1,4 +1,0 @@
-- Agregar configuraciones de temporizador de entrenamiento personalizables
-- Mejorar la calidad del icono de la aplicación
-- Simplificar README y documentación
-- Mejoras de UI/UX

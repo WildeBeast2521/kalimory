@@ -1,45 +1,34 @@
-Un tracker per allenamento a corpo libero incentrato sulla privacy. Personalizza tutto — esercizi, metodi di allenamento e flusso di lavoro — in base alle tue esigenze.
+Kalimory pianifica il tuo allenamento a corpo libero, ti accompagna mentre lo fai e ricorda ogni serie. Nessun account e niente va online: i tuoi allenamenti restano sul telefono.
 
-Nessun template rigido. Adatta l'app al tuo stile di allenamento.
+<b>Oggi</b>
+• La settimana a colpo d'occhio, cosa c'è da fare e un suggerimento su cosa allenare
+• Avvia qualsiasi allenamento con un pulsante
 
-<b>Da fare</b>
+<b>Allenamenti guidati</b>
+• Conteggio delle ripetizioni, timer di tenuta e di recupero che continuano a schermo spento
+• Programmi di più esercizi, da mettere in pausa e riprendere dopo
+• Intervalli con tempi di lavoro e recupero
+• Registra allenamenti passati, anche con più esercizi in una sessione
 
-• Pianifica il tuo allenamento come lista, tocca per avviare direttamente
-• Programma ripetizioni per giorno della settimana per automatizzare la tua routine settimanale
+<b>101 passi in 19 progressioni</b>
+• Dal piegamento al muro alla planche, dalla sospensione al front lever, dallo squat assistito al pistol squat
+• Ogni passo ha indicazioni di tecnica, una mappa dei muscoli, l'attrezzatura necessaria e standard chiari per iniziare e avanzare
+• Le skill come muscle-up e bandiera umana mostrano su cosa si basano
+• Niente è bloccato: allena qualsiasi passo quando vuoi
 
-<b>Modalità Registrazione</b>
+<b>Progressioni</b>
+• Per ogni progressione che segui: il passo attuale, quanto manca al successivo e le date in cui hai iniziato e raggiunto ogni passo
 
-• Registra rapidamente i tuoi allenamenti dopo l'allenamento
+<b>Progressi</b>
+• Calendario, elenchi, grafici, record personali e un obiettivo settimanale
 
-<b>Modalità Allenamento</b>
+<b>I tuoi dati, i tuoi file</b>
+• Backup JSON completi, importazione ed esportazione CSV e file di ripristino se il database si danneggia
 
-• Allenamento guidato automaticamente con timer integrati
-• Singolo: Timer per il conteggio delle ripetizioni e la misurazione degli esercizi isometrici
-• Programma: Crea ed esegui routine multi-esercizio in sequenza
-• Intervallo: Cicli lavoro/riposo cronometrati con round personalizzabili
-• I programmi e gli intervalli si creano combinando liberamente i tuoi esercizi
+<b>Calma per scelta</b>
+• Temi chiaro e scuro, colori dello sfondo opzionali e dieci lingue
 
-<b>Creazione Esercizi</b>
+<b>Privacy</b>
+• Nessun permesso internet, niente pubblicità, niente analisi e niente segnalazioni di crash
 
-• Crea qualsiasi esercizio con qualsiasi nome, organizzali in gruppi
-• Scegli il monitoraggio per ripetizioni (dinamico) o per tempo (isometrico)
-• Supporto per esercizi unilaterali
-• Progressioni a 10 livelli per adattare il tuo metodo
-• Monitoraggio opzionale di distanza, peso e assistenza
-• Esercizi preferiti (★) per accesso rapido
-• Aggiungi note di descrizione opzionali a ogni esercizio
-
-<b>Monitoraggio Progressi</b>
-
-• Calendario: Visualizza l'attività di allenamento a colpo d'occhio
-• Lista: Sfoglia tutte le sessioni in ordine cronologico
-• Grafico: Visualizza le tendenze con statistiche media/massimo/totale
-• Sfida: Monitoraggio obiettivi con indicatori a colori
-• Filtri per periodo (1 settimana, 1 mese, 3 mesi)
-
-<b>Gestione Dati</b>
-
-• Esporta/importa in formato JSON/CSV
-• I tuoi dati rimangono sul tuo dispositivo, internet non richiesto
-
-Convict Conditioning, StartBodyweight, RR (Recommended Routine), HIIT, allenamento a circuito — qualunque sia il tuo metodo, questa app si adatta a te.
+Kalimory nasce come fork di Calisthenics Memory di Gonbei774 ed è software libero sotto GPL-3.0.

@@ -1,7 +1,0 @@
-Añadido:
-- Pestaña de retos: tira de calor de días completados (completados/total de un vistazo)
-
-Mejorado:
-- Configuración de entrenamiento único rediseñada con botones de paso redondos
-
-Contributors: @SomeTr

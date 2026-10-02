@@ -1,4 +1,0 @@
-Aggiunta funzione To Do per pianificare gli allenamenti.
-Aggiungi esercizi alla lista, riordina trascinando ed elimina con swipe.
-Vai direttamente alla schermata Registrazione o Allenamento da ogni attività.
-Interfaccia semplificata della lista registrazioni.

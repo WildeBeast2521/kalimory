@@ -1,4 +1,0 @@
-- Aggiunte impostazioni timer allenamento personalizzabili
-- Migliorata qualità icona app
-- Semplificati README e documentazione
-- Miglioramenti UI/UX
