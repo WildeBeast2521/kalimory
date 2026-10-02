@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -67,12 +68,12 @@ fun CreateScreen(
         modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
         topBar = { CalmTopBar(title = stringResource(R.string.library_exercises), onBack = onNavigateBack, scrollBehavior = topBarScroll) },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { showAddDialog = true }
-            ) {
+            // Expressive medium FAB: a larger, softer target for the screen's main action.
+            MediumFloatingActionButton(onClick = { showAddDialog = true }) {
                 Icon(
                     AppIcons.Add,
-                    contentDescription = stringResource(R.string.add)
+                    contentDescription = stringResource(R.string.add),
+                    modifier = Modifier.size(FloatingActionButtonDefaults.MediumIconSize),
                 )
             }
         }
@@ -126,48 +127,11 @@ fun CreateScreen(
                     .padding(paddingValues)
                     .padding(16.dp)
             ) {
-                // Search field
-                OutlinedTextField(
-                    value = searchQuery,
-                    onValueChange = { searchQuery = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    placeholder = {
-                        Text(
-                            text = stringResource(R.string.search_placeholder),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            AppIcons.Search,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    },
-                    trailingIcon = {
-                        if (searchQuery.isNotEmpty()) {
-                            IconButton(onClick = { searchQuery = "" }) {
-                                Icon(
-                                    AppIcons.Close,
-                                    contentDescription = stringResource(R.string.clear),
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-                    },
-                    singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                        focusedBorderColor = MaterialTheme.colorScheme.secondary,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
-                        cursorColor = MaterialTheme.colorScheme.secondary
-                    ),
-                    shape = RoundedCornerShape(8.dp)
+                CalmSearchField(
+                    query = searchQuery,
+                    onQueryChange = { searchQuery = it },
+                    placeholder = stringResource(R.string.search_placeholder),
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
 
                 LazyColumn(

@@ -11,7 +11,6 @@
     <string name="create">Crear</string>
     <string name="back">Atrás</string>
     <string name="close">Cerrar</string>
-    <string name="search">Buscar</string>
     <string name="select">Seleccionar</string>
     <string name="settings">Configuración</string>
     <string name="comment">Comentario</string>
@@ -914,7 +913,7 @@
     <string name="guide_places_title">Cuatro lugares</string>
     <string name="guide_place_today">Tu semana de un vistazo, lo que sigue y lo que hiciste hoy.</string>
     <string name="guide_place_train">Empieza un entrenamiento: un ejercicio, un programa o intervalos. También puedes registrar uno que hiciste antes.</string>
-    <string name="guide_place_progress">Tu historial como calendario, lista y gráficos, además de retos.</string>
+    <string name="guide_place_progress">Tu historial como calendario, lista y gráficos, además de tus progresiones.</string>
     <string name="guide_place_library">Tus ejercicios, programas y rutinas de intervalos, y los ajustes.</string>
     <string name="guide_workout_title">Cómo va un entrenamiento</string>
     <string name="guide_workout_sets_title">Serie a serie</string>

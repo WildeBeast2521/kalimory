@@ -148,7 +148,7 @@
     <string name="guide_places_title">أربعة أقسام</string>
     <string name="guide_place_today">أسبوعك في لمحة، وما التالي، وما أنجزته اليوم.</string>
     <string name="guide_place_train">ابدأ تمرينًا: تمرين واحد أو برنامج أو فترات. ويمكنك أيضًا تسجيل تمرين أديته من قبل.</string>
-    <string name="guide_place_progress">سجلّك في تقويم وقائمة ورسوم بيانية، مع التحديات.</string>
+    <string name="guide_place_progress">سجلّك في تقويم وقائمة ورسوم بيانية، مع تدرّجاتك.</string>
     <string name="guide_place_library">تمارينك وبرامجك وروتينات الفترات، والإعدادات.</string>
     <string name="guide_workout_title">كيف يسير التمرين</string>
     <string name="guide_workout_sets_title">مجموعة تلو الأخرى</string>

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import androidx.compose.material3.LinearWavyProgressIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
@@ -748,39 +749,11 @@ fun FilterBottomSheetContent(
         )
 
         // 検索バー
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            placeholder = { Text(stringResource(R.string.search_exercise), color = MaterialTheme.colorScheme.onSurfaceVariant) },
-            leadingIcon = {
-                Icon(
-                    AppIcons.Search,
-                    contentDescription = stringResource(R.string.search),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            },
-            trailingIcon = {
-                if (searchQuery.isNotEmpty()) {
-                    IconButton(onClick = { searchQuery = "" }) {
-                        Icon(
-                            AppIcons.Close,
-                            contentDescription = stringResource(R.string.clear),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
-                cursorColor = MaterialTheme.colorScheme.primary
-            ),
-            singleLine = true
+        CalmSearchField(
+            query = searchQuery,
+            onQueryChange = { searchQuery = it },
+            placeholder = stringResource(R.string.search_exercise),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
         )
 
         // スクロール可能な階層表示
