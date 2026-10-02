@@ -22,7 +22,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
+import io.github.gonbei774.calisthenicsmemory.data.figure.FigureBody
 import io.github.gonbei774.calisthenicsmemory.data.figure.FigureMuscles
+import io.github.gonbei774.calisthenicsmemory.data.figure.PlacedMuscle
 import androidx.compose.ui.platform.LocalContext
 import io.github.gonbei774.calisthenicsmemory.data.figure.FigureCamera
 import io.github.gonbei774.calisthenicsmemory.data.figure.FigureMotion
@@ -33,6 +35,7 @@ import io.github.gonbei774.calisthenicsmemory.data.figure.SkeletonSolver
 import io.github.gonbei774.calisthenicsmemory.data.figure.SolvedSkeleton
 import io.github.gonbei774.calisthenicsmemory.data.figure.Vec3
 import io.github.gonbei774.calisthenicsmemory.data.figure.Proportions
+import kotlin.math.PI
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
@@ -50,6 +53,7 @@ fun FigureView(
     secondary: Set<Muscle> = emptySet(),
     playing: Boolean = true,
     camera: FigureCamera = motion.camera,
+    style: FigureStyle = FigureStyle.SHADED,
 ) {
     val context = LocalContext.current
     val animationsOn = remember {
@@ -77,8 +81,23 @@ fun FigureView(
     // Framed on the figure; large props such as a wall are cut at the edges.
     Canvas(modifier.clipToBounds()) {
         val pose = progress?.let(motion::poseAt) ?: motion.stillPose
-        drawFigure(SkeletonSolver.solve(pose), camera, bounds, colors, primary, secondary, motion.props)
+        val skeleton = SkeletonSolver.solve(pose)
+        if (style == FigureStyle.MANNEQUIN) {
+            drawFigure(skeleton, camera, bounds, colors, primary, secondary, motion.props)
+        } else {
+            drawMuscularFigure(skeleton, camera, bounds, colors, primary, secondary, motion.props, shaded = style == FigureStyle.SHADED)
+        }
     }
+}
+
+/** How the figure is drawn. The owner asked for a muscular human (2026-10-02); the styles are compared in the debug preview. */
+enum class FigureStyle {
+    /** Stage 2: tapered capsules with muscle lenses. */
+    MANNEQUIN,
+    /** A lofted, muscular body in flat tones, with the muscle lenses. */
+    SCULPTED,
+    /** The lofted body lit from above, so its form reads as solid. */
+    SHADED,
 }
 
 /** The projected extent of a motion over its whole loop, floor shadow included. */
@@ -265,3 +284,169 @@ private fun DrawScope.capsule(a: Offset, b: Offset, ra: Float, rb: Float, color:
     }
     drawPath(path, color)
 }
+
+/**
+ * The muscular figure: lofted body parts (FigureBody), far parts first. Each part's outline is the
+ * hull of each pair of neighbouring rings; [shaded] adds the facets facing the viewer, lit from
+ * above and slightly to the left, so the form reads as solid.
+ */
+private fun DrawScope.drawMuscularFigure(
+    skeleton: SolvedSkeleton,
+    camera: FigureCamera,
+    bounds: FigureBounds,
+    colors: FigureColors,
+    primary: Set<Muscle>,
+    secondary: Set<Muscle>,
+    props: List<Prop>,
+    shaded: Boolean,
+) {
+    val scale = min(size.width / (bounds.maxX - bounds.minX), size.height / (bounds.maxY - bounds.minY))
+    val offsetX = (size.width - (bounds.maxX - bounds.minX) * scale) / 2
+    val offsetY = (size.height - (bounds.maxY - bounds.minY) * scale) / 2
+    fun screen(p: Projected) = Offset(offsetX + (p.x - bounds.minX) * scale, offsetY + (bounds.maxY - p.y) * scale)
+    fun screen(p: Vec3) = screen(camera.project(p))
+
+    val floorShade = lerp(colors.background, colors.shadow, 0.08f)
+    segments.forEach { s ->
+        val a = skeleton[s.from]
+        val b = skeleton[s.to]
+        capsule(screen(Vec3(a.x, 0f, a.z)), screen(Vec3(b.x, 0f, b.z)), s.fromRadius * scale * 1.3f, s.toRadius * scale * 1.3f, floorShade)
+    }
+    props.forEach { prop -> drawProp(prop, camera, ::screen, colors) }
+
+    val toward = camera.towardViewer
+    val light = (toward + Vec3.UP * 0.9f + Vec3(-0.3f, 0f, 0f)).normalized()
+    val parts = FigureBody.parts(skeleton)
+    val muscles = FigureMuscles.place(skeleton) { from, to -> FigureBody.radiusAt(from, to, 0.3f) to FigureBody.radiusAt(from, to, 0.7f) }
+        .groupBy { it.shape.from to it.shape.to }
+
+    val depthOf = parts.associateWith { part -> part.rings.map { camera.project(it.center).depth }.average().toFloat() }
+    val near = depthOf.values.max()
+    val far = depthOf.values.min()
+    fun nearness(depth: Float) = if (near - far < 1e-4f) 1f else ((depth - far) / (near - far)).coerceIn(0f, 1f)
+    fun shade(color: Color, depth: Float) = lerp(lerp(color, colors.background, 0.4f), color, nearness(depth))
+
+    val steps = 24
+    val angles = (0 until steps).map { it * 2f * PI.toFloat() / steps }
+    parts.sortedBy { depthOf.getValue(it) }.forEach { part ->
+        val depth = depthOf.getValue(part)
+        val onPart = part.segments.flatMap { muscles[it].orEmpty() }.map { it.shape.muscle }
+        // Flat style: a part carrying a worked muscle is tinted, as in stage 2. Shaded style paints the
+        // muscles on the lit surface instead, so the body itself stays its own colour.
+        val tint = when {
+            shaded -> colors.body
+            onPart.any { it in primary } -> lerp(colors.body, colors.red, 0.28f)
+            onPart.any { it in secondary } -> lerp(colors.body, colors.red, 0.1f)
+            else -> colors.body
+        }
+        val base = shade(tint, depth)
+        // Worked muscles first, so a facet shared by two shapes shows the worked one.
+        val partMuscles = part.segments.flatMap { muscles[it].orEmpty() }
+            .sortedBy { if (it.shape.muscle in primary) 0 else if (it.shape.muscle in secondary) 1 else 2 }
+        // The outline: the hull of each pair of neighbouring rings.
+        val ringPoints = part.rings.map { ring -> angles.map { ring.point(it) } }
+        for (i in 0 until ringPoints.size - 1) {
+            val hull = convexHull((ringPoints[i] + ringPoints[i + 1]).map(::screen))
+            if (hull.size >= 3) drawPath(polygon(hull), base)
+        }
+        if (shaded) {
+            // Facets facing the viewer, darker away from the light.
+            val dark = lerp(base, colors.shadow, 0.35f)
+            val bright = lerp(base, colors.background, 0.22f)
+            val red = shade(colors.red, depth)
+            val lightRed = shade(colors.lightRed, depth)
+            val facets = mutableListOf<Pair<Float, () -> Unit>>()
+            for (i in 0 until ringPoints.size - 1) {
+                val c0 = part.rings[i].center
+                val c1 = part.rings[i + 1].center
+                for (k in 0 until steps) {
+                    val k1 = (k + 1) % steps
+                    val corners = listOf(ringPoints[i][k], ringPoints[i][k1], ringPoints[i + 1][k1], ringPoints[i + 1][k])
+                    val mid = (corners[0] + corners[1] + corners[2] + corners[3]) * 0.25f
+                    val normal = (mid - (c0 + c1) * 0.5f).normalized()
+                    if (normal.dot(toward) <= 0f) continue
+                    val lit = normal.dot(light).coerceIn(0f, 1f)
+                    // Muscles are a shade lighter than the grooves between them, which gives the body
+                    // its definition; worked muscles are red. Edges blend softly into the body.
+                    val skin = lerp(lerp(dark, colors.shadow, 0.1f), bright, lit * 0.9f)
+                    var color = skin
+                    for (placed in partMuscles) {
+                        val weight = coverage(placed, mid, normal)
+                        if (weight <= 0f) continue
+                        val muscleColor = when (placed.shape.muscle) {
+                            in primary -> lerp(lerp(red, colors.shadow, 0.35f), lerp(red, colors.background, 0.12f), lit)
+                            in secondary -> lerp(lerp(lightRed, colors.shadow, 0.3f), lerp(lightRed, colors.background, 0.15f), lit)
+                            else -> lerp(dark, lerp(bright, colors.background, 0.1f), lit)
+                        }
+                        color = lerp(skin, muscleColor, weight)
+                        break
+                    }
+                    val facetDepth = camera.project(mid).depth
+                    facets += facetDepth to { drawPath(polygon(corners.map(::screen)), color) }
+                }
+            }
+            facets.sortedBy { it.first }.forEach { it.second() }
+        }
+        // The muscles on this part that face the viewer; worked ones in red. The shaded style has
+        // already painted them on its facets.
+        if (!shaded) part.segments.flatMap { muscles[it].orEmpty() }.forEach { placed ->
+            val facing = placed.normal.dot(toward)
+            if (facing <= 0.08f) return@forEach
+            val color = when (placed.shape.muscle) {
+                in primary -> colors.red
+                in secondary -> colors.lightRed
+                else -> lerp(base, colors.background, 0.18f)
+            }
+            val (from, to) = placed.shape.from to placed.shape.to
+            val radius = FigureBody.radiusAt(from, to, (placed.shape.start + placed.shape.end) / 2)
+            val halfWidth = radius * placed.shape.width * scale * (0.3f + 0.7f * facing) * 0.8f
+            lens(screen(placed.start), screen(placed.end), halfWidth, shade(color, depth), shade(lerp(base, colors.shadow, 0.3f), depth))
+        }
+    }
+}
+
+/**
+ * How far inside a muscle a surface point lies, from 0 (outside its oval, or facing away from it)
+ * to 1 (well inside), so muscle colour fades into the body at its edges.
+ */
+private fun coverage(muscle: PlacedMuscle, point: Vec3, normal: Vec3): Float {
+    val facing = normal.dot(muscle.normal)
+    if (facing < 0.3f) return 0f
+    val center = (muscle.start + muscle.end) * 0.5f
+    val axis = (muscle.end - muscle.start)
+    val halfLength = axis.length() / 2 + 0.02f
+    val direction = axis.normalized()
+    val offset = point - center
+    val along = offset.dot(direction)
+    val across = (offset - direction * along).length()
+    val (from, to) = muscle.shape.from to muscle.shape.to
+    val halfWidth = FigureBody.radiusAt(from, to, (muscle.shape.start + muscle.shape.end) / 2) * muscle.shape.width * 1.05f
+    val e = (along / halfLength) * (along / halfLength) + (across / halfWidth) * (across / halfWidth)
+    val inside = ((1f - e) * 2.5f).coerceIn(0f, 1f)
+    val side = ((facing - 0.3f) * 3f).coerceIn(0f, 1f)
+    return inside * side
+}
+
+private fun polygon(points: List<Offset>) = Path().apply {
+    points.forEachIndexed { i, p -> if (i == 0) moveTo(p.x, p.y) else lineTo(p.x, p.y) }
+    close()
+}
+
+/** The convex hull of screen points, by the monotone chain. */
+private fun convexHull(points: List<Offset>): List<Offset> {
+    val sorted = points.sortedWith(compareBy({ it.x }, { it.y }))
+    if (sorted.size < 3) return sorted
+    fun cross(o: Offset, a: Offset, b: Offset) = (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x)
+    val lower = mutableListOf<Offset>()
+    for (p in sorted) {
+        while (lower.size >= 2 && cross(lower[lower.size - 2], lower.last(), p) <= 0) lower.removeAt(lower.size - 1)
+        lower += p
+    }
+    val upper = mutableListOf<Offset>()
+    for (p in sorted.reversed()) {
+        while (upper.size >= 2 && cross(upper[upper.size - 2], upper.last(), p) <= 0) upper.removeAt(upper.size - 1)
+        upper += p
+    }
+    return lower.dropLast(1) + upper.dropLast(1)
+}
+

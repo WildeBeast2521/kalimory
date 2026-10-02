@@ -557,7 +557,11 @@ fun CalisthenicsMemoryApp(
                         )
                     }
                     is Screen.FigurePreview -> {
-                        FigurePreviewScreen(onNavigateBack = { currentScreen = Screen.Settings }, initialStep = figureStep)
+                        FigurePreviewScreen(
+                            onNavigateBack = { currentScreen = Screen.Settings },
+                            initialStep = figureStep,
+                            initialStyle = if (BuildConfig.DEBUG) (androidx.compose.ui.platform.LocalContext.current as? android.app.Activity)?.intent?.getStringExtra(FIGURE_STYLE_EXTRA) else null,
+                        )
                     }
                     is Screen.Catalogue -> {
                         CatalogueScreen(
@@ -685,6 +689,9 @@ fun CalisthenicsMemoryApp(
 
 /** Debug builds: the intent extra naming the step the figure preview opens on. */
 const val FIGURE_STEP_EXTRA = "figure_step"
+
+/** Debug builds: the intent extra naming the figure style the preview starts in, such as "SHADED". */
+const val FIGURE_STYLE_EXTRA = "figure_style"
 
 sealed class Screen {
     object Home : Screen()

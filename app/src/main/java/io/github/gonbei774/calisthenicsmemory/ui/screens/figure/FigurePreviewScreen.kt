@@ -34,6 +34,7 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.figure.SampleMotions
 import io.github.gonbei774.calisthenicsmemory.data.figure.StepMotions
+import io.github.gonbei774.calisthenicsmemory.ui.components.figure.FigureStyle
 import io.github.gonbei774.calisthenicsmemory.ui.components.figure.FigureView
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -43,7 +44,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
  * camera, pause on a pose. Its text is English only because users never see it.
  */
 @Composable
-fun FigurePreviewScreen(onNavigateBack: () -> Unit, initialStep: String? = null) {
+fun FigurePreviewScreen(onNavigateBack: () -> Unit, initialStep: String? = null, initialStyle: String? = null) {
     // The samples, then every catalogue step that has a motion, named by its id.
     val samples = remember {
         SampleMotions.all + StepMotions.stepIds.sorted().mapNotNull { id ->
@@ -57,6 +58,7 @@ fun FigurePreviewScreen(onNavigateBack: () -> Unit, initialStep: String? = null)
     var yaw by remember(selected) { mutableFloatStateOf(motion.camera.yaw) }
     var pitch by remember(selected) { mutableFloatStateOf(motion.camera.pitch) }
     var playing by remember { mutableStateOf(true) }
+    var style by remember { mutableStateOf(FigureStyle.entries.firstOrNull { it.name == initialStyle } ?: FigureStyle.SHADED) }
 
     Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding().navigationBarsPadding()) {
         Row(Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -79,6 +81,7 @@ fun FigurePreviewScreen(onNavigateBack: () -> Unit, initialStep: String? = null)
             primary = sample.primary,
             secondary = sample.secondary,
             playing = playing,
+            style = style,
             camera = motion.camera.copy(yaw = yaw, pitch = pitch),
         )
         Column(Modifier.padding(horizontal = Spacing.l, vertical = Spacing.m)) {
@@ -86,6 +89,11 @@ fun FigurePreviewScreen(onNavigateBack: () -> Unit, initialStep: String? = null)
             Slider(value = yaw, onValueChange = { yaw = it }, valueRange = -90f..90f)
             Text("Camera tilt: ${pitch.toInt()}°", style = MaterialTheme.typography.bodyMedium)
             Slider(value = pitch, onValueChange = { pitch = it }, valueRange = 0f..45f)
+            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                FigureStyle.entries.forEach { option ->
+                    FilterChip(selected = option == style, onClick = { style = option }, label = { Text(option.name.lowercase()) })
+                }
+            }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Play", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
                 Switch(checked = playing, onCheckedChange = { playing = it })

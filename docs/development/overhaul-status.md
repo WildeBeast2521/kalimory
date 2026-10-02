@@ -2,7 +2,7 @@
 
 Durable handoff for the multi-session overhaul. Keep it current: update it in every slice, record only verified facts, and delete what stops being true. Full details of finished work live in each PR and in git history, not here.
 
-Last reviewed: 2026-10-02, at PR #106.
+Last reviewed: 2026-10-02, at PR #107.
 
 ## Where things stand
 
@@ -204,7 +204,12 @@ The review page, with live motion previews: https://claude.ai/artifact/6JM7Ewpck
          - Nordic curls kneel with the shins flat and the ankles under an anchor prop.
          - Hanging leg raises keep the shoulders fixed under the pull-up bar.
      - Stage 3 is complete. The figure is still debug-only.
-     - Next: the owner's muscular human style. After that, the figure goes on each step's sheet.
+     - Done in PR #107: a first muscular style, still debug-only.
+       - `FigureBody` lofts each part from cross-section rings with muscle profiles: a V-tapered torso, deltoids, biceps, forearms, quads and calves, plus an egg-shaped head and flat hands and feet. Silhouettes stay true from any angle.
+       - `FigureStyle.SHADED`, the preview's default, lights the facets from above and paints the worked muscles on the surface with soft edges. `SCULPTED` (flat) and `MANNEQUIN` (stage 2) remain for comparison.
+       - Debug builds accept `--es figure_style SHADED|SCULPTED|MANNEQUIN`.
+       - Tests: `FigureBodyTest`.
+       - Honest assessment: it reads as a solid, shaded mannequin, not yet a muscular human. The owner is choosing the direction: more sculpting (muscle volumes), pre-rendered 3D frames (ADR 0008, decision 4), or drawn illustrations.
   6. Expansion: skills, the remaining chains, trends.
 
 ## Workout sounds (owner decisions, 2026-09-30)
@@ -274,7 +279,7 @@ GitHub Actions stopped starting jobs on 2026-09-27: the account's payment failed
 
 Each PR below passed the full local gate before merging (see "How to verify"). Once Actions runs again, re-run CI on `master`, clear this list, and go back to merging only on green CI.
 
-PRs #34 to #106. PRs #70, #86 and #87 changed documentation only.
+PRs #34 to #107. PRs #70, #86 and #87 changed documentation only.
 
 ## How to verify (the local gate)
 
@@ -284,7 +289,7 @@ adb shell pm clear io.github.gonbei774.calisthenicsmemory   # seeded data breaks
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-- Expected as of PR #106: 422 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
+- Expected as of PR #107: 426 unit tests, 163 instrumented tests on `floor_api29` (API 29), and "Lint found 4 warnings" or 6. The count varies with lint's online version lookup: two `GradleDependency` notices come and go. The rest are `NewerVersionAvailable` and `UseTomlInstead`.
 - Also run `scripts/check-room-schemas.sh` when a schema changes.
 - **Always pin `ANDROID_SERIAL`.** The owner's own phone, which holds real data, can appear on wireless adb. Never install, test, clear or seed on it.
 - Start the emulator headless: `emulator -avd floor_api29 -no-window -no-audio -no-boot-anim -read-only -no-snapshot -gpu swiftshader_indirect`. Other local AVDs: `s1_api28`, `s1_api36`, `r1_api28_arm64`.
