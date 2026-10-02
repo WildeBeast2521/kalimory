@@ -27,7 +27,7 @@ No account, no internet permission, no ads, no analytics. Your workouts stay on 
 
 ## Documentation
 
-The user guide lives in [`docs/wiki`](docs/wiki/Home.md). Design decisions are recorded as ADRs in [`docs/architecture`](docs/architecture).
+The user guide lives in [`docs/wiki`](docs/wiki/Home.md).
 
 ## Permissions
 
@@ -54,7 +54,7 @@ Bug reports, catalogue corrections and ideas are welcome through the issue templ
 
 This app began as a fork of [Calisthenics Memory by Gonbei774](https://codeberg.org/Gonbei774/CalisthenicsMemory), whose work and history are kept in this repository. It has since been substantially redesigned and extended. Thanks also to the original project's translators.
 
-The muscle map outlines are adapted from react-body-highlighter (MIT). See [`docs/catalogue-sources.md`](docs/catalogue-sources.md) and the app's Open Source Licenses screen.
+The muscle map outlines are adapted from react-body-highlighter (MIT). See [Credits and sources](docs/wiki/Credits.md) and the app's Open Source Licenses screen.
 
 ## License
 

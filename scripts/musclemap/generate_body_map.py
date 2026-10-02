@@ -2,7 +2,7 @@
 
 Usage:
     curl -sSL -o /tmp/rbh.tgz https://registry.npmjs.org/react-body-highlighter/-/react-body-highlighter-2.0.5.tgz
-    # sha256: see docs/catalogue-sources.md
+    # sha256: c15467a8fcf48193896ecbaef1eb98ff260e50021cea3454313ff1016f59e2cb
     tar xzf /tmp/rbh.tgz -C /tmp
     python3 scripts/musclemap/generate_body_map.py /tmp/package/src/assets/index.ts .
 

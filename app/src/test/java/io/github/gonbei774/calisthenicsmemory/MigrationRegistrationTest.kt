@@ -7,8 +7,7 @@ import org.junit.Test
 import java.io.File
 
 /**
- * Ties the registered migrations to the supported-version policy
- * (docs/development/supported-database-versions.md) and the committed schemas.
+ * Ties the registered migrations to the oldest supported version and the committed schemas.
  */
 class MigrationRegistrationTest {
     // Unit tests run with the module directory as the working directory.

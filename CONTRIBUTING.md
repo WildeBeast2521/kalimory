@@ -49,7 +49,6 @@ app/src/test/          Unit tests
 app/src/androidTest/   Instrumented tests
 app/schemas/           Exported Room schemas
 baselineprofile/       Baseline Profile generator
-docs/architecture/     Decision records (ADRs)
 docs/wiki/             User guide
 scripts/               Catalogue, muscle map, sound, icon and schema tools
 fastlane/              Store metadata
@@ -63,7 +62,7 @@ The catalogue is generated. Edit `scripts/catalogue/catalogue_spec.py`, then run
 python3 scripts/catalogue/generate_catalogue.py .
 ```
 
-This writes `Catalogue.kt` and the English `catalogue_strings.xml`. Add the same keys to every `values-*/catalogue_strings.xml`; `CatalogueTranslationTest` and lint check that none are missing. Catalogue text must be written for this project. See `docs/catalogue-sources.md`.
+This writes `Catalogue.kt` and the English `catalogue_strings.xml`. Add the same keys to every `values-*/catalogue_strings.xml`; `CatalogueTranslationTest` and lint check that none are missing. Catalogue text must be written for this project. See `docs/wiki/Credits.md`.
 
 ## Translations
 

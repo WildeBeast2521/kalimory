@@ -9,5 +9,6 @@ These pages explain how to use the app. They are kept in the repository under `d
 - [Progressions and the catalogue](Progressions-and-the-Catalogue.md): the built-in exercise chains, standards, suggestions and your climb.
 - [Backups and your data](Backups-and-Your-Data.md): exports, imports, recovery files and moving to a new phone.
 - [Privacy](Privacy.md): what the app stores and what it never does.
+- [Credits and sources](Credits.md): where the app and its catalogue come from.
 
 Found a problem, or something unclear here? Open an issue with one of the templates.

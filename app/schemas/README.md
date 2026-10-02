@@ -4,7 +4,7 @@ This directory holds the exported Room schema JSON for `AppDatabase`, one file p
 
     io.github.gonbei774.calisthenicsmemory.data.AppDatabase/<version>.json
 
-The files are inputs to `MigrationTestHelper` (the `androidTest` source set adds this directory to its assets) and are the evidence behind the supported-version policy in `docs/development/supported-database-versions.md`.
+The files are inputs to `MigrationTestHelper` (the `androidTest` source set adds this directory to its assets) and are the evidence behind `AppDatabase.OLDEST_SUPPORTED_VERSION`.
 
 ## Rules
 
