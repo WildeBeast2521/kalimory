@@ -167,7 +167,7 @@ internal object PushMotions {
 
 /** The demonstration for each catalogue step that has one so far (ADR 0008, decision 3). */
 object StepMotions {
-    private val all: Map<String, FigureMotion> = PushMotions.byStep + SquatMotions.byStep
+    private val all: Map<String, FigureMotion> = PushMotions.byStep + SquatMotions.byStep + PullMotions.byStep
 
     fun forStep(stepId: String): FigureMotion? = all[stepId]
 
