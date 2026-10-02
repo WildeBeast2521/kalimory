@@ -11,7 +11,7 @@ class StepMotionsTest {
     private fun distance(a: Vec3, b: Vec3) = (a - b).length()
 
     /** Chains whose motions are done; each later chain joins this list. */
-    private val covered = listOf("push", "squat", "pull", "row")
+    private val covered = listOf("push", "squat", "pull", "row", "dip", "vpush")
 
     @Test fun `every step of a covered chain has a motion`() {
         covered.forEach { chain -> Catalogue.chain(chain)!!.steps.forEach { assertNotNull(it.id, StepMotions.forStep(it.id)) } }
@@ -35,6 +35,23 @@ class StepMotionsTest {
             val pulled = SkeletonSolver.solve(motion.stillPose)[Joint.CHEST]
             assertTrue("$id chest rises towards the bar", (pulled - hand).length() < (start - hand).length() - 0.15f)
         }
+    }
+
+    @Test fun `dips and handstand push-ups lower the shoulders towards the hands`() {
+        listOf("dip.bench", "dip.full", "dip.negative", "vpush.pike", "vpush.elevated_pike", "vpush.wall_negative", "vpush.wall_hspu").forEach { id ->
+            val motion = StepMotions.forStep(id)!!
+            val hand = motion.poseAt(0f).rightHandPin!!
+            val start = SkeletonSolver.solve(motion.poseAt(0f))[Joint.RIGHT_SHOULDER]
+            // The deepest point of the loop; a negative's still pose is only halfway down.
+            val closest = (0..40).minOf { (SkeletonSolver.solve(motion.poseAt(it / 40f))[Joint.RIGHT_SHOULDER] - hand).length() }
+            assertTrue("$id lowers", closest < (start - hand).length() - 0.15f)
+        }
+    }
+
+    @Test fun `the wall handstand holds its head above the floor and its feet near the wall`() {
+        val top = SkeletonSolver.solve(StepMotions.forStep("vpush.wall_hold")!!.poseAt(0f))
+        assertTrue(top[Joint.HEAD].y > 0.2f)
+        assertTrue("feet up", top[Joint.LEFT_ANKLE].y > 1.6f)
     }
 
     @Test fun `squats lower the hips and stand back up`() {
