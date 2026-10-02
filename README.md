@@ -48,7 +48,7 @@
   </tr>
   <tr>
     <td valign="top"><img src=".github/readme/icon-translate.svg" width="40" align="left" alt="">&nbsp;<b>Ten languages</b><br>&nbsp;English, Arabic, Chinese, French, German, Italian, Japanese, Russian, Spanish and Ukrainian.</td>
-    <td valign="top"><img src=".github/readme/icon-palette.svg" width="40" align="left" alt="">&nbsp;<b>Calm by design</b><br>&nbsp;Light and dark themes, optional wallpaper colours, and motion that respects "Remove animations".</td>
+    <td valign="top"><img src=".github/readme/icon-palette.svg" width="40" align="left" alt="">&nbsp;<b>Calm by design</b><br>&nbsp;Light and dark themes, and optional wallpaper colours.</td>
   </tr>
 </table>
 
@@ -85,12 +85,8 @@ Every exercise in the catalogue belongs to a chain of steps, each harder than th
 
 <table>
   <tr>
-    <td valign="top"><img src=".github/readme/icon-wifi_off.svg" width="40" alt=""></td>
-    <td><b>No internet permission.</b> The app cannot send anything anywhere. There is no account, no ads, no analytics and no crash reporting.</td>
-  </tr>
-  <tr>
-    <td valign="top"><img src=".github/readme/icon-lock.svg" width="40" alt=""></td>
-    <td><b>Only what workouts need.</b> <code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_SPECIAL_USE</code> and <code>WAKE_LOCK</code> keep timers running with the screen off; <code>FLASHLIGHT</code> can flash at the end of a rest.</td>
+    <td width="50%" valign="top"><img src=".github/readme/icon-wifi_off.svg" width="40" align="left" alt="">&nbsp;<b>No internet permission</b><br>&nbsp;The app cannot send anything anywhere. No account, no ads, no analytics and no crash reporting.</td>
+    <td width="50%" valign="top"><img src=".github/readme/icon-lock.svg" width="40" align="left" alt="">&nbsp;<b>Only what workouts need</b><br>&nbsp;<code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_SPECIAL_USE</code> and <code>WAKE_LOCK</code> keep timers running with the screen off; <code>FLASHLIGHT</code> can flash at the end of a rest.</td>
   </tr>
 </table>
 

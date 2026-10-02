@@ -130,6 +130,7 @@ def banner(theme, name):
 
 PUSH_CHAIN = [("Wall", 1), ("Incline", 2), ("Knee", 2), ("Push-up", 3), ("Diamond", 4), ("Decline", 4), ("Archer", 6), ("One-arm", 8)]
 CURRENT = 3  # The marker sits on Push-up.
+CYCLE = 9  # Seconds per loop of the chain picture.
 
 
 def chain(theme, name):
@@ -154,25 +155,28 @@ def chain(theme, name):
         lab, _ = text_path(label, x + colw / 2, base + 36, 20, 600 if here else 500, anchor="middle")
         parts.append(f'<path d="{lab}" fill="{c["ink"] if here else c["muted"]}"/>')
         seats.append((x + colw / 2, top - 22))
-        css.append(f".b{i}{{animation:grow .8s cubic-bezier(.34,1.4,.64,1) {0.1 * i:.1f}s both}}")
+        css.append(f".b{i}{{animation:grow {CYCLE}s cubic-bezier(.34,1.4,.64,1) {0.1 * i:.1f}s infinite both}}")
     sx, sy = seats[CURRENT]
     parts.append(f'<circle class="mark" cx="{sx}" cy="{sy}" r="12" fill="{c["brass"]}"/>')
     hint, _ = text_path("You are here. Move on at 3 × 12.", sx, sy - 26, 20, 500, anchor="middle")
     parts.append(f'<path class="hint" d="{hint}" fill="{c["brass"]}"/>')
-    keys = []
-    for k in range(CURRENT + 1):
-        px, py = seats[k]
-        pct = 10 + 22 * k
-        keys.append(f"{pct}%{{transform:translate({px - sx:.0f}px,{py - sy:.0f}px)}}")
-        if k < CURRENT:
-            nx, ny = seats[k + 1]
-            keys.append(f"{pct + 11}%{{transform:translate({(px + nx) / 2 - sx:.0f}px,{min(py, ny) - sy - 34:.0f}px)}}")
-    keys.append("100%{transform:none}")
-    css += ["@keyframes grow{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}",
+    # One loop: the bars rise, the marker hops up to the current step, the hint shows, all rest,
+    # then fade and start again. The still frame (reduced motion) is the finished picture.
+    first_x, first_y = seats[0][0] - sx, seats[0][1] - sy
+    keys = [f"0%,14%{{transform:translate({first_x:.0f}px,{first_y:.0f}px);opacity:0}}",
+            f"17%{{transform:translate({first_x:.0f}px,{first_y:.0f}px);opacity:1}}"]
+    for step in range(1, CURRENT + 1):
+        (ax, ay), (bx, by) = seats[step - 1], seats[step]
+        start = 17 + 9 * (step - 1)
+        keys.append(f"{start + 4.5:g}%{{transform:translate({(ax + bx) / 2 - sx:.0f}px,{min(ay, by) - sy - 34:.0f}px);opacity:1}}")
+        keys.append(f"{start + 9:g}%{{transform:translate({bx - sx:.0f}px,{by - sy:.0f}px);opacity:1}}")
+    keys += ["86%{transform:none;opacity:1}", "94%,100%{transform:none;opacity:0}"]
+    css += ["@keyframes grow{0%{transform:scaleY(0);opacity:0}8%,86%{transform:scaleY(1);opacity:1}94%,100%{transform:scaleY(1);opacity:0}}",
             ".bar,.lab{transform-box:fill-box;transform-origin:50% 100%}",
-            "@keyframes walk{0%{transform:translate(" + f"{seats[0][0] - sx:.0f}px,{seats[0][1] - sy:.0f}px)" + "}" + "".join(keys) + "}",
-            ".mark{animation:walk 2.6s ease-in-out .9s both}",
-            "@keyframes show{from{opacity:0}to{opacity:1}}.hint{animation:show .6s ease 3.4s both}"]
+            "@keyframes walk{" + "".join(keys) + "}",
+            f".mark{{animation:walk {CYCLE}s ease-in-out infinite both}}",
+            "@keyframes show{0%,46%{opacity:0}52%,86%{opacity:1}94%,100%{opacity:0}}",
+            f".hint{{animation:show {CYCLE}s ease infinite both}}"]
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="The Push-up chain: eight steps from wall push-up to one-arm push-up">'
            f'<style>{"".join(css)}{REDUCED}</style>'
            f'<rect width="{w}" height="{h}" rx="32" fill="{c["card"]}"/>'
@@ -188,9 +192,14 @@ def feature_icons():
     for n in FEATURES:
         raw = urllib.request.urlopen(f"{SYMBOLS}/{n}/materialsymbolsrounded/{n}_24px.svg").read().decode()
         d = re.search(r' d="([^"]+)"', raw).group(1)
+        # Most symbols draw on a 960-unit grid shifted up by 960; some older ones on a plain 24-unit
+        # grid with no viewBox. Fit either into the 32-unit centre of the tile.
+        vb = re.search(r'viewBox="([^"]+)"', raw)
+        minx, miny, vw, _ = (float(v) for v in vb.group(1).split()) if vb else (0.0, 0.0, 24.0, 24.0)
+        k = 32 / vw
         svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">'
                f'<rect width="64" height="64" rx="20" fill="{ICON_BG}"/>'
-               f'<g transform="translate(16 48) scale(0.0333)"><path d="{d}" fill="{ICON_FG}"/></g></svg>')
+               f'<g transform="translate({16 - minx * k:g} {16 - miny * k:g}) scale({k:.5f})"><path d="{d}" fill="{ICON_FG}"/></g></svg>')
         write(f"icon-{n}.svg", svg)
 
 
