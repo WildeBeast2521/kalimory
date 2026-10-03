@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - Kalimory
+## [1.0.0] - Kalimory (not yet released)
 
 Kalimory is a fork of Calisthenics Memory with its own name, application ID (`io.github.wildebeast2521.kalimory`) and icon. It installs beside the original app; move your data with a complete backup.
 
