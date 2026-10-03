@@ -14,11 +14,17 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-dry_run=false
-[ "${1:-}" = "--dry-run" ] && dry_run=true
-
 fail() { echo "release: $*" >&2; exit 1; }
 step() { echo; echo "== $*"; }
+
+# Gradle can use JAVA_HOME directly, but Android build-tools launchers such as apksigner
+# execute `java` through PATH. Make both resolution paths consistent.
+[ -n "${JAVA_HOME:-}" ] || fail "JAVA_HOME is not set (JDK 17+ required)"
+[ -x "$JAVA_HOME/bin/java" ] || fail "JAVA_HOME/bin/java is not executable: $JAVA_HOME"
+export PATH="$JAVA_HOME/bin:$PATH"
+
+dry_run=false
+[ "${1:-}" = "--dry-run" ] && dry_run=true
 
 # The release certificate's fingerprint (public, not a secret). Android refuses updates signed
 # with another key, so a mismatch stops the release.
