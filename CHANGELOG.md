@@ -18,11 +18,15 @@ Kalimory is a fork of Calisthenics Memory with its own name, application ID (`io
 - Restore from a recovery file inside the app
 - A welcome guide on first launch
 - New workout sounds, and an optional vibration when a set is done
+- A true-black AMOLED theme beside Follow system, Light and Dark
+- Every language complete, including Russian and Arabic (right-to-left)
 
 ### Changed
 - A complete redesign in Material 3 Expressive: four destinations (Today, Train, Progress, Library), one workout flow, calm colours with optional wallpaper colours, wavy progress indicators, connected button groups, flexible top bars and a floating rest toolbar
 - Workout timers survive the app being stopped and resume where they left off
 - Backups are written and restored atomically and validated before import
+- Import shows everything a backup replaces and asks twice, offering a backup of the current data
+- Workouts no longer add an automatic comment ("Workout Mode", "【Program】") to what you save
 
 ### Removed
 - The Challenge tab, replaced by Progressions

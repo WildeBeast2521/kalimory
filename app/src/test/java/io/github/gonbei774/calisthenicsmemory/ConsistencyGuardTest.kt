@@ -53,4 +53,9 @@ class ConsistencyGuardTest {
         val offenders = titleCase.filter { ">$it" in strings }
         assertTrue("Old wording is back: $offenders", offenders.isEmpty())
     }
+
+    @Test fun `workouts save only the user's own comment`() {
+        val offenders = uses(Regex("""【Program】|workout_mode_comment"""))
+        assertTrue("No automatic comments: $offenders", offenders.isEmpty())
+    }
 }

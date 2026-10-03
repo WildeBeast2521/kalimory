@@ -13,11 +13,14 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import android.content.res.Configuration
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PRIMARY_NAVIGATION_BAR_TAG
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -104,6 +107,18 @@ class ConsistencyRegressionTest {
         libraryRow(R.string.interval_list_title).performClick()
         rule.onNode(hasContentDescription(text(R.string.new_interval_program))).performClick()
         rule.onNode(hasText(text(R.string.new_interval_program)) and isHeading()).assertExists()
+    }
+
+    /** Status bar icons are dark on the light theme and light on the dark one. */
+    @Test
+    fun statusBarIconsFollowTheAppTheme() {
+        rule.runOnUiThread {
+            val activity = rule.activity
+            val dark = (activity.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+                Configuration.UI_MODE_NIGHT_YES
+            val controller = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
+            assertEquals(!dark, controller.isAppearanceLightStatusBars)
+        }
     }
 
     private companion object {

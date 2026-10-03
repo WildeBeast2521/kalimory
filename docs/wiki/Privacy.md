@@ -9,6 +9,7 @@
 
 - `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE` and `WAKE_LOCK` keep workout timers running when the screen is off.
 - `FLASHLIGHT` can flash the camera light at the end of a rest.
+- `POST_NOTIFICATIONS` shows the running timer in a notification. Android asks for it when your first workout opens; the app works without it.
 
 ## When you report a problem
 

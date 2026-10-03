@@ -26,7 +26,7 @@ Kalimory planifica tu entrenamiento con peso corporal, te acompaña mientras lo 
 • Copias de seguridad JSON completas, importación y exportación CSV y archivos de recuperación si la base de datos se daña
 
 <b>Calma por diseño</b>
-• Temas claro y oscuro, colores del fondo de pantalla opcionales y diez idiomas
+• Temas claro, oscuro y AMOLED en negro puro, colores del fondo de pantalla opcionales y diez idiomas
 
 <b>Privacidad</b>
 • Sin permiso de internet, sin anuncios, sin analíticas y sin informes de errores

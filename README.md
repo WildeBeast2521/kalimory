@@ -22,6 +22,7 @@
 
 <p align="center">
   <a href="#features">Features</a> ·
+  <a href="#screenshots">Screenshots</a> ·
   <a href="#progressions">Progressions</a> ·
   <a href="#privacy">Privacy</a> ·
   <a href="docs/wiki/Home.md">User guide</a> ·
@@ -48,9 +49,26 @@
   </tr>
   <tr>
     <td valign="top"><img src=".github/readme/icon-translate.svg" width="40" align="left" alt="">&nbsp;<b>Ten languages</b><br>&nbsp;English, Arabic, Chinese, French, German, Italian, Japanese, Russian, Spanish and Ukrainian.</td>
-    <td valign="top"><img src=".github/readme/icon-palette.svg" width="40" align="left" alt="">&nbsp;<b>Calm by design</b><br>&nbsp;Light and dark themes, and optional wallpaper colours.</td>
+    <td valign="top"><img src=".github/readme/icon-palette.svg" width="40" align="left" alt="">&nbsp;<b>Calm by design</b><br>&nbsp;Light, dark and true-black AMOLED themes, and optional wallpaper colours.</td>
   </tr>
 </table>
+
+<h2 id="screenshots">Screenshots</h2>
+
+<table>
+  <tr>
+    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/today-dark.png"><img src=".github/readme/screens/today-light.png" width="100%" alt="Today: this week, what is due and a start button"></picture><br><sub>Today</sub></td>
+    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/rest-dark.png"><img src=".github/readme/screens/rest-light.png" width="100%" alt="Workout: the rest timer between sets"></picture><br><sub>Workout</sub></td>
+    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/progressions-dark.png"><img src=".github/readme/screens/progressions-light.png" width="100%" alt="Progressions: where you stand in each chain"></picture><br><sub>Progressions</sub></td>
+  </tr>
+  <tr>
+    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/chain-dark.png"><img src=".github/readme/screens/chain-light.png" width="100%" alt="Chain: every step from easiest to hardest"></picture><br><sub>Chain</sub></td>
+    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/step-dark.png"><img src=".github/readme/screens/step-light.png" width="100%" alt="Step: form cues and the muscles it works"></picture><br><sub>Step</sub></td>
+    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/calendar-dark.png"><img src=".github/readme/screens/calendar-light.png" width="100%" alt="History: the week, its sets and exercises"></picture><br><sub>History</sub></td>
+  </tr>
+</table>
+
+<p align="center"><sub>Shown with made-up training data. Light or dark follows your GitHub theme.</sub></p>
 
 <h2 id="progressions">Progressions</h2>
 
@@ -87,7 +105,7 @@ Every exercise in the catalogue belongs to a chain of steps, each harder than th
 <table>
   <tr>
     <td width="50%" valign="top"><img src=".github/readme/icon-wifi_off.svg" width="40" align="left" alt="">&nbsp;<b>No internet permission</b><br>&nbsp;The app cannot send anything anywhere. No account, no ads, no analytics and no crash reporting.</td>
-    <td width="50%" valign="top"><img src=".github/readme/icon-lock.svg" width="40" align="left" alt="">&nbsp;<b>Only what workouts need</b><br>&nbsp;<code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_SPECIAL_USE</code> and <code>WAKE_LOCK</code> keep timers running with the screen off; <code>FLASHLIGHT</code> can flash at the end of a rest.</td>
+    <td width="50%" valign="top"><img src=".github/readme/icon-lock.svg" width="40" align="left" alt="">&nbsp;<b>Only what workouts need</b><br>&nbsp;<code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_SPECIAL_USE</code> and <code>WAKE_LOCK</code> keep timers running with the screen off; <code>FLASHLIGHT</code> can flash at the end of a rest; <code>POST_NOTIFICATIONS</code> shows the running timer, and is asked for only when your first workout opens.</td>
   </tr>
 </table>
 

@@ -26,7 +26,7 @@ Kalimory plant dein Training mit dem eigenen Körpergewicht, begleitet dich dabe
 • Komplette JSON-Sicherungen, CSV-Import und -Export und Wiederherstellungsdateien, falls die Datenbank beschädigt wird
 
 <b>Ruhig gestaltet</b>
-• Helles und dunkles Design, optionale Hintergrundfarben und zehn Sprachen
+• Helles, dunkles und tiefschwarzes AMOLED-Design, optionale Hintergrundfarben und zehn Sprachen
 
 <b>Datenschutz</b>
 • Keine Internetberechtigung, keine Werbung, keine Analyse und keine Absturzberichte

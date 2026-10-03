@@ -437,7 +437,9 @@ fun ProgramExecutionScreen(
             program = prog,
             exercises = exercisePairs,
             sets = allSets,
-            comment = "【Program】${prog.name}",
+            // Starts empty: the session already records which program it came from, and an
+            // automatic note with the program name read as the user's own comment.
+            comment = "",
             loops = programLoops
         )
         session = newSession

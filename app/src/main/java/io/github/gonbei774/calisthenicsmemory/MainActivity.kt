@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import androidx.compose.runtime.DisposableEffect
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.SystemBarStyle
 import androidx.core.content.ContextCompat
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -80,7 +83,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
@@ -154,6 +156,18 @@ class MainActivity : ComponentActivity() {
                 AppTheme.SYSTEM -> isSystemDark
                 AppTheme.LIGHT -> false
                 AppTheme.DARK, AppTheme.AMOLED -> true
+            }
+            // System bar icons follow the app's theme, not the system's: a light app on a dark
+            // system (or the window default) otherwise drew white icons on a light status bar.
+            DisposableEffect(darkTheme) {
+                val style = if (darkTheme) {
+                    SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
+                } else {
+                    // The dark scrim is used only where the system cannot draw dark icons (API 26).
+                    SystemBarStyle.light(android.graphics.Color.TRANSPARENT, android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b))
+                }
+                enableEdgeToEdge(statusBarStyle = style, navigationBarStyle = style)
+                onDispose {}
             }
 
             // Open the database before any screen uses it; failures show a recovery screen.

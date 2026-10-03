@@ -26,7 +26,7 @@ Kalimory plans your bodyweight training, runs it with you, and remembers every s
 • Complete JSON backups, CSV import and export, and recovery files if the database is ever damaged
 
 <b>Calm by design</b>
-• Light and dark themes, optional wallpaper colours, and ten languages
+• Light, dark and true-black AMOLED themes, optional wallpaper colours, and ten languages
 
 <b>Privacy</b>
 • No internet permission, no ads, no analytics and no crash reporting
