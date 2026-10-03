@@ -9,59 +9,37 @@
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="add">Add</string>
-    <string name="create">Create</string>
     <string name="back">Back</string>
     <string name="select">Select</string>
     <string name="settings">Settings</string>
     <string name="comment">Comment</string>
     <string name="comment_optional">Comment (Optional)</string>
-    <string name="level">Level</string>
     <string name="group">Group</string>
     <string name="none">None</string>
     <string name="type">Type</string>
     <string name="menu">Menu</string>
-    <string name="loading">Loading...</string>
     <!-- Home Screen -->
-    <string name="bodyweight_training">Bodyweight Training</string>
     <string name="home_record">Log a past workout</string>
     <string name="home_workout">Workout</string>
-    <string name="home_view">View</string>
-    <string name="view_details">View details</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <!-- Create Screen -->
-    <string name="no_exercises">No exercises yet\nAdd one using the + button below</string>
     <string name="exercise_name">Exercise Name</string>
     <string name="set_challenge">Set a target</string>
     <string name="sets_count">Sets</string>
-    <string name="reps_or_seconds">%s</string>
     <!-- Will be replaced with "Reps" or "Seconds" -->
-    <string name="reps">Reps</string>
-    <string name="seconds">Seconds</string>
-    <string name="per_side">(Per Side)</string>
     <string name="target_format">%1$d sets × %2$d %3$s</string>
     <string name="target_format_unilateral">%1$d sets × %2$d %3$s (per side)</string>
     <string name="laterality">Laterality</string>
-    <string name="bilateral">Bilateral</string>
-    <string name="unilateral">Unilateral</string>
-    <string name="bilateral_example">e.g., Push-ups, Squats</string>
-    <string name="unilateral_example">e.g., Pistol Squats, One-arm Push-ups</string>
     <string name="one_sided">One-sided</string>
     <string name="group_optional">Group (Optional)</string>
     <string name="new_group_name">New Group Name</string>
-    <string name="new_group">+ New Group</string>
     <string name="no_group">No Group</string>
-    <string name="edit_exercise">Edit Exercise</string>
-    <string name="create_new_group">Create New Group</string>
-    <string name="add_new_exercise">Add New Exercise</string>
     <string name="create_type">Create Type</string>
     <string name="exercise">Exercise</string>
     <string name="group_name">Group Name</string>
-    <string name="already_exists">This %s name already exists</string>
     <string name="add_exercise_to_group">Add New Exercise to Group</string>
     <string name="rename_group">Rename Group</string>
     <string name="delete_group">Delete Group</string>
-    <string name="delete_group_warning">Delete \"%s\"?\nExercises in this group will be moved to \"No Group\".</string>
-    <string name="delete_exercise_warning">Delete \"%s\"?\nAll records for this exercise will also be deleted.</string>
     <string name="delete_confirmation">Delete Confirmation</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
@@ -77,12 +55,9 @@
     <string name="target_display_unilateral">Target: %1$d sets × %2$d %3$s (per side)</string>
     <string name="right">Right</string>
     <string name="left">Left</string>
-    <string name="right_value">Right (%s)</string>
     <string name="right_value_short">R: %1$d %2$s</string>
-    <string name="left_value">Left (%s)</string>
     <string name="left_value_short">L: %1$d %2$s</string>
     <string name="set_number_format">Set %d</string>
-    <string name="set_number_with_unit" formatted="false">Set %d (%s)</string>
     <string name="date_format">Date: %s</string>
     <string name="time_format">Time: %s</string>
     <string name="record_button">Record</string>
@@ -103,48 +78,26 @@
     <string name="exercise_type_dynamic_description">e.g. Push-ups, Pull-ups. Recorded by reps.</string>
     <string name="exercise_type_isometric_description">e.g. Plank, L-sit. Recorded by hold time.</string>
     <!-- View Screen -->
-    <string name="list">List</string>
-    <string name="graph">Graph</string>
-    <string name="challenge">Challenge</string>
     <string name="no_records_yet">No records yet</string>
-    <string name="tap_to_edit_long_press_for_menu">※ Tap set to edit, long press for menu</string>
-    <string name="tap_to_edit_hint">※ Tap set to edit, long press for menu</string>
     <string name="unknown_exercise">Unknown Exercise</string>
     <string name="edit_session_info">Edit Session Info</string>
     <string name="delete_session">Delete Session</string>
     <string name="delete_record_warning">Delete \"%1$s\" record?\n%2$s %3$s\n%4$d sets</string>
-    <string name="date">Date</string>
-    <string name="time">Time</string>
     <string name="edit_set_value">Edit Set Value</string>
-    <string name="value">Value</string>
     <string name="right_value_label">Right Value</string>
     <string name="left_value_label">Left Value</string>
-    <string name="edit_session_title">Edit Session Info</string>
     <string name="show_all">Show All</string>
     <string name="search_exercise">Search Exercise...</string>
-    <string name="filter_bottom_sheet_title">Select Exercise</string>
-    <string name="clear_filter">Clear Filter</string>
     <!-- Period filters -->
-    <string name="period_1week">1 Week</string>
-    <string name="period_1month">1 Month</string>
-    <string name="period_3months">3 Months</string>
     <string name="period_one_week">1 Week</string>
     <string name="period_one_month">1 Month</string>
     <string name="period_three_months">3 Months</string>
     <!-- Graph Screen -->
-    <string name="display_data">Display Data</string>
-    <string name="graph_average">Average</string>
-    <string name="graph_max">Max</string>
-    <string name="graph_total">Total</string>
-    <string name="no_exercise_select_one">Please select an exercise\nChoose from \"Select Exercise\" above</string>
     <string name="no_data">No data</string>
-    <string name="record_this_exercise">Record training for this exercise</string>
     <string name="record_training_for_exercise">Record training for this exercise</string>
     <string name="statistics_summary">Statistics Summary</string>
     <string name="total_sets">Total Sets</string>
     <string name="average">Average</string>
-    <string name="highest_record">Highest Record</string>
-    <string name="lowest_record">Lowest Record</string>
     <string name="weekly_change">Weekly Change</string>
     <string name="sets_format">%d sets</string>
     <string name="change_format">%+d sets</string>
@@ -158,12 +111,8 @@
     <string name="challenge_best">Best</string>
     <string name="challenge_target_label">Target</string>
     <string name="challenge_clear_days">Cleared %1$d/%2$d days</string>
-    <string name="last_workout">Last Workout</string>
-    <string name="last_workout_none">Last Workout: None</string>
-    <string name="last_workout_date">Last Workout: %s</string>
     <string name="no_exercises_available">No exercises available</string>
     <string name="no_exercises_in_period">No exercises worked on in %s</string>
-    <string name="achievement_rate">%1$d%% (%2$d/%3$d%4$s)</string>
     <!-- Settings Screen -->
     <string name="data_management">Data Management</string>
     <string name="export_data">Export Data</string>
@@ -211,13 +160,9 @@
     <string name="no_exercises_yet_workout">No exercises yet</string>
     <string name="no_group_workout">No Group</string>
     <string name="one_sided_workout">One-sided</string>
-    <string name="target_label">Target:</string>
     <string name="target_sets_label">Target Sets</string>
     <string name="target_reps_label">Target Reps</string>
     <string name="target_duration_label">Target Duration (sec)</string>
-    <string name="rep_duration_label">Rep Duration (sec)</string>
-    <string name="start_countdown_label">Start Countdown (sec)</string>
-    <string name="interval_duration_label">Rest between sets (sec)</string>
     <!-- Single Workout Setup Redesign -->
     <string name="workout_section_target">Target</string>
     <string name="workout_section_timer">Timer</string>
@@ -238,10 +183,8 @@
     <string name="set_format_with_side">Set %1$d/%2$d - %3$s</string>
     <string name="side_right">Right</string>
     <string name="side_left">Left</string>
-    <string name="reps_unit">reps</string>
     <string name="pause_button">Pause</string>
     <string name="resume_button">Resume</string>
-    <string name="stop_button">Stop</string>
     <string name="save_and_exit_button">Save &amp; exit</string>
     <string name="retry_set_button">Retry Set</string>
     <string name="interval_label">Interval</string>
@@ -259,9 +202,6 @@
     <string name="add_extra_set_confirm">Add</string>
     <string name="set_number">Set %d</string>
     <string name="skipped_label">Skipped</string>
-    <string name="right_label">Right:</string>
-    <string name="left_label">Left:</string>
-    <string name="ten_seconds">10 sec</string>
     <string name="set_label">Set %d</string>
     <string name="right_colon">Right:</string>
     <string name="left_colon">Left:</string>
@@ -270,8 +210,6 @@
     <!-- Level display -->
     <string name="level_format">Level %d</string>
     <!-- Additional missing strings -->
-    <string name="bilateral_label">Bilateral</string>
-    <string name="unilateral_label">Unilateral</string>
     <!-- Common Labels -->
     <string name="tab_list">List</string>
     <string name="tab_graph">Graph</string>
@@ -288,9 +226,6 @@
     <string name="clear">Clear</string>
     <string name="no_results">No results found</string>
     <string name="value_label">Value</string>
-    <string name="right_with_unit">Right (%s)</string>
-    <string name="left_with_unit">Left (%s)</string>
-    <string name="target_with_unit">%1$d×%2$d%3$s</string>
     <string name="graph_type_average">Average</string>
     <string name="graph_type_max">Max</string>
     <string name="graph_type_total">Total</string>
@@ -310,7 +245,6 @@
     <!-- Additional hardcoded strings that need to be moved -->
     <string name="no_exercises_add_with_plus">No exercises yet\nAdd one using the + button below</string>
     <string name="delete_group_confirm_message">Delete \"%s\"?\nExercises in this group will be moved to \"No Group\".</string>
-    <string name="delete_exercise_confirm_message">Delete \"%s\"?\nAll records for this exercise will also be deleted.</string>
     <string name="delete_exercise_confirm_title">Delete \"%s\"?</string>
     <string name="delete_exercise_record_count">Records to be deleted: %d</string>
     <string name="delete_exercise_in_use">This exercise is in use:</string>
@@ -333,46 +267,26 @@
     <string name="save_button">Save</string>
     <string name="create_button">Create</string>
     <string name="add_button">Add</string>
-    <string name="set_number_display">Set %d</string>
-    <string name="date_with_label">Date: %s</string>
-    <string name="time_with_label">Time: %s</string>
     <string name="select_exercise_filter">Select Exercise</string>
-    <string name="target_display_short">Target: %1$d sets × %2$d%3$s%4$s</string>
     <string name="edit_exercise_title">Edit Exercise</string>
     <string name="create_group_title">Create New Group</string>
     <string name="add_exercise_title">Add New Exercise</string>
     <!-- GraphView specific strings -->
-    <string name="graph_tooltip_unilateral">%1$s: Right %2$d%3$s / Left %4$d%5$s</string>
-    <string name="statistics_average_label">Average</string>
-    <string name="statistics_highest_label">Highest Record</string>
-    <string name="statistics_lowest_label">Lowest Record</string>
-    <string name="statistics_total_sets_label">Total Sets</string>
-    <string name="statistics_value_format">%1$d%2$s</string>
-    <string name="statistics_sets_count_format">%d sets</string>
     <!-- Additional format strings for remaining hardcoded Japanese -->
-    <string name="multiplication_sign">×</string>
-    <string name="per_side_short">(per side)</string>
     <string name="unknown_short">Unknown</string>
-    <string name="colon_separator">: </string>
     <!-- Remaining hardcoded strings migration -->
-    <string name="set_ordinal_suffix">Set %d</string>
-    <string name="target_prefix">Target: </string>
     <!-- ViewScreen & GraphView remaining strings -->
     <string name="right_short">Right</string>
     <string name="left_short">Left</string>
     <string name="best_record">Best</string>
     <string name="worst_record">Lowest</string>
-    <string name="graph_tooltip_bilateral">%1$s: %2$d%3$s</string>
-    <string name="graph_tooltip_unilateral_detail">%1$s: R%2$d%4$s / L%3$d%4$s</string>
     <!-- CSV Import/Export -->
     <string name="csv_export_success">%1$s exported: %2$d items</string>
     <string name="csv_template_exported">CSV template exported: %d exercises</string>
     <string name="csv_empty">CSV file is empty</string>
     <string name="csv_import_success">Successfully imported %d records</string>
     <string name="csv_import_partial">Imported %1$d records, %2$d errors occurred</string>
-    <string name="export_csv_template">Export Input Template</string>
     <string name="csv_import">CSV Import</string>
-    <string name="csv_template_description">Download template for recording</string>
     <string name="csv_import_description">Import groups, exercises, or records (auto-detected)</string>
     <!-- CSV Export Dialog -->
     <string name="csv_export">CSV Export</string>
@@ -391,12 +305,6 @@
     <string name="csv_type">Type</string>
     <string name="csv_items">Items</string>
     <string name="import_action">Import</string>
-    <string name="csv_import_mode">Import Mode</string>
-    <string name="csv_import_mode_merge">Merge (Add)</string>
-    <string name="csv_import_mode_merge_description">Keep existing data, add new items</string>
-    <string name="csv_import_mode_replace">Replace</string>
-    <string name="csv_import_mode_replace_description">Delete all existing data and replace it with the imported data</string>
-    <string name="csv_import_button">Import</string>
     <!-- CSV Import Result Dialog -->
     <string name="csv_import_completed">Import Completed</string>
     <string name="csv_import_success_label">Success</string>
@@ -411,8 +319,6 @@
     <string name="section_partial_data_management">CSV files</string>
     <string name="section_partial_data_management_description">For data exchange with other apps and spreadsheets.\nExport and import groups, exercises, and records individually via CSV.</string>
     <!-- Legacy key for compatibility -->
-    <string name="section_add_records">Add Records (CSV)</string>
-    <string name="section_add_records_description">Add records to existing data.\nUse for importing analog records or data from other apps.</string>
     <!-- Favorites -->
     <string name="favorite">Favorite</string>
     <string name="add_to_favorites">Add to favorites</string>
@@ -422,8 +328,6 @@
     <string name="section_language_description">Change the app display language.</string>
     <string name="language_setting">Language</string>
     <string name="current_language">Current: %s</string>
-    <string name="restart_required">Restart required to apply changes</string>
-    <string name="language_changed">Language changed. Please restart the app.</string>
     <!-- Theme Settings -->
     <string name="section_theme">Theme Settings</string>
     <string name="section_theme_description">Change the app appearance.</string>
@@ -435,9 +339,7 @@
     <string name="theme_amoled" translatable="false">AMOLED</string>
     <!-- Open Source Licenses -->
     <string name="open_source_licenses">Open Source Licenses</string>
-    <string name="licenses_description">View licenses of libraries used in this app</string>
     <!-- Training Days Display -->
-    <string name="training_days_format">Training %s</string>
     <string name="last_record_short">Last: %s</string>
     <!-- Backup Before Import -->
     <string name="backup_before_import_title">Backup Before Import</string>
@@ -447,22 +349,17 @@
     <string name="backup_saved_successfully">Backup saved to Downloads folder</string>
     <string name="backup_failed">Backup failed</string>
     <!-- Auto-fill Settings -->
-    <string name="settings_autofill_section">Auto-fill</string>
-    <string name="settings_autofill_section_description">Configure automatic input assistance.</string>
     <string name="settings_prefill_previous">Pre-fill previous record</string>
     <string name="settings_prefill_previous_description">Auto-fill values from the last session in Record and Workout screens</string>
     <!-- Workout Settings -->
     <string name="section_workout_settings">Workout Settings</string>
     <string name="section_workout_settings_description">Customize workout screen behavior.</string>
-    <string name="workout_settings">Workout Settings</string>
     <string name="start_countdown_setting">Start Countdown</string>
     <string name="set_interval_setting">Rest between sets</string>
     <string name="current_start_countdown">Current: %d seconds</string>
     <string name="current_set_interval">Current: %d seconds</string>
-    <string name="seconds_suffix">seconds</string>
     <string name="start_countdown_dialog_title">Start Countdown</string>
     <string name="set_interval_dialog_title">Rest between sets</string>
-    <string name="seconds_format">%d seconds</string>
     <string name="set_interval_note">Note: Exercise-specific settings take priority if configured.</string>
     <string name="flash_notification_setting">LED Flash Notification</string>
     <string name="flash_notification_description">Flash LED in sync with sounds during workout</string>
@@ -493,7 +390,6 @@
     <string name="weight_display_format">%.1f kg</string>
     <!-- Apply Exercise Settings Button -->
     <string name="apply_exercise_settings">Apply Exercise Settings</string>
-    <string name="apply_target_values">Apply Target Values</string>
     <!-- App Info Section -->
     <string name="section_app_info">App Info</string>
     <string name="section_app_info_description">View app information and licenses.</string>
@@ -502,20 +398,12 @@
     <string name="app_author">Author</string>
     <string name="app_source_code">Source Code</string>
     <string name="app_feedback">Feedback</string>
-    <string name="codeberg_main">Codeberg</string>
-    <string name="github_mirror">GitHub</string>
-    <string name="feedback_description">Report bugs or request features</string>
-    <string name="codeberg_description">Main repository</string>
-    <string name="github_description">Mirror repository</string>
     <string name="report_issue_github">Report issue on GitHub</string>
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
     <string name="todo_empty">Tap + to add exercises</string>
-    <string name="todo_add_exercises">Add Exercises</string>
     <string name="todo_all_added">All exercises are already in the list</string>
     <string name="todo_drag_to_reorder">Drag to reorder</string>
-    <string name="todo_rec_button">Rec</string>
-    <string name="todo_wo_button">WO</string>
     <string name="todo_choose_mode">Choose Mode</string>
     <string name="todo_mode_record">Record</string>
     <string name="todo_mode_workout">Workout</string>
@@ -529,7 +417,6 @@
     <string name="todo_no_intervals">No intervals</string>
     <string name="todo_add_items">Add Items</string>
     <string name="todo_repeat_title">Repeat</string>
-    <string name="todo_repeat_clear">Clear</string>
     <string name="todo_repeat_save">Save</string>
     <!-- Notification Channel for Workout Timer -->
     <string name="notification_channel_workout">Workout Timer</string>
@@ -544,12 +431,8 @@
     <string name="edit_program">Edit program</string>
     <string name="program_name">Program Name</string>
     <string name="program_name_hint">e.g., Morning Routine</string>
-    <string name="auto_mode_label">Auto Mode</string>
     <string name="auto_mode">Auto Mode</string>
-    <string name="auto_mode_description">Manual completion button</string>
     <string name="auto_mode_disabled_hint">Requires Count Sound to be ON</string>
-    <string name="timer_on">ON</string>
-    <string name="timer_off">OFF</string>
     <string name="timer_mode_on_description">Auto-complete when goal is reached</string>
     <string name="timer_mode_off_description">Manually complete with the Done button</string>
     <string name="start_countdown">Start Countdown</string>
@@ -566,8 +449,6 @@
     <string name="discard_changes_title">Discard Changes?</string>
     <string name="discard_changes_message">You have unsaved changes. Are you sure you want to discard them?</string>
     <string name="discard">Discard</string>
-    <string name="program_saved">Program saved</string>
-    <string name="program_name_required">Program name is required</string>
     <string name="program_exercises_required">Add at least one exercise</string>
     <string name="program_validation_incomplete_sets_or_value">Some exercises are missing sets or target value</string>
     <string name="exercise_settings">Exercise Settings</string>
@@ -577,32 +458,17 @@
     <string name="program_start">Start</string>
     <!-- Program Execution -->
     <string name="get_ready">Get ready</string>
-    <string name="executing_label">In Progress</string>
-    <string name="complete_button">Complete</string>
-    <string name="abort_button">Abort</string>
     <string name="program_use_program">Program</string>
     <string name="program_use_challenge">Exercise</string>
     <string name="program_use_previous">Previous</string>
     <string name="program_use_program_desc">Uses the sets and target values defined in the program</string>
     <string name="program_use_challenge_desc">Uses each exercise\'s challenge settings (program values if not set)</string>
     <string name="program_use_previous_desc">Uses your previous workout values (program values if no record)</string>
-    <string name="all_sets_label">All Sets</string>
-    <string name="all_exercises_label">All Exercises</string>
-    <string name="program_use_all_program">All Program</string>
-    <string name="program_use_all_challenge">All Challenge</string>
-    <string name="program_previous_value">Using previous value</string>
     <string name="auto_fill_target_label">Auto-fill target values</string>
-    <string name="next_exercise_label">Next: %s</string>
-    <string name="program_set_label">Set %d:</string>
     <string name="program_estimated_time">~%d min</string>
     <!-- Isometric Manual Mode -->
-    <string name="paused_label">Paused</string>
-    <string name="elapsed_target_format">Elapsed: %1$ds / Target: %2$ds</string>
     <string name="complete_with_time">Complete (%ds)</string>
-    <string name="target_reps_format">Target: %d reps</string>
     <string name="previous_value_format">Previous: %s</string>
-    <string name="previous_reps_format">Previous: %d reps</string>
-    <string name="previous_time_format">Previous: %ds</string>
     <!-- Executing screen: previous/target stats and rep pace -->
     <string name="stat_previous_label">Previous</string>
     <string name="stat_target_label">Target</string>
@@ -614,16 +480,11 @@
     <string name="exit_workout_message">Sets you haven\'t saved will be lost. Use Save &amp; exit to keep them.</string>
     <string name="exit_workout_confirm">Exit</string>
     <!-- Discard Result Confirmation -->
-    <string name="discard_result_title">Discard results?</string>
-    <string name="discard_result_message">Your workout results will not be saved.</string>
-    <string name="discard_result_confirm">Discard</string>
     <!-- Sound Settings (Program Confirm) -->
-    <string name="sound_settings_section">Sound Settings</string>
     <string name="dynamic_count_sound_label">Count Sound</string>
     <string name="dynamic_count_sound_description">Assists counting for dynamic exercises</string>
     <string name="isometric_interval_sound_label">Interval Notification</string>
     <string name="isometric_interval_sound_description">Isometric exercises</string>
-    <string name="interval_seconds_short">%d sec</string>
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Program Overview</string>
     <string name="nav_overall_progress">Overall Progress</string>
@@ -638,12 +499,9 @@
     <string name="nav_save_overwrite_message">Only one workout can be saved at a time. The previous saved workout will be overwritten.</string>
     <string name="nav_discard">Discard</string>
     <string name="nav_resume">Resume</string>
-    <string name="nav_target">Target</string>
     <string name="nav_skipped">Skipped</string>
     <string name="nav_type_dynamic_short">Reps</string>
     <string name="nav_type_isometric_short">Hold</string>
-    <string name="nav_edit_target">Edit target</string>
-    <string name="nav_edit_actual">Edit actual</string>
     <string name="nav_step_decrement">Decrease</string>
     <string name="nav_step_increment">Increase</string>
     <string name="nav_check_set">Mark set as complete</string>
@@ -657,7 +515,6 @@
     <string name="loop_round_format">%d Rounds</string>
     <string name="loop_rest_format">Rest: %ds</string>
     <string name="loop_current_round">Round %1$d/%2$d</string>
-    <string name="loop_delete_confirm">Delete this loop? Exercises inside it will also be deleted.</string>
     <string name="loop_empty">Tap + to add exercises</string>
     <string name="add_exercise_to_loop">Add Exercise</string>
     <string name="move_to_loop">Move to loop</string>
@@ -673,7 +530,6 @@
     <string name="new_interval_program">New interval</string>
     <string name="edit_interval_program">Edit interval</string>
     <string name="interval_program_name">Name</string>
-    <string name="interval_program_name_hint">e.g., HIIT Circuit A</string>
     <string name="interval_timer_settings">Timer Settings</string>
     <string name="interval_work_seconds">Work time</string>
     <string name="interval_rest_seconds">Rest between exercises</string>
@@ -686,7 +542,6 @@
     <string name="interval_delete_program">Delete interval</string>
     <string name="interval_delete_program_warning">Delete \"%s\"?</string>
     <string name="interval_duplicate">Duplicate</string>
-    <string name="interval_duplicated">Program duplicated</string>
     <string name="interval_seconds_suffix">sec</string>
     <string name="interval_rounds_suffix">rounds</string>
 
@@ -701,8 +556,6 @@
     <string name="interval_next">Next</string>
     <string name="interval_next_round">Next round</string>
     <string name="interval_round_complete_format">Round %d complete!</string>
-    <string name="interval_pause">Pause</string>
-    <string name="interval_resume">Resume</string>
     <string name="interval_stop">Stop</string>
     <string name="interval_complete_title">Complete</string>
     <string name="interval_ended_title">Ended</string>
@@ -710,21 +563,15 @@
     <string name="interval_partial_format">%1$d / %2$d rounds + %3$d / %4$d exercises</string>
     <string name="interval_partial_note">(Stopped early)</string>
     <string name="interval_exercises_done">Exercises</string>
-    <string name="interval_round_header_format">Round %1$d</string>
-    <string name="interval_not_executed">(not executed)</string>
-    <string name="interval_skipped_label">(skipped)</string>
     <string name="interval_comment_label">Comment</string>
     <string name="interval_comment_placeholder">How was your workout?</string>
     <string name="interval_save_and_finish">Save and Finish</string>
-    <string name="interval_discard_result">Don\'t Save</string>
     <string name="interval_exit_confirm_title">Stop workout?</string>
     <string name="interval_exit_confirm_message">Stop the current interval workout?</string>
     <string name="interval_unsaved_title">Record Not Saved</string>
     <string name="interval_unsaved_message">The workout record has not been saved. Leave without saving?</string>
     <string name="interval_unsaved_leave">Leave</string>
     <string name="interval_settings_format">%1$ds × %2$d exercises × %3$d rounds</string>
-    <string name="interval_record_saved">Interval record saved</string>
-    <string name="interval_skipped_format">Skipped: %1$d exercises</string>
     <string name="interval_record_rounds_format" tools:ignore="PluralsCandidate">%1$d/%2$d rounds</string>
     <string name="interval_record_complete">Complete</string>
     <string name="interval_record_partial">Stopped early</string>

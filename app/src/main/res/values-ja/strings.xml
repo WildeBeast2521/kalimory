@@ -8,58 +8,36 @@
     <string name="delete">削除</string>
     <string name="edit">編集</string>
     <string name="add">追加</string>
-    <string name="create">作成</string>
     <string name="back">戻る</string>
     <string name="select">選択</string>
     <string name="settings">設定</string>
     <string name="comment">コメント</string>
     <string name="comment_optional">コメント（任意）</string>
-    <string name="level">レベル</string>
     <string name="group">グループ</string>
     <string name="none">なし</string>
     <string name="type">タイプ</string>
     <string name="menu">メニュー</string>
-    <string name="loading">読み込み中...</string>
     <!-- Home Screen -->
-    <string name="bodyweight_training">自重トレーニング</string>
     <string name="home_record">記録入力</string>
     <string name="home_workout">ワークアウト</string>
-    <string name="home_view">閲覧</string>
-    <string name="view_details">詳細を見る</string>
     <string name="copied_to_clipboard">コピーしました</string>
     <!-- Create Screen -->
-    <string name="no_exercises">種目がまだありません\n右下の + ボタンから追加してください</string>
     <string name="exercise_name">種目名</string>
     <string name="set_challenge">課題を設定</string>
     <string name="sets_count">セット数</string>
-    <string name="reps_or_seconds">%s</string>
-    <string name="reps">回数</string>
-    <string name="seconds">秒数</string>
-    <string name="per_side">(片方)</string>
     <string name="target_format">%1$dセット × %2$d%3$s</string>
     <string name="target_format_unilateral">%1$dセット × %2$d%3$s(片方)</string>
     <string name="laterality">左右</string>
-    <string name="bilateral">両側 (Bilateral)</string>
-    <string name="unilateral">片側 (Unilateral)</string>
-    <string name="bilateral_example">例: プッシュアップ、スクワット</string>
-    <string name="unilateral_example">例: ピストルスクワット、片手プッシュアップ</string>
     <string name="one_sided">片側</string>
     <string name="group_optional">グループ（任意）</string>
     <string name="new_group_name">新しいグループ名</string>
-    <string name="new_group">+ 新しいグループ</string>
     <string name="no_group">グループなし</string>
-    <string name="edit_exercise">種目を編集</string>
-    <string name="create_new_group">新しいグループを作成</string>
-    <string name="add_new_exercise">新しい種目を追加</string>
     <string name="create_type">作成するもの</string>
     <string name="exercise">種目</string>
     <string name="group_name">グループ名</string>
-    <string name="already_exists">この%s名は既に使用されています</string>
     <string name="add_exercise_to_group">グループに新しい種目を追加</string>
     <string name="rename_group">グループ名を編集</string>
     <string name="delete_group">グループを削除</string>
-    <string name="delete_group_warning">「%s」を削除しますか？\nこのグループの種目は「グループなし」に移動します。</string>
-    <string name="delete_exercise_warning">「%s」を削除しますか？\nこの種目の記録も全て削除されます。</string>
     <string name="delete_confirmation">削除の確認</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
@@ -75,12 +53,9 @@
     <string name="target_display_unilateral">目標: %1$dセット × %2$d%3$s (片方あたり)</string>
     <string name="right">右</string>
     <string name="left">左</string>
-    <string name="right_value">右 (%s)</string>
     <string name="right_value_short">右: %1$d%2$s</string>
-    <string name="left_value">左 (%s)</string>
     <string name="left_value_short">左: %1$d%2$s</string>
     <string name="set_number_format">%dセット目</string>
-    <string name="set_number_with_unit" formatted="false">%dセット目 (%s)</string>
     <string name="date_format">日付: %s</string>
     <string name="time_format">時刻: %s</string>
     <string name="record_button">記録する</string>
@@ -101,48 +76,26 @@
     <string name="exercise_type_dynamic_description">例：腕立て伏せ、懸垂など。回数で記録します。</string>
     <string name="exercise_type_isometric_description">例：プランク、Lシットなど。保持時間で記録します。</string>
     <!-- View Screen -->
-    <string name="list">一覧</string>
-    <string name="graph">グラフ</string>
-    <string name="challenge">課題</string>
     <string name="no_records_yet">記録がまだありません</string>
-    <string name="tap_to_edit_long_press_for_menu">※ セットをタップで編集、長押しでメニュー</string>
-    <string name="tap_to_edit_hint">※ セットをタップで編集、長押しでメニュー</string>
     <string name="unknown_exercise">不明な種目</string>
     <string name="edit_session_info">セッション情報を編集</string>
     <string name="delete_session">セッションを削除</string>
     <string name="delete_record_warning">「%1$s」の記録を削除しますか？\n%2$s %3$s\n%4$dセット</string>
-    <string name="date">日付</string>
-    <string name="time">時刻</string>
     <string name="edit_set_value">セット値の編集</string>
-    <string name="value">値</string>
     <string name="right_value_label">右の値</string>
     <string name="left_value_label">左の値</string>
-    <string name="edit_session_title">セッション情報の編集</string>
     <string name="show_all">全て表示</string>
     <string name="search_exercise">種目を検索...</string>
-    <string name="filter_bottom_sheet_title">種目を選択</string>
-    <string name="clear_filter">フィルタークリア</string>
     <!-- Period filters -->
-    <string name="period_1week">1週間</string>
-    <string name="period_1month">1ヶ月</string>
-    <string name="period_3months">3ヶ月</string>
     <string name="period_one_week">1週間</string>
     <string name="period_one_month">1ヶ月</string>
     <string name="period_three_months">3ヶ月</string>
     <!-- Graph Screen -->
-    <string name="display_data">表示するデータ</string>
-    <string name="graph_average">平均</string>
-    <string name="graph_max">最大</string>
-    <string name="graph_total">合計</string>
-    <string name="no_exercise_select_one">種目を選択してください\n上部の「種目を選択」から種目を選んでください</string>
     <string name="no_data">データがありません</string>
-    <string name="record_this_exercise">この種目のトレーニングを記録してください</string>
     <string name="record_training_for_exercise">この種目のトレーニングを記録してください</string>
     <string name="statistics_summary">統計サマリー</string>
     <string name="total_sets">総セット数</string>
     <string name="average">平均</string>
-    <string name="highest_record">最高記録</string>
-    <string name="lowest_record">最低記録</string>
     <string name="weekly_change">今週の変化</string>
     <string name="sets_format">%dセット</string>
     <string name="change_format">%+dセット</string>
@@ -153,12 +106,8 @@
     <string name="challenge_best">ベスト</string>
     <string name="challenge_target_label">目標</string>
     <string name="challenge_clear_days">クリア %1$d/%2$d日</string>
-    <string name="last_workout">最終取り組み</string>
-    <string name="last_workout_none">最終取り組み: なし</string>
-    <string name="last_workout_date">最終取り組み: %s</string>
     <string name="no_exercises_available">種目がありません</string>
     <string name="no_exercises_in_period">%sに取り組んだ種目がありません</string>
-    <string name="achievement_rate">%1$d%% (%2$d/%3$d%4$s)</string>
     <!-- Settings Screen -->
     <string name="data_management">データ管理</string>
     <string name="export_data">データをエクスポート</string>
@@ -206,13 +155,9 @@
     <string name="no_exercises_yet_workout">種目がまだありません</string>
     <string name="no_group_workout">グループなし</string>
     <string name="one_sided_workout">片側</string>
-    <string name="target_label">目標:</string>
     <string name="target_sets_label">目標セット数</string>
     <string name="target_reps_label">目標回数</string>
     <string name="target_duration_label">目標秒数</string>
-    <string name="rep_duration_label">1レップの時間（秒）</string>
-    <string name="start_countdown_label">開始カウントダウン（秒）</string>
-    <string name="interval_duration_label">セット間インターバル（秒）</string>
     <!-- Single Workout Setup Redesign -->
     <string name="workout_section_target">目標</string>
     <string name="workout_section_timer">タイマー</string>
@@ -233,10 +178,8 @@
     <string name="set_format_with_side">セット %1$d/%2$d - %3$s</string>
     <string name="side_right">右</string>
     <string name="side_left">左</string>
-    <string name="reps_unit">回</string>
     <string name="pause_button">一時停止</string>
     <string name="resume_button">再開</string>
-    <string name="stop_button">中断</string>
     <string name="save_and_exit_button">保存して終了</string>
     <string name="retry_set_button">やり直し</string>
     <string name="interval_label">インターバル</string>
@@ -252,9 +195,6 @@
     <string name="add_extra_set_confirm">追加</string>
     <string name="set_number">セット %d</string>
     <string name="skipped_label">スキップ</string>
-    <string name="right_label">右:</string>
-    <string name="left_label">左:</string>
-    <string name="ten_seconds">10秒</string>
     <string name="set_label">セット %d</string>
     <string name="right_colon">右:</string>
     <string name="left_colon">左:</string>
@@ -263,8 +203,6 @@
     <!-- Level display -->
     <string name="level_format">Lv.%d</string>
     <!-- Additional missing strings -->
-    <string name="bilateral_label">両側 (Bilateral)</string>
-    <string name="unilateral_label">片側 (Unilateral)</string>
     <!-- Common Labels -->
     <string name="tab_list">一覧</string>
     <string name="tab_graph">グラフ</string>
@@ -281,16 +219,12 @@
     <string name="no_results">結果が見つかりません</string>
     <string name="clear">クリア</string>
     <string name="value_label">値</string>
-    <string name="right_with_unit">右 (%s)</string>
-    <string name="left_with_unit">左 (%s)</string>
-    <string name="target_with_unit">%1$d×%2$d%3$s</string>
     <string name="graph_type_average">平均</string>
     <string name="graph_type_max">最大</string>
     <string name="graph_type_total">合計</string>
     <!-- Additional hardcoded strings that need to be moved -->
     <string name="no_exercises_add_with_plus">種目がまだありません\n右下の + ボタンから追加してください</string>
     <string name="delete_group_confirm_message">「%s」を削除しますか？\nこのグループの種目は「グループなし」に移動します。</string>
-    <string name="delete_exercise_confirm_message">「%s」を削除しますか？\nこの種目の記録も全て削除されます。</string>
     <string name="delete_exercise_confirm_title">「%s」を削除しますか？</string>
     <string name="delete_exercise_record_count">削除される記録: %d件</string>
     <string name="delete_exercise_in_use">この種目を使用中:</string>
@@ -313,46 +247,26 @@
     <string name="save_button">保存</string>
     <string name="create_button">作成</string>
     <string name="add_button">追加</string>
-    <string name="set_number_display">%dセット目</string>
-    <string name="date_with_label">日付: %s</string>
-    <string name="time_with_label">時刻: %s</string>
     <string name="select_exercise_filter">種目を選択</string>
-    <string name="target_display_short">目標: %1$dセット × %2$d%3$s%4$s</string>
     <string name="edit_exercise_title">種目を編集</string>
     <string name="create_group_title">新しいグループを作成</string>
     <string name="add_exercise_title">新しい種目を追加</string>
     <!-- GraphView specific strings -->
-    <string name="graph_tooltip_unilateral">%1$s: 右%2$d%3$s / 左%4$d%5$s</string>
-    <string name="statistics_average_label">平均</string>
-    <string name="statistics_highest_label">最高記録</string>
-    <string name="statistics_lowest_label">最低記録</string>
-    <string name="statistics_total_sets_label">総セット数</string>
-    <string name="statistics_value_format">%1$d%2$s</string>
-    <string name="statistics_sets_count_format">%dセット</string>
     <!-- Additional format strings for remaining hardcoded Japanese -->
-    <string name="multiplication_sign">×</string>
-    <string name="per_side_short">(片方)</string>
     <string name="unknown_short">不明</string>
-    <string name="colon_separator">: </string>
     <!-- Remaining hardcoded strings migration -->
-    <string name="set_ordinal_suffix">%dセット目</string>
-    <string name="target_prefix">目標: </string>
     <!-- ViewScreen & GraphView remaining strings -->
     <string name="right_short">右</string>
     <string name="left_short">左</string>
     <string name="best_record">最高記録</string>
     <string name="worst_record">最低記録</string>
-    <string name="graph_tooltip_bilateral">%1$s: %2$d%3$s</string>
-    <string name="graph_tooltip_unilateral_detail">%1$s: 右%2$d%4$s / 左%3$d%4$s</string>
     <!-- CSV Import/Export -->
     <string name="csv_export_success">%1$sをエクスポートしました: %2$d件</string>
     <string name="csv_template_exported">CSVテンプレートをエクスポートしました: %d種目</string>
     <string name="csv_empty">CSVファイルが空です</string>
     <string name="csv_import_success">%d件の記録をインポートしました</string>
     <string name="csv_import_partial">%1$d件インポート完了、%2$d件エラー</string>
-    <string name="export_csv_template">種目リストをエクスポート</string>
     <string name="csv_import">CSVインポート</string>
-    <string name="csv_template_description">記録入力用テンプレートをダウンロード</string>
     <string name="csv_import_description">グループ、種目、記録を自動判定してインポート</string>
     <!-- CSV Export Dialog -->
     <string name="csv_export">CSV エクスポート</string>
@@ -371,12 +285,6 @@
     <string name="csv_type">種類</string>
     <string name="csv_items">項目数</string>
     <string name="import_action">インポート</string>
-    <string name="csv_import_mode">インポートモード</string>
-    <string name="csv_import_mode_merge">マージ（追加）</string>
-    <string name="csv_import_mode_merge_description">既存データを保持し、新しい項目を追加</string>
-    <string name="csv_import_mode_replace">置き換え</string>
-    <string name="csv_import_mode_replace_description">全ての既存データを削除して置き換え</string>
-    <string name="csv_import_button">インポート</string>
     <!-- CSV Import Result Dialog -->
     <string name="csv_import_completed">インポート完了</string>
     <string name="csv_import_success_label">成功</string>
@@ -391,8 +299,6 @@
     <string name="section_partial_data_management">部分データ管理 (CSV)</string>
     <string name="section_partial_data_management_description">他アプリや表計算ソフトとのデータ連携に。\nグループ、種目、記録をCSVで個別にやり取りできます。</string>
     <!-- Legacy key for compatibility -->
-    <string name="section_add_records">記録の追加 (CSV)</string>
-    <string name="section_add_records_description">既存データに記録を追加。他アプリからの移行に使用。</string>
     <!-- Favorites -->
     <string name="favorite">お気に入り</string>
     <string name="add_to_favorites">お気に入りに追加</string>
@@ -402,13 +308,9 @@
     <string name="section_language_description">アプリの表示言語を変更できます。</string>
     <string name="language_setting">言語 / Language</string>
     <string name="current_language">現在: %s</string>
-    <string name="restart_required">変更を反映するにはアプリを再起動してください</string>
-    <string name="language_changed">言語を変更しました。アプリを再起動してください。</string>
     <!-- Open Source Licenses -->
     <string name="open_source_licenses">オープンソースライセンス</string>
-    <string name="licenses_description">このアプリで使用しているライブラリのライセンスを表示</string>
     <!-- Training Days Display -->
-    <string name="training_days_format">トレーニング%s</string>
     <string name="last_record_short">最後: %s</string>
     <!-- Backup Before Import -->
     <string name="backup_before_import_title">インポート前の確認</string>
@@ -418,22 +320,17 @@
     <string name="backup_saved_successfully">バックアップをDownloadsフォルダに保存しました</string>
     <string name="backup_failed">バックアップに失敗しました</string>
     <!-- Auto-fill Settings -->
-    <string name="settings_autofill_section">オートフィル</string>
-    <string name="settings_autofill_section_description">自動入力アシスタンスを設定します。</string>
     <string name="settings_prefill_previous">前回の記録をプリフィル</string>
     <string name="settings_prefill_previous_description">記録・ワークアウト画面で前回の値を自動入力</string>
     <!-- Workout Settings -->
     <string name="section_workout_settings">ワークアウト設定</string>
     <string name="section_workout_settings_description">ワークアウト画面の動作をカスタマイズできます。</string>
-    <string name="workout_settings">ワークアウト設定</string>
     <string name="start_countdown_setting">開始カウントダウン</string>
     <string name="set_interval_setting">セット間インターバル</string>
     <string name="current_start_countdown">現在: %d秒</string>
     <string name="current_set_interval">現在: %d秒</string>
-    <string name="seconds_suffix">秒</string>
     <string name="start_countdown_dialog_title">開始カウントダウン</string>
     <string name="set_interval_dialog_title">セット間インターバル</string>
-    <string name="seconds_format">%d秒</string>
     <string name="set_interval_note">※種目ごとの設定がある場合はそちらが優先されます。</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">タイマー設定（任意）</string>
@@ -472,7 +369,6 @@
     <string name="avg_weight">平均荷重</string>
     <!-- Apply Exercise Settings Button -->
     <string name="apply_exercise_settings">種目設定を適用</string>
-    <string name="apply_target_values">目標値を反映</string>
     <!-- App Info Section -->
     <string name="section_app_info">アプリ情報</string>
     <string name="section_app_info_description">アプリの情報やライセンスを確認できます。</string>
@@ -481,11 +377,6 @@
     <string name="app_author">作者</string>
     <string name="app_source_code">ソースコード</string>
     <string name="app_feedback">フィードバック</string>
-    <string name="codeberg_main">Codeberg</string>
-    <string name="github_mirror">GitHub</string>
-    <string name="feedback_description">バグ報告・機能要望はこちら</string>
-    <string name="codeberg_description">メインリポジトリ</string>
-    <string name="github_description">ミラーリポジトリ</string>
     <string name="report_issue_github">GitHubで問題を報告する</string>
     <!-- Flash Notification -->
     <string name="flash_notification_setting">LEDフラッシュ通知</string>
@@ -497,11 +388,8 @@
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
     <string name="todo_empty">右下の + で種目を追加</string>
-    <string name="todo_add_exercises">種目を追加</string>
     <string name="todo_all_added">すべての種目が追加済みです</string>
     <string name="todo_drag_to_reorder">ドラッグで並び替え</string>
-    <string name="todo_rec_button">記録</string>
-    <string name="todo_wo_button">WO</string>
     <string name="todo_choose_mode">モード選択</string>
     <string name="todo_mode_record">記録</string>
     <string name="todo_mode_workout">ワークアウト</string>
@@ -515,7 +403,6 @@
     <string name="todo_no_intervals">インターバルがありません</string>
     <string name="todo_add_items">追加</string>
     <string name="todo_repeat_title">繰り返し設定</string>
-    <string name="todo_repeat_clear">解除</string>
     <string name="todo_repeat_save">保存</string>
     <!-- Notification Channel for Workout Timer -->
     <string name="notification_channel_workout">ワークアウトタイマー</string>
@@ -530,8 +417,6 @@
     <string name="edit_program">プログラムを編集</string>
     <string name="program_name">プログラム名</string>
     <string name="program_name_hint">例: 朝のルーティン</string>
-    <string name="timer_on">ON</string>
-    <string name="timer_off">OFF</string>
     <string name="timer_mode_on_description">目標達成で自動完了</string>
     <string name="timer_mode_off_description">完了ボタンで手動完了</string>
     <string name="start_countdown">開始カウントダウン</string>
@@ -548,8 +433,6 @@
     <string name="discard_changes_title">変更を破棄しますか？</string>
     <string name="discard_changes_message">保存されていない変更があります。破棄してもよろしいですか？</string>
     <string name="discard">破棄</string>
-    <string name="program_saved">プログラムを保存しました</string>
-    <string name="program_name_required">プログラム名を入力してください</string>
     <string name="program_exercises_required">種目を1つ以上追加してください</string>
     <string name="program_validation_incomplete_sets_or_value">セット数または目標値が未設定の種目があります</string>
     <string name="exercise_settings">種目設定</string>
@@ -559,41 +442,25 @@
     <string name="program_start">開始</string>
     <!-- Program Execution -->
     <string name="get_ready">準備</string>
-    <string name="executing_label">実行中</string>
-    <string name="complete_button">完了</string>
-    <string name="abort_button">中止</string>
     <string name="program_use_program">プログラム値</string>
     <string name="program_use_challenge">種目値</string>
     <string name="program_use_previous">前回値</string>
     <string name="program_use_program_desc">プログラムで設定したセット数・目標値を使います</string>
     <string name="program_use_challenge_desc">種目の課題設定を使います（未設定の種目はプログラム値）</string>
     <string name="program_use_previous_desc">前回の記録値を使います（記録がない種目はプログラム値）</string>
-    <string name="program_use_all_program">全てプログラム値</string>
-    <string name="program_use_all_challenge">全て課題値</string>
-    <string name="program_previous_value">前回の値を使用</string>
-    <string name="next_exercise_label">次: %s</string>
-    <string name="program_set_label">セット%d:</string>
     <!-- Isometric Manual Mode -->
-    <string name="paused_label">一時停止中</string>
-    <string name="elapsed_target_format">経過: %1$d秒 / 目標: %2$d秒</string>
     <string name="complete_with_time">完了（%d秒で記録）</string>
     <!-- Exit Workout Confirmation -->
     <string name="exit_workout_title">トレーニングを中断しますか？</string>
     <string name="exit_workout_message">保存していないセットは失われます。残すには「保存して終了」を使ってください。</string>
     <string name="exit_workout_confirm">中断する</string>
     <!-- Discard Result Confirmation -->
-    <string name="discard_result_title">記録を破棄しますか？</string>
-    <string name="discard_result_message">トレーニング結果は保存されません。</string>
-    <string name="discard_result_confirm">破棄する</string>
     <!-- Short labels -->
     <string name="interval_short">休憩:</string>
     <string name="sets_label_short">セット:</string>
     <string name="unit_seconds_short">秒</string>
     <string name="record_weight_for_graph">この種目の重量を記録する</string>
-    <string name="target_reps_format">目標: %d回</string>
     <string name="previous_value_format">前回: %s</string>
-    <string name="previous_reps_format">前回: %d回</string>
-    <string name="previous_time_format">前回: %d秒</string>
     <!-- Executing screen: previous/target stats and rep pace -->
     <string name="stat_previous_label">前回</string>
     <string name="stat_target_label">目標</string>
@@ -601,20 +468,14 @@
     <string name="record_confirm_title">記録しますか？</string>
     <string name="record_set_to_target">目標値にセット（%1$d%2$s）</string>
     <!-- Sound Settings (Program Confirm) -->
-    <string name="sound_settings_section">サウンド設定</string>
     <string name="dynamic_count_sound_label">カウント音</string>
     <string name="dynamic_count_sound_description">回数系種目のカウントを補助</string>
     <string name="isometric_interval_sound_label">インターバル通知</string>
     <string name="isometric_interval_sound_description">静止系の種目</string>
-    <string name="interval_seconds_short">%d秒</string>
     <!-- Auto Mode -->
-    <string name="auto_mode_label">自動モード</string>
     <string name="auto_mode">自動モード</string>
-    <string name="auto_mode_description">手動で完了ボタンを押す</string>
     <string name="auto_mode_disabled_hint">カウント音がONの場合のみ使用可</string>
     <!-- Program Settings -->
-    <string name="all_exercises_label">全種目</string>
-    <string name="all_sets_label">全セット</string>
     <string name="auto_fill_target_label">目標値を自動入力</string>
     <string name="program_estimated_time">約%d分</string>
     <!-- Navigation Sheet (Program Execution) -->
@@ -631,12 +492,9 @@
     <string name="nav_save_overwrite_message">保存できるワークアウトは1つだけです。以前の保存データは上書きされます。</string>
     <string name="nav_discard">破棄</string>
     <string name="nav_resume">再開</string>
-    <string name="nav_target">目標</string>
     <string name="nav_skipped">スキップ</string>
     <string name="nav_type_dynamic_short">回数</string>
     <string name="nav_type_isometric_short">静止</string>
-    <string name="nav_edit_target">目標を編集</string>
-    <string name="nav_edit_actual">実績を編集</string>
     <string name="nav_step_decrement">減らす</string>
     <string name="nav_step_increment">増やす</string>
     <!-- Loop Feature -->
@@ -650,7 +508,6 @@
     <string name="loop_round_format">%d ラウンド</string>
     <string name="loop_rest_format">休憩: %d秒</string>
     <string name="loop_current_round">ラウンド %1$d/%2$d</string>
-    <string name="loop_delete_confirm">このループを削除しますか？内部の種目も削除されます。</string>
     <string name="loop_empty">+をタップして種目を追加</string>
     <string name="add_exercise_to_loop">種目を追加</string>
     <string name="move_to_loop">ループに移動</string>
@@ -675,7 +532,6 @@
     <string name="new_interval_program">新規インターバル</string>
     <string name="edit_interval_program">インターバルを編集</string>
     <string name="interval_program_name">プログラム名</string>
-    <string name="interval_program_name_hint">例: HIITサーキットA</string>
     <string name="interval_timer_settings">タイマー設定</string>
     <string name="interval_work_seconds">ワーク時間</string>
     <string name="interval_rest_seconds">レスト時間</string>
@@ -688,7 +544,6 @@
     <string name="interval_delete_program">インターバルを削除</string>
     <string name="interval_delete_program_warning">「%s」を削除しますか？</string>
     <string name="interval_duplicate">複製</string>
-    <string name="interval_duplicated">プログラムを複製しました</string>
     <string name="interval_seconds_suffix">秒</string>
     <string name="interval_rounds_suffix">周</string>
 
@@ -703,8 +558,6 @@
     <string name="interval_next">次</string>
     <string name="interval_next_round">次のラウンド</string>
     <string name="interval_round_complete_format">%d周目完了！</string>
-    <string name="interval_pause">一時停止</string>
-    <string name="interval_resume">再開</string>
     <string name="interval_stop">終了</string>
     <string name="interval_complete_title">完了</string>
     <string name="interval_ended_title">終了</string>
@@ -712,21 +565,15 @@
     <string name="interval_partial_format">%1$d / %2$d 周 + %3$d / %4$d 種目</string>
     <string name="interval_partial_note">（途中終了）</string>
     <string name="interval_exercises_done">実行した種目</string>
-    <string name="interval_round_header_format">%1$d周目</string>
-    <string name="interval_not_executed">（未実行）</string>
-    <string name="interval_skipped_label">（スキップ）</string>
     <string name="interval_comment_label">コメント</string>
     <string name="interval_comment_placeholder">ワークアウトはどうでしたか？</string>
     <string name="interval_save_and_finish">保存して終了</string>
-    <string name="interval_discard_result">保存しない</string>
     <string name="interval_exit_confirm_title">ワークアウトを終了しますか？</string>
     <string name="interval_exit_confirm_message">現在のインターバルワークアウトを終了しますか？</string>
     <string name="interval_unsaved_title">記録が保存されていません</string>
     <string name="interval_unsaved_message">ワークアウトの記録が保存されていません。保存せずに戻りますか？</string>
     <string name="interval_unsaved_leave">戻る</string>
     <string name="interval_settings_format">%1$d秒 × %2$d種目 × %3$d周</string>
-    <string name="interval_record_saved">インターバル記録を保存しました</string>
-    <string name="interval_skipped_format">スキップ: %1$d種目</string>
     <string name="interval_record_rounds_format">%1$d/%2$d周</string>
     <string name="interval_record_complete">完走</string>
     <string name="interval_record_partial">途中終了</string>

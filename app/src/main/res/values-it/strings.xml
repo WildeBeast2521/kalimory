@@ -8,58 +8,36 @@
     <string name="delete">Elimina</string>
     <string name="edit">Modifica</string>
     <string name="add">Aggiungi</string>
-    <string name="create">Crea</string>
     <string name="back">Indietro</string>
     <string name="select">Seleziona</string>
     <string name="settings">Impostazioni</string>
     <string name="comment">Commento</string>
     <string name="comment_optional">Commento (Opzionale)</string>
-    <string name="level">Livello</string>
     <string name="group">Gruppo</string>
     <string name="none">Nessuno</string>
     <string name="type">Tipo</string>
     <string name="menu">Menu</string>
-    <string name="loading">Caricamento...</string>
     <!-- Home Screen -->
-    <string name="bodyweight_training">Allenamento a Corpo Libero</string>
     <string name="home_record">Registra Allenamento</string>
     <string name="home_workout">Allenamento</string>
-    <string name="home_view">Visualizza</string>
-    <string name="view_details">Visualizza dettagli</string>
     <string name="copied_to_clipboard">Copiato negli appunti</string>
     <!-- Create Screen -->
-    <string name="no_exercises">Nessun esercizio ancora\nAggiungine uno usando il pulsante + qui sotto</string>
     <string name="exercise_name">Nome Esercizio</string>
     <string name="set_challenge">Imposta Obiettivo</string>
     <string name="sets_count">Serie</string>
-    <string name="reps_or_seconds">%s</string>
     <!-- Will be replaced with "Reps" or "Seconds" -->
-    <string name="reps">Ripetizioni</string>
-    <string name="seconds">Secondi</string>
-    <string name="per_side">(Per Lato)</string>
     <string name="target_format">%1$d serie × %2$d %3$s</string>
     <string name="target_format_unilateral">%1$d serie × %2$d %3$s (per lato)</string>
     <string name="laterality">Lateralità</string>
-    <string name="bilateral">Bilaterale</string>
-    <string name="unilateral">Unilaterale</string>
-    <string name="bilateral_example">es., Piegamenti, Squat</string>
-    <string name="unilateral_example">es., Pistol Squat, Piegamenti ad un braccio</string>
     <string name="one_sided">Un lato</string>
     <string name="group_optional">Gruppo (Opzionale)</string>
     <string name="new_group_name">Nome Nuovo Gruppo</string>
-    <string name="new_group">+ Nuovo Gruppo</string>
     <string name="no_group">Nessun Gruppo</string>
-    <string name="edit_exercise">Modifica Esercizio</string>
-    <string name="create_new_group">Crea Nuovo Gruppo</string>
-    <string name="add_new_exercise">Aggiungi Nuovo Esercizio</string>
     <string name="create_type">Tipo di Creazione</string>
     <string name="exercise">Esercizio</string>
     <string name="group_name">Nome Gruppo</string>
-    <string name="already_exists">Questo nome %s esiste già</string>
     <string name="rename_group">Rinomina Gruppo</string>
     <string name="delete_group">Elimina Gruppo</string>
-    <string name="delete_group_warning">Eliminare \"%s\"?\nGli esercizi in questo gruppo saranno spostati in \"Nessun Gruppo\".</string>
-    <string name="delete_exercise_warning">Eliminare \"%s\"?\nAnche tutte le registrazioni per questo esercizio saranno eliminate.</string>
     <string name="delete_confirmation">Conferma Eliminazione</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
@@ -75,12 +53,9 @@
     <string name="target_display_unilateral">Obiettivo: %1$d serie × %2$d %3$s (per lato)</string>
     <string name="right">Destra</string>
     <string name="left">Sinistra</string>
-    <string name="right_value">Destra (%s)</string>
     <string name="right_value_short">D: %1$d %2$s</string>
-    <string name="left_value">Sinistra (%s)</string>
     <string name="left_value_short">S: %1$d %2$s</string>
     <string name="set_number_format">Serie %d</string>
-    <string name="set_number_with_unit" formatted="false">Serie %d (%s)</string>
     <string name="date_format">Data: %s</string>
     <string name="time_format">Ora: %s</string>
     <string name="record_button">Registra</string>
@@ -91,48 +66,26 @@
     <string name="exercise_type_dynamic">Dinamico</string>
     <string name="exercise_type_isometric">Isometrico</string>
     <!-- View Screen -->
-    <string name="list">Elenco</string>
-    <string name="graph">Grafico</string>
-    <string name="challenge">Obiettivo</string>
     <string name="no_records_yet">Nessuna registrazione ancora</string>
-    <string name="tap_to_edit_long_press_for_menu">※ Tocca la serie per modificare, premi a lungo per il menu</string>
-    <string name="tap_to_edit_hint">※ Tocca la serie per modificare, premi a lungo per il menu</string>
     <string name="unknown_exercise">Esercizio Sconosciuto</string>
     <string name="edit_session_info">Modifica Info Sessione</string>
     <string name="delete_session">Elimina Sessione</string>
     <string name="delete_record_warning">Eliminare la registrazione \"%1$s\"?\n%2$s %3$s\n%4$d serie</string>
-    <string name="date">Data</string>
-    <string name="time">Ora</string>
     <string name="edit_set_value">Modifica Valore Serie</string>
-    <string name="value">Valore</string>
     <string name="right_value_label">Valore Destra</string>
     <string name="left_value_label">Valore Sinistra</string>
-    <string name="edit_session_title">Modifica Info Sessione</string>
     <string name="show_all">Mostra Tutto</string>
     <string name="search_exercise">Cerca Esercizio...</string>
-    <string name="filter_bottom_sheet_title">Seleziona Esercizio</string>
-    <string name="clear_filter">Cancella Filtro</string>
     <!-- Period filters -->
-    <string name="period_1week">1 Settimana</string>
-    <string name="period_1month">1 Mese</string>
-    <string name="period_3months">3 Mesi</string>
     <string name="period_one_week">1 Settimana</string>
     <string name="period_one_month">1 Mese</string>
     <string name="period_three_months">3 Mesi</string>
     <!-- Graph Screen -->
-    <string name="display_data">Visualizza Dati</string>
-    <string name="graph_average">Media</string>
-    <string name="graph_max">Massimo</string>
-    <string name="graph_total">Totale</string>
-    <string name="no_exercise_select_one">Seleziona un esercizio\nScegli da \"Seleziona Esercizio\" sopra</string>
     <string name="no_data">Nessun dato</string>
-    <string name="record_this_exercise">Registra allenamento per questo esercizio</string>
     <string name="record_training_for_exercise">Registra allenamento per questo esercizio</string>
     <string name="statistics_summary">Riepilogo Statistiche</string>
     <string name="total_sets">Serie Totali</string>
     <string name="average">Media</string>
-    <string name="highest_record">Record Massimo</string>
-    <string name="lowest_record">Record Minimo</string>
     <string name="weekly_change">Variazione Settimanale</string>
     <string name="sets_format">%d serie</string>
     <string name="change_format">%+d serie</string>
@@ -140,12 +93,8 @@
     <string name="unit_seconds">sec</string>
     <!-- Challenge Screen -->
     <string name="no_challenge_set">Nessun Obiettivo Impostato</string>
-    <string name="last_workout">Ultimo Allenamento</string>
-    <string name="last_workout_none">Ultimo Allenamento: Nessuno</string>
-    <string name="last_workout_date">Ultimo Allenamento: %s</string>
     <string name="no_exercises_available">Nessun esercizio disponibile</string>
     <string name="no_exercises_in_period">Nessun esercizio praticato in %s</string>
-    <string name="achievement_rate">%1$d%% (%2$d/%3$d%4$s)</string>
     <!-- Settings Screen -->
     <string name="data_management">Gestione Dati</string>
     <string name="export_data">Esporta Dati</string>
@@ -193,13 +142,9 @@
     <string name="no_exercises_yet_workout">Nessun esercizio ancora</string>
     <string name="no_group_workout">Nessun Gruppo</string>
     <string name="one_sided_workout">Un lato</string>
-    <string name="target_label">Obiettivo:</string>
     <string name="target_sets_label">Serie Obiettivo</string>
     <string name="target_reps_label">Ripetizioni Obiettivo</string>
     <string name="target_duration_label">Durata Obiettivo (sec)</string>
-    <string name="rep_duration_label">Durata Ripetizione (sec)</string>
-    <string name="start_countdown_label">Conto alla Rovescia Inizio (sec)</string>
-    <string name="interval_duration_label">Durata Intervallo (sec)</string>
     <string name="start_workout">Inizia</string>
     <string name="preparing">Preparazione</string>
     <string name="skip_button">Salta</string>
@@ -209,7 +154,6 @@
     <string name="side_left">Sinistra</string>
     <string name="pause_button">Pausa</string>
     <string name="resume_button">Riprendi</string>
-    <string name="stop_button">Ferma</string>
     <string name="retry_set_button">Riprova serie</string>
     <string name="interval_label">Intervallo</string>
     <string name="next_set_format">Prossima: Serie %1$d/%2$d</string>
@@ -220,9 +164,6 @@
     <string name="record_workout">Registra</string>
     <string name="set_number">Serie %d</string>
     <string name="skipped_label">Saltato</string>
-    <string name="right_label">Destra:</string>
-    <string name="left_label">Sinistra:</string>
-    <string name="ten_seconds">10 sec</string>
     <string name="set_label">Serie %d</string>
     <string name="right_colon">Destra:</string>
     <string name="left_colon">Sinistra:</string>
@@ -231,8 +172,6 @@
     <!-- Level display -->
     <string name="level_format">Liv.%d</string>
     <!-- Additional missing strings -->
-    <string name="bilateral_label">Bilaterale</string>
-    <string name="unilateral_label">Unilaterale</string>
     <!-- Common Labels -->
     <string name="tab_list">Elenco</string>
     <string name="tab_graph">Grafico</string>
@@ -241,16 +180,12 @@
     <string name="no_results">Nessun risultato trovato</string>
     <string name="clear">Cancella</string>
     <string name="value_label">Valore</string>
-    <string name="right_with_unit">Destra (%s)</string>
-    <string name="left_with_unit">Sinistra (%s)</string>
-    <string name="target_with_unit">%1$d×%2$d%3$s</string>
     <string name="graph_type_average">Media</string>
     <string name="graph_type_max">Massimo</string>
     <string name="graph_type_total">Totale</string>
     <!-- Additional hardcoded strings that need to be moved -->
     <string name="no_exercises_add_with_plus">Nessun esercizio ancora\nAggiungine uno usando il pulsante + qui sotto</string>
     <string name="delete_group_confirm_message">Eliminare \"%s\"?\nGli esercizi in questo gruppo saranno spostati in \"Nessun Gruppo\".</string>
-    <string name="delete_exercise_confirm_message">Eliminare \"%s\"?\nAnche tutte le registrazioni per questo esercizio saranno eliminate.</string>
     <string name="duplicate_exercise_name">Questo nome di esercizio è già in uso</string>
     <string name="duplicate_group_name">Questo nome di gruppo è già in uso</string>
     <string name="bilateral_with_parenthesis">Bilaterale</string>
@@ -267,46 +202,26 @@
     <string name="save_button">Salva</string>
     <string name="create_button">Crea</string>
     <string name="add_button">Aggiungi</string>
-    <string name="set_number_display">Serie %d</string>
-    <string name="date_with_label">Data: %s</string>
-    <string name="time_with_label">Ora: %s</string>
     <string name="select_exercise_filter">Seleziona Esercizio</string>
-    <string name="target_display_short">Obiettivo: %1$d serie × %2$d%3$s%4$s</string>
     <string name="edit_exercise_title">Modifica Esercizio</string>
     <string name="create_group_title">Crea Nuovo Gruppo</string>
     <string name="add_exercise_title">Aggiungi Nuovo Esercizio</string>
     <!-- GraphView specific strings -->
-    <string name="graph_tooltip_unilateral">%1$s: Destra %2$d%3$s / Sinistra %4$d%5$s</string>
-    <string name="statistics_average_label">Media</string>
-    <string name="statistics_highest_label">Record Massimo</string>
-    <string name="statistics_lowest_label">Record Minimo</string>
-    <string name="statistics_total_sets_label">Serie Totali</string>
-    <string name="statistics_value_format">%1$d%2$s</string>
-    <string name="statistics_sets_count_format">%d serie</string>
     <!-- Additional format strings for remaining hardcoded Japanese -->
-    <string name="multiplication_sign">×</string>
-    <string name="per_side_short">(per lato)</string>
     <string name="unknown_short">Sconosciuto</string>
-    <string name="colon_separator">: </string>
     <!-- Remaining hardcoded strings migration -->
-    <string name="set_ordinal_suffix">Serie %d</string>
-    <string name="target_prefix">Obiettivo: </string>
     <!-- ViewScreen & GraphView remaining strings -->
     <string name="right_short">Destra</string>
     <string name="left_short">Sinistra</string>
     <string name="best_record">Migliore</string>
     <string name="worst_record">Minimo</string>
-    <string name="graph_tooltip_bilateral">%1$s: %2$d%3$s</string>
-    <string name="graph_tooltip_unilateral_detail">%1$s: D%2$d%4$s / S%3$d%4$s</string>
     <!-- CSV Import/Export -->
     <string name="csv_export_success">%1$s esportato: %2$d elementi</string>
     <string name="csv_template_exported">Template CSV esportato: %d esercizi</string>
     <string name="csv_empty">Il file CSV è vuoto</string>
     <string name="csv_import_success">Importate con successo %d registrazioni</string>
     <string name="csv_import_partial">Importate %1$d registrazioni, si sono verificati %2$d errori</string>
-    <string name="export_csv_template">Esporta Template di Input</string>
     <string name="csv_import">Importazione CSV</string>
-    <string name="csv_template_description">Scarica template per la registrazione</string>
     <string name="csv_import_description">Importa gruppi, esercizi o registrazioni (rilevamento automatico)</string>
     <!-- CSV Export Dialog -->
     <string name="csv_export">Esportazione CSV</string>
@@ -325,12 +240,6 @@
     <string name="csv_type">Tipo</string>
     <string name="csv_items">Elementi</string>
     <string name="import_action">Importa</string>
-    <string name="csv_import_mode">Modalità di Importazione</string>
-    <string name="csv_import_mode_merge">Unisci (Aggiungi)</string>
-    <string name="csv_import_mode_merge_description">Mantieni i dati esistenti, aggiungi nuovi elementi</string>
-    <string name="csv_import_mode_replace">Sostituisci</string>
-    <string name="csv_import_mode_replace_description">Elimina tutti i dati esistenti e sostituisci</string>
-    <string name="csv_import_button">Importa</string>
     <!-- CSV Import Result Dialog -->
     <string name="csv_import_completed">Importazione Completata</string>
     <string name="csv_import_success_label">Successo</string>
@@ -345,8 +254,6 @@
     <string name="section_partial_data_management">Gestione Dati Parziale (CSV)</string>
     <string name="section_partial_data_management_description">Per lo scambio di dati con altre app e fogli di calcolo.\nEsporta e importa gruppi, esercizi e registrazioni individualmente tramite CSV.</string>
     <!-- Legacy key for compatibility -->
-    <string name="section_add_records">Aggiungi Registrazioni (CSV)</string>
-    <string name="section_add_records_description">Aggiungi registrazioni ai dati esistenti.\nUtilizza per importare registrazioni analogiche o dati da altre app.</string>
     <!-- Favorites -->
     <string name="favorite">Preferito</string>
     <string name="add_to_favorites">Aggiungi ai preferiti</string>
@@ -356,13 +263,9 @@
     <string name="section_language_description">Cambia la lingua di visualizzazione dell\'app.</string>
     <string name="language_setting">Lingua</string>
     <string name="current_language">Attuale: %s</string>
-    <string name="restart_required">Riavvio necessario per applicare le modifiche</string>
-    <string name="language_changed">Lingua cambiata. Riavvia l\'app.</string>
     <!-- Open Source Licenses -->
     <string name="open_source_licenses">Licenze Open Source</string>
-    <string name="licenses_description">Visualizza le licenze delle librerie usate in questa app</string>
     <!-- Training Days Display -->
-    <string name="training_days_format">Allenamento %s</string>
     <string name="last_record_short">Ultimo: %s</string>
     <!-- Backup Before Import -->
     <string name="backup_before_import_title">Backup Prima dell\'Importazione</string>
@@ -372,22 +275,17 @@
     <string name="backup_saved_successfully">Backup salvato nella cartella Download</string>
     <string name="backup_failed">Backup fallito</string>
     <!-- Auto-fill Settings -->
-    <string name="settings_autofill_section">Compilazione automatica</string>
-    <string name="settings_autofill_section_description">Configura l\'assistenza di inserimento automatico.</string>
     <string name="settings_prefill_previous">Pre-compila record precedente</string>
     <string name="settings_prefill_previous_description">Compila automaticamente i valori dell\'ultima sessione nelle schermate Registra e Allenamento</string>
     <!-- Workout Settings -->
     <string name="section_workout_settings">Impostazioni Allenamento</string>
     <string name="section_workout_settings_description">Personalizza il comportamento della schermata di allenamento.</string>
-    <string name="workout_settings">Impostazioni Allenamento</string>
     <string name="start_countdown_setting">Conto alla Rovescia Inizio</string>
     <string name="set_interval_setting">Intervallo Serie</string>
     <string name="current_start_countdown">Attuale: %d secondi</string>
     <string name="current_set_interval">Attuale: %d secondi</string>
-    <string name="seconds_suffix">secondi</string>
     <string name="start_countdown_dialog_title">Conto alla Rovescia Inizio</string>
     <string name="set_interval_dialog_title">Intervallo Serie</string>
-    <string name="seconds_format">%d secondi</string>
     <string name="set_interval_note">Nota: Le impostazioni specifiche dell\'esercizio hanno la priorità se configurate.</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Impostazioni Timer (Opzionale)</string>
@@ -425,7 +323,6 @@
     <string name="avg_weight">Peso medio</string>
     <!-- Apply Exercise Settings Button -->
     <string name="apply_exercise_settings">Applica Impostazioni Esercizio</string>
-    <string name="apply_target_values">Applica Valori Obiettivo</string>
     <!-- App Info Section -->
     <string name="section_app_info">Info App</string>
     <string name="section_app_info_description">Visualizza informazioni dell\'app e licenze.</string>
@@ -434,11 +331,6 @@
     <string name="app_author">Autore</string>
     <string name="app_source_code">Codice Sorgente</string>
     <string name="app_feedback">Feedback</string>
-    <string name="codeberg_main">Codeberg</string>
-    <string name="github_mirror">GitHub</string>
-    <string name="feedback_description">Segnala bug o richiedi funzionalità</string>
-    <string name="codeberg_description">Repository principale</string>
-    <string name="github_description">Repository mirror</string>
     <string name="report_issue_github">Segnala problema su GitHub</string>
     <!-- Flash Notification -->
     <string name="flash_notification_setting">Notifica Flash LED</string>
@@ -450,11 +342,8 @@
     <!-- To Do Screen -->
     <string name="todo_title">Da fare</string>
     <string name="todo_empty">Tocca + per aggiungere esercizi</string>
-    <string name="todo_add_exercises">Aggiungi esercizi</string>
     <string name="todo_all_added">Tutti gli esercizi sono già nella lista</string>
     <string name="todo_drag_to_reorder">Trascina per riordinare</string>
-    <string name="todo_rec_button">Reg</string>
-    <string name="todo_wo_button">WO</string>
     <string name="todo_choose_mode">Scegli modalità</string>
     <string name="todo_mode_record">Registra</string>
     <string name="todo_mode_workout">Allenamento</string>
@@ -468,7 +357,6 @@
     <string name="todo_no_intervals">Nessun intervallo</string>
     <string name="todo_add_items">Aggiungi elementi</string>
     <string name="todo_repeat_title">Ripeti</string>
-    <string name="todo_repeat_clear">Cancella</string>
     <string name="todo_repeat_save">Salva</string>
     <!-- Notification Channel for Workout Timer -->
     <string name="notification_channel_workout">Timer allenamento</string>
@@ -494,8 +382,6 @@
     <string name="discard_changes_title">Annullare le modifiche?</string>
     <string name="discard_changes_message">Hai modifiche non salvate. Sei sicuro di volerle annullare?</string>
     <string name="discard">Annulla</string>
-    <string name="program_saved">Programma salvato</string>
-    <string name="program_name_required">Nome programma richiesto</string>
     <string name="program_exercises_required">Aggiungi almeno un esercizio</string>
     <string name="target_value_label">Obiettivo</string>
     <string name="interval_seconds_label">Durata riposo (sec.)</string>
@@ -503,25 +389,14 @@
     <string name="exercise_settings">Impostazioni esercizio</string>
     <string name="sets_label">Serie</string>
     <string name="get_ready">Preparati</string>
-    <string name="executing_label">In corso</string>
-    <string name="complete_button">Completa</string>
-    <string name="abort_button">Annulla</string>
     <string name="program_use_program">Programma</string>
     <string name="program_use_challenge">Esercizio</string>
     <string name="program_use_previous">Precedente</string>
-    <string name="program_use_all_program">Tutto Programma</string>
-    <string name="program_use_all_challenge">Tutta Sfida</string>
-    <string name="program_previous_value">Usando valore precedente</string>
-    <string name="next_exercise_label">Prossimo: %s</string>
-    <string name="program_set_label">Serie %d:</string>
     <!-- Exit Workout Confirmation -->
     <string name="exit_workout_title">Uscire dall\'allenamento?</string>
     <string name="exit_workout_message">Le serie non salvate andranno perse. Usa Salva ed esci per conservarle.</string>
     <string name="exit_workout_confirm">Esci</string>
     <!-- Discard Result Confirmation -->
-    <string name="discard_result_title">Scartare i risultati?</string>
-    <string name="discard_result_message">I risultati dell\'allenamento non verranno salvati.</string>
-    <string name="discard_result_confirm">Scarta</string>
     <!-- Missing keys -->
     <string name="interval_short">Riposo:</string>
     <string name="sets_label_short">Serie:</string>
@@ -529,35 +404,21 @@
     <string name="new_program">Nuovo programma</string>
     <string name="single_mode_description">Un esercizio alla volta</string>
     <string name="start_countdown">Conto alla rovescia iniziale</string>
-    <string name="timer_on">ON</string>
-    <string name="timer_off">OFF</string>
     <string name="timer_mode_on_description">Completamento automatico al raggiungimento dell\'obiettivo</string>
     <string name="timer_mode_off_description">Completamento manuale con il pulsante Completa</string>
     <string name="record_weight_for_graph">Registra peso per questo esercizio</string>
-    <string name="target_reps_format">Obiettivo: %d reps</string>
-    <string name="paused_label">In pausa</string>
-    <string name="elapsed_target_format">Trascorso: %1$ds / Obiettivo: %2$ds</string>
     <string name="complete_with_time">Completa (%ds)</string>
     <string name="previous_value_format">Precedente: %s</string>
-    <string name="previous_reps_format">Precedente: %d reps</string>
-    <string name="previous_time_format">Precedente: %ds</string>
-    <string name="reps_unit">reps</string>
     <string name="program_result_zero_warning">Le serie a 0 vengono salvate come saltate e non compaiono nella cronologia.</string>
     <!-- Sound Settings (Program Confirm) -->
-    <string name="sound_settings_section">Impostazioni audio</string>
     <string name="dynamic_count_sound_label">Suono conteggio</string>
     <string name="dynamic_count_sound_description">Assiste il conteggio degli esercizi dinamici</string>
     <string name="isometric_interval_sound_label">Notifica intervallo</string>
     <string name="isometric_interval_sound_description">Esercizi isometrici</string>
-    <string name="interval_seconds_short">%d sec</string>
     <!-- Auto Mode -->
-    <string name="auto_mode_label">Modalità auto</string>
     <string name="auto_mode">Modalità auto</string>
-    <string name="auto_mode_description">Pulsante completamento manuale</string>
     <string name="auto_mode_disabled_hint">Richiede suono conteggio attivo</string>
     <!-- Program Settings -->
-    <string name="all_exercises_label">Tutti gli esercizi</string>
-    <string name="all_sets_label">Tutte le serie</string>
     <string name="auto_fill_target_label">Compila auto valori obiettivo</string>
     <string name="program_estimated_time">~%d min</string>
     <!-- Navigation Sheet (Program Execution) -->
@@ -574,7 +435,6 @@
     <string name="nav_save_overwrite_message">È possibile salvare un solo allenamento alla volta. L\'allenamento precedente verrà sovrascritto.</string>
     <string name="nav_discard">Abbandona</string>
     <string name="nav_resume">Riprendi</string>
-    <string name="nav_target">Obiettivo</string>
     <string name="nav_skipped">Saltato</string>
     <string name="nav_type_dynamic_short">Din</string>
     <string name="nav_type_isometric_short">Iso</string>
@@ -589,7 +449,6 @@
     <string name="loop_round_format">%d Round</string>
     <string name="loop_rest_format">Riposo: %ds</string>
     <string name="loop_current_round">Round %1$d/%2$d</string>
-    <string name="loop_delete_confirm">Eliminare questo ciclo? Anche gli esercizi al suo interno verranno eliminati.</string>
     <string name="loop_empty">Tocca + per aggiungere esercizi</string>
     <string name="add_exercise_to_loop">Aggiungi esercizio</string>
     <string name="move_to_loop">Sposta nel ciclo</string>
@@ -614,7 +473,6 @@
     <string name="new_interval_program">Nuovo intervallo</string>
     <string name="edit_interval_program">Modifica intervallo</string>
     <string name="interval_program_name">Nome del programma</string>
-    <string name="interval_program_name_hint">es., Circuito HIIT A</string>
     <string name="interval_timer_settings">Impostazioni timer</string>
     <string name="interval_work_seconds">Tempo di lavoro</string>
     <string name="interval_rest_seconds">Tempo di riposo</string>
@@ -626,7 +484,6 @@
     <string name="interval_add_exercise">Aggiungi esercizio</string>
     <string name="interval_exercises_required">Aggiungi almeno un esercizio</string>
     <string name="interval_duplicate">Duplica</string>
-    <string name="interval_duplicated">Programma duplicato</string>
     <string name="interval_delete_program">Elimina intervallo</string>
     <string name="interval_delete_program_warning">Eliminare \"%s\"?</string>
     <string name="interval_summary_format">%1$ds/%2$ds · %3$d round</string>
@@ -639,14 +496,8 @@
     <string name="interval_exercise_format">Esercizio %1$d / %2$d</string>
     <string name="interval_round_format">Round %1$d / %2$d</string>
     <string name="interval_round_complete_format">Round %d completato!</string>
-    <string name="interval_round_header_format">Round %1$d</string>
     <string name="interval_next">Prossimo</string>
     <string name="interval_next_round">Prossimo round</string>
-    <string name="interval_skipped_format">Saltati: %1$d esercizi</string>
-    <string name="interval_skipped_label">(saltato)</string>
-    <string name="interval_not_executed">(non eseguito)</string>
-    <string name="interval_pause">Pausa</string>
-    <string name="interval_resume">Riprendi</string>
     <string name="interval_stop">Ferma</string>
     <string name="interval_complete_title">Completato</string>
     <string name="interval_ended_title">Terminato</string>
@@ -655,8 +506,6 @@
     <string name="interval_partial_note">(Interrotto in anticipo)</string>
     <string name="interval_exercises_done">Esercizi</string>
     <string name="interval_save_and_finish">Salva e termina</string>
-    <string name="interval_discard_result">Non salvare</string>
-    <string name="interval_record_saved">Registrazione intervallo salvata</string>
     <string name="interval_exit_confirm_title">Interrompere l\'allenamento?</string>
     <string name="interval_exit_confirm_message">Interrompere l\'allenamento a intervalli in corso?</string>
     <string name="interval_comment_label">Commento</string>
@@ -928,4 +777,61 @@
         <item quantity="many">Completa (%d rip.)</item>
     </plurals>
     <string name="theme_system_short">Sistema</string>
+    <string name="add_exercise_to_group">Aggiungi esercizio al gruppo</string>
+    <string name="add_extra_set_button">Aggiungi un\'altra serie</string>
+    <string name="add_extra_set_confirm">Aggiungi</string>
+    <string name="add_extra_set_title">Aggiungi serie</string>
+    <string name="challenge_best">Migliore</string>
+    <string name="challenge_clear_days">%1$d/%2$d giorni completati</string>
+    <string name="challenge_target_label">Obiettivo</string>
+    <string name="delete_exercise_confirm_title">Eliminare \"%s\"?</string>
+    <string name="delete_exercise_in_use">Questo esercizio è in uso:</string>
+    <string name="delete_exercise_record_count">Registrazioni da eliminare: %d</string>
+    <string name="delete_exercise_removed_note">Verrà rimosso anche da questi.</string>
+    <string name="delete_exercise_used_in_intervals">• Intervalli: %s</string>
+    <string name="delete_exercise_used_in_programs">• Programmi: %s</string>
+    <string name="exercise_type_dynamic_description">es. piegamenti, trazioni. Registrato in ripetizioni.</string>
+    <string name="exercise_type_isometric_description">es. plank, L-sit. Registrato in secondi di tenuta.</string>
+    <string name="legend_weight">Peso</string>
+    <string name="nav_check_set">Segna la serie come completata</string>
+    <string name="nav_step_decrement">Diminuisci</string>
+    <string name="nav_step_increment">Aumenta</string>
+    <string name="nav_uncheck_set">Segna la serie come non completata</string>
+    <string name="previous_value_label">Ultimo</string>
+    <string name="program_use_challenge_desc">Usa l\'obiettivo di ogni esercizio (altrimenti i valori del programma)</string>
+    <string name="program_use_previous_desc">Usa i valori del tuo ultimo allenamento (altrimenti quelli del programma)</string>
+    <string name="program_use_program_desc">Usa le serie e gli obiettivi definiti nel programma</string>
+    <string name="program_validation_incomplete_sets_or_value">Ad alcuni esercizi mancano serie o obiettivo</string>
+    <string name="record_confirm_title">Salvare questa registrazione?</string>
+    <string name="record_done_count">%1$d/%2$d</string>
+    <string name="record_set_to_target">Imposta sull\'obiettivo (%1$d %2$s)</string>
+    <string name="rep_pace_format">Ritmo: %d s / rip.</string>
+    <string name="save_and_exit_button">Salva ed esci</string>
+    <string name="set_complete_button">Completa serie %1$d</string>
+    <string name="set_done_label">FATTO</string>
+    <string name="set_now_badge">ORA</string>
+    <string name="set_status_check_desc">Stato di completamento della serie</string>
+    <string name="set_uncheck_desc">Segna la serie come non completata</string>
+    <string name="stat_previous_label">Precedente</string>
+    <string name="stat_target_label">Obiettivo</string>
+    <string name="stats_exercise_count">Esercizi</string>
+    <string name="stats_total_intervals">Intervalli totali</string>
+    <string name="stats_total_min_sec_format">%1$d min %2$d s</string>
+    <string name="stats_total_minutes_format">%d min</string>
+    <string name="stats_total_reps">Ripetizioni totali</string>
+    <string name="stats_total_seconds_format">%d s</string>
+    <string name="stats_total_sets">Serie totali</string>
+    <string name="stats_total_time">Tempo totale</string>
+    <string name="unit_cm">cm</string>
+    <string name="unit_kg">kg</string>
+    <string name="workout_label_assistance">Assistenza</string>
+    <string name="workout_label_distance">Distanza</string>
+    <string name="workout_label_interval">Riposo tra le serie</string>
+    <string name="workout_label_rep_duration">Durata per ripetizione</string>
+    <string name="workout_label_start_countdown">Conto alla rovescia</string>
+    <string name="workout_label_weight">Peso</string>
+    <string name="workout_optional_tag">Facoltativo</string>
+    <string name="workout_section_load">Carico e distanza</string>
+    <string name="workout_section_target">Obiettivo</string>
+    <string name="workout_section_timer">Timer</string>
 </resources>
