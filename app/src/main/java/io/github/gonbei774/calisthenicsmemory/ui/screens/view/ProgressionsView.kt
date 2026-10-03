@@ -1,7 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import androidx.compose.foundation.layout.Box
-import io.github.gonbei774.calisthenicsmemory.ui.navigation.sharedChainTitle
+import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -91,12 +91,11 @@ private fun ChainCard(progress: ChainProgress, onClick: () -> Unit) {
                         stringResource(progress.chain.name),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.sharedChainTitle(progress.chain.id),
                     )
                 }
                 Text(
                     stringResource(R.string.progressions_step_of, steps.indexOf(progress.step) + 1, steps.size),
-                    style = MaterialTheme.typography.labelLarge.copy(fontFeatureSettings = "tnum"),
+                    style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -111,7 +110,10 @@ private fun ChainCard(progress: ChainProgress, onClick: () -> Unit) {
             )
             Row {
                 Text(
-                    progress.lastSession?.let { stringResource(R.string.progressions_last, it.values.joinToString(", ")) }
+                    progress.lastSession?.let { session ->
+                        val unit = if (progress.step.kind == ExerciseKind.ISOMETRIC) " " + stringResource(R.string.unit_seconds_short) else ""
+                        stringResource(R.string.progressions_last, session.values.joinToString(", ") + unit)
+                    }
                         ?: stringResource(R.string.progressions_not_trained),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,

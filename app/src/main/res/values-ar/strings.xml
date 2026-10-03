@@ -149,7 +149,7 @@
     <string name="guide_place_today">أسبوعك في لمحة، وما التالي، وما أنجزته اليوم.</string>
     <string name="guide_place_train">ابدأ تمرينًا: تمرين واحد أو برنامج أو فترات. ويمكنك أيضًا تسجيل تمرين أديته من قبل.</string>
     <string name="guide_place_progress">سجلّك في تقويم وقائمة ورسوم بيانية، مع تدرّجاتك.</string>
-    <string name="guide_place_library">تمارينك وبرامجك وروتينات الفترات، والإعدادات.</string>
+    <string name="guide_place_library">تمارينك وبرامجك وفتراتك، وقائمة المهام، وكتالوج التمارين، والإعدادات.</string>
     <string name="guide_workout_title">كيف يسير التمرين</string>
     <string name="guide_workout_sets_title">مجموعة تلو الأخرى</string>
     <string name="guide_workout_sets">عُدّ تكراراتك أو شغّل مؤقتًا، مع راحة بين المجموعات.</string>
@@ -222,4 +222,26 @@
     <string name="progressions_ready">جاهز للخطوة التالية</string>
     <string name="progressions_next">التالي: %1$s</string>
     <string name="progressions_top">قمة هذه السلسلة</string>
+    <plurals name="exercise_count">
+        <item quantity="zero">%d تمرين</item>
+        <item quantity="one">تمرين واحد</item>
+        <item quantity="two">تمرينان</item>
+        <item quantity="few">%d تمارين</item>
+        <item quantity="many">%d تمرينًا</item>
+        <item quantity="other">%d تمرين</item>
+    </plurals>
+    <plurals name="complete_reps">
+        <item quantity="zero">إكمال (%d تكرار)</item>
+        <item quantity="one">إكمال (تكرار واحد)</item>
+        <item quantity="two">إكمال (تكراران)</item>
+        <item quantity="few">إكمال (%d تكرارات)</item>
+        <item quantity="many">إكمال (%d تكرارًا)</item>
+        <item quantity="other">إكمال (%d تكرار)</item>
+    </plurals>
+    <string name="exit_workout_message">ستُفقد المجموعات غير المحفوظة. استخدم «حفظ وخروج» للاحتفاظ بها.</string>
+    <string name="new_interval_program">فاصل جديد</string>
+    <string name="edit_interval_program">تعديل الفاصل</string>
+    <string name="interval_delete_program">حذف الفاصل</string>
+    <string name="theme_system">حسب النظام</string>
+    <string name="theme_system_short">النظام</string>
 </resources>

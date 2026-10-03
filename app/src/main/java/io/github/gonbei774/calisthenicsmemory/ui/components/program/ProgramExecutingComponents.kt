@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -146,7 +147,7 @@ internal fun ProgramExecutingStepDynamicManual(
         // 完了ボタン（押下で記録確認シートを表示）
         var showConfirm by remember(currentSetIndex) { mutableStateOf(false) }
         WorkoutPrimaryButton(
-            text = stringResource(R.string.complete_with_reps, recordValue),
+            text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
             onClick = {
                 isPaused = true
                 showConfirm = true
@@ -548,7 +549,7 @@ internal fun ProgramExecutingStepDynamicAuto(
 
         // 完了ボタン（早期完了用）
         WorkoutPrimaryButton(
-            text = stringResource(R.string.complete_with_reps, recordValue),
+            text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
             onClick = { onSetComplete(recordValue) },
         )
 
@@ -604,7 +605,7 @@ internal fun ProgramExecutingStepDynamicSimple(
 
         // 完了ボタン
         WorkoutPrimaryButton(
-            text = stringResource(R.string.complete_with_reps, repsCount),
+            text = pluralStringResource(R.plurals.complete_reps, repsCount, repsCount),
             onClick = { onSetComplete(repsCount) },
         )
 

@@ -29,7 +29,13 @@ data class IntervalSessionRow(
  * either store. [v2SessionId] is set for v2 workouts; edits and deletes go to that session, and
  * [record]'s id is then meaningless.
  */
-data class IntervalHistoryItem(val record: IntervalRecord, val v2SessionId: Long? = null)
+data class IntervalHistoryItem(val record: IntervalRecord, val v2SessionId: Long? = null) {
+    /** Work intervals done, each counted as one set, so weekly totals include interval workouts. */
+    val completedSets: Int get() {
+        val exerciseCount = runCatching { Json.decodeFromString(ListSerializer(String.serializer()), record.exercisesJson).size }.getOrDefault(0)
+        return record.completedRounds * exerciseCount + record.completedExercisesInLastRound
+    }
+}
 
 /** Legacy interval records plus v2 interval workouts, each shown once. */
 object IntervalHistory {

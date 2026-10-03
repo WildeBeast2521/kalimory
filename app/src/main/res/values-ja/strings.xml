@@ -10,7 +10,6 @@
     <string name="add">追加</string>
     <string name="create">作成</string>
     <string name="back">戻る</string>
-    <string name="close">閉じる</string>
     <string name="select">選択</string>
     <string name="settings">設定</string>
     <string name="comment">コメント</string>
@@ -62,7 +61,6 @@
     <string name="delete_group_warning">「%s」を削除しますか？\nこのグループの種目は「グループなし」に移動します。</string>
     <string name="delete_exercise_warning">「%s」を削除しますか？\nこの種目の記録も全て削除されます。</string>
     <string name="delete_confirmation">削除の確認</string>
-    <string name="exercises_count">(%d種目)</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">トレーニング記録</string>
@@ -229,7 +227,6 @@
     <string name="unit_cm">cm</string>
     <string name="unit_kg">kg</string>
     <string name="start_workout">開始</string>
-    <string name="back_button">戻る</string>
     <string name="preparing">準備中</string>
     <string name="skip_button">スキップ</string>
     <string name="set_format">セット %1$d/%2$d</string>
@@ -258,7 +255,6 @@
     <string name="right_label">右:</string>
     <string name="left_label">左:</string>
     <string name="ten_seconds">10秒</string>
-    <string name="workout_mode_comment">ワークアウトモード</string>
     <string name="set_label">セット %d</string>
     <string name="right_colon">右:</string>
     <string name="left_colon">左:</string>
@@ -344,7 +340,6 @@
     <!-- ViewScreen & GraphView remaining strings -->
     <string name="right_short">右</string>
     <string name="left_short">左</string>
-    <string name="sets_suffix">セット</string>
     <string name="best_record">最高記録</string>
     <string name="worst_record">最低記録</string>
     <string name="graph_tooltip_bilateral">%1$s: %2$d%3$s</string>
@@ -404,7 +399,7 @@
     <string name="remove_from_favorites">お気に入りから削除</string>
     <!-- Language Settings -->
     <string name="section_language">言語設定</string>
-    <string name="section_language_description">アプリの表示言語を変更できます。\nアプリを再起動すると反映されます。</string>
+    <string name="section_language_description">アプリの表示言語を変更できます。</string>
     <string name="language_setting">言語 / Language</string>
     <string name="current_language">現在: %s</string>
     <string name="restart_required">変更を反映するにはアプリを再起動してください</string>
@@ -438,10 +433,8 @@
     <string name="seconds_suffix">秒</string>
     <string name="start_countdown_dialog_title">開始カウントダウン</string>
     <string name="set_interval_dialog_title">セット間インターバル</string>
-    <string name="enter_seconds">秒数を入力</string>
     <string name="seconds_format">%d秒</string>
     <string name="set_interval_note">※種目ごとの設定がある場合はそちらが優先されます。</string>
-    <string name="enter_seconds_max">秒数を入力（最大 %d）</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">タイマー設定（任意）</string>
     <string name="timer_settings_description">この種目のタイマーを設定します。空欄の場合はデフォルト設定を使用します。</string>
@@ -509,7 +502,6 @@
     <string name="todo_drag_to_reorder">ドラッグで並び替え</string>
     <string name="todo_rec_button">記録</string>
     <string name="todo_wo_button">WO</string>
-    <string name="todo_start_button">開始</string>
     <string name="todo_choose_mode">モード選択</string>
     <string name="todo_mode_record">記録</string>
     <string name="todo_mode_workout">ワークアウト</string>
@@ -521,7 +513,6 @@
     <string name="todo_delete_confirm_message">\"%s\" をToDoから削除しますか？</string>
     <string name="todo_no_programs">プログラムがありません</string>
     <string name="todo_no_intervals">インターバルがありません</string>
-    <string name="todo_group_exercise_count">%d 種目</string>
     <string name="todo_add_items">追加</string>
     <string name="todo_repeat_title">繰り返し設定</string>
     <string name="todo_repeat_clear">解除</string>
@@ -546,7 +537,6 @@
     <string name="start_countdown">開始カウントダウン</string>
     <string name="program_exercises">種目</string>
     <string name="add_exercise_to_program">種目を追加</string>
-    <string name="program_exercise_count">%d種目</string>
     <string name="program_sets_format">%dセット</string>
     <string name="program_target_format">%1$d%2$s</string>
     <string name="program_interval_format">休憩 %d秒</string>
@@ -589,7 +579,7 @@
     <string name="complete_with_time">完了（%d秒で記録）</string>
     <!-- Exit Workout Confirmation -->
     <string name="exit_workout_title">トレーニングを中断しますか？</string>
-    <string name="exit_workout_message">進捗は保存されません。</string>
+    <string name="exit_workout_message">保存していないセットは失われます。残すには「保存して終了」を使ってください。</string>
     <string name="exit_workout_confirm">中断する</string>
     <!-- Discard Result Confirmation -->
     <string name="discard_result_title">記録を破棄しますか？</string>
@@ -600,7 +590,6 @@
     <string name="sets_label_short">セット:</string>
     <string name="unit_seconds_short">秒</string>
     <string name="record_weight_for_graph">この種目の重量を記録する</string>
-    <string name="complete_with_reps">完了 (%d回)</string>
     <string name="target_reps_format">目標: %d回</string>
     <string name="previous_value_format">前回: %s</string>
     <string name="previous_reps_format">前回: %d回</string>
@@ -682,9 +671,9 @@
     <!-- Interval Mode -->
     <string name="interval_list_title">インターバル</string>
     <string name="interval_empty">インターバルプログラムがありません\n+ をタップして作成</string>
-    <string name="interval_summary_format">%1$d種目 · %2$d秒/%3$d秒 · %4$d周</string>
-    <string name="new_interval_program">新規プログラム</string>
-    <string name="edit_interval_program">プログラムを編集</string>
+    <string name="interval_summary_format">%1$d秒/%2$d秒 · %3$d周</string>
+    <string name="new_interval_program">新規インターバル</string>
+    <string name="edit_interval_program">インターバルを編集</string>
     <string name="interval_program_name">プログラム名</string>
     <string name="interval_program_name_hint">例: HIITサーキットA</string>
     <string name="interval_timer_settings">タイマー設定</string>
@@ -696,9 +685,8 @@
     <string name="interval_add_exercise">種目を追加</string>
     <string name="interval_exercises_required">種目を1つ以上追加してください</string>
     <string name="interval_no_record_note">※ このモードではレップ数・保持時間は記録されません</string>
-    <string name="interval_delete_program">プログラムを削除</string>
+    <string name="interval_delete_program">インターバルを削除</string>
     <string name="interval_delete_program_warning">「%s」を削除しますか？</string>
-    <string name="interval_start">開始</string>
     <string name="interval_duplicate">複製</string>
     <string name="interval_duplicated">プログラムを複製しました</string>
     <string name="interval_seconds_suffix">秒</string>
@@ -706,8 +694,6 @@
 
     <!-- Interval Execution -->
     <string name="interval_total_time">推定時間</string>
-    <string name="interval_total_time_format">約%1$d分%2$d秒</string>
-    <string name="interval_start_workout">ワークアウト開始</string>
     <string name="interval_get_ready">準備</string>
     <string name="interval_work_label">ワーク</string>
     <string name="interval_rest_label">レスト</string>
@@ -745,7 +731,6 @@
     <string name="interval_record_complete">完走</string>
     <string name="interval_record_partial">途中終了</string>
     <string name="interval_record_settings_format">ワーク%1$d秒 / レスト%2$d秒 / 周間レスト%3$d秒</string>
-    <string name="interval_record_exercises_count">%1$d種目</string>
     <string name="interval_delete_record_confirm">「%1$s」のインターバル記録（%2$s）を削除しますか？</string>
 
     <!-- Share export/import -->
@@ -773,7 +758,6 @@
     <string name="share_no_exercises">種目なし</string>
     <string name="share_exercise_auto_included">プログラム/インターバルから自動追加</string>
     <string name="share_ungrouped">グループなし</string>
-    <string name="share_program_exercises_format">%1$d 種目</string>
     <string name="share_program_loops_format">、%1$d ループ</string>
     <string name="share_import_dialog_title">共有JSONファイルのインポート</string>
     <string name="share_import_preview_new">新規（追加されます）</string>
@@ -919,7 +903,7 @@
     <string name="guide_place_today">今週の様子、次にやること、今日やったこと。</string>
     <string name="guide_place_train">ワークアウトを開始：1 種目、プログラム、インターバル。過去のワークアウトも記録できます。</string>
     <string name="guide_place_progress">履歴をカレンダー、リスト、グラフで。プログレッションもここに。</string>
-    <string name="guide_place_library">種目、プログラム、インターバル、そして設定。</string>
+    <string name="guide_place_library">種目、プログラム、インターバル、To Do、種目カタログ、そして設定。</string>
     <string name="guide_workout_title">ワークアウトの流れ</string>
     <string name="guide_workout_sets_title">セットごとに</string>
     <string name="guide_workout_sets">回数を数えるかタイマーを使い、セット間には休憩が入ります。</string>
@@ -992,4 +976,11 @@
     <string name="progressions_ready">次のステップに進めます</string>
     <string name="progressions_next">次: %1$s</string>
     <string name="progressions_top">このチェーンの最上位</string>
+    <plurals name="exercise_count">
+        <item quantity="other">%d種目</item>
+    </plurals>
+    <plurals name="complete_reps">
+        <item quantity="other">完了 (%d回)</item>
+    </plurals>
+    <string name="theme_system_short">システム</string>
 </resources>

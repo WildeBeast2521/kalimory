@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.workout.restDialProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RestToolbar
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.SetDoneBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.TimerDial
@@ -29,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
-import io.github.gonbei774.calisthenicsmemory.ui.components.common.ProgramCircularTimer
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.util.FlashController
 import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
@@ -176,8 +176,7 @@ internal fun ProgramIntervalStep(
     }
     val remainingMillis = totalInterval * 1_000L + extraMillis - stopwatch.elapsedMillis
     val remainingTime = countdownSeconds(remainingMillis)
-    val totalMillis = totalInterval * 1_000L + extraMillis
-    val progress = if (totalMillis > 0) remainingMillis.coerceAtLeast(0).toFloat() / totalMillis else 0f
+    val progress = restDialProgress(totalInterval * 1_000L, remainingMillis)
 
     Column(
         modifier = Modifier
@@ -196,7 +195,7 @@ internal fun ProgramIntervalStep(
         Spacer(modifier = Modifier.weight(1f))
 
         WorkoutStatus(
-            stringResource(if (hasLoopRest) R.string.loop_round_rest else R.string.interval_label),
+            stringResource(if (hasLoopRest) R.string.loop_round_rest else R.string.interval_rest_label),
             WorkoutTone.rest
         )
         if (currentSet.loopId != null && currentSet.totalRounds > 1) {

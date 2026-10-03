@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.material3.PrimaryTabRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import androidx.compose.material3.LinearWavyProgressIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -26,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -69,6 +73,8 @@ sealed class RecordItem(val date: String, val time: String) {
     // v2SessionId is set for a v2 interval workout; edits and deletes then go to that session.
     data class Interval(val record: IntervalRecord, val v2SessionId: Long? = null) : RecordItem(record.date, record.time)
 }
+
+private const val PROGRESSIONS_PAGE = 3
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -220,28 +226,30 @@ fun ViewScreen(
                 stringResource(R.string.tab_graph),
                 stringResource(R.string.tab_progressions)
             )
-            BoxWithConstraints {
-                val minTabWidth = maxWidth / tabTitles.size
-                ScrollableTabRow(
-                    selectedTabIndex = pagerState.currentPage,
-                    containerColor = MaterialTheme.colorScheme.background,
-                    contentColor = MaterialTheme.colorScheme.onSurface,
-                    edgePadding = 0.dp
-                ) {
-                    tabTitles.forEachIndexed { index, title ->
-                        Tab(
-                            selected = pagerState.currentPage == index,
-                            onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-                            modifier = Modifier.widthIn(min = minTabWidth),
-                            text = {
-                                Text(title, style = MaterialTheme.typography.titleSmall, maxLines = 1)
-                            }
-                        )
-                    }
+            // Four fixed tabs, so none is clipped at the screen edge; long labels shrink to fit.
+            PrimaryTabRow(
+                selectedTabIndex = pagerState.currentPage,
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onSurface,
+            ) {
+                tabTitles.forEachIndexed { index, title ->
+                    Tab(
+                        selected = pagerState.currentPage == index,
+                        onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+                        text = {
+                            Text(
+                                title,
+                                style = MaterialTheme.typography.titleSmall,
+                                maxLines = 1,
+                                autoSize = TextAutoSize.StepBased(minFontSize = 11.sp, maxFontSize = 14.sp),
+                            )
+                        }
+                    )
                 }
             }
 
-            // フィルターチップ（全タブで表示、一行に並べる）
+            // Exercise and period filters apply to the record tabs, not to Progressions.
+            AnimatedVisibility(visible = pagerState.targetPage != PROGRESSIONS_PAGE) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 color = MaterialTheme.colorScheme.background
@@ -316,6 +324,8 @@ fun ViewScreen(
                         fill = false,
                     )
                 }
+            }
+
             }
 
             // モードに応じた表示（スワイプ対応）
@@ -820,7 +830,7 @@ fun FilterBottomSheetContent(
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
-                                        text = "(${group.exercises.size})",
+                                        text = pluralStringResource(R.plurals.exercise_count, group.exercises.size, group.exercises.size),
                                         fontSize = 14.sp,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -976,7 +986,7 @@ fun FilterTextItem(
 
             if (isSelected) {
                 Icon(
-                    imageVector = AppIcons.Search,
+                    imageVector = AppIcons.Check,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary
                 )
@@ -1160,7 +1170,7 @@ fun ChallengeExerciseCard(
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.large,
         onClick = onClick
     ) {
         Column(

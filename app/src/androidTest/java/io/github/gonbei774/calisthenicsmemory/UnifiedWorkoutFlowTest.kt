@@ -328,8 +328,8 @@ class UnifiedWorkoutFlowTest {
     @Test
     fun intervalWorkoutIsSavedAsOneSession() = runBlocking {
         openFromToday(TodoTask.TYPE_INTERVAL, intervalProgramId, intervalName())
-        waitForText(text(R.string.interval_start_workout))
-        rule.onNodeWithText(text(R.string.interval_start_workout)).performClick()
+        waitForText(text(R.string.start_workout))
+        rule.onNodeWithText(text(R.string.start_workout)).performClick()
         rule.waitUntil(INTERVAL_TIMEOUT_MS) {
             rule.onAllNodesWithText(text(R.string.interval_save_and_finish)).fetchSemanticsNodes().isNotEmpty()
         }

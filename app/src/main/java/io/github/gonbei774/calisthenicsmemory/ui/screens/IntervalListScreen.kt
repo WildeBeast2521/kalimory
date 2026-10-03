@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.AppFab
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -57,11 +60,7 @@ fun IntervalListScreen(
         modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
         topBar = { CalmTopBar(title = stringResource(R.string.interval_list_title), onBack = onNavigateBack, scrollBehavior = topBarScroll) },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { onNavigateToEdit(null) }
-            ) {
-                Icon(AppIcons.Add, contentDescription = stringResource(R.string.new_interval_program), tint = MaterialTheme.colorScheme.onSurface)
-            }
+            AppFab(onClick = { onNavigateToEdit(null) }, contentDescription = stringResource(R.string.new_interval_program))
         }
     ) { paddingValues ->
         if (programs.isEmpty()) {
@@ -197,24 +196,7 @@ private fun IntervalProgramListItem(
 
     SwipeToDismissBox(
         state = dismissState,
-        backgroundContent = {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = MaterialTheme.colorScheme.error,
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .padding(horizontal = 16.dp),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                Icon(
-                    AppIcons.Delete,
-                    contentDescription = stringResource(R.string.delete),
-                    tint = MaterialTheme.colorScheme.onError
-                )
-            }
-        },
+        backgroundContent = { SwipeToDeleteBackground(dismissState, MaterialTheme.shapes.large) },
         enableDismissFromStartToEnd = false,
         enableDismissFromEndToStart = true
     ) {
@@ -227,7 +209,7 @@ private fun IntervalProgramListItem(
                         onLongClick = { showContextMenu = true }
                     ),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                shape = RoundedCornerShape(12.dp)
+                shape = MaterialTheme.shapes.large
             ) {
                 Row(
                     modifier = Modifier
@@ -268,25 +250,7 @@ private fun IntervalProgramListItem(
                     }
 
                     // Execute button
-                    Button(
-                        onClick = onExecute,
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                        shape = RoundedCornerShape(8.dp),
-                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                        modifier = Modifier.height(36.dp)
-                    ) {
-                        Icon(
-                            AppIcons.Play,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = stringResource(R.string.interval_start),
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
+                    StartButton(onClick = onExecute)
                 }
             }
 

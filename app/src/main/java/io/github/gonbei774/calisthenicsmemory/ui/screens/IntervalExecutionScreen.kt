@@ -1,6 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.compose.material3.LoadingIndicator
+import io.github.gonbei774.calisthenicsmemory.util.ProgramTimeEstimator
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.OutlinedButton
@@ -284,8 +287,9 @@ fun IntervalExecutionScreen(
                     val now = clock.nowMillis()
                     val caughtUp = WorkoutReducer.reduce(current, WorkoutEvent.Tick(now)).state
                     val step = IntervalWorkoutPlan.describe(caughtUp.currentStep, exercises.size)
-                    val (completedRounds, completedExInLast) =
-                        IntervalWorkoutPlan.progressWhenStopped(step, exercises.size)
+                    val (completedRounds, completedExInLast) = IntervalWorkoutPlan.normalized(
+                        IntervalWorkoutPlan.progressWhenStopped(step, exercises.size), exercises.size,
+                    )
                     workout = WorkoutReducer.reduce(caughtUp, WorkoutEvent.Abandon(now)).state
                     clearCheckpoint()
 
@@ -533,7 +537,8 @@ fun IntervalExecutionScreen(
                     remainingSeconds = remainingSeconds,
                     totalSeconds = totalSeconds,
                     isPaused = isPaused,
-                    onPauseToggle = ::togglePause
+                    onPauseToggle = ::togglePause,
+                    onSkip = ::skipCurrentStep,
                 )
                 IntervalStepType.WORK -> IntervalTimerContent(
                     program = program!!,
@@ -670,45 +675,11 @@ private fun IntervalConfirmContent(
 ) {
     val cs = MaterialTheme.colorScheme
     val exerciseCount = exercises.size
-    val perRoundSeconds = exerciseCount * program.workSeconds +
-            (exerciseCount - 1).coerceAtLeast(0) * program.restSeconds
-    val totalSeconds = perRoundSeconds * program.rounds +
-            program.roundRestSeconds * (program.rounds - 1).coerceAtLeast(0)
-    val totalMinutes = totalSeconds / 60
-    val totalRemainSeconds = totalSeconds % 60
+    // Rounded like every other estimate in the app ("~4 min").
+    val estimatedMinutes = ProgramTimeEstimator.formatMinutes(ProgramTimeEstimator.estimateIntervalSeconds(program, exerciseCount))
 
     Scaffold(
-        topBar = {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                color = cs.background
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            AppIcons.Back,
-                            contentDescription = stringResource(R.string.back),
-                            tint = cs.onSurface
-                        )
-                    }
-                    Text(
-                        text = program.name,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = cs.onSurface,
-                        modifier = Modifier.weight(1f)
-                    )
-                    // The large Start button at the bottom is the one way to begin.
-                }
-            }
-        }
+        topBar = { CalmTopBar(title = program.name, onBack = onBack, scrollBehavior = null) }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
@@ -722,7 +693,7 @@ private fun IntervalConfirmContent(
             item {
                 Card(
                     colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = MaterialTheme.shapes.large
                 ) {
                     Column(
                         modifier = Modifier
@@ -734,10 +705,13 @@ private fun IntervalConfirmContent(
                             label = stringResource(R.string.interval_work_seconds),
                             value = stringResource(R.string.value_with_unit, program.workSeconds, stringResource(R.string.interval_seconds_suffix))
                         )
-                        ConfirmSettingRow(
-                            label = stringResource(R.string.interval_rest_seconds),
-                            value = stringResource(R.string.value_with_unit, program.restSeconds, stringResource(R.string.interval_seconds_suffix))
-                        )
+                        // Rest between exercises only exists with two or more, as in the editor.
+                        if (exerciseCount > 1) {
+                            ConfirmSettingRow(
+                                label = stringResource(R.string.interval_rest_seconds),
+                                value = stringResource(R.string.value_with_unit, program.restSeconds, stringResource(R.string.interval_seconds_suffix))
+                            )
+                        }
                         ConfirmSettingRow(
                             label = stringResource(R.string.interval_rounds),
                             value = stringResource(R.string.value_with_unit, program.rounds, stringResource(R.string.interval_rounds_suffix))
@@ -754,11 +728,7 @@ private fun IntervalConfirmContent(
                         )
                         ConfirmSettingRow(
                             label = stringResource(R.string.interval_total_time),
-                            value = stringResource(
-                                R.string.interval_total_time_format,
-                                totalMinutes,
-                                totalRemainSeconds
-                            ),
+                            value = stringResource(R.string.program_estimated_time, estimatedMinutes),
                             isBold = true
                         )
                     }
@@ -779,7 +749,7 @@ private fun IntervalConfirmContent(
             itemsIndexed(exercises) { index, exercise ->
                 Card(
                     colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = MaterialTheme.shapes.large
                 ) {
                     Row(
                         modifier = Modifier
@@ -817,21 +787,11 @@ private fun IntervalConfirmContent(
             // Start button
             item {
                 Spacer(modifier = Modifier.height(8.dp))
-                Button(
+                WorkoutPrimaryButton(
+                    text = stringResource(R.string.start_workout),
                     onClick = onStart,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = cs.tertiary),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.interval_start_workout),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = cs.onTertiary
-                    )
-                }
+                    icon = AppIcons.Play,
+                )
             }
         }
     }
@@ -872,7 +832,8 @@ private fun IntervalPrepareContent(
     remainingSeconds: Int,
     totalSeconds: Int,
     isPaused: Boolean,
-    onPauseToggle: () -> Unit
+    onPauseToggle: () -> Unit,
+    onSkip: () -> Unit,
 ) {
     val cs = MaterialTheme.colorScheme
     val progress = remainingSeconds.toFloat() / totalSeconds
@@ -896,6 +857,9 @@ private fun IntervalPrepareContent(
             paused = isPaused,
             onToggle = onPauseToggle,
         )
+        Spacer(modifier = Modifier.height(Spacing.l))
+        // Skip, as on every other "Get ready".
+        WorkoutSkipButton(onSkip)
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -903,7 +867,7 @@ private fun IntervalPrepareContent(
         if (firstExercise != null) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
-                shape = RoundedCornerShape(12.dp),
+                shape = MaterialTheme.shapes.large,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
@@ -996,8 +960,6 @@ private fun IntervalTimerContent(
             accent = phaseColor,
             paused = isPaused,
             onToggle = onPauseToggle,
-            // Smaller than elsewhere: this screen also shows what comes next and two actions.
-            size = 220.dp,
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -1013,7 +975,7 @@ private fun IntervalTimerContent(
         if (nextPreview != null) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
-                shape = RoundedCornerShape(12.dp),
+                shape = MaterialTheme.shapes.large,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
@@ -1158,7 +1120,7 @@ private fun IntervalCompleteContent(
             item {
                 Card(
                     colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = MaterialTheme.shapes.large
                 ) {
                     Column(
                         modifier = Modifier
@@ -1180,7 +1142,10 @@ private fun IntervalCompleteContent(
                             )
                         } else {
                             Text(
-                                text = stringResource(
+                                // Whole rounds read like history ("2/3 rounds"); a part round adds its exercises.
+                                text = if (completedExercisesInLastRound == 0) {
+                                    stringResource(R.string.interval_record_rounds_format, completedRounds, program.rounds)
+                                } else stringResource(
                                     R.string.interval_partial_format,
                                     completedRounds,
                                     program.rounds,

@@ -43,6 +43,14 @@ class IntervalWorkoutPlanTest {
         assertEquals(1 to 2, IntervalWorkoutPlan.progressWhenStopped(at("roundRest:1"), 2))
     }
 
+    @Test fun `a finished last round counts as a round on the result screen`() {
+        // Stopped in the rest after round 2's only exercise: history says 2/3, so must the result.
+        assertEquals(2 to 0, IntervalWorkoutPlan.normalized(1 to 1, 1))
+        assertEquals(2 to 0, IntervalWorkoutPlan.normalized(1 to 2, 2))
+        assertEquals(1 to 1, IntervalWorkoutPlan.normalized(1 to 1, 2))
+        assertEquals(0 to 0, IntervalWorkoutPlan.normalized(0 to 0, 0))
+    }
+
     @Test fun `a full run through the reducer ends at the program's total duration`() {
         val steps = IntervalWorkoutPlan.build(20, 10, 2, 60, 2)
         var state = WorkoutReducer.reduce(WorkoutState(steps), WorkoutEvent.Start(0)).state

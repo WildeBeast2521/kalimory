@@ -45,6 +45,16 @@ object IntervalWorkoutPlan {
     }
 
     /**
+     * [progress] with a fully finished last round counted as a round, so "1 round + 1 of 1
+     * exercises" reads as "2 rounds", the way history shows the same workout.
+     */
+    fun normalized(progress: Pair<Int, Int>, exerciseCount: Int): Pair<Int, Int> {
+        val (rounds, exercises) = progress
+        return if (exerciseCount > 0 && exercises >= exerciseCount) (rounds + exercises / exerciseCount) to (exercises % exerciseCount)
+        else progress
+    }
+
+    /**
      * Completed rounds and completed exercises in the last round when the user stops
      * during [step]. These are the same rules the screen used before.
      */

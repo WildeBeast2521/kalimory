@@ -47,13 +47,14 @@ fun BackupScreen(
     val scope = rememberCoroutineScope()
 
     var showDataPreview by remember { mutableStateOf(false) }
-    var showBackupConfirmation by remember { mutableStateOf(false) }
     var showImportWarning by remember { mutableStateOf(false) }
     var pendingImportData by remember { mutableStateOf<BackupData?>(null) }
     var importFileName by remember { mutableStateOf<String?>(null) }
     var importGroupCount by remember { mutableStateOf(0) }
     var importExerciseCount by remember { mutableStateOf(0) }
     var importRecordCount by remember { mutableStateOf(0) }
+    // Everything else the file replaces, so the preview names all of it.
+    var importOtherCounts by remember { mutableStateOf(listOf<Pair<Int, Int>>()) }
     var importAnomalyCount by remember { mutableIntStateOf(0) }
     var isLoading by remember { mutableStateOf(false) }
     val backupPrefs = remember { BackupPreferences(context) }
@@ -125,11 +126,12 @@ fun BackupScreen(
                     viewModel.showBackupResult(false)
                 } finally {
                     isLoading = false
-                    if (!success) showBackupConfirmation = true
+                    // Back to the import dialog, which offers the backup again.
+                    if (!success) showImportWarning = true
                 }
             }
         } else {
-            showBackupConfirmation = true
+            showImportWarning = true
         }
     }
 
@@ -162,6 +164,11 @@ fun BackupScreen(
                         importGroupCount = backupData.groups.size
                         importExerciseCount = backupData.exercises.size
                         importRecordCount = backupData.records.size
+                        importOtherCounts = listOf(
+                            R.string.program_list_title to backupData.programs.size,
+                            R.string.interval_list_title to backupData.intervalPrograms.size,
+                            R.string.todo_title to backupData.todoTasks.size,
+                        )
                         showDataPreview = true
                     }
                     is BackupResult.Failure -> viewModel.showSnackbar(UiMessage.ImportError(parsed.message))
@@ -208,7 +215,7 @@ fun BackupScreen(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = {
                         if (!isLoading) {
                             val dateTime = LocalDateTime.now()
@@ -240,6 +247,7 @@ fun BackupScreen(
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
+                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -251,7 +259,7 @@ fun BackupScreen(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = {
                         if (!isLoading) {
                             importLauncher.launch(arrayOf("application/json"))
@@ -279,6 +287,7 @@ fun BackupScreen(
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
+                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -290,7 +299,7 @@ fun BackupScreen(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.1f)
                     ),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = MaterialTheme.shapes.large
                 ) {
                     Row(
                         modifier = Modifier
@@ -380,7 +389,7 @@ fun BackupScreen(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = MaterialTheme.shapes.large
                     ) {
                         Column(
                             modifier = Modifier
@@ -408,7 +417,7 @@ fun BackupScreen(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = MaterialTheme.shapes.large
                     ) {
                         Column(
                             modifier = Modifier
@@ -470,6 +479,24 @@ fun BackupScreen(
                                     fontWeight = FontWeight.Bold
                                 )
                             }
+                            importOtherCounts.forEach { (label, count) ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(
+                                        text = stringResource(label),
+                                        fontSize = 16.sp,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.count_items, count),
+                                        fontSize = 16.sp,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
                         }
                     }
 
@@ -494,7 +521,7 @@ fun BackupScreen(
                 TextButton(
                     onClick = {
                         showDataPreview = false
-                        showBackupConfirmation = true
+                        showImportWarning = true
                     },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.primary
@@ -544,6 +571,19 @@ fun BackupScreen(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.error
                     )
+                    // The backup offer lives here, so an import asks twice (preview, then this)
+                    // rather than three times.
+                    OutlinedButton(
+                        onClick = {
+                            showImportWarning = false
+                            val dateTime = LocalDateTime.now()
+                            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")
+                            backupBeforeImportLauncher.launch("kalimory_backup_${dateTime.format(formatter)}.json")
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    ) {
+                        Text(stringResource(R.string.backup_and_continue))
+                    }
                 }
             },
             confirmButton = {
@@ -596,83 +636,6 @@ fun BackupScreen(
         )
     }
 
-    // バックアップ確認ダイアログ
-    if (showBackupConfirmation) {
-        AlertDialog(
-            onDismissRequest = {
-                showBackupConfirmation = false
-            },
-            title = {
-                Text(
-                    text = stringResource(R.string.backup_before_import_title),
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            text = {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.backup_before_import_message),
-                        fontSize = 16.sp,
-                        lineHeight = 22.sp
-                    )
-
-                    Button(
-                        onClick = {
-                            showBackupConfirmation = false
-                            val dateTime = LocalDateTime.now()
-                            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")
-                            val fileName = "kalimory_backup_${dateTime.format(formatter)}.json"
-                            backupBeforeImportLauncher.launch(fileName)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Text(
-                            text = stringResource(R.string.backup_and_continue),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp
-                        )
-                    }
-
-                    OutlinedButton(
-                        onClick = {
-                            showBackupConfirmation = false
-                            showImportWarning = true
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onSurface
-                        )
-                    ) {
-                        Text(
-                            text = stringResource(R.string.skip_and_continue),
-                            fontSize = 16.sp
-                        )
-                    }
-                }
-            },
-            confirmButton = {},
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        showBackupConfirmation = false
-                        pendingImportData = null
-                    }
-                ) {
-                    Text(stringResource(R.string.cancel))
-                }
-            }
-        )
-    }
 }
 
 /** The last backup time in the user's locale and time zone, for example "Sep 28, 2026, 9:57 PM". */

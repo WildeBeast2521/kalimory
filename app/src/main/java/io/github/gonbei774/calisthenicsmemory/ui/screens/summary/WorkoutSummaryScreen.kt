@@ -104,7 +104,7 @@ private fun SummaryContent(viewModel: TrainingViewModel, summary: WorkoutSummary
             Text(source, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         Text(
-            stringResource(R.string.workout_summary_title),
+            stringResource(if (summary.stoppedEarly) R.string.interval_record_partial else R.string.workout_summary_title),
             style = MaterialTheme.typography.displaySmall,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.semantics { heading() },

@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
 import androidx.compose.material3.LinearWavyProgressIndicator
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -469,11 +470,11 @@ private fun NavigationRoundCard(
 
     Card(
         colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.large,
         modifier = Modifier.border(
             width = 2.dp,
             color = cs.secondary.copy(alpha = 0.5f),
-            shape = RoundedCornerShape(12.dp)
+            shape = MaterialTheme.shapes.large
         )
     ) {
         Column {
@@ -724,7 +725,7 @@ private fun NavigationExerciseCard(
     val exerciseType = exercise.type
     Card(
         colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column {
             // 種目ヘッダー
@@ -1613,7 +1614,6 @@ private fun SetActionButton(
                 onClick = { onRedoSet(setIndex) },
                 modifier = Modifier.height(32.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp),
-                shape = RoundedCornerShape(8.dp),
                 border = androidx.compose.foundation.BorderStroke(1.dp, cs.primary)
             ) {
                 Text(
@@ -1629,7 +1629,6 @@ private fun SetActionButton(
                 onClick = { onJumpToSet(setIndex) },
                 modifier = Modifier.height(32.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp),
-                shape = RoundedCornerShape(8.dp),
                 border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
             ) {
                 Text(
@@ -1640,22 +1639,8 @@ private fun SetActionButton(
                 )
             }
         }
-        SetStatus.CURRENT -> {
-            OutlinedButton(
-                onClick = { onRedoSet(setIndex) },
-                modifier = Modifier.height(32.dp),
-                contentPadding = PaddingValues(horizontal = 12.dp),
-                shape = RoundedCornerShape(8.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
-            ) {
-                Text(
-                    text = stringResource(R.string.nav_redo),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = cs.onSurfaceVariant
-                )
-            }
-        }
+        // The set in progress needs no action: it is already where the workout is.
+        SetStatus.CURRENT -> Unit
     }
 }
 
@@ -1695,7 +1680,6 @@ private fun NavigationSheetFooter(
                 .fillMaxWidth()
                 .height(48.dp),
             colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
-            shape = RoundedCornerShape(12.dp)
         ) {
             Text(
                 text = stringResource(R.string.nav_finish),
@@ -1714,7 +1698,6 @@ private fun NavigationSheetFooter(
                 modifier = Modifier
                     .weight(1f)
                     .height(44.dp),
-                shape = RoundedCornerShape(12.dp),
                 border = androidx.compose.foundation.BorderStroke(1.dp, cs.tertiary)
             ) {
                 Text(
@@ -1731,7 +1714,6 @@ private fun NavigationSheetFooter(
                 modifier = Modifier
                     .weight(1f)
                     .height(44.dp),
-                shape = RoundedCornerShape(12.dp),
                 border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
             ) {
                 Text(
@@ -2193,48 +2175,5 @@ private fun RepeatableStepButton(
     contentDescription: String,
     onStep: () -> Boolean
 ) {
-    val cs = MaterialTheme.colorScheme
-    val scope = rememberCoroutineScope()
-    // 値が変わるたびに onStep ラムダが新しくなるが、pointerInput は再起動させたくないので
-    // rememberUpdatedState で「常に最新」のラムダを参照する
-    val currentOnStep by rememberUpdatedState(onStep)
-    val containerColor = if (enabled) cs.tertiary else cs.surfaceContainerHighest
-    val textColor = if (enabled) cs.onTertiary else cs.outline
-    val description = contentDescription
-    Box(
-        modifier = Modifier
-            .size(size)
-            .background(containerColor, CircleShape)
-            .semantics { this.contentDescription = description }
-            .pointerInput(enabled) {
-                if (!enabled) return@pointerInput
-                awaitEachGesture {
-                    awaitFirstDown(requireUnconsumed = false)
-                    val firstResult = currentOnStep()
-                    var repeatJob: Job? = null
-                    try {
-                        if (firstResult) {
-                            repeatJob = scope.launch {
-                                delay(350)
-                                while (isActive) {
-                                    if (!currentOnStep()) break
-                                    delay(80)
-                                }
-                            }
-                        }
-                        waitForUpOrCancellation()
-                    } finally {
-                        repeatJob?.cancel()
-                    }
-                }
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = label,
-            fontSize = if (size <= 32.dp) 18.sp else 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = textColor
-        )
-    }
+    NumberStepButton(increment = label == "+", contentDescription = contentDescription, enabled = enabled, size = size, onStep = onStep)
 }

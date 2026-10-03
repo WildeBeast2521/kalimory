@@ -2,9 +2,15 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.LoadingIndicator
@@ -314,7 +320,9 @@ fun IntervalEditScreen(
                         label = stringResource(R.string.interval_rounds),
                         value = rounds,
                         onValueChange = { rounds = it.filter { c -> c.isDigit() } },
-                        suffix = stringResource(R.string.interval_rounds_suffix)
+                        suffix = stringResource(R.string.interval_rounds_suffix),
+                        step = 1,
+                        min = 1
                     )
                 }
 
@@ -344,7 +352,7 @@ fun IntervalEditScreen(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Text(
                                 text = stringResource(R.string.interval_exercises_required),
@@ -376,24 +384,7 @@ fun IntervalEditScreen(
                                 }
                                 SwipeToDismissBox(
                                     state = dismissState,
-                                    backgroundContent = {
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxSize()
-                                                .background(
-                                                    color = MaterialTheme.colorScheme.error,
-                                                    shape = RoundedCornerShape(12.dp)
-                                                )
-                                                .padding(horizontal = 16.dp),
-                                            contentAlignment = Alignment.CenterEnd
-                                        ) {
-                                            Icon(
-                                                AppIcons.Delete,
-                                                contentDescription = stringResource(R.string.delete),
-                                                tint = MaterialTheme.colorScheme.onSurface
-                                            )
-                                        }
-                                    },
+                                    backgroundContent = { SwipeToDeleteBackground(dismissState, MaterialTheme.shapes.large) },
                                     enableDismissFromStartToEnd = false,
                                     enableDismissFromEndToStart = true
                                 ) {
@@ -572,47 +563,58 @@ private fun TimerSettingRow(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
-    suffix: String
+    suffix: String,
+    step: Int = 5,
+    min: Int = 0,
 ) {
+    // The app's stepper: − value unit +, with the number still typeable. Fixed widths keep every
+    // row's controls in one column.
+    fun stepped(delta: Int): Boolean {
+        val next = ((value.toIntOrNull() ?: min) + delta).coerceAtLeast(min)
+        onValueChange(next.toString())
+        return next > min || delta > 0
+    }
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = label,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
+        NumberStepButton(increment = false, contentDescription = null, enabled = (value.toIntOrNull() ?: min) > min) { stepped(-step) }
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.width(112.dp),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.Center
         ) {
-            OutlinedTextField(
+            BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
-                modifier = Modifier.width(80.dp),
+                // A fixed width that fits four digits: an intrinsic width let the text scroll inside
+                // the field and hid it until scrolled.
+                modifier = Modifier.width(52.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    cursorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
-                ),
                 singleLine = true,
-                textStyle = androidx.compose.ui.text.TextStyle(
+                textStyle = MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.onSurface,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    fontSize = 14.sp
-                )
+                ),
+                cursorBrush = androidx.compose.ui.graphics.SolidColor(MaterialTheme.colorScheme.primary),
             )
+            Spacer(Modifier.width(4.dp))
             Text(
                 text = suffix,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                softWrap = false,
+                modifier = Modifier.padding(bottom = 2.dp)
             )
         }
+        NumberStepButton(increment = true, contentDescription = null) { stepped(step) }
     }
 }
 
@@ -627,7 +629,7 @@ private fun IntervalExerciseItem(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
         Row(
@@ -828,12 +830,13 @@ private fun IntervalExerciseSelectItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .toggleable(value = isSelected, role = Role.Checkbox, onValueChange = { _ -> onToggle(exercise.id) })
                 .padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.Top
         ) {
             Checkbox(
                 checked = isSelected,
-                onCheckedChange = { onToggle(exercise.id) },
+                onCheckedChange = null,
                 colors = CheckboxDefaults.colors(
                     checkedColor = MaterialTheme.colorScheme.primary,
                     uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -990,12 +993,13 @@ private fun IntervalSelectExerciseGroup(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .toggleable(value = exercise.id in selectedExercises, role = Role.Checkbox, onValueChange = { _ -> onExerciseToggle(exercise.id) })
                                 .padding(vertical = 4.dp),
                             verticalAlignment = Alignment.Top
                         ) {
                             Checkbox(
                                 checked = exercise.id in selectedExercises,
-                                onCheckedChange = { onExerciseToggle(exercise.id) },
+                                onCheckedChange = null,
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = MaterialTheme.colorScheme.primary,
                                     uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant

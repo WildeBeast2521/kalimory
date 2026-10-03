@@ -291,7 +291,7 @@ fun CsvDataManagementScreen(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = {
                         if (!isLoading) {
                             showCsvExportDialog = true
@@ -305,7 +305,7 @@ fun CsvDataManagementScreen(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(AppIcons.List, contentDescription = null, modifier = Modifier.size(24.dp))
+                        Icon(AppIcons.Upload, contentDescription = null, modifier = Modifier.size(24.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.csv_export),
@@ -319,6 +319,7 @@ fun CsvDataManagementScreen(
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
+                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -330,7 +331,7 @@ fun CsvDataManagementScreen(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = {
                         if (!isLoading) {
                             csvImportLauncher.launch(arrayOf("text/csv", "text/comma-separated-values"))
@@ -344,7 +345,7 @@ fun CsvDataManagementScreen(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(AppIcons.Chart, contentDescription = null, modifier = Modifier.size(24.dp))
+                        Icon(AppIcons.Download, contentDescription = null, modifier = Modifier.size(24.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.csv_import),
@@ -358,6 +359,7 @@ fun CsvDataManagementScreen(
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
+                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }

@@ -11,7 +11,6 @@
     <string name="add">Add</string>
     <string name="create">Create</string>
     <string name="back">Back</string>
-    <string name="close">Close</string>
     <string name="select">Select</string>
     <string name="settings">Settings</string>
     <string name="comment">Comment</string>
@@ -24,7 +23,7 @@
     <string name="loading">Loading...</string>
     <!-- Home Screen -->
     <string name="bodyweight_training">Bodyweight Training</string>
-    <string name="home_record">Record Training</string>
+    <string name="home_record">Log a past workout</string>
     <string name="home_workout">Workout</string>
     <string name="home_view">View</string>
     <string name="view_details">View details</string>
@@ -32,7 +31,7 @@
     <!-- Create Screen -->
     <string name="no_exercises">No exercises yet\nAdd one using the + button below</string>
     <string name="exercise_name">Exercise Name</string>
-    <string name="set_challenge">Set Challenge</string>
+    <string name="set_challenge">Set a target</string>
     <string name="sets_count">Sets</string>
     <string name="reps_or_seconds">%s</string>
     <!-- Will be replaced with "Reps" or "Seconds" -->
@@ -64,10 +63,9 @@
     <string name="delete_group_warning">Delete \"%s\"?\nExercises in this group will be moved to \"No Group\".</string>
     <string name="delete_exercise_warning">Delete \"%s\"?\nAll records for this exercise will also be deleted.</string>
     <string name="delete_confirmation">Delete Confirmation</string>
-    <string name="exercises_count">%d exercise(s)</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
-    <string name="training_record">Training Record</string>
+    <string name="training_record">Log a past workout</string>
     <string name="no_exercises_registered">No exercises registered</string>
     <string name="add_exercises_in_settings">Add exercises in settings</string>
     <string name="go_to_settings">Go to Settings</string>
@@ -92,7 +90,7 @@
     <string name="set_now_badge">NOW</string>
     <string name="set_done_label">DONE</string>
     <string name="set_complete_button">Complete Set %1$d</string>
-    <string name="previous_value_label">Prev</string>
+    <string name="previous_value_label">Last</string>
     <string name="set_status_check_desc">Set completion status</string>
     <string name="set_uncheck_desc">Mark set as not done</string>
     <string name="record_done_count">%1$d/%2$d</string>
@@ -219,7 +217,7 @@
     <string name="target_duration_label">Target Duration (sec)</string>
     <string name="rep_duration_label">Rep Duration (sec)</string>
     <string name="start_countdown_label">Start Countdown (sec)</string>
-    <string name="interval_duration_label">Interval Duration (sec)</string>
+    <string name="interval_duration_label">Rest between sets (sec)</string>
     <!-- Single Workout Setup Redesign -->
     <string name="workout_section_target">Target</string>
     <string name="workout_section_timer">Timer</string>
@@ -227,14 +225,13 @@
     <string name="workout_optional_tag">Optional</string>
     <string name="workout_label_rep_duration">Rep Duration</string>
     <string name="workout_label_start_countdown">Start Countdown</string>
-    <string name="workout_label_interval">Set Interval</string>
+    <string name="workout_label_interval">Rest between sets</string>
     <string name="workout_label_distance">Distance</string>
     <string name="workout_label_weight">Weight</string>
     <string name="workout_label_assistance">Assistance</string>
     <string name="unit_cm">cm</string>
     <string name="unit_kg">kg</string>
     <string name="start_workout">Start</string>
-    <string name="back_button">Back</string>
     <string name="preparing">Preparing</string>
     <string name="skip_button">Skip</string>
     <string name="set_format">Set %1$d/%2$d</string>
@@ -265,14 +262,13 @@
     <string name="right_label">Right:</string>
     <string name="left_label">Left:</string>
     <string name="ten_seconds">10 sec</string>
-    <string name="workout_mode_comment">Workout Mode</string>
     <string name="set_label">Set %d</string>
     <string name="right_colon">Right:</string>
     <string name="left_colon">Left:</string>
     <string name="reps_input">Reps</string>
     <string name="seconds_input">Seconds</string>
     <!-- Level display -->
-    <string name="level_format">Lv.%d</string>
+    <string name="level_format">Level %d</string>
     <!-- Additional missing strings -->
     <string name="bilateral_label">Bilateral</string>
     <string name="unilateral_label">Unilateral</string>
@@ -364,7 +360,6 @@
     <!-- ViewScreen & GraphView remaining strings -->
     <string name="right_short">Right</string>
     <string name="left_short">Left</string>
-    <string name="sets_suffix">sets</string>
     <string name="best_record">Best</string>
     <string name="worst_record">Lowest</string>
     <string name="graph_tooltip_bilateral">%1$s: %2$d%3$s</string>
@@ -413,7 +408,7 @@
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">Complete Backup (JSON)</string>
     <string name="section_full_backup_description">Save and restore all your data: exercises, records, programs, intervals and to-dos.\nUse when changing devices.</string>
-    <string name="section_partial_data_management">Partial Data Management (CSV)</string>
+    <string name="section_partial_data_management">CSV files</string>
     <string name="section_partial_data_management_description">For data exchange with other apps and spreadsheets.\nExport and import groups, exercises, and records individually via CSV.</string>
     <!-- Legacy key for compatibility -->
     <string name="section_add_records">Add Records (CSV)</string>
@@ -424,7 +419,7 @@
     <string name="remove_from_favorites">Remove from favorites</string>
     <!-- Language Settings -->
     <string name="section_language">Language Settings</string>
-    <string name="section_language_description">Change the app display language.\nChanges will take effect after restarting the app.</string>
+    <string name="section_language_description">Change the app display language.</string>
     <string name="language_setting">Language</string>
     <string name="current_language">Current: %s</string>
     <string name="restart_required">Restart required to apply changes</string>
@@ -437,6 +432,7 @@
     <string name="theme_system">Follow system</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+    <string name="theme_amoled" translatable="false">AMOLED</string>
     <!-- Open Source Licenses -->
     <string name="open_source_licenses">Open Source Licenses</string>
     <string name="licenses_description">View licenses of libraries used in this app</string>
@@ -460,16 +456,14 @@
     <string name="section_workout_settings_description">Customize workout screen behavior.</string>
     <string name="workout_settings">Workout Settings</string>
     <string name="start_countdown_setting">Start Countdown</string>
-    <string name="set_interval_setting">Set Interval</string>
+    <string name="set_interval_setting">Rest between sets</string>
     <string name="current_start_countdown">Current: %d seconds</string>
     <string name="current_set_interval">Current: %d seconds</string>
     <string name="seconds_suffix">seconds</string>
     <string name="start_countdown_dialog_title">Start Countdown</string>
-    <string name="set_interval_dialog_title">Set Interval</string>
-    <string name="enter_seconds">Enter seconds</string>
+    <string name="set_interval_dialog_title">Rest between sets</string>
     <string name="seconds_format">%d seconds</string>
     <string name="set_interval_note">Note: Exercise-specific settings take priority if configured.</string>
-    <string name="enter_seconds_max">Enter seconds (max %d)</string>
     <string name="flash_notification_setting">LED Flash Notification</string>
     <string name="flash_notification_description">Flash LED in sync with sounds during workout</string>
     <string name="keep_screen_on_setting">Keep Screen On</string>
@@ -480,7 +474,7 @@
     <string name="timer_settings_optional">Timer Settings (Optional)</string>
     <string name="timer_settings_description">Configure timers for this exercise. Leave blank to use default settings.</string>
     <string name="rep_duration_seconds">Rep Duration (seconds)</string>
-    <string name="rest_interval_seconds">Rest Interval (seconds)</string>
+    <string name="rest_interval_seconds">Rest between sets (seconds)</string>
     <string name="example_5_seconds">e.g., 5</string>
     <string name="example_240_seconds">e.g., 240</string>
     <!-- Tracking Settings (v1.9) -->
@@ -503,7 +497,7 @@
     <!-- App Info Section -->
     <string name="section_app_info">App Info</string>
     <string name="section_app_info_description">View app information and licenses.</string>
-    <string name="app_description">Bodyweight training record app</string>
+    <string name="app_description">Calm, offline bodyweight training</string>
     <string name="app_version">Version</string>
     <string name="app_author">Author</string>
     <string name="app_source_code">Source Code</string>
@@ -522,7 +516,6 @@
     <string name="todo_drag_to_reorder">Drag to reorder</string>
     <string name="todo_rec_button">Rec</string>
     <string name="todo_wo_button">WO</string>
-    <string name="todo_start_button">Start</string>
     <string name="todo_choose_mode">Choose Mode</string>
     <string name="todo_mode_record">Record</string>
     <string name="todo_mode_workout">Workout</string>
@@ -534,7 +527,6 @@
     <string name="todo_delete_confirm_message">Remove \"%s\" from ToDo?</string>
     <string name="todo_no_programs">No programs</string>
     <string name="todo_no_intervals">No intervals</string>
-    <string name="todo_group_exercise_count">%d exercises</string>
     <string name="todo_add_items">Add Items</string>
     <string name="todo_repeat_title">Repeat</string>
     <string name="todo_repeat_clear">Clear</string>
@@ -548,8 +540,8 @@
     <string name="single_mode_description">One exercise at a time</string>
     <string name="program_list_title">Programs</string>
     <string name="program_empty">No programs yet\nTap + to create one</string>
-    <string name="new_program">New Program</string>
-    <string name="edit_program">Edit Program</string>
+    <string name="new_program">New program</string>
+    <string name="edit_program">Edit program</string>
     <string name="program_name">Program Name</string>
     <string name="program_name_hint">e.g., Morning Routine</string>
     <string name="auto_mode_label">Auto Mode</string>
@@ -563,11 +555,10 @@
     <string name="start_countdown">Start Countdown</string>
     <string name="program_exercises">Exercises</string>
     <string name="add_exercise_to_program">Add Exercise</string>
-    <string name="program_exercise_count">%d exercise(s)</string>
     <string name="program_sets_format">%d sets</string>
     <string name="program_target_format">%1$d %2$s</string>
     <string name="program_interval_format">Rest %ds</string>
-    <string name="delete_program">Delete Program</string>
+    <string name="delete_program">Delete program</string>
     <string name="delete_program_warning">Delete \"%s\"?</string>
     <string name="duplicate_program">Duplicate</string>
     <string name="program_duplicated">Program duplicated</string>
@@ -582,10 +573,10 @@
     <string name="exercise_settings">Exercise Settings</string>
     <string name="sets_label">Sets</string>
     <string name="target_value_label">Target</string>
-    <string name="interval_seconds_label">Interval Duration (sec)</string>
+    <string name="interval_seconds_label">Rest between sets (sec)</string>
     <string name="program_start">Start</string>
     <!-- Program Execution -->
-    <string name="get_ready">Get Ready</string>
+    <string name="get_ready">Get ready</string>
     <string name="executing_label">In Progress</string>
     <string name="complete_button">Complete</string>
     <string name="abort_button">Abort</string>
@@ -608,7 +599,6 @@
     <string name="paused_label">Paused</string>
     <string name="elapsed_target_format">Elapsed: %1$ds / Target: %2$ds</string>
     <string name="complete_with_time">Complete (%ds)</string>
-    <string name="complete_with_reps">Complete (%d reps)</string>
     <string name="target_reps_format">Target: %d reps</string>
     <string name="previous_value_format">Previous: %s</string>
     <string name="previous_reps_format">Previous: %d reps</string>
@@ -621,7 +611,7 @@
     <string name="record_set_to_target">Set to target (%1$d %2$s)</string>
     <!-- Exit Workout Confirmation -->
     <string name="exit_workout_title">Exit workout?</string>
-    <string name="exit_workout_message">Progress will not be saved.</string>
+    <string name="exit_workout_message">Sets you haven\'t saved will be lost. Use Save &amp; exit to keep them.</string>
     <string name="exit_workout_confirm">Exit</string>
     <!-- Discard Result Confirmation -->
     <string name="discard_result_title">Discard results?</string>
@@ -650,8 +640,8 @@
     <string name="nav_resume">Resume</string>
     <string name="nav_target">Target</string>
     <string name="nav_skipped">Skipped</string>
-    <string name="nav_type_dynamic_short">Dyn</string>
-    <string name="nav_type_isometric_short">Iso</string>
+    <string name="nav_type_dynamic_short">Reps</string>
+    <string name="nav_type_isometric_short">Hold</string>
     <string name="nav_edit_target">Edit target</string>
     <string name="nav_edit_actual">Edit actual</string>
     <string name="nav_step_decrement">Decrease</string>
@@ -679,23 +669,22 @@
     <!-- Interval Mode -->
     <string name="interval_list_title">Interval</string>
     <string name="interval_empty">No interval programs yet\nTap + to create one</string>
-    <string name="interval_summary_format">%1$d exercises · %2$ds/%3$ds · %4$d rounds</string>
-    <string name="new_interval_program">New Program</string>
-    <string name="edit_interval_program">Edit Program</string>
-    <string name="interval_program_name">Program Name</string>
+    <string name="interval_summary_format" tools:ignore="PluralsCandidate">%1$ds/%2$ds · %3$d rounds</string>
+    <string name="new_interval_program">New interval</string>
+    <string name="edit_interval_program">Edit interval</string>
+    <string name="interval_program_name">Name</string>
     <string name="interval_program_name_hint">e.g., HIIT Circuit A</string>
     <string name="interval_timer_settings">Timer Settings</string>
-    <string name="interval_work_seconds">Work Time</string>
-    <string name="interval_rest_seconds">Rest Time</string>
+    <string name="interval_work_seconds">Work time</string>
+    <string name="interval_rest_seconds">Rest between exercises</string>
     <string name="interval_rounds">Rounds</string>
-    <string name="interval_round_rest_seconds">Round Rest</string>
+    <string name="interval_round_rest_seconds">Rest between rounds</string>
     <string name="interval_exercises">Exercises</string>
     <string name="interval_add_exercise">Add Exercise</string>
     <string name="interval_exercises_required">Add at least one exercise</string>
     <string name="interval_no_record_note">This mode does not record reps or hold time</string>
-    <string name="interval_delete_program">Delete Program</string>
+    <string name="interval_delete_program">Delete interval</string>
     <string name="interval_delete_program_warning">Delete \"%s\"?</string>
-    <string name="interval_start">Start</string>
     <string name="interval_duplicate">Duplicate</string>
     <string name="interval_duplicated">Program duplicated</string>
     <string name="interval_seconds_suffix">sec</string>
@@ -703,9 +692,7 @@
 
     <!-- Interval Execution -->
     <string name="interval_total_time">Estimated Time</string>
-    <string name="interval_total_time_format">~%1$d min %2$d sec</string>
-    <string name="interval_start_workout">Start Workout</string>
-    <string name="interval_get_ready">Get Ready</string>
+    <string name="interval_get_ready">Get ready</string>
     <string name="interval_work_label">Work</string>
     <string name="interval_rest_label">Rest</string>
     <string name="interval_round_rest_label">Round rest</string>
@@ -730,7 +717,7 @@
     <string name="interval_comment_placeholder">How was your workout?</string>
     <string name="interval_save_and_finish">Save and Finish</string>
     <string name="interval_discard_result">Don\'t Save</string>
-    <string name="interval_exit_confirm_title">Stop Workout?</string>
+    <string name="interval_exit_confirm_title">Stop workout?</string>
     <string name="interval_exit_confirm_message">Stop the current interval workout?</string>
     <string name="interval_unsaved_title">Record Not Saved</string>
     <string name="interval_unsaved_message">The workout record has not been saved. Leave without saving?</string>
@@ -738,11 +725,10 @@
     <string name="interval_settings_format">%1$ds × %2$d exercises × %3$d rounds</string>
     <string name="interval_record_saved">Interval record saved</string>
     <string name="interval_skipped_format">Skipped: %1$d exercises</string>
-    <string name="interval_record_rounds_format">%1$d/%2$d rounds</string>
+    <string name="interval_record_rounds_format" tools:ignore="PluralsCandidate">%1$d/%2$d rounds</string>
     <string name="interval_record_complete">Complete</string>
     <string name="interval_record_partial">Stopped early</string>
     <string name="interval_record_settings_format">Work %1$ds / Rest %2$ds / Round rest %3$ds</string>
-    <string name="interval_record_exercises_count">%1$d exercises</string>
     <string name="interval_delete_record_confirm">Delete interval record for \"%1$s\" (%2$s)?</string>
 
     <!-- Share export/import -->
@@ -770,7 +756,6 @@
     <string name="share_no_exercises">No exercises</string>
     <string name="share_exercise_auto_included">Auto-included from program/interval</string>
     <string name="share_ungrouped">Ungrouped</string>
-    <string name="share_program_exercises_format">%1$d exercises</string>
     <string name="share_program_loops_format">, %1$d loops</string>
     <string name="share_import_dialog_title">Import Shared JSON File</string>
     <string name="share_import_preview_new">New (will be added)</string>
@@ -841,7 +826,7 @@
     <string name="first_day_of_week_auto">Auto</string>
     <string name="train_no_programs">No programs yet</string>
     <string name="train_no_intervals">No interval routines yet</string>
-    <string name="train_log_title">Log a past workout</string>
+    <string name="train_log_title">Already trained</string>
     <string name="train_log_detail">Enter sets you already did</string>
     <string name="train_see_all">See all</string>
     <string name="train_quick_label">Quick start</string>
@@ -917,7 +902,7 @@
     <string name="guide_place_today">Your week at a glance, what is next, and what you did today.</string>
     <string name="guide_place_train">Start a workout: one exercise, a program or intervals. You can also log one you did earlier.</string>
     <string name="guide_place_progress">Your history as a calendar, a list and graphs, plus your progressions.</string>
-    <string name="guide_place_library">Your exercises, programs and interval routines, and Settings.</string>
+    <string name="guide_place_library">Your exercises, programs and intervals, the To Do list, the exercise catalogue, and Settings.</string>
     <string name="guide_workout_title">How a workout runs</string>
     <string name="guide_workout_sets_title">Set by set</string>
     <string name="guide_workout_sets">Count your reps or run a timer, with a rest between sets.</string>
@@ -990,4 +975,13 @@
     <string name="progressions_ready">Ready for the next step</string>
     <string name="progressions_next">Next: %1$s</string>
     <string name="progressions_top">Top of this chain</string>
+    <plurals name="exercise_count">
+        <item quantity="one">%d exercise</item>
+        <item quantity="other">%d exercises</item>
+    </plurals>
+    <plurals name="complete_reps">
+        <item quantity="one">Complete (%d rep)</item>
+        <item quantity="other">Complete (%d reps)</item>
+    </plurals>
+    <string name="theme_system_short">System</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import android.text.format.DateUtils
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import java.time.LocalDate
 import java.time.ZoneId
@@ -49,15 +50,15 @@ fun rememberProgramSummaries(
 fun ProgramSummary?.describe(): String = when {
     this == null -> ""
     exerciseCount == 0 -> stringResource(R.string.program_no_exercises)
-    else -> stringResource(R.string.program_exercise_count, exerciseCount) + " · " +
+    else -> pluralStringResource(R.plurals.exercise_count, exerciseCount, exerciseCount) + " · " +
         stringResource(R.string.program_estimated_time, minutes)
 }
 
 /** "2 exercises · 20s/10s · 8 rounds · ~7 min" for an interval routine with [exerciseCount] exercises. */
 @Composable
 fun intervalSummary(interval: IntervalProgram, exerciseCount: Int): String {
-    val summary = stringResource(
-        R.string.interval_summary_format, exerciseCount, interval.workSeconds, interval.restSeconds, interval.rounds,
+    val summary = pluralStringResource(R.plurals.exercise_count, exerciseCount, exerciseCount) + " · " + stringResource(
+        R.string.interval_summary_format, interval.workSeconds, interval.restSeconds, interval.rounds,
     )
     val seconds = ProgramTimeEstimator.estimateIntervalSeconds(interval, exerciseCount)
     // Rounded like program estimates, so both kinds of list read the same way.

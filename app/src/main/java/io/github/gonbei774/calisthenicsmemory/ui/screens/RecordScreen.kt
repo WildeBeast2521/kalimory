@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -447,7 +448,7 @@ fun HierarchicalExerciseGroup(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column {
             // グループヘッダー
@@ -459,7 +460,7 @@ fun HierarchicalExerciseGroup(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp),
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -483,7 +484,7 @@ fun HierarchicalExerciseGroup(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = stringResource(R.string.exercises_count, group.exercises.size),
+                            text = pluralStringResource(R.plurals.exercise_count, group.exercises.size, group.exercises.size),
                             fontSize = 14.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -991,7 +992,7 @@ fun WorkoutInputScreen(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.6f)
                         ),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = MaterialTheme.shapes.large
                     ) {
                         Row(
                             modifier = Modifier
@@ -1818,45 +1819,7 @@ private fun RepeatableStepButton(
     contentDescription: String,
     onStep: () -> Boolean
 ) {
-    val scope = rememberCoroutineScope()
-    val currentOnStep by rememberUpdatedState(onStep)
-    val containerColor = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHighest
-    val textColor = if (enabled) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.outline
-    Box(
-        modifier = Modifier
-            .size(size)
-            .background(containerColor, CircleShape)
-            .pointerInput(enabled) {
-                if (!enabled) return@pointerInput
-                awaitEachGesture {
-                    awaitFirstDown(requireUnconsumed = false)
-                    val firstResult = currentOnStep()
-                    var repeatJob: Job? = null
-                    try {
-                        if (firstResult) {
-                            repeatJob = scope.launch {
-                                delay(350)
-                                while (isActive) {
-                                    if (!currentOnStep()) break
-                                    delay(80)
-                                }
-                            }
-                        }
-                        waitForUpOrCancellation()
-                    } finally {
-                        repeatJob?.cancel()
-                    }
-                }
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = label,
-            fontSize = if (size <= 32.dp) 18.sp else 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = textColor
-        )
-    }
+    NumberStepButton(increment = label == "+", contentDescription = contentDescription, enabled = enabled, size = size, onStep = onStep)
 }
 
 @Composable

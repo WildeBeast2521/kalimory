@@ -16,6 +16,8 @@ data class WorkoutSummary(
     val durationMinutes: Int?,
     val exercises: List<ExerciseResult>,
     val personalBests: List<PersonalBest>,
+    /** The user stopped before the plan ended; the heading then says so instead of "complete". */
+    val stoppedEarly: Boolean = false,
 )
 
 data class ExerciseResult(
@@ -65,6 +67,8 @@ object WorkoutSummaryBuilder {
                 .map { it.roundNumber to it.setNumber }
                 .distinct()
                 .size
+                // Interval runs store only the rounds done; the plan is the program's round count.
+                .let { if (session.sourceType == WorkoutSourceType.INTERVAL_TEMPLATE) maxOf(it, exercise.targetSets ?: 0) else it }
             val previous = exercise.exerciseId?.let { earlier[it] }.orEmpty()
             val result = ExerciseResult(
                 name = exercise.exerciseNameSnapshot,
@@ -91,6 +95,8 @@ object WorkoutSummaryBuilder {
             durationMinutes = duration,
             exercises = results,
             personalBests = bests,
+            stoppedEarly = session.status == WorkoutSessionStatus.ABANDONED ||
+                results.any { it.sets.size < it.plannedSets },
         )
     }
 

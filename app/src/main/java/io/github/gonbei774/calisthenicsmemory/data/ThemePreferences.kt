@@ -15,7 +15,7 @@ class ThemePreferences(context: Context) {
 
     /**
      * テーマ設定を取得
-     * @return AppTheme (SYSTEM, LIGHT, DARK)
+     * @return AppTheme (SYSTEM, LIGHT, DARK, AMOLED)
      */
     fun getTheme(): AppTheme {
         val themeCode = prefs.getString(KEY_THEME, AppTheme.SYSTEM.code)
@@ -59,7 +59,9 @@ class ThemePreferences(context: Context) {
 enum class AppTheme(val code: String) {
     SYSTEM("system"),
     LIGHT("light"),
-    DARK("dark");
+    DARK("dark"),
+    /** Dark with true-black backgrounds, for OLED screens. */
+    AMOLED("amoled");
 
     companion object {
         fun fromCode(code: String): AppTheme {

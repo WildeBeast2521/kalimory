@@ -8,7 +8,6 @@
     <string name="add">Добавить</string>
     <string name="create">Создать</string>
     <string name="back">Назад</string>
-    <string name="close">Закрыть</string>
     <string name="select">Выбрать</string>
     <string name="settings">Настройки</string>
     <string name="comment">Комментарии</string>
@@ -57,7 +56,6 @@
     <string name="delete_group_warning">Удалить \"%s\"?\nУпражнения в этой группе будут перенесены в \"Без группы\".</string>
     <string name="delete_exercise_warning">Удалить \"%s\"?\nВсе записи по этому упражнению также будут удалены.</string>
     <string name="delete_confirmation">Подтверждение удаления</string>
-    <string name="exercises_count">%d упражнений(е)</string>
     <string name="character_count">%1$d/%2$d</string>
     <string name="training_record">Журнал тренировок</string>
     <string name="no_exercises_registered">Упражнения не добавлены</string>
@@ -243,7 +241,7 @@
     <string name="guide_place_today">Ваша неделя одним взглядом, что дальше и что вы сделали сегодня.</string>
     <string name="guide_place_train">Начните тренировку: одно упражнение, программу или интервалы. Можно также записать прошлую тренировку.</string>
     <string name="guide_place_progress">Ваша история в календаре, списке и графиках, а также ваши прогрессии.</string>
-    <string name="guide_place_library">Ваши упражнения, программы, интервальные тренировки и настройки.</string>
+    <string name="guide_place_library">Ваши упражнения, программы и интервалы, список дел, каталог упражнений и настройки.</string>
     <string name="guide_workout_title">Как проходит тренировка</string>
     <string name="guide_workout_sets_title">Подход за подходом</string>
     <string name="guide_workout_sets">Считайте повторения или включите таймер, с отдыхом между подходами.</string>
@@ -316,4 +314,22 @@
     <string name="progressions_ready">Можно переходить к следующему шагу</string>
     <string name="progressions_next">Далее: %1$s</string>
     <string name="progressions_top">Вершина этой цепочки</string>
+    <plurals name="exercise_count">
+        <item quantity="one">%d упражнение</item>
+        <item quantity="few">%d упражнения</item>
+        <item quantity="many">%d упражнений</item>
+        <item quantity="other">%d упражнения</item>
+    </plurals>
+    <plurals name="complete_reps">
+        <item quantity="one">Завершить (%d повторение)</item>
+        <item quantity="few">Завершить (%d повторения)</item>
+        <item quantity="many">Завершить (%d повторений)</item>
+        <item quantity="other">Завершить (%d повторения)</item>
+    </plurals>
+    <string name="exit_workout_message">Несохранённые подходы будут потеряны. Чтобы сохранить их, нажмите «Сохранить и выйти».</string>
+    <string name="new_interval_program">Новый интервал</string>
+    <string name="edit_interval_program">Изменить интервал</string>
+    <string name="interval_delete_program">Удалить интервал</string>
+    <string name="theme_system">Как в системе</string>
+    <string name="theme_system_short">Системная</string>
 </resources>

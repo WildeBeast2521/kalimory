@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
+import com.mikepenz.aboutlibraries.ui.compose.m3.chipColors
 import com.mikepenz.aboutlibraries.ui.compose.m3.libraryColors
 import io.github.gonbei774.calisthenicsmemory.R
 
@@ -38,9 +39,13 @@ fun LicensesScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
+            // Version, license and funding chips in the app's own tonal colours, not the library's pink.
             colors = LibraryDefaults.libraryColors(
-                libraryBackgroundColor = MaterialTheme.colorScheme.background,
-                libraryContentColor = MaterialTheme.colorScheme.onSurface
+                MaterialTheme.colorScheme.background,
+                MaterialTheme.colorScheme.onSurface,
+                LibraryDefaults.chipColors(MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.onSecondaryContainer),
+                LibraryDefaults.chipColors(MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.onSecondaryContainer),
+                LibraryDefaults.chipColors(MaterialTheme.colorScheme.tertiaryContainer, MaterialTheme.colorScheme.onTertiaryContainer),
             )
         )
     }

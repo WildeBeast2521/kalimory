@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.AppFab
 import androidx.compose.foundation.layout.ColumnScope
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
@@ -97,14 +99,7 @@ fun CreateScreen(
         modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
         topBar = { CalmTopBar(title = stringResource(R.string.library_exercises), onBack = onNavigateBack, scrollBehavior = topBarScroll) },
         floatingActionButton = {
-            // Expressive medium FAB: a larger, softer target for the screen's main action.
-            MediumFloatingActionButton(onClick = { showAddDialog = true }) {
-                Icon(
-                    AppIcons.Add,
-                    contentDescription = stringResource(R.string.add),
-                    modifier = Modifier.size(FloatingActionButtonDefaults.MediumIconSize),
-                )
-            }
+            AppFab(onClick = { showAddDialog = true }, contentDescription = stringResource(R.string.add))
         }
     ) { paddingValues ->
         if (hierarchicalData.isEmpty()) {
@@ -440,7 +435,7 @@ fun ExpandableGroupCard(
         colors = CardDefaults.cardColors(
             containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
         Column {
@@ -489,7 +484,7 @@ fun ExpandableGroupCard(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = stringResource(R.string.exercises_count, group.exercises.size),
+                            text = pluralStringResource(R.plurals.exercise_count, group.exercises.size, group.exercises.size),
                             fontSize = 14.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -948,7 +943,7 @@ fun UnifiedAddDialog(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(
@@ -973,7 +968,7 @@ fun UnifiedAddDialog(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 OutlinedTextField(
@@ -1000,7 +995,7 @@ fun UnifiedAddDialog(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp),
@@ -1078,7 +1073,7 @@ fun UnifiedAddDialog(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp),
@@ -1160,7 +1155,7 @@ fun UnifiedAddDialog(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp),
@@ -1252,7 +1247,7 @@ fun UnifiedAddDialog(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp),
@@ -1315,7 +1310,7 @@ fun UnifiedAddDialog(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp),
@@ -1405,7 +1400,7 @@ fun UnifiedAddDialog(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp),

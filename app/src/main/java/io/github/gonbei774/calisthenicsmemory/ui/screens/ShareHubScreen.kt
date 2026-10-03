@@ -203,7 +203,7 @@ fun ShareHubScreen(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = { onNavigateToCommunityShareExport() }
                 ) {
                     Row(
@@ -227,6 +227,7 @@ fun ShareHubScreen(
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
+                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -238,7 +239,7 @@ fun ShareHubScreen(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = MaterialTheme.shapes.large,
                     onClick = {
                         if (!isLoading) {
                             shareImportLauncher.launch(arrayOf("application/json"))
@@ -266,6 +267,7 @@ fun ShareHubScreen(
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
+                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }

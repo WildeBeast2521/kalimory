@@ -11,7 +11,6 @@ import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBar
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.calculateEndPadding
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.LocalSharedTransitionScope
@@ -53,6 +52,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
@@ -150,7 +153,7 @@ class MainActivity : ComponentActivity() {
             val darkTheme = when (currentTheme) {
                 AppTheme.SYSTEM -> isSystemDark
                 AppTheme.LIGHT -> false
-                AppTheme.DARK -> true
+                AppTheme.DARK, AppTheme.AMOLED -> true
             }
 
             // Open the database before any screen uses it; failures show a recovery screen.
@@ -159,7 +162,7 @@ class MainActivity : ComponentActivity() {
                 startupState = withContext(Dispatchers.IO) { DatabaseStartupCheck.run(applicationContext) }
             }
 
-            CalisthenicsMemoryTheme(darkTheme = darkTheme, dynamicColor = dynamicColor) {
+            CalisthenicsMemoryTheme(darkTheme = darkTheme, dynamicColor = dynamicColor, trueBlack = currentTheme == AppTheme.AMOLED) {
               CompositionLocalProvider(LocalFirstDayOfWeekSetting provides firstDayOfWeek) {
                 when (val state = startupState) {
                     null -> Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))
@@ -219,6 +222,8 @@ class MainActivity : ComponentActivity() {
             AppLanguage.FRENCH -> Locale("fr")
             AppLanguage.ITALIAN -> Locale("it")
             AppLanguage.UKRAINIAN -> Locale("uk")
+            AppLanguage.RUSSIAN -> Locale("ru")
+            AppLanguage.ARABIC -> Locale("ar")
             AppLanguage.SYSTEM -> return context
         }
 
@@ -422,6 +427,9 @@ fun CalisthenicsMemoryApp(
     }
     lastScreen[0] = currentScreen
     Scaffold(
+        // Insets are applied below, top and sides only, so the bottom stays unconsumed for the
+        // navigation bar and each screen's own bottom padding.
+        contentWindowInsets = WindowInsets(0),
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
@@ -436,16 +444,12 @@ fun CalisthenicsMemoryApp(
         // The bottom is left to each screen: the home screens end with the navigation bar, other
         // screens clear the system bar. Nothing resizes when a screen opens, so a pushed screen only
         // slides in; it does not also shift as the bar leaves.
-        val layoutDirection = LocalLayoutDirection.current
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(
-                    top = paddingValues.calculateTopPadding(),
-                    start = paddingValues.calculateStartPadding(layoutDirection),
-                    end = paddingValues.calculateEndPadding(layoutDirection),
-                )
+                .padding(paddingValues)
+                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
         ) {
             // The screen being left keeps its own state while it animates out, so each branch reads
             // `screen`, never `currentScreen`. The transition is seekable, so the back gesture can
@@ -536,6 +540,7 @@ fun CalisthenicsMemoryApp(
                                     onOpenExercises = { currentScreen = Screen.Create },
                                     onOpenPrograms = { currentScreen = Screen.ProgramList },
                                     onOpenIntervals = { currentScreen = Screen.IntervalList },
+                                    onOpenToDo = { currentScreen = Screen.ToDo },
                                     onOpenCatalogue = { currentScreen = Screen.Catalogue },
                                     onOpenSettings = { currentScreen = Screen.Settings }
                                 )

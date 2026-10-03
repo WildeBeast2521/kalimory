@@ -8,7 +8,6 @@
     <string name="add">Додати</string>
     <string name="create">Створити</string>
     <string name="back">Назад</string>
-    <string name="close">Закрити</string>
     <string name="search_exercise">Шукати вправу...</string>
     <string name="search_placeholder">Пошук</string>
     <string name="select">Вибрати</string>
@@ -27,7 +26,7 @@
     <string name="copied_to_clipboard">Скопійовано в буфер обміну</string>
     <string name="no_exercises">Вправ ще немає.\nДодайте першу за допомогою кнопки + нижче</string>
     <string name="exercise_name">Назва вправи</string>
-    <string name="set_challenge">Встановити виклик</string>
+    <string name="set_challenge">Встановити ціль</string>
     <string name="sets_count">Підходи</string>
     <string name="seconds">Секунди</string>
     <string name="bilateral_example">напр., віджимання, присідання</string>
@@ -88,7 +87,6 @@
     <string name="export_error">Помилка експорту: %s</string>
     <string name="import_error">Помилка імпорту: %s</string>
     <string name="workout_title">Тренування</string>
-    <string name="workout_mode_comment">Режим тренування</string>
     <string name="value_label">Значення</string>
     <string name="new_group_plus">+ Нова група</string>
     <string name="level_display">Рівень: %d</string>
@@ -147,7 +145,6 @@
     <string name="program_empty">Програм ще немає.\nДодайте першу за допомогою кнопки +</string>
     <string name="edit_exercise_title">Редагувати вправу</string>
     <string name="edit_program">Редагувати програму</string>
-    <string name="back_button">Назад</string>
     <string name="restore_from_backup">Відновити з резервної копії</string>
     <string name="backup_failed">Не вдалося створити резервну копію</string>
     <string name="select_exercise">Виберіть вправу</string>
@@ -213,7 +210,6 @@
     <string name="file_name">Назва файлу</string>
     <string name="clear">Очистити</string>
     <string name="clear_filter">Очистити фільтр</string>
-    <string name="exercises_count">%d вправ</string>
     <string name="no_exercises_registered">Немає зареєстрованих вправ</string>
     <string name="already_registered_format">«%1$s (%2$s)» вже зареєстровано</string>
     <string name="error_occurred">Виникла помилка</string>
@@ -245,7 +241,6 @@
     <string name="keep_screen_on_setting">Тримати екран увімкненим</string>
     <string name="report_issue_github">Повідомити про помилку на GitHub</string>
     <string name="todo_drag_to_reorder">Перетягніть, щоб змінити порядок</string>
-    <string name="program_exercise_count">%d вправ</string>
     <string name="program_exercises_required">Додайте хоча б одну вправу</string>
     <string name="target_with_unit">%1$d×%2$d%3$s</string>
     <string name="csv_import_success_label">Успішно</string>
@@ -336,7 +331,6 @@
     <string name="set_label">Підхід %d</string>
     <string name="set_number_display">Підхід %d</string>
     <string name="set_ordinal_suffix">Підхід %d</string>
-    <string name="sets_suffix">підходів</string>
     <string name="seconds_suffix">секунд</string>
     <string name="statistics_sets_count_format">%d підходів</string>
     <string name="sets_format">%d підходів</string>
@@ -378,11 +372,8 @@
     <string name="nav_skipped">Пропущено</string>
     <string name="record_workout">Записати</string>
     <string name="complete_with_time">Завершити (%d с)</string>
-    <string name="complete_with_reps">Завершити (%d разів)</string>
     <string name="timer_on">Увімк.</string>
     <string name="timer_off">Вимк.</string>
-    <string name="enter_seconds">Уведіть секунди</string>
-    <string name="enter_seconds_max">Уведіть секунди (макс. %d)</string>
     <string name="statistics_summary">Статистика</string>
     <string name="import_data_preview_title">Підтвердження імпорту</string>
     <string name="data_management">Керування даними</string>
@@ -439,7 +430,7 @@
     <string name="nav_redo">Повторити</string>
     <string name="bodyweight_training">Тренування з власною вагою</string>
     <string name="app_description">Додаток для запису тренувань із власною вагою</string>
-    <string name="section_language_description">Мова відображення додатка.\nЗміни набувають чинності після перезапуску.</string>
+    <string name="section_language_description">Мова відображення додатка.</string>
     <string name="language_changed">Мову змінено. Будь ласка, перезапустіть додаток.</string>
     <string name="weekly_change">Зміна за тиждень</string>
     <string name="section_add_records">Додати записи (CSV)</string>
@@ -452,7 +443,7 @@
     <string name="legend_distance">Відстань</string>
     <string name="invert">Обернути</string>
     <string name="program_result_zero_warning">Підходи з 0 зберігаються як пропущені й не показуються в історії.</string>
-    <string name="exit_workout_message">Прогрес не збережеться.</string>
+    <string name="exit_workout_message">Незбережені підходи буде втрачено. Щоб зберегти їх, натисніть «Зберегти і вийти».</string>
     <string name="exit_workout_title">Закрити тренування?</string>
     <string name="current_language">Поточна: %s</string>
     <string name="stop_button">Стоп</string>
@@ -500,7 +491,6 @@
     <string name="target_reps_label">Мета (разів)</string>
     <string name="todo_rec_button">Запис</string>
     <string name="todo_wo_button">Викон.</string>
-    <string name="todo_start_button">Почати</string>
     <string name="todo_choose_mode">Виберіть режим</string>
     <string name="todo_mode_record">Запис</string>
     <string name="todo_mode_workout">Тренування</string>
@@ -512,7 +502,6 @@
     <string name="todo_delete_confirm_message">Видалити «%s» зі списку завдань?</string>
     <string name="todo_no_programs">Немає програм</string>
     <string name="todo_no_intervals">Немає інтервалів</string>
-    <string name="todo_group_exercise_count">%d вправ</string>
     <string name="todo_add_items">Додати елементи</string>
     <string name="todo_repeat_title">Повтор</string>
     <string name="todo_repeat_clear">Очистити</string>
@@ -565,9 +554,9 @@
     <string name="description_optional">Опис (необов’язково)</string>
     <string name="interval_list_title">Інтервал</string>
     <string name="interval_empty">Програм для ВІІТ тренувань ще немає.\nДодайте першу за допомогою кнопки +</string>
-    <string name="interval_summary_format">%1$d вправ · %2$d с/%3$d с · %4$d раундів</string>
-    <string name="new_interval_program">Нова програма</string>
-    <string name="edit_interval_program">Редагувати програму</string>
+    <string name="interval_summary_format">%1$d с/%2$d с · %3$d раундів</string>
+    <string name="new_interval_program">Новий інтервал</string>
+    <string name="edit_interval_program">Редагувати інтервал</string>
     <string name="interval_program_name">Назва програми</string>
     <string name="interval_program_name_hint">напр., ВІІТ круг А</string>
     <string name="interval_timer_settings">Налаштування таймера</string>
@@ -577,15 +566,12 @@
     <string name="interval_exercises">Вправи</string>
     <string name="interval_add_exercise">Додати вправу</string>
     <string name="interval_exercises_required">Додайте хоча б одну вправу</string>
-    <string name="interval_delete_program">Видалити програму</string>
+    <string name="interval_delete_program">Видалити інтервал</string>
     <string name="interval_delete_program_warning">Видалити «%s»?</string>
-    <string name="interval_start">Почати</string>
     <string name="interval_duplicate">Дублювати</string>
     <string name="interval_duplicated">Програму продублювано</string>
     <string name="interval_seconds_suffix">с</string>
     <string name="interval_rounds_suffix">раундів</string>
-    <string name="interval_total_time_format">~%1$d хв %2$d с</string>
-    <string name="interval_start_workout">Почати тренування</string>
     <string name="interval_get_ready">Приготуйтеся</string>
     <string name="interval_round_format">Раунд %1$d / %2$d</string>
     <string name="interval_exercise_format">Вправа %1$d / %2$d</string>
@@ -627,7 +613,6 @@
     <string name="interval_record_settings_format">Тренування %1$d с / Відпочинок %2$d с / Відпочинок між раундами %3$d с</string>
     <string name="interval_record_complete">Завершено</string>
     <string name="interval_record_partial">Припинено раніше</string>
-    <string name="interval_record_exercises_count">%1$d вправ</string>
     <!-- Share export/import -->
     <string name="share_section_title">Поширення</string>
     <string name="share_section_description">Діліться програмами та вправами з іншими</string>
@@ -653,7 +638,6 @@
     <string name="share_no_exercises">Немає вправ</string>
     <string name="share_exercise_auto_included">Автоматично додано з програми/інтервалу</string>
     <string name="share_ungrouped">Без групи</string>
-    <string name="share_program_exercises_format">%1$d вправ</string>
     <string name="share_program_loops_format">, %1$d циклів</string>
     <string name="share_import_dialog_title">Імпорт спільного файлу JSON</string>
     <string name="share_import_preview_new">Нове (буде додано)</string>
@@ -864,7 +848,7 @@
     <string name="guide_place_today">Ваш тиждень одним поглядом, що далі і що ви зробили сьогодні.</string>
     <string name="guide_place_train">Почніть тренування: одну вправу, програму або інтервали. Можна також записати минуле тренування.</string>
     <string name="guide_place_progress">Ваша історія в календарі, списку й графіках, а також ваші прогресії.</string>
-    <string name="guide_place_library">Ваші вправи, програми, інтервальні тренування та налаштування.</string>
+    <string name="guide_place_library">Ваші вправи, програми та інтервали, список справ, каталог вправ і налаштування.</string>
     <string name="guide_workout_title">Як проходить тренування</string>
     <string name="guide_workout_sets_title">Підхід за підходом</string>
     <string name="guide_workout_sets">Рахуйте повторення або вмикайте таймер, з відпочинком між підходами.</string>
@@ -937,4 +921,17 @@
     <string name="progressions_ready">Можна переходити до наступного кроку</string>
     <string name="progressions_next">Далі: %1$s</string>
     <string name="progressions_top">Вершина цього ланцюжка</string>
+    <plurals name="exercise_count">
+        <item quantity="one">%d вправа</item>
+        <item quantity="few">%d вправи</item>
+        <item quantity="many">%d вправ</item>
+        <item quantity="other">%d вправи</item>
+    </plurals>
+    <plurals name="complete_reps">
+        <item quantity="one">Завершити (%d раз)</item>
+        <item quantity="few">Завершити (%d рази)</item>
+        <item quantity="many">Завершити (%d разів)</item>
+        <item quantity="other">Завершити (%d рази)</item>
+    </plurals>
+    <string name="theme_system_short">Системна</string>
 </resources>

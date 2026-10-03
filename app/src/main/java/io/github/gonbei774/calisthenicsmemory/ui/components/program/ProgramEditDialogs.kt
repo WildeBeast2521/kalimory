@@ -4,6 +4,8 @@ package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -183,12 +185,13 @@ private fun ProgramExerciseSelectItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .toggleable(value = isSelected, role = Role.Checkbox, onValueChange = { _ -> onToggle(exercise.id) })
                 .padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.Top
         ) {
             Checkbox(
                 checked = isSelected,
-                onCheckedChange = { onToggle(exercise.id) },
+                onCheckedChange = null,
                 colors = CheckboxDefaults.colors(
                     checkedColor = MaterialTheme.colorScheme.primary,
                     uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -342,12 +345,13 @@ private fun ProgramSelectExerciseGroup(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .toggleable(value = exercise.id in selectedExercises, role = Role.Checkbox, onValueChange = { _ -> onExerciseToggle(exercise.id) })
                                 .padding(vertical = 4.dp),
                             verticalAlignment = Alignment.Top
                         ) {
                             Checkbox(
                                 checked = exercise.id in selectedExercises,
-                                onCheckedChange = { onExerciseToggle(exercise.id) },
+                                onCheckedChange = null,
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = MaterialTheme.colorScheme.primary,
                                     uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant

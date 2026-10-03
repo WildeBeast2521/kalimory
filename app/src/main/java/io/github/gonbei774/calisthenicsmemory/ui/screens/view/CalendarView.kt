@@ -413,7 +413,7 @@ private fun StatsCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column(
             modifier = Modifier.padding(12.dp),
@@ -586,7 +586,9 @@ private fun WeekDayCell(
             Text(
                 text = dayOfWeekText,
                 fontSize = 11.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                // On a filled (trained) day the label takes the fill's own text colour; grey on a
+                // light fill was unreadable.
+                color = if (level > 0) heatContent(level) else MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
             Text(
@@ -624,7 +626,7 @@ private fun DayRecordSummary(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column(
             modifier = Modifier.padding(12.dp),

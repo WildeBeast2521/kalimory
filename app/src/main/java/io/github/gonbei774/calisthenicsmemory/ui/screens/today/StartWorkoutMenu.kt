@@ -66,7 +66,7 @@ fun StartWorkoutMenu(
             icon = { Icon(icon, contentDescription = null) },
             text = { Text(text) },
         )
-        item(AppIcons.RecordManually, stringResource(R.string.train_log_title), onLogPast)
+        item(AppIcons.RecordManually, stringResource(R.string.home_record), onLogPast)
         item(AppIcons.Interval, stringResource(R.string.interval_list_title), onInterval)
         item(AppIcons.Program, stringResource(R.string.today_kind_program), onProgram)
         item(AppIcons.Exercise, stringResource(R.string.exercise), onExercise)

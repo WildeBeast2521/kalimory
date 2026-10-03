@@ -1,6 +1,12 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.intervalSummary
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.foundation.layout.size
@@ -29,7 +35,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -59,6 +64,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
@@ -187,33 +193,20 @@ fun CommunityShareExportScreen(
         modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
         topBar = { CalmTopBar(title = stringResource(R.string.share_export_screen_title), onBack = onNavigateBack, scrollBehavior = topBarScroll) },
         bottomBar = {
-            BottomAppBar(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+            // The main action as on other screens: one full-width button above the system bar.
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+                    .navigationBarsPadding()
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Button(
-                        onClick = { showPreviewDialog = true },
-                        enabled = totalSelected > 0 && !isExporting,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-                        ),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = if (totalSelected > 0) stringResource(R.string.share_export_button_with_count, totalSelected) else stringResource(R.string.share_export_button),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = if (totalSelected > 0) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
+                WorkoutPrimaryButton(
+                    text = if (totalSelected > 0) stringResource(R.string.share_export_button_with_count, totalSelected) else stringResource(R.string.share_export_button),
+                    onClick = { showPreviewDialog = true },
+                    icon = AppIcons.Upload,
+                    enabled = totalSelected > 0 && !isExporting,
+                )
             }
         }
     ) { paddingValues ->
@@ -414,7 +407,7 @@ private fun ProgramsExportTab(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(4.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
             items(
                 items = programs,
@@ -428,12 +421,13 @@ private fun ProgramsExportTab(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .toggleable(value = program.id in selectedIds, role = Role.Checkbox, onValueChange = { _ -> onToggle(program.id) })
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(
                             checked = program.id in selectedIds,
-                            onCheckedChange = { onToggle(program.id) },
+                            onCheckedChange = null,
                             colors = CheckboxDefaults.colors(
                                 checkedColor = MaterialTheme.colorScheme.primary,
                                 uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -448,7 +442,7 @@ private fun ProgramsExportTab(
                             )
                             val exCount = exerciseCounts[program.id] ?: 0
                             val lpCount = loopCounts[program.id] ?: 0
-                            val exercisesText = stringResource(R.string.share_program_exercises_format, exCount)
+                            val exercisesText = pluralStringResource(R.plurals.exercise_count, exCount, exCount)
                             val loopsText = if (lpCount > 0) stringResource(R.string.share_program_loops_format, lpCount) else ""
                             val subtitle = exercisesText + loopsText
                             Text(
@@ -485,7 +479,7 @@ private fun IntervalsExportTab(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(4.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
             items(
                 items = intervalPrograms,
@@ -499,12 +493,13 @@ private fun IntervalsExportTab(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .toggleable(value = interval.id in selectedIds, role = Role.Checkbox, onValueChange = { _ -> onToggle(interval.id) })
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(
                             checked = interval.id in selectedIds,
-                            onCheckedChange = { onToggle(interval.id) },
+                            onCheckedChange = null,
                             colors = CheckboxDefaults.colors(
                                 checkedColor = MaterialTheme.colorScheme.primary,
                                 uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -519,7 +514,7 @@ private fun IntervalsExportTab(
                             )
                             val exCount = exerciseCounts[interval.id] ?: 0
                             Text(
-                                text = stringResource(R.string.interval_summary_format, exCount, interval.workSeconds, interval.restSeconds, interval.rounds),
+                                text = intervalSummary(interval, exCount),
                                 fontSize = 11.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 2.dp)
@@ -564,7 +559,7 @@ private fun ExercisesExportTab(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(4.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
             groupedExercises.forEach { (groupName, groupExercises) ->
                 item(key = "group_header_$groupName") {
@@ -589,12 +584,13 @@ private fun ExercisesExportTab(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .toggleable(value = exercise.id in selectedIds || isIncluded, role = Role.Checkbox, onValueChange = { _ -> if (!isIncluded) onToggle(exercise.id) })
                                 .padding(horizontal = 8.dp, vertical = 4.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Checkbox(
                                 checked = exercise.id in selectedIds || isIncluded,
-                                onCheckedChange = { if (!isIncluded) onToggle(exercise.id) },
+                                onCheckedChange = null,
                                 enabled = !isIncluded,
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = if (isIncluded) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.primary,
