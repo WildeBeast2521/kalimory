@@ -52,7 +52,8 @@ class ProgressionsViewTest {
         )
 
         rule.onNodeWithText("My chin-ups").assertIsDisplayed()
-        rule.onNodeWithText("Step 5 of 9").assertIsDisplayed()
+        // Derived from the catalogue, so the check survives steps being added to the chain.
+        rule.onNodeWithText("Step ${pull.steps.indexOf(chinUp) + 1} of ${pull.steps.size}").assertIsDisplayed()
         rule.onNodeWithText("Last session: 8, 8, 8").assertIsDisplayed()
         rule.onNodeWithText("Ready for the next step").assertIsDisplayed()
         rule.onNodeWithText("Next: Pull-up").assertIsDisplayed()
