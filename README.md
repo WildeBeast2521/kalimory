@@ -17,7 +17,7 @@
 
 <p align="center">
   <b>Kalimory</b> plans your bodyweight training, runs it with you, and remembers every set.<br>
-  It guides you up 19 progression chains, from the wall push-up to the planche, and never locks a thing.
+  It guides you up 29 progression chains, from the wall push-up to the planche, and never locks a thing.
 </p>
 
 <p align="center">
@@ -39,7 +39,7 @@
     <td width="50%" valign="top"><img src=".github/readme/icon-timer.svg" width="40" align="left" alt="">&nbsp;<b>Guided workouts</b><br>&nbsp;Rep counting, hold and rest timers, programs and intervals. Timers keep going with the screen off.</td>
   </tr>
   <tr>
-    <td valign="top"><img src=".github/readme/icon-stairs.svg" width="40" align="left" alt="">&nbsp;<b>101 steps in 19 chains</b><br>&nbsp;Form cues, a muscle map, the equipment each needs, and clear standards to start and move on.</td>
+    <td valign="top"><img src=".github/readme/icon-stairs.svg" width="40" align="left" alt="">&nbsp;<b>157 steps in 29 chains</b><br>&nbsp;Form cues, a muscle map, the equipment each needs, and clear standards to start and move on.</td>
     <td valign="top"><img src=".github/readme/icon-insights.svg" width="40" align="left" alt="">&nbsp;<b>Progressions</b><br>&nbsp;Where you stand in each chain, how close you are to the next step, and when you got there.</td>
   </tr>
   <tr>
@@ -64,20 +64,21 @@ Every exercise in the catalogue belongs to a chain of steps, each harder than th
 </p>
 
 <details>
-<summary><b>All 19 chains</b></summary>
+<summary><b>All 29 chains</b></summary>
 <br>
 
-| Fundamentals | Skills | More |
-|:---|:---|:---|
-| Push-up | Handstand | Side core |
-| Handstand push-up | L-sit | Back bridge |
-| Dip | Muscle-up | Burpee |
-| Pull-up | Front lever | |
-| Row | Back lever | |
-| Squat | Planche | |
-| Hip hinge | Human flag | |
-| Core | | |
-| Leg raise | | |
+| Fundamentals | Skills | Strength and conditioning | Mobility |
+|:---|:---|:---|:---|
+| Push-up | Handstand | Calf raise | Lower body mobility |
+| Handstand push-up | L-sit | Lunge | Shoulder and wrist mobility |
+| Dip | Muscle-up | Explosive | |
+| Pull-up | Front lever | Rollout and dragon flag | |
+| Row | Back lever | Rotation | |
+| Squat | Planche | Side core | |
+| Hip hinge | Human flag | Back extension | |
+| Core | Rings | Grip | |
+| Leg raise | | Back bridge | |
+| | | Burpee | |
 
 </details>
 

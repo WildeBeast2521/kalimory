@@ -11,7 +11,7 @@ Kalimory is a fork of Calisthenics Memory with its own name, application ID (`io
 
 ### Added
 - **Today**: this week at a glance, what is due, suggestions from your progressions, a weekly goal, and a start-workout button for every kind of workout
-- **Exercise catalogue**: 101 steps in 19 progression chains, with form cues, a muscle map, equipment, and starting and move-on standards, in all ten languages
+- **Exercise catalogue**: 157 steps in 29 progression chains, with form cues, a muscle map, equipment, and starting and move-on standards, in all ten languages
 - **Progressions**: where you stand in each chain you follow, when you are ready for the next step, and the dates you started and met each step
 - **Workout summary** after every workout, with totals and new personal bests
 - Log a past workout with several exercises at once
