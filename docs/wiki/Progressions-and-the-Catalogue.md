@@ -2,9 +2,9 @@
 
 ## The catalogue
 
-Library › Exercise catalogue holds 101 steps in 19 chains. A chain goes from an easier step to a harder one: for example, the Push-up chain starts at the wall push-up and ends at the one-arm push-up.
+Library › Exercise catalogue holds 157 steps in 29 chains. A chain goes from an easier step to a harder one: for example, the Push-up chain starts at the wall push-up and ends at the one-arm push-up.
 
-The chains cover pushing, pulling, dips, squats, hips, core, side core and conditioning, and skills such as the handstand, L-sit, muscle-up, front lever, back lever, planche, human flag and the back bridge.
+The chains cover pushing, pulling, dips, rows, squats, lunges, calves, hips and back extensions, core, rotation and side core, grip, explosive work and conditioning; skills such as the handstand, L-sit, muscle-up, front lever, back lever, planche, human flag, back bridge and rings; and lower body, shoulder and wrist mobility.
 
 Each step has:
 
