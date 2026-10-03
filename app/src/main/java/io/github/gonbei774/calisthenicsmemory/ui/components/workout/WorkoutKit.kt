@@ -2,9 +2,10 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.workout
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material3.HorizontalFloatingToolbar
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.material3.WavyProgressIndicatorDefaults
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
@@ -234,9 +235,18 @@ fun TimerDial(
         // path is not rebuilt every frame (a widening stroke made short countdowns stutter).
         val stroke = with(LocalDensity.current) { Stroke(16.dp.toPx(), cap = StrokeCap.Round) }
         // Kept across frames, so the indicator does not see a new amplitude function each tick.
-        val amplitude = remember(paused) { { p: Float -> if (paused) 0f else WavyProgressIndicatorDefaults.indicatorAmplitude(p) } }
+        // The same full wave at every progress: the default flattens a nearly full ring, so a
+        // 60 s rest lay flat while a 5 s "Get ready" rippled. Every countdown now looks alike.
+        val amplitude = remember(paused) { { p: Float -> if (paused || p <= 0f || p >= 1f) 0f else 1f } }
+        // The stopwatch ticks every 100 ms. Gliding between ticks keeps every countdown smooth: a
+        // 5 s "Get ready" moves 2% per tick, which stepped visibly, while a long rest barely moves.
+        val shownProgress by animateFloatAsState(
+            targetValue = progress.coerceIn(0f, 1f),
+            animationSpec = tween(durationMillis = 110, easing = LinearEasing),
+            label = "dial progress",
+        )
         CircularWavyProgressIndicator(
-            progress = { progress.coerceIn(0f, 1f) },
+            progress = { shownProgress },
             modifier = Modifier
                 .size(size)
                 .graphicsLayer {
@@ -275,6 +285,10 @@ fun TimerDial(
  */
 @Composable
 fun RollingNumber(text: String, style: TextStyle, color: Color, modifier: Modifier = Modifier) {
+    // Each digit is its own Text so it can roll. Proportional figures keep "10" and "11" from
+    // gaping, and the font's own side bearings space the digits: the style's tight negative
+    // tracking made big pairs such as "77" touch once each digit was laid out alone.
+    val digitStyle = style.copy(fontFeatureSettings = "pnum", letterSpacing = 0.sp)
     Row(modifier) {
         text.forEachIndexed { index, char ->
             key(text.length - index) {
@@ -287,7 +301,7 @@ fun RollingNumber(text: String, style: TextStyle, color: Color, modifier: Modifi
                     },
                     label = "digit",
                 ) { digit ->
-                    Text(digit.toString(), style = style, color = color)
+                    Text(digit.toString(), style = digitStyle, color = color)
                 }
             }
         }
@@ -430,9 +444,10 @@ fun StepButton(icon: ImageVector, contentDescription: String, enabled: Boolean =
 
 /** The one main action at the bottom of an in-workout screen, within thumb reach. */
 @Composable
-fun WorkoutPrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, icon: ImageVector? = AppIcons.Check) {
+fun WorkoutPrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, icon: ImageVector? = AppIcons.Check, enabled: Boolean = true) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier.fillMaxWidth().heightIn(min = 64.dp),
         // Pressing squeezes the corners, so the main action answers the thumb.
         shapes = ButtonShapes(shape = MaterialTheme.shapes.large, pressedShape = MaterialTheme.shapes.small),

@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.common
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -58,7 +61,13 @@ fun <T> ConnectedChoices(
                 // Narrow padding so up to six options fit a phone width.
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp),
             ) {
-                Text(label(option), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                // Long labels ("Follow system" beside three others) shrink before they are cut.
+                Text(
+                    label(option),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    autoSize = TextAutoSize.StepBased(minFontSize = 11.sp, maxFontSize = MaterialTheme.typography.labelLarge.fontSize),
+                )
             }
         }
     }

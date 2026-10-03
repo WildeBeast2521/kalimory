@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -176,7 +178,7 @@ internal fun ProgramConfirmStep(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(R.string.program_exercise_count, session.exercises.size),
+                        text = pluralStringResource(R.plurals.exercise_count, session.exercises.size, session.exercises.size),
                         fontSize = 14.sp,
                         color = cs.onSurfaceVariant
                     )
@@ -394,7 +396,7 @@ internal fun SettingsSection(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column {
             // 折りたたみヘッダー
@@ -484,11 +486,9 @@ internal fun SettingsSection(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    IconButton(
-                        onClick = { if (startCountdownSeconds > 0) onStartCountdownChange(startCountdownSeconds - 1) },
-                        modifier = Modifier.size(28.dp)
-                    ) {
-                        Text("−", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = cs.onSurfaceVariant)
+                    NumberStepButton(increment = false, contentDescription = null, enabled = startCountdownSeconds > 0, size = 32.dp) {
+                        if (startCountdownSeconds > 0) onStartCountdownChange(startCountdownSeconds - 1)
+                        false
                     }
                     Text(
                         text = startCountdownSeconds.toString(),
@@ -497,11 +497,9 @@ internal fun SettingsSection(
                         textAlign = TextAlign.Center,
                         modifier = Modifier.width(24.dp)
                     )
-                    IconButton(
-                        onClick = { onStartCountdownChange(startCountdownSeconds + 1) },
-                        modifier = Modifier.size(28.dp)
-                    ) {
-                        Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = cs.onSurfaceVariant)
+                    NumberStepButton(increment = true, contentDescription = null, size = 32.dp) {
+                        onStartCountdownChange(startCountdownSeconds + 1)
+                        false
                     }
                     Text(
                         text = stringResource(R.string.unit_seconds_short),
@@ -672,7 +670,7 @@ internal fun ProgramConfirmExerciseCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column {
             // ヘッダー: 番号バッジ + 種目名 + セット数バッジ + シェブロン
@@ -767,16 +765,11 @@ internal fun ProgramConfirmExerciseCard(
                             color = cs.onSurfaceVariant
                         )
                         Row(
-                            modifier = Modifier
-                                .background(cs.surfaceContainerHigh, RoundedCornerShape(8.dp))
-                                .padding(2.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            IconButton(
-                                onClick = { if (currentSetCount > 1) onUpdateSetCount(currentSetCount - 1) },
-                                modifier = Modifier.size(32.dp)
-                            ) {
-                                Text("−", fontSize = 16.sp, color = cs.onSurfaceVariant)
+                            NumberStepButton(increment = false, contentDescription = null, enabled = currentSetCount > 1, size = 32.dp) {
+                                if (currentSetCount > 1) onUpdateSetCount(currentSetCount - 1)
+                                false
                             }
                             Text(
                                 text = currentSetCount.toString(),
@@ -785,11 +778,9 @@ internal fun ProgramConfirmExerciseCard(
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.width(28.dp)
                             )
-                            IconButton(
-                                onClick = { onUpdateSetCount(currentSetCount + 1) },
-                                modifier = Modifier.size(32.dp)
-                            ) {
-                                Text("+", fontSize = 16.sp, color = cs.onSurfaceVariant)
+                            NumberStepButton(increment = true, contentDescription = null, size = 32.dp) {
+                                onUpdateSetCount(currentSetCount + 1)
+                                false
                             }
                         }
                     }
@@ -1058,7 +1049,7 @@ private fun ProgramConfirmLoopBlock(
             .fillMaxWidth()
             .border(2.dp, cs.tertiary, RoundedCornerShape(12.dp)),
         colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column {
             // ループヘッダー
@@ -1203,47 +1194,7 @@ private fun OrangeCircleStepButton(
     enabled: Boolean = true,
     onStep: () -> Unit
 ) {
-    val cs = MaterialTheme.colorScheme
-    val scope = rememberCoroutineScope()
-    val currentOnStep by rememberUpdatedState(onStep)
-    val bgColor = if (enabled) cs.tertiary else cs.surfaceContainerHighest
-    val labelColor = if (enabled) cs.onTertiary else cs.outline
-    Box(
-        modifier = Modifier
-            .size(30.dp)
-            .background(bgColor, CircleShape)
-            .then(
-                if (enabled) {
-                    Modifier.pointerInput(Unit) {
-                        awaitEachGesture {
-                            awaitFirstDown(requireUnconsumed = false)
-                            currentOnStep()
-                            var repeatJob: Job? = null
-                            try {
-                                repeatJob = scope.launch {
-                                    delay(350)
-                                    while (isActive) {
-                                        currentOnStep()
-                                        delay(80)
-                                    }
-                                }
-                                waitForUpOrCancellation()
-                            } finally {
-                                repeatJob?.cancel()
-                            }
-                        }
-                    }
-                } else Modifier
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = label,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = labelColor
-        )
-    }
+    NumberStepButton(increment = label == "+", contentDescription = null, enabled = enabled) { onStep(); enabled }
 }
 
 @Composable

@@ -227,14 +227,16 @@ fun TodayScreen(
         Column {
             // The week's work as one big number: the anchor of the page.
             val weekDates = remember(week) { week.map { it.toString() }.toSet() }
-            val setsThisWeek = remember(history, weekDates) { history.count { it.date in weekDates } }
+            // Interval work counts too: each work interval done is one set, as the summary counts it.
+            val setsThisWeek = remember(history, intervalHistory, weekDates) {
+                history.count { it.date in weekDates } + intervalHistory.filter { it.record.date in weekDates }.sumOf { it.completedSets }
+            }
             val setsLabel = pluralStringResource(R.plurals.today_week_sets, setsThisWeek)
             Row(
                 verticalAlignment = Alignment.Bottom,
                 modifier = Modifier.clearAndSetSemantics { contentDescription = "$setsThisWeek $setsLabel" },
             ) {
-                // Proportional figures: tabular ones leave a gap inside "11" at this size.
-                RollingNumber("$setsThisWeek", style = WorkoutNumerals.copy(fontSize = 64.sp, lineHeight = 68.sp, fontFeatureSettings = "pnum"), color = MaterialTheme.colorScheme.onBackground)
+                RollingNumber("$setsThisWeek", style = WorkoutNumerals.copy(fontSize = 64.sp, lineHeight = 68.sp), color = MaterialTheme.colorScheme.onBackground)
                 Text(
                     setsLabel,
                     style = MaterialTheme.typography.titleMedium,

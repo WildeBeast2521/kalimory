@@ -53,6 +53,28 @@ class WorkoutSummaryBuilderTest {
         assertEquals(2, summary.exercises[0].sets.size)
     }
 
+    @Test fun `a run stopped early says so, and an interval ring counts the planned rounds`() {
+        val skipped = WorkoutSummaryBuilder.build(
+            WorkoutSessionGraph(session(), listOf(exercise(1, "Push-up") to listOf(set(1, reps = 10), set(2, status = SetEntryStatus.SKIPPED)))),
+            history = emptyList(),
+        )
+        assertTrue(skipped.stoppedEarly)
+        val interval = WorkoutSummaryBuilder.build(
+            WorkoutSessionGraph(
+                session(WorkoutSourceType.INTERVAL_TEMPLATE, "Tabata"),
+                listOf(exercise(1, "Burpee").copy(targetSets = 3) to listOf(set(1), set(2))),
+            ),
+            history = emptyList(),
+        )
+        assertEquals(3, interval.exercises[0].plannedSets)
+        assertTrue(interval.stoppedEarly)
+        val full = WorkoutSummaryBuilder.build(
+            WorkoutSessionGraph(session(), listOf(exercise(1, "Push-up") to listOf(set(1, reps = 10), set(2, reps = 9)))),
+            history = emptyList(),
+        )
+        assertEquals(false, full.stoppedEarly)
+    }
+
     @Test fun `one-sided sets pair their sides`() {
         val summary = WorkoutSummaryBuilder.build(
             WorkoutSessionGraph(

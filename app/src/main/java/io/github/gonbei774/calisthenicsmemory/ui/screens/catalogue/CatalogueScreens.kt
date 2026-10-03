@@ -1,7 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.material3.TopAppBarDefaults
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
-import io.github.gonbei774.calisthenicsmemory.ui.navigation.sharedChainTitle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -97,14 +99,16 @@ fun CatalogueChainScreen(viewModel: TrainingViewModel, chainId: String, onNaviga
     val unfollowed by viewModel.unfollowedChains.collectAsState()
     val history by viewModel.history.collectAsState()
     val journey = remember(exercises, history) { Progressions.journey(chain, exercises, history).associateBy { it.step.id } }
-    CatalogueScaffold(chainName, onNavigateBack, sharedChainId = chain.id) {
+    CatalogueScaffold(chainName, onNavigateBack) {
         // Following only matters once a step is in the library (ADR 0007, decision 4).
         if (chain.steps.any { it.id in linked }) {
             item { FollowRow(followed = chain.id !in unfollowed) { viewModel.setChainFollowed(chain.id, it) } }
         }
         item {
             RowGroup {
-                chain.steps.forEach { step -> StepRow(step, step.id in linked, journey[step.id]) { open = step } }
+                // Numbered by place in the chain, as Progressions counts "Step 3 of 11"; equal difficulty
+                // would repeat a number.
+                chain.steps.forEachIndexed { index, step -> StepRow(index + 1, step, step.id in linked, journey[step.id]) { open = step } }
             }
         }
     }
@@ -113,7 +117,7 @@ fun CatalogueChainScreen(viewModel: TrainingViewModel, chainId: String, onNaviga
         val name = stringResource(step.name)
         val description = stringResource(step.description)
         ModalBottomSheet(onDismissRequest = { open = null }, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
-            StepDetails(step, inLibrary = step.id in linked) {
+            StepDetails(step, number = chain.steps.indexOf(step) + 1, inLibrary = step.id in linked) {
                 viewModel.addFromCatalogue(step, name, description, chainName)
                 open = null
             }
@@ -121,28 +125,21 @@ fun CatalogueChainScreen(viewModel: TrainingViewModel, chainId: String, onNaviga
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CatalogueScaffold(
     title: String,
     onNavigateBack: () -> Unit,
-    // The chain whose name glides into this title from where it was tapped.
-    sharedChainId: String? = null,
     content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit,
 ) {
-    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding()) {
-        Row(Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onNavigateBack) {
-                Icon(AppIcons.Back, contentDescription = stringResource(R.string.back), tint = MaterialTheme.colorScheme.onSurface)
-            }
-            Text(
-                title,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = (if (sharedChainId != null) Modifier.sharedChainTitle(sharedChainId) else Modifier).semantics { heading() },
-            )
-        }
+    // The app's header, as on every other screen: a large title that settles into the bar on scroll.
+    val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).nestedScroll(topBarScroll.nestedScrollConnection)) {
+        CalmTopBar(
+            title = title,
+            onBack = onNavigateBack,
+            scrollBehavior = topBarScroll,
+        )
         LazyColumn(
             Modifier.fillMaxSize().navigationBarsPadding(),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = Spacing.l, vertical = Spacing.m),
@@ -163,7 +160,6 @@ private fun ChainRow(chain: CatalogueChain, inLibrary: Int, onClick: () -> Unit)
                 stringResource(chain.name),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.sharedChainTitle(chain.id),
             )
             // Where the chain begins and where it leads.
             Text(
@@ -218,12 +214,12 @@ private fun LevelBadge(level: Int) {
 }
 
 @Composable
-private fun StepRow(step: CatalogueStep, inLibrary: Boolean, journey: StepJourney?, onClick: () -> Unit) {
+private fun StepRow(number: Int, step: CatalogueStep, inLibrary: Boolean, journey: StepJourney?, onClick: () -> Unit) {
     Row(
         Modifier.fillMaxWidth().clip(MaterialTheme.shapes.medium).clickable(onClick = onClick).padding(horizontal = Spacing.l, vertical = Spacing.m),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        LevelBadge(step.difficulty)
+        LevelBadge(number)
         Spacer(Modifier.width(Spacing.l))
         Column(Modifier.weight(1f)) {
             Text(stringResource(step.name), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
@@ -251,13 +247,13 @@ private fun StepRow(step: CatalogueStep, inLibrary: Boolean, journey: StepJourne
 }
 
 @Composable
-private fun StepDetails(step: CatalogueStep, inLibrary: Boolean, onAdd: () -> Unit) {
+private fun StepDetails(step: CatalogueStep, number: Int, inLibrary: Boolean, onAdd: () -> Unit) {
     Column(
         Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = Spacing.xl).padding(bottom = Spacing.xl),
         verticalArrangement = Arrangement.spacedBy(Spacing.l),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            LevelBadge(step.difficulty)
+            LevelBadge(number)
             Spacer(Modifier.width(Spacing.l))
             Text(
                 stringResource(step.name),

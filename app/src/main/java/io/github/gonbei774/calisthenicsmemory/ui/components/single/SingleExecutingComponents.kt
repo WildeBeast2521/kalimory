@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.R
@@ -129,7 +130,7 @@ fun SingleExecutingStepDynamicManual(
         // 完了ボタン（押下で記録確認シートを表示）
         var showConfirm by remember(currentSetIndex) { mutableStateOf(false) }
         WorkoutPrimaryButton(
-            text = stringResource(R.string.complete_with_reps, recordValue),
+            text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
             onClick = {
                 isPaused = true
                 showConfirm = true
@@ -272,7 +273,7 @@ fun SingleExecutingStepDynamicAuto(
 
         // 完了ボタン（早期完了用）
         WorkoutPrimaryButton(
-            text = stringResource(R.string.complete_with_reps, recordValue),
+            text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
             onClick = {
                 currentSet.actualValue = recordValue
                 currentSet.isCompleted = true
@@ -343,7 +344,7 @@ fun SingleExecutingStepDynamicSimple(
         Spacer(modifier = Modifier.height(Spacing.l))
 
         WorkoutPrimaryButton(
-            text = stringResource(R.string.complete_with_reps, reps),
+            text = pluralStringResource(R.plurals.complete_reps, reps, reps),
             onClick = {
                 if (isFlashEnabled) {
                     scope.launch { flashController.flashSetComplete() }

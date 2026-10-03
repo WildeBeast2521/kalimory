@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
+import io.github.gonbei774.calisthenicsmemory.workout.restDialProgress
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -41,6 +44,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
@@ -67,6 +71,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.workout.SetDoneBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RestToolbar
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutSkipButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutStatus
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.TimerDial
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutHeader
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutTone
@@ -179,7 +184,6 @@ fun WorkoutScreen(
     val isKeepScreenOnEnabled = remember { workoutPreferences.isKeepScreenOnEnabled() }
 
     // ワークアウトモードのコメント文字列
-    val workoutModeComment = stringResource(R.string.workout_mode_comment)
 
     // 中断確認ダイアログ
     var showExitConfirmDialog by remember { mutableStateOf(false) }
@@ -334,7 +338,7 @@ fun WorkoutScreen(
                         IconButton(onClick = { showNavigationSheet = true }) {
                             Icon(
                                 AppIcons.Menu,
-                                contentDescription = stringResource(R.string.nav_program_overview),
+                                contentDescription = stringResource(R.string.menu),
                                 tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
@@ -371,8 +375,7 @@ fun WorkoutScreen(
                                 } else {
                                     WorkoutStep.Executing(session, 0)
                                 }
-                            },
-                            onBack = { currentStep = WorkoutStep.ExerciseSelection }
+                            }
                         )
                     }
                 }
@@ -383,7 +386,7 @@ fun WorkoutScreen(
                         soundPlayer = soundPlayer,
                         flashController = flashController,
                         isFlashEnabled = isFlashEnabled,
-                        isNavigationOpen = showNavigationSheet,
+                        isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                         onIntervalComplete = {
                             currentStep = WorkoutStep.Executing(step.session, step.currentSetIndex)
                         },
@@ -466,7 +469,7 @@ fun WorkoutScreen(
                                     isFlashEnabled = isFlashEnabled,
                                     isIntervalSoundEnabled = workoutPreferences.isIsometricIntervalSoundEnabled(),
                                     intervalSeconds = workoutPreferences.getIsometricIntervalSeconds(),
-                                    isNavigationOpen = showNavigationSheet,
+                                    isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                                     onSetComplete = onSetComplete,
                                     onSkip = onSkip,
                                     onAbort = onAbort,
@@ -483,7 +486,7 @@ fun WorkoutScreen(
                                     isFlashEnabled = isFlashEnabled,
                                     isIntervalSoundEnabled = workoutPreferences.isIsometricIntervalSoundEnabled(),
                                     intervalSeconds = workoutPreferences.getIsometricIntervalSeconds(),
-                                    isNavigationOpen = showNavigationSheet,
+                                    isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                                     onSetComplete = onSetComplete,
                                     onSkip = onSkip,
                                     onAbort = onAbort,
@@ -498,7 +501,7 @@ fun WorkoutScreen(
                                     soundPlayer = soundPlayer,
                                     flashController = flashController,
                                     isFlashEnabled = isFlashEnabled,
-                                    isNavigationOpen = showNavigationSheet,
+                                    isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                                     onSetComplete = onSetComplete,
                                     onSkip = onSkip,
                                     onAbort = onAbort,
@@ -514,7 +517,7 @@ fun WorkoutScreen(
                                     flashController = flashController,
                                     isFlashEnabled = isFlashEnabled,
                                     isCountSoundEnabled = step.session.isDynamicCountSoundEnabled,
-                                    isNavigationOpen = showNavigationSheet,
+                                    isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                                     onSetComplete = onSetComplete,
                                     onSkip = onSkip,
                                     onAbort = onAbort,
@@ -530,7 +533,7 @@ fun WorkoutScreen(
                                     flashController = flashController,
                                     isFlashEnabled = isFlashEnabled,
                                     isCountSoundEnabled = step.session.isDynamicCountSoundEnabled,
-                                    isNavigationOpen = showNavigationSheet,
+                                    isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                                     onSetComplete = onSetComplete,
                                     onSkip = onSkip,
                                     onAbort = onAbort,
@@ -558,8 +561,6 @@ fun WorkoutScreen(
                                         onRetry()
                                     },
                                     modifier = Modifier.fillMaxWidth().height(48.dp),
-                                    shape = RoundedCornerShape(12.dp),
-                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.retry_set_button),
@@ -576,8 +577,6 @@ fun WorkoutScreen(
                                         onAbort(step.session)
                                     },
                                     modifier = Modifier.fillMaxWidth().height(48.dp),
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError),
-                                    shape = RoundedCornerShape(12.dp)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.save_and_exit_button),
@@ -595,7 +594,7 @@ fun WorkoutScreen(
                         soundPlayer = soundPlayer,
                         flashController = flashController,
                         isFlashEnabled = isFlashEnabled,
-                        isNavigationOpen = showNavigationSheet,
+                        isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                         onIntervalComplete = {
                             // インターバル完了後、準備（StartInterval）を挟む
                             currentStep = if (step.session.startInterval > 0) {
@@ -639,7 +638,7 @@ fun WorkoutScreen(
                         onConfirm = { finalSession ->
                             // Saved as one v2 session; a to-do it came from is completed after the save.
                             viewModel.recordSingleWorkout(
-                                finalSession.toSingleWorkout(workoutModeComment, groups, System.currentTimeMillis()),
+                                finalSession.toSingleWorkout(groups, System.currentTimeMillis()),
                                 completeTodo = fromToDo || resumedFromToDo
                             )
                             clearCheckpoint()
@@ -708,7 +707,7 @@ fun WorkoutScreen(
                         onNavigateBack()
                     }
                 ) {
-                    Text(stringResource(R.string.exit_workout_confirm))
+                    Text(stringResource(R.string.exit_workout_confirm), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
@@ -841,7 +840,7 @@ fun WorkoutHierarchicalGroup(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column {
             // グループヘッダー
@@ -853,7 +852,7 @@ fun WorkoutHierarchicalGroup(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp),
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -877,7 +876,7 @@ fun WorkoutHierarchicalGroup(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = stringResource(R.string.exercises_count, group.exercises.size),
+                            text = pluralStringResource(R.plurals.exercise_count, group.exercises.size, group.exercises.size),
                             fontSize = 14.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -1053,63 +1052,14 @@ private fun WorkoutStepButton(
     contentDescription: String,
     onStep: () -> Boolean
 ) {
-    val scope = rememberCoroutineScope()
-    val currentOnStep by rememberUpdatedState(onStep)
-    val containerColor = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHighest
-    val textColor = if (enabled) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-    Box(
-        modifier = Modifier
-            .size(44.dp)
-            .background(containerColor, CircleShape)
-            .pointerInput(enabled) {
-                if (!enabled) return@pointerInput
-                awaitEachGesture {
-                    awaitFirstDown(requireUnconsumed = false)
-                    val firstResult = currentOnStep()
-                    var repeatJob: Job? = null
-                    try {
-                        if (firstResult) {
-                            repeatJob = scope.launch {
-                                delay(350)
-                                while (isActive) {
-                                    if (!currentOnStep()) break
-                                    delay(80)
-                                }
-                            }
-                        }
-                        waitForUpOrCancellation()
-                    } finally {
-                        repeatJob?.cancel()
-                    }
-                }
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = label,
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            color = textColor
-        )
-    }
+    NumberStepButton(increment = label == "+", contentDescription = contentDescription, enabled = enabled, size = 44.dp, onStep = onStep)
 }
 
-// セクション見出し（オレンジのドット + ラベル + 任意タグ）
+// Section heading as on Today and Train (no bullet), with an optional tag.
 @Composable
 private fun WorkoutSectionHeader(text: String, tag: String? = null) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = Modifier
-                .size(7.dp)
-                .background(MaterialTheme.colorScheme.primary, CircleShape)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = text,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        SectionHeading(text)
         if (tag != null) {
             Spacer(modifier = Modifier.width(8.dp))
             Box(
@@ -1254,7 +1204,6 @@ fun SettingsStep(
     exercise: Exercise,
     viewModel: TrainingViewModel,
     onStartWorkout: (WorkoutSession) -> Unit,
-    onBack: () -> Unit,
     suggestedTarget: Standard? = null
 ) {
     val context = LocalContext.current
@@ -1614,7 +1563,8 @@ fun SettingsStep(
         val isValid = sets.isNotEmpty() && targetValue.isNotEmpty() &&
                 (exercise.type != "Dynamic" || !isDynamicCountSoundEnabled || repDuration.toIntOrNull()?.let { it >= 1 } == true)
 
-        Button(
+        WorkoutPrimaryButton(
+            text = stringResource(R.string.start_workout),
             onClick = {
                 val totalSets = sets.toIntOrNull() ?: 3
                 val target = targetValue.toIntOrNull() ?: 10
@@ -1682,21 +1632,9 @@ fun SettingsStep(
                 )
                 onStartWorkout(session)
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
+            icon = AppIcons.Play,
             enabled = isValid,
-            colors = ButtonDefaults.buttonColors()
-        ) {
-            Text(stringResource(R.string.start_workout), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        }
-
-        OutlinedButton(
-            onClick = onBack,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(stringResource(R.string.back_button))
-        }
+        )
     }
 }
 
@@ -1720,8 +1658,6 @@ private fun TimerAbortSheet(
             Button(
                 onClick = onAbort,
                 modifier = Modifier.fillMaxWidth().height(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError),
-                shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
                     text = stringResource(R.string.save_and_exit_button),
@@ -1859,8 +1795,7 @@ fun IntervalStep(
     }
     val remainingMillis = session.intervalDuration * 1_000L + extraMillis - stopwatch.elapsedMillis
     val remainingTime = countdownSeconds(remainingMillis)
-    val totalMillis = session.intervalDuration * 1_000L + extraMillis
-    val progress = if (totalMillis > 0) remainingMillis.coerceAtLeast(0).toFloat() / totalMillis else 0f
+    val progress = restDialProgress(session.intervalDuration * 1_000L, remainingMillis)
 
     val nextSet = session.sets.getOrNull(nextSetIndex)
     val previousSet = session.sets.getOrNull(nextSetIndex - 1)
@@ -2652,7 +2587,6 @@ private fun parseWeightGValue(input: String): Int? {
  * skipped sets, which the legacy save dropped. Group links resolve through [groups].
  */
 fun WorkoutSession.toSingleWorkout(
-    workoutModeComment: String,
     groups: List<ExerciseGroup>,
     savedAtWallMillis: Long
 ): SingleWorkout {
@@ -2682,7 +2616,8 @@ fun WorkoutSession.toSingleWorkout(
                 completedAtWallMillis = set.completedAtWallMillis,
             )
         },
-        comment = comment.ifEmpty { workoutModeComment },
+        // Only what the user wrote: an automatic "Workout Mode" note read as their own comment.
+        comment = comment,
         startedAtWallMillis = startedAtWallMillis,
         savedAtWallMillis = savedAtWallMillis,
     )
@@ -2945,7 +2880,7 @@ fun WorkoutSearchResultItem(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.large,
         onClick = onSelected
     ) {
         Row(

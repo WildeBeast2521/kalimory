@@ -1,7 +1,10 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -105,8 +108,6 @@ fun SettingsScreenNew(
                 var selectedLanguage by remember { mutableStateOf(languagePrefs.getLanguage()) }
                 var showLanguageDialog by remember { mutableStateOf(false) }
 
-                // 現在のシステム言語を取得
-                val currentLocale = LocalConfiguration.current.locales[0].language
 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -133,7 +134,7 @@ fun SettingsScreenNew(
                             Text(
                                 text = stringResource(
                                     R.string.current_language,
-                                    selectedLanguage.getDisplayName(currentLocale)
+                                    if (selectedLanguage == AppLanguage.SYSTEM) stringResource(R.string.theme_system) else selectedLanguage.nativeName
                                 ),
                                 fontSize = 14.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -154,7 +155,11 @@ fun SettingsScreenNew(
                             )
                         },
                         text = {
-                            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            // Eleven choices outgrow a dialog on small screens, so the list scrolls.
+                            Column(
+                                modifier = Modifier.verticalScroll(rememberScrollState()),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
                                 AppLanguage.entries.forEach { language ->
                                     Card(
                                         modifier = Modifier.fillMaxWidth(),
@@ -177,7 +182,7 @@ fun SettingsScreenNew(
                                         }
                                     ) {
                                         Text(
-                                            text = language.getDisplayName(currentLocale),
+                                            text = if (language == AppLanguage.SYSTEM) stringResource(R.string.theme_system) else language.nativeName,
                                             modifier = Modifier.padding(16.dp),
                                             color = MaterialTheme.colorScheme.onSurface,
                                             fontSize = 16.sp
@@ -188,7 +193,7 @@ fun SettingsScreenNew(
                         },
                         confirmButton = {
                             TextButton(onClick = { showLanguageDialog = false }) {
-                                Text(stringResource(R.string.close))
+                                Text(stringResource(R.string.cancel))
                             }
                         }
                     )
@@ -228,6 +233,7 @@ fun SettingsScreenNew(
                     AppTheme.SYSTEM -> stringResource(R.string.theme_system)
                     AppTheme.LIGHT -> stringResource(R.string.theme_light)
                     AppTheme.DARK -> stringResource(R.string.theme_dark)
+                    AppTheme.AMOLED -> stringResource(R.string.theme_amoled)
                 }
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -255,7 +261,8 @@ fun SettingsScreenNew(
                             options = AppTheme.entries,
                             selected = currentTheme,
                             onSelect = { it?.let(onThemeChange) },
-                            label = { themeName(it) },
+                            // Four choices share the row, so "Follow system" is shown as "System" here.
+                            label = { if (it == AppTheme.SYSTEM) stringResource(R.string.theme_system_short) else themeName(it) },
                         )
                     }
                 }
@@ -720,18 +727,7 @@ fun SettingsScreenNew(
                             )
                         },
                         text = {
-                            OutlinedTextField(
-                                value = inputValue,
-                                onValueChange = { if (it.isEmpty() || it.all { c -> c.isDigit() }) inputValue = it },
-                                label = { Text(stringResource(R.string.enter_seconds)) },
-                                singleLine = true,
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                                    focusedLabelColor = MaterialTheme.colorScheme.primary,
-                                    cursorColor = MaterialTheme.colorScheme.primary
-                                )
-                            )
+                            NumberStepper(value = inputValue, onValueChange = { inputValue = it }, unit = stringResource(R.string.unit_seconds_short), max = 60)
                         },
                         confirmButton = {
                             TextButton(
@@ -770,26 +766,7 @@ fun SettingsScreenNew(
                             )
                         },
                         text = {
-                            OutlinedTextField(
-                                value = inputValue,
-                                onValueChange = { newValue ->
-                                    if (newValue.isEmpty() || newValue.all { c -> c.isDigit() }) {
-                                        // 上限チェック
-                                        val intValue = newValue.toIntOrNull()
-                                        if (intValue == null || intValue <= maxInterval) {
-                                            inputValue = newValue
-                                        }
-                                    }
-                                },
-                                label = { Text(stringResource(R.string.enter_seconds_max, maxInterval)) },
-                                singleLine = true,
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                                    focusedLabelColor = MaterialTheme.colorScheme.primary,
-                                    cursorColor = MaterialTheme.colorScheme.primary
-                                )
-                            )
+                            NumberStepper(value = inputValue, onValueChange = { inputValue = it }, unit = stringResource(R.string.unit_seconds_short), step = 5, min = 1, max = maxInterval)
                         },
                         confirmButton = {
                             TextButton(
@@ -1049,6 +1026,9 @@ fun SettingsScreenNew(
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
+                            Spacer(Modifier.weight(1f))
+                            // Every link in About shows where it leads, like the rows above.
+                            Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
 
                         // 使用許諾（ライセンス）
@@ -1059,12 +1039,15 @@ fun SettingsScreenNew(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(AppIcons.Document, contentDescription = null, modifier = Modifier.size(20.dp))
+                            Icon(AppIcons.Document, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
                             Text(
                                 text = stringResource(R.string.open_source_licenses),
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
+                            Spacer(Modifier.weight(1f))
+                            // Every link in About shows where it leads, like the rows above.
+                            Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
 
                         // The welcome guide from the first launch, again.
@@ -1075,12 +1058,15 @@ fun SettingsScreenNew(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(AppIcons.Info, contentDescription = null, modifier = Modifier.size(20.dp))
+                            Icon(AppIcons.Info, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
                             Text(
                                 text = stringResource(R.string.settings_welcome_guide),
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
+                            Spacer(Modifier.weight(1f))
+                            // Every link in About shows where it leads, like the rows above.
+                            Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }
@@ -1107,6 +1093,25 @@ fun SettingsScreenNew(
                             fontSize = 14.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+
+                        // Kalimory's maintainer, then the original author (GPL-3.0 attribution).
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = AppIcons.Exercise,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Text(
+                                text = "WildeBeast2521",
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
 
                         // 開発者
                         Row(
@@ -1148,6 +1153,9 @@ fun SettingsScreenNew(
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
+                            Spacer(Modifier.weight(1f))
+                            // Every link in About shows where it leads, like the rows above.
+                            Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }
@@ -1186,12 +1194,15 @@ fun SettingsScreenNew(
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(AppIcons.RecordManually, contentDescription = null, modifier = Modifier.size(20.dp))
+                            Icon(AppIcons.RecordManually, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
                             Text(
                                 text = stringResource(R.string.report_issue_github),
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
+                            Spacer(Modifier.weight(1f))
+                            // Every link in About shows where it leads, like the rows above.
+                            Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }

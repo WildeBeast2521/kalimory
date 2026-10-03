@@ -44,12 +44,14 @@ fun LibraryScreen(
     onOpenExercises: () -> Unit,
     onOpenPrograms: () -> Unit,
     onOpenIntervals: () -> Unit,
+    onOpenToDo: () -> Unit,
     onOpenCatalogue: () -> Unit,
     onOpenSettings: () -> Unit,
 ) {
     val exercises by viewModel.exercises.collectAsState()
     val programs by viewModel.programs.collectAsState()
     val intervalPrograms by viewModel.intervalPrograms.collectAsState()
+    val todoTasks by viewModel.todoTasks.collectAsState()
 
     Column(
         modifier = Modifier
@@ -69,6 +71,8 @@ fun LibraryScreen(
             LibraryRow(AppIcons.Exercise, stringResource(R.string.library_exercises), exercises.size, onOpenExercises)
             LibraryRow(AppIcons.Program, stringResource(R.string.program_list_title), programs.size, onOpenPrograms)
             LibraryRow(AppIcons.Interval, stringResource(R.string.interval_list_title), intervalPrograms.size, onOpenIntervals)
+            // To Do is managed here like the other lists, not only reachable from Today.
+            LibraryRow(AppIcons.Today, stringResource(R.string.todo_title), todoTasks.size, onOpenToDo)
         }
         RowGroup {
             LibraryRow(AppIcons.List, stringResource(R.string.library_catalogue), Catalogue.steps.size, onOpenCatalogue)
@@ -96,7 +100,7 @@ private fun LibraryRow(icon: ImageVector, title: String, count: Int?, onClick: (
         if (count != null) {
             Text(
                 count.toString(),
-                style = MaterialTheme.typography.titleLarge.copy(fontFeatureSettings = "tnum"),
+                style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Spacer(Modifier.width(Spacing.s))

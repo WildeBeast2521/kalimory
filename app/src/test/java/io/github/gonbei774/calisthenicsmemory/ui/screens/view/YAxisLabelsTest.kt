@@ -26,4 +26,11 @@ class YAxisLabelsTest {
             assertTrue("max=$max at most 7", labels.size <= 7)
         }
     }
+
+    @Test fun `the top of the graph is a labelled line at or above the highest point`() {
+        assertEquals(20f, yAxisTop(16f))
+        assertEquals(15f, yAxisTop(15f))
+        assertEquals(4f, yAxisTop(4f))
+        assertEquals(true, calculateYAxisLabels(0f, yAxisTop(16f)).last() >= 16f)
+    }
 }

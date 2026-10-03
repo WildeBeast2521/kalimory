@@ -84,7 +84,7 @@ fun SetCardContainer(
                 .then(if (isDone) Modifier.alpha(0.7f) else Modifier)
                 .then(if (status == SetStatus.PENDING) Modifier.clickable(onClick = onActivate) else Modifier),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-            shape = RoundedCornerShape(14.dp),
+            shape = MaterialTheme.shapes.large,
             border = if (isCurrent) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null
         ) {
             content()
@@ -129,7 +129,8 @@ fun NowBadge(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .matchParentSize()
                     .graphicsLayer {
-                        val scale = 1f + 0.9f * progress
+                        // A small halo: a wider one spread over the "Set 1" label beside it.
+                        val scale = 1f + 0.3f * progress
                         scaleX = scale
                         scaleY = scale
                         alpha = 0.5f * (1f - progress)

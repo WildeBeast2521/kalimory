@@ -2,9 +2,17 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
+import io.github.gonbei774.calisthenicsmemory.ui.screens.train.intervalSummary
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.AppFab
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -39,6 +47,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
@@ -138,11 +147,7 @@ fun ToDoScreen(
         modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
         topBar = { CalmTopBar(title = stringResource(R.string.todo_title), onBack = onNavigateBack, scrollBehavior = topBarScroll) },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { showAddDialog = true }
-            ) {
-                Icon(AppIcons.Add, contentDescription = stringResource(R.string.add), tint = MaterialTheme.colorScheme.onSurface)
-            }
+            AppFab(onClick = { showAddDialog = true }, contentDescription = stringResource(R.string.add))
         }
     ) { paddingValues ->
         // Split tasks into active and inactive
@@ -206,24 +211,7 @@ fun ToDoScreen(
                                 val dragHandleModifier = Modifier.longPressDraggableHandle()
                                 SwipeToDismissBox(
                                     state = dismissState,
-                                    backgroundContent = {
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxSize()
-                                                .background(
-                                                    color = MaterialTheme.colorScheme.error,
-                                                    shape = RoundedCornerShape(12.dp)
-                                                )
-                                                .padding(horizontal = 16.dp),
-                                            contentAlignment = Alignment.CenterEnd
-                                        ) {
-                                            Icon(
-                                                AppIcons.Delete,
-                                                contentDescription = stringResource(R.string.delete),
-                                                tint = MaterialTheme.colorScheme.onSurface
-                                            )
-                                        }
-                                    },
+                                    backgroundContent = { SwipeToDeleteBackground(dismissState, MaterialTheme.shapes.large) },
                                     enableDismissFromStartToEnd = false,
                                     enableDismissFromEndToStart = true
                                 ) {
@@ -244,7 +232,8 @@ fun ToDoScreen(
                                         onNavigateToWorkout = onNavigateToWorkout,
                                         onNavigateToProgramPreview = onNavigateToProgramPreview,
                                         onNavigateToIntervalPreview = onNavigateToIntervalPreview,
-                                        onLongClick = { repeatDialogTask = task }
+                                        onLongClick = { repeatDialogTask = task },
+                                        onDelete = { deleteConfirmTask = task }
                                     )
                                 }
                             }
@@ -272,24 +261,7 @@ fun ToDoScreen(
                             )
                             SwipeToDismissBox(
                                 state = dismissState,
-                                backgroundContent = {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(
-                                                color = MaterialTheme.colorScheme.error,
-                                                shape = RoundedCornerShape(12.dp)
-                                            )
-                                            .padding(horizontal = 16.dp),
-                                        contentAlignment = Alignment.CenterEnd
-                                    ) {
-                                        Icon(
-                                            AppIcons.Delete,
-                                            contentDescription = stringResource(R.string.delete),
-                                            tint = MaterialTheme.colorScheme.onSurface
-                                        )
-                                    }
-                                },
+                                backgroundContent = { SwipeToDeleteBackground(dismissState, MaterialTheme.shapes.large) },
                                 enableDismissFromStartToEnd = false,
                                 enableDismissFromEndToStart = true
                             ) {
@@ -303,7 +275,8 @@ fun ToDoScreen(
                                     programEstimatedSeconds = programEstimatedSeconds,
                                     intervalProgramMap = intervalProgramMap,
                                     intervalExerciseCounts = intervalExerciseCounts,
-                                    onLongClick = { repeatDialogTask = task }
+                                    onLongClick = { repeatDialogTask = task },
+                                        onDelete = { deleteConfirmTask = task }
                                 )
                             }
                         }
@@ -388,7 +361,8 @@ private fun ActiveTaskContent(
     onNavigateToWorkout: (Long) -> Unit,
     onNavigateToProgramPreview: (Long) -> Unit,
     onNavigateToIntervalPreview: (Long) -> Unit,
-    onLongClick: () -> Unit
+    onLongClick: () -> Unit,
+    onDelete: () -> Unit = {},
 ) {
     if (task.hasTarget(exerciseMap.keys, groupMap.keys, programMap.keys, intervalProgramMap.keys) != true) {
         UnavailableTaskCard(isDragging = isDragging, elevation = elevation) {
@@ -413,7 +387,8 @@ private fun ActiveTaskContent(
                     elevation = elevation,
                     dragHandleModifier = dragHandleModifier,
                     onStart = { showModeDialog = true },
-                    onLongClick = onLongClick
+                    onLongClick = onLongClick,
+                    onDelete = onDelete
                 )
                 if (showModeDialog) {
                     AlertDialog(
@@ -489,7 +464,8 @@ private fun ActiveTaskContent(
                     dragHandleModifier = dragHandleModifier,
                     onNavigateToRecord = onNavigateToRecord,
                     onNavigateToWorkout = onNavigateToWorkout,
-                    onLongClick = onLongClick
+                    onLongClick = onLongClick,
+                    onDelete = onDelete
                 )
             }
         }
@@ -504,7 +480,8 @@ private fun ActiveTaskContent(
                     elevation = elevation,
                     dragHandleModifier = dragHandleModifier,
                     onNavigate = { onNavigateToProgramPreview(program.id) },
-                    onLongClick = onLongClick
+                    onLongClick = onLongClick,
+                    onDelete = onDelete
                 )
             }
         }
@@ -519,7 +496,8 @@ private fun ActiveTaskContent(
                     elevation = elevation,
                     dragHandleModifier = dragHandleModifier,
                     onNavigate = { onNavigateToIntervalPreview(intervalProgram.id) },
-                    onLongClick = onLongClick
+                    onLongClick = onLongClick,
+                    onDelete = onDelete
                 )
             }
         }
@@ -538,7 +516,8 @@ private fun InactiveTaskContent(
     programEstimatedSeconds: Map<Long, Int>,
     intervalProgramMap: Map<Long, IntervalProgram>,
     intervalExerciseCounts: Map<Long, Int>,
-    onLongClick: () -> Unit
+    onLongClick: () -> Unit,
+    onDelete: () -> Unit = {},
 ) {
     if (task.hasTarget(exerciseMap.keys, groupMap.keys, programMap.keys, intervalProgramMap.keys) != true) {
         UnavailableTaskCard(isDragging = false, elevation = 0.dp)
@@ -626,6 +605,7 @@ private fun GroupTaskCard(
     onNavigateToRecord: (Long) -> Unit,
     onNavigateToWorkout: (Long) -> Unit,
     onLongClick: () -> Unit,
+    onDelete: () -> Unit = {},
     showStartButton: Boolean = true
 ) {
     var isExpanded by remember { mutableStateOf(true) }
@@ -637,7 +617,7 @@ private fun GroupTaskCard(
         colors = CardDefaults.cardColors(
             containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
         Column(modifier = Modifier.alpha(if (showStartButton) 1f else 0.4f)) {
@@ -697,7 +677,7 @@ private fun GroupTaskCard(
                         }
                         if (hasAnyEstimable) {
                             Text(
-                                text = ProgramTimeEstimator.formatHmmss(groupTotalSeconds),
+                                text = stringResource(R.string.program_estimated_time, ProgramTimeEstimator.formatMinutes(groupTotalSeconds)),
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.secondary
@@ -716,6 +696,7 @@ private fun GroupTaskCard(
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+                TaskMenu(onRepeat = onLongClick, onDelete = onDelete)
             }
 
             // 展開時: 所属種目リスト
@@ -750,7 +731,7 @@ private fun GroupTaskCard(
                             val memberEstSeconds = ProgramTimeEstimator.estimateExerciseSeconds(exercise)
                             if (memberEstSeconds != null) {
                                 Text(
-                                    text = ProgramTimeEstimator.formatHmmss(memberEstSeconds),
+                                    text = stringResource(R.string.program_estimated_time, ProgramTimeEstimator.formatMinutes(memberEstSeconds)),
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.secondary,
@@ -767,15 +748,7 @@ private fun GroupTaskCard(
                                     tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
                                 )
                             } else if (showStartButton) {
-                                Button(
-                                    onClick = { showModeDialog = true },
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                                    shape = RoundedCornerShape(8.dp),
-                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                                    modifier = Modifier.height(32.dp)
-                                ) {
-                                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onPrimary)
-                                }
+                                StartButton(onClick = { showModeDialog = true })
                             }
                         }
 
@@ -855,6 +828,7 @@ private fun ExerciseTaskCard(
     dragHandleModifier: Modifier,
     onStart: () -> Unit,
     onLongClick: () -> Unit,
+    onDelete: () -> Unit = {},
     showStartButton: Boolean = true
 ) {
     Card(
@@ -863,7 +837,7 @@ private fun ExerciseTaskCard(
         colors = CardDefaults.cardColors(
             containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
         Row(
@@ -914,7 +888,7 @@ private fun ExerciseTaskCard(
                     val estSeconds = ProgramTimeEstimator.estimateExerciseSeconds(exercise)
                     if (estSeconds != null) {
                         Text(
-                            text = ProgramTimeEstimator.formatHmmss(estSeconds),
+                            text = stringResource(R.string.program_estimated_time, ProgramTimeEstimator.formatMinutes(estSeconds)),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.secondary
@@ -937,16 +911,9 @@ private fun ExerciseTaskCard(
             }
 
             // Start button
+            TaskMenu(onRepeat = onLongClick, onDelete = onDelete)
             if (showStartButton) {
-                Button(
-                    onClick = onStart,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    shape = RoundedCornerShape(8.dp),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                    modifier = Modifier.height(32.dp)
-                ) {
-                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onPrimary)
-                }
+                StartButton(onClick = onStart)
             }
         }
     }
@@ -967,7 +934,7 @@ private fun UnavailableTaskCard(
         colors = CardDefaults.cardColors(
             containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
         Row(
@@ -996,6 +963,7 @@ private fun ProgramTaskCard(
     dragHandleModifier: Modifier,
     onNavigate: () -> Unit,
     onLongClick: () -> Unit,
+    onDelete: () -> Unit = {},
     showStartButton: Boolean = true
 ) {
     Card(
@@ -1004,7 +972,7 @@ private fun ProgramTaskCard(
         colors = CardDefaults.cardColors(
             containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
         Row(
@@ -1046,7 +1014,7 @@ private fun ProgramTaskCard(
                     )
                     if (estimatedSeconds != null && estimatedSeconds > 0) {
                         Text(
-                            text = ProgramTimeEstimator.formatHmmss(estimatedSeconds),
+                            text = stringResource(R.string.program_estimated_time, ProgramTimeEstimator.formatMinutes(estimatedSeconds)),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.secondary
@@ -1057,16 +1025,9 @@ private fun ProgramTaskCard(
             }
 
             // Start button
+            TaskMenu(onRepeat = onLongClick, onDelete = onDelete)
             if (showStartButton) {
-                Button(
-                    onClick = onNavigate,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    shape = RoundedCornerShape(8.dp),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                    modifier = Modifier.height(32.dp)
-                ) {
-                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onPrimary)
-                }
+                StartButton(onClick = onNavigate)
             }
         }
     }
@@ -1083,6 +1044,7 @@ private fun IntervalTaskCard(
     dragHandleModifier: Modifier,
     onNavigate: () -> Unit,
     onLongClick: () -> Unit,
+    onDelete: () -> Unit = {},
     showStartButton: Boolean = true
 ) {
     Card(
@@ -1091,7 +1053,7 @@ private fun IntervalTaskCard(
         colors = CardDefaults.cardColors(
             containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
         Row(
@@ -1121,43 +1083,19 @@ private fun IntervalTaskCard(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = stringResource(
-                        R.string.interval_summary_format,
-                        exerciseCount,
-                        intervalProgram.workSeconds,
-                        intervalProgram.restSeconds,
-                        intervalProgram.rounds
-                    ),
+                    text = intervalSummary(intervalProgram, exerciseCount),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 2.dp)
                 )
-                if (exerciseCount > 0) {
-                    val intervalEst = ProgramTimeEstimator.estimateIntervalSeconds(intervalProgram, exerciseCount)
-                    if (intervalEst > 0) {
-                        Text(
-                            text = ProgramTimeEstimator.formatHmmss(intervalEst),
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary,
-                            modifier = Modifier.padding(top = 2.dp)
-                        )
-                    }
-                }
+                // The summary above already ends with the estimate ("~14 min").
                 RepeatDaysLabel(repeatDays = repeatDays)
             }
 
             // Start button
+            TaskMenu(onRepeat = onLongClick, onDelete = onDelete)
             if (showStartButton) {
-                Button(
-                    onClick = onNavigate,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    shape = RoundedCornerShape(8.dp),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                    modifier = Modifier.height(32.dp)
-                ) {
-                    Text(text = stringResource(R.string.todo_start_button), fontSize = 12.sp, color = MaterialTheme.colorScheme.onPrimary)
-                }
+                StartButton(onClick = onNavigate)
             }
         }
     }
@@ -1520,7 +1458,7 @@ private fun GroupsTabContent(
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = stringResource(R.string.todo_group_exercise_count, groupExercises.size),
+                                    text = pluralStringResource(R.plurals.exercise_count, groupExercises.size, groupExercises.size),
                                     fontSize = 11.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(top = 2.dp)
@@ -1593,12 +1531,13 @@ private fun ProgramsTabContent(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .toggleable(value = program.id in selectedIds, role = Role.Checkbox, onValueChange = { _ -> onToggle(program.id) })
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(
                             checked = program.id in selectedIds,
-                            onCheckedChange = { onToggle(program.id) },
+                            onCheckedChange = null,
                             colors = CheckboxDefaults.colors(
                                 checkedColor = MaterialTheme.colorScheme.primary,
                                 uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1655,12 +1594,13 @@ private fun IntervalsTabContent(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .toggleable(value = program.id in selectedIds, role = Role.Checkbox, onValueChange = { _ -> onToggle(program.id) })
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(
                             checked = program.id in selectedIds,
-                            onCheckedChange = { onToggle(program.id) },
+                            onCheckedChange = null,
                             colors = CheckboxDefaults.colors(
                                 checkedColor = MaterialTheme.colorScheme.primary,
                                 uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1674,13 +1614,7 @@ private fun IntervalsTabContent(
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                text = stringResource(
-                                    R.string.interval_summary_format,
-                                    exerciseCounts[program.id] ?: 0,
-                                    program.workSeconds,
-                                    program.restSeconds,
-                                    program.rounds
-                                ),
+                                text = intervalSummary(program, exerciseCounts[program.id] ?: 0),
                                 fontSize = 11.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 2.dp)
@@ -1774,12 +1708,13 @@ fun AddExerciseGroup(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .toggleable(value = exercise.id in selectedExercises, role = Role.Checkbox, onValueChange = { _ -> onExerciseToggle(exercise.id) })
                                 .padding(vertical = 4.dp),
                             verticalAlignment = Alignment.Top
                         ) {
                             Checkbox(
                                 checked = exercise.id in selectedExercises,
-                                onCheckedChange = { onExerciseToggle(exercise.id) },
+                                onCheckedChange = null,
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = MaterialTheme.colorScheme.primary,
                                     uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1856,12 +1791,13 @@ fun SearchResultExerciseItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .toggleable(value = isSelected, role = Role.Checkbox, onValueChange = { _ -> onToggle(exercise.id) })
                 .padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.Top
         ) {
             Checkbox(
                 checked = isSelected,
-                onCheckedChange = { onToggle(exercise.id) },
+                onCheckedChange = null,
                 colors = CheckboxDefaults.colors(
                     checkedColor = MaterialTheme.colorScheme.primary,
                     uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1960,9 +1896,10 @@ private fun RepeatDaysDialog(
             )
         },
         text = {
+            // Seven equal circles that shrink to fit narrow dialogs instead of clipping the last day.
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 // In display order from the chosen first day; stored numbers stay ISO (Monday = 1).
                 weekDaysFrom(firstDayOfWeek()).map { it.value }.forEach { dayNum ->
@@ -1971,8 +1908,8 @@ private fun RepeatDaysDialog(
                     val isSelected = dayNum in selectedDays
 
                     Surface(
-                        modifier = Modifier.size(40.dp),
-                        shape = RoundedCornerShape(20.dp),
+                        modifier = Modifier.weight(1f).aspectRatio(1f),
+                        shape = CircleShape,
                         color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHigh,
                         onClick = {
                             selectedDays = if (isSelected) selectedDays - dayNum else selectedDays + dayNum
@@ -1997,6 +1934,38 @@ private fun RepeatDaysDialog(
             }) {
                 Text(stringResource(R.string.todo_repeat_save), color = MaterialTheme.colorScheme.primary)
             }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
         }
     )
+}
+
+/** A task's actions, visible on every card (long-press and swipe stay as shortcuts). */
+@Composable
+private fun TaskMenu(onRepeat: () -> Unit, onDelete: () -> Unit) {
+    Box {
+        var open by remember { mutableStateOf(false) }
+        IconButton(onClick = { open = true }) {
+            Icon(AppIcons.More, contentDescription = stringResource(R.string.menu), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.todo_repeat_title)) },
+                leadingIcon = { Icon(AppIcons.Repeat, contentDescription = null) },
+                onClick = {
+                    open = false
+                    onRepeat()
+                },
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) },
+                leadingIcon = { Icon(AppIcons.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
+                onClick = {
+                    open = false
+                    onDelete()
+                },
+            )
+        }
+    }
 }

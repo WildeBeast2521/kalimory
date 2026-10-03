@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
@@ -129,7 +130,7 @@ fun SessionCard(
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -369,7 +370,7 @@ fun SessionEditDialog(
                     onClick = { showDatePicker = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(stringResource(R.string.date_format, editDate))
+                    Text(stringResource(R.string.date_format, displayDate(editDate)))
                 }
 
                 OutlinedButton(
@@ -596,7 +597,7 @@ fun IntervalRecordCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Header: program name + action buttons
@@ -740,7 +741,7 @@ fun IntervalRecordCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = stringResource(R.string.interval_record_exercises_count, exercises.size),
+                            text = pluralStringResource(R.plurals.exercise_count, exercises.size, exercises.size),
                             fontSize = 14.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -831,7 +832,7 @@ fun IntervalRecordEditDialog(
                     onClick = { showDatePicker = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(stringResource(R.string.date_format, editDate))
+                    Text(stringResource(R.string.date_format, displayDate(editDate)))
                 }
 
                 OutlinedButton(
@@ -950,3 +951,8 @@ fun IntervalRecordEditDialog(
         )
     }
 }
+
+/** "3 Oct 2026" in the user's locale, as the record form shows it; the stored ISO date otherwise. */
+private fun displayDate(isoDate: String): String = runCatching {
+    java.time.LocalDate.parse(isoDate).format(java.time.format.DateTimeFormatter.ofLocalizedDate(java.time.format.FormatStyle.MEDIUM))
+}.getOrDefault(isoDate)

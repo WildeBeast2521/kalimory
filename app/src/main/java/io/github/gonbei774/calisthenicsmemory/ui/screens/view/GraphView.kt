@@ -19,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
@@ -181,7 +182,7 @@ fun GraphView(
                 colors = CardDefaults.cardColors(
                     containerColor = cs.surfaceContainerLow
                 ),
-                shape = RoundedCornerShape(12.dp)
+                shape = MaterialTheme.shapes.large
             ) {
                 Row(
                     modifier = Modifier
@@ -749,7 +750,7 @@ fun LineChart(
         colors = CardDefaults.cardColors(
             containerColor = cs.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(modifier = Modifier.weight(1f)) {
@@ -860,7 +861,7 @@ fun SimpleLineChart(
             )
         } else {
             data.maxOfOrNull { it.value } ?: 1f
-        }
+        }.let { yAxisTop(it) }
 
         val minValue = 0f
         val range = (maxValue - minValue).coerceAtLeast(1f)
@@ -1161,7 +1162,7 @@ fun SimpleLineChart(
             val x = leftPadding + (daysFromStart.toFloat() / (totalDays - 1).coerceAtLeast(1)) * graphWidth
             val y = size.height - bottomPadding + 20.dp.toPx()
 
-            val dateText = "${date.monthValue}/${date.dayOfMonth}"
+            val dateText = axisDate(date)
 
             drawContext.canvas.nativeCanvas.drawText(
                 dateText,
@@ -1193,7 +1194,7 @@ fun VolumeChart(
         colors = CardDefaults.cardColors(
             containerColor = cs.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(modifier = Modifier.weight(1f)) {
@@ -1480,7 +1481,7 @@ fun SimpleVolumeChart(
             val x = leftPadding + (daysFromStart.toFloat() / (totalDays - 1).coerceAtLeast(1)) * graphWidth
             val y = size.height - bottomPadding + 20.dp.toPx()
 
-            val dateText = "${date.monthValue}/${date.dayOfMonth}"
+            val dateText = axisDate(date)
 
             drawContext.canvas.nativeCanvas.drawText(
                 dateText,
@@ -1512,7 +1513,7 @@ fun AssistanceChart(
         colors = CardDefaults.cardColors(
             containerColor = cs.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(modifier = Modifier.weight(1f)) {
@@ -1710,7 +1711,7 @@ fun SimpleAssistanceChart(
             val x = leftPadding + (daysFromStart.toFloat() / (totalDays - 1).coerceAtLeast(1)) * graphWidth
             val y = size.height - bottomPadding + 20.dp.toPx()
 
-            val dateText = "${date.monthValue}/${date.dayOfMonth}"
+            val dateText = axisDate(date)
 
             drawContext.canvas.nativeCanvas.drawText(
                 dateText,
@@ -1761,7 +1762,7 @@ fun WeightChart(
         colors = CardDefaults.cardColors(
             containerColor = cs.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Box(modifier = Modifier.weight(1f)) {
@@ -1957,7 +1958,7 @@ fun SimpleWeightChart(
             val x = leftPadding + (daysFromStart.toFloat() / (totalDays - 1).coerceAtLeast(1)) * graphWidth
             val y = size.height - bottomPadding + 20.dp.toPx()
 
-            val dateText = "${date.monthValue}/${date.dayOfMonth}"
+            val dateText = axisDate(date)
 
             drawContext.canvas.nativeCanvas.drawText(
                 dateText,
@@ -1987,6 +1988,17 @@ fun calculateWeightYAxisLabels(min: Float, max: Float): List<Float> {
     return (0..5).map { i ->
         adjustedMax * i / 5f
     }
+}
+
+/**
+ * The graph's top: [max] raised to the next label step, so the highest point sits on or under a
+ * labelled line instead of above the last label (a 16 s hold drew above "15").
+ */
+fun yAxisTop(max: Float): Float {
+    if (max <= 0f) return max
+    val step = generateSequence(1) { if (it.toString().first() == '2') it / 2 * 5 else it * 2 }
+        .first { max / it <= 6f }
+    return kotlin.math.ceil(max / step) * step
 }
 
 fun calculateYAxisLabels(min: Float, max: Float): List<Float> {
@@ -2083,7 +2095,7 @@ fun StatisticsSummary(
         colors = CardDefaults.cardColors(
             containerColor = cs.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = MaterialTheme.shapes.large
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -2106,8 +2118,7 @@ fun StatisticsSummary(
 
                 // 総セット数
                 val totalSetsText = stringResource(R.string.total_sets)
-                val setsSuffix = stringResource(R.string.sets_suffix)
-                StatItem(totalSetsText, "${statistics.totalSets}$setsSuffix")
+                StatItem(totalSetsText, pluralStringResource(R.plurals.set_count, statistics.totalSets, statistics.totalSets))
 
                 if (isUnilateral) {
                     // Unilateral: 左右並べて表示
@@ -2134,11 +2145,7 @@ fun StatisticsSummary(
                 }
 
                 if (statistics.weeklyChange != 0) {
-                    val changeText = if (statistics.weeklyChange > 0) {
-                        "+${statistics.weeklyChange}$setsSuffix"
-                    } else {
-                        "${statistics.weeklyChange}$setsSuffix"
-                    }
+                    val changeText = stringResource(R.string.change_format, statistics.weeklyChange)
                     StatItem(stringResource(R.string.weekly_change), changeText)
                 }
 
@@ -2405,3 +2412,10 @@ fun calculateStatistics(
  */
 @Composable
 private fun unitSuffix(unit: String): String = stringResource(R.string.value_with_unit, 0, unit).substringAfter('0')
+
+/** A short axis date in the user's locale ("28 Sep", "Sep 28", "9/28" where that is the norm). */
+private fun axisDate(date: java.time.LocalDate): String {
+    val locale = java.util.Locale.getDefault()
+    val pattern = android.text.format.DateFormat.getBestDateTimePattern(locale, "dMMM")
+    return date.format(java.time.format.DateTimeFormatter.ofPattern(pattern, locale))
+}

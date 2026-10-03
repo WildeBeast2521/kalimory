@@ -435,7 +435,7 @@ fun ProgramEditScreen(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.large
                         ) {
                             Text(
                                 text = stringResource(R.string.program_exercises_required),

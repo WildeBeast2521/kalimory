@@ -617,7 +617,7 @@ fun ProgramExecutionScreen(
                         onNavigateBack()
                     }
                 ) {
-                    Text(stringResource(R.string.exit_workout_confirm))
+                    Text(stringResource(R.string.exit_workout_confirm), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
@@ -1145,7 +1145,7 @@ fun ProgramExecutionScreen(
                             soundPlayer = soundPlayer,
                             flashController = flashController,
                             isFlashEnabled = isFlashEnabled,
-                            isNavigationOpen = showNavigationSheet,
+                            isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                             onComplete = {
                                 currentStep = ProgramExecutionStep.Executing(step.session, step.currentSetIndex)
                             },
@@ -1183,7 +1183,7 @@ fun ProgramExecutionScreen(
                                         isFlashEnabled = isFlashEnabled,
                                         isIntervalSoundEnabled = isIsometricIntervalSoundEnabled,
                                         intervalSeconds = isometricIntervalSeconds,
-                                        isNavigationOpen = showNavigationSheet,
+                                        isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                                         onSetComplete = { actualValue ->
                                             val sets = step.session.sets
                                             sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
@@ -1292,7 +1292,7 @@ fun ProgramExecutionScreen(
                                     flashController = flashController,
                                     isFlashEnabled = isFlashEnabled,
                                     isCountSoundEnabled = isDynamicCountSoundEnabled,
-                                    isNavigationOpen = showNavigationSheet,
+                                    isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                                     onSetComplete = { actualValue ->
                                         val sets = step.session.sets
                                         sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
@@ -1353,7 +1353,7 @@ fun ProgramExecutionScreen(
                                         isFlashEnabled = isFlashEnabled,
                                         isIntervalSoundEnabled = isIsometricIntervalSoundEnabled,
                                         intervalSeconds = isometricIntervalSeconds,
-                                        isNavigationOpen = showNavigationSheet,
+                                        isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                                         onSetComplete = { actualValue ->
                                             val sets = step.session.sets
                                             sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
@@ -1465,7 +1465,7 @@ fun ProgramExecutionScreen(
                                         flashController = flashController,
                                         isFlashEnabled = isFlashEnabled,
                                         isCountSoundEnabled = isDynamicCountSoundEnabled,
-                                        isNavigationOpen = showNavigationSheet,
+                                        isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                                         onSetComplete = { actualValue ->
                                             val sets = step.session.sets
                                             sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
@@ -1547,7 +1547,7 @@ fun ProgramExecutionScreen(
                             soundPlayer = soundPlayer,
                             flashController = flashController,
                             isFlashEnabled = isFlashEnabled,
-                            isNavigationOpen = showNavigationSheet,
+                            isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                             nextSetIndexOverride = nextSetIndexForDisplay,
                             onComplete = {
                                 if (isRedoMode) {

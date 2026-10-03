@@ -43,6 +43,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
 import io.github.gonbei774.calisthenicsmemory.R
 
 /**
@@ -276,23 +277,7 @@ private fun AdjustButton(
     enabled: Boolean,
     onClick: () -> Unit
 ) {
-    Surface(
-        shape = RoundedCornerShape(50),
-        color = Color.Transparent,
-        border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
-        onClick = onClick,
-        enabled = enabled,
-        modifier = Modifier.size(56.dp)
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Text(
-                text = symbol,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = if (enabled) 1f else 0.3f)
-            )
-        }
-    }
+    NumberStepButton(increment = symbol == "+", contentDescription = null, enabled = enabled, size = 48.dp) { onClick(); true }
 }
 
 /**
@@ -366,23 +351,7 @@ private fun SmallStepButton(
     enabled: Boolean,
     onClick: () -> Unit
 ) {
-    Surface(
-        shape = RoundedCornerShape(50),
-        color = Color.Transparent,
-        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline),
-        onClick = onClick,
-        enabled = enabled,
-        modifier = Modifier.size(40.dp)
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Text(
-                text = symbol,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = if (enabled) 1f else 0.3f)
-            )
-        }
-    }
+    NumberStepButton(increment = symbol == "+", contentDescription = null, enabled = enabled, size = 36.dp) { onClick(); false }
 }
 
 private fun normalizeNumber(s: String): String = s
