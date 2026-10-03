@@ -1,5 +1,13 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import androidx.compose.ui.unit.dp
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBarHeight
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.calculateEndPadding
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.LocalSharedTransitionScope
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.LocalScreenAnimationScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -56,6 +64,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -68,6 +77,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBar
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.depth
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.stateKey
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.screenTransition
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.tabTransition
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
@@ -371,44 +381,52 @@ fun CalisthenicsMemoryApp(
     }
 
     val showPrimaryNavigation = currentScreen is Screen.Home
+
+    // Screens keep their saved state, such as a list's scroll position, while they are on the way
+    // back: returning from a chain shows the catalogue where it was left. Opening a screen afresh,
+    // or leaving it by going back, clears what it had saved.
+    val screenStates = rememberSaveableStateHolder()
+    val keptScreens = remember { mutableMapOf<String, Int>() }
+    val lastScreen = remember { arrayOfNulls<Screen>(1) }
+    lastScreen[0]?.let { previous ->
+        if (previous != currentScreen) {
+            val forward = currentScreen.depth() >= previous.depth()
+            val newKey = currentScreen.stateKey()
+            val stale = keptScreens.filter { (key, depth) ->
+                if (forward) depth >= currentScreen.depth() else depth > currentScreen.depth() && key != newKey
+            }.keys
+            stale.forEach { key ->
+                screenStates.removeState(key)
+                keptScreens.remove(key)
+            }
+        }
+    }
+    lastScreen[0] = currentScreen
     Scaffold(
-        bottomBar = {
-            AnimatedVisibility(
-                visible = showPrimaryNavigation,
-                enter = slideInVertically { it },
-                exit = slideOutVertically { it },
-            ) {
-                PrimaryNavigationBar(
-                    selected = primaryDestination,
-                    onSelect = { primaryDestination = it }
-                )
-            }
-        },
-        // Today's Expressive FAB menu: start any kind of workout from the home screen.
-        floatingActionButton = {
-            if (showPrimaryNavigation && primaryDestination == PrimaryDestination.TODAY) {
-                StartWorkoutMenu(
-                    onExercise = { currentScreen = Screen.Workout(fromToday = true) },
-                    onProgram = { currentScreen = Screen.ProgramList },
-                    onInterval = { currentScreen = Screen.IntervalList },
-                    onLogPast = { currentScreen = Screen.Record() },
-                )
-            }
-        },
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
-                // The navigation bar already clears the system bar when shown.
-                modifier = if (showPrimaryNavigation) Modifier else
-                    Modifier.padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding())
+                // Above the system bar, and above the navigation bar on the home screens.
+                modifier = Modifier.padding(
+                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() +
+                        if (showPrimaryNavigation) PrimaryNavigationBarHeight else 0.dp
+                )
             )
         }
     ) { paddingValues ->
+        // The bottom is left to each screen: the home screens end with the navigation bar, other
+        // screens clear the system bar. Nothing resizes when a screen opens, so a pushed screen only
+        // slides in; it does not also shift as the bar leaves.
+        val layoutDirection = LocalLayoutDirection.current
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(paddingValues)
+                .padding(
+                    top = paddingValues.calculateTopPadding(),
+                    start = paddingValues.calculateStartPadding(layoutDirection),
+                    end = paddingValues.calculateEndPadding(layoutDirection),
+                )
         ) {
             // The screen being left keeps its own state while it animates out, so each branch reads
             // `screen`, never `currentScreen`. The transition is seekable, so the back gesture can
@@ -421,16 +439,21 @@ fun CalisthenicsMemoryApp(
                 modifier = Modifier.fillMaxSize(),
             ) { screen ->
                 CompositionLocalProvider(LocalScreenAnimationScope provides this) {
+                keptScreens[screen.stateKey()] = screen.depth()
+                screenStates.SaveableStateProvider(screen.stateKey()) {
+                Box(if (screen is Screen.Home) Modifier.fillMaxSize() else Modifier.fillMaxSize().navigationBarsPadding()) {
                 when (screen) {
-                    is Screen.Home -> {
+                    is Screen.Home -> Column(Modifier.fillMaxSize()) {
                         BackHandler(enabled = primaryDestination != PrimaryDestination.TODAY) {
                             primaryDestination = PrimaryDestination.TODAY
                         }
+                        Box(Modifier.weight(1f)) {
                         AnimatedContent(
                             targetState = primaryDestination,
                             transitionSpec = { tabTransition() },
                             label = "primary destination",
                         ) { destination ->
+                            screenStates.SaveableStateProvider("tab-${destination.name}") {
                             when (destination) {
                                 PrimaryDestination.TODAY -> TodayScreen(
                                     viewModel = viewModel,
@@ -498,7 +521,24 @@ fun CalisthenicsMemoryApp(
                                     onOpenSettings = { currentScreen = Screen.Settings }
                                 )
                             }
+                            }
                         }
+                        // Today's Expressive FAB menu: start any kind of workout from the home screen.
+                        if (primaryDestination == PrimaryDestination.TODAY) {
+                            StartWorkoutMenu(
+                                onExercise = { currentScreen = Screen.Workout(fromToday = true) },
+                                onProgram = { currentScreen = Screen.ProgramList },
+                                onInterval = { currentScreen = Screen.IntervalList },
+                                onLogPast = { currentScreen = Screen.Record() },
+                                modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
+                            )
+                        }
+                        }
+                        // The navigation bar belongs to the home screens and slides with them.
+                        PrimaryNavigationBar(
+                            selected = primaryDestination,
+                            onSelect = { primaryDestination = it }
+                        )
                     }
                     is Screen.ToDo -> {
                         ToDoScreen(
@@ -688,6 +728,8 @@ fun CalisthenicsMemoryApp(
                         }
                         WorkoutSummaryScreen(viewModel = viewModel, sessionId = screen.sessionId, onDone = finish)
                     }
+                }
+                }
                 }
                 }
             }

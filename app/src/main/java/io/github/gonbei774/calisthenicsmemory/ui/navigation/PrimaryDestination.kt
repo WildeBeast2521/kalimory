@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.navigation
 
+import androidx.compose.ui.unit.dp
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material3.Icon
@@ -54,3 +55,6 @@ fun PrimaryNavigationBar(
 }
 
 const val PRIMARY_NAVIGATION_BAR_TAG = "primary_navigation_bar"
+
+/** The short navigation bar's height above the system bar, for placing snackbars over it. */
+val PrimaryNavigationBarHeight = 64.dp

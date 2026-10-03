@@ -49,3 +49,6 @@ internal fun tabTransition(): ContentTransform =
     (fadeIn(tween(210, delayMillis = 90, easing = EmphasizedDecelerate)) +
         scaleIn(tween(210, delayMillis = 90, easing = EmphasizedDecelerate), initialScale = 0.96f)) togetherWith
         fadeOut(tween(90, easing = EmphasizedAccelerate))
+
+/** Identifies a screen and its arguments, for keeping its saved state while it is on the way back. */
+internal fun Screen.stateKey(): String = toString()
