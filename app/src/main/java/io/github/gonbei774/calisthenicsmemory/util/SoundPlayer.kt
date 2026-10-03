@@ -69,8 +69,8 @@ class SoundPlayer(context: Context) {
     internal companion object {
         // Lengths of the generated sounds (scripts/sounds/generate_workout_sounds.py).
         const val COUNTDOWN_MS = 220L
-        const val GO_MS = 900L
-        const val SET_DONE_MS = 1_270L
+        const val GO_MS = 1_399L
+        const val SET_DONE_MS = 1_450L
         const val HOLD_TICK_MS = 160L
         const val FOCUS_MARGIN_MS = 150L
     }
