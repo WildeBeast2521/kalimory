@@ -1,5 +1,11 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.compose.rememberLauncherForActivityResult
+import android.os.Build
+import android.content.pm.PackageManager
+import android.Manifest
 import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBarHeight
 import androidx.compose.ui.Alignment
@@ -381,6 +387,19 @@ fun CalisthenicsMemoryApp(
     }
 
     val showPrimaryNavigation = currentScreen is Screen.Home
+
+    // Android 13+ blocks notifications until allowed. The workout timer shows one, so the app
+    // asks once, when the first workout opens, where the reason is clear.
+    val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
+    LaunchedEffect(currentScreen) {
+        val inWorkout = currentScreen is Screen.Workout || currentScreen is Screen.ProgramExecution || currentScreen is Screen.IntervalExecution
+        if (inWorkout && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !onboarding.isNotificationAsked() &&
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            onboarding.markNotificationAsked()
+            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
 
     // Screens keep their saved state, such as a list's scroll position, while they are on the way
     // back: returning from a chain shows the catalogue where it was left. Opening a screen afresh,

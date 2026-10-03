@@ -779,7 +779,7 @@
     <string name="today_due_title">Heute fällig</string>
     <string name="today_due_none">Heute ist nichts fällig</string>
     <string name="today_all_todos">Alle Aufgaben</string>
-    <string name="dynamic_color_title">Hintergrundfarben</string>
+    <string name="dynamic_color_title">Dynamische Farben</string>
     <string name="dynamic_color_description">Farben deines Hintergrundbilds verwenden. Wenn aus, nutzt die App ihre eigene Farbpalette.</string>
     <string name="today_next_up">Als Nächstes</string>
     <string name="today_start">Starten</string>
@@ -906,6 +906,7 @@
     <string name="catalogue_name_taken">Du hast bereits eine Übung namens %1$s</string>
     <string name="catalogue_start_at">Start bei %1$s</string>
     <string name="catalogue_move_on_at">Weiter bei %1$s</string>
+    <string name="catalogue_rest">%1$d s Pause zwischen den Sätzen</string>
     <string name="catalogue_works">Trainiert</string>
     <string name="catalogue_also">Außerdem</string>
     <string name="catalogue_needs">Benötigt</string>

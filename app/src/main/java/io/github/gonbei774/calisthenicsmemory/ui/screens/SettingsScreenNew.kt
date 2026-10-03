@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
@@ -85,9 +86,8 @@ fun SettingsScreenNew(
                 ) {
                     Text(
                         text = stringResource(R.string.section_language),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
@@ -119,16 +119,15 @@ fun SettingsScreenNew(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(20.dp),
+                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(AppIcons.Language, contentDescription = null, modifier = Modifier.size(32.dp))
+                        Icon(AppIcons.Language, contentDescription = null, modifier = Modifier.size(24.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.language_setting),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
@@ -209,9 +208,8 @@ fun SettingsScreenNew(
                 ) {
                     Text(
                         text = stringResource(R.string.section_theme),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
@@ -236,14 +234,13 @@ fun SettingsScreenNew(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                     shape = MaterialTheme.shapes.large,
                 ) {
-                    Column(modifier = Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.m), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Icon(AppIcons.Theme, contentDescription = null, modifier = Modifier.size(32.dp))
+                            Icon(AppIcons.Theme, contentDescription = null, modifier = Modifier.size(24.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.theme_setting),
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
@@ -275,15 +272,16 @@ fun SettingsScreenNew(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(20.dp),
+                                // The whole row toggles, not only the small switch.
+                                .toggleable(value = dynamicColor, role = Role.Switch, onValueChange = onDynamicColorChange)
+                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.dynamic_color_title),
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
@@ -293,7 +291,7 @@ fun SettingsScreenNew(
                                     modifier = Modifier.padding(top = 4.dp)
                                 )
                             }
-                            Switch(checked = dynamicColor, onCheckedChange = onDynamicColorChange)
+                            Switch(checked = dynamicColor, onCheckedChange = null)
                         }
                     }
                 }
@@ -314,14 +312,13 @@ fun SettingsScreenNew(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                     shape = MaterialTheme.shapes.large,
                 ) {
-                    Column(modifier = Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.m), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Icon(AppIcons.Today, contentDescription = null, modifier = Modifier.size(32.dp))
+                            Icon(AppIcons.Today, contentDescription = null, modifier = Modifier.size(24.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.first_day_of_week),
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
@@ -354,14 +351,13 @@ fun SettingsScreenNew(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                     shape = MaterialTheme.shapes.large,
                 ) {
-                    Column(modifier = Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.m), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Icon(AppIcons.Done, contentDescription = null, modifier = Modifier.size(32.dp))
+                            Icon(AppIcons.Done, contentDescription = null, modifier = Modifier.size(24.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.weekly_goal),
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
@@ -395,15 +391,14 @@ fun SettingsScreenNew(
                         modifier = Modifier
                             .fillMaxWidth()
                             .toggleable(value = showSuggestions, role = Role.Switch, onValueChange = viewModel::setShowSuggestions)
-                            .padding(20.dp),
+                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.settings_suggestions),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
@@ -431,9 +426,8 @@ fun SettingsScreenNew(
                 ) {
                     Text(
                         text = stringResource(R.string.section_workout_settings),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
@@ -474,16 +468,15 @@ fun SettingsScreenNew(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(20.dp),
+                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(AppIcons.RecordManually, contentDescription = null, modifier = Modifier.size(32.dp))
+                            Icon(AppIcons.RecordManually, contentDescription = null, modifier = Modifier.size(24.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.settings_prefill_previous),
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
@@ -515,16 +508,15 @@ fun SettingsScreenNew(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(20.dp),
+                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(AppIcons.Timer, contentDescription = null, modifier = Modifier.size(32.dp))
+                            Icon(AppIcons.Timer, contentDescription = null, modifier = Modifier.size(24.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.start_countdown_setting),
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
@@ -557,16 +549,15 @@ fun SettingsScreenNew(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(20.dp),
+                                    .padding(horizontal = Spacing.l, vertical = Spacing.m),
                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Icon(AppIcons.Rest, contentDescription = null, modifier = Modifier.size(32.dp))
+                                Icon(AppIcons.Rest, contentDescription = null, modifier = Modifier.size(24.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = stringResource(R.string.set_interval_setting),
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Bold,
+                                        style = MaterialTheme.typography.titleMedium,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
@@ -606,16 +597,15 @@ fun SettingsScreenNew(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(20.dp),
+                                    .padding(horizontal = Spacing.l, vertical = Spacing.m),
                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Icon(AppIcons.Camera, contentDescription = null, modifier = Modifier.size(32.dp))
+                                Icon(AppIcons.Camera, contentDescription = null, modifier = Modifier.size(24.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = stringResource(R.string.flash_notification_setting),
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Bold,
+                                        style = MaterialTheme.typography.titleMedium,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
@@ -648,16 +638,15 @@ fun SettingsScreenNew(
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(20.dp),
+                                    .padding(horizontal = Spacing.l, vertical = Spacing.m),
                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Icon(AppIcons.Brightness, contentDescription = null, modifier = Modifier.size(32.dp))
+                                Icon(AppIcons.Brightness, contentDescription = null, modifier = Modifier.size(24.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = stringResource(R.string.keep_screen_on_setting),
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Bold,
+                                        style = MaterialTheme.typography.titleMedium,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
@@ -689,16 +678,15 @@ fun SettingsScreenNew(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(20.dp),
+                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(AppIcons.Vibration, contentDescription = null, modifier = Modifier.size(32.dp))
+                            Icon(AppIcons.Vibration, contentDescription = null, modifier = Modifier.size(24.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.set_done_vibration_setting),
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
@@ -836,8 +824,7 @@ fun SettingsScreenNew(
             item {
                 Text(
                     text = stringResource(R.string.data_management),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
@@ -856,16 +843,15 @@ fun SettingsScreenNew(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(20.dp),
+                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(AppIcons.Save, contentDescription = null, modifier = Modifier.size(32.dp))
+                        Icon(AppIcons.Save, contentDescription = null, modifier = Modifier.size(24.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.section_full_backup),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
@@ -894,16 +880,15 @@ fun SettingsScreenNew(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(20.dp),
+                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(AppIcons.List, contentDescription = null, modifier = Modifier.size(32.dp))
+                        Icon(AppIcons.List, contentDescription = null, modifier = Modifier.size(24.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.section_partial_data_management),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
@@ -932,16 +917,15 @@ fun SettingsScreenNew(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(20.dp),
+                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(AppIcons.Share, contentDescription = null, modifier = Modifier.size(32.dp))
+                        Icon(AppIcons.Share, contentDescription = null, modifier = Modifier.size(24.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.share_section_title),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
@@ -970,9 +954,8 @@ fun SettingsScreenNew(
                 ) {
                     Text(
                         text = stringResource(R.string.section_app_info),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
@@ -996,7 +979,7 @@ fun SettingsScreenNew(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(20.dp),
+                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         // アプリ名と説明（中央揃え）
@@ -1115,7 +1098,7 @@ fun SettingsScreenNew(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(20.dp),
+                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         // セクションタイトル
@@ -1182,7 +1165,7 @@ fun SettingsScreenNew(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(20.dp),
+                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         // セクションタイトル

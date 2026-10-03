@@ -65,7 +65,7 @@ fun ProgramExerciseItem(
                 Icon(
                     AppIcons.Delete,
                     contentDescription = stringResource(R.string.delete),
-                    tint = MaterialTheme.colorScheme.onSurface
+                    tint = MaterialTheme.colorScheme.onError
                 )
             }
         },

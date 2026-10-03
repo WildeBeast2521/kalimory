@@ -818,7 +818,7 @@
     <string name="today_due_title">今日の予定</string>
     <string name="today_due_none">今日の予定はありません</string>
     <string name="today_all_todos">すべてのTo Do</string>
-    <string name="dynamic_color_title">壁紙の色</string>
+    <string name="dynamic_color_title">ダイナミックカラー</string>
     <string name="dynamic_color_description">壁紙の色を使用します。オフにするとアプリ独自の配色を使用します。</string>
     <string name="today_next_up">次はこれ</string>
     <string name="today_start">開始</string>
@@ -942,6 +942,7 @@
     <string name="catalogue_name_taken">%1$s という種目はすでにあります</string>
     <string name="catalogue_start_at">開始の目安 %1$s</string>
     <string name="catalogue_move_on_at">次に進む目安 %1$s</string>
+    <string name="catalogue_rest">セット間の休憩 %1$d 秒</string>
     <string name="catalogue_works">主に使う部位</string>
     <string name="catalogue_also">補助</string>
     <string name="catalogue_needs">必要なもの</string>

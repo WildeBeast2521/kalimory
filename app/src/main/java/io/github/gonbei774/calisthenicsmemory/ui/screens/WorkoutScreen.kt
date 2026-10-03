@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.lastDoneText
@@ -1287,7 +1288,9 @@ fun SettingsStep(
             when {
                 // 1. 種目設定が最優先
                 exercise.restInterval != null -> exercise.restInterval.toString()
-                // 2. スイッチONなら設定画面の秒数
+                // 2. A catalogue exercise rests as its step suggests.
+                exercise.recommendedRestSeconds() != null -> exercise.recommendedRestSeconds().toString()
+                // 3. スイッチONなら設定画面の秒数
                 workoutPrefs.isSetIntervalEnabled() -> workoutPrefs.getSetInterval().toString()
                 // 3. それ以外は空欄
                 else -> ""
@@ -1420,6 +1423,8 @@ fun SettingsStep(
                 // 休憩時間を反映（種目設定がある場合のみ）
                 if (exercise.restInterval != null) {
                     interval = exercise.restInterval.toString()
+                } else {
+                    exercise.recommendedRestSeconds()?.let { interval = it.toString() }
                 }
                 // 種目設定がない場合はユーザー入力を保持
                 // 開始カウントダウンは種目設定がないため、ここでは何もしない

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -608,7 +609,7 @@ fun ProgramEditScreen(
                         sortOrder = baseSortOrder + index,
                         sets = exercise.targetSets ?: 0,
                         targetValue = exercise.targetValue ?: 0,
-                        intervalSeconds = exercise.restInterval ?: defaultInterval
+                        intervalSeconds = exercise.restInterval ?: exercise.recommendedRestSeconds() ?: defaultInterval
                     )
                 }
                 programExercises = programExercises + newPes
@@ -793,7 +794,7 @@ fun ProgramEditScreen(
                         sortOrder = baseSortOrder + index,
                         sets = exercise.targetSets ?: 0,
                         targetValue = exercise.targetValue ?: 0,
-                        intervalSeconds = exercise.restInterval ?: defaultInterval,
+                        intervalSeconds = exercise.restInterval ?: exercise.recommendedRestSeconds() ?: defaultInterval,
                         loopId = targetLoop.id
                     )
                 }

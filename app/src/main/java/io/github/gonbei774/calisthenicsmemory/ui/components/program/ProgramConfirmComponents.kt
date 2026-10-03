@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.animation.AnimatedVisibility
@@ -212,39 +213,47 @@ internal fun ProgramConfirmStep(
                         color = cs.outline,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        BulkSettingTab(
-                            text = stringResource(R.string.program_use_program),
-                            isSelected = selectedBulkTab == 0,
-                            onClick = {
-                                selectedBulkTab = 0
-                                onUseAllProgramValues()
-                                refreshKey++
-                            }
-                        )
-                        if (hasChallengeExercise) {
-                            BulkSettingTab(
-                                text = stringResource(R.string.program_use_challenge),
-                                isSelected = selectedBulkTab == 1,
-                                onClick = {
+                    // An Expressive connected group, whose labels always read on their own fill.
+                    val bulkOptions = buildList {
+                        add(0)
+                        if (hasChallengeExercise) add(1)
+                        add(2)
+                    }
+                    val selectedOption = when {
+                        selectedBulkTab == 0 -> 0
+                        hasChallengeExercise && selectedBulkTab == 1 -> 1
+                        else -> 2
+                    }
+                    ConnectedChoices(
+                        options = bulkOptions,
+                        selected = selectedOption,
+                        onSelect = { option ->
+                            when (option) {
+                                0 -> {
+                                    selectedBulkTab = 0
+                                    onUseAllProgramValues()
+                                }
+                                1 -> {
                                     selectedBulkTab = 1
                                     onUseAllChallengeValues()
-                                    refreshKey++
+                                }
+                                else -> {
+                                    selectedBulkTab = if (hasChallengeExercise) 2 else 1
+                                    onUseAllPreviousRecordValues()
+                                }
+                            }
+                            refreshKey++
+                        },
+                        label = { option ->
+                            stringResource(
+                                when (option) {
+                                    0 -> R.string.program_use_program
+                                    1 -> R.string.program_use_challenge
+                                    else -> R.string.program_use_previous
                                 }
                             )
-                        }
-                        BulkSettingTab(
-                            text = stringResource(R.string.program_use_previous),
-                            isSelected = selectedBulkTab == if (hasChallengeExercise) 2 else 1,
-                            onClick = {
-                                selectedBulkTab = if (hasChallengeExercise) 2 else 1
-                                onUseAllPreviousRecordValues()
-                                refreshKey++
-                            }
-                        )
-                    }
+                        },
+                    )
                     // 選択中の一括適用方法の説明
                     Text(
                         text = stringResource(
@@ -686,7 +695,7 @@ internal fun ProgramConfirmExerciseCard(
                         text = displayNumber.toString(),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = cs.onSurface
+                        color = cs.onTertiary
                     )
                 }
 
@@ -1016,29 +1025,6 @@ internal fun ProgramConfirmExerciseCard(
 /**
  * 一括設定タブ（pill型ボタン）
  */
-@Composable
-private fun BulkSettingTab(
-    text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    val cs = MaterialTheme.colorScheme
-    Box(
-        modifier = Modifier
-            .background(
-                color = if (isSelected) cs.tertiary else Color.Transparent,
-                shape = RoundedCornerShape(20.dp)
-            )
-            .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        Text(
-            text = text,
-            fontSize = 13.sp,
-            color = if (isSelected) cs.onSurface else cs.onSurfaceVariant
-        )
-    }
-}
 
 
 /**

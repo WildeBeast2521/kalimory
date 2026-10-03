@@ -30,7 +30,7 @@
     <string name="today_due_title">مستحق اليوم</string>
     <string name="today_due_none">لا شيء مستحق اليوم</string>
     <string name="today_all_todos">كل المهام</string>
-    <string name="dynamic_color_title">ألوان الخلفية</string>
+    <string name="dynamic_color_title">الألوان الديناميكية</string>
     <string name="dynamic_color_description">استخدم ألوان خلفية الشاشة. عند الإيقاف، يستخدم التطبيق ألوانه الخاصة.</string>
     <string name="today_next_up">التالي</string>
     <string name="today_start">ابدأ</string>
@@ -172,6 +172,7 @@
     <string name="catalogue_name_taken">لديك بالفعل تمرين باسم %1$s</string>
     <string name="catalogue_start_at">ابدأ عند %1$s</string>
     <string name="catalogue_move_on_at">انتقل عند %1$s</string>
+    <string name="catalogue_rest">استرح %1$d ث بين المجموعات</string>
     <string name="catalogue_works">يعمل على</string>
     <string name="catalogue_also">أيضًا</string>
     <string name="catalogue_needs">يحتاج إلى</string>

@@ -753,7 +753,7 @@
     <string name="today_due_title">今日待办</string>
     <string name="today_due_none">今天没有待办</string>
     <string name="today_all_todos">全部待办</string>
-    <string name="dynamic_color_title">壁纸颜色</string>
+    <string name="dynamic_color_title">动态取色</string>
     <string name="dynamic_color_description">使用壁纸的颜色。关闭时，应用使用自己的配色。</string>
     <string name="today_next_up">下一项</string>
     <string name="today_start">开始</string>
@@ -877,6 +877,7 @@
     <string name="catalogue_name_taken">你已经有名为 %1$s 的动作</string>
     <string name="catalogue_start_at">起步 %1$s</string>
     <string name="catalogue_move_on_at">进阶标准 %1$s</string>
+    <string name="catalogue_rest">组间休息 %1$d 秒</string>
     <string name="catalogue_works">主要锻炼</string>
     <string name="catalogue_also">辅助</string>
     <string name="catalogue_needs">需要</string>

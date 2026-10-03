@@ -229,17 +229,28 @@ fun TimerDial(
                 drawCircle(Brush.radialGradient(listOf(accent.copy(alpha = 0.22f), Color.Transparent)), radius = this.size.minDimension / 2)
             }
         }
-        // Expressive wavy ring: it ripples while the clock runs and lies flat when paused.
-        val stroke = with(LocalDensity.current) { Stroke(16.dp.toPx() * pulse.value, cap = StrokeCap.Round) }
+        // Expressive wavy ring: it ripples while the clock runs and lies flat when paused. The
+        // last-seconds pulse scales the drawn ring rather than widening its stroke, so the wave
+        // path is not rebuilt every frame (a widening stroke made short countdowns stutter).
+        val stroke = with(LocalDensity.current) { Stroke(16.dp.toPx(), cap = StrokeCap.Round) }
+        // Kept across frames, so the indicator does not see a new amplitude function each tick.
+        val amplitude = remember(paused) { { p: Float -> if (paused) 0f else WavyProgressIndicatorDefaults.indicatorAmplitude(p) } }
         CircularWavyProgressIndicator(
             progress = { progress.coerceIn(0f, 1f) },
-            modifier = Modifier.size(size).clearAndSetSemantics {},
+            modifier = Modifier
+                .size(size)
+                .graphicsLayer {
+                    val scale = 1f + (pulse.value - 1f) * 0.12f
+                    scaleX = scale
+                    scaleY = scale
+                }
+                .clearAndSetSemantics {},
             color = accent.copy(alpha = if (paused) 0.35f else 1f),
             trackColor = track,
             stroke = stroke,
             trackStroke = stroke,
             // A long, slow wave keeps the dial calm.
-            amplitude = { if (paused) 0f else WavyProgressIndicatorDefaults.indicatorAmplitude(it) },
+            amplitude = amplitude,
             wavelength = 84.dp,
             waveSpeed = 24.dp,
         )

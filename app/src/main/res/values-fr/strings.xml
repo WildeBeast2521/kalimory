@@ -750,7 +750,7 @@
     <string name="today_due_title">Prévu aujourd\'hui</string>
     <string name="today_due_none">Rien de prévu aujourd\'hui</string>
     <string name="today_all_todos">Toutes les tâches</string>
-    <string name="dynamic_color_title">Couleurs du fond d\'écran</string>
+    <string name="dynamic_color_title">Couleurs dynamiques</string>
     <string name="dynamic_color_description">Utiliser les couleurs de votre fond d\'écran. Désactivé, l\'app utilise sa propre palette.</string>
     <string name="today_next_up">À suivre</string>
     <string name="today_start">Commencer</string>
@@ -880,6 +880,7 @@
     <string name="catalogue_name_taken">Vous avez déjà un exercice nommé %1$s</string>
     <string name="catalogue_start_at">Commencer à %1$s</string>
     <string name="catalogue_move_on_at">Passer à la suite à %1$s</string>
+    <string name="catalogue_rest">Repos de %1$d s entre les séries</string>
     <string name="catalogue_works">Travaille</string>
     <string name="catalogue_also">Aussi</string>
     <string name="catalogue_needs">Matériel</string>
