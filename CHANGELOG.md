@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - Kalimory (not yet released)
+## [1.0.0] - 2026-10-04
 
 Kalimory is a fork of Calisthenics Memory with its own name, application ID (`io.github.wildebeast2521.kalimory`) and icon. It installs beside the original app; move your data with a complete backup.
 
@@ -17,7 +17,7 @@ Kalimory is a fork of Calisthenics Memory with its own name, application ID (`io
 - Log a past workout with several exercises at once
 - Restore from a recovery file inside the app
 - A welcome guide on first launch
-- New workout sounds, and an optional vibration when a set is done
+- New workout sounds that ring out softly, and an optional vibration when a set is done
 - A true-black AMOLED theme beside Follow system, Light and Dark
 - Every language complete, including Russian and Arabic (right-to-left)
 

@@ -39,6 +39,16 @@ def fade_tail(x, sec=0.01):
     return x
 
 
+def fade_out(x, sec):
+    """A smooth (raised-cosine) release over the last sec seconds, so a ringing bell dies away
+    instead of stopping mid-ring."""
+    n = min(len(x), int(SR * sec))
+    start = len(x) - n
+    for i in range(n):
+        x[start + i] *= 0.5 * (1 + math.cos(math.pi * i / n))
+    return x
+
+
 def partials(freq, ratios, amps, decays, dur, attack=0.002):
     """Sum of decaying sine partials: the basis for mallets and bells."""
     n = int(SR * dur)
@@ -117,9 +127,11 @@ SOUNDS = {
     # Last three seconds of any countdown: a wood block, as audible as the old beep.
     "countdown": lambda: normalise(wood(A5, 0.22, bright=1.3, ring=0.075), -1),
     # A set or work phase starts: a small brass bell, a step above the countdown.
-    "go": lambda: normalise(brass_bell(D6, 0.9), -1),
+    # It rings out for 1.4 s and fades over the last 0.6 s (it used to stop mid-ring at 0.9 s).
+    "go": lambda: normalise(fade_out(brass_bell(D6, 1.4), 0.6), -1),
     # Target reached or hold finished: a rising marimba phrase that resolves on the bell.
-    "set_done": lambda: normalise(mix(marimba(D5, 1.2), at(marimba(Fs5, 1.1), 0.09), at(marimba(A5, 1.0), 0.18), at(brass_bell(D6, 1.0), 0.27)), -1),
+    # The closing bell rings to 1.45 s and fades over the last 0.55 s.
+    "set_done": lambda: normalise(fade_out(mix(marimba(D5, 1.2), at(marimba(Fs5, 1.1), 0.09), at(marimba(A5, 1.0), 0.18), at(brass_bell(D6, 1.18), 0.27)), 0.55), -1),
     # Each rep, when the count sound is on: short, soft and high, so thirty in a row stay light.
     "rep": lambda: normalise(wood(E6, 0.06, bright=0.6, seed=2), -8),
     # Every few seconds of a hold, when that sound is on: a lower wood tick.
@@ -140,4 +152,9 @@ if __name__ == "__main__":
     out = sys.argv[1]
     os.makedirs(out, exist_ok=True)
     for name, make in SOUNDS.items():
-        write(os.path.join(out, name + ".wav"), make())
+        x = make()
+        # The longer cues must die away: their last 50 ms stay below 1 % of the peak.
+        if name in ("go", "set_done"):
+            tail = max(abs(v) for v in x[-int(SR * 0.05):])
+            assert tail < 0.01 * max(abs(v) for v in x), f"{name} ends abruptly"
+        write(os.path.join(out, name + ".wav"), x)

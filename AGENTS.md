@@ -89,7 +89,15 @@ deterministic and offline. A known flaky test is named in the release log, never
 
 ## Versions and releases
 
-The first Kalimory release is 1.0.0 (versionCode 1). Bump `versionCode` and `versionName` in
-`app/build.gradle.kts` only when releasing, together with the CHANGELOG entry and a Fastlane
-changelog file. The release runbook lives with the maintainer's release notes; publishing,
-tagging and signing are done by the maintainer only.
+The first Kalimory release is 1.0.0 (versionCode 1). For a release:
+
+1. Bump `versionCode` (always +1) and `versionName` in `app/build.gradle.kts`.
+2. Date the CHANGELOG entry (`## [x.y.z] - YYYY-MM-DD`) and add
+   `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt` (500 characters at most).
+3. Merge to master, start the API 29 emulator, then run `scripts/release.sh --dry-run` and,
+   when it passes, `scripts/release.sh`. It runs every check, builds and verifies the signed APK
+   (certificate, package, version, no INTERNET), tags `v<versionName>` and creates the GitHub
+   release with the APK and its SHA-256.
+
+Signing needs `keystore.properties`, which only the maintainer's machine has. Without it,
+`assembleRelease` builds an unsigned APK (what F-Droid builds from source).
