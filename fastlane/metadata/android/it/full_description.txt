@@ -26,7 +26,7 @@ Kalimory pianifica il tuo allenamento a corpo libero, ti accompagna mentre lo fa
 • Backup JSON completi, importazione ed esportazione CSV e file di ripristino se il database si danneggia
 
 <b>Calma per scelta</b>
-• Temi chiaro e scuro, colori dello sfondo opzionali e dieci lingue
+• Temi chiaro, scuro e AMOLED nero puro, colori dello sfondo opzionali e dieci lingue
 
 <b>Privacy</b>
 • Nessun permesso internet, niente pubblicità, niente analisi e niente segnalazioni di crash

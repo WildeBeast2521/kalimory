@@ -65,8 +65,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // リリースビルド時に署名を適用
-            signingConfig = signingConfigs.getByName("release")
+            // Signed with the release key when keystore.properties is present (the maintainer's
+            // machine); otherwise unsigned, as F-Droid and other source builds expect.
+            signingConfig = if (keystorePropertiesFile.exists()) signingConfigs.getByName("release") else null
             // 依存関係メタデータを無効化（F-Droid要件）
             dependenciesInfo {
                 includeInApk = false
@@ -121,7 +122,7 @@ ksp {
 
 dependencies {
     // Compose BOM
-    implementation(platform("androidx.compose:compose-bom:2026.09.00"))
+    implementation(platform(libs.androidx.compose.bom))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -172,6 +173,6 @@ dependencies {
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation("androidx.room:room-testing:2.8.5")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2026.09.00"))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")   
 }

@@ -36,6 +36,10 @@ Requires JDK 17 or later and the Android SDK. Instrumented tests run on an emula
 
 Run `scripts/check-room-schemas.sh` when a Room schema changes. Do not regenerate lint baselines, weaken validation or skip tests to make the check pass.
 
+## Repository guide
+
+[AGENTS.md](AGENTS.md) explains the invariants, generated content, translations, verification and release rules in more detail, for people and coding agents alike.
+
 ## Where things are
 
 ```
