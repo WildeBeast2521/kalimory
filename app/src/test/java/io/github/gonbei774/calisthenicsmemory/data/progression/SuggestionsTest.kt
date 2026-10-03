@@ -112,4 +112,12 @@ class SuggestionsTest {
 
         assertEquals(listOf("row"), chains)
     }
+
+    @Test fun `mobility needs no rest day, but is not repeated the same day`() {
+        val exercises = listOf(exercise(1, "flex_lower.deep_squat"), exercise(2, "flex_upper.puppy"))
+        val history = session(1, "2026-09-30", 30) + session(2, "2026-10-01", 30)
+
+        // Lower body mobility was trained yesterday and is suggested again; shoulder mobility was trained today.
+        assertEquals(listOf("flex_lower"), Suggestions.forDay(today, exercises, history).map { it.chain.id })
+    }
 }

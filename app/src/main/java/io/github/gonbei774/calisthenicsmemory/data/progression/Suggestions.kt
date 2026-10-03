@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.data.progression
 
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.MovementPattern
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueChain
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
@@ -39,8 +40,8 @@ object Suggestions {
     /**
      * Suggestions for [today], least recently trained chain first. A chain is left out when it was
      * dismissed today, or when a chain of the same movement pattern was trained today or yesterday,
-     * so the movement rests about two days. History holds dates, not exact hours, so rest is
-     * counted in days.
+     * so the movement rests about two days. Mobility rests only for the day it was trained.
+     * History holds dates, not exact hours, so rest is counted in days.
      */
     fun forDay(
         today: LocalDate,
@@ -60,14 +61,18 @@ object Suggestions {
                 .mapNotNull { runCatching { LocalDate.parse(it.date) }.getOrNull() }
             progress.chain.id to dates.maxOrNull()
         }
+        // Mobility needs no rest day; a mobility chain is only left out on the day it was trained.
         val restingPatterns = progressions
+            .filter { it.chain.pattern != MovementPattern.MOBILITY }
             .filter { lastTrained[it.chain.id]?.let { date -> !date.isBefore(today.minusDays(1)) } == true }
             .map { it.chain.pattern }
             .toSet()
+        val trainedToday = { progress: ChainProgress -> lastTrained[progress.chain.id] == today }
 
         return progressions
             // Training in a chain no longer followed still rests its movement pattern.
             .filter { it.chain.id !in dismissedChains && it.chain.id !in unfollowedChains && it.chain.pattern !in restingPatterns }
+            .filter { it.chain.pattern != MovementPattern.MOBILITY || !trainedToday(it) }
             .sortedWith(compareBy(nullsFirst()) { lastTrained[it.chain.id] })
             .map { suggest(it, byCatalogId, historyByExercise) }
     }
