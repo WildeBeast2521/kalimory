@@ -503,7 +503,7 @@ private fun NavigationRoundCard(
                         text = stringResource(R.string.loop_current_round, roundNumber, totalRounds),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        color = cs.onSurface
+                        color = cs.onSecondary
                     )
                 }
 
@@ -874,7 +874,7 @@ private fun NavigationExerciseHeader(
                 text = displayNumber.toString(),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = cs.onSurface
+                color = cs.onTertiary
             )
         }
 
@@ -1262,7 +1262,7 @@ private fun SetStatusIcon(
                     Icon(
                         imageVector = AppIcons.Check,
                         contentDescription = null,
-                        tint = cs.onSurface,
+                        tint = cs.onTertiary,
                         modifier = Modifier.size(14.dp)
                     )
                 }

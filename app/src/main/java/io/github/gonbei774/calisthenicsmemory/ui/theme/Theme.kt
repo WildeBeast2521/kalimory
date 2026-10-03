@@ -24,8 +24,9 @@ fun CalisthenicsMemoryTheme(
 ) {
     val context = LocalContext.current
     val colorScheme = when {
+        // Wallpaper colours can be nearly colourless, so their text colours are checked for contrast.
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            (if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)).withReadableText()
         darkTheme -> CalmPalette.dark
         else -> CalmPalette.light
     }

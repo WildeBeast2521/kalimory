@@ -812,7 +812,7 @@
     <string name="today_due_title">Due today</string>
     <string name="today_due_none">Nothing due today</string>
     <string name="today_all_todos">All to-dos</string>
-    <string name="dynamic_color_title">Wallpaper colours</string>
+    <string name="dynamic_color_title">Dynamic colours</string>
     <string name="dynamic_color_description">Use the colours of your wallpaper. When off, the app uses its own palette.</string>
     <string name="today_next_up">Next up</string>
     <string name="today_start">Start</string>
@@ -940,6 +940,7 @@
     <string name="catalogue_name_taken">You already have an exercise named %1$s</string>
     <string name="catalogue_start_at">Start at %1$s</string>
     <string name="catalogue_move_on_at">Move on at %1$s</string>
+    <string name="catalogue_rest">Rest %1$d s between sets</string>
     <string name="catalogue_works">Works</string>
     <string name="catalogue_also">Also</string>
     <string name="catalogue_needs">Needs</string>

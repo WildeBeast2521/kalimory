@@ -61,6 +61,8 @@ object CatalogueLibrary {
                     laterality = if (step.laterality == Laterality.UNILATERAL) "Unilateral" else "Bilateral",
                     targetSets = step.moveOn.sets,
                     targetValue = step.moveOn.value,
+                    // A rest that suits the step, rather than the app-wide default.
+                    restInterval = step.recommendedRestSeconds(),
                     description = text.description,
                     catalogId = step.id,
                 )

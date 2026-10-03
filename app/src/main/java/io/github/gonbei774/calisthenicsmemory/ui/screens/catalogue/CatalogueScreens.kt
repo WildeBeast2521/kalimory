@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue
 
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.sharedChainTitle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -309,6 +310,7 @@ private fun StepDetails(step: CatalogueStep, inLibrary: Boolean, onAdd: () -> Un
         Column {
             Text(stringResource(R.string.catalogue_start_at, standardText(step.working, step.kind)), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
             Text(stringResource(R.string.catalogue_move_on_at, standardText(step.moveOn, step.kind)), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+            Text(stringResource(R.string.catalogue_rest, step.recommendedRestSeconds()), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
 
         if (inLibrary) {

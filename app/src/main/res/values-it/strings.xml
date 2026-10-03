@@ -753,7 +753,7 @@
     <string name="today_due_title">In programma oggi</string>
     <string name="today_due_none">Niente in programma oggi</string>
     <string name="today_all_todos">Tutte le attività</string>
-    <string name="dynamic_color_title">Colori dello sfondo</string>
+    <string name="dynamic_color_title">Colori dinamici</string>
     <string name="dynamic_color_description">Usa i colori del tuo sfondo. Se disattivato, l\'app usa la propria tavolozza.</string>
     <string name="today_next_up">Prossimo</string>
     <string name="today_start">Inizia</string>
@@ -883,6 +883,7 @@
     <string name="catalogue_name_taken">Hai già un esercizio chiamato %1$s</string>
     <string name="catalogue_start_at">Inizia a %1$s</string>
     <string name="catalogue_move_on_at">Passa oltre a %1$s</string>
+    <string name="catalogue_rest">Recupero di %1$d s tra le serie</string>
     <string name="catalogue_works">Allena</string>
     <string name="catalogue_also">Anche</string>
     <string name="catalogue_needs">Serve</string>

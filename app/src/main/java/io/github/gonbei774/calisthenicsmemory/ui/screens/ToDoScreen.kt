@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -1290,7 +1291,10 @@ private fun AddItemsDialog(
             // Tab content（スワイプ対応）
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.fillMaxSize()
+                // The same side margin as every other screen.
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(horizontal = Spacing.l),
+                pageSpacing = Spacing.l,
             ) { page ->
                 when (page) {
                     0 -> ExercisesTabContent(
@@ -1469,7 +1473,7 @@ private fun GroupsTabContent(
             Text(
                 text = stringResource(R.string.todo_no_groups),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(vertical = 16.dp)
             )
         }
     } else {
@@ -1569,7 +1573,7 @@ private fun ProgramsTabContent(
             Text(
                 text = stringResource(R.string.todo_no_programs),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(vertical = 16.dp)
             )
         }
     } else {
@@ -1631,7 +1635,7 @@ private fun IntervalsTabContent(
             Text(
                 text = stringResource(R.string.todo_no_intervals),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(vertical = 16.dp)
             )
         }
     } else {

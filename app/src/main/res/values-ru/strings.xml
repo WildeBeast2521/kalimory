@@ -130,7 +130,7 @@
     <string name="today_due_title">На сегодня</string>
     <string name="today_due_none">На сегодня ничего нет</string>
     <string name="today_all_todos">Все задачи</string>
-    <string name="dynamic_color_title">Цвета обоев</string>
+    <string name="dynamic_color_title">Динамические цвета</string>
     <string name="dynamic_color_description">Использовать цвета обоев. Если выключено, приложение использует собственную палитру.</string>
     <string name="today_next_up">Далее</string>
     <string name="today_start">Начать</string>
@@ -266,6 +266,7 @@
     <string name="catalogue_name_taken">У вас уже есть упражнение «%1$s»</string>
     <string name="catalogue_start_at">Начать с %1$s</string>
     <string name="catalogue_move_on_at">Переходить дальше при %1$s</string>
+    <string name="catalogue_rest">Отдых %1$d с между подходами</string>
     <string name="catalogue_works">Работают</string>
     <string name="catalogue_also">Также</string>
     <string name="catalogue_needs">Нужно</string>

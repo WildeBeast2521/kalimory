@@ -754,7 +754,7 @@
     <string name="today_due_title">На сьогодні</string>
     <string name="today_due_none">На сьогодні нічого немає</string>
     <string name="today_all_todos">Усі завдання</string>
-    <string name="dynamic_color_title">Кольори шпалер</string>
+    <string name="dynamic_color_title">Динамічні кольори</string>
     <string name="dynamic_color_description">Використовувати кольори шпалер. Якщо вимкнено, застосунок використовує власну палітру.</string>
     <string name="today_next_up">Далі</string>
     <string name="today_start">Почати</string>
@@ -887,6 +887,7 @@
     <string name="catalogue_name_taken">У вас уже є вправа «%1$s»</string>
     <string name="catalogue_start_at">Почати з %1$s</string>
     <string name="catalogue_move_on_at">Переходити далі при %1$s</string>
+    <string name="catalogue_rest">Відпочинок %1$d с між підходами</string>
     <string name="catalogue_works">Працюють</string>
     <string name="catalogue_also">Також</string>
     <string name="catalogue_needs">Потрібно</string>

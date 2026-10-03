@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.foundation.layout.ColumnScope
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -61,6 +62,34 @@ fun CreateScreen(
     var searchQuery by remember { mutableStateOf("") }
     val searchResults = remember(hierarchicalData, searchQuery) {
         SearchUtils.searchHierarchicalExercises(hierarchicalData, searchQuery)
+    }
+
+    // A group's menu, shown beside its own button (ExpandableGroupCard), not at the screen's corner.
+    val groupMenuItems: @Composable ColumnScope.(String) -> Unit = { groupName ->
+        if (groupName != TrainingViewModel.FAVORITE_GROUP_KEY) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.add_exercise_to_group)) },
+                onClick = {
+                    addToGroup = groupName
+                    showAddDialog = true
+                    showGroupMenu = null
+                }
+            )
+        }
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.rename_group)) },
+            onClick = {
+                showGroupEditDialog = groupName
+                showGroupMenu = null
+            }
+        )
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.delete_group), color = MaterialTheme.colorScheme.error) },
+            onClick = {
+                showGroupDeleteDialog = groupName
+                showGroupMenu = null
+            }
+        )
     }
 
     val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -179,6 +208,9 @@ fun CreateScreen(
                                     onExpandToggle = {
                                         viewModel.toggleGroupExpansion(TrainingViewModel.FAVORITE_GROUP_KEY)
                                     },
+                                    menuExpanded = showGroupMenu != null && showGroupMenu == favoriteGroup.groupName,
+                                    onMenuDismiss = { showGroupMenu = null },
+                                    menuContent = { favoriteGroup.groupName?.let { groupMenuItems(it) } },
                                     onGroupMenuClick = {
                                         showGroupMenu = favoriteGroup.groupName
                                     },
@@ -211,6 +243,9 @@ fun CreateScreen(
                                     onExpandToggle = {
                                         viewModel.toggleGroupExpansion(group.groupName!!)
                                     },
+                                    menuExpanded = showGroupMenu != null && showGroupMenu == group.groupName,
+                                    onMenuDismiss = { showGroupMenu = null },
+                                    menuContent = { group.groupName?.let { groupMenuItems(it) } },
                                     onGroupMenuClick = {
                                         showGroupMenu = group.groupName
                                     },
@@ -238,6 +273,9 @@ fun CreateScreen(
                                     onExpandToggle = {
                                         viewModel.toggleGroupExpansion("ungrouped")
                                     },
+                                    menuExpanded = showGroupMenu != null && showGroupMenu == ungroupedGroup.groupName,
+                                    onMenuDismiss = { showGroupMenu = null },
+                                    menuContent = { ungroupedGroup.groupName?.let { groupMenuItems(it) } },
                                     onGroupMenuClick = {
                                         showGroupMenu = ungroupedGroup.groupName
                                     },
@@ -272,38 +310,7 @@ fun CreateScreen(
         )
     }
 
-    // グループメニュー
-    showGroupMenu?.let { groupName ->
-        DropdownMenu(
-            expanded = true,
-            onDismissRequest = { showGroupMenu = null }
-        ) {
-            if (groupName != TrainingViewModel.FAVORITE_GROUP_KEY) {
-                DropdownMenuItem(
-                    text = { Text(stringResource(R.string.add_exercise_to_group)) },
-                    onClick = {
-                        addToGroup = groupName
-                        showAddDialog = true
-                        showGroupMenu = null
-                    }
-                )
-            }
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.rename_group)) },
-                onClick = {
-                    showGroupEditDialog = groupName
-                    showGroupMenu = null
-                }
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.delete_group), color = MaterialTheme.colorScheme.error) },
-                onClick = {
-                    showGroupDeleteDialog = groupName
-                    showGroupMenu = null
-                }
-            )
-        }
-    }
+
 
     // グループ編集ダイアログ
     showGroupEditDialog?.let { oldName ->
@@ -418,6 +425,9 @@ fun ExpandableGroupCard(
     isExpanded: Boolean,
     onExpandToggle: () -> Unit,
     onGroupMenuClick: () -> Unit,
+    menuExpanded: Boolean = false,
+    onMenuDismiss: () -> Unit = {},
+    menuContent: @Composable ColumnScope.() -> Unit = {},
     onExerciseEdit: (Exercise) -> Unit,
     onExerciseDelete: (Exercise) -> Unit,
     viewModel: TrainingViewModel,
@@ -486,16 +496,21 @@ fun ExpandableGroupCard(
                     }
 
                     if (group.groupName != null) {
-                        IconButton(
-                            onClick = onGroupMenuClick,
-                            modifier = Modifier.size(24.dp)
-                        ) {
-                            Icon(
-                                AppIcons.More,
-                                contentDescription = stringResource(R.string.menu),
-                                tint = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.size(18.dp)
-                            )
+                        Box {
+                            IconButton(
+                                onClick = onGroupMenuClick,
+                                modifier = Modifier.size(24.dp)
+                            ) {
+                                Icon(
+                                    AppIcons.More,
+                                    contentDescription = stringResource(R.string.menu),
+                                    tint = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                            DropdownMenu(expanded = menuExpanded, onDismissRequest = onMenuDismiss) {
+                                menuContent()
+                            }
                         }
                     }
                 }
