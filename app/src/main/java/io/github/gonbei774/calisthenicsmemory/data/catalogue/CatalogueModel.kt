@@ -46,6 +46,8 @@ enum class Equipment {
     ANCHOR,
     /** A vertical pole, a post or wall bars to grip. */
     POLE,
+    /** A pair of gymnastic rings on straps. */
+    RINGS,
 }
 
 /** The movement a chain trains; the same pattern rests about 48 hours between sessions (ADR 0005). */
@@ -61,6 +63,8 @@ enum class MovementPattern {
     CORE_LATERAL,
     /** Whole-body work for breath and stamina. */
     CONDITIONING,
+    /** Flexibility and joint preparation. It needs no rest day, so it is suggested again the next day. */
+    MOBILITY,
 }
 
 /** Sets of reps, or of seconds for a hold. */
