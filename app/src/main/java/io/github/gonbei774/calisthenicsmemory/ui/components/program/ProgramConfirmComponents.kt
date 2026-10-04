@@ -727,7 +727,7 @@ internal fun ProgramConfirmExerciseCard(
                             .padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.loop_round_format, loopRounds),
+                            text = pluralStringResource(R.plurals.loop_round_count, loopRounds, loopRounds),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = cs.secondary
@@ -1081,7 +1081,7 @@ private fun ProgramConfirmLoopBlock(
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.loop_round_format, loop.rounds),
+                        text = pluralStringResource(R.plurals.loop_round_count, loop.rounds, loop.rounds),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = cs.secondary

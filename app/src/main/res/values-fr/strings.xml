@@ -446,7 +446,6 @@
     <string name="loop_settings">Paramètres de la boucle</string>
     <string name="loop_rounds">Tours</string>
     <string name="loop_rest_between_rounds">Repos entre les tours (sec)</string>
-    <string name="loop_round_format">%d Tours</string>
     <string name="loop_rest_format">Repos: %ds</string>
     <string name="loop_current_round">Tour %1$d/%2$d</string>
     <string name="loop_empty">Appuyez sur + pour ajouter des exercices</string>
@@ -829,4 +828,9 @@
     <string name="workout_section_load">Charge et distance</string>
     <string name="workout_section_target">Objectif</string>
     <string name="workout_section_timer">Minuteur</string>
+    <plurals name="loop_round_count">
+        <item quantity="one">%d tour</item>
+        <item quantity="many">%d tours</item>
+        <item quantity="other">%d tours</item>
+    </plurals>
 </resources>

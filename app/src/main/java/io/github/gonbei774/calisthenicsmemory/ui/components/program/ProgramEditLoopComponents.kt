@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -99,7 +100,7 @@ fun LoopBlock(
                         Icon(AppIcons.Repeat, contentDescription = null, modifier = Modifier.size(18.dp))
                         // Rounds badge
                         Text(
-                            text = stringResource(R.string.loop_round_format, loop.rounds),
+                            text = pluralStringResource(R.plurals.loop_round_count, loop.rounds, loop.rounds),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary,

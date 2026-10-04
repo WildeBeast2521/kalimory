@@ -1,0 +1,1 @@
+Consistent start cards and Start buttons, AMOLED cards that keep the Dark theme's colours, sentence-case labels throughout, and a faster start-up.

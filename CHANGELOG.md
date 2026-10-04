@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+Each entry is one user-facing change, linked to the pull request that made it; the GitHub release
+for a version shows the same section. Versions 1.26.0 and earlier are releases of the original
+Calisthenics Memory by Gonbei774.
+
+## [1.0.1] - 2026-10-04
+
+### Changed
+- Train's Quick start card now looks like Today's start card, and every Start button shows a play icon ([#143](https://github.com/WildeBeast2521/kalimory/pull/143))
+- AMOLED cards keep the Dark theme's colours, one step brighter so they stand out from black ([#143](https://github.com/WildeBeast2521/kalimory/pull/143))
+- Labels and titles across the app use sentence case ([#143](https://github.com/WildeBeast2521/kalimory/pull/143))
+- The startup profile is regenerated for the current screens, so the app opens faster ([#143](https://github.com/WildeBeast2521/kalimory/pull/143))
+
+### Fixed
+- The Gradle wrapper matches the Gradle version the app builds with, as F-Droid's scanner requires ([#143](https://github.com/WildeBeast2521/kalimory/pull/143))
 
 ## [1.0.0] - 2026-10-04
 
@@ -31,7 +45,6 @@ Kalimory is a fork of Calisthenics Memory with its own name, application ID (`io
 ### Removed
 - The Challenge tab, replaced by Progressions
 
-Versions 1.26.0 and earlier below are releases of the original Calisthenics Memory by Gonbei774.
 
 ## [1.26.0] - 2026-07-20
 

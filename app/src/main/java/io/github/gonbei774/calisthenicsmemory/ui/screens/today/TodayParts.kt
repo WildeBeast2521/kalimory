@@ -47,6 +47,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -295,8 +296,13 @@ internal fun HeroCard(
                     !emphasised || dark -> ButtonDefaults.buttonColors()
                     else -> ButtonDefaults.buttonColors(containerColor = scheme.onPrimary, contentColor = scheme.primary)
                 },
-                contentPadding = ButtonDefaults.ContentPadding,
-            ) { Text(action, style = MaterialTheme.typography.labelLarge) }
+                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+            ) {
+                // The play icon every Start button in the app carries.
+                Icon(AppIcons.Play, contentDescription = null, modifier = Modifier.size(ButtonDefaults.IconSize))
+                Spacer(Modifier.width(ButtonDefaults.IconSpacing))
+                Text(action, style = MaterialTheme.typography.labelLarge)
+            }
         }
       }
     }
