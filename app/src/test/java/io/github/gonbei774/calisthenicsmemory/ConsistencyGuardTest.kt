@@ -58,4 +58,19 @@ class ConsistencyGuardTest {
         val offenders = uses(Regex("""【Program】|workout_mode_comment"""))
         assertTrue("No automatic comments: $offenders", offenders.isEmpty())
     }
+
+    @Test fun `short English labels use sentence case`() {
+        // Proper names and feature names keep their capitals; everything else is lower case after
+        // the first word, so "Add Another Set" cannot come back beside "Add another exercise".
+        val proper = setOf("Today", "Train", "Progress", "Progressions", "Library", "To", "Do", "Done",
+            "JSON", "CSV", "LED", "ON", "GitHub", "Kalimory", "Android", "Programs", "Intervals", "Select", "New", "Morning")
+        val strings = main.resolve("res/values/strings.xml").readText()
+        val offenders = Regex("""<string name="([^"]+)"[^>]*>([^<]{1,60})</string>""").findAll(strings)
+            .filter { m ->
+                val words = Regex("""[A-Za-z][A-Za-z'\-]*""").findAll(m.groupValues[2].substringBefore(". ")).map { it.value }.toList()
+                words.drop(1).any { it[0].isUpperCase() && !it.all(Char::isUpperCase) && it !in proper }
+            }
+            .map { it.groupValues[1] }.toList()
+        assertTrue("Use sentence case: $offenders", offenders.isEmpty())
+    }
 }

@@ -82,7 +82,8 @@ fun TrainScreen(
             detail = stringResource(R.string.single_mode_description),
             action = stringResource(R.string.today_start),
             icon = AppIcons.Workout,
-            emphasised = true,
+            // The same card as Today's "Start a workout": both start a workout from scratch.
+            emphasised = false,
             onClick = onStartWorkout,
         )
 

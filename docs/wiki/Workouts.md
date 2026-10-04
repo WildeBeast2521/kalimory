@@ -16,6 +16,10 @@ You can save a program part-way through and finish it later. Only one workout ca
 
 Timed rounds of work and rest, for example 30 seconds on and 15 seconds off. Create them in Library › Interval.
 
+## To Do
+
+The To Do list holds what you plan to train: exercises, groups, programs and interval routines. Add items with + in Library › To Do; Today shows what is due. Each item's ⋮ menu sets the days it repeats on, or deletes it, and swiping it away deletes it too.
+
 ## Log a past workout
 
 Train › Log a past workout records sets you already did, with their date and time. Use "Add another exercise" to put several exercises into one workout.
@@ -26,4 +30,4 @@ Timers keep running in a notification. If the app is stopped anyway, Today offer
 
 ## Sounds and vibration
 
-Settings has the sound options for counting and rests, and "Vibrate When a Set Is Done".
+Settings has the sound options for counting and rests, and "Vibrate when a set is done".

@@ -46,18 +46,20 @@ fun CalisthenicsMemoryTheme(
 }
 
 /**
- * The AMOLED theme: the dark scheme on true black, so unlit pixels stay off. Cards keep the dark
- * theme's tinted greys, a clear step above black (at least 1.3:1) and above each other, so a card
- * and the card inside it stay distinct; near-black containers (1.08:1) vanished on black.
+ * The AMOLED theme: the dark scheme on true black, so unlit pixels stay off. Each container is
+ * the dark theme's own container lifted by 0.03 in OKLCH lightness with its hue and chroma kept,
+ * so cards read as the same colour as in Dark, only a step brighter to stand off black (at least
+ * 1.3:1, and 1.12:1 between levels). Hand-picked greys drifted in hue and looked like another
+ * colour. Regenerate with the formula in TrueBlackTest if the dark palette changes.
  */
 internal fun ColorScheme.trueBlack(): ColorScheme = copy(
     background = Color.Black,
     surface = Color.Black,
     surfaceDim = Color.Black,
     surfaceContainerLowest = Color.Black,
-    surfaceContainerLow = Color(0xFF1E2724),
-    surfaceContainer = Color(0xFF242D2A),
-    surfaceContainerHigh = Color(0xFF2C3532),
-    surfaceContainerHighest = Color(0xFF363F3B),
-    surfaceBright = Color(0xFF3E4744),
+    surfaceContainerLow = Color(0xFF212927),
+    surfaceContainer = Color(0xFF252E2B),
+    surfaceContainerHigh = Color(0xFF2F3936),
+    surfaceContainerHighest = Color(0xFF3B4441),
+    surfaceBright = Color(0xFF404946),
 )

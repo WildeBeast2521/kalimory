@@ -446,7 +446,6 @@
     <string name="loop_settings">Configuración del bucle</string>
     <string name="loop_rounds">Rondas</string>
     <string name="loop_rest_between_rounds">Descanso entre rondas (seg)</string>
-    <string name="loop_round_format">%d Rondas</string>
     <string name="loop_rest_format">Descanso: %ds</string>
     <string name="loop_current_round">Ronda %1$d/%2$d</string>
     <string name="loop_empty">Toca + para añadir ejercicios</string>
@@ -829,4 +828,9 @@
         <item quantity="many">Completar (%d reps)</item>
     </plurals>
     <string name="theme_system_short">Sistema</string>
+    <plurals name="loop_round_count">
+        <item quantity="one">%d ronda</item>
+        <item quantity="many">%d rondas</item>
+        <item quantity="other">%d rondas</item>
+    </plurals>
 </resources>

@@ -446,7 +446,6 @@
     <string name="loop_settings">循环设置</string>
     <string name="loop_rounds">回合数</string>
     <string name="loop_rest_between_rounds">回合间休息（秒）</string>
-    <string name="loop_round_format">%d 回合</string>
     <string name="loop_rest_format">休息：%d秒</string>
     <string name="loop_current_round">回合 %1$d/%2$d</string>
     <string name="loop_empty">点击+添加动作</string>
@@ -824,4 +823,7 @@
     <string name="workout_section_load">负重与距离</string>
     <string name="workout_section_target">目标</string>
     <string name="workout_section_timer">计时器</string>
+    <plurals name="loop_round_count">
+        <item quantity="other">%d 回合</item>
+    </plurals>
 </resources>

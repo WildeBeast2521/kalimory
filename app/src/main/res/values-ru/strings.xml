@@ -687,7 +687,6 @@
     <string name="loop_settings">Настройки круга</string>
     <string name="loop_rounds">Повторы круга</string>
     <string name="loop_rest_between_rounds">Отдых между кругами (с)</string>
-    <string name="loop_round_format">Кругов: %d</string>
     <string name="loop_rest_format">Отдых: %d с</string>
     <string name="loop_current_round">Круг %1$d/%2$d</string>
     <string name="loop_empty">Нажмите +, чтобы добавить</string>
@@ -778,4 +777,10 @@
     <string name="share_import_errors">Ошибки (%1$d)</string>
     <string name="share_import_count_reused">Использовано имеющихся: %1$d</string>
     <string name="share_import_count_skipped">Пропущено: %1$d</string>
+    <plurals name="loop_round_count">
+        <item quantity="one">%d круг</item>
+        <item quantity="few">%d круга</item>
+        <item quantity="many">%d кругов</item>
+        <item quantity="other">%d круга</item>
+    </plurals>
 </resources>

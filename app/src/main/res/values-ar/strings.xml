@@ -697,7 +697,6 @@
     <string name="loop_settings">إعدادات الحلقة</string>
     <string name="loop_rounds">الجولات</string>
     <string name="loop_rest_between_rounds">الراحة بين الجولات (ث)</string>
-    <string name="loop_round_format">%d جولات</string>
     <string name="loop_rest_format">الراحة: %d ث</string>
     <string name="loop_current_round">الجولة %1$d/%2$d</string>
     <string name="loop_empty">اضغط + لإضافة تمارين</string>
@@ -788,4 +787,12 @@
     <string name="share_import_errors">الأخطاء (%1$d)</string>
     <string name="share_import_count_reused">أُعيد استخدام %1$d</string>
     <string name="share_import_count_skipped">تُخطّي %1$d</string>
+    <plurals name="loop_round_count">
+        <item quantity="zero">%d جولة</item>
+        <item quantity="one">جولة واحدة</item>
+        <item quantity="two">جولتان</item>
+        <item quantity="few">%d جولات</item>
+        <item quantity="many">%d جولة</item>
+        <item quantity="other">%d جولة</item>
+    </plurals>
 </resources>

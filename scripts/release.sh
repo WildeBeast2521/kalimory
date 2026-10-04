@@ -86,6 +86,19 @@ awk -v v="$version_name" '
     on { print }
 ' CHANGELOG.md > "$notes"
 [ -s "$notes" ] || fail "the CHANGELOG section for $version_name is empty"
+# The release page is the CHANGELOG section plus a fixed footer (see AGENTS.md, "Changelog and
+# release notes"); nothing else is added by hand, and no tool attribution belongs in it.
+previous_tag="$(git describe --tags --abbrev=0 --match 'v*' HEAD 2>/dev/null || true)"
+{
+    echo
+    echo "---"
+    echo
+    [ -n "$previous_tag" ] && echo "**Full changelog:** https://github.com/WildeBeast2521/kalimory/compare/$previous_tag...$tag" && echo
+    echo "**Verify the download:** \`sha256sum -c Kalimory-$version_name.apk.sha256\`. The APK is signed with the release key, certificate SHA-256 \`$expected_cert\`."
+} >> "$notes"
+if grep -qiE "claude|generated with|co-authored" "$notes"; then
+    fail "the release notes contain tool attribution; remove it from CHANGELOG.md"
+fi
 
 echo "APK: $asset"
 cat "$out/Kalimory-$version_name.apk.sha256"
