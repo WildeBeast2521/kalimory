@@ -1,1 +1,1 @@
-Consistent start cards and Start buttons, AMOLED cards that keep the Dark theme's colours, sentence-case labels throughout, and a faster start-up.
+One start card style on Today and Train, with a play icon on every Start button. AMOLED cards use the Dark theme's greys on true black. Sentence-case labels throughout, and a faster start-up.

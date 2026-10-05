@@ -39,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -239,23 +238,13 @@ internal fun HeroCard(
     detail: String,
     action: String,
     icon: ImageVector,
-    emphasised: Boolean,
     onClick: () -> Unit,
 ) {
     val scheme = MaterialTheme.colorScheme
-    // Deep spruce in both themes: the light theme's primary, the dark theme's primary container,
-    // so the card stays calm at night instead of becoming a bright block.
-    val dark = scheme.background.luminance() < 0.5f
-    val container = when {
-        !emphasised -> scheme.surfaceContainerHigh
-        dark -> scheme.primaryContainer
-        else -> scheme.primary
-    }
-    val content = when {
-        !emphasised -> scheme.onSurface
-        dark -> scheme.onPrimaryContainer
-        else -> scheme.onPrimary
-    }
+    // One card for every "what to do now" moment (resume, next up, start from scratch), on Today
+    // and Train alike: a tonal container with the app's primary only on the badge and the button.
+    val container = scheme.surfaceContainerHigh
+    val content = scheme.onSurface
     Surface(
         onClick = onClick,
         shape = MaterialTheme.shapes.extraLarge,
@@ -278,8 +267,8 @@ internal fun HeroCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 ShapeBadge(
                     icon,
-                    container = if (emphasised) content.copy(alpha = 0.16f) else scheme.primaryContainer,
-                    content = if (emphasised) content else scheme.onPrimaryContainer,
+                    container = scheme.primaryContainer,
+                    content = scheme.onPrimaryContainer,
                 )
                 Spacer(Modifier.width(Spacing.m))
                 Text(label, style = MaterialTheme.typography.titleSmall, modifier = Modifier.semantics { heading() })
@@ -292,10 +281,7 @@ internal fun HeroCard(
             Button(
                 onClick = onClick,
                 shape = CircleShape,
-                colors = when {
-                    !emphasised || dark -> ButtonDefaults.buttonColors()
-                    else -> ButtonDefaults.buttonColors(containerColor = scheme.onPrimary, contentColor = scheme.primary)
-                },
+                colors = ButtonDefaults.buttonColors(),
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             ) {
                 // The play icon every Start button in the app carries.

@@ -8,11 +8,11 @@ Each entry is one user-facing change, linked to the pull request that made it; t
 for a version shows the same section. Versions 1.26.0 and earlier are releases of the original
 Calisthenics Memory by Gonbei774.
 
-## [1.0.1] - 2026-10-04
+## [1.0.1] - 2026-10-05
 
 ### Changed
-- Train's Quick start card now looks like Today's start card, and every Start button shows a play icon ([#143](https://github.com/WildeBeast2521/kalimory/pull/143))
-- AMOLED cards keep the Dark theme's colours, one step brighter so they stand out from black ([#143](https://github.com/WildeBeast2521/kalimory/pull/143))
+- Today and Train use one start card for every case (resume, next up, start a workout), and every Start button shows a play icon ([#143](https://github.com/WildeBeast2521/kalimory/pull/143)) ([#144](https://github.com/WildeBeast2521/kalimory/pull/144))
+- AMOLED cards use the Dark theme's greys on a true-black page ([#143](https://github.com/WildeBeast2521/kalimory/pull/143)) ([#144](https://github.com/WildeBeast2521/kalimory/pull/144))
 - Labels and titles across the app use sentence case ([#143](https://github.com/WildeBeast2521/kalimory/pull/143))
 - The startup profile is regenerated for the current screens, so the app opens faster ([#143](https://github.com/WildeBeast2521/kalimory/pull/143))
 
