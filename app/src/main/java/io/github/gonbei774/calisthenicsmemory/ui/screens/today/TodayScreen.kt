@@ -254,14 +254,14 @@ fun TodayScreen(
         val heroFromDue = resumeItems.isEmpty() && dueItems.isNotEmpty()
         when {
             resumeItems.isNotEmpty() -> resumeItems.first().let {
-                HeroCard(stringResource(R.string.today_resume_title), it.name, it.kind, stringResource(R.string.resume_button), it.icon, emphasised = true, onClick = it.open)
+                HeroCard(stringResource(R.string.today_resume_title), it.name, it.kind, stringResource(R.string.resume_button), it.icon, onClick = it.open)
             }
             heroFromDue -> dueItems.first().let {
-                HeroCard(stringResource(R.string.today_next_up), it.name, it.kind, stringResource(R.string.today_start), it.icon, emphasised = true, onClick = it.open)
+                HeroCard(stringResource(R.string.today_next_up), it.name, it.kind, stringResource(R.string.today_start), it.icon, onClick = it.open)
             }
             else -> HeroCard(
                 stringResource(R.string.today_nothing_planned), stringResource(R.string.today_start_workout), stringResource(R.string.today_start_workout_detail),
-                stringResource(R.string.today_start), AppIcons.Workout, emphasised = false, onClick = onOpenTrain,
+                stringResource(R.string.today_start), AppIcons.Workout, onClick = onOpenTrain,
             )
         }
         if (resumeItems.size > 1) {

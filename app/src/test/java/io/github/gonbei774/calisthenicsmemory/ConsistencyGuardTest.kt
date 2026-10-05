@@ -73,4 +73,10 @@ class ConsistencyGuardTest {
             .map { it.groupValues[1] }.toList()
         assertTrue("Use sentence case: $offenders", offenders.isEmpty())
     }
+
+    @Test fun `there is one start card style`() {
+        // Resume, next up and start-a-workout cards on Today and Train all look the same.
+        val offenders = uses(Regex("""emphasised"""))
+        assertTrue("HeroCard has one style: $offenders", offenders.isEmpty())
+    }
 }
