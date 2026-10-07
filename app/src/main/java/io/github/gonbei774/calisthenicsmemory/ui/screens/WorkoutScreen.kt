@@ -1731,7 +1731,7 @@ fun StartIntervalStep(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        WorkoutStatus(stringResource(R.string.preparing), WorkoutTone.prepare)
+        WorkoutStatus(stringResource(R.string.interval_get_ready), WorkoutTone.prepare)
 
         Spacer(modifier = Modifier.height(Spacing.xl))
 
@@ -1816,7 +1816,7 @@ fun IntervalStep(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        WorkoutStatus(stringResource(R.string.interval_label), WorkoutTone.rest)
+        WorkoutStatus(stringResource(R.string.interval_rest_label), WorkoutTone.rest)
 
         nextSet?.let {
             val nextSideText = when (it.side) {

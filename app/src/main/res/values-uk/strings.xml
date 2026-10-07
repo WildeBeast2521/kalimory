@@ -377,7 +377,6 @@
     <string name="todo_repeat_save">Зберегти</string>
     <string name="get_ready">Приготуйтеся</string>
     <string name="data_contents">Містить такі дані</string>
-    <string name="preparing">Приготування</string>
     <string name="right_value_label">Значення для правої</string>
     <string name="left_value_label">Значення для лівої</string>
     <string name="target_duration_label">Цільова тривалість (с)</string>

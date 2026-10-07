@@ -99,6 +99,9 @@ The first Kalimory release is 1.0.0 (versionCode 1). For a release:
    (certificate, package, version, no INTERNET), tags `v<versionName>` and creates the GitHub
    release with the APK and its SHA-256.
 
+The release build is minified with R8 (`proguard-rules.pro` keeps only line numbers; the app uses
+no reflection). Keep each release's `build/release/mapping-x.y.z.txt` to read stack traces.
+
 Signing needs `keystore.properties`, which only the maintainer's machine has. Without it,
 `assembleRelease` builds an unsigned APK (what F-Droid builds from source).
 

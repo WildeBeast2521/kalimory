@@ -79,4 +79,9 @@ class ConsistencyGuardTest {
         val offenders = uses(Regex("""emphasised"""))
         assertTrue("HeroCard has one style: $offenders", offenders.isEmpty())
     }
+
+    @Test fun `every countdown says Get ready and every rest says Rest`() {
+        val offenders = uses(Regex("""WorkoutStatus\(stringResource\(R\.string\.(preparing|interval_label)\)"""))
+        assertTrue("Use interval_get_ready / interval_rest_label: $offenders", offenders.isEmpty())
+    }
 }

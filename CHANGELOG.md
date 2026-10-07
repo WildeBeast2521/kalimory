@@ -8,6 +8,14 @@ Each entry is one user-facing change, linked to the pull request that made it; t
 for a version shows the same section. Versions 1.26.0 and earlier are releases of the original
 Calisthenics Memory by Gonbei774.
 
+## [1.0.2] - 2026-10-07
+
+### Changed
+- The app is about a third of its former size (4.5 MB instead of 14 MB), as the release build is now optimised with R8 ([#145](https://github.com/WildeBeast2521/kalimory/pull/145))
+
+### Fixed
+- Single-exercise workouts say "Get ready" before a set and "Rest" between sets, like programs and intervals ([#145](https://github.com/WildeBeast2521/kalimory/pull/145))
+
 ## [1.0.1] - 2026-10-05
 
 ### Changed
