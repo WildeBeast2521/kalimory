@@ -1,0 +1,1 @@
+A much smaller download: the app is now about 4.5 MB instead of 14 MB. Single-exercise workouts now say "Get ready" and "Rest", like programs and intervals.

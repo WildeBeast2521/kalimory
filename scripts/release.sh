@@ -77,6 +77,9 @@ mkdir -p "$out"
 asset="$out/Kalimory-$version_name.apk"
 cp "$apk" "$asset"
 (cd "$out" && sha256sum "Kalimory-$version_name.apk" > "Kalimory-$version_name.apk.sha256")
+# R8's mapping file turns a reported stack trace back into source names. It stays with the
+# maintainer (it is large and not needed by users), next to the APK it belongs to.
+cp app/build/outputs/mapping/release/mapping.txt "$out/mapping-$version_name.txt"
 
 # Release notes: the version's CHANGELOG section, without its heading.
 notes="$out/notes-$version_name.md"

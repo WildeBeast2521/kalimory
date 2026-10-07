@@ -144,7 +144,6 @@
     <string name="target_reps_label">Zielwiederholungen</string>
     <string name="target_duration_label">Zieldauer (Sek.)</string>
     <string name="start_workout">Starten</string>
-    <string name="preparing">Vorbereiten</string>
     <string name="skip_button">Überspringen</string>
     <string name="set_format">Satz %1$d/%2$d</string>
     <string name="set_format_with_side">Satz %1$d/%2$d - %3$s</string>

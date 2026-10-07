@@ -172,7 +172,6 @@
     <string name="unit_cm">cm</string>
     <string name="unit_kg">kg</string>
     <string name="start_workout">開始</string>
-    <string name="preparing">準備中</string>
     <string name="skip_button">スキップ</string>
     <string name="set_format">セット %1$d/%2$d</string>
     <string name="set_format_with_side">セット %1$d/%2$d - %3$s</string>

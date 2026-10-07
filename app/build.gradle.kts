@@ -33,8 +33,8 @@ android {
         minSdk = 26
         targetSdk = 35
         // Kalimory's own numbering, starting fresh with its own application ID.
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 3
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -60,7 +60,11 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            // R8 shrinks, optimises and obfuscates the release build; unused resources go too.
+            // The mapping file (build/outputs/mapping/release/mapping.txt) turns a reported stack
+            // trace back into source names; scripts/release.sh keeps it with each release.
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
