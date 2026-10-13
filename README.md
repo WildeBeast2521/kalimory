@@ -21,6 +21,7 @@
 </p>
 
 <p align="center">
+  <a href="#download">Download</a> ·
   <a href="#features">Features</a> ·
   <a href="#screenshots">Screenshots</a> ·
   <a href="#progressions">Progressions</a> ·
@@ -31,6 +32,13 @@
 
 > [!IMPORTANT]
 > **Your training never leaves your phone.** Kalimory has no account, no ads, no analytics and no internet permission at all. Backups are files you keep.
+
+<h2 id="download">Download</h2>
+
+<p align="center">
+  <a href="https://f-droid.org/en/packages/io.github.wildebeast2521.kalimory/"><img src="https://f-droid.org/badge/get-it-on.png" height="80" alt="Get it on F-Droid"></a>
+  <a href="https://github.com/WildeBeast2521/kalimory/releases/latest"><img src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" height="80" alt="Get it on GitHub"></a>
+</p>
 
 <h2 id="features">Features</h2>
 
