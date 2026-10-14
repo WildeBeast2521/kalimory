@@ -6,6 +6,7 @@ import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
 import io.github.gonbei774.calisthenicsmemory.data.ProgramLoop
 import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
+import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import kotlin.math.roundToInt
 
 /**
@@ -25,33 +26,47 @@ object ProgramTimeEstimator {
     fun estimateSeconds(
         session: ProgramExecutionSession,
         startCountdownSeconds: Int
-    ): Int {
-        val exerciseByIndex = session.exercises.mapIndexed { index, pair -> index to pair.second }.toMap()
-        return computeFromFlatSets(session.sets) { set ->
-            exerciseByIndex[set.exerciseIndex]
-        }.let { workTotal ->
-            workTotal + startCountdownSeconds * session.sets.size
-        }
-    }
+    ): Int = estimateSeconds(session.sets, session.exercises, startCountdownSeconds)
 
+    /**
+     * The estimate for a program's own sets and targets, as the program editor shows them. It is
+     * the start screen's estimate for the same sets: both go through [ProgramSetPlanner].
+     */
     fun estimateSeconds(
         programExercises: List<ProgramExercise>,
         loops: List<ProgramLoop>,
         exerciseMap: Map<Long, Exercise>,
         startCountdownSeconds: Int
     ): Int {
-        val sets = expandToFlatSets(programExercises, loops, exerciseMap)
-        if (sets.isEmpty()) return 0
-        var total = 0
-        val lastIndex = sets.lastIndex
-        sets.forEachIndexed { index, flat ->
-            total += startCountdownSeconds + flat.workSeconds
-            if (index != lastIndex) {
-                total += flat.intervalSeconds + flat.loopRestSeconds
-            }
-        }
-        return total
+        val pairs = programExercises.mapNotNull { pe -> exerciseMap[pe.exerciseId]?.let { pe to it } }
+        return estimateSeconds(ProgramSetPlanner.plan(pairs, loops, emptyMap(), prefill = false), pairs, startCountdownSeconds)
     }
+
+    /**
+     * The estimate for the next run of a program, as its start screen will show it: with prefill
+     * on, exercises take their last session's sets and values. The Train and To Do lists use this,
+     * so a program shows the same time in the list and when it opens.
+     */
+    suspend fun estimateNextRunSeconds(
+        programExercises: List<ProgramExercise>,
+        loops: List<ProgramLoop>,
+        exerciseMap: Map<Long, Exercise>,
+        startCountdownSeconds: Int,
+        prefill: Boolean,
+        latestSession: suspend (exerciseId: Long) -> List<HistorySet>,
+    ): Int {
+        val pairs = programExercises.mapNotNull { pe -> exerciseMap[pe.exerciseId]?.let { pe to it } }
+        val previous = pairs.map { it.second.id }.distinct().associateWith { latestSession(it) }
+        return estimateSeconds(ProgramSetPlanner.plan(pairs, loops, previous, prefill), pairs, startCountdownSeconds)
+    }
+
+    /** Work, the rest after every set but the last, and a countdown before each set. */
+    fun estimateSeconds(
+        sets: List<ProgramWorkoutSet>,
+        exercises: List<Pair<ProgramExercise, Exercise>>,
+        startCountdownSeconds: Int,
+    ): Int = computeFromFlatSets(sets) { set -> exercises.getOrNull(set.exerciseIndex)?.second } +
+        startCountdownSeconds * sets.size
 
     /**
      * The start countdown a program run adds before each set, as the user set it. Every screen
@@ -82,21 +97,6 @@ object ProgramTimeEstimator {
             (rounds - 1).coerceAtLeast(0) * interval.roundRestSeconds
     }
 
-    fun formatHmmss(seconds: Int): String {
-        val s = seconds.coerceAtLeast(0)
-        val h = s / 3600
-        val m = (s % 3600) / 60
-        val sec = s % 60
-        return if (h > 0) "%d:%02d:%02d".format(h, m, sec)
-        else "%d:%02d".format(m, sec)
-    }
-
-    private data class FlatSet(
-        val workSeconds: Int,
-        val intervalSeconds: Int,
-        val loopRestSeconds: Int
-    )
-
     private fun computeFromFlatSets(
         sets: List<ProgramWorkoutSet>,
         exerciseLookup: (ProgramWorkoutSet) -> Exercise?
@@ -114,81 +114,9 @@ object ProgramTimeEstimator {
         return total
     }
 
-    private fun expandToFlatSets(
-        programExercises: List<ProgramExercise>,
-        loops: List<ProgramLoop>,
-        exerciseMap: Map<Long, Exercise>
-    ): List<FlatSet> {
-        val result = mutableListOf<FlatSet>()
-
-        // 実行順に並べる: スタンドアロン種目とループを sortOrder で混在ソート
-        val standalone = programExercises.filter { it.loopId == null }
-        val items = mutableListOf<Pair<Int, ExpansionItem>>()
-        standalone.forEach { pe ->
-            items.add(pe.sortOrder to ExpansionItem.Standalone(pe))
-        }
-        loops.forEach { loop ->
-            items.add(loop.sortOrder to ExpansionItem.LoopItem(loop))
-        }
-        val sorted = items.sortedBy { it.first }.map { it.second }
-
-        sorted.forEach { item ->
-            when (item) {
-                is ExpansionItem.Standalone -> {
-                    val ex = exerciseMap[item.pe.exerciseId] ?: return@forEach
-                    appendExerciseSets(result, item.pe, ex, loopRestAfter = 0)
-                }
-                is ExpansionItem.LoopItem -> {
-                    val loop = item.loop
-                    val loopPes = programExercises
-                        .filter { it.loopId == loop.id }
-                        .sortedBy { it.sortOrder }
-                    if (loopPes.isEmpty()) return@forEach
-                    for (round in 1..loop.rounds) {
-                        loopPes.forEachIndexed { idx, lpe ->
-                            val ex = exerciseMap[lpe.exerciseId] ?: return@forEachIndexed
-                            val isLastExInRound = idx == loopPes.lastIndex
-                            val loopRestAfter = if (isLastExInRound) loop.restBetweenRounds else 0
-                            appendExerciseSets(result, lpe, ex, loopRestAfter = loopRestAfter)
-                        }
-                    }
-                }
-            }
-        }
-        return result
-    }
-
-    private fun appendExerciseSets(
-        out: MutableList<FlatSet>,
-        pe: ProgramExercise,
-        exercise: Exercise,
-        loopRestAfter: Int
-    ) {
-        val work = workSecondsFor(exercise, pe.targetValue)
-        val sides = if (exercise.laterality == "Unilateral") 2 else 1
-        for (setIdx in 1..pe.sets) {
-            val isLastSet = setIdx == pe.sets
-            for (side in 1..sides) {
-                val isLastSide = side == sides
-                // ProgramExecutionScreen の addExerciseSets に合わせて R/L 両方 intervalSeconds を持つ
-                val loopRest = if (isLastSet && isLastSide) loopRestAfter else 0
-                out.add(FlatSet(
-                    workSeconds = work,
-                    intervalSeconds = pe.intervalSeconds,
-                    loopRestSeconds = loopRest
-                ))
-            }
-        }
-    }
-
     private fun workSecondsFor(exercise: Exercise, targetValue: Int): Int =
         when (exercise.type) {
             "Isometric" -> targetValue
             else -> targetValue * (exercise.repDuration ?: DEFAULT_DYNAMIC_REP_SECONDS)
         }
-
-    private sealed class ExpansionItem {
-        data class Standalone(val pe: ProgramExercise) : ExpansionItem()
-        data class LoopItem(val loop: ProgramLoop) : ExpansionItem()
-    }
 }

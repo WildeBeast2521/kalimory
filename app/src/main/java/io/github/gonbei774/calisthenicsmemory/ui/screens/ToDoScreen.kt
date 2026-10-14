@@ -129,16 +129,18 @@ fun ToDoScreen(
     // Pre-compute estimated seconds per program (for ProgramTaskCard display).
     val programEstimatedSeconds = remember { mutableStateMapOf<Long, Int>() }
     val estimateContext = androidx.compose.ui.platform.LocalContext.current
-    LaunchedEffect(programs, exerciseMap) {
-        val countdown = ProgramTimeEstimator.startCountdownSeconds(io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences(estimateContext))
+    val history by viewModel.history.collectAsState()
+    LaunchedEffect(programs, exerciseMap, history) {
+        val preferences = io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences(estimateContext)
+        val countdown = ProgramTimeEstimator.startCountdownSeconds(preferences)
+        val prefill = preferences.isPrefillPreviousRecordEnabled()
         programs.forEach { program ->
             val pes = viewModel.getProgramExercisesSync(program.id)
             val loops = viewModel.getProgramLoopsSync(program.id)
-            val subMap = pes.mapNotNull { pe ->
-                exerciseMap[pe.exerciseId]?.let { pe.exerciseId to it }
-            }.toMap()
-            programEstimatedSeconds[program.id] =
-                ProgramTimeEstimator.estimateSeconds(pes, loops, subMap, countdown)
+            // The same sets and values the program's start screen will open with.
+            programEstimatedSeconds[program.id] = ProgramTimeEstimator.estimateNextRunSeconds(
+                pes, loops, exerciseMap, countdown, prefill, viewModel::getLatestSession,
+            )
         }
     }
 
