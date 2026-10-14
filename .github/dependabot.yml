@@ -1,0 +1,30 @@
+# Monthly, grouped update pull requests (#152). Each runs the full CI; merge them deliberately,
+# one group at a time, and read the release notes of anything that changes behaviour.
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: build
+      include: scope
+    groups:
+      # Patch and minor updates in one pull request; major updates arrive one by one.
+      gradle-minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: ci
+      include: scope
+    groups:
+      github-actions:
+        patterns:
+          - "*"
