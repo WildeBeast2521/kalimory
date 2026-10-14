@@ -8,6 +8,11 @@ Each entry is one user-facing change, linked to the pull request that made it; t
 for a version shows the same section. Versions 1.26.0 and earlier are releases of the original
 Calisthenics Memory by Gonbei774.
 
+## [Unreleased]
+
+### Fixed
+- A program shows the same estimated time in the Train and To Do lists as on its start screen, including after a workout changes what it will open with ([#178](https://github.com/WildeBeast2521/kalimory/pull/178))
+
 ## [1.0.2] - 2026-10-07
 
 ### Changed

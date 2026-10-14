@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens.train
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,7 +20,7 @@ import io.github.gonbei774.calisthenicsmemory.data.Program
 import io.github.gonbei774.calisthenicsmemory.util.ProgramTimeEstimator
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
-/** How many exercises a program has and roughly how long it takes, in whole minutes rounded up. */
+/** How many exercises a program has and roughly how long its next run takes, in whole minutes. */
 data class ProgramSummary(val exerciseCount: Int, val minutes: Int)
 
 /** Summaries for [programs], read in the background and updated when programs or exercises change. */
@@ -31,14 +32,18 @@ fun rememberProgramSummaries(
 ): Map<Long, ProgramSummary> {
     var summaries by remember { mutableStateOf(emptyMap<Long, ProgramSummary>()) }
     val context = androidx.compose.ui.platform.LocalContext.current
-    LaunchedEffect(programs, exercises) {
-        val countdown = ProgramTimeEstimator.startCountdownSeconds(io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences(context))
+    // History feeds the next run's values, so a finished workout updates the estimate.
+    val history by viewModel.history.collectAsState()
+    LaunchedEffect(programs, exercises, history) {
+        val preferences = io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences(context)
+        val countdown = ProgramTimeEstimator.startCountdownSeconds(preferences)
+        val prefill = preferences.isPrefillPreviousRecordEnabled()
         val byId = exercises.associateBy { it.id }
         summaries = programs.associate { program ->
             val pes = viewModel.getProgramExercisesSync(program.id)
             val loops = viewModel.getProgramLoopsSync(program.id)
-            val used = pes.mapNotNull { pe -> byId[pe.exerciseId]?.let { pe.exerciseId to it } }.toMap()
-            val seconds = ProgramTimeEstimator.estimateSeconds(pes, loops, used, countdown)
+            // The same sets and values the program's start screen will open with.
+            val seconds = ProgramTimeEstimator.estimateNextRunSeconds(pes, loops, byId, countdown, prefill, viewModel::getLatestSession)
             program.id to ProgramSummary(pes.size, ProgramTimeEstimator.formatMinutes(seconds))
         }
     }
