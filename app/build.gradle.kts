@@ -171,7 +171,7 @@ dependencies {
     testImplementation("androidx.room:room-testing:2.8.5")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.mockito:mockito-core:5.7.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:6.4.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
