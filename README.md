@@ -40,6 +40,10 @@
   <a href="https://github.com/WildeBeast2521/kalimory/releases/latest"><img src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" height="80" alt="Get it on GitHub"></a>
 </p>
 
+<h3 id="requirements">Requirements</h3>
+
+Android 8.0 (Oreo) or later.
+
 <h2 id="features">Features</h2>
 
 <table>
