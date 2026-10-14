@@ -86,6 +86,8 @@ deterministic and offline. A known flaky test is named in the release log, never
 - Remove code, resources or assets only after proving they are unused (references, lint, tests).
   Never delete migrations, schemas or recovery tooling because they look old.
 - Keep README, CHANGELOG, wiki, Fastlane metadata and this guide true to the shipped app.
+- `ROADMAP.md` mirrors the GitHub milestones: when an issue is added, moved or closed, update
+  its line in the same pull request (or right after a milestone ships).
 
 ## Versions and releases
 

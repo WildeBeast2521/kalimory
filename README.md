@@ -27,6 +27,7 @@
   <a href="#progressions">Progressions</a> ·
   <a href="#privacy">Privacy</a> ·
   <a href="docs/wiki/Home.md">User guide</a> ·
+  <a href="ROADMAP.md">Roadmap</a> ·
   <a href="#building">Building</a>
 </p>
 
@@ -135,7 +136,7 @@ The full local check, run before every merge, is in [CONTRIBUTING.md](CONTRIBUTI
 
 ## Contributing
 
-Bug reports, catalogue corrections and ideas are welcome through the issue templates. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+Bug reports, catalogue corrections and ideas are welcome through the issue templates. What is planned next is in the [roadmap](ROADMAP.md). Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ## Credits
 
