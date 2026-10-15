@@ -54,6 +54,10 @@ application ID changed.
 - **Room schemas.** Bump the database version, add a migration and let the build export the new
   schema. Committed schema files are immutable; `scripts/check-room-schemas.sh` enforces it.
 - **Lint baseline.** Never regenerate `app/lint-baseline.xml` to hide new problems. Fix them.
+- **Screenshots.** `app/src/test/screenshots` holds golden images of the shared components in
+  Light, Dark and AMOLED; `testDebugUnitTest` fails when one changes. After a deliberate visual
+  change, run `./gradlew recordRoborazziDebug`, look at every changed image and commit them with
+  the change. Never re-record to make an unexplained difference pass.
 
 ## Strings and translations
 

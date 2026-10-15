@@ -9,6 +9,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.mikepenz.aboutlibraries.plugin.android")
     alias(libs.plugins.androidx.baselineprofile)
+    alias(libs.plugins.roborazzi)
 }
 
 // AboutLibraries: exclude timestamp for reproducible builds
@@ -94,6 +95,11 @@ android {
         baseline = file("lint-baseline.xml")
     }
 
+    testOptions {
+        // Robolectric screenshot tests render with the app's real resources and fonts.
+        unitTests.isIncludeAndroidResources = true
+    }
+
     sourceSets {
         // Exported Room schemas are MigrationTestHelper inputs.
         getByName("androidTest").assets.directories.add("$projectDir/schemas")
@@ -117,6 +123,25 @@ kotlin {
         // Material 3 Expressive components are used throughout the app (owner decision, 2026-10-02).
         optIn.add("androidx.compose.material3.ExperimentalMaterial3ExpressiveApi")
     }
+}
+
+// Screenshot tests (Roborazzi on Robolectric). Golden images live in the repository and
+// testDebugUnitTest compares against them (roborazzi.test.verify in gradle.properties);
+// ./gradlew recordRoborazziDebug rewrites them after a deliberate visual change.
+roborazzi {
+    outputDir.set(file("src/test/screenshots"))
+}
+
+// Robolectric would otherwise download its Android framework jar while the tests run. Gradle
+// resolves it like any other dependency instead, and Robolectric runs offline from Gradle's cached
+// copy. (Not a copy in build/: Robolectric cannot load its native graphics from a path with a space.)
+val robolectricRuntime: Configuration by configurations.creating
+tasks.withType<Test>().configureEach {
+    val runtimeJars = robolectricRuntime
+    inputs.files(runtimeJars).withPropertyName("robolectricRuntime").withNormalizer(ClasspathNormalizer::class.java)
+    jvmArgumentProviders.add(CommandLineArgumentProvider {
+        listOf("-Drobolectric.offline=true", "-Drobolectric.dependency.dir=${runtimeJars.singleFile.parentFile.absolutePath}")
+    })
 }
 
 ksp {
@@ -174,6 +199,13 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.mockito:mockito-core:5.24.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:6.4.0")
+    testImplementation(libs.robolectric)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.roborazzi.junit.rule)
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    robolectricRuntime(libs.robolectric.android.all)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
