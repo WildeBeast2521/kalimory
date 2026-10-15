@@ -7,6 +7,8 @@ benchmark = "1.5.0"
 profileinstaller = "1.4.1"
 uiautomator = "2.4.0"
 kotlinxCoroutines = "1.11.0"
+robolectric = "4.17"
+roborazzi = "1.76.0"
 
 [libraries]
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -16,10 +18,18 @@ androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profi
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+# The Android 15 (API 35) framework Robolectric 4.17 runs on, resolved by Gradle so the tests never
+# download it themselves. It must be the exact build listed in Robolectric's DefaultSdkProvider.
+robolectric-android-all = { group = "org.robolectric", name = "android-all-instrumented", version = "15-robolectric-13954326-i7" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
+roborazzi-junit-rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-test = { id = "com.android.test", version.ref = "agp" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "benchmark" }
