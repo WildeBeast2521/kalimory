@@ -2,7 +2,7 @@
 
 ## The app
 
-This app began as a fork of [Calisthenics Memory by Gonbei774](https://codeberg.org/Gonbei774/CalisthenicsMemory), licensed under GPL-3.0. Its history is kept in this repository. Thanks to Gonbei774 and to the original project's translators.
+This app began as a fork of [Calisthenics Memory by Gonbei774](https://codeberg.org/Gonbei774/CalisthenicsMemory), licensed under GPL-3.0-only. Kalimory keeps that licence. Its history is kept in this repository. Thanks to Gonbei774 and to the original project's translators.
 
 ## The exercise catalogue
 
@@ -11,7 +11,7 @@ Every name, description, form cue, standard, chain and difficulty in the catalog
 | Content | Source | Licence | What is used |
 |:---|:---|:---|:---|
 | Exercise names, primary and secondary muscles, equipment, level | [free-exercise-db](https://github.com/yuhonas/free-exercise-db) | Unlicense (public domain) | Facts only, as a checklist and a cross-check. No text and no photos. |
-| Descriptions, cues, standards, chains and difficulty | Written for this project | GPL-3.0-or-later | Everything |
+| Descriptions, cues, standards, chains and difficulty | Written for this project | GPL-3.0-only | Everything |
 | Muscle map body outlines | [react-body-highlighter](https://github.com/GV79/react-body-highlighter) 2.0.5, Copyright (c) 2020 GV79 | MIT | Polygon outlines only, converted by `scripts/musclemap/generate_body_map.py` into `BodyMapData.kt`, which carries the MIT notice. Also listed in the app's Open Source Licenses screen. |
 
 Not used:
