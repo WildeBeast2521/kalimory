@@ -832,4 +832,7 @@
         <item quantity="many">%d tours</item>
         <item quantity="other">%d tours</item>
     </plurals>
+    <string name="crash_report_title">Kalimory s\'est fermé de façon inattendue</string>
+    <string name="crash_report_message">Vous pouvez partager un rapport sur l\'erreur pour qu\'elle soit corrigée. Il contient les détails de l\'erreur, la version de l\'application et le modèle de votre téléphone, et vous pouvez le lire avant de l\'envoyer.</string>
+    <string name="crash_report_share">Partager le rapport</string>
 </resources>

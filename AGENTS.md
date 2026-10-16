@@ -118,6 +118,11 @@ The first Kalimory release is 1.0.0 (versionCode 1). For a release:
 The release build is minified with R8 (`proguard-rules.pro` keeps only line numbers; the app uses
 no reflection). Keep each release's `build/release/mapping-x.y.z.txt` to read stack traces.
 
+After a crash, the app keeps a report on the phone and offers to share it on the next launch
+(`data/CrashReports.kt`; never sent automatically, left out of Android backups). A shared report
+names its version; save its trace to a file and turn it back into source names with
+`$ANDROID_HOME/cmdline-tools/latest/bin/retrace build/release/mapping-x.y.z.txt trace.txt`.
+
 Signing needs `keystore.properties`, which only the maintainer's machine has. Without it,
 `assembleRelease` builds an unsigned APK (what F-Droid builds from source).
 

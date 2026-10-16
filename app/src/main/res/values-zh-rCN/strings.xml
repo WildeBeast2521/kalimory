@@ -825,4 +825,7 @@
     <plurals name="loop_round_count">
         <item quantity="other">%d 回合</item>
     </plurals>
+    <string name="crash_report_title">Kalimory 意外关闭</string>
+    <string name="crash_report_message">你可以分享错误报告，帮助修复这个问题。报告包含错误详情、应用版本和手机型号，发送前你可以先查看内容。</string>
+    <string name="crash_report_share">分享报告</string>
 </resources>

@@ -785,4 +785,7 @@
         <item quantity="many">%d раундів</item>
         <item quantity="other">%d раунду</item>
     </plurals>
+    <string name="crash_report_title">Застосунок Kalimory неочікувано закрився</string>
+    <string name="crash_report_message">Звітом про помилку можна поділитися, щоб її виправили. Він містить відомості про помилку, версію застосунку та модель телефона, і перед надсиланням його можна прочитати.</string>
+    <string name="crash_report_share">Поділитися звітом</string>
 </resources>
