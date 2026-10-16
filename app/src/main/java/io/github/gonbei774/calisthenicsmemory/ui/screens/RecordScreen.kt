@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -106,8 +107,8 @@ fun RecordScreen(
     var previousSession by remember { mutableStateOf<List<HistorySet>?>(null) }
 
     // Date and Time with pickers
-    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
-    var selectedTime by remember { mutableStateOf(LocalTime.now()) }
+    var selectedDate by remember { mutableStateOf(AppClock.today()) }
+    var selectedTime by remember { mutableStateOf(AppClock.timeNow()) }
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
 
@@ -163,8 +164,8 @@ fun RecordScreen(
                     // The next exercise of the same workout keeps its date, time and comment.
                     if (staged.isEmpty()) {
                         comment = ""
-                        selectedDate = LocalDate.now()
-                        selectedTime = LocalTime.now()
+                        selectedDate = AppClock.today()
+                        selectedTime = AppClock.timeNow()
                     }
 
                     // 前回セッションを取得（「前回」表示は設定に関係なく常に行う）

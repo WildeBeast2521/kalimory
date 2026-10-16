@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.summary
 
+import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.animation.core.Animatable
@@ -128,7 +129,7 @@ private fun SummaryContent(viewModel: TrainingViewModel, summary: WorkoutSummary
     // The week, with today filling in as the last beat.
     val history by viewModel.history.collectAsState()
     val intervalHistory by viewModel.intervalHistory.collectAsState()
-    val today = remember { LocalDate.now() }
+    val today = remember { AppClock.today() }
     val week = weekOf(today, firstDayOfWeek())
     val trained = remember(history, intervalHistory) {
         (history.map { it.date } + intervalHistory.map { it.record.date })

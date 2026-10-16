@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import androidx.compose.ui.graphics.toArgb
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.weekOf
 import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
@@ -427,7 +428,7 @@ fun prepareGraphData(
     }
 
     // 期間でフィルター（nullの場合は全期間）
-    val today = LocalDate.now()
+    val today = AppClock.today()
     val filteredRecords = if (period == null) {
         exerciseRecords
     } else {
@@ -544,7 +545,7 @@ fun prepareVolumeData(
     }
 
     // 期間でフィルター（nullの場合は全期間）
-    val today = LocalDate.now()
+    val today = AppClock.today()
     val filteredRecords = if (period == null) {
         exerciseRecords
     } else {
@@ -624,7 +625,7 @@ fun prepareAssistanceData(
     }
 
     // 期間でフィルター（nullの場合は全期間）
-    val today = LocalDate.now()
+    val today = AppClock.today()
     val filteredRecords = if (period == null) {
         exerciseRecords
     } else {
@@ -690,7 +691,7 @@ fun prepareWeightData(
     }
 
     // 期間でフィルター（nullの場合は全期間）
-    val today = LocalDate.now()
+    val today = AppClock.today()
     val filteredRecords = if (period == null) {
         exerciseRecords
     } else {
@@ -890,7 +891,7 @@ fun SimpleLineChart(
             isAntiAlias = true
         }
 
-        val today = LocalDate.now()
+        val today = AppClock.today()
         val startDate = if (period == null) {
             try {
                 LocalDate.parse(data.minOf { it.date })
@@ -1315,7 +1316,7 @@ fun SimpleVolumeChart(
             isAntiAlias = true
         }
 
-        val today = LocalDate.now()
+        val today = AppClock.today()
         val startDate = if (period == null) {
             try {
                 LocalDate.parse(data.minOf { it.date })
@@ -1610,7 +1611,7 @@ fun SimpleAssistanceChart(
             isAntiAlias = true
         }
 
-        val today = LocalDate.now()
+        val today = AppClock.today()
         // X軸の日付範囲: 全記録の範囲を使用（メインチャートと同じ）
         val startDate = if (period == null) {
             allRecordsDateRange?.first ?: try {
@@ -1858,7 +1859,7 @@ fun SimpleWeightChart(
             isAntiAlias = true
         }
 
-        val today = LocalDate.now()
+        val today = AppClock.today()
         // X軸の日付範囲: 全記録の範囲を使用（メインチャートと同じ）
         val startDate = if (period == null) {
             allRecordsDateRange?.first ?: try {
@@ -2285,7 +2286,7 @@ fun calculateStatistics(
     val filteredRecords = if (period == null) {
         exerciseRecords
     } else {
-        val cutoffDate = period.startDate(LocalDate.now(), firstDay)
+        val cutoffDate = period.startDate(AppClock.today(), firstDay)
         exerciseRecords.filter {
             try {
                 LocalDate.parse(it.date) >= cutoffDate
@@ -2306,7 +2307,7 @@ fun calculateStatistics(
     val valuesRight = filteredRecords.map { it.valueRight }
 
     // 今週のデータ
-    val weekStart = LocalDate.now().minusDays(7)
+    val weekStart = AppClock.today().minusDays(7)
     val thisWeekRecords = filteredRecords.filter {
         try {
             LocalDate.parse(it.date) >= weekStart
