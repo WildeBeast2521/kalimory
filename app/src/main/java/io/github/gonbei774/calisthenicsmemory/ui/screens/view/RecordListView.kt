@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -506,7 +507,7 @@ fun SessionEditDialog(
         val currentDate = try {
             LocalDate.parse(editDate, dateFormatter)
         } catch (e: Exception) {
-            LocalDate.now()
+            AppClock.today()
         }
 
         val datePickerState = rememberDatePickerState(
@@ -541,7 +542,7 @@ fun SessionEditDialog(
         val currentTime = try {
             LocalTime.parse(editTime, timeFormatter)
         } catch (e: Exception) {
-            LocalTime.now()
+            AppClock.timeNow()
         }
 
         val timePickerState = rememberTimePickerState(
@@ -885,7 +886,7 @@ fun IntervalRecordEditDialog(
         val currentDate = try {
             LocalDate.parse(editDate, dateFormatter)
         } catch (e: Exception) {
-            LocalDate.now()
+            AppClock.today()
         }
 
         val datePickerState = rememberDatePickerState(
@@ -920,7 +921,7 @@ fun IntervalRecordEditDialog(
         val currentTime = try {
             LocalTime.parse(editTime, timeFormatter)
         } catch (e: Exception) {
-            LocalTime.now()
+            AppClock.timeNow()
         }
 
         val timePickerState = rememberTimePickerState(

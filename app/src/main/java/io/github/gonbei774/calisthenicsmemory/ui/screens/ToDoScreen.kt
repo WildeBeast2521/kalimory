@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.intervalSummary
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
@@ -101,7 +102,7 @@ fun ToDoScreen(
     }
 
     // グループ内種目の今日の記録状態
-    val todayStr = remember { java.time.LocalDate.now().toString() }
+    val todayStr = remember { AppClock.today().toString() }
     val groupExerciseCompletions = remember { mutableStateMapOf<Long, Set<Long>>() }
     LaunchedEffect(todoTasks, exercises, groups) {
         val groupTodoTasks = todoTasks.filter { it.type == TodoTask.TYPE_GROUP }
@@ -153,7 +154,7 @@ fun ToDoScreen(
         }
     ) { paddingValues ->
         // Split tasks into active and inactive
-        val today = remember { java.time.LocalDate.now() }
+        val today = remember { AppClock.today() }
 
         val activeTasks = remember(todoTasks, today) { todoTasks.filter { it.isDueOn(today) } }
         val inactiveTasks = remember(todoTasks, today) { todoTasks.filterNot { it.isDueOn(today) } }

@@ -54,6 +54,12 @@ class ConsistencyGuardTest {
         assertTrue("Old wording is back: $offenders", offenders.isEmpty())
     }
 
+    @Test fun `today and the time of day come from AppClock`() {
+        // Screens and the view model read the date through one clock, which tests can fix.
+        val offenders = uses(Regex("""\bLocal(Date|Time)\.now\(\s*\)"""), except = setOf("AppClock.kt"))
+        assertTrue("Use AppClock.today() or AppClock.timeNow(): $offenders", offenders.isEmpty())
+    }
+
     @Test fun `workouts save only the user's own comment`() {
         val offenders = uses(Regex("""【Program】|workout_mode_comment"""))
         assertTrue("No automatic comments: $offenders", offenders.isEmpty())

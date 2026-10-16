@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
+import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -1526,7 +1527,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     private suspend fun completeTodoTask(type: String, referenceId: Long) {
         val task = todoTaskDao.getTaskByReference(type, referenceId)
         if (task != null && task.isRepeating()) {
-            val todayStr = java.time.LocalDate.now().toString()
+            val todayStr = AppClock.today().toString()
             todoTaskDao.updateLastCompletedDate(type, referenceId, todayStr)
         } else {
             todoTaskDao.deleteByReference(type, referenceId)
@@ -1547,9 +1548,9 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         val groupTask = todoTaskDao.getTaskByReference(TodoTask.TYPE_GROUP, group.id) ?: return
 
         // 今日のアクティブなタスクかチェック
-        val todayStr = java.time.LocalDate.now().toString()
+        val todayStr = AppClock.today().toString()
         if (groupTask.isRepeating()) {
-            val todayDayNumber = java.time.LocalDate.now().dayOfWeek.value
+            val todayDayNumber = AppClock.today().dayOfWeek.value
             if (todayDayNumber !in groupTask.getRepeatDayNumbers()) return
             if (groupTask.lastCompletedDate == todayStr) return
         }

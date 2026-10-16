@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import android.text.format.DateUtils
 import androidx.compose.ui.draw.alpha
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.weekOf
@@ -83,7 +84,7 @@ fun CalendarView(
             onFocusShown()
         }
     }
-    val today = remember { LocalDate.now() }
+    val today = remember { AppClock.today() }
     val exerciseMap = remember(exercises) { exercises.associateBy { it.id } }
 
     val statsRange = remember(items, selectedPeriod, selectedDate, today) {

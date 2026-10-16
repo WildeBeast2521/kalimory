@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.train
 
+import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -74,7 +75,7 @@ fun intervalSummary(interval: IntervalProgram, exerciseCount: Int): String {
 @Composable
 fun lastDoneText(date: LocalDate?): String? {
     date ?: return null
-    val today = LocalDate.now()
+    val today = AppClock.today()
     if (date == today) return stringResource(R.string.last_done_today)
     // Short and localised; the year appears only when it is not this year.
     val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.PrimaryTabRow
@@ -156,7 +157,7 @@ fun ViewScreen(
 
         // 期間フィルター
         if (selectedPeriod != null) {
-            val today = java.time.LocalDate.now()
+            val today = AppClock.today()
             val cutoffDate = selectedPeriod!!.startDate(today, firstDay)
 
             filtered = filtered.filter { session ->
@@ -177,7 +178,7 @@ fun ViewScreen(
         if (selectedExerciseFilter != null) {
             emptyList()
         } else if (selectedPeriod != null) {
-            val today = java.time.LocalDate.now()
+            val today = AppClock.today()
             val cutoffDate = selectedPeriod!!.startDate(today, firstDay)
             intervalRecords.filter { item ->
                 try {
@@ -1027,7 +1028,7 @@ fun ChallengeView(
 
         // 期間フィルター（nullの場合は全期間）
         if (selectedPeriod != null) {
-            val today = java.time.LocalDate.now()
+            val today = AppClock.today()
             val cutoffDate = selectedPeriod!!.startDate(today, firstDay)
 
             // 期間内に記録がある種目のみを抽出
@@ -1297,7 +1298,7 @@ fun calculateActualTotal(
 
     // 期間フィルター適用（指定されている場合）
     if (period != null) {
-        val today = java.time.LocalDate.now()
+        val today = AppClock.today()
         val cutoffDate = period.startDate(today, firstDay)
         exerciseRecords = exerciseRecords.filter { record ->
             try {
@@ -1396,7 +1397,7 @@ fun calculateClearDays(
 ): ClearDayData {
     val targetSets = exercise.targetSets
     val targetValue = exercise.targetValue
-    val today = java.time.LocalDate.now()
+    val today = AppClock.today()
     val exerciseRecords = records.filter { it.exerciseId == exercise.id }
 
     if (targetSets == null || targetValue == null || exerciseRecords.isEmpty()) {
@@ -1497,7 +1498,7 @@ fun calculateChallengeStatus(
 
     // 期間フィルター適用（指定されている場合）
     if (period != null) {
-        val today = java.time.LocalDate.now()
+        val today = AppClock.today()
         val cutoffDate = period.startDate(today, firstDay)
         exerciseRecords = exerciseRecords.filter { record ->
             try {
