@@ -54,6 +54,11 @@ application ID changed.
 - **Room schemas.** Bump the database version, add a migration and let the build export the new
   schema. Committed schema files are immutable; `scripts/check-room-schemas.sh` enforces it.
 - **Lint baseline.** Never regenerate `app/lint-baseline.xml` to hide new problems. Fix them.
+- **Dependency checksums.** `gradle/verification-metadata.xml` holds the SHA-256 of everything
+  Gradle downloads; a missing or different checksum fails the build. After any dependency change,
+  run `scripts/update-dependency-verification.sh` (needs the emulator) and review the diff: every
+  changed entry must belong to the update. Never trust a group or delete the file to get past a
+  failure.
 - **Screenshots.** `app/src/test/screenshots` holds golden images of the shared components and
   the four main screens in Light, Dark and AMOLED; `testDebugUnitTest` fails when one changes.
   Screens read "today" through `AppClock`, which the tests fix to a set date. After a deliberate visual
@@ -91,7 +96,9 @@ deterministic and offline. A known flaky test is named in the release log, never
 - Remove code, resources or assets only after proving they are unused (references, lint, tests).
   Never delete migrations, schemas or recovery tooling because they look old.
 - Keep README, CHANGELOG, wiki, Fastlane metadata and this guide true to the shipped app.
-- Dependabot opens grouped update pull requests each month (`.github/dependabot.yml`). Review the
+- Dependabot opens grouped update pull requests each month (`.github/dependabot.yml`). It cannot
+  update the dependency checksums, so its Gradle pull requests fail until
+  `scripts/update-dependency-verification.sh` runs on the branch and the result is pushed. Review the
   release notes, let CI pass, and merge one group at a time; a major update gets its own pull request.
 - `ROADMAP.md` mirrors the GitHub milestones: when an issue is added, moved or closed, update
   its line in the same pull request (or right after a milestone ships).

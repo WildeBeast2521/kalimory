@@ -36,7 +36,7 @@ Requires JDK 17 or later and the Android SDK. Instrumented tests run on an emula
 
 `testDebugUnitTest` also compares the shared components with the golden images in `app/src/test/screenshots`. After a deliberate visual change, run `./gradlew recordRoborazziDebug` and commit the updated images with the change.
 
-Run `scripts/check-room-schemas.sh` when a Room schema changes. Do not regenerate lint baselines, weaken validation or skip tests to make the check pass.
+Run `scripts/check-room-schemas.sh` when a Room schema changes, and `scripts/update-dependency-verification.sh` when a dependency changes (Gradle checks the SHA-256 of everything it downloads against `gradle/verification-metadata.xml`). Do not regenerate lint baselines, weaken validation or skip tests to make the check pass.
 
 ## Repository guide
 
