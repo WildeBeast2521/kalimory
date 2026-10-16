@@ -4,6 +4,8 @@
 # Dependabot pull request), then review the diff: each changed checksum should belong to a
 # dependency the change meant to update.
 #
+# Gradle records only what it downloads, and a warm cache skips parent POMs and BOMs, so it runs
+# with an empty Gradle home of its own (downloading everything once) and stops that daemon after.
 # It starts from an empty list, so entries nothing uses any more disappear, then runs the tasks
 # that resolve everything: the build, lint, unit tests (with Robolectric's framework jar), the
 # Baseline Profile module and one instrumented test (Android's test runner is only resolved
@@ -26,6 +28,22 @@ fail() {
 }
 
 adb get-state >/dev/null 2>&1 || fail "no device at $ANDROID_SERIAL for the instrumented test"
+
+# Outside the project: Robolectric cannot load its native graphics from a path with a space.
+export GRADLE_USER_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/kalimory-dependency-verification"
+rm -rf "$GRADLE_USER_HOME"
+tmp="$(mktemp -d)"
+# Stops this Gradle home's daemon and removes it, keeping the script's own exit status.
+cleanup() {
+    local status=$?
+    ./gradlew --stop >/dev/null 2>&1 || true
+    for _ in 1 2 3 4 5; do
+        rm -rf "$GRADLE_USER_HOME" "$tmp" 2>/dev/null && break
+        sleep 2
+    done
+    exit "$status"
+}
+trap cleanup EXIT
 
 cat > "$metadata" <<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -51,8 +69,6 @@ XML
 
 aapt2_version="$(sed -nE 's/.*<component group="com.android.tools.build" name="aapt2" version="([^"]+)">.*/\1/p' "$metadata")"
 [ -n "$aapt2_version" ] || fail "aapt2 is not in $metadata"
-tmp="$(mktemp -d)"
-trap 'rm -rf "$tmp"' EXIT
 for os in linux osx windows; do
     jar="aapt2-$aapt2_version-$os.jar"
     curl -fsSL -o "$tmp/$jar" "https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2/$aapt2_version/$jar" \
