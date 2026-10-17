@@ -7,7 +7,7 @@
     <string name="edit">Редагувати</string>
     <string name="add">Додати</string>
     <string name="back">Назад</string>
-    <string name="search_exercise">Шукати вправу...</string>
+    <string name="search_exercise">Шукати вправу…</string>
     <string name="search_placeholder">Пошук</string>
     <string name="select">Вибрати</string>
     <string name="settings">Налаштування</string>
@@ -171,7 +171,7 @@
     <string name="csv_import_success">Успішно імпортовано %d записів</string>
     <string name="import_action">Імпортувати</string>
     <string name="record_training_for_exercise">Запишіть тренування для цієї вправи</string>
-    <string name="csv_import_more_items">... і ще %d</string>
+    <string name="csv_import_more_items">… і ще %d</string>
     <string name="keep_screen_on_description">Тримати екран увімкненим під час тренування, щоб бачити відлік часу</string>
     <string name="set_done_vibration_setting">Вібрувати після підходу</string>
     <string name="set_done_vibration_description">Коротка вібрація підтверджує кожен завершений підхід</string>

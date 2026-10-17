@@ -87,7 +87,7 @@
     <string name="right_value_label">Right value</string>
     <string name="left_value_label">Left value</string>
     <string name="show_all">Show all</string>
-    <string name="search_exercise">Search exercise...</string>
+    <string name="search_exercise">Search exercise…</string>
     <!-- Period filters -->
     <string name="period_one_week">1 week</string>
     <string name="period_one_month">1 month</string>
@@ -311,7 +311,7 @@
     <string name="csv_import_error_label">Errors</string>
     <string name="csv_import_skipped_items">Skipped items (%d)</string>
     <string name="csv_import_errors">Errors (%d)</string>
-    <string name="csv_import_more_items">... and %d more</string>
+    <string name="csv_import_more_items">… and %d more</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">Complete backup (JSON)</string>
     <string name="section_full_backup_description">Save and restore all your data: exercises, records, programs, intervals and to-dos.\nUse when changing devices.</string>

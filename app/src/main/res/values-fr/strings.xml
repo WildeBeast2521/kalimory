@@ -75,7 +75,7 @@
     <string name="right_value_label">Valeur Droite</string>
     <string name="left_value_label">Valeur Gauche</string>
     <string name="show_all">Tout Afficher</string>
-    <string name="search_exercise">Rechercher un Exercice...</string>
+    <string name="search_exercise">Rechercher un Exercice…</string>
     <!-- Period filters -->
     <string name="period_one_week">1 Semaine</string>
     <string name="period_one_month">1 Mois</string>
@@ -246,7 +246,7 @@
     <string name="csv_import_error_label">Erreurs</string>
     <string name="csv_import_skipped_items">Éléments Ignorés (%d)</string>
     <string name="csv_import_errors">Erreurs (%d)</string>
-    <string name="csv_import_more_items">... et %d de plus</string>
+    <string name="csv_import_more_items">… et %d de plus</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">Sauvegarde Complète (JSON)</string>
     <string name="section_full_backup_description">Sauvegardez et restaurez toutes vos données : exercices, enregistrements, programmes, intervalles et tâches.\nÀ utiliser lors d’un changement d’appareil.</string>
@@ -397,8 +397,8 @@
     <string name="exit_workout_confirm">Quitter</string>
     <!-- Discard Result Confirmation -->
     <!-- Missing keys -->
-    <string name="interval_short">Repos:</string>
-    <string name="sets_label_short">Séries:</string>
+    <string name="interval_short">Repos :</string>
+    <string name="sets_label_short">Séries :</string>
     <string name="unit_seconds_short">s</string>
     <string name="new_program">Nouveau programme</string>
     <string name="single_mode_description">Un exercice à la fois</string>
@@ -445,7 +445,7 @@
     <string name="loop_settings">Paramètres de la boucle</string>
     <string name="loop_rounds">Tours</string>
     <string name="loop_rest_between_rounds">Repos entre les tours (sec)</string>
-    <string name="loop_rest_format">Repos: %ds</string>
+    <string name="loop_rest_format">Repos : %ds</string>
     <string name="loop_current_round">Tour %1$d/%2$d</string>
     <string name="loop_empty">Appuyez sur + pour ajouter des exercices</string>
     <string name="add_exercise_to_loop">Ajouter un exercice</string>

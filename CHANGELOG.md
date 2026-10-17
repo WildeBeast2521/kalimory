@@ -14,6 +14,7 @@ Calisthenics Memory by Gonbei774.
 - After a crash, the app offers on its next start to share a report of the error through the share sheet, or to delete it; the report stays on the phone and is never sent by itself ([#192](https://github.com/WildeBeast2521/kalimory/pull/192))
 
 ### Fixed
+- French labels put a space before the colon, as French typography does, and the exercise search and import lists end in a proper ellipsis (…) in every language ([#197](https://github.com/WildeBeast2521/kalimory/pull/197))
 - Two workouts saved in the same minute show as separate cards in History, so editing or deleting one no longer changes the other ([#196](https://github.com/WildeBeast2521/kalimory/pull/196))
 - The Progressions tab label shows in full on narrow phones in every language, instead of being cut off ([#195](https://github.com/WildeBeast2521/kalimory/pull/195))
 - A program shows the same estimated time in the Train and To Do lists as on its start screen, including after a workout changes what it will open with ([#178](https://github.com/WildeBeast2521/kalimory/pull/178))

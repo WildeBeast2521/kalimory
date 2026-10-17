@@ -73,7 +73,7 @@
     <string name="right_value_label">Rechter Wert</string>
     <string name="left_value_label">Linker Wert</string>
     <string name="show_all">Alle anzeigen</string>
-    <string name="search_exercise">Übung suchen...</string>
+    <string name="search_exercise">Übung suchen…</string>
     <!-- Period filters -->
     <string name="period_one_week">1 Woche</string>
     <string name="period_one_month">1 Monat</string>
@@ -243,7 +243,7 @@
     <string name="csv_import_error_label">Fehler</string>
     <string name="csv_import_skipped_items">Übersprungene Elemente (%d)</string>
     <string name="csv_import_errors">Fehler (%d)</string>
-    <string name="csv_import_more_items">... und %d weitere</string>
+    <string name="csv_import_more_items">… und %d weitere</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">Vollständige Sicherung (JSON)</string>
     <string name="section_full_backup_description">Alle Daten sichern und wiederherstellen: Übungen, Einträge, Programme, Intervalle und To-dos.\nZum Gerätewechsel verwenden.</string>

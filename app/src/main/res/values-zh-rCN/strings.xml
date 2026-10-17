@@ -75,7 +75,7 @@
     <string name="right_value_label">右侧数值</string>
     <string name="left_value_label">左侧数值</string>
     <string name="show_all">显示全部</string>
-    <string name="search_exercise">搜索动作...</string>
+    <string name="search_exercise">搜索动作…</string>
     <!-- Period filters -->
     <string name="period_one_week">1周</string>
     <string name="period_one_month">1个月</string>
@@ -246,7 +246,7 @@
     <string name="csv_import_error_label">错误</string>
     <string name="csv_import_skipped_items">已跳过项目（%d）</string>
     <string name="csv_import_errors">错误（%d）</string>
-    <string name="csv_import_more_items">... 以及其他 %d 项</string>
+    <string name="csv_import_more_items">… 以及其他 %d 项</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">完整备份（JSON）</string>
     <string name="section_full_backup_description">保存和恢复所有数据：动作、记录、计划、间歇和待办。\n更换设备时使用。</string>

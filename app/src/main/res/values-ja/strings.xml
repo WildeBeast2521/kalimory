@@ -85,7 +85,7 @@
     <string name="right_value_label">右の値</string>
     <string name="left_value_label">左の値</string>
     <string name="show_all">全て表示</string>
-    <string name="search_exercise">種目を検索...</string>
+    <string name="search_exercise">種目を検索…</string>
     <!-- Period filters -->
     <string name="period_one_week">1週間</string>
     <string name="period_one_month">1ヶ月</string>
@@ -291,7 +291,7 @@
     <string name="csv_import_error_label">エラー</string>
     <string name="csv_import_skipped_items">スキップ項目 (%d)</string>
     <string name="csv_import_errors">エラー (%d)</string>
-    <string name="csv_import_more_items">... その他 %d件</string>
+    <string name="csv_import_more_items">… その他 %d件</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">完全バックアップ (JSON)</string>
     <string name="section_full_backup_description">すべてのデータ（種目、記録、プログラム、インターバル、ToDo）を保存・復元します。\n機種変更時にご利用ください。</string>
