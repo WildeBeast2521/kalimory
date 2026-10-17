@@ -17,7 +17,7 @@ Make the app sturdier before it grows.
 - Screenshot tests, so the look stays consistent ([#150](https://github.com/WildeBeast2521/kalimory/issues/150))
 - Native-speaker review of translations through Weblate ([#151](https://github.com/WildeBeast2521/kalimory/issues/151))
 - Edit any saved workout fully, including its date ([#156](https://github.com/WildeBeast2521/kalimory/issues/156))
-- One time estimate everywhere ([#157](https://github.com/WildeBeast2521/kalimory/issues/157)) and fresh screenshots ([#158](https://github.com/WildeBeast2521/kalimory/issues/158))
+- One time estimate everywhere ([#157](https://github.com/WildeBeast2521/kalimory/issues/157)), whole tab labels on narrow phones ([#194](https://github.com/WildeBeast2521/kalimory/issues/194)) and fresh screenshots ([#158](https://github.com/WildeBeast2521/kalimory/issues/158))
 - A careful review of every file for bugs, performance and maintainability before the app grows ([#184](https://github.com/WildeBeast2521/kalimory/issues/184))
 - Behind the scenes: dependency updates ([#152](https://github.com/WildeBeast2521/kalimory/issues/152)), dependency verification ([#153](https://github.com/WildeBeast2521/kalimory/issues/153)), a clean lint report ([#154](https://github.com/WildeBeast2521/kalimory/issues/154)) and start-up measurements ([#155](https://github.com/WildeBeast2521/kalimory/issues/155))
 

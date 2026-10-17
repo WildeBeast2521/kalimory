@@ -2,8 +2,6 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.text.TextAutoSize
-import androidx.compose.material3.PrimaryTabRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import androidx.compose.material3.LinearWavyProgressIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -227,27 +225,11 @@ fun ViewScreen(
                 stringResource(R.string.tab_graph),
                 stringResource(R.string.tab_progressions)
             )
-            // Four fixed tabs, so none is clipped at the screen edge; long labels shrink to fit.
-            PrimaryTabRow(
-                selectedTabIndex = pagerState.currentPage,
-                containerColor = MaterialTheme.colorScheme.background,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-            ) {
-                tabTitles.forEachIndexed { index, title ->
-                    Tab(
-                        selected = pagerState.currentPage == index,
-                        onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-                        text = {
-                            Text(
-                                title,
-                                style = MaterialTheme.typography.titleSmall,
-                                maxLines = 1,
-                                autoSize = TextAutoSize.StepBased(minFontSize = 11.sp, maxFontSize = 14.sp),
-                            )
-                        }
-                    )
-                }
-            }
+            ProgressTabRow(
+                titles = tabTitles,
+                selected = pagerState.currentPage,
+                onSelect = { index -> coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+            )
 
             // Exercise and period filters apply to the record tabs, not to Progressions.
             AnimatedVisibility(visible = pagerState.targetPage != PROGRESSIONS_PAGE) {
