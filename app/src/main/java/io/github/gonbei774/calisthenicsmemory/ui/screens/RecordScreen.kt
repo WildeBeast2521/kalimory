@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
+import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -616,11 +617,11 @@ fun ExerciseSelectionItem(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = stringResource(
-                                if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format,
+                            text = targetText(
                                 exercise.targetSets!!,
                                 exercise.targetValue!!,
-                                stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                                stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                                unilateral = exercise.laterality == "Unilateral",
                             ),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
@@ -1003,11 +1004,12 @@ fun WorkoutInputScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = stringResource(
-                                    if (exercise.laterality == "Unilateral") R.string.target_display_unilateral else R.string.target_display,
+                                text = targetText(
                                     exercise.targetSets!!,
                                     exercise.targetValue!!,
-                                    stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                                    stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                                    unilateral = exercise.laterality == "Unilateral",
+                                    display = true,
                                 ),
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.primary,

@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import androidx.compose.animation.AnimatedVisibility
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import androidx.compose.material3.LinearWavyProgressIndicator
@@ -683,7 +684,7 @@ fun ViewScreen(
                     exercise?.name ?: stringResource(R.string.unknown_short),
                     session.date,
                     session.time,
-                    session.records.size
+                    countText(R.plurals.set_count, session.records.size)
                 ))
             },
             confirmButton = {
@@ -1248,7 +1249,7 @@ fun ChallengeExerciseCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(R.string.challenge_clear_days, clearData.clearCount, clearData.totalDays),
+                        text = pluralStringResource(R.plurals.challenge_clear_days, clearData.totalDays, clearData.clearCount, clearData.totalDays),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface

@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -374,7 +375,7 @@ private fun LoopExerciseItemWithDrag(
                         modifier = Modifier.padding(top = 4.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.program_sets_format, programExercise.sets),
+                            text = countText(R.plurals.set_count, programExercise.sets),
                             fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.secondary
                         )

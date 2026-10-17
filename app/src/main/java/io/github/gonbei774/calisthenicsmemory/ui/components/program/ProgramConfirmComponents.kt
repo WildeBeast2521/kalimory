@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -713,7 +714,7 @@ internal fun ProgramConfirmExerciseCard(
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.sets_format, currentSetCount),
+                        text = countText(R.plurals.set_count, currentSetCount),
                         fontSize = 12.sp,
                         color = cs.onSurfaceVariant
                     )

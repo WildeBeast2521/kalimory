@@ -3,6 +3,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
+import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.intervalSummary
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
@@ -900,11 +901,11 @@ private fun ExerciseTaskCard(
                 }
                 if (exercise.targetSets != null && exercise.targetValue != null) {
                     Text(
-                        text = stringResource(
-                            if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format,
+                        text = targetText(
                             exercise.targetSets!!,
                             exercise.targetValue!!,
-                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                            unilateral = exercise.laterality == "Unilateral",
                         ),
                         fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 2.dp)
@@ -1761,11 +1762,11 @@ fun AddExerciseGroup(
                                 }
                                 if (exercise.targetSets != null && exercise.targetValue != null) {
                                     Text(
-                                        text = stringResource(
-                                            if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format,
+                                        text = targetText(
                                             exercise.targetSets!!,
                                             exercise.targetValue!!,
-                                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                                            unilateral = exercise.laterality == "Unilateral",
                                         ),
                                         fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.padding(top = 2.dp)
@@ -1843,11 +1844,11 @@ fun SearchResultExerciseItem(
                 }
                 if (exercise.targetSets != null && exercise.targetValue != null) {
                     Text(
-                        text = stringResource(
-                            if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format,
+                        text = targetText(
                             exercise.targetSets!!,
                             exercise.targetValue!!,
-                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                            unilateral = exercise.laterality == "Unilateral",
                         ),
                         fontSize = 10.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 2.dp)

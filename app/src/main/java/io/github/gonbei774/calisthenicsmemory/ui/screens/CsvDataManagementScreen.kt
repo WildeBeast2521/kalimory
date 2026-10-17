@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
@@ -799,7 +800,7 @@ fun CsvDataManagementScreen(
                                         }
                                         if (report.skippedItems.size > 10) {
                                             Text(
-                                                text = stringResource(R.string.csv_import_more_items, report.skippedItems.size - 10),
+                                                text = (report.skippedItems.size - 10).let { countText(R.plurals.csv_import_more_items, it) },
                                                 fontSize = 12.sp,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
@@ -859,7 +860,7 @@ fun CsvDataManagementScreen(
                                         }
                                         if (report.errors.size > 10) {
                                             Text(
-                                                text = stringResource(R.string.csv_import_more_items, report.errors.size - 10),
+                                                text = (report.errors.size - 10).let { countText(R.plurals.csv_import_more_items, it) },
                                                 fontSize = 12.sp,
                                                 color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
                                             )

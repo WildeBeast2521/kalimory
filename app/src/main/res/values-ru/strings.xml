@@ -21,8 +21,8 @@
     <string name="exercise_name">Название упражнения</string>
     <string name="set_challenge">Установить цель</string>
     <string name="sets_count">Подходы</string>
-    <string name="target_format">%1$d подходов × %2$d %3$s</string>
-    <string name="target_format_unilateral">%1$d подходов × %2$d %3$s (на сторону)</string>
+    <string name="target_format">%1$s × %2$d %3$s</string>
+    <string name="target_format_unilateral">%1$s × %2$d %3$s (на сторону)</string>
     <string name="laterality">Латеральность</string>
     <string name="one_sided">Односторонний</string>
     <string name="group_optional">Группа (Опционально)</string>
@@ -43,8 +43,8 @@
     <string name="select_exercise_please">Выберите упражнение</string>
     <string name="select_from_top">Используйте «Выберите упражнение» выше</string>
     <string name="no_records_for_exercise">Нет записей для этого упражнения</string>
-    <string name="target_display">Цель: %1$d подходов × %2$d %3$s</string>
-    <string name="target_display_unilateral">Цель: %1$d подходов × %2$d %3$s (на сторону)</string>
+    <string name="target_display">Цель: %1$s × %2$d %3$s</string>
+    <string name="target_display_unilateral">Цель: %1$s × %2$d %3$s (на сторону)</string>
     <string name="right">Правый</string>
     <string name="left">Левый</string>
     <string name="right_value_short">П: %1$d %2$s</string>
@@ -65,7 +65,7 @@
     <string name="unknown_exercise">Неизвестное упражнение</string>
     <string name="edit_session_info">Редактировать тренировку</string>
     <string name="delete_session">Удалить тренировку</string>
-    <string name="delete_record_warning">Удалить запись \"%1$s\"?\n%2$s %3$s\n%4$d подходов</string>
+    <string name="delete_record_warning">Удалить запись \"%1$s\"?\n%2$s %3$s\n%4$s</string>
     <string name="import_anomalies_notice">Элементы, не соответствующие формату приложения: %1$d. Они будут импортированы без изменений.</string>
     <string name="db_unavailable_title">Не удалось открыть данные тренировок</string>
     <string name="db_unavailable_unsupported">Эта база данных (версия %1$d) создана версией приложения, которую эта сборка не может обновить. Ничего не изменено и не удалено.</string>
@@ -322,8 +322,6 @@
     <string name="total_sets">Всего подходов</string>
     <string name="average">Среднее</string>
     <string name="weekly_change">Изменение за неделю</string>
-    <string name="sets_format">Подходов: %d</string>
-    <string name="change_format">%+d подх.</string>
     <string name="unit_reps">повт.</string>
     <string name="unit_seconds">сек</string>
     <string name="unit_seconds_short">с</string>
@@ -332,7 +330,6 @@
     <string name="no_challenge_set">Цель не задана</string>
     <string name="challenge_best">Лучший</string>
     <string name="challenge_target_label">Цель</string>
-    <string name="challenge_clear_days">Выполнено %1$d/%2$d дн.</string>
     <string name="no_exercises_available">Нет доступных упражнений</string>
     <string name="no_exercises_in_period">Нет упражнений за период: %s</string>
     <string name="data_management">Управление данными</string>
@@ -347,8 +344,6 @@
     <string name="groups">Группы</string>
     <string name="exercises">Упражнения</string>
     <string name="records">Записи</string>
-    <string name="count_items">%d шт.</string>
-    <string name="count_records">Записей: %d</string>
     <string name="import_data_preview_message">Импортировать эти данные?</string>
     <string name="next">Далее</string>
     <string name="data_overwrite_title">Перезапись данных</string>
@@ -364,16 +359,15 @@
     <string name="already_in_use_format">«%1$s (%2$s)» уже используется</string>
     <string name="exercise_updated">Упражнение обновлено</string>
     <string name="exercise_deleted">Упражнение удалено</string>
-    <string name="sets_recorded">Записано подходов: %d</string>
     <string name="record_updated">Запись обновлена</string>
     <string name="record_deleted">Запись удалена</string>
     <string name="group_created">Группа создана</string>
     <string name="group_already_exists">Группа с таким названием уже есть</string>
     <string name="group_renamed">Группа переименована</string>
     <string name="group_deleted">Группа удалена</string>
-    <string name="export_complete">Экспорт завершён: групп %1$d, упражнений %2$d, записей %3$d</string>
+    <string name="export_complete">Экспорт завершён: %1$s, %2$s, %3$s</string>
     <string name="export_error">Ошибка экспорта: %s</string>
-    <string name="import_complete">Импорт завершён: групп %1$d, упражнений %2$d, записей %3$d</string>
+    <string name="import_complete">Импорт завершён: %1$s, %2$s, %3$s</string>
     <string name="import_error">Ошибка импорта: %s</string>
     <string name="workout_title">Тренировка</string>
     <string name="no_exercises_yet_workout">Упражнений пока нет</string>
@@ -488,11 +482,11 @@
     <string name="left_short">Лев.</string>
     <string name="best_record">Лучший</string>
     <string name="worst_record">Худший</string>
-    <string name="csv_export_success">%1$s: экспортировано %2$d</string>
-    <string name="csv_template_exported">Шаблон CSV экспортирован: упражнений %d</string>
+    <string name="csv_export_success">%1$s: экспортировано %2$s</string>
+    <string name="csv_template_exported">Шаблон CSV экспортирован: %s</string>
     <string name="csv_empty">CSV-файл пуст</string>
-    <string name="csv_import_success">Импортировано записей: %d</string>
-    <string name="csv_import_partial">Импортировано записей: %1$d, ошибок: %2$d</string>
+    <string name="csv_import_success">Импортировано: %s</string>
+    <string name="csv_import_partial">Импортировано: %1$s, %2$s</string>
     <string name="csv_import">Импорт CSV</string>
     <string name="csv_import_description">Импорт групп, упражнений или записей (тип определяется сам)</string>
     <string name="csv_export">Экспорт CSV</string>
@@ -516,7 +510,6 @@
     <string name="csv_import_error_label">Ошибки</string>
     <string name="csv_import_skipped_items">Пропущено (%d)</string>
     <string name="csv_import_errors">Ошибки (%d)</string>
-    <string name="csv_import_more_items">… и ещё %d</string>
     <string name="section_full_backup">Полная резервная копия (JSON)</string>
     <string name="section_full_backup_description">Сохранение и восстановление всех данных: упражнений, записей, программ, интервалов и дел.\nПригодится при смене устройства.</string>
     <string name="section_partial_data_management">Файлы CSV</string>
@@ -548,8 +541,6 @@
     <string name="section_workout_settings_description">Поведение экрана тренировки.</string>
     <string name="start_countdown_setting">Обратный отсчёт</string>
     <string name="set_interval_setting">Отдых между подходами</string>
-    <string name="current_start_countdown">Сейчас: %d с</string>
-    <string name="current_set_interval">Сейчас: %d с</string>
     <string name="start_countdown_dialog_title">Обратный отсчёт</string>
     <string name="set_interval_dialog_title">Отдых между подходами</string>
     <string name="set_interval_note">Настройки упражнения, если заданы, важнее.</string>
@@ -621,7 +612,6 @@
     <string name="start_countdown">Обратный отсчёт</string>
     <string name="program_exercises">Упражнения</string>
     <string name="add_exercise_to_program">Добавить упражнение</string>
-    <string name="program_sets_format">Подходов: %d</string>
     <string name="program_target_format">%1$d %2$s</string>
     <string name="program_interval_format">Отдых %d с</string>
     <string name="delete_program">Удалить программу</string>
@@ -663,7 +653,6 @@
     <string name="isometric_interval_sound_description">Статические упражнения</string>
     <string name="nav_program_overview">Обзор программы</string>
     <string name="nav_overall_progress">Общий прогресс</string>
-    <string name="nav_sets_format">%1$d / %2$d подх.</string>
     <string name="nav_done">Готово</string>
     <string name="nav_current">Текущий</string>
     <string name="nav_redo">Повторить</string>
@@ -723,8 +712,7 @@
     <string name="interval_stop">Стоп</string>
     <string name="interval_complete_title">Готово</string>
     <string name="interval_ended_title">Завершено</string>
-    <string name="interval_full_complete_format">Выполнено кругов: %1$d / %2$d</string>
-    <string name="interval_partial_format">Кругов %1$d / %2$d + упражнений %3$d / %4$d</string>
+    <string name="interval_partial_format">%1$s + %2$s</string>
     <string name="interval_partial_note">(Остановлено досрочно)</string>
     <string name="interval_exercises_done">Упражнения</string>
     <string name="interval_comment_label">Комментарий</string>
@@ -735,7 +723,7 @@
     <string name="interval_unsaved_title">Запись не сохранена</string>
     <string name="interval_unsaved_message">Тренировка не сохранена. Выйти без сохранения?</string>
     <string name="interval_unsaved_leave">Выйти</string>
-    <string name="interval_settings_format">%1$d с × упражнений %2$d × кругов %3$d</string>
+    <string name="interval_settings_format">%1$d с × %2$s × %3$s</string>
     <string name="interval_record_rounds_format">Кругов: %1$d/%2$d</string>
     <string name="interval_record_complete">Выполнено</string>
     <string name="interval_record_partial">Остановлено досрочно</string>
@@ -758,24 +746,20 @@
     <string name="share_preview_programs">Программы (%1$d)</string>
     <string name="share_preview_intervals">Интервалы (%1$d)</string>
     <string name="share_preview_total_exercises">Всего упражнений: %1$d</string>
-    <string name="share_preview_auto_included">(%1$d добавлено автоматически)</string>
     <string name="share_preview_groups">Групп: %1$d</string>
     <string name="share_no_programs">Нет программ</string>
     <string name="share_no_intervals">Нет интервалов</string>
     <string name="share_no_exercises">Нет упражнений</string>
     <string name="share_exercise_auto_included">Добавлено из программы или интервала</string>
     <string name="share_ungrouped">Без группы</string>
-    <string name="share_program_loops_format">, кругов: %1$d</string>
     <string name="share_import_dialog_title">Импорт файла обмена</string>
     <string name="share_import_preview_new">Новое (будет добавлено)</string>
     <string name="share_import_preview_exists">Уже есть (будет пропущено)</string>
     <string name="share_import_preview_nothing">Всё уже есть. Добавлять нечего.</string>
     <string name="share_import_complete">Импорт завершён</string>
-    <string name="share_import_added_reused">Добавлено: %1$d, использовано имеющихся: %2$d</string>
-    <string name="share_import_added_skipped">Добавлено: %1$d, пропущено: %2$d</string>
+    <string name="share_import_added_reused">%1$s. %2$s</string>
+    <string name="share_import_added_skipped">%1$s. %2$s</string>
     <string name="share_import_errors">Ошибки (%1$d)</string>
-    <string name="share_import_count_reused">Использовано имеющихся: %1$d</string>
-    <string name="share_import_count_skipped">Пропущено: %1$d</string>
     <plurals name="loop_round_count">
         <item quantity="one">%d круг</item>
         <item quantity="few">%d круга</item>
@@ -785,4 +769,113 @@
     <string name="crash_report_title">Приложение Kalimory неожиданно закрылось</string>
     <string name="crash_report_message">Отчётом об ошибке можно поделиться, чтобы её исправили. В нём есть сведения об ошибке, версия приложения и модель телефона, и перед отправкой его можно прочитать.</string>
     <string name="crash_report_share">Поделиться отчётом</string>
+    <!-- Counts: one entry per plural form of each language -->
+    <plurals name="sets_recorded">
+        <item quantity="one">Записан %d подход</item>
+        <item quantity="few">Записано %d подхода</item>
+        <item quantity="many">Записано %d подходов</item>
+        <item quantity="other">Записано %d подхода</item>
+    </plurals>
+    <plurals name="count_items">
+        <item quantity="one">%d шт.</item>
+        <item quantity="few">%d шт.</item>
+        <item quantity="many">%d шт.</item>
+        <item quantity="other">%d шт.</item>
+    </plurals>
+    <plurals name="count_records">
+        <item quantity="one">%d запись</item>
+        <item quantity="few">%d записи</item>
+        <item quantity="many">%d записей</item>
+        <item quantity="other">%d записи</item>
+    </plurals>
+    <plurals name="group_count">
+        <item quantity="one">%d группа</item>
+        <item quantity="few">%d группы</item>
+        <item quantity="many">%d групп</item>
+        <item quantity="other">%d группы</item>
+    </plurals>
+    <plurals name="csv_error_count">
+        <item quantity="one">%d ошибка</item>
+        <item quantity="few">%d ошибки</item>
+        <item quantity="many">%d ошибок</item>
+        <item quantity="other">%d ошибки</item>
+    </plurals>
+    <plurals name="csv_import_more_items">
+        <item quantity="one">… и ещё %d</item>
+        <item quantity="few">… и ещё %d</item>
+        <item quantity="many">… и ещё %d</item>
+        <item quantity="other">… и ещё %d</item>
+    </plurals>
+    <plurals name="current_seconds">
+        <item quantity="one">Сейчас: %d с</item>
+        <item quantity="few">Сейчас: %d с</item>
+        <item quantity="many">Сейчас: %d с</item>
+        <item quantity="other">Сейчас: %d с</item>
+    </plurals>
+    <plurals name="nav_sets_format">
+        <item quantity="one">%1$d / %2$d подход</item>
+        <item quantity="few">%1$d / %2$d подхода</item>
+        <item quantity="many">%1$d / %2$d подходов</item>
+        <item quantity="other">%1$d / %2$d подхода</item>
+    </plurals>
+    <plurals name="interval_full_complete_format">
+        <item quantity="one">Выполнено кругов: %1$d / %2$d</item>
+        <item quantity="few">Выполнено кругов: %1$d / %2$d</item>
+        <item quantity="many">Выполнено кругов: %1$d / %2$d</item>
+        <item quantity="other">Выполнено кругов: %1$d / %2$d</item>
+    </plurals>
+    <plurals name="interval_rounds_progress">
+        <item quantity="one">Кругов %1$d / %2$d</item>
+        <item quantity="few">Кругов %1$d / %2$d</item>
+        <item quantity="many">Кругов %1$d / %2$d</item>
+        <item quantity="other">Кругов %1$d / %2$d</item>
+    </plurals>
+    <plurals name="interval_exercises_progress">
+        <item quantity="one">упражнений %1$d / %2$d</item>
+        <item quantity="few">упражнений %1$d / %2$d</item>
+        <item quantity="many">упражнений %1$d / %2$d</item>
+        <item quantity="other">упражнений %1$d / %2$d</item>
+    </plurals>
+    <plurals name="challenge_clear_days">
+        <item quantity="one">Выполнено %1$d/%2$d дн.</item>
+        <item quantity="few">Выполнено %1$d/%2$d дн.</item>
+        <item quantity="many">Выполнено %1$d/%2$d дн.</item>
+        <item quantity="other">Выполнено %1$d/%2$d дн.</item>
+    </plurals>
+    <plurals name="change_format">
+        <item quantity="one">%+d подх.</item>
+        <item quantity="few">%+d подх.</item>
+        <item quantity="many">%+d подх.</item>
+        <item quantity="other">%+d подх.</item>
+    </plurals>
+    <plurals name="share_program_loops_format">
+        <item quantity="one">, кругов: %1$d</item>
+        <item quantity="few">, кругов: %1$d</item>
+        <item quantity="many">, кругов: %1$d</item>
+        <item quantity="other">, кругов: %1$d</item>
+    </plurals>
+    <plurals name="share_preview_auto_included">
+        <item quantity="one">(%1$d добавлено автоматически)</item>
+        <item quantity="few">(%1$d добавлено автоматически)</item>
+        <item quantity="many">(%1$d добавлено автоматически)</item>
+        <item quantity="other">(%1$d добавлено автоматически)</item>
+    </plurals>
+    <plurals name="share_import_added">
+        <item quantity="one">Добавлено: %1$d</item>
+        <item quantity="few">Добавлено: %1$d</item>
+        <item quantity="many">Добавлено: %1$d</item>
+        <item quantity="other">Добавлено: %1$d</item>
+    </plurals>
+    <plurals name="share_import_reused">
+        <item quantity="one">Использовано имеющихся: %1$d</item>
+        <item quantity="few">Использовано имеющихся: %1$d</item>
+        <item quantity="many">Использовано имеющихся: %1$d</item>
+        <item quantity="other">Использовано имеющихся: %1$d</item>
+    </plurals>
+    <plurals name="share_import_skipped">
+        <item quantity="one">Пропущено: %1$d</item>
+        <item quantity="few">Пропущено: %1$d</item>
+        <item quantity="many">Пропущено: %1$d</item>
+        <item quantity="other">Пропущено: %1$d</item>
+    </plurals>
 </resources>

@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.AppFab
+import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import androidx.compose.foundation.layout.ColumnScope
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
@@ -678,11 +679,11 @@ fun ExerciseItemCompactContent(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(
-                            if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format,
+                        text = targetText(
                             exercise.targetSets!!,
                             exercise.targetValue!!,
-                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                            unilateral = exercise.laterality == "Unilateral",
                         ),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
