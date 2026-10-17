@@ -1,6 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.compose.material3.LoadingIndicator
+import androidx.compose.ui.res.pluralStringResource
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.util.ProgramTimeEstimator
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
@@ -1131,8 +1133,9 @@ private fun IntervalCompleteContent(
                     ) {
                         if (isFullCompletion) {
                             Text(
-                                text = stringResource(
-                                    R.string.interval_full_complete_format,
+                                text = pluralStringResource(
+                                    R.plurals.interval_full_complete_format,
+                                    program.rounds,
                                     completedRounds,
                                     program.rounds
                                 ),
@@ -1147,10 +1150,10 @@ private fun IntervalCompleteContent(
                                     stringResource(R.string.interval_record_rounds_format, completedRounds, program.rounds)
                                 } else stringResource(
                                     R.string.interval_partial_format,
-                                    completedRounds,
-                                    program.rounds,
-                                    completedExercisesInLastRound,
-                                    exercises.size
+                                    pluralStringResource(R.plurals.interval_rounds_progress, program.rounds, completedRounds, program.rounds),
+                                    pluralStringResource(
+                                        R.plurals.interval_exercises_progress, exercises.size, completedExercisesInLastRound, exercises.size
+                                    )
                                 ),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
@@ -1172,8 +1175,8 @@ private fun IntervalCompleteContent(
                             text = stringResource(
                                 R.string.interval_settings_format,
                                 program.workSeconds,
-                                exercises.size,
-                                program.rounds
+                                countText(R.plurals.exercise_count, exercises.size),
+                                countText(R.plurals.loop_round_count, program.rounds)
                             ),
                             fontSize = 13.sp,
                             color = cs.onSurfaceVariant

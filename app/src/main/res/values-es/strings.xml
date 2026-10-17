@@ -26,8 +26,8 @@
     <string name="set_challenge">Establecer objetivo</string>
     <string name="sets_count">Series</string>
     <!-- Will be replaced with "Reps" or "Seconds" -->
-    <string name="target_format">%1$d series × %2$d %3$s</string>
-    <string name="target_format_unilateral">%1$d series × %2$d %3$s (por lado)</string>
+    <string name="target_format">%1$s × %2$d %3$s</string>
+    <string name="target_format_unilateral">%1$s × %2$d %3$s (por lado)</string>
     <string name="laterality">Lateralidad</string>
     <string name="one_sided">Un lado</string>
     <string name="group_optional">Grupo (Opcional)</string>
@@ -49,8 +49,8 @@
     <string name="select_exercise_please">Por favor selecciona un ejercicio</string>
     <string name="select_from_top">Elige desde \"Seleccionar Ejercicio\" arriba</string>
     <string name="no_records_for_exercise">No hay registros para este ejercicio</string>
-    <string name="target_display">Meta: %1$d series × %2$d %3$s</string>
-    <string name="target_display_unilateral">Meta: %1$d series × %2$d %3$s (por lado)</string>
+    <string name="target_display">Meta: %1$s × %2$d %3$s</string>
+    <string name="target_display_unilateral">Meta: %1$s × %2$d %3$s (por lado)</string>
     <string name="right">Derecho</string>
     <string name="left">Izquierdo</string>
     <string name="right_value_short">D: %1$d %2$s</string>
@@ -70,7 +70,7 @@
     <string name="unknown_exercise">Ejercicio Desconocido</string>
     <string name="edit_session_info">Editar Info de Sesión</string>
     <string name="delete_session">Eliminar Sesión</string>
-    <string name="delete_record_warning">¿Eliminar registro de \"%1$s\"?\n%2$s %3$s\n%4$d series</string>
+    <string name="delete_record_warning">¿Eliminar registro de \"%1$s\"?\n%2$s %3$s\n%4$s</string>
     <string name="edit_set_value">Editar Valor de Serie</string>
     <string name="right_value_label">Valor Derecho</string>
     <string name="left_value_label">Valor Izquierdo</string>
@@ -87,8 +87,6 @@
     <string name="total_sets">Total de Series</string>
     <string name="average">Promedio</string>
     <string name="weekly_change">Cambio Semanal</string>
-    <string name="sets_format">%d series</string>
-    <string name="change_format">%+d series</string>
     <string name="unit_reps">reps</string>
     <string name="unit_seconds">seg</string>
     <!-- Challenge Screen -->
@@ -108,8 +106,6 @@
     <string name="groups">Grupos</string>
     <string name="exercises">Ejercicios</string>
     <string name="records">Registros</string>
-    <string name="count_items">%d elementos</string>
-    <string name="count_records">%d registros</string>
     <string name="import_data_preview_message">¿Desea proceder con la importación de estos datos?</string>
     <string name="next">Siguiente</string>
     <string name="data_overwrite_title">Sobrescritura de Datos</string>
@@ -126,16 +122,15 @@
     <string name="already_in_use_format">\"%1$s (%2$s)\" ya está en uso</string>
     <string name="exercise_updated">Ejercicio actualizado</string>
     <string name="exercise_deleted">Ejercicio eliminado</string>
-    <string name="sets_recorded">¡%d series registradas!</string>
     <string name="record_updated">Registro actualizado</string>
     <string name="record_deleted">Registro eliminado</string>
     <string name="group_created">Grupo creado</string>
     <string name="group_already_exists">Ya existe un grupo con el mismo nombre</string>
     <string name="group_renamed">Grupo renombrado</string>
     <string name="group_deleted">Grupo eliminado</string>
-    <string name="export_complete">Exportación completa: %1$d grupos, %2$d ejercicios, %3$d registros</string>
+    <string name="export_complete">Exportación completa: %1$s, %2$s, %3$s</string>
     <string name="export_error">Error de exportación: %s</string>
-    <string name="import_complete">Importación completa: %1$d grupos, %2$d ejercicios, %3$d registros</string>
+    <string name="import_complete">Importación completa: %1$s, %2$s, %3$s</string>
     <string name="import_error">Error de importación: %s</string>
     <!-- Workout Screen (if exists) -->
     <string name="workout_title">Entrenamiento</string>
@@ -215,11 +210,11 @@
     <string name="best_record">Mejor</string>
     <string name="worst_record">Más Bajo</string>
     <!-- CSV Import/Export -->
-    <string name="csv_export_success">%1$s exportado: %2$d elementos</string>
-    <string name="csv_template_exported">Plantilla CSV exportada: %d ejercicios</string>
+    <string name="csv_export_success">%1$s exportado: %2$s</string>
+    <string name="csv_template_exported">Plantilla CSV exportada: %s</string>
     <string name="csv_empty">El archivo CSV está vacío</string>
-    <string name="csv_import_success">Se importaron exitosamente %d registros</string>
-    <string name="csv_import_partial">Se importaron %1$d registros, %2$d errores ocurrieron</string>
+    <string name="csv_import_success">Importación correcta: %s</string>
+    <string name="csv_import_partial">Importados: %1$s; %2$s</string>
     <string name="csv_import">Importar CSV</string>
     <string name="csv_import_description">Importar grupos, ejercicios o registros (detección automática)</string>
     <!-- CSV Export Dialog -->
@@ -246,7 +241,6 @@
     <string name="csv_import_error_label">Errores</string>
     <string name="csv_import_skipped_items">Elementos Omitidos (%d)</string>
     <string name="csv_import_errors">Errores (%d)</string>
-    <string name="csv_import_more_items">… y %d más</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">Copia de Seguridad Completa (JSON)</string>
     <string name="section_full_backup_description">Guarda y restaura todos tus datos: ejercicios, registros, programas, intervalos y tareas.\nÚsalo al cambiar de dispositivo.</string>
@@ -281,8 +275,6 @@
     <string name="section_workout_settings_description">Personalizar el comportamiento de la pantalla de entrenamiento.</string>
     <string name="start_countdown_setting">Cuenta Regresiva Inicial</string>
     <string name="set_interval_setting">Intervalo entre Series</string>
-    <string name="current_start_countdown">Actual: %d segundos</string>
-    <string name="current_set_interval">Actual: %d segundos</string>
     <string name="start_countdown_dialog_title">Cuenta Regresiva Inicial</string>
     <string name="set_interval_dialog_title">Intervalo entre Series</string>
     <string name="set_interval_note">Nota: La configuración específica del ejercicio tiene prioridad si está configurada.</string>
@@ -370,7 +362,6 @@
     <string name="program_name_hint">ej. Rutina matutina</string>
     <string name="program_exercises">Ejercicios</string>
     <string name="add_exercise_to_program">Añadir ejercicio</string>
-    <string name="program_sets_format">%d series</string>
     <string name="program_target_format">%1$d %2$s</string>
     <string name="program_interval_format">Descanso %ds</string>
     <string name="delete_program">Eliminar programa</string>
@@ -423,7 +414,6 @@
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Resumen del programa</string>
     <string name="nav_overall_progress">Progreso general</string>
-    <string name="nav_sets_format">%1$d / %2$d series</string>
     <string name="nav_done">Hecho</string>
     <string name="nav_current">Actual</string>
     <string name="nav_redo">Repetir</string>
@@ -482,7 +472,7 @@
     <string name="interval_delete_program">Eliminar intervalo</string>
     <string name="interval_delete_program_warning">¿Eliminar \"%s\"?</string>
     <string name="interval_summary_format">%1$ds/%2$ds · %3$d rondas</string>
-    <string name="interval_settings_format">%1$ds × %2$d ejercicios × %3$d rondas</string>
+    <string name="interval_settings_format">%1$ds × %2$s × %3$s</string>
     <string name="interval_total_time">Tiempo estimado</string>
     <string name="interval_get_ready">Prepárate</string>
     <string name="interval_work_label">Trabajo</string>
@@ -496,8 +486,7 @@
     <string name="interval_stop">Detener</string>
     <string name="interval_complete_title">Completado</string>
     <string name="interval_ended_title">Finalizado</string>
-    <string name="interval_full_complete_format">%1$d / %2$d rondas completadas</string>
-    <string name="interval_partial_format">%1$d / %2$d rondas + %3$d / %4$d ejercicios</string>
+    <string name="interval_partial_format">%1$s + %2$s</string>
     <string name="interval_partial_note">(Detenido antes)</string>
     <string name="interval_exercises_done">Ejercicios</string>
     <string name="interval_save_and_finish">Guardar y finalizar</string>
@@ -531,24 +520,20 @@
     <string name="share_preview_programs">Programas (%1$d)</string>
     <string name="share_preview_intervals">Intervalos (%1$d)</string>
     <string name="share_preview_total_exercises">Total de ejercicios: %1$d</string>
-    <string name="share_preview_auto_included"> (%1$d incluidos automáticamente)</string>
     <string name="share_preview_groups">Grupos: %1$d</string>
     <string name="share_no_programs">Sin programas</string>
     <string name="share_no_intervals">Sin programas de intervalos</string>
     <string name="share_no_exercises">Sin ejercicios</string>
     <string name="share_exercise_auto_included">Incluido automáticamente desde programa/intervalo</string>
     <string name="share_ungrouped">Sin grupo</string>
-    <string name="share_program_loops_format">, %1$d bucles</string>
     <string name="share_import_dialog_title">Importar archivo JSON compartido</string>
     <string name="share_import_preview_new">Nuevo (se añadirá)</string>
     <string name="share_import_preview_exists">Ya existe (se omitirá)</string>
     <string name="share_import_preview_nothing">Todos los elementos ya existen. No se añadirá nada.</string>
     <string name="share_import_complete">Importación completada</string>
-    <string name="share_import_added_reused">%1$d añadidos, %2$d reutilizados</string>
-    <string name="share_import_added_skipped">%1$d añadidos, %2$d omitidos</string>
+    <string name="share_import_added_reused">%1$s, %2$s</string>
+    <string name="share_import_added_skipped">%1$s, %2$s</string>
     <string name="share_import_errors">Errores (%1$d)</string>
-    <string name="share_import_count_reused">%1$d reutilizados</string>
-    <string name="share_import_count_skipped">%1$d omitidos</string>
     <string name="exercise_type_dynamic_description">Por ejemplo: flexiones, dominadas. Registradas por repeticiones.</string>
     <string name="exercise_type_isometric_description">Por ejemplo, plancha, sentadilla en L. Registrado por tiempo de mantenimiento.</string>
     <string name="add_extra_set_button">Añadir otra serie</string>
@@ -590,7 +575,6 @@
     <string name="record_set_to_target">Establecer como objetivo (%1$d %2$s)</string>
     <string name="challenge_best">Mejor</string>
     <string name="challenge_target_label">Objetivo</string>
-    <string name="challenge_clear_days">Días completados: %1$d/%2$d</string>
     <string name="workout_section_target">Objetivo</string>
     <string name="workout_section_timer">Temporizador</string>
     <string name="workout_section_load">Carga y distancia</string>
@@ -835,4 +819,95 @@
     <string name="crash_report_title">Kalimory se cerró de forma inesperada</string>
     <string name="crash_report_message">Puedes compartir un informe del error para que se pueda corregir. Contiene los detalles del error, la versión de la app y el modelo de tu teléfono, y puedes leerlo antes de enviarlo.</string>
     <string name="crash_report_share">Compartir informe</string>
+    <!-- Counts: one entry per plural form of each language -->
+    <plurals name="sets_recorded">
+        <item quantity="one">¡%d serie registrada!</item>
+        <item quantity="many">¡%d de series registradas!</item>
+        <item quantity="other">¡%d series registradas!</item>
+    </plurals>
+    <plurals name="count_items">
+        <item quantity="one">%d elemento</item>
+        <item quantity="many">%d de elementos</item>
+        <item quantity="other">%d elementos</item>
+    </plurals>
+    <plurals name="count_records">
+        <item quantity="one">%d registro</item>
+        <item quantity="many">%d de registros</item>
+        <item quantity="other">%d registros</item>
+    </plurals>
+    <plurals name="group_count">
+        <item quantity="one">%d grupo</item>
+        <item quantity="many">%d de grupos</item>
+        <item quantity="other">%d grupos</item>
+    </plurals>
+    <plurals name="csv_error_count">
+        <item quantity="one">%d error</item>
+        <item quantity="many">%d de errores</item>
+        <item quantity="other">%d errores</item>
+    </plurals>
+    <plurals name="csv_import_more_items">
+        <item quantity="one">… y %d más</item>
+        <item quantity="many">… y %d más</item>
+        <item quantity="other">… y %d más</item>
+    </plurals>
+    <plurals name="current_seconds">
+        <item quantity="one">Actual: %d segundo</item>
+        <item quantity="many">Actual: %d de segundos</item>
+        <item quantity="other">Actual: %d segundos</item>
+    </plurals>
+    <plurals name="nav_sets_format">
+        <item quantity="one">%1$d / %2$d serie</item>
+        <item quantity="many">%1$d / %2$d de series</item>
+        <item quantity="other">%1$d / %2$d series</item>
+    </plurals>
+    <plurals name="interval_full_complete_format">
+        <item quantity="one">%1$d / %2$d ronda completada</item>
+        <item quantity="many">%1$d / %2$d de rondas completadas</item>
+        <item quantity="other">%1$d / %2$d rondas completadas</item>
+    </plurals>
+    <plurals name="interval_rounds_progress">
+        <item quantity="one">%1$d / %2$d ronda</item>
+        <item quantity="many">%1$d / %2$d de rondas</item>
+        <item quantity="other">%1$d / %2$d rondas</item>
+    </plurals>
+    <plurals name="interval_exercises_progress">
+        <item quantity="one">%1$d / %2$d ejercicio</item>
+        <item quantity="many">%1$d / %2$d de ejercicios</item>
+        <item quantity="other">%1$d / %2$d ejercicios</item>
+    </plurals>
+    <plurals name="challenge_clear_days">
+        <item quantity="one">Días completados: %1$d/%2$d</item>
+        <item quantity="many">Días completados: %1$d/%2$d</item>
+        <item quantity="other">Días completados: %1$d/%2$d</item>
+    </plurals>
+    <plurals name="change_format">
+        <item quantity="one">%+d serie</item>
+        <item quantity="many">%+d de series</item>
+        <item quantity="other">%+d series</item>
+    </plurals>
+    <plurals name="share_program_loops_format">
+        <item quantity="one">, %1$d bucle</item>
+        <item quantity="many">, %1$d de bucles</item>
+        <item quantity="other">, %1$d bucles</item>
+    </plurals>
+    <plurals name="share_preview_auto_included">
+        <item quantity="one"> (%1$d incluido automáticamente)</item>
+        <item quantity="many"> (%1$d incluidos automáticamente)</item>
+        <item quantity="other"> (%1$d incluidos automáticamente)</item>
+    </plurals>
+    <plurals name="share_import_added">
+        <item quantity="one">%1$d añadido</item>
+        <item quantity="many">%1$d añadidos</item>
+        <item quantity="other">%1$d añadidos</item>
+    </plurals>
+    <plurals name="share_import_reused">
+        <item quantity="one">%1$d reutilizado</item>
+        <item quantity="many">%1$d reutilizados</item>
+        <item quantity="other">%1$d reutilizados</item>
+    </plurals>
+    <plurals name="share_import_skipped">
+        <item quantity="one">%1$d omitido</item>
+        <item quantity="many">%1$d omitidos</item>
+        <item quantity="other">%1$d omitidos</item>
+    </plurals>
 </resources>

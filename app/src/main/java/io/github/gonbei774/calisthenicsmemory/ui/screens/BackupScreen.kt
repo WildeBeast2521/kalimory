@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
@@ -441,7 +442,7 @@ fun BackupScreen(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
-                                    text = stringResource(R.string.count_items, importGroupCount),
+                                    text = countText(R.plurals.count_items, importGroupCount),
                                     fontSize = 16.sp,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
@@ -457,7 +458,7 @@ fun BackupScreen(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
-                                    text = stringResource(R.string.count_items, importExerciseCount),
+                                    text = countText(R.plurals.count_items, importExerciseCount),
                                     fontSize = 16.sp,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
@@ -473,7 +474,7 @@ fun BackupScreen(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
-                                    text = stringResource(R.string.count_records, importRecordCount),
+                                    text = countText(R.plurals.count_records, importRecordCount),
                                     fontSize = 16.sp,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
@@ -490,7 +491,7 @@ fun BackupScreen(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
-                                        text = stringResource(R.string.count_items, count),
+                                        text = countText(R.plurals.count_items, count),
                                         fontSize = 16.sp,
                                         color = MaterialTheme.colorScheme.onSurface,
                                         fontWeight = FontWeight.Bold

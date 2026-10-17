@@ -3,6 +3,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
+import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -907,11 +908,11 @@ private fun IntervalExerciseSelectItem(
                 }
                 if (exercise.targetSets != null && exercise.targetValue != null) {
                     Text(
-                        text = stringResource(
-                            if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format,
+                        text = targetText(
                             exercise.targetSets!!,
                             exercise.targetValue!!,
-                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                            unilateral = exercise.laterality == "Unilateral",
                         ),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
@@ -1070,11 +1071,11 @@ private fun IntervalSelectExerciseGroup(
                                 }
                                 if (exercise.targetSets != null && exercise.targetValue != null) {
                                     Text(
-                                        text = stringResource(
-                                            if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format,
+                                        text = targetText(
                                             exercise.targetSets!!,
                                             exercise.targetValue!!,
-                                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                                            unilateral = exercise.laterality == "Unilateral",
                                         ),
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,

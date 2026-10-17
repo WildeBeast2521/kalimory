@@ -54,8 +54,6 @@
     <string name="groups">Групи</string>
     <string name="exercises">Вправи</string>
     <string name="records">Записи</string>
-    <string name="count_items">%d елементів</string>
-    <string name="count_records">%d записів</string>
     <string name="isometric_label">Час</string>
     <string name="exercise_added">Вправу додано</string>
     <string name="exercise_updated">Вправу оновлено</string>
@@ -146,13 +144,13 @@
     <string name="csv_empty">Файл CSV порожній</string>
     <string name="csv_import">Імпорт CSV</string>
     <string name="csv_export">Експорт CSV</string>
-    <string name="csv_export_success">%1$s експортовано: %2$d елементів</string>
+    <string name="csv_export_success">%1$s експортовано: %2$s</string>
     <string name="csv_items">Елементи</string>
     <string name="resume_button">Продовжити</string>
     <string name="nav_resume">Продовжити</string>
     <string name="no_results">Нічого не знайдено</string>
-    <string name="export_complete">Експорт завершено: %1$d груп, %2$d вправ, %3$d записів</string>
-    <string name="import_complete">Імпорт завершено: %1$d груп, %2$d вправ, %3$d записів</string>
+    <string name="export_complete">Експорт завершено: %1$s, %2$s, %3$s</string>
+    <string name="import_complete">Імпорт завершено: %1$s, %2$s, %3$s</string>
     <string name="no_exercises_available">Немає доступних вправ</string>
     <string name="file_name">Назва файлу</string>
     <string name="clear">Очистити</string>
@@ -160,7 +158,7 @@
     <string name="already_registered_format">«%1$s (%2$s)» вже зареєстровано</string>
     <string name="error_occurred">Виникла помилка</string>
     <string name="csv_import_errors">Помилки (%d)</string>
-    <string name="csv_import_partial">Імпортовано %1$d записів, виникло %2$d помилок</string>
+    <string name="csv_import_partial">Імпортовано %1$s, %2$s</string>
     <string name="csv_import_error_label">Помилки</string>
     <string name="no_challenge_set">Немає встановлених викликів</string>
     <string name="tab_calendar">Календар</string>
@@ -168,10 +166,9 @@
     <string name="export_data">Експортувати дані</string>
     <string name="import_data">Імпортувати дані</string>
     <string name="unknown_short">Невідомо</string>
-    <string name="csv_import_success">Успішно імпортовано %d записів</string>
+    <string name="csv_import_success">Успішно імпортовано %s</string>
     <string name="import_action">Імпортувати</string>
     <string name="record_training_for_exercise">Запишіть тренування для цієї вправи</string>
-    <string name="csv_import_more_items">… і ще %d</string>
     <string name="keep_screen_on_description">Тримати екран увімкненим під час тренування, щоб бачити відлік часу</string>
     <string name="set_done_vibration_setting">Вібрувати після підходу</string>
     <string name="set_done_vibration_description">Коротка вібрація підтверджує кожен завершений підхід</string>
@@ -225,13 +222,11 @@
     <string name="no_group_workout">Без групи</string>
     <string name="no_group_display">Без групи</string>
     <string name="level_format">Рівень %d</string>
-    <string name="delete_record_warning">Видалити запис «%1$s»?\n%2$s %3$s\n%4$d підходів</string>
-    <string name="program_sets_format">%d підходів</string>
-    <string name="nav_sets_format">%1$d / %2$d підходів</string>
-    <string name="target_format_unilateral">%1$d підходів × %2$d %3$s (на сторону)</string>
-    <string name="target_format">%1$d підходів × %2$d %3$s</string>
-    <string name="target_display">Мета: %1$d підходів × %2$d %3$s</string>
-    <string name="target_display_unilateral">Мета: %1$d підходів × %2$d %3$s (на сторону)</string>
+    <string name="delete_record_warning">Видалити запис «%1$s»?\n%2$s %3$s\n%4$s</string>
+    <string name="target_format_unilateral">%1$s × %2$d %3$s (на сторону)</string>
+    <string name="target_format">%1$s × %2$d %3$s</string>
+    <string name="target_display">Мета: %1$s × %2$d %3$s</string>
+    <string name="target_display_unilateral">Мета: %1$s × %2$d %3$s (на сторону)</string>
     <string name="per_side_parenthesis">(на сторону)</string>
     <string name="target_value_label">Мета</string>
     <string name="right">Права</string>
@@ -243,14 +238,9 @@
     <string name="set_format_with_side">Підхід %1$d/%2$d – %3$s</string>
     <string name="set_number">Підхід %d</string>
     <string name="set_label">Підхід %d</string>
-    <string name="sets_format">%d підходів</string>
-    <string name="change_format">%+d підходів</string>
     <string name="sets_label_short">Підходи:</string>
-    <string name="sets_recorded">Записано %d підходів!</string>
     <string name="next_set_format">Наступна: Підхід %1$d/%2$d</string>
     <string name="next_set_format_with_side">Наступна: Підхід %1$d/%2$d – %3$s</string>
-    <string name="current_start_countdown">Зараз: %d секунд</string>
-    <string name="current_set_interval">Зараз: %d секунд</string>
     <string name="seconds_input">Секунди</string>
     <string name="total_sets">Усього підходів</string>
     <string name="reps_label">Повторення</string>
@@ -283,7 +273,7 @@
     <string name="csv_export_exercises_description">Експорт усіх вправ</string>
     <string name="csv_export_groups_description">Експорт усіх груп вправ</string>
     <string name="csv_export_description">Експорт груп, вправ, записів або шаблону записів</string>
-    <string name="csv_template_exported">Шаблон CSV експортовано: %d вправ</string>
+    <string name="csv_template_exported">Шаблон CSV експортовано: %s</string>
     <string name="tracking_settings_optional">Налаштування відстеження (необов’язково)</string>
     <string name="track_distance">Відстежувати відстань</string>
     <string name="track_weight">Відстежувати вагу</string>
@@ -431,12 +421,11 @@
     <string name="interval_round_format">Раунд %1$d / %2$d</string>
     <string name="interval_exercise_format">Вправа %1$d / %2$d</string>
     <string name="interval_round_complete_format">Раунд %d завершено!</string>
-    <string name="interval_full_complete_format">%1$d / %2$d раундів завершено</string>
     <string name="interval_stop">Стоп</string>
     <string name="interval_complete_title">Завершити</string>
-    <string name="interval_partial_format">%1$d / %2$d раундів + %3$d / %4$d вправ</string>
+    <string name="interval_partial_format">%1$s + %2$s</string>
     <string name="interval_exercises_done">Вправи</string>
-    <string name="interval_settings_format">%1$ds × %2$d вправ × %3$d раундів</string>
+    <string name="interval_settings_format">%1$ds × %2$s × %3$s</string>
     <string name="interval_total_time">Приблизний час</string>
     <string name="interval_exit_confirm_message">Припинити поточне інтервальне тренування?</string>
     <string name="interval_exit_confirm_title">Припинити тренування?</string>
@@ -478,24 +467,20 @@
     <string name="share_preview_programs">Програми (%1$d)</string>
     <string name="share_preview_intervals">Інтервали (%1$d)</string>
     <string name="share_preview_total_exercises">Всього вправ: %1$d</string>
-    <string name="share_preview_auto_included"> (%1$d додано автоматично)</string>
     <string name="share_preview_groups">Групи: %1$d</string>
     <string name="share_no_programs">Немає програм</string>
     <string name="share_no_intervals">Немає інтервальних програм</string>
     <string name="share_no_exercises">Немає вправ</string>
     <string name="share_exercise_auto_included">Автоматично додано з програми/інтервалу</string>
     <string name="share_ungrouped">Без групи</string>
-    <string name="share_program_loops_format">, %1$d циклів</string>
     <string name="share_import_dialog_title">Імпорт спільного файлу JSON</string>
     <string name="share_import_preview_new">Нове (буде додано)</string>
     <string name="share_import_preview_exists">Вже існує (буде пропущено)</string>
     <string name="share_import_preview_nothing">Усі елементи вже існують. Нічого не буде додано.</string>
     <string name="share_import_complete">Імпорт завершено</string>
-    <string name="share_import_added_reused">%1$d додано, %2$d повторно використано</string>
-    <string name="share_import_added_skipped">%1$d додано, %2$d пропущено</string>
+    <string name="share_import_added_reused">%1$s, %2$s</string>
+    <string name="share_import_added_skipped">%1$s, %2$s</string>
     <string name="share_import_errors">Помилки (%1$d)</string>
-    <string name="share_import_count_reused">%1$d повторно використано</string>
-    <string name="share_import_count_skipped">%1$d пропущено</string>
     <string name="exercise_type_dynamic_description">напр., віджимання, підтягування. Записується за кількістю повторень.</string>
     <string name="exercise_type_isometric_description">напр., планка, «вугол». Записується за часом утримання.</string>
     <string name="add_extra_set_confirm">Додати</string>
@@ -537,7 +522,6 @@
     <string name="record_set_to_target">Встановити цільове значення (%1$d %2$s)</string>
     <string name="challenge_best">Рекорд</string>
     <string name="challenge_target_label">Мета</string>
-    <string name="challenge_clear_days">Виконано %1$d/%2$d днів</string>
     <string name="workout_label_weight">Вага</string>
     <string name="workout_section_target">Мета</string>
     <string name="workout_section_timer">Таймер</string>
@@ -788,4 +772,113 @@
     <string name="crash_report_title">Застосунок Kalimory неочікувано закрився</string>
     <string name="crash_report_message">Звітом про помилку можна поділитися, щоб її виправили. Він містить відомості про помилку, версію застосунку та модель телефона, і перед надсиланням його можна прочитати.</string>
     <string name="crash_report_share">Поділитися звітом</string>
+    <!-- Counts: one entry per plural form of each language -->
+    <plurals name="sets_recorded">
+        <item quantity="one">Записано %d підхід!</item>
+        <item quantity="few">Записано %d підходи!</item>
+        <item quantity="many">Записано %d підходів!</item>
+        <item quantity="other">Записано %d підходу!</item>
+    </plurals>
+    <plurals name="count_items">
+        <item quantity="one">%d елемент</item>
+        <item quantity="few">%d елементи</item>
+        <item quantity="many">%d елементів</item>
+        <item quantity="other">%d елемента</item>
+    </plurals>
+    <plurals name="count_records">
+        <item quantity="one">%d запис</item>
+        <item quantity="few">%d записи</item>
+        <item quantity="many">%d записів</item>
+        <item quantity="other">%d запису</item>
+    </plurals>
+    <plurals name="group_count">
+        <item quantity="one">%d група</item>
+        <item quantity="few">%d групи</item>
+        <item quantity="many">%d груп</item>
+        <item quantity="other">%d групи</item>
+    </plurals>
+    <plurals name="csv_error_count">
+        <item quantity="one">%d помилка</item>
+        <item quantity="few">%d помилки</item>
+        <item quantity="many">%d помилок</item>
+        <item quantity="other">%d помилки</item>
+    </plurals>
+    <plurals name="csv_import_more_items">
+        <item quantity="one">… і ще %d</item>
+        <item quantity="few">… і ще %d</item>
+        <item quantity="many">… і ще %d</item>
+        <item quantity="other">… і ще %d</item>
+    </plurals>
+    <plurals name="current_seconds">
+        <item quantity="one">Зараз: %d секунда</item>
+        <item quantity="few">Зараз: %d секунди</item>
+        <item quantity="many">Зараз: %d секунд</item>
+        <item quantity="other">Зараз: %d секунди</item>
+    </plurals>
+    <plurals name="nav_sets_format">
+        <item quantity="one">%1$d / %2$d підхід</item>
+        <item quantity="few">%1$d / %2$d підходи</item>
+        <item quantity="many">%1$d / %2$d підходів</item>
+        <item quantity="other">%1$d / %2$d підходу</item>
+    </plurals>
+    <plurals name="interval_full_complete_format">
+        <item quantity="one">%1$d / %2$d раунд завершено</item>
+        <item quantity="few">%1$d / %2$d раунди завершено</item>
+        <item quantity="many">%1$d / %2$d раундів завершено</item>
+        <item quantity="other">%1$d / %2$d раунду завершено</item>
+    </plurals>
+    <plurals name="interval_rounds_progress">
+        <item quantity="one">%1$d / %2$d раунд</item>
+        <item quantity="few">%1$d / %2$d раунди</item>
+        <item quantity="many">%1$d / %2$d раундів</item>
+        <item quantity="other">%1$d / %2$d раунду</item>
+    </plurals>
+    <plurals name="interval_exercises_progress">
+        <item quantity="one">%1$d / %2$d вправа</item>
+        <item quantity="few">%1$d / %2$d вправи</item>
+        <item quantity="many">%1$d / %2$d вправ</item>
+        <item quantity="other">%1$d / %2$d вправи</item>
+    </plurals>
+    <plurals name="challenge_clear_days">
+        <item quantity="one">Виконано %1$d/%2$d день</item>
+        <item quantity="few">Виконано %1$d/%2$d дні</item>
+        <item quantity="many">Виконано %1$d/%2$d днів</item>
+        <item quantity="other">Виконано %1$d/%2$d дня</item>
+    </plurals>
+    <plurals name="change_format">
+        <item quantity="one">%+d підхід</item>
+        <item quantity="few">%+d підходи</item>
+        <item quantity="many">%+d підходів</item>
+        <item quantity="other">%+d підходу</item>
+    </plurals>
+    <plurals name="share_program_loops_format">
+        <item quantity="one">, %1$d цикл</item>
+        <item quantity="few">, %1$d цикли</item>
+        <item quantity="many">, %1$d циклів</item>
+        <item quantity="other">, %1$d циклу</item>
+    </plurals>
+    <plurals name="share_preview_auto_included">
+        <item quantity="one"> (%1$d додано автоматично)</item>
+        <item quantity="few"> (%1$d додано автоматично)</item>
+        <item quantity="many"> (%1$d додано автоматично)</item>
+        <item quantity="other"> (%1$d додано автоматично)</item>
+    </plurals>
+    <plurals name="share_import_added">
+        <item quantity="one">%1$d додано</item>
+        <item quantity="few">%1$d додано</item>
+        <item quantity="many">%1$d додано</item>
+        <item quantity="other">%1$d додано</item>
+    </plurals>
+    <plurals name="share_import_reused">
+        <item quantity="one">%1$d повторно використано</item>
+        <item quantity="few">%1$d повторно використано</item>
+        <item quantity="many">%1$d повторно використано</item>
+        <item quantity="other">%1$d повторно використано</item>
+    </plurals>
+    <plurals name="share_import_skipped">
+        <item quantity="one">%1$d пропущено</item>
+        <item quantity="few">%1$d пропущено</item>
+        <item quantity="many">%1$d пропущено</item>
+        <item quantity="other">%1$d пропущено</item>
+    </plurals>
 </resources>

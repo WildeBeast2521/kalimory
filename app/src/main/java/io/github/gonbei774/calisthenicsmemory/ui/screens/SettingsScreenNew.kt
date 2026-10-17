@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepper
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.foundation.rememberScrollState
@@ -527,7 +528,7 @@ fun SettingsScreenNew(
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = stringResource(R.string.current_start_countdown, startCountdown),
+                                    text = countText(R.plurals.current_seconds, startCountdown),
                                     fontSize = 14.sp,
                                     color = if (startCountdownEnabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                                     modifier = Modifier.padding(top = 4.dp)
@@ -568,7 +569,7 @@ fun SettingsScreenNew(
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
-                                        text = stringResource(R.string.current_set_interval, setInterval),
+                                        text = countText(R.plurals.current_seconds, setInterval),
                                         fontSize = 14.sp,
                                         color = if (setIntervalEnabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                                         modifier = Modifier.padding(top = 4.dp)

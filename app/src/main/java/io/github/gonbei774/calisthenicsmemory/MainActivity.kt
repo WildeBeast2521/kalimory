@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory
 
 import androidx.compose.runtime.DisposableEffect
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.SystemBarStyle
 import androidx.core.content.ContextCompat
@@ -271,22 +272,36 @@ fun UiMessage.toMessageString(): String {
             val typeLabel = stringResource(if (type == "Dynamic") R.string.dynamic_label else R.string.isometric_label)
             stringResource(R.string.already_in_use_format, name, typeLabel)
         }
-        is UiMessage.SetsRecorded -> stringResource(R.string.sets_recorded, count)
+        is UiMessage.SetsRecorded -> countText(R.plurals.sets_recorded, count)
         is UiMessage.RecordUpdated -> stringResource(R.string.record_updated)
         is UiMessage.RecordDeleted -> stringResource(R.string.record_deleted)
         is UiMessage.GroupCreated -> stringResource(R.string.group_created)
         is UiMessage.GroupRenamed -> stringResource(R.string.group_renamed)
         is UiMessage.GroupDeleted -> stringResource(R.string.group_deleted)
         is UiMessage.GroupAlreadyExists -> stringResource(R.string.group_already_exists)
-        is UiMessage.ExportComplete -> stringResource(R.string.export_complete, groupCount, exerciseCount, recordCount)
-        is UiMessage.ImportComplete -> stringResource(R.string.import_complete, groupCount, exerciseCount, recordCount)
+        is UiMessage.ExportComplete -> stringResource(
+            R.string.export_complete,
+            countText(R.plurals.group_count, groupCount),
+            countText(R.plurals.exercise_count, exerciseCount),
+            countText(R.plurals.count_records, recordCount),
+        )
+        is UiMessage.ImportComplete -> stringResource(
+            R.string.import_complete,
+            countText(R.plurals.group_count, groupCount),
+            countText(R.plurals.exercise_count, exerciseCount),
+            countText(R.plurals.count_records, recordCount),
+        )
         is UiMessage.ExportError -> stringResource(R.string.export_error, errorMessage)
         is UiMessage.ImportError -> stringResource(R.string.import_error, errorMessage)
-        is UiMessage.CsvExportSuccess -> stringResource(R.string.csv_export_success, type, count)
-        is UiMessage.CsvTemplateExported -> stringResource(R.string.csv_template_exported, exerciseCount)
+        is UiMessage.CsvExportSuccess -> stringResource(R.string.csv_export_success, type, countText(R.plurals.count_items, count))
+        is UiMessage.CsvTemplateExported -> stringResource(R.string.csv_template_exported, countText(R.plurals.exercise_count, exerciseCount))
         is UiMessage.CsvEmpty -> stringResource(R.string.csv_empty)
-        is UiMessage.CsvImportSuccess -> stringResource(R.string.csv_import_success, successCount)
-        is UiMessage.CsvImportPartial -> stringResource(R.string.csv_import_partial, successCount, errorCount)
+        is UiMessage.CsvImportSuccess -> stringResource(R.string.csv_import_success, countText(R.plurals.count_records, successCount))
+        is UiMessage.CsvImportPartial -> stringResource(
+            R.string.csv_import_partial,
+            countText(R.plurals.count_records, successCount),
+            countText(R.plurals.csv_error_count, errorCount),
+        )
         is UiMessage.BackupSaved -> stringResource(R.string.backup_saved_successfully)
         is UiMessage.BackupFailed -> stringResource(R.string.backup_failed)
         is UiMessage.CopiedToClipboard -> stringResource(R.string.copied_to_clipboard)

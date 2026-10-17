@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.today
 
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
+import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -142,8 +143,7 @@ fun TodayScreen(
         val sets = exercise.targetSets ?: return workoutLabel
         val value = exercise.targetValue ?: return workoutLabel
         val unit = if (exercise.type == "Dynamic") repsUnit else secondsUnit
-        val format = if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format
-        return stringResource(format, sets, value, unit)
+        return targetText(sets, value, unit, unilateral = exercise.laterality == "Unilateral")
     }
     val programLabel = stringResource(R.string.today_kind_program)
     val intervalLabel = stringResource(R.string.interval_label)

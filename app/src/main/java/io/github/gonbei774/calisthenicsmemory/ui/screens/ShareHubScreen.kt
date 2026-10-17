@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
@@ -436,7 +437,7 @@ fun ShareHubScreen(
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(text = stringResource(R.string.groups), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                        Text(text = stringResource(R.string.share_import_count_reused, preview.groupsReused), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = countText(R.plurals.share_import_reused, preview.groupsReused), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                 }
                                 if (preview.exercisesSkipped > 0) {
@@ -445,7 +446,7 @@ fun ShareHubScreen(
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(text = stringResource(R.string.exercises), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                        Text(text = stringResource(R.string.share_import_count_skipped, preview.exercisesSkipped), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = countText(R.plurals.share_import_skipped, preview.exercisesSkipped), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                 }
                                 if (preview.programsSkipped > 0) {
@@ -454,7 +455,7 @@ fun ShareHubScreen(
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(text = stringResource(R.string.share_tab_programs), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                        Text(text = stringResource(R.string.share_import_count_skipped, preview.programsSkipped), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = countText(R.plurals.share_import_skipped, preview.programsSkipped), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                 }
                                 if (preview.intervalProgramsSkipped > 0) {
@@ -463,7 +464,7 @@ fun ShareHubScreen(
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(text = stringResource(R.string.share_tab_intervals), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                        Text(text = stringResource(R.string.share_import_count_skipped, preview.intervalProgramsSkipped), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = countText(R.plurals.share_import_skipped, preview.intervalProgramsSkipped), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                 }
                             }
@@ -561,7 +562,11 @@ fun ShareHubScreen(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
-                                    text = stringResource(R.string.share_import_added_reused, report.groupsAdded, report.groupsReused),
+                                    text = stringResource(
+                                        R.string.share_import_added_reused,
+                                        countText(R.plurals.share_import_added, report.groupsAdded),
+                                        countText(R.plurals.share_import_reused, report.groupsReused),
+                                    ),
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
@@ -578,7 +583,11 @@ fun ShareHubScreen(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
-                                    text = stringResource(R.string.share_import_added_skipped, report.exercisesAdded, report.exercisesSkipped),
+                                    text = stringResource(
+                                        R.string.share_import_added_skipped,
+                                        countText(R.plurals.share_import_added, report.exercisesAdded),
+                                        countText(R.plurals.share_import_skipped, report.exercisesSkipped),
+                                    ),
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
@@ -595,7 +604,11 @@ fun ShareHubScreen(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
-                                    text = stringResource(R.string.share_import_added_skipped, report.programsAdded, report.programsSkipped),
+                                    text = stringResource(
+                                        R.string.share_import_added_skipped,
+                                        countText(R.plurals.share_import_added, report.programsAdded),
+                                        countText(R.plurals.share_import_skipped, report.programsSkipped),
+                                    ),
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
@@ -612,7 +625,11 @@ fun ShareHubScreen(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
-                                    text = stringResource(R.string.share_import_added_skipped, report.intervalProgramsAdded, report.intervalProgramsSkipped),
+                                    text = stringResource(
+                                        R.string.share_import_added_skipped,
+                                        countText(R.plurals.share_import_added, report.intervalProgramsAdded),
+                                        countText(R.plurals.share_import_skipped, report.intervalProgramsSkipped),
+                                    ),
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
@@ -653,7 +670,7 @@ fun ShareHubScreen(
                                 }
                                 if (report.errors.size > 10) {
                                     Text(
-                                        text = stringResource(R.string.csv_import_more_items, report.errors.size - 10),
+                                        text = (report.errors.size - 10).let { countText(R.plurals.csv_import_more_items, it) },
                                         fontSize = 12.sp,
                                         color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
                                     )

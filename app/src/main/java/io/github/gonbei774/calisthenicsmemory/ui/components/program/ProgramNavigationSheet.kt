@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
 import androidx.compose.material3.LinearWavyProgressIndicator
+import androidx.compose.ui.res.pluralStringResource
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.background
@@ -227,7 +228,7 @@ private fun NavigationProgressSection(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = stringResource(R.string.nav_sets_format, completedSets, totalSets),
+                text = pluralStringResource(R.plurals.nav_sets_format, totalSets, completedSets, totalSets),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = cs.onSurface

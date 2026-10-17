@@ -1,6 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.screens.train.intervalSummary
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
+import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
 import androidx.compose.foundation.background
@@ -346,7 +348,7 @@ fun CommunityShareExportScreen(
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = stringResource(R.string.share_preview_total_exercises, totalExerciseCount) +
-                                if (autoIncludedExerciseCount > 0) stringResource(R.string.share_preview_auto_included, autoIncludedExerciseCount) else "",
+                                if (autoIncludedExerciseCount > 0) countText(R.plurals.share_preview_auto_included, autoIncludedExerciseCount) else "",
                         fontSize = 13.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -443,7 +445,7 @@ private fun ProgramsExportTab(
                             val exCount = exerciseCounts[program.id] ?: 0
                             val lpCount = loopCounts[program.id] ?: 0
                             val exercisesText = pluralStringResource(R.plurals.exercise_count, exCount, exCount)
-                            val loopsText = if (lpCount > 0) stringResource(R.string.share_program_loops_format, lpCount) else ""
+                            val loopsText = if (lpCount > 0) countText(R.plurals.share_program_loops_format, lpCount) else ""
                             val subtitle = exercisesText + loopsText
                             Text(
                                 text = subtitle,
@@ -681,11 +683,11 @@ private fun ExercisesExportTab(
                                     // 課題バッジ
                                     if (exercise.targetSets != null && exercise.targetValue != null) {
                                         Text(
-                                            text = stringResource(
-                                                if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format,
+                                            text = targetText(
                                                 exercise.targetSets!!,
                                                 exercise.targetValue!!,
-                                                stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                                                stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                                                unilateral = exercise.laterality == "Unilateral",
                                             ),
                                             fontSize = 11.sp,
                                             fontWeight = FontWeight.Bold,

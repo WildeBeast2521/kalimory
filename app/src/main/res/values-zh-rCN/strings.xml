@@ -26,8 +26,8 @@
     <string name="set_challenge">设定目标</string>
     <string name="sets_count">组数</string>
     <!-- Will be replaced with "Reps" or "Seconds" -->
-    <string name="target_format">%1$d组 × %2$d%3$s</string>
-    <string name="target_format_unilateral">%1$d组 × %2$d%3$s（每侧）</string>
+    <string name="target_format">%1$s × %2$d%3$s</string>
+    <string name="target_format_unilateral">%1$s × %2$d%3$s（每侧）</string>
     <string name="laterality">单双侧</string>
     <string name="one_sided">单侧</string>
     <string name="group_optional">分组（可选）</string>
@@ -49,8 +49,8 @@
     <string name="select_exercise_please">请选择动作</string>
     <string name="select_from_top">从上方「选择动作」选择</string>
     <string name="no_records_for_exercise">此动作暂无记录</string>
-    <string name="target_display">目标：%1$d组 × %2$d%3$s</string>
-    <string name="target_display_unilateral">目标：%1$d组 × %2$d%3$s（每侧）</string>
+    <string name="target_display">目标：%1$s × %2$d%3$s</string>
+    <string name="target_display_unilateral">目标：%1$s × %2$d%3$s（每侧）</string>
     <string name="right">右侧</string>
     <string name="left">左侧</string>
     <string name="right_value_short">右：%1$d%2$s</string>
@@ -70,7 +70,7 @@
     <string name="unknown_exercise">未知动作</string>
     <string name="edit_session_info">编辑训练信息</string>
     <string name="delete_session">删除训练</string>
-    <string name="delete_record_warning">删除「%1$s」记录？\n%2$s %3$s\n%4$d组</string>
+    <string name="delete_record_warning">删除「%1$s」记录？\n%2$s %3$s\n%4$s</string>
     <string name="edit_set_value">编辑组数值</string>
     <string name="right_value_label">右侧数值</string>
     <string name="left_value_label">左侧数值</string>
@@ -87,8 +87,6 @@
     <string name="total_sets">总组数</string>
     <string name="average">平均</string>
     <string name="weekly_change">周变化</string>
-    <string name="sets_format">%d组</string>
-    <string name="change_format">%+d组</string>
     <string name="unit_reps">次</string>
     <string name="unit_seconds">秒</string>
     <!-- Challenge Screen -->
@@ -108,8 +106,6 @@
     <string name="groups">分组</string>
     <string name="exercises">动作</string>
     <string name="records">记录</string>
-    <string name="count_items">%d项</string>
-    <string name="count_records">%d条记录</string>
     <string name="import_data_preview_message">您是否要继续导入这些数据？</string>
     <string name="next">下一步</string>
     <string name="data_overwrite_title">数据覆盖</string>
@@ -126,16 +122,15 @@
     <string name="already_in_use_format">「%1$s（%2$s）」已在使用</string>
     <string name="exercise_updated">已更新动作</string>
     <string name="exercise_deleted">已删除动作</string>
-    <string name="sets_recorded">已记录%d组！</string>
     <string name="record_updated">已更新记录</string>
     <string name="record_deleted">已删除记录</string>
     <string name="group_created">已创建分组</string>
     <string name="group_already_exists">相同名称的分组已存在</string>
     <string name="group_renamed">已重命名分组</string>
     <string name="group_deleted">已删除分组</string>
-    <string name="export_complete">导出完成：%1$d个分组，%2$d个动作，%3$d条记录</string>
+    <string name="export_complete">导出完成：%1$s，%2$s，%3$s</string>
     <string name="export_error">导出错误：%s</string>
-    <string name="import_complete">导入完成：%1$d个分组，%2$d个动作，%3$d条记录</string>
+    <string name="import_complete">导入完成：%1$s，%2$s，%3$s</string>
     <string name="import_error">导入错误：%s</string>
     <!-- Workout Screen (if exists) -->
     <string name="workout_title">训练</string>
@@ -215,11 +210,11 @@
     <string name="best_record">最佳</string>
     <string name="worst_record">最低</string>
     <!-- CSV Import/Export -->
-    <string name="csv_export_success">已导出%1$s：%2$d项</string>
-    <string name="csv_template_exported">已导出CSV模板：%d个动作</string>
+    <string name="csv_export_success">已导出%1$s：%2$s</string>
+    <string name="csv_template_exported">已导出CSV模板：%s</string>
     <string name="csv_empty">CSV文件为空</string>
-    <string name="csv_import_success">成功导入%d条记录</string>
-    <string name="csv_import_partial">已导入%1$d条记录，发生%2$d个错误</string>
+    <string name="csv_import_success">成功导入%s</string>
+    <string name="csv_import_partial">已导入%1$s，%2$s</string>
     <string name="csv_import">CSV 导入</string>
     <string name="csv_import_description">导入分组、动作或记录（自动检测）</string>
     <!-- CSV Export Dialog -->
@@ -246,7 +241,6 @@
     <string name="csv_import_error_label">错误</string>
     <string name="csv_import_skipped_items">已跳过项目（%d）</string>
     <string name="csv_import_errors">错误（%d）</string>
-    <string name="csv_import_more_items">… 以及其他 %d 项</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">完整备份（JSON）</string>
     <string name="section_full_backup_description">保存和恢复所有数据：动作、记录、计划、间歇和待办。\n更换设备时使用。</string>
@@ -281,8 +275,6 @@
     <string name="section_workout_settings_description">自定义训练界面的行为。</string>
     <string name="start_countdown_setting">开始倒计时</string>
     <string name="set_interval_setting">组间间歇</string>
-    <string name="current_start_countdown">当前：%d秒</string>
-    <string name="current_set_interval">当前：%d秒</string>
     <string name="start_countdown_dialog_title">开始倒计时</string>
     <string name="set_interval_dialog_title">组间间歇</string>
     <string name="set_interval_note">注意：如果已配置，动作的特定设置优先。</string>
@@ -370,7 +362,6 @@
     <string name="program_name_hint">例如：晨间训练</string>
     <string name="program_exercises">动作</string>
     <string name="add_exercise_to_program">添加动作</string>
-    <string name="program_sets_format">%d组</string>
     <string name="program_target_format">%1$d%2$s</string>
     <string name="program_interval_format">休息%d秒</string>
     <string name="delete_program">删除计划</string>
@@ -423,7 +414,6 @@
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">计划概览</string>
     <string name="nav_overall_progress">整体进度</string>
-    <string name="nav_sets_format">%1$d / %2$d 组</string>
     <string name="nav_done">完成</string>
     <string name="nav_current">当前</string>
     <string name="nav_redo">重做</string>
@@ -485,7 +475,7 @@
     <string name="interval_delete_program">删除间歇训练</string>
     <string name="interval_delete_program_warning">删除「%s」？</string>
     <string name="interval_summary_format">%1$d秒/%2$d秒 · %3$d轮</string>
-    <string name="interval_settings_format">%1$d秒 × %2$d个动作 × %3$d轮</string>
+    <string name="interval_settings_format">%1$d秒 × %2$s × %3$s</string>
     <string name="interval_total_time">预计时间</string>
     <string name="interval_get_ready">准备好</string>
     <string name="interval_work_label">训练</string>
@@ -499,8 +489,7 @@
     <string name="interval_stop">停止</string>
     <string name="interval_complete_title">已完成</string>
     <string name="interval_ended_title">已结束</string>
-    <string name="interval_full_complete_format">已完成 %1$d / %2$d 轮</string>
-    <string name="interval_partial_format">%1$d / %2$d 轮 + %3$d / %4$d 个动作</string>
+    <string name="interval_partial_format">%1$s + %2$s</string>
     <string name="interval_partial_note">（提前结束）</string>
     <string name="interval_exercises_done">动作</string>
     <string name="interval_save_and_finish">保存并结束</string>
@@ -535,24 +524,20 @@
     <string name="share_preview_programs">计划 (%1$d)</string>
     <string name="share_preview_intervals">间歇 (%1$d)</string>
     <string name="share_preview_total_exercises">动作总数：%1$d</string>
-    <string name="share_preview_auto_included">（%1$d 自动包含）</string>
     <string name="share_preview_groups">分组：%1$d</string>
     <string name="share_no_programs">无训练计划</string>
     <string name="share_no_intervals">无间歇训练计划</string>
     <string name="share_no_exercises">无动作</string>
     <string name="share_exercise_auto_included">从训练计划/间歇训练自动包含</string>
     <string name="share_ungrouped">无分组</string>
-    <string name="share_program_loops_format">，%1$d 个循环</string>
     <string name="share_import_dialog_title">导入分享的JSON文件</string>
     <string name="share_import_preview_new">新增（将被添加）</string>
     <string name="share_import_preview_exists">已存在（将被跳过）</string>
     <string name="share_import_preview_nothing">所有项目已存在，不会添加任何内容。</string>
     <string name="share_import_complete">导入完成</string>
-    <string name="share_import_added_reused">%1$d 已添加，%2$d 已复用</string>
-    <string name="share_import_added_skipped">%1$d 已添加，%2$d 已跳过</string>
+    <string name="share_import_added_reused">%1$s，%2$s</string>
+    <string name="share_import_added_skipped">%1$s，%2$s</string>
     <string name="share_import_errors">错误 (%1$d)</string>
-    <string name="share_import_count_reused">%1$d 已复用</string>
-    <string name="share_import_count_skipped">%1$d 已跳过</string>
 
     <string name="import_anomalies_notice">与应用格式不一致的项目：%1$d 个。将按原样导入。</string>
     <string name="db_unavailable_title">无法打开你的训练数据</string>
@@ -770,7 +755,6 @@
     <string name="add_extra_set_confirm">添加</string>
     <string name="add_extra_set_title">添加一组</string>
     <string name="challenge_best">最佳</string>
-    <string name="challenge_clear_days">已完成 %1$d/%2$d 天</string>
     <string name="challenge_target_label">目标</string>
     <string name="delete_exercise_confirm_title">删除“%s”？</string>
     <string name="delete_exercise_in_use">此动作正在使用中：</string>
@@ -828,4 +812,59 @@
     <string name="crash_report_title">Kalimory 意外关闭</string>
     <string name="crash_report_message">你可以分享错误报告，帮助修复这个问题。报告包含错误详情、应用版本和手机型号，发送前你可以先查看内容。</string>
     <string name="crash_report_share">分享报告</string>
+    <!-- Counts: one entry per plural form of each language -->
+    <plurals name="sets_recorded">
+        <item quantity="other">已记录%d组！</item>
+    </plurals>
+    <plurals name="count_items">
+        <item quantity="other">%d项</item>
+    </plurals>
+    <plurals name="count_records">
+        <item quantity="other">%d条记录</item>
+    </plurals>
+    <plurals name="group_count">
+        <item quantity="other">%d个分组</item>
+    </plurals>
+    <plurals name="csv_error_count">
+        <item quantity="other">发生%d个错误</item>
+    </plurals>
+    <plurals name="csv_import_more_items">
+        <item quantity="other">… 以及其他 %d 项</item>
+    </plurals>
+    <plurals name="current_seconds">
+        <item quantity="other">当前：%d秒</item>
+    </plurals>
+    <plurals name="nav_sets_format">
+        <item quantity="other">%1$d / %2$d 组</item>
+    </plurals>
+    <plurals name="interval_full_complete_format">
+        <item quantity="other">已完成 %1$d / %2$d 轮</item>
+    </plurals>
+    <plurals name="interval_rounds_progress">
+        <item quantity="other">%1$d / %2$d 轮</item>
+    </plurals>
+    <plurals name="interval_exercises_progress">
+        <item quantity="other">%1$d / %2$d 个动作</item>
+    </plurals>
+    <plurals name="challenge_clear_days">
+        <item quantity="other">已完成 %1$d/%2$d 天</item>
+    </plurals>
+    <plurals name="change_format">
+        <item quantity="other">%+d组</item>
+    </plurals>
+    <plurals name="share_program_loops_format">
+        <item quantity="other">，%1$d 个循环</item>
+    </plurals>
+    <plurals name="share_preview_auto_included">
+        <item quantity="other">（%1$d 自动包含）</item>
+    </plurals>
+    <plurals name="share_import_added">
+        <item quantity="other">%1$d 已添加</item>
+    </plurals>
+    <plurals name="share_import_reused">
+        <item quantity="other">%1$d 已复用</item>
+    </plurals>
+    <plurals name="share_import_skipped">
+        <item quantity="other">%1$d 已跳过</item>
+    </plurals>
 </resources>

@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
+import kotlin.math.abs
 import androidx.compose.ui.graphics.toArgb
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.weekOf
 import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
@@ -2146,7 +2147,7 @@ fun StatisticsSummary(
                 }
 
                 if (statistics.weeklyChange != 0) {
-                    val changeText = stringResource(R.string.change_format, statistics.weeklyChange)
+                    val changeText = pluralStringResource(R.plurals.change_format, abs(statistics.weeklyChange), statistics.weeklyChange)
                     StatItem(stringResource(R.string.weekly_change), changeText)
                 }
 

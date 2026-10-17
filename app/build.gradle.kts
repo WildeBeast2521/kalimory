@@ -93,6 +93,9 @@ android {
 
     lint {
         baseline = file("lint-baseline.xml")
+        // Cleared from the baseline (#154); new findings fail the build. A count that is not a
+        // plural (an abbreviation, an ordinal) is marked tools:ignore="PluralsCandidate".
+        error += setOf("PluralsCandidate", "TypographyEllipsis")
     }
 
     testOptions {

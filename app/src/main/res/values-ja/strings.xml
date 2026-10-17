@@ -25,8 +25,8 @@
     <string name="exercise_name">種目名</string>
     <string name="set_challenge">課題を設定</string>
     <string name="sets_count">セット数</string>
-    <string name="target_format">%1$dセット × %2$d%3$s</string>
-    <string name="target_format_unilateral">%1$dセット × %2$d%3$s(片方)</string>
+    <string name="target_format">%1$s × %2$d%3$s</string>
+    <string name="target_format_unilateral">%1$s × %2$d%3$s(片方)</string>
     <string name="laterality">左右</string>
     <string name="one_sided">片側</string>
     <string name="group_optional">グループ（任意）</string>
@@ -49,8 +49,8 @@
     <string name="select_exercise_please">種目を選択してください</string>
     <string name="select_from_top">上部の「種目を選択」から種目を選んでください</string>
     <string name="no_records_for_exercise">この種目の記録はありません</string>
-    <string name="target_display">目標: %1$dセット × %2$d%3$s</string>
-    <string name="target_display_unilateral">目標: %1$dセット × %2$d%3$s (片方あたり)</string>
+    <string name="target_display">目標: %1$s × %2$d%3$s</string>
+    <string name="target_display_unilateral">目標: %1$s × %2$d%3$s (片方あたり)</string>
     <string name="right">右</string>
     <string name="left">左</string>
     <string name="right_value_short">右: %1$d%2$s</string>
@@ -80,7 +80,7 @@
     <string name="unknown_exercise">不明な種目</string>
     <string name="edit_session_info">セッション情報を編集</string>
     <string name="delete_session">セッションを削除</string>
-    <string name="delete_record_warning">「%1$s」の記録を削除しますか？\n%2$s %3$s\n%4$dセット</string>
+    <string name="delete_record_warning">「%1$s」の記録を削除しますか？\n%2$s %3$s\n%4$s</string>
     <string name="edit_set_value">セット値の編集</string>
     <string name="right_value_label">右の値</string>
     <string name="left_value_label">左の値</string>
@@ -97,15 +97,12 @@
     <string name="total_sets">総セット数</string>
     <string name="average">平均</string>
     <string name="weekly_change">今週の変化</string>
-    <string name="sets_format">%dセット</string>
-    <string name="change_format">%+dセット</string>
     <string name="unit_reps">回</string>
     <string name="unit_seconds">秒</string>
     <!-- Challenge Screen -->
     <string name="no_challenge_set">課題未設定</string>
     <string name="challenge_best">ベスト</string>
     <string name="challenge_target_label">目標</string>
-    <string name="challenge_clear_days">クリア %1$d/%2$d日</string>
     <string name="no_exercises_available">種目がありません</string>
     <string name="no_exercises_in_period">%sに取り組んだ種目がありません</string>
     <!-- Settings Screen -->
@@ -121,8 +118,6 @@
     <string name="groups">グループ</string>
     <string name="exercises">種目</string>
     <string name="records">記録</string>
-    <string name="count_items">%d個</string>
-    <string name="count_records">%d件</string>
     <string name="import_data_preview_message">このデータをインポートしますか？</string>
     <string name="next">次へ</string>
     <string name="data_overwrite_title">データの上書き</string>
@@ -139,16 +134,15 @@
     <string name="already_in_use_format">「%1$s (%2$s)」は既に使用されています</string>
     <string name="exercise_updated">種目を更新しました</string>
     <string name="exercise_deleted">種目を削除しました</string>
-    <string name="sets_recorded">%dセット記録しました!</string>
     <string name="record_updated">記録を更新しました</string>
     <string name="record_deleted">記録を削除しました</string>
     <string name="group_created">グループを作成しました</string>
     <string name="group_already_exists">同じグループ名が既に存在します</string>
     <string name="group_renamed">グループ名を変更しました</string>
     <string name="group_deleted">グループを削除しました</string>
-    <string name="export_complete">エクスポート完了: グループ%1$d個、種目%2$d個、記録%3$d件</string>
+    <string name="export_complete">エクスポート完了: %1$s、%2$s、%3$s</string>
     <string name="export_error">エクスポートエラー: %s</string>
-    <string name="import_complete">インポート完了: グループ%1$d個、種目%2$d個、記録%3$d件</string>
+    <string name="import_complete">インポート完了: %1$s、%2$s、%3$s</string>
     <string name="import_error">インポートエラー: %s</string>
     <!-- Workout Screen (if exists) -->
     <string name="workout_title">ワークアウト</string>
@@ -260,11 +254,11 @@
     <string name="best_record">最高記録</string>
     <string name="worst_record">最低記録</string>
     <!-- CSV Import/Export -->
-    <string name="csv_export_success">%1$sをエクスポートしました: %2$d件</string>
-    <string name="csv_template_exported">CSVテンプレートをエクスポートしました: %d種目</string>
+    <string name="csv_export_success">%1$sをエクスポートしました: %2$s</string>
+    <string name="csv_template_exported">CSVテンプレートをエクスポートしました: %s</string>
     <string name="csv_empty">CSVファイルが空です</string>
-    <string name="csv_import_success">%d件の記録をインポートしました</string>
-    <string name="csv_import_partial">%1$d件インポート完了、%2$d件エラー</string>
+    <string name="csv_import_success">%sの記録をインポートしました</string>
+    <string name="csv_import_partial">%1$sインポート完了、%2$s</string>
     <string name="csv_import">CSVインポート</string>
     <string name="csv_import_description">グループ、種目、記録を自動判定してインポート</string>
     <!-- CSV Export Dialog -->
@@ -291,7 +285,6 @@
     <string name="csv_import_error_label">エラー</string>
     <string name="csv_import_skipped_items">スキップ項目 (%d)</string>
     <string name="csv_import_errors">エラー (%d)</string>
-    <string name="csv_import_more_items">… その他 %d件</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">完全バックアップ (JSON)</string>
     <string name="section_full_backup_description">すべてのデータ（種目、記録、プログラム、インターバル、ToDo）を保存・復元します。\n機種変更時にご利用ください。</string>
@@ -326,8 +319,6 @@
     <string name="section_workout_settings_description">ワークアウト画面の動作をカスタマイズできます。</string>
     <string name="start_countdown_setting">開始カウントダウン</string>
     <string name="set_interval_setting">セット間インターバル</string>
-    <string name="current_start_countdown">現在: %d秒</string>
-    <string name="current_set_interval">現在: %d秒</string>
     <string name="start_countdown_dialog_title">開始カウントダウン</string>
     <string name="set_interval_dialog_title">セット間インターバル</string>
     <string name="set_interval_note">※種目ごとの設定がある場合はそちらが優先されます。</string>
@@ -421,7 +412,6 @@
     <string name="start_countdown">開始カウントダウン</string>
     <string name="program_exercises">種目</string>
     <string name="add_exercise_to_program">種目を追加</string>
-    <string name="program_sets_format">%dセット</string>
     <string name="program_target_format">%1$d%2$s</string>
     <string name="program_interval_format">休憩 %d秒</string>
     <string name="delete_program">プログラムを削除</string>
@@ -480,7 +470,6 @@
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">プログラム概要</string>
     <string name="nav_overall_progress">全体の進捗</string>
-    <string name="nav_sets_format">%1$d / %2$d セット</string>
     <string name="nav_done">完了</string>
     <string name="nav_current">現在</string>
     <string name="nav_redo">やり直し</string>
@@ -559,8 +548,7 @@
     <string name="interval_stop">終了</string>
     <string name="interval_complete_title">完了</string>
     <string name="interval_ended_title">終了</string>
-    <string name="interval_full_complete_format">%1$d / %2$d 周 完走</string>
-    <string name="interval_partial_format">%1$d / %2$d 周 + %3$d / %4$d 種目</string>
+    <string name="interval_partial_format">%1$s + %2$s</string>
     <string name="interval_partial_note">（途中終了）</string>
     <string name="interval_exercises_done">実行した種目</string>
     <string name="interval_comment_label">コメント</string>
@@ -571,7 +559,7 @@
     <string name="interval_unsaved_title">記録が保存されていません</string>
     <string name="interval_unsaved_message">ワークアウトの記録が保存されていません。保存せずに戻りますか？</string>
     <string name="interval_unsaved_leave">戻る</string>
-    <string name="interval_settings_format">%1$d秒 × %2$d種目 × %3$d周</string>
+    <string name="interval_settings_format">%1$d秒 × %2$s × %3$s</string>
     <string name="interval_record_rounds_format">%1$d/%2$d周</string>
     <string name="interval_record_complete">完走</string>
     <string name="interval_record_partial">途中終了</string>
@@ -596,24 +584,20 @@
     <string name="share_preview_programs">プログラム (%1$d)</string>
     <string name="share_preview_intervals">インターバル (%1$d)</string>
     <string name="share_preview_total_exercises">種目合計: %1$d</string>
-    <string name="share_preview_auto_included"> (%1$d 自動追加)</string>
     <string name="share_preview_groups">グループ: %1$d</string>
     <string name="share_no_programs">プログラムなし</string>
     <string name="share_no_intervals">インターバルプログラムなし</string>
     <string name="share_no_exercises">種目なし</string>
     <string name="share_exercise_auto_included">プログラム/インターバルから自動追加</string>
     <string name="share_ungrouped">グループなし</string>
-    <string name="share_program_loops_format">、%1$d ループ</string>
     <string name="share_import_dialog_title">共有JSONファイルのインポート</string>
     <string name="share_import_preview_new">新規（追加されます）</string>
     <string name="share_import_preview_exists">既存（スキップされます）</string>
     <string name="share_import_preview_nothing">すべてのデータが既に存在します。追加されるものはありません。</string>
     <string name="share_import_complete">インポート完了</string>
-    <string name="share_import_added_reused">%1$d 追加、%2$d 再利用</string>
-    <string name="share_import_added_skipped">%1$d 追加、%2$d スキップ</string>
+    <string name="share_import_added_reused">%1$s、%2$s</string>
+    <string name="share_import_added_skipped">%1$s、%2$s</string>
     <string name="share_import_errors">エラー (%1$d)</string>
-    <string name="share_import_count_reused">%1$d 再利用</string>
-    <string name="share_import_count_skipped">%1$d スキップ</string>
     <string name="nav_check_set">セットを完了にする</string>
     <string name="nav_uncheck_set">セットを未実行に戻す</string>
 
@@ -834,4 +818,59 @@
     <string name="crash_report_title">Kalimory が予期せず終了しました</string>
     <string name="crash_report_message">エラーのレポートを共有すると、問題の修正に役立ちます。レポートにはエラーの詳細、アプリのバージョン、端末の機種が含まれ、送信前に内容を確認できます。</string>
     <string name="crash_report_share">レポートを共有</string>
+    <!-- Counts: one entry per plural form of each language -->
+    <plurals name="sets_recorded">
+        <item quantity="other">%dセット記録しました!</item>
+    </plurals>
+    <plurals name="count_items">
+        <item quantity="other">%d個</item>
+    </plurals>
+    <plurals name="count_records">
+        <item quantity="other">%d件</item>
+    </plurals>
+    <plurals name="group_count">
+        <item quantity="other">%dグループ</item>
+    </plurals>
+    <plurals name="csv_error_count">
+        <item quantity="other">%d件エラー</item>
+    </plurals>
+    <plurals name="csv_import_more_items">
+        <item quantity="other">… その他 %d件</item>
+    </plurals>
+    <plurals name="current_seconds">
+        <item quantity="other">現在: %d秒</item>
+    </plurals>
+    <plurals name="nav_sets_format">
+        <item quantity="other">%1$d / %2$d セット</item>
+    </plurals>
+    <plurals name="interval_full_complete_format">
+        <item quantity="other">%1$d / %2$d 周 完走</item>
+    </plurals>
+    <plurals name="interval_rounds_progress">
+        <item quantity="other">%1$d / %2$d 周</item>
+    </plurals>
+    <plurals name="interval_exercises_progress">
+        <item quantity="other">%1$d / %2$d 種目</item>
+    </plurals>
+    <plurals name="challenge_clear_days">
+        <item quantity="other">クリア %1$d/%2$d日</item>
+    </plurals>
+    <plurals name="change_format">
+        <item quantity="other">%+dセット</item>
+    </plurals>
+    <plurals name="share_program_loops_format">
+        <item quantity="other">、%1$d ループ</item>
+    </plurals>
+    <plurals name="share_preview_auto_included">
+        <item quantity="other"> (%1$d 自動追加)</item>
+    </plurals>
+    <plurals name="share_import_added">
+        <item quantity="other">%1$d 追加</item>
+    </plurals>
+    <plurals name="share_import_reused">
+        <item quantity="other">%1$d 再利用</item>
+    </plurals>
+    <plurals name="share_import_skipped">
+        <item quantity="other">%1$d スキップ</item>
+    </plurals>
 </resources>

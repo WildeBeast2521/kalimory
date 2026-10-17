@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
+import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.workout.restDialProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
@@ -1010,11 +1011,11 @@ fun WorkoutExerciseItem(
                     ) {
                         val unit = if (exercise.type == "Dynamic") stringResource(R.string.unit_reps) else stringResource(R.string.unit_seconds)
                         Text(
-                            text = stringResource(
-                                if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format,
+                            text = targetText(
                                 exercise.targetSets ?: 0,
                                 exercise.targetValue ?: 0,
-                                unit
+                                unit,
+                                unilateral = exercise.laterality == "Unilateral",
                             ),
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.primary,
@@ -2992,11 +2993,11 @@ fun WorkoutSearchResultItem(
                     ) {
                         val unit = if (exercise.type == "Dynamic") stringResource(R.string.unit_reps) else stringResource(R.string.unit_seconds)
                         Text(
-                            text = stringResource(
-                                if (exercise.laterality == "Unilateral") R.string.target_format_unilateral else R.string.target_format,
+                            text = targetText(
                                 exercise.targetSets ?: 0,
                                 exercise.targetValue ?: 0,
-                                unit
+                                unit,
+                                unilateral = exercise.laterality == "Unilateral",
                             ),
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.primary,

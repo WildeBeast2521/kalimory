@@ -265,8 +265,8 @@
     <string name="exercise_name">اسم التمرين</string>
     <string name="set_challenge">تحديد هدف</string>
     <string name="sets_count">المجموعات</string>
-    <string name="target_format">%1$d مجموعات × %2$d %3$s</string>
-    <string name="target_format_unilateral">%1$d مجموعات × %2$d %3$s (لكل جانب)</string>
+    <string name="target_format">%1$s × %2$d %3$s</string>
+    <string name="target_format_unilateral">%1$s × %2$d %3$s (لكل جانب)</string>
     <string name="laterality">الجانب</string>
     <string name="one_sided">جانب واحد</string>
     <string name="group_optional">المجموعة (اختيارية)</string>
@@ -288,8 +288,8 @@
     <string name="select_exercise_please">يُرجى اختيار تمرين</string>
     <string name="select_from_top">اختر من «اختر تمرينًا» في الأعلى</string>
     <string name="no_records_for_exercise">لا توجد سجلات لهذا التمرين</string>
-    <string name="target_display">الهدف: %1$d مجموعات × %2$d %3$s</string>
-    <string name="target_display_unilateral">الهدف: %1$d مجموعات × %2$d %3$s (لكل جانب)</string>
+    <string name="target_display">الهدف: %1$s × %2$d %3$s</string>
+    <string name="target_display_unilateral">الهدف: %1$s × %2$d %3$s (لكل جانب)</string>
     <string name="right">اليمين</string>
     <string name="left">اليسار</string>
     <string name="right_value_short">ي: %1$d %2$s</string>
@@ -317,7 +317,7 @@
     <string name="unknown_exercise">تمرين غير معروف</string>
     <string name="edit_session_info">تعديل معلومات الجلسة</string>
     <string name="delete_session">حذف الجلسة</string>
-    <string name="delete_record_warning">حذف سجل «%1$s»؟\n%2$s %3$s\n%4$d مجموعات</string>
+    <string name="delete_record_warning">حذف سجل «%1$s»؟\n%2$s %3$s\n%4$s</string>
     <string name="edit_set_value">تعديل قيمة المجموعة</string>
     <string name="right_value_label">قيمة اليمين</string>
     <string name="left_value_label">قيمة اليسار</string>
@@ -332,8 +332,6 @@
     <string name="total_sets">إجمالي المجموعات</string>
     <string name="average">المتوسط</string>
     <string name="weekly_change">التغير الأسبوعي</string>
-    <string name="sets_format">%d مجموعات</string>
-    <string name="change_format">%+d مجموعات</string>
     <string name="unit_reps">تكرار</string>
     <string name="unit_seconds">ث</string>
     <string name="unit_seconds_short">ث</string>
@@ -342,7 +340,6 @@
     <string name="no_challenge_set">لم يُحدَّد هدف</string>
     <string name="challenge_best">الأفضل</string>
     <string name="challenge_target_label">الهدف</string>
-    <string name="challenge_clear_days">أُنجز %1$d/%2$d يوم</string>
     <string name="no_exercises_available">لا توجد تمارين متاحة</string>
     <string name="no_exercises_in_period">لا تمارين خلال %s</string>
     <string name="data_management">إدارة البيانات</string>
@@ -357,8 +354,6 @@
     <string name="groups">المجموعات</string>
     <string name="exercises">التمارين</string>
     <string name="records">السجلات</string>
-    <string name="count_items">%d عنصر</string>
-    <string name="count_records">%d سجل</string>
     <string name="import_data_preview_message">هل تريد استيراد هذه البيانات؟</string>
     <string name="next">التالي</string>
     <string name="data_overwrite_title">استبدال البيانات</string>
@@ -374,16 +369,15 @@
     <string name="already_in_use_format">«%1$s (%2$s)» مستخدم بالفعل</string>
     <string name="exercise_updated">حُدِّث التمرين</string>
     <string name="exercise_deleted">حُذف التمرين</string>
-    <string name="sets_recorded">سُجّلت %d مجموعات</string>
     <string name="record_updated">حُدّث السجل</string>
     <string name="record_deleted">حُذف السجل</string>
     <string name="group_created">أُنشئت المجموعة</string>
     <string name="group_already_exists">توجد مجموعة بالاسم نفسه</string>
     <string name="group_renamed">أُعيدت تسمية المجموعة</string>
     <string name="group_deleted">حُذفت المجموعة</string>
-    <string name="export_complete">اكتمل التصدير: %1$d مجموعات، %2$d تمارين، %3$d سجلات</string>
+    <string name="export_complete">اكتمل التصدير: %1$s، %2$s، %3$s</string>
     <string name="export_error">خطأ في التصدير: %s</string>
-    <string name="import_complete">اكتمل الاستيراد: %1$d مجموعات، %2$d تمارين، %3$d سجلات</string>
+    <string name="import_complete">اكتمل الاستيراد: %1$s، %2$s، %3$s</string>
     <string name="import_error">خطأ في الاستيراد: %s</string>
     <string name="workout_title">تمرين</string>
     <string name="no_exercises_yet_workout">لا توجد تمارين بعد</string>
@@ -498,11 +492,11 @@
     <string name="left_short">يسار</string>
     <string name="best_record">الأفضل</string>
     <string name="worst_record">الأدنى</string>
-    <string name="csv_export_success">صُدِّر %1$s: %2$d عنصر</string>
-    <string name="csv_template_exported">صُدِّر قالب CSV: %d تمارين</string>
+    <string name="csv_export_success">صُدِّر %1$s: %2$s</string>
+    <string name="csv_template_exported">صُدِّر قالب CSV: %s</string>
     <string name="csv_empty">ملف CSV فارغ</string>
-    <string name="csv_import_success">استُورد %d سجل</string>
-    <string name="csv_import_partial">استُورد %1$d سجل، وحدث %2$d خطأ</string>
+    <string name="csv_import_success">استُورد %s</string>
+    <string name="csv_import_partial">استُورد %1$s، مع %2$s</string>
     <string name="csv_import">استيراد CSV</string>
     <string name="csv_import_description">استيراد المجموعات أو التمارين أو السجلات (يُكتشف النوع تلقائيًا)</string>
     <string name="csv_export">تصدير CSV</string>
@@ -526,7 +520,6 @@
     <string name="csv_import_error_label">الأخطاء</string>
     <string name="csv_import_skipped_items">العناصر المتخطاة (%d)</string>
     <string name="csv_import_errors">الأخطاء (%d)</string>
-    <string name="csv_import_more_items">… و%d أخرى</string>
     <string name="section_full_backup">نسخة احتياطية كاملة (JSON)</string>
     <string name="section_full_backup_description">احفظ كل بياناتك واستعدها: التمارين والسجلات والبرامج والفترات والمهام.\nمفيد عند تغيير الجهاز.</string>
     <string name="section_partial_data_management">ملفات CSV</string>
@@ -558,8 +551,6 @@
     <string name="section_workout_settings_description">خصّص سلوك شاشة التمرين.</string>
     <string name="start_countdown_setting">العد التنازلي للبدء</string>
     <string name="set_interval_setting">الراحة بين المجموعات</string>
-    <string name="current_start_countdown">الحالي: %d ث</string>
-    <string name="current_set_interval">الحالي: %d ث</string>
     <string name="start_countdown_dialog_title">العد التنازلي للبدء</string>
     <string name="set_interval_dialog_title">الراحة بين المجموعات</string>
     <string name="set_interval_note">إعدادات التمرين نفسه لها الأولوية إن وُجدت.</string>
@@ -631,7 +622,6 @@
     <string name="start_countdown">العد التنازلي للبدء</string>
     <string name="program_exercises">التمارين</string>
     <string name="add_exercise_to_program">إضافة تمرين</string>
-    <string name="program_sets_format">%d مجموعات</string>
     <string name="program_target_format">%1$d %2$s</string>
     <string name="program_interval_format">راحة %d ث</string>
     <string name="delete_program">حذف البرنامج</string>
@@ -673,7 +663,6 @@
     <string name="isometric_interval_sound_description">التمارين الثابتة</string>
     <string name="nav_program_overview">نظرة على البرنامج</string>
     <string name="nav_overall_progress">التقدم الكلي</string>
-    <string name="nav_sets_format">%1$d / %2$d مجموعات</string>
     <string name="nav_done">تم</string>
     <string name="nav_current">الحالية</string>
     <string name="nav_redo">إعادة</string>
@@ -733,8 +722,7 @@
     <string name="interval_stop">إيقاف</string>
     <string name="interval_complete_title">اكتمل</string>
     <string name="interval_ended_title">انتهى</string>
-    <string name="interval_full_complete_format">اكتملت %1$d / %2$d جولات</string>
-    <string name="interval_partial_format">%1$d / %2$d جولات + %3$d / %4$d تمارين</string>
+    <string name="interval_partial_format">%1$s + %2$s</string>
     <string name="interval_partial_note">(أُوقف مبكرًا)</string>
     <string name="interval_exercises_done">التمارين</string>
     <string name="interval_comment_label">ملاحظة</string>
@@ -745,7 +733,7 @@
     <string name="interval_unsaved_title">لم يُحفظ السجل</string>
     <string name="interval_unsaved_message">لم يُحفظ سجل التمرين. هل تريد المغادرة دون حفظ؟</string>
     <string name="interval_unsaved_leave">مغادرة</string>
-    <string name="interval_settings_format">%1$d ث × %2$d تمارين × %3$d جولات</string>
+    <string name="interval_settings_format">%1$d ث × %2$s × %3$s</string>
     <string name="interval_record_rounds_format">%1$d/%2$d جولات</string>
     <string name="interval_record_complete">مكتمل</string>
     <string name="interval_record_partial">أُوقف مبكرًا</string>
@@ -768,24 +756,20 @@
     <string name="share_preview_programs">البرامج (%1$d)</string>
     <string name="share_preview_intervals">الفترات (%1$d)</string>
     <string name="share_preview_total_exercises">إجمالي التمارين: %1$d</string>
-    <string name="share_preview_auto_included">(%1$d مضمّنة تلقائيًا)</string>
     <string name="share_preview_groups">المجموعات: %1$d</string>
     <string name="share_no_programs">لا توجد برامج</string>
     <string name="share_no_intervals">لا توجد فترات</string>
     <string name="share_no_exercises">لا توجد تمارين</string>
     <string name="share_exercise_auto_included">مضمّن تلقائيًا من برنامج أو فترات</string>
     <string name="share_ungrouped">بلا مجموعة</string>
-    <string name="share_program_loops_format">، %1$d حلقات</string>
     <string name="share_import_dialog_title">استيراد ملف JSON مُشارَك</string>
     <string name="share_import_preview_new">جديد (ستُضاف)</string>
     <string name="share_import_preview_exists">موجود بالفعل (سيُتخطّى)</string>
     <string name="share_import_preview_nothing">كل العناصر موجودة بالفعل. لن يُضاف شيء.</string>
     <string name="share_import_complete">اكتمل الاستيراد</string>
-    <string name="share_import_added_reused">أُضيف %1$d، وأُعيد استخدام %2$d</string>
-    <string name="share_import_added_skipped">أُضيف %1$d، وتُخطّي %2$d</string>
+    <string name="share_import_added_reused">%1$s، و%2$s</string>
+    <string name="share_import_added_skipped">%1$s، و%2$s</string>
     <string name="share_import_errors">الأخطاء (%1$d)</string>
-    <string name="share_import_count_reused">أُعيد استخدام %1$d</string>
-    <string name="share_import_count_skipped">تُخطّي %1$d</string>
     <plurals name="loop_round_count">
         <item quantity="zero">%d جولة</item>
         <item quantity="one">جولة واحدة</item>
@@ -797,4 +781,149 @@
     <string name="crash_report_title">أُغلق Kalimory بشكل غير متوقع</string>
     <string name="crash_report_message">يمكنك مشاركة تقرير عن الخطأ لإصلاحه. يتضمن التقرير تفاصيل الخطأ وإصدار التطبيق وطراز هاتفك، ويمكنك قراءته قبل إرساله.</string>
     <string name="crash_report_share">مشاركة التقرير</string>
+    <!-- Counts: one entry per plural form of each language -->
+    <plurals name="sets_recorded">
+        <item quantity="zero">سُجّلت %d مجموعات</item>
+        <item quantity="one">سُجّلت مجموعة واحدة</item>
+        <item quantity="two">سُجّلت مجموعتان</item>
+        <item quantity="few">سُجّلت %d مجموعات</item>
+        <item quantity="many">سُجّلت %d مجموعة</item>
+        <item quantity="other">سُجّلت %d مجموعة</item>
+    </plurals>
+    <plurals name="count_items">
+        <item quantity="zero">%d عنصر</item>
+        <item quantity="one">عنصر واحد</item>
+        <item quantity="two">عنصران</item>
+        <item quantity="few">%d عناصر</item>
+        <item quantity="many">%d عنصرًا</item>
+        <item quantity="other">%d عنصر</item>
+    </plurals>
+    <plurals name="count_records">
+        <item quantity="zero">%d سجل</item>
+        <item quantity="one">سجل واحد</item>
+        <item quantity="two">سجلان</item>
+        <item quantity="few">%d سجلات</item>
+        <item quantity="many">%d سجلًا</item>
+        <item quantity="other">%d سجل</item>
+    </plurals>
+    <plurals name="group_count">
+        <item quantity="zero">%d مجموعة</item>
+        <item quantity="one">مجموعة واحدة</item>
+        <item quantity="two">مجموعتان</item>
+        <item quantity="few">%d مجموعات</item>
+        <item quantity="many">%d مجموعة</item>
+        <item quantity="other">%d مجموعة</item>
+    </plurals>
+    <plurals name="csv_error_count">
+        <item quantity="zero">%d خطأ</item>
+        <item quantity="one">خطأ واحد</item>
+        <item quantity="two">خطآن</item>
+        <item quantity="few">%d أخطاء</item>
+        <item quantity="many">%d خطأً</item>
+        <item quantity="other">%d خطأ</item>
+    </plurals>
+    <plurals name="csv_import_more_items">
+        <item quantity="zero">… و%d أخرى</item>
+        <item quantity="one">… و%d أخرى</item>
+        <item quantity="two">… و%d أخرى</item>
+        <item quantity="few">… و%d أخرى</item>
+        <item quantity="many">… و%d أخرى</item>
+        <item quantity="other">… و%d أخرى</item>
+    </plurals>
+    <plurals name="current_seconds">
+        <item quantity="zero">الحالي: %d ث</item>
+        <item quantity="one">الحالي: %d ث</item>
+        <item quantity="two">الحالي: %d ث</item>
+        <item quantity="few">الحالي: %d ث</item>
+        <item quantity="many">الحالي: %d ث</item>
+        <item quantity="other">الحالي: %d ث</item>
+    </plurals>
+    <plurals name="nav_sets_format">
+        <item quantity="zero">%1$d / %2$d مجموعة</item>
+        <item quantity="one">%1$d / %2$d مجموعة</item>
+        <item quantity="two">%1$d / %2$d مجموعات</item>
+        <item quantity="few">%1$d / %2$d مجموعات</item>
+        <item quantity="many">%1$d / %2$d مجموعة</item>
+        <item quantity="other">%1$d / %2$d مجموعة</item>
+    </plurals>
+    <plurals name="interval_full_complete_format">
+        <item quantity="zero">اكتملت %1$d / %2$d جولة</item>
+        <item quantity="one">اكتملت %1$d / %2$d جولة</item>
+        <item quantity="two">اكتملت %1$d / %2$d جولات</item>
+        <item quantity="few">اكتملت %1$d / %2$d جولات</item>
+        <item quantity="many">اكتملت %1$d / %2$d جولة</item>
+        <item quantity="other">اكتملت %1$d / %2$d جولة</item>
+    </plurals>
+    <plurals name="interval_rounds_progress">
+        <item quantity="zero">%1$d / %2$d جولة</item>
+        <item quantity="one">%1$d / %2$d جولة</item>
+        <item quantity="two">%1$d / %2$d جولات</item>
+        <item quantity="few">%1$d / %2$d جولات</item>
+        <item quantity="many">%1$d / %2$d جولة</item>
+        <item quantity="other">%1$d / %2$d جولة</item>
+    </plurals>
+    <plurals name="interval_exercises_progress">
+        <item quantity="zero">%1$d / %2$d تمرين</item>
+        <item quantity="one">%1$d / %2$d تمرين</item>
+        <item quantity="two">%1$d / %2$d تمارين</item>
+        <item quantity="few">%1$d / %2$d تمارين</item>
+        <item quantity="many">%1$d / %2$d تمرين</item>
+        <item quantity="other">%1$d / %2$d تمرين</item>
+    </plurals>
+    <plurals name="challenge_clear_days">
+        <item quantity="zero">أُنجز %1$d/%2$d يوم</item>
+        <item quantity="one">أُنجز %1$d/%2$d يوم</item>
+        <item quantity="two">أُنجز %1$d/%2$d يوم</item>
+        <item quantity="few">أُنجز %1$d/%2$d أيام</item>
+        <item quantity="many">أُنجز %1$d/%2$d يوم</item>
+        <item quantity="other">أُنجز %1$d/%2$d يوم</item>
+    </plurals>
+    <plurals name="change_format">
+        <item quantity="zero">%+d مجموعات</item>
+        <item quantity="one">%+d مجموعة</item>
+        <item quantity="two">%+d مجموعات</item>
+        <item quantity="few">%+d مجموعات</item>
+        <item quantity="many">%+d مجموعة</item>
+        <item quantity="other">%+d مجموعة</item>
+    </plurals>
+    <plurals name="share_program_loops_format">
+        <item quantity="zero">، %1$d حلقة</item>
+        <item quantity="one">، %1$d حلقة</item>
+        <item quantity="two">، %1$d حلقات</item>
+        <item quantity="few">، %1$d حلقات</item>
+        <item quantity="many">، %1$d حلقة</item>
+        <item quantity="other">، %1$d حلقة</item>
+    </plurals>
+    <plurals name="share_preview_auto_included">
+        <item quantity="zero">(%1$d مضمّنة تلقائيًا)</item>
+        <item quantity="one">(%1$d مضمّنة تلقائيًا)</item>
+        <item quantity="two">(%1$d مضمّنة تلقائيًا)</item>
+        <item quantity="few">(%1$d مضمّنة تلقائيًا)</item>
+        <item quantity="many">(%1$d مضمّنة تلقائيًا)</item>
+        <item quantity="other">(%1$d مضمّنة تلقائيًا)</item>
+    </plurals>
+    <plurals name="share_import_added">
+        <item quantity="zero">أُضيف %1$d</item>
+        <item quantity="one">أُضيف %1$d</item>
+        <item quantity="two">أُضيف %1$d</item>
+        <item quantity="few">أُضيف %1$d</item>
+        <item quantity="many">أُضيف %1$d</item>
+        <item quantity="other">أُضيف %1$d</item>
+    </plurals>
+    <plurals name="share_import_reused">
+        <item quantity="zero">أُعيد استخدام %1$d</item>
+        <item quantity="one">أُعيد استخدام %1$d</item>
+        <item quantity="two">أُعيد استخدام %1$d</item>
+        <item quantity="few">أُعيد استخدام %1$d</item>
+        <item quantity="many">أُعيد استخدام %1$d</item>
+        <item quantity="other">أُعيد استخدام %1$d</item>
+    </plurals>
+    <plurals name="share_import_skipped">
+        <item quantity="zero">تُخطّي %1$d</item>
+        <item quantity="one">تُخطّي %1$d</item>
+        <item quantity="two">تُخطّي %1$d</item>
+        <item quantity="few">تُخطّي %1$d</item>
+        <item quantity="many">تُخطّي %1$d</item>
+        <item quantity="other">تُخطّي %1$d</item>
+    </plurals>
 </resources>
