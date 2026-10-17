@@ -10,6 +10,9 @@ Calisthenics Memory by Gonbei774.
 
 ## [Unreleased]
 
+### Added
+- After a crash, the app offers on its next start to share a report of the error through the share sheet, or to delete it; the report stays on the phone and is never sent by itself ([#192](https://github.com/WildeBeast2521/kalimory/pull/192))
+
 ### Fixed
 - A program shows the same estimated time in the Train and To Do lists as on its start screen, including after a workout changes what it will open with ([#178](https://github.com/WildeBeast2521/kalimory/pull/178))
 
