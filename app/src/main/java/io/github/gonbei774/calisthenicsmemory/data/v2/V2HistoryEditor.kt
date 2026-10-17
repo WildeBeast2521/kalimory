@@ -105,7 +105,7 @@ object V2HistoryEditor {
     }
 
     // Call inside a transaction.
-    private suspend fun moveSession(database: AppDatabase, sessionId: Long, start: Long, comment: String, nowEpochMillis: Long) {
+    internal suspend fun moveSession(database: AppDatabase, sessionId: Long, start: Long, comment: String, nowEpochMillis: Long) {
         val dao = database.workoutSessionDao()
         val session = dao.session(sessionId) ?: return
         val shift = start - session.startedAtEpochMillis

@@ -75,6 +75,29 @@ sealed class RecordItem(val date: String, val time: String) {
 
 private const val PROGRESSIONS_PAGE = 3
 
+/**
+ * History's cards, newest first: one per exercise and saved minute, and for v2 sets also per
+ * workout, so two workouts saved in the same minute never share a card (ADR 0009, decision 7).
+ */
+internal fun historyCards(records: List<HistorySet>): List<SessionInfo> =
+    records
+        .groupBy { listOf(it.source, it.exerciseId, it.date, it.time, it.workoutSessionId) }
+        .map { (_, sessionRecords) ->
+            val first = sessionRecords.first()
+            SessionInfo(
+                exerciseId = first.exerciseId,
+                date = first.date,
+                time = first.time,
+                comment = first.comment,
+                records = sessionRecords.sortedBy { it.setNumber },
+                source = first.source
+            )
+        }
+        .sortedWith(
+            compareByDescending<SessionInfo> { it.date }
+                .thenByDescending { it.time }
+        )
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ViewScreen(
@@ -124,25 +147,7 @@ fun ViewScreen(
     var showIntervalEditDialog by remember { mutableStateOf<RecordItem.Interval?>(null) }
 
     // 一覧モード用のセッションデータ
-    val sessions = remember(records, exercises) {
-        records
-            .groupBy { "${it.source}-${it.exerciseId}-${it.date}-${it.time}" }
-            .map { (_, sessionRecords) ->
-                val first = sessionRecords.first()
-                SessionInfo(
-                    exerciseId = first.exerciseId,
-                    date = first.date,
-                    time = first.time,
-                    comment = first.comment,
-                    records = sessionRecords.sortedBy { it.setNumber },
-                    source = first.source
-                )
-            }
-            .sortedWith(
-                compareByDescending<SessionInfo> { it.date }
-                    .thenByDescending { it.time }
-            )
-    }
+    val sessions = remember(records, exercises) { historyCards(records) }
 
     // フィルター済みセッション（種目＋期間）
     val filteredSessions = remember(sessions, selectedExerciseFilter, selectedPeriod) {
