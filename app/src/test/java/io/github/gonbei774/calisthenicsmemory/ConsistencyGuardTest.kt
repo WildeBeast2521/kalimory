@@ -47,6 +47,25 @@ class ConsistencyGuardTest {
         assertTrue("Use a plurals resource: $offenders", offenders.isEmpty())
     }
 
+    private val stringFiles = main.resolve("res").listFiles { dir -> dir.name.startsWith("values") }.orEmpty()
+        .flatMap { dir -> listOf("strings.xml", "catalogue_strings.xml").map { dir.resolve(it) }.filter { it.exists() } }
+    private val stringValue = Regex("""<(?:string name="([^"]+)"[^>]*|item quantity="[^"]+")>([^<]*)<""")
+
+    @Test fun `strings use the ellipsis character, never three dots`() {
+        val offenders = stringFiles.flatMap { file ->
+            stringValue.findAll(file.readText()).filter { "..." in it.groupValues[2] }.map { "${file.parentFile.name}/${it.groupValues[1]}" }
+        }
+        assertTrue("Use … instead of ...: $offenders", offenders.isEmpty())
+    }
+
+    @Test fun `French puts a space before colons, semicolons, question and exclamation marks`() {
+        val offenders = stringFiles.filter { it.parentFile.name == "values-fr" }.flatMap { file ->
+            stringValue.findAll(file.readText()).filter { Regex("""\p{L}[:;?!]""").containsMatchIn(it.groupValues[2]) }
+                .map { it.groupValues[1] }
+        }
+        assertTrue("French typography needs a space before : ; ? !: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `user facing English strings use sentence case for dialog and screen titles`() {
         val strings = main.resolve("res/values/strings.xml").readText()
         val titleCase = listOf("Stop Workout?", "New Program", "Delete Program", "Set Challenge", "Get Ready", "Partial Data Management")

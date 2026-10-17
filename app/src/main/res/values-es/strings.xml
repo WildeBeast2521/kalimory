@@ -75,7 +75,7 @@
     <string name="right_value_label">Valor Derecho</string>
     <string name="left_value_label">Valor Izquierdo</string>
     <string name="show_all">Mostrar Todo</string>
-    <string name="search_exercise">Buscar Ejercicio...</string>
+    <string name="search_exercise">Buscar Ejercicio…</string>
     <!-- Period filters -->
     <string name="period_one_week">1 Semana</string>
     <string name="period_one_month">1 Mes</string>
@@ -246,7 +246,7 @@
     <string name="csv_import_error_label">Errores</string>
     <string name="csv_import_skipped_items">Elementos Omitidos (%d)</string>
     <string name="csv_import_errors">Errores (%d)</string>
-    <string name="csv_import_more_items">... y %d más</string>
+    <string name="csv_import_more_items">… y %d más</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">Copia de Seguridad Completa (JSON)</string>
     <string name="section_full_backup_description">Guarda y restaura todos tus datos: ejercicios, registros, programas, intervalos y tareas.\nÚsalo al cambiar de dispositivo.</string>

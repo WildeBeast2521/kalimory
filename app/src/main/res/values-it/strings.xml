@@ -75,7 +75,7 @@
     <string name="right_value_label">Valore Destra</string>
     <string name="left_value_label">Valore Sinistra</string>
     <string name="show_all">Mostra Tutto</string>
-    <string name="search_exercise">Cerca Esercizio...</string>
+    <string name="search_exercise">Cerca Esercizio…</string>
     <!-- Period filters -->
     <string name="period_one_week">1 Settimana</string>
     <string name="period_one_month">1 Mese</string>
@@ -246,7 +246,7 @@
     <string name="csv_import_error_label">Errori</string>
     <string name="csv_import_skipped_items">Elementi Saltati (%d)</string>
     <string name="csv_import_errors">Errori (%d)</string>
-    <string name="csv_import_more_items">... e %d in più</string>
+    <string name="csv_import_more_items">… e %d in più</string>
     <!-- Settings Screen Sections -->
     <string name="section_full_backup">Backup Completo (JSON)</string>
     <string name="section_full_backup_description">Salva e ripristina tutti i tuoi dati: esercizi, registrazioni, programmi, intervalli e attività.\nDa usare quando cambi dispositivo.</string>
