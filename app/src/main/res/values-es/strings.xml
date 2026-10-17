@@ -832,4 +832,7 @@
         <item quantity="many">%d rondas</item>
         <item quantity="other">%d rondas</item>
     </plurals>
+    <string name="crash_report_title">Kalimory se cerró de forma inesperada</string>
+    <string name="crash_report_message">Puedes compartir un informe del error para que se pueda corregir. Contiene los detalles del error, la versión de la app y el modelo de tu teléfono, y puedes leerlo antes de enviarlo.</string>
+    <string name="crash_report_share">Compartir informe</string>
 </resources>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-   Android Auto Backup on Android 11 and earlier. Nothing is excluded on purpose: the database
-   and settings are the user's own data, and a restore onto a new phone should bring them back.
-   Android 12 and later read data_extraction_rules.xml instead.
+   Android Auto Backup on Android 11 and earlier. With no <include>, everything else is backed up
+   on purpose: the database and settings are the user's own data, and a restore onto a new phone
+   should bring them back. Crash reports stay on the phone that crashed: they leave it only when
+   the user shares one. Android 12 and later read data_extraction_rules.xml instead.
 -->
-<full-backup-content />
+<full-backup-content>
+    <exclude domain="file" path="crash-reports/" />
+</full-backup-content>

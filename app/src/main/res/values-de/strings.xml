@@ -825,4 +825,7 @@
         <item quantity="one">%d Runde</item>
         <item quantity="other">%d Runden</item>
     </plurals>
+    <string name="crash_report_title">Kalimory wurde unerwartet beendet</string>
+    <string name="crash_report_message">Du kannst einen Bericht über den Fehler teilen, damit er behoben werden kann. Er enthält die Fehlerdetails, die App-Version und dein Handymodell, und du kannst ihn vor dem Senden lesen.</string>
+    <string name="crash_report_share">Bericht teilen</string>
 </resources>

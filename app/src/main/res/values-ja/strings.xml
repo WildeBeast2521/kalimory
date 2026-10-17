@@ -831,4 +831,7 @@
     <plurals name="loop_round_count">
         <item quantity="other">%d ラウンド</item>
     </plurals>
+    <string name="crash_report_title">Kalimory が予期せず終了しました</string>
+    <string name="crash_report_message">エラーのレポートを共有すると、問題の修正に役立ちます。レポートにはエラーの詳細、アプリのバージョン、端末の機種が含まれ、送信前に内容を確認できます。</string>
+    <string name="crash_report_share">レポートを共有</string>
 </resources>

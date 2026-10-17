@@ -782,4 +782,7 @@
         <item quantity="many">%d кругов</item>
         <item quantity="other">%d круга</item>
     </plurals>
+    <string name="crash_report_title">Приложение Kalimory неожиданно закрылось</string>
+    <string name="crash_report_message">Отчётом об ошибке можно поделиться, чтобы её исправили. В нём есть сведения об ошибке, версия приложения и модель телефона, и перед отправкой его можно прочитать.</string>
+    <string name="crash_report_share">Поделиться отчётом</string>
 </resources>

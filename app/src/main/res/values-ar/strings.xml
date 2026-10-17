@@ -794,4 +794,7 @@
         <item quantity="many">%d جولة</item>
         <item quantity="other">%d جولة</item>
     </plurals>
+    <string name="crash_report_title">أُغلق Kalimory بشكل غير متوقع</string>
+    <string name="crash_report_message">يمكنك مشاركة تقرير عن الخطأ لإصلاحه. يتضمن التقرير تفاصيل الخطأ وإصدار التطبيق وطراز هاتفك، ويمكنك قراءته قبل إرساله.</string>
+    <string name="crash_report_share">مشاركة التقرير</string>
 </resources>

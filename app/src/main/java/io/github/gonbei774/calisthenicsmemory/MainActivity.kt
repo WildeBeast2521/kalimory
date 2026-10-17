@@ -116,6 +116,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.IntervalExecutionScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.CommunityShareExportScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.BackupScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.DatabaseUnavailableScreen
+import io.github.gonbei774.calisthenicsmemory.ui.screens.CrashReportOffer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import io.github.gonbei774.calisthenicsmemory.ui.screens.CsvDataManagementScreen
@@ -404,6 +405,9 @@ fun CalisthenicsMemoryApp(
         WelcomeGuide(onFinish = { close(Screen.Home) }, onAddExercise = { close(Screen.Create) })
         return
     }
+
+    // After a crash, the kept report is offered once (never over the welcome guide).
+    CrashReportOffer()
 
     val showPrimaryNavigation = currentScreen is Screen.Home
 

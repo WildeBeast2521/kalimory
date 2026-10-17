@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-   Android 12+ cloud backup and device-to-device transfer. Empty rules keep the default: all app
-   data (the database and settings) is included, so moving to a new phone keeps the user's
-   training. The app's own JSON backups remain the portable, user-controlled copy.
+   Android 12+ cloud backup and device-to-device transfer. With no <include>, all app data (the
+   database and settings) is included, so moving to a new phone keeps the user's training. The
+   app's own JSON backups remain the portable, user-controlled copy. Crash reports stay on the
+   phone that crashed: they leave it only when the user shares one.
 -->
 <data-extraction-rules>
-    <cloud-backup />
-    <device-transfer />
+    <cloud-backup>
+        <exclude domain="file" path="crash-reports/" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="file" path="crash-reports/" />
+    </device-transfer>
 </data-extraction-rules>

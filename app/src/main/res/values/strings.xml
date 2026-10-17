@@ -833,4 +833,7 @@
         <item quantity="one">%d round</item>
         <item quantity="other">%d rounds</item>
     </plurals>
+    <string name="crash_report_title">Kalimory closed unexpectedly</string>
+    <string name="crash_report_message">You can share a report of the error so it can be fixed. It contains the error details, the app version and your phone model, and you can read it before sending it.</string>
+    <string name="crash_report_share">Share report</string>
 </resources>
