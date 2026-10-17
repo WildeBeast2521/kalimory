@@ -65,6 +65,20 @@ interface WorkoutSessionDao {
     )
     suspend fun deleteEmptySessions(ids: List<Long>)
 
+    @Query("DELETE FROM set_entries WHERE id IN (:ids)")
+    suspend fun deleteSetEntries(ids: List<Long>)
+
+    /** The v2 copies of legacy records (ADR 0003), which History hides behind the records. */
+    @Query("SELECT * FROM set_entries WHERE legacyTrainingRecordId IN (:recordIds)")
+    suspend fun setEntriesLinkedTo(recordIds: List<Long>): List<SetEntryEntity>
+
+    /** Deletes those of [ids] that no longer have any set. */
+    @Query(
+        "DELETE FROM session_exercises WHERE id IN (:ids) " +
+            "AND NOT EXISTS (SELECT 1 FROM set_entries WHERE sessionExerciseId = session_exercises.id)"
+    )
+    suspend fun deleteEmptySessionExercises(ids: List<Long>)
+
     @Query("SELECT * FROM workout_sessions ORDER BY startedAtEpochMillis DESC, id DESC")
     suspend fun sessionsNewestFirst(): List<WorkoutSessionEntity>
 

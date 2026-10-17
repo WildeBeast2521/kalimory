@@ -30,6 +30,16 @@ interface TrainingRecordDao {
     @Query("DELETE FROM training_records WHERE exerciseId = :exerciseId AND date = :date AND time = :time")
     suspend fun deleteSession(exerciseId: Long, date: String, time: String)
 
+    /** One legacy workout: every record one save stamped with this date, minute and comment. */
+    @Query("SELECT * FROM training_records WHERE date = :date AND time = :time AND comment = :comment ORDER BY id")
+    suspend fun workoutRecords(date: String, time: String, comment: String): List<TrainingRecord>
+
+    @Update
+    suspend fun updateRecords(records: List<TrainingRecord>)
+
+    @Query("DELETE FROM training_records WHERE id IN (:ids)")
+    suspend fun deleteRecordsByIds(ids: List<Long>)
+
     @Query("SELECT * FROM training_records WHERE exerciseId = :exerciseId AND date = :date AND time = :time")
     suspend fun getSessionRecords(exerciseId: Long, date: String, time: String): List<TrainingRecord>
 

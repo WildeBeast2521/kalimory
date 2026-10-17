@@ -30,6 +30,8 @@ data class HistorySet(
     val assistanceG: Int?,
     /** The v2 exercise occurrence this set belongs to; null for legacy rows. */
     val sessionExerciseId: Long? = null,
+    /** The v2 workout this set belongs to; null for legacy rows. */
+    val workoutSessionId: Long? = null,
 ) {
     /** The legacy row behind this set, for legacy edit and delete actions; null for v2-only sets. */
     fun toLegacyRecord(): TrainingRecord? = legacyRecordId?.takeIf { source == HistorySource.LEGACY }?.let {
@@ -111,6 +113,7 @@ object CompatibilityHistory {
                 weightG = primary.addedWeightGrams,
                 assistanceG = primary.assistanceGrams,
                 sessionExerciseId = primary.sessionExerciseId,
+                workoutSessionId = primary.workoutSessionId,
             )
         }
         return (legacySets + v2Sets).sortedWith(
