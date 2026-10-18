@@ -1,1 +1,5 @@
 blank_issues_enabled: false
+contact_links:
+  - name: Security problem
+    url: https://github.com/WildeBeast2521/kalimory/security/advisories/new
+    about: Report a vulnerability privately instead of opening a public issue. See SECURITY.md.
