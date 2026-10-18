@@ -46,6 +46,10 @@ git rev-parse --quiet --verify "refs/tags/$tag" >/dev/null && fail "tag $tag alr
 [ -f keystore.properties ] || fail "keystore.properties is missing; the release must be signed"
 grep -q "^## \[$version_name\] - [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}$" CHANGELOG.md \
     || fail "CHANGELOG.md needs a dated entry: ## [$version_name] - YYYY-MM-DD"
+grep -qxF "[$version_name]: https://github.com/WildeBeast2521/kalimory/releases/tag/v$version_name" CHANGELOG.md \
+    || fail "CHANGELOG.md needs the link [$version_name]: https://github.com/WildeBeast2521/kalimory/releases/tag/v$version_name"
+grep -qxF "[Unreleased]: https://github.com/WildeBeast2521/kalimory/compare/v$version_name...HEAD" CHANGELOG.md \
+    || fail "CHANGELOG.md needs [Unreleased]: https://github.com/WildeBeast2521/kalimory/compare/v$version_name...HEAD"
 changelog_file="fastlane/metadata/android/en-US/changelogs/$version_code.txt"
 [ -f "$changelog_file" ] || fail "$changelog_file is missing"
 [ "$(wc -c < "$changelog_file")" -le 500 ] || fail "$changelog_file is longer than 500 characters"

@@ -111,7 +111,9 @@ deterministic and offline. A known flaky test is named in the release log, never
 The first Kalimory release is 1.0.0 (versionCode 1). For a release:
 
 1. Bump `versionCode` (always +1) and `versionName` in `app/build.gradle.kts`.
-2. Date the CHANGELOG entry (`## [x.y.z] - YYYY-MM-DD`) and add
+2. Date the CHANGELOG entry (`## [x.y.z] - YYYY-MM-DD`), keep an empty `## [Unreleased]` above it,
+   and at the bottom add `[x.y.z]: https://github.com/WildeBeast2521/kalimory/releases/tag/vx.y.z` and
+   point `[Unreleased]` at `compare/vx.y.z...HEAD`. Add
    `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt` (500 characters at most).
 3. Merge to master, start the API 29 emulator, then run `scripts/release.sh --dry-run` and,
    when it passes, `scripts/release.sh`. It runs every check, builds and verifies the signed APK
@@ -133,7 +135,9 @@ Signing needs `keystore.properties`, which only the maintainer's machine has. Wi
 
 One standard, for every release:
 
-- `CHANGELOG.md` follows Keep a Changelog. A release is `## [x.y.z] - YYYY-MM-DD` with the
+- `CHANGELOG.md` follows Keep a Changelog. Every version heading has a link at the bottom of the file:
+  Kalimory versions to their GitHub release, and the original app's releases, headed
+  `Calisthenics Memory x.y.z`, to Codeberg. `ChangelogTest` checks it. A release is `## [x.y.z] - YYYY-MM-DD` with the
   sections that apply, in this order: `### Added`, `### Changed`, `### Fixed`, `### Removed`.
 - Each bullet is one change a user can notice, written as a plain sentence in the present tense,
   ending with the pull request that made it: `([#143](https://github.com/WildeBeast2521/kalimory/pull/143))`.
