@@ -115,21 +115,28 @@ The first Kalimory release is 1.0.0 (versionCode 1). For a release:
    and at the bottom add `[x.y.z]: https://github.com/WildeBeast2521/kalimory/releases/tag/vx.y.z` and
    point `[Unreleased]` at `compare/vx.y.z...HEAD`. Add
    `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt` (500 characters at most).
-3. Merge to master, start the API 29 emulator, then run `scripts/release.sh --dry-run` and,
-   when it passes, `scripts/release.sh`. It runs every check, builds and verifies the signed APK
-   (certificate, package, version, no INTERNET), tags `v<versionName>` and creates the GitHub
-   release with the APK and its SHA-256.
+3. Merge to master, then run `scripts/release.sh --dry-run` and, when it passes,
+   `scripts/release.sh`. It runs `scripts/release-checks.sh`, shows the release notes, and tags
+   and pushes `v<versionName>`.
+4. The tag starts `.github/workflows/release.yml`. It runs the whole CI (unit tests, lint, builds
+   and the API 29 instrumented tests), then the release checks again, builds the APK signed with
+   the key from the `release` environment's secrets, verifies it (certificate, package, version,
+   no INTERNET) and drafts the GitHub release with the APK and its SHA-256.
+5. Read the draft, then publish it. Download the run's `mapping-x.y.z` artifact (kept 90 days) and
+   keep it to read stack traces.
 
 The release build is minified with R8 (`proguard-rules.pro` keeps only line numbers; the app uses
-no reflection). Keep each release's `build/release/mapping-x.y.z.txt` to read stack traces.
+no reflection).
 
 After a crash, the app keeps a report on the phone and offers to share it on the next launch
 (`data/CrashReports.kt`; never sent automatically, left out of Android backups). A shared report
 names its version; save its trace to a file and turn it back into source names with
-`$ANDROID_HOME/cmdline-tools/latest/bin/retrace build/release/mapping-x.y.z.txt trace.txt`.
+`$ANDROID_HOME/cmdline-tools/latest/bin/retrace mapping-x.y.z.txt trace.txt`.
 
-Signing needs `keystore.properties`, which only the maintainer's machine has. Without it,
-`assembleRelease` builds an unsigned APK (what F-Droid builds from source).
+Signing needs the release key: in CI, the `release` environment's secrets, which only `v*` tags can
+use; locally, `keystore.properties`, which only the maintainer's machine has. Without either,
+`assembleRelease` builds an unsigned APK (what F-Droid builds from source). The certificate's
+SHA-256 is in `.github/release-certificate.sha256`; a release signed with any other key is refused.
 
 ## Changelog and release notes
 
@@ -146,10 +153,11 @@ One standard, for every release:
   it to the version and date.
 - The Fastlane changelog `changelogs/<versionCode>.txt` (500 characters at most) is a two- or
   three-sentence summary of the same section, for app stores.
-- The GitHub release is titled `Kalimory x.y.z` and its text is exactly that CHANGELOG section plus
-  the footer `scripts/release.sh` adds (the comparison with the previous tag and how to verify the
-  APK). Nothing is edited by hand on the release page, and no tool or AI attribution appears in
-  the CHANGELOG, the Fastlane changelog or the release; the script refuses notes that contain it.
+- The GitHub release is titled `vx.y.z` and its text is exactly that CHANGELOG section in
+  `.github/release-notes-template.md` (the comparison with the previous tag and how to verify the
+  APK), written by `scripts/release-notes.py`. Nothing is edited by hand on the release page, and
+  no tool or AI attribution appears in the CHANGELOG, the Fastlane changelog or the release; the
+  scripts refuse notes that contain it.
 - Assets: `Kalimory-x.y.z.apk` and `Kalimory-x.y.z.apk.sha256`.
 
 ## Wiki
