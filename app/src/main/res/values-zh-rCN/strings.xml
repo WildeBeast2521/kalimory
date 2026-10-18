@@ -26,8 +26,8 @@
     <string name="set_challenge">设定目标</string>
     <string name="sets_count">组数</string>
     <!-- Will be replaced with "Reps" or "Seconds" -->
-    <string name="target_format">%1$s × %2$d%3$s</string>
-    <string name="target_format_unilateral">%1$s × %2$d%3$s（每侧）</string>
+    <string name="target_format">%1$s × %2$s</string>
+    <string name="target_format_unilateral">%1$s × %2$s（每侧）</string>
     <string name="laterality">单双侧</string>
     <string name="one_sided">单侧</string>
     <string name="group_optional">分组（可选）</string>
@@ -49,8 +49,8 @@
     <string name="select_exercise_please">请选择动作</string>
     <string name="select_from_top">从上方「选择动作」选择</string>
     <string name="no_records_for_exercise">此动作暂无记录</string>
-    <string name="target_display">目标：%1$s × %2$d%3$s</string>
-    <string name="target_display_unilateral">目标：%1$s × %2$d%3$s（每侧）</string>
+    <string name="target_display">目标：%1$s × %2$s</string>
+    <string name="target_display_unilateral">目标：%1$s × %2$s（每侧）</string>
     <string name="right">右侧</string>
     <string name="left">左侧</string>
     <string name="right_value_short">右：%1$d%2$s</string>
@@ -866,5 +866,8 @@
     </plurals>
     <plurals name="share_import_skipped">
         <item quantity="other">%1$d 已跳过</item>
+    </plurals>
+    <plurals name="target_reps">
+        <item quantity="other">%d次</item>
     </plurals>
 </resources>

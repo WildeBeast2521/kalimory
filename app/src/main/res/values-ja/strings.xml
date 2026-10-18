@@ -25,8 +25,8 @@
     <string name="exercise_name">種目名</string>
     <string name="set_challenge">課題を設定</string>
     <string name="sets_count">セット数</string>
-    <string name="target_format">%1$s × %2$d%3$s</string>
-    <string name="target_format_unilateral">%1$s × %2$d%3$s(片方)</string>
+    <string name="target_format">%1$s × %2$s</string>
+    <string name="target_format_unilateral">%1$s × %2$s(片方)</string>
     <string name="laterality">左右</string>
     <string name="one_sided">片側</string>
     <string name="group_optional">グループ（任意）</string>
@@ -49,8 +49,8 @@
     <string name="select_exercise_please">種目を選択してください</string>
     <string name="select_from_top">上部の「種目を選択」から種目を選んでください</string>
     <string name="no_records_for_exercise">この種目の記録はありません</string>
-    <string name="target_display">目標: %1$s × %2$d%3$s</string>
-    <string name="target_display_unilateral">目標: %1$s × %2$d%3$s (片方あたり)</string>
+    <string name="target_display">目標: %1$s × %2$s</string>
+    <string name="target_display_unilateral">目標: %1$s × %2$s (片方あたり)</string>
     <string name="right">右</string>
     <string name="left">左</string>
     <string name="right_value_short">右: %1$d%2$s</string>
@@ -872,5 +872,8 @@
     </plurals>
     <plurals name="share_import_skipped">
         <item quantity="other">%1$d スキップ</item>
+    </plurals>
+    <plurals name="target_reps">
+        <item quantity="other">%d回</item>
     </plurals>
 </resources>

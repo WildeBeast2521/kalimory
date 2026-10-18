@@ -265,8 +265,8 @@
     <string name="exercise_name">اسم التمرين</string>
     <string name="set_challenge">تحديد هدف</string>
     <string name="sets_count">المجموعات</string>
-    <string name="target_format">%1$s × %2$d %3$s</string>
-    <string name="target_format_unilateral">%1$s × %2$d %3$s (لكل جانب)</string>
+    <string name="target_format">%1$s × %2$s</string>
+    <string name="target_format_unilateral">%1$s × %2$s (لكل جانب)</string>
     <string name="laterality">الجانب</string>
     <string name="one_sided">جانب واحد</string>
     <string name="group_optional">المجموعة (اختيارية)</string>
@@ -288,8 +288,8 @@
     <string name="select_exercise_please">يُرجى اختيار تمرين</string>
     <string name="select_from_top">اختر من «اختر تمرينًا» في الأعلى</string>
     <string name="no_records_for_exercise">لا توجد سجلات لهذا التمرين</string>
-    <string name="target_display">الهدف: %1$s × %2$d %3$s</string>
-    <string name="target_display_unilateral">الهدف: %1$s × %2$d %3$s (لكل جانب)</string>
+    <string name="target_display">الهدف: %1$s × %2$s</string>
+    <string name="target_display_unilateral">الهدف: %1$s × %2$s (لكل جانب)</string>
     <string name="right">اليمين</string>
     <string name="left">اليسار</string>
     <string name="right_value_short">ي: %1$d %2$s</string>
@@ -925,5 +925,13 @@
         <item quantity="few">تُخطّي %1$d</item>
         <item quantity="many">تُخطّي %1$d</item>
         <item quantity="other">تُخطّي %1$d</item>
+    </plurals>
+    <plurals name="target_reps">
+        <item quantity="zero">%d تكرار</item>
+        <item quantity="one">تكرار واحد</item>
+        <item quantity="two">تكراران</item>
+        <item quantity="few">%d تكرارات</item>
+        <item quantity="many">%d تكرارًا</item>
+        <item quantity="other">%d تكرار</item>
     </plurals>
 </resources>

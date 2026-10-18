@@ -26,8 +26,8 @@
     <string name="set_challenge">Imposta Obiettivo</string>
     <string name="sets_count">Serie</string>
     <!-- Will be replaced with "Reps" or "Seconds" -->
-    <string name="target_format">%1$s × %2$d %3$s</string>
-    <string name="target_format_unilateral">%1$s × %2$d %3$s (per lato)</string>
+    <string name="target_format">%1$s × %2$s</string>
+    <string name="target_format_unilateral">%1$s × %2$s (per lato)</string>
     <string name="laterality">Lateralità</string>
     <string name="one_sided">Un lato</string>
     <string name="group_optional">Gruppo (Opzionale)</string>
@@ -49,8 +49,8 @@
     <string name="select_exercise_please">Seleziona un esercizio</string>
     <string name="select_from_top">Scegli da \"Seleziona Esercizio\" sopra</string>
     <string name="no_records_for_exercise">Nessuna registrazione per questo esercizio</string>
-    <string name="target_display">Obiettivo: %1$s × %2$d %3$s</string>
-    <string name="target_display_unilateral">Obiettivo: %1$s × %2$d %3$s (per lato)</string>
+    <string name="target_display">Obiettivo: %1$s × %2$s</string>
+    <string name="target_display_unilateral">Obiettivo: %1$s × %2$s (per lato)</string>
     <string name="right">Destra</string>
     <string name="left">Sinistra</string>
     <string name="right_value_short">D: %1$d %2$s</string>
@@ -914,5 +914,10 @@
         <item quantity="one">%1$d saltato</item>
         <item quantity="many">%1$d saltati</item>
         <item quantity="other">%1$d saltati</item>
+    </plurals>
+    <plurals name="target_reps">
+        <item quantity="one">%d rip</item>
+        <item quantity="many">%d rip</item>
+        <item quantity="other">%d rip</item>
     </plurals>
 </resources>

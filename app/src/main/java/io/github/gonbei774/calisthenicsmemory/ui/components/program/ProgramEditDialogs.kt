@@ -265,7 +265,7 @@ private fun ProgramExerciseSelectItem(
                         text = targetText(
                             exercise.targetSets!!,
                             exercise.targetValue!!,
-                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                            dynamic = exercise.type == "Dynamic",
                             unilateral = exercise.laterality == "Unilateral",
                         ),
                         fontSize = 10.sp,
@@ -425,7 +425,7 @@ private fun ProgramSelectExerciseGroup(
                                         text = targetText(
                                             exercise.targetSets!!,
                                             exercise.targetValue!!,
-                                            stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                                            dynamic = exercise.type == "Dynamic",
                                             unilateral = exercise.laterality == "Unilateral",
                                         ),
                                         fontSize = 10.sp,

@@ -620,7 +620,7 @@ fun ExerciseSelectionItem(
                             text = targetText(
                                 exercise.targetSets!!,
                                 exercise.targetValue!!,
-                                stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                                dynamic = exercise.type == "Dynamic",
                                 unilateral = exercise.laterality == "Unilateral",
                             ),
                             fontSize = 12.sp,
@@ -1007,7 +1007,7 @@ fun WorkoutInputScreen(
                                 text = targetText(
                                     exercise.targetSets!!,
                                     exercise.targetValue!!,
-                                    stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
+                                    dynamic = exercise.type == "Dynamic",
                                     unilateral = exercise.laterality == "Unilateral",
                                     display = true,
                                 ),

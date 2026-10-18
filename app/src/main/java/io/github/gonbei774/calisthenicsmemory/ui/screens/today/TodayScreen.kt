@@ -142,8 +142,7 @@ fun TodayScreen(
         val exercise = exercisesById[exerciseId] ?: return workoutLabel
         val sets = exercise.targetSets ?: return workoutLabel
         val value = exercise.targetValue ?: return workoutLabel
-        val unit = if (exercise.type == "Dynamic") repsUnit else secondsUnit
-        return targetText(sets, value, unit, unilateral = exercise.laterality == "Unilateral")
+        return targetText(sets, value, dynamic = exercise.type == "Dynamic", unilateral = exercise.laterality == "Unilateral")
     }
     val programLabel = stringResource(R.string.today_kind_program)
     val intervalLabel = stringResource(R.string.interval_label)

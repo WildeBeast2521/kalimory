@@ -56,4 +56,21 @@ class PluralsFormatTest {
         assertEquals("سُجّلت مجموعتان", recorded("ar", 2))
         assertEquals("Записано 5 подходов", recorded("ru", 5))
     }
+
+    @Test fun `a target reads with the right forms for its sets and repetitions`() {
+        // As targetText builds it: the set count and the repetitions, each in its own plural.
+        fun target(tag: String, sets: Int, reps: Int): String {
+            val resources = context(tag).resources
+            return resources.getString(
+                R.string.target_format,
+                resources.getQuantityString(R.plurals.set_count, sets, sets),
+                resources.getQuantityString(R.plurals.target_reps, reps, reps),
+            )
+        }
+        assertEquals("3 sets × 1 rep", target("en", 3, 1))
+        assertEquals("1 set × 12 reps", target("en", 1, 12))
+        assertEquals("3 підходи × 1 раз", target("uk", 3, 1))
+        assertEquals("5 підходів × 3 рази", target("uk", 5, 3))
+        assertEquals("3セット × 10回", target("ja", 3, 10))
+    }
 }

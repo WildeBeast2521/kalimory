@@ -26,8 +26,8 @@
     <string name="set_challenge">Ziel festlegen</string>
     <string name="sets_count">Sätze</string>
     <!-- Will be replaced with "Reps" or "Seconds" -->
-    <string name="target_format">%1$s × %2$d %3$s</string>
-    <string name="target_format_unilateral">%1$s × %2$d %3$s (pro Seite)</string>
+    <string name="target_format">%1$s × %2$s</string>
+    <string name="target_format_unilateral">%1$s × %2$s (pro Seite)</string>
     <string name="laterality">Seitigkeit</string>
     <string name="one_sided">Einseitig</string>
     <string name="group_optional">Gruppe (optional)</string>
@@ -49,8 +49,8 @@
     <string name="select_exercise_please">Bitte wähle eine Übung aus</string>
     <string name="select_from_top">Wähle oben aus unter „Übung auswählen“</string>
     <string name="no_records_for_exercise">Keine Aufzeichnungen für diese Übung</string>
-    <string name="target_display">Ziel: %1$s × %2$d %3$s</string>
-    <string name="target_display_unilateral">Ziel: %1$s × %2$d %3$s (pro Seite)</string>
+    <string name="target_display">Ziel: %1$s × %2$s</string>
+    <string name="target_display_unilateral">Ziel: %1$s × %2$s (pro Seite)</string>
     <string name="right">Rechts</string>
     <string name="left">Links</string>
     <string name="right_value_short">R: %1$d %2$s</string>
@@ -884,5 +884,9 @@
     <plurals name="share_import_skipped">
         <item quantity="one">%1$d übersprungen</item>
         <item quantity="other">%1$d übersprungen</item>
+    </plurals>
+    <plurals name="target_reps">
+        <item quantity="one">%d Wdh.</item>
+        <item quantity="other">%d Wdh.</item>
     </plurals>
 </resources>

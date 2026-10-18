@@ -223,10 +223,10 @@
     <string name="no_group_display">Без групи</string>
     <string name="level_format">Рівень %d</string>
     <string name="delete_record_warning">Видалити запис «%1$s»?\n%2$s %3$s\n%4$s</string>
-    <string name="target_format_unilateral">%1$s × %2$d %3$s (на сторону)</string>
-    <string name="target_format">%1$s × %2$d %3$s</string>
-    <string name="target_display">Мета: %1$s × %2$d %3$s</string>
-    <string name="target_display_unilateral">Мета: %1$s × %2$d %3$s (на сторону)</string>
+    <string name="target_format_unilateral">%1$s × %2$s (на сторону)</string>
+    <string name="target_format">%1$s × %2$s</string>
+    <string name="target_display">Мета: %1$s × %2$s</string>
+    <string name="target_display_unilateral">Мета: %1$s × %2$s (на сторону)</string>
     <string name="per_side_parenthesis">(на сторону)</string>
     <string name="target_value_label">Мета</string>
     <string name="right">Права</string>
@@ -880,5 +880,11 @@
         <item quantity="few">%1$d пропущено</item>
         <item quantity="many">%1$d пропущено</item>
         <item quantity="other">%1$d пропущено</item>
+    </plurals>
+    <plurals name="target_reps">
+        <item quantity="one">%d раз</item>
+        <item quantity="few">%d рази</item>
+        <item quantity="many">%d разів</item>
+        <item quantity="other">%d раза</item>
     </plurals>
 </resources>

@@ -26,9 +26,9 @@
     <string name="exercise_name">Exercise name</string>
     <string name="set_challenge">Set a target</string>
     <string name="sets_count">Sets</string>
-    <!-- Will be replaced with "Reps" or "Seconds" -->
-    <string name="target_format">%1$s × %2$d %3$s</string>
-    <string name="target_format_unilateral">%1$s × %2$d %3$s (per side)</string>
+    <!-- The set count (set_count) and the value (target_reps, or seconds with value_with_unit) -->
+    <string name="target_format">%1$s × %2$s</string>
+    <string name="target_format_unilateral">%1$s × %2$s (per side)</string>
     <string name="laterality">Laterality</string>
     <string name="one_sided">One-sided</string>
     <string name="group_optional">Group (optional)</string>
@@ -51,8 +51,8 @@
     <string name="select_exercise_please">Please select an exercise</string>
     <string name="select_from_top">Choose from \"Select exercise\" above</string>
     <string name="no_records_for_exercise">No records for this exercise</string>
-    <string name="target_display">Target: %1$s × %2$d %3$s</string>
-    <string name="target_display_unilateral">Target: %1$s × %2$d %3$s (per side)</string>
+    <string name="target_display">Target: %1$s × %2$s</string>
+    <string name="target_display_unilateral">Target: %1$s × %2$s (per side)</string>
     <string name="right">Right</string>
     <string name="left">Left</string>
     <string name="right_value_short">R: %1$d %2$s</string>
@@ -892,5 +892,9 @@
     <plurals name="share_import_skipped">
         <item quantity="one">%1$d skipped</item>
         <item quantity="other">%1$d skipped</item>
+    </plurals>
+    <plurals name="target_reps">
+        <item quantity="one">%d rep</item>
+        <item quantity="other">%d reps</item>
     </plurals>
 </resources>
