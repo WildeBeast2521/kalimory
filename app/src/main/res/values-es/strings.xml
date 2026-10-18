@@ -802,13 +802,13 @@
     <string name="progressions_top">Cima de esta cadena</string>
     <plurals name="exercise_count">
         <item quantity="one">%d ejercicio</item>
-        <item quantity="other">%d ejercicios</item>
         <item quantity="many">%d ejercicios</item>
+        <item quantity="other">%d ejercicios</item>
     </plurals>
     <plurals name="complete_reps">
         <item quantity="one">Completar (%d rep.)</item>
-        <item quantity="other">Completar (%d reps)</item>
         <item quantity="many">Completar (%d reps)</item>
+        <item quantity="other">Completar (%d reps)</item>
     </plurals>
     <string name="theme_system_short">Sistema</string>
     <plurals name="loop_round_count">
@@ -891,9 +891,9 @@
         <item quantity="other">, %1$d bucles</item>
     </plurals>
     <plurals name="share_preview_auto_included">
-        <item quantity="one"> (%1$d incluido automáticamente)</item>
-        <item quantity="many"> (%1$d incluidos automáticamente)</item>
-        <item quantity="other"> (%1$d incluidos automáticamente)</item>
+        <item quantity="one">(%1$d incluido automáticamente)</item>
+        <item quantity="many">(%1$d incluidos automáticamente)</item>
+        <item quantity="other">(%1$d incluidos automáticamente)</item>
     </plurals>
     <plurals name="share_import_added">
         <item quantity="one">%1$d añadido</item>

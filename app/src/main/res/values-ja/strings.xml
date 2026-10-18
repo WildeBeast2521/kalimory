@@ -499,7 +499,6 @@
     <string name="add_exercise_to_loop">種目を追加</string>
     <string name="move_to_loop">ループに移動</string>
     <string name="loop_number_format">ループ %d</string>
-
     <!-- Theme Settings -->
     <string name="section_theme">テーマ設定</string>
     <string name="section_theme_description">アプリの外観を変更します。</string>
@@ -508,10 +507,8 @@
     <string name="theme_system">システムに従う</string>
     <string name="theme_light">ライト</string>
     <string name="theme_dark">ダーク</string>
-
     <!-- Exercise Description -->
     <string name="description_optional">説明文（任意）</string>
-
     <!-- Interval Mode -->
     <string name="interval_list_title">インターバル</string>
     <string name="interval_empty">インターバルプログラムがありません\n+ をタップして作成</string>
@@ -533,7 +530,6 @@
     <string name="interval_duplicate">複製</string>
     <string name="interval_seconds_suffix">秒</string>
     <string name="interval_rounds_suffix">周</string>
-
     <!-- Interval Execution -->
     <string name="interval_total_time">推定時間</string>
     <string name="interval_get_ready">準備</string>
@@ -565,7 +561,6 @@
     <string name="interval_record_partial">途中終了</string>
     <string name="interval_record_settings_format">ワーク%1$d秒 / レスト%2$d秒 / 周間レスト%3$d秒</string>
     <string name="interval_delete_record_confirm">「%1$s」のインターバル記録（%2$s）を削除しますか？</string>
-
     <!-- Share export/import -->
     <string name="share_section_title">共有</string>
     <string name="share_section_description">プログラムや種目を他の人と共有</string>
@@ -600,7 +595,6 @@
     <string name="share_import_errors">エラー (%1$d)</string>
     <string name="nav_check_set">セットを完了にする</string>
     <string name="nav_uncheck_set">セットを未実行に戻す</string>
-
     <string name="import_anomalies_notice">アプリの形式と一致しない項目: %1$d 件。変更せずにインポートされます。</string>
     <string name="db_unavailable_title">トレーニングデータを開けませんでした</string>
     <string name="db_unavailable_unsupported">このデータベース（バージョン %1$d）は、このバージョンのアプリでは更新できない形式です。データは変更も削除もされていません。</string>
@@ -862,7 +856,7 @@
         <item quantity="other">、%1$d ループ</item>
     </plurals>
     <plurals name="share_preview_auto_included">
-        <item quantity="other"> (%1$d 自動追加)</item>
+        <item quantity="other">(%1$d 自動追加)</item>
     </plurals>
     <plurals name="share_import_added">
         <item quantity="other">%1$d 追加</item>

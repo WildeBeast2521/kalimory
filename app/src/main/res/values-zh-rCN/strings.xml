@@ -343,7 +343,7 @@
     <string name="todo_tab_intervals">间歇</string>
     <string name="todo_tab_groups">分组</string>
     <string name="todo_no_groups">无分组</string>
-    <string name="todo_delete_confirm_message">从ToDo中移除"%s"？</string>
+    <string name="todo_delete_confirm_message">从ToDo中移除%s？</string>
     <string name="todo_no_programs">无计划</string>
     <string name="todo_no_intervals">无间歇</string>
     <string name="todo_add_items">添加项目</string>
@@ -441,10 +441,8 @@
     <string name="add_exercise_to_loop">添加动作</string>
     <string name="move_to_loop">移动到循环</string>
     <string name="loop_number_format">循环 %d</string>
-
     <!-- Exercise Description -->
     <string name="description_optional">说明（可选）</string>
-
     <!-- Theme Settings -->
     <string name="section_theme">主题设置</string>
     <string name="section_theme_description">更改应用外观。</string>
@@ -453,7 +451,6 @@
     <string name="theme_system">跟随系统</string>
     <string name="theme_light">浅色</string>
     <string name="theme_dark">深色</string>
-
     <!-- Interval Mode -->
     <string name="interval_no_record_note">此模式不记录次数或保持时间</string>
     <string name="interval_list_title">间歇</string>
@@ -505,7 +502,6 @@
     <string name="interval_record_settings_format">训练%1$d秒 / 休息%2$d秒 / 轮间休息%3$d秒</string>
     <string name="interval_record_complete">已完成</string>
     <string name="interval_record_partial">提前结束</string>
-
     <!-- Share export/import -->
     <string name="share_section_title">分享</string>
     <string name="share_section_description">与他人分享你的训练计划和动作</string>
@@ -538,7 +534,6 @@
     <string name="share_import_added_reused">%1$s，%2$s</string>
     <string name="share_import_added_skipped">%1$s，%2$s</string>
     <string name="share_import_errors">错误 (%1$d)</string>
-
     <string name="import_anomalies_notice">与应用格式不一致的项目：%1$d 个。将按原样导入。</string>
     <string name="db_unavailable_title">无法打开你的训练数据</string>
     <string name="db_unavailable_unsupported">此数据库（版本 %1$d）由当前版本无法升级的应用版本创建。未更改或删除任何内容。</string>
