@@ -27,7 +27,7 @@
   <a href="#progressions">Progressions</a> ·
   <a href="#privacy">Privacy</a> ·
   <a href="docs/wiki/Home.md">User guide</a> ·
-  <a href="ROADMAP.md">Roadmap</a> ·
+  <a href="#roadmap">Roadmap</a> ·
   <a href="#building">Building</a>
 </p>
 
@@ -124,6 +124,17 @@ Every exercise in the catalogue belongs to a chain of steps, each harder than th
 
 More in the [Privacy](docs/wiki/Privacy.md) and [Backups](docs/wiki/Backups-and-Your-Data.md) pages of the user guide.
 
+<h2 id="roadmap">Roadmap</h2>
+
+Each version has one theme. There are no dates: a version ships when its work is done and tested.
+
+- **1.1 Trust and polish** (in progress). Make the app sturdier before it grows: crash reports that stay on the phone, full editing of saved workouts, an accessibility pass, native review of the translations and a review of every file.
+- **1.2 Training insight.** Show whether you are improving, from data the app already has: a weekly review, a body map, a climb chart for each chain, personal-best history and a larger catalogue.
+- **1.3 Progression v2.** Progressions that explain themselves: warm-up sets, an optional effort rating, supersets and targets that say why.
+- **1.4 Planning and reach.** Starter programs, schedules, a home-screen widget, spoken cues and imports from FitNotes, Strong and Hevy.
+
+Accounts, sync servers, cloud backup, ads and AI coaching are not planned. The checklist of every issue, ticked as each one is done, is in [ROADMAP.md](ROADMAP.md).
+
 <h2 id="building">Building</h2>
 
 Requires JDK 17 or later and the Android SDK.
@@ -136,7 +147,7 @@ The full local check, run before every merge, is in [CONTRIBUTING.md](CONTRIBUTI
 
 ## Contributing
 
-Bug reports, catalogue corrections and ideas are welcome through the issue templates. What is planned next is in the [roadmap](ROADMAP.md). Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md), and security problems are reported privately as described in [SECURITY.md](SECURITY.md).
+Bug reports, catalogue corrections and ideas are welcome through the issue templates. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md), and security problems are reported privately as described in [SECURITY.md](SECURITY.md).
 
 ## Credits
 
