@@ -11,6 +11,7 @@ Calisthenics Memory by Gonbei774.
 ## [Unreleased]
 
 ### Added
+- Edit a whole saved workout from Progress › List: change its date, time, comment and sets, add or remove sets and exercises, and save everything at once ([#200](https://github.com/WildeBeast2521/kalimory/pull/200))
 - After a crash, the app offers on its next start to share a report of the error through the share sheet, or to delete it; the report stays on the phone and is never sent by itself ([#192](https://github.com/WildeBeast2521/kalimory/pull/192))
 
 ### Fixed
