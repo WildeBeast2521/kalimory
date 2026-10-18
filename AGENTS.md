@@ -78,6 +78,9 @@ log. Arabic is right-to-left: check layouts in RTL.
 # Every change (needs an API 29 emulator for the last task):
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 
+# When CHANGELOG.md changes (CI runs it too):
+python3 -I scripts/changelog-links.py --check
+
 # When a Room schema or migration changes:
 scripts/check-room-schemas.sh --stacktrace
 
@@ -112,8 +115,8 @@ The first Kalimory release is 1.0.0 (versionCode 1). For a release:
 
 1. Bump `versionCode` (always +1) and `versionName` in `app/build.gradle.kts`.
 2. Date the CHANGELOG entry (`## [x.y.z] - YYYY-MM-DD`), keep an empty `## [Unreleased]` above it,
-   and at the bottom add `[x.y.z]: https://github.com/WildeBeast2521/kalimory/releases/tag/vx.y.z` and
-   point `[Unreleased]` at `compare/vx.y.z...HEAD`. Add
+   then run `python3 -I scripts/changelog-links.py`, which rewrites the link definitions at the
+   bottom. Add
    `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt` (500 characters at most).
 3. Merge to master, then run `scripts/release.sh --dry-run` and, when it passes,
    `scripts/release.sh`. It runs `scripts/release-checks.sh`, shows the release notes, and tags
@@ -142,10 +145,21 @@ SHA-256 is in `.github/release-certificate.sha256`; a release signed with any ot
 
 One standard, for every release:
 
-- `CHANGELOG.md` follows Keep a Changelog. Every version heading has a link at the bottom of the file:
-  Kalimory versions to their GitHub release, and the original app's releases, headed
-  `Calisthenics Memory x.y.z`, to Codeberg. `ChangelogTest` checks it. A release is `## [x.y.z] - YYYY-MM-DD` with the
-  sections that apply, in this order: `### Added`, `### Changed`, `### Fixed`, `### Removed`.
+- `CHANGELOG.md` follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/) and Semantic
+  Versioning. The latest version comes first, under an `## [Unreleased]` section that is always
+  there. A release is `## [x.y.z] - YYYY-MM-DD` with the sections that apply, in this order:
+  `### Added`, `### Changed`, `### Deprecated`, `### Removed`, `### Fixed`, `### Security`.
+- Every heading links from the bottom of the file, as Keep a Changelog does: `[Unreleased]` compares
+  the latest tag with `HEAD`, each version compares with the one before it, and 1.0.0 links to its
+  tag. The original app's releases, headed `Calisthenics Memory x.y.z`, link to their Codeberg tags.
+  `scripts/changelog-links.py` writes these links; with `--check` (run by CI and the release checks)
+  it also enforces the headings, dates, section types and order, and the pull request at the end of
+  every entry from 1.0.1 on.
+- Deprecations, removals and anything that breaks what users have (a backup an older version cannot
+  read, a removed setting) are always listed, never left to the commit log.
+- A release pulled for a serious bug or security problem keeps its section, marked
+  `## [x.y.z] - YYYY-MM-DD [YANKED]`, and its GitHub release title gets ` [YANKED]`; the next
+  release says why under `### Fixed` or `### Security`.
 - Each bullet is one change a user can notice, written as a plain sentence in the present tense,
   ending with the pull request that made it: `([#143](https://github.com/WildeBeast2521/kalimory/pull/143))`.
   Tests, refactors, CI and documentation stay out unless they change what users get.
