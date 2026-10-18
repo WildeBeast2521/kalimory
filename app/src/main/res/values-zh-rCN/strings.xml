@@ -343,7 +343,7 @@
     <string name="todo_tab_intervals">间歇</string>
     <string name="todo_tab_groups">分组</string>
     <string name="todo_no_groups">无分组</string>
-    <string name="todo_delete_confirm_message">从ToDo中移除"%s"？</string>
+    <string name="todo_delete_confirm_message">从ToDo中移除“%s”？</string>
     <string name="todo_no_programs">无计划</string>
     <string name="todo_no_intervals">无间歇</string>
     <string name="todo_add_items">添加项目</string>

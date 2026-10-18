@@ -58,6 +58,32 @@ class ConsistencyGuardTest {
         assertTrue("Use … instead of ...: $offenders", offenders.isEmpty())
     }
 
+    /** The two special spaces, written as escapes in the resource files. */
+    private fun decodeSpaces(value: String) = value.replace("\\u00A0", "\u00A0").replace("\\u202F", "\u202F")
+
+    @Test fun `special spaces are written as escapes, which Weblate keeps`() {
+        // Weblate's file parser (translate-toolkit) turns a literal no-break space into a plain
+        // space, so a Weblate commit would lose it; the escapes \u00A0 and \u202F survive.
+        val offenders = stringFiles.flatMap { file ->
+            stringValue.findAll(file.readText()).filter { m -> m.groupValues[2].any { it == '\u00A0' || it == '\u202F' } }
+                .map { "${file.parentFile.name}/${it.groupValues[1]}" }
+        }
+        assertTrue("Write the space as \\u00A0 or \\u202F: $offenders", offenders.isEmpty())
+    }
+
+    @Test fun `Russian and Ukrainian plurals use the many wording for other, as Weblate writes it`() {
+        // Weblate keeps three forms for these languages and writes Android's fourth, "other",
+        // from "many". Android uses "other" only for fractions, which the app never shows.
+        val plurals = Regex("""<plurals name="([^"]+)">(.*?)</plurals>""", RegexOption.DOT_MATCHES_ALL)
+        fun form(body: String, quantity: String) = Regex("""<item quantity="$quantity">([^<]*)</item>""").find(body)?.groupValues?.get(1)
+        val offenders = listOf("values-ru", "values-uk").flatMap { dir ->
+            plurals.findAll(main.resolve("res/$dir/strings.xml").readText())
+                .filter { form(it.groupValues[2], "other") != form(it.groupValues[2], "many") }
+                .map { "$dir/${it.groupValues[1]}" }
+        }
+        assertTrue("Make other the same as many: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `strings never start or end with a space, which Android drops`() {
         // An unquoted resource loses its outer spaces when it is compiled, so text glued on with a
         // leading space shows without it. Join the parts with a format string instead.
@@ -70,7 +96,7 @@ class ConsistencyGuardTest {
 
     @Test fun `French puts a space before colons, semicolons, question and exclamation marks`() {
         val offenders = stringFiles.filter { it.parentFile.name == "values-fr" }.flatMap { file ->
-            stringValue.findAll(file.readText()).filter { Regex("""\p{L}[:;?!]""").containsMatchIn(it.groupValues[2]) }
+            stringValue.findAll(file.readText()).filter { Regex("""\p{L}[:;?!]""").containsMatchIn(decodeSpaces(it.groupValues[2])) }
                 .map { it.groupValues[1] }
         }
         assertTrue("French typography needs a space before : ; ? !: $offenders", offenders.isEmpty())

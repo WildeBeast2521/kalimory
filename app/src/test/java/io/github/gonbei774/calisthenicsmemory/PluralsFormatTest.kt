@@ -74,6 +74,12 @@ class PluralsFormatTest {
         assertEquals("3セット × 10回", target("ja", 3, 10))
     }
 
+    @Test fun `escaped special spaces and Chinese quotes reach the app`() {
+        assertEquals("-10\u00A0с", context("uk").resources.getString(R.string.minus_10sec))
+        assertTrue(context("fr").resources.getString(R.string.exercise_type_dynamic_description).startsWith("Par exemple\u202F:"))
+        assertEquals("从ToDo中移除“深蹲”？", context("zh-CN").resources.getString(R.string.todo_delete_confirm_message, "深蹲"))
+    }
+
     @Test fun `the share preview keeps the space before the auto-included count`() {
         // Compiled resources lose their outer spaces, so the space has to come from the join.
         fun preview(tag: String, total: Int, auto: Int): String {

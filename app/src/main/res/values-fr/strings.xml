@@ -535,8 +535,8 @@
     <string name="share_import_added_reused">%1$s, %2$s</string>
     <string name="share_import_added_skipped">%1$s, %2$s</string>
     <string name="share_import_errors">Erreurs (%1$d)</string>
-    <string name="exercise_type_dynamic_description">Par exemple : pompes, tractions… Comptées en répétitions.</string>
-    <string name="exercise_type_isometric_description">Par exemple : planche, équerre… Comptées en temps.</string>
+    <string name="exercise_type_dynamic_description">Par exemple\u202F: pompes, tractions… Comptées en répétitions.</string>
+    <string name="exercise_type_isometric_description">Par exemple\u202F: planche, équerre… Comptées en temps.</string>
     <string name="import_anomalies_notice">Éléments ne correspondant pas au format de l\'application : %1$d. Ils seront importés tels quels.</string>
     <string name="db_unavailable_title">Impossible d\'ouvrir tes données d\'entraînement</string>
     <string name="db_unavailable_unsupported">Cette base de données (version %1$d) a été créée par une version de l\'application que cette version ne peut pas mettre à jour. Rien n\'a été modifié ni supprimé.</string>
