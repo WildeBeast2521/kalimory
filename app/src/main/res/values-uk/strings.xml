@@ -635,7 +635,7 @@
         <item quantity="one">підхід за тиждень</item>
         <item quantity="few">підходи за тиждень</item>
         <item quantity="many">підходів за тиждень</item>
-        <item quantity="other">підходу за тиждень</item>
+        <item quantity="other">підходів за тиждень</item>
     </plurals>
     <!-- A day in Today's week strip, read by screen readers: the full date, then that it was trained. -->
     <string name="today_day_trained">%1$s: було тренування</string>
