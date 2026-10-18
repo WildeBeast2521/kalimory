@@ -870,4 +870,15 @@
     <plurals name="target_reps">
         <item quantity="other">%d次</item>
     </plurals>
+    <!-- Workout editor (ADR 0009) -->
+    <string name="workout_edit_title">编辑训练</string>
+    <string name="workout_edit_add_set">添加一组</string>
+    <string name="workout_edit_add_exercise">添加动作</string>
+    <string name="workout_edit_remove_set">删除第%1$d组</string>
+    <string name="workout_edit_remove_exercise">删除%1$s</string>
+    <string name="workout_edit_changed">此训练在打开后已更改，已重新载入。请重新修改。</string>
+    <string name="workout_edit_time_taken">此日期和时间已保存了另一个评论相同的训练。请选择其他时间。</string>
+    <string name="workout_edit_delete_title">删除此训练？</string>
+    <string name="workout_edit_delete_message">已没有任何组，保存将删除整个训练。</string>
+    <string name="workout_edit_unavailable">此训练已无法编辑。</string>
 </resources>

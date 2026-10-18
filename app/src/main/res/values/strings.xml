@@ -897,4 +897,15 @@
         <item quantity="one">%d rep</item>
         <item quantity="other">%d reps</item>
     </plurals>
+    <!-- Workout editor (ADR 0009) -->
+    <string name="workout_edit_title">Edit workout</string>
+    <string name="workout_edit_add_set">Add set</string>
+    <string name="workout_edit_add_exercise">Add exercise</string>
+    <string name="workout_edit_remove_set">Remove set %1$d</string>
+    <string name="workout_edit_remove_exercise">Remove %1$s</string>
+    <string name="workout_edit_changed">This workout changed after you opened it, so it has been reloaded. Make your changes again.</string>
+    <string name="workout_edit_time_taken">Another workout is saved at this date and time with the same comment. Choose another time.</string>
+    <string name="workout_edit_delete_title">Delete this workout?</string>
+    <string name="workout_edit_delete_message">No sets are left, so saving deletes the whole workout.</string>
+    <string name="workout_edit_unavailable">This workout can no longer be edited.</string>
 </resources>

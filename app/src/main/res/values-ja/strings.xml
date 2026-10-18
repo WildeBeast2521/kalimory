@@ -876,4 +876,15 @@
     <plurals name="target_reps">
         <item quantity="other">%d回</item>
     </plurals>
+    <!-- Workout editor (ADR 0009) -->
+    <string name="workout_edit_title">ワークアウトを編集</string>
+    <string name="workout_edit_add_set">セットを追加</string>
+    <string name="workout_edit_add_exercise">種目を追加</string>
+    <string name="workout_edit_remove_set">セット%1$dを削除</string>
+    <string name="workout_edit_remove_exercise">%1$sを削除</string>
+    <string name="workout_edit_changed">開いた後にこのワークアウトが変更されたため、読み込み直しました。もう一度変更してください。</string>
+    <string name="workout_edit_time_taken">この日時には同じコメントの別のワークアウトが保存されています。別の時刻を選んでください。</string>
+    <string name="workout_edit_delete_title">このワークアウトを削除しますか？</string>
+    <string name="workout_edit_delete_message">セットが残っていないため、保存するとワークアウト全体が削除されます。</string>
+    <string name="workout_edit_unavailable">このワークアウトはもう編集できません。</string>
 </resources>

@@ -75,12 +75,12 @@ class MainScreenScreenshotTest(private val theme: AppTheme) {
     val rules: TestRule = RuleChain.outerRule(appState).around(compose)
 
     @Test
-    fun today() = snap("Today", waitFor = PROGRAM)
+    fun today() = snap("Today", waitFor = PROGRAM, PROGRAM_ESTIMATE)
 
     @Test
     fun train() {
         open("Train")
-        snap("Train", waitFor = PROGRAM)
+        snap("Train", waitFor = PROGRAM, PROGRAM_ESTIMATE)
     }
 
     @Test
@@ -104,9 +104,13 @@ class MainScreenScreenshotTest(private val theme: AppTheme) {
         compose.onNode(item).performClick()
     }
 
-    private fun snap(name: String, waitFor: String) {
-        // Room loads on its own threads; wait until the seeded data is on screen.
+    private fun snap(name: String, waitFor: String, vararg alsoWaitFor: String) {
+        // Room loads on its own threads; wait until the seeded data is on screen. A program's time
+        // estimate settles after its title, so screens that show one wait for it too.
         compose.waitUntil(STARTUP_TIMEOUT_MS) { compose.onAllNodes(hasText(waitFor)).fetchSemanticsNodes().isNotEmpty() }
+        for (text in alsoWaitFor) {
+            compose.waitUntil(STARTUP_TIMEOUT_MS) { compose.onAllNodes(hasText(text, substring = true)).fetchSemanticsNodes().isNotEmpty() }
+        }
         compose.waitForIdle()
         compose.onRoot().captureRoboImage("src/test/screenshots/screen_${name}_${theme.code}.png")
     }
@@ -150,6 +154,8 @@ class MainScreenScreenshotTest(private val theme: AppTheme) {
         /** A Thursday. */
         private val TODAY: LocalDate = LocalDate.of(2026, 3, 12)
         private const val PROGRAM = "Upper body"
+        // The seeded program's settled estimate; a capture taken before it settled showed "~1 min".
+        private const val PROGRAM_ESTIMATE = "~13 min"
         private const val STARTUP_TIMEOUT_MS = 10_000L
 
         @JvmStatic

@@ -91,6 +91,14 @@ class WorkoutEditPlanTest {
     }
 
     @Test
+    fun aNegativeDistanceIsAValue() {
+        // Every distance input in the app accepts a minus sign, so saved workouts can hold one.
+        val below = DraftSet(listOf(100), 12, distanceCm = -5)
+        val plan = plan(loaded.copy(exercises = listOf(pushUp.copy(sets = listOf(below, pushUp.sets[1])), lunge)))
+        assertEquals(listOf(pushUp.sets[0] to below), plan.changedSets)
+    }
+
+    @Test
     fun draftsThatDoNotFitWhatWasLoadedAreRejected() {
         fun rejects(edited: WorkoutDraft) {
             assertThrows(IllegalArgumentException::class.java) { plan(edited) }
@@ -100,6 +108,7 @@ class WorkoutEditPlanTest {
         rejects(loaded.copy(exercises = listOf(pushUp.copy(sets = listOf(DraftSet(value = 5, valueLeft = 5))))))
         rejects(loaded.copy(exercises = listOf(lunge.copy(sets = listOf(DraftSet(value = null))))))
         rejects(loaded.copy(exercises = listOf(pushUp.copy(sets = listOf(DraftSet(value = 5, weightG = -1))))))
+        rejects(loaded.copy(exercises = listOf(pushUp.copy(sets = listOf(DraftSet(value = 5, assistanceG = -1))))))
         // An unknown exercise key, a loaded exercise turned into another, and one listed twice.
         rejects(loaded.copy(exercises = listOf(pushUp.copy(key = 99))))
         rejects(loaded.copy(exercises = listOf(pushUp.copy(exerciseId = 3))))

@@ -39,6 +39,13 @@ data class WorkoutDraft(
     val exercises: List<DraftExercise>,
 )
 
+/** The saved workout an editor opens: a v2 session, or the legacy records of one save (ADR 0009). */
+sealed interface WorkoutRef {
+    data class V2(val sessionId: Long) : WorkoutRef
+
+    data class Legacy(val date: String, val time: String, val comment: String) : WorkoutRef
+}
+
 /** What saving an edited workout did, or why it did nothing. */
 enum class WorkoutSaveResult {
     /** The edits were written. */
@@ -133,7 +140,8 @@ data class WorkoutEditPlan(
         }
 
         private fun validate(set: DraftSet, unilateral: Boolean) {
-            listOfNotNull(set.value, set.valueLeft, set.distanceCm, set.weightG, set.assistanceG).forEach {
+            // A distance may be negative, as every distance input in the app allows.
+            listOfNotNull(set.value, set.valueLeft, set.weightG, set.assistanceG).forEach {
                 require(it >= 0) { "Values must not be negative" }
             }
             if (unilateral) {

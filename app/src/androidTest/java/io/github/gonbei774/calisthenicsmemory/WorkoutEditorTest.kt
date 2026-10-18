@@ -208,10 +208,28 @@ class WorkoutEditorTest {
         val moved = ZonedDateTime.of(2026, 3, 4, 18, 5, 0, 0, zone).toInstant().toEpochMilli()
         val session = database.workoutSessionDao().session(sessionId)!!
         assertEquals(moved, session.startedAtEpochMillis)
+        assertEquals(moved + 1_200_000, session.endedAtEpochMillis)
         assertEquals(TimePrecision.MINUTE, session.timePrecision)
         assertEquals(before.map { it?.plus(moved - startedAt) }, entries(pushUpId).map { it.completedAtEpochMillis })
         assertFalse(CompatibilityHistory.hasSetOn(database, 1, LocalDate.of(2026, 3, 2), zone))
         assertTrue(CompatibilityHistory.hasSetOn(database, 1, LocalDate.of(2026, 3, 4), zone))
+
+        // A cleared comment is no comment.
+        val movedDraft = loadV2()
+        assertEquals(WorkoutSaveResult.SAVED, saveV2(movedDraft, movedDraft.copy(comment = "")))
+        assertNull(database.workoutSessionDao().session(sessionId)!!.comment)
+    }
+
+    @Test
+    fun aNegativeDistanceIsKeptAndCanBeSaved() = runBlocking {
+        // Every distance input accepts a minus sign, so a saved workout can hold one.
+        val dao = database.workoutSessionDao()
+        dao.updateSetEntries(entries(pushUpId).take(1).map { it.copy(distanceCm = -5) })
+        val loaded = loadV2()
+        assertEquals(-5, loaded.exercises.first().sets.first().distanceCm)
+        val edited = loaded.withExercise(pushUpId) { it.copy(sets = it.sets + DraftSet(value = 8, distanceCm = -10)) }
+        assertEquals(WorkoutSaveResult.SAVED, saveV2(loaded, edited))
+        assertEquals(listOf(-5, null, null, -10), entries(pushUpId).map { it.distanceCm })
     }
 
     @Test

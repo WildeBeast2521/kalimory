@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutRef
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySource
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.data.progression.ChainProgress
@@ -75,6 +76,13 @@ sealed class RecordItem(val date: String, val time: String) {
 }
 
 private const val PROGRESSIONS_PAGE = 3
+
+/** The saved workout a card belongs to: its v2 session, or the legacy save its first record came from. */
+internal fun SessionInfo.workoutRef(): WorkoutRef? {
+    val first = records.firstOrNull() ?: return null
+    return if (source == HistorySource.V2) first.workoutSessionId?.let(WorkoutRef::V2)
+    else WorkoutRef.Legacy(first.date, first.time, first.comment)
+}
 
 /**
  * History's cards, newest first: one per exercise and saved minute, and for v2 sets also per
@@ -142,7 +150,7 @@ fun ViewScreen(
     var editValue by remember { mutableStateOf("") }
     var editValueRight by remember { mutableStateOf("") }
     var editValueLeft by remember { mutableStateOf("") }
-    var showSessionEditDialog by remember { mutableStateOf<SessionInfo?>(null) }
+    var editingWorkoutOf by remember { mutableStateOf<SessionInfo?>(null) }
     var showContextMenu by remember { mutableStateOf<SessionInfo?>(null) }
     var showIntervalDeleteDialog by remember { mutableStateOf<RecordItem.Interval?>(null) }
     var showIntervalEditDialog by remember { mutableStateOf<RecordItem.Interval?>(null) }
@@ -356,7 +364,7 @@ fun ViewScreen(
                                 }
                             },
                             onSessionLongPress = { session ->
-                                showSessionEditDialog = session
+                                editingWorkoutOf = session
                             },
                             onDeleteClick = { session ->
                                 showDeleteDialog = session
@@ -627,7 +635,7 @@ fun ViewScreen(
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.edit_session_info)) },
                 onClick = {
-                    showSessionEditDialog = session
+                    editingWorkoutOf = session
                     showContextMenu = null
                 }
             )
@@ -641,35 +649,9 @@ fun ViewScreen(
         }
     }
 
-    // Session Edit Dialog
-    showSessionEditDialog?.let { session ->
-        val editExercise = exercises.find { it.id == session.exerciseId }
-        SessionEditDialog(
-            session = session,
-            exercise = editExercise,
-            onDismiss = { showSessionEditDialog = null },
-            onConfirm = { newDate, newTime, newComment, newDistancesCm, newWeightsG, newAssistancesG ->
-                if (session.source == HistorySource.V2) {
-                    viewModel.updateV2Session(
-                        session.records, newDate, newTime, newComment, newDistancesCm, newWeightsG, newAssistancesG
-                    )
-                }
-                session.records.forEachIndexed { index, record ->
-                    val legacy = record.toLegacyRecord() ?: return@forEachIndexed
-                    viewModel.updateRecord(
-                        legacy.copy(
-                            date = newDate,
-                            time = newTime,
-                            comment = newComment,
-                            distanceCm = newDistancesCm.getOrNull(index),
-                            weightG = newWeightsG.getOrNull(index),
-                            assistanceG = newAssistancesG.getOrNull(index)
-                        )
-                    )
-                }
-                showSessionEditDialog = null
-            }
-        )
+    // The whole workout behind a card, in the workout editor (ADR 0009).
+    editingWorkoutOf?.workoutRef()?.let { ref ->
+        WorkoutEditorScreen(ref = ref, viewModel = viewModel, onClose = { editingWorkoutOf = null })
     }
 
     // Delete Dialog

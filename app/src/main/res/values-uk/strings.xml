@@ -887,4 +887,15 @@
         <item quantity="many">%d разів</item>
         <item quantity="other">%d раза</item>
     </plurals>
+    <!-- Workout editor (ADR 0009) -->
+    <string name="workout_edit_title">Редагувати тренування</string>
+    <string name="workout_edit_add_set">Додати підхід</string>
+    <string name="workout_edit_add_exercise">Додати вправу</string>
+    <string name="workout_edit_remove_set">Видалити підхід %1$d</string>
+    <string name="workout_edit_remove_exercise">Видалити: %1$s</string>
+    <string name="workout_edit_changed">Тренування змінилося після відкриття, тому його завантажено знову. Внесіть зміни ще раз.</string>
+    <string name="workout_edit_time_taken">На цю дату й час уже збережено інше тренування з тим самим коментарем. Виберіть інший час.</string>
+    <string name="workout_edit_delete_title">Видалити це тренування?</string>
+    <string name="workout_edit_delete_message">Підходів не залишилося, тому збереження видалить усе тренування.</string>
+    <string name="workout_edit_unavailable">Це тренування більше не можна редагувати.</string>
 </resources>

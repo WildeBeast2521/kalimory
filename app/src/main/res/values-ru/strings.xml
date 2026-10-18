@@ -884,4 +884,15 @@
         <item quantity="many">%d повт.</item>
         <item quantity="other">%d повт.</item>
     </plurals>
+    <!-- Workout editor (ADR 0009) -->
+    <string name="workout_edit_title">Изменить тренировку</string>
+    <string name="workout_edit_add_set">Добавить подход</string>
+    <string name="workout_edit_add_exercise">Добавить упражнение</string>
+    <string name="workout_edit_remove_set">Удалить подход %1$d</string>
+    <string name="workout_edit_remove_exercise">Удалить: %1$s</string>
+    <string name="workout_edit_changed">Тренировка изменилась после открытия и загружена заново. Внесите изменения ещё раз.</string>
+    <string name="workout_edit_time_taken">На эту дату и время уже сохранена другая тренировка с тем же комментарием. Выберите другое время.</string>
+    <string name="workout_edit_delete_title">Удалить эту тренировку?</string>
+    <string name="workout_edit_delete_message">Подходов не осталось, поэтому при сохранении вся тренировка будет удалена.</string>
+    <string name="workout_edit_unavailable">Эту тренировку больше нельзя изменить.</string>
 </resources>

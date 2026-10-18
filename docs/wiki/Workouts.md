@@ -24,6 +24,12 @@ The To Do list holds what you plan to train: exercises, groups, programs and int
 
 Train › Log a past workout records sets you already did, with their date and time. Use "Add another exercise" to put several exercises into one workout.
 
+## Correct a saved workout
+
+In Progress › List, a workout's ⋮ menu › Edit opens the whole workout. You can change its date, time and comment, change any set, add or remove sets, and add or remove exercises. Nothing changes until you tap Save, and then everything is saved at once. If you remove every set, saving deletes the workout after you confirm.
+
+Graphs, bests and progressions follow the corrected workout. Tapping a single set in the list still changes just that set's value.
+
 ## If the app is closed during a workout
 
 Timers keep running in a notification. If the app is stopped anyway, Today offers to continue where you left off.
