@@ -803,13 +803,13 @@
     <string name="progressions_top">Cima de esta cadena</string>
     <plurals name="exercise_count">
         <item quantity="one">%d ejercicio</item>
-        <item quantity="other">%d ejercicios</item>
         <item quantity="many">%d ejercicios</item>
+        <item quantity="other">%d ejercicios</item>
     </plurals>
     <plurals name="complete_reps">
         <item quantity="one">Completar (%d rep.)</item>
-        <item quantity="other">Completar (%d reps)</item>
         <item quantity="many">Completar (%d reps)</item>
+        <item quantity="other">Completar (%d reps)</item>
     </plurals>
     <string name="theme_system_short">Sistema</string>
     <plurals name="loop_round_count">

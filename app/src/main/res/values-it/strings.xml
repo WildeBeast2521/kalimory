@@ -441,10 +441,8 @@
     <string name="add_exercise_to_loop">Aggiungi esercizio</string>
     <string name="move_to_loop">Sposta nel ciclo</string>
     <string name="loop_number_format">Ciclo %d</string>
-
     <!-- Exercise Description -->
     <string name="description_optional">Descrizione (Opzionale)</string>
-
     <!-- Theme Settings -->
     <string name="section_theme">Impostazioni tema</string>
     <string name="section_theme_description">Cambia l\'aspetto dell\'applicazione.</string>
@@ -453,7 +451,6 @@
     <string name="theme_system">Segui il sistema</string>
     <string name="theme_light">Chiaro</string>
     <string name="theme_dark">Scuro</string>
-
     <!-- Interval Mode -->
     <string name="interval_no_record_note">Questa modalità non registra ripetizioni o tempo di mantenimento</string>
     <string name="interval_list_title">Intervallo</string>
@@ -505,7 +502,6 @@
     <string name="interval_record_settings_format">Lavoro %1$ds / Riposo %2$ds / Riposo tra round %3$ds</string>
     <string name="interval_record_complete">Completato</string>
     <string name="interval_record_partial">Interrotto in anticipo</string>
-
     <!-- Share export/import -->
     <string name="share_section_title">Condivisione</string>
     <string name="share_section_description">Condividi i tuoi programmi ed esercizi con altri</string>
@@ -539,7 +535,6 @@
     <string name="share_import_added_reused">%1$s, %2$s</string>
     <string name="share_import_added_skipped">%1$s, %2$s</string>
     <string name="share_import_errors">Errori (%1$d)</string>
-
     <string name="import_anomalies_notice">Elementi che non corrispondono al formato dell\'app: %1$d. Verranno importati senza modifiche.</string>
     <string name="db_unavailable_title">Impossibile aprire i tuoi dati di allenamento</string>
     <string name="db_unavailable_unsupported">Questo database (versione %1$d) è stato creato da una versione dell\'app che questa build non può aggiornare. Nulla è stato modificato o eliminato.</string>
@@ -752,13 +747,13 @@
     <string name="progressions_top">Cima di questa catena</string>
     <plurals name="exercise_count">
         <item quantity="one">%d esercizio</item>
-        <item quantity="other">%d esercizi</item>
         <item quantity="many">%d esercizi</item>
+        <item quantity="other">%d esercizi</item>
     </plurals>
     <plurals name="complete_reps">
         <item quantity="one">Completa (%d rip.)</item>
-        <item quantity="other">Completa (%d rip.)</item>
         <item quantity="many">Completa (%d rip.)</item>
+        <item quantity="other">Completa (%d rip.)</item>
     </plurals>
     <string name="theme_system_short">Sistema</string>
     <string name="add_exercise_to_group">Aggiungi esercizio al gruppo</string>
