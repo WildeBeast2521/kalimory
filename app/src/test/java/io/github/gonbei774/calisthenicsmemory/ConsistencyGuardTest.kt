@@ -74,7 +74,7 @@ class ConsistencyGuardTest {
     @Test fun `Russian and Ukrainian plurals use the many wording for other, as Weblate writes it`() {
         // Weblate keeps three forms for these languages and writes Android's fourth, "other",
         // from "many". Android uses "other" only for fractions, which the app never shows.
-        val plurals = Regex("""<plurals name="([^"]+)">(.*?)</plurals>""", RegexOption.DOT_MATCHES_ALL)
+        val plurals = Regex("""<plurals name="([^"]+)"[^>]*>(.*?)</plurals>""", RegexOption.DOT_MATCHES_ALL)
         fun form(body: String, quantity: String) = Regex("""<item quantity="$quantity">([^<]*)</item>""").find(body)?.groupValues?.get(1)
         val offenders = listOf("values-ru", "values-uk").flatMap { dir ->
             plurals.findAll(main.resolve("res/$dir/strings.xml").readText())
