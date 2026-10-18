@@ -934,4 +934,15 @@
         <item quantity="many">%d تكرارًا</item>
         <item quantity="other">%d تكرار</item>
     </plurals>
+    <!-- Workout editor (ADR 0009) -->
+    <string name="workout_edit_title">تعديل التمرين</string>
+    <string name="workout_edit_add_set">إضافة مجموعة</string>
+    <string name="workout_edit_add_exercise">إضافة تمرين</string>
+    <string name="workout_edit_remove_set">إزالة المجموعة %1$d</string>
+    <string name="workout_edit_remove_exercise">إزالة %1$s</string>
+    <string name="workout_edit_changed">تغيّر هذا التمرين بعد فتحه، فأُعيد تحميله. أعد إجراء تعديلاتك.</string>
+    <string name="workout_edit_time_taken">يوجد تمرين آخر محفوظ في هذا التاريخ والوقت بالتعليق نفسه. اختر وقتًا آخر.</string>
+    <string name="workout_edit_delete_title">حذف هذا التمرين؟</string>
+    <string name="workout_edit_delete_message">لم تبقَ أي مجموعة، لذا يحذف الحفظ التمرين كله.</string>
+    <string name="workout_edit_unavailable">لم يعد بالإمكان تعديل هذا التمرين.</string>
 </resources>

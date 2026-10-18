@@ -35,6 +35,10 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.ProgramWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkout
 import io.github.gonbei774.calisthenicsmemory.data.v2.SingleWorkoutWriter
 import io.github.gonbei774.calisthenicsmemory.data.v2.V2HistoryEditor
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutDraft
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutEditor
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutRef
+import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSaveResult
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSummary
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSummaryBuilder
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSourceType
@@ -512,20 +516,43 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         V2HistoryEditor.updateSetValues(database, set, valueRight, valueLeft)
     }
 
-    fun updateV2Session(
-        sets: List<HistorySet>,
-        date: String,
-        time: String,
-        comment: String,
-        distancesCm: List<Int?>,
-        weightsG: List<Int?>,
-        assistancesG: List<Int?>
-    ) = editV2(UiMessage.RecordUpdated) {
-        V2HistoryEditor.updateSession(
-            database, sets, date, time, comment, distancesCm, weightsG, assistancesG,
-            ZoneId.systemDefault(), System.currentTimeMillis()
-        )
+    /** The exercise library as stored now, for the workout editor's names and fields. */
+    suspend fun libraryExercises(): List<Exercise> = withContext(Dispatchers.IO) { database.backupDao().exercises() }
+
+    /** The workout as the editor shows it, or null when there is nothing to edit (ADR 0009). */
+    suspend fun loadWorkoutDraft(ref: WorkoutRef): WorkoutDraft? = withContext(Dispatchers.IO) {
+        when (ref) {
+            is WorkoutRef.V2 -> WorkoutEditor.loadV2(database, ref.sessionId, ZoneId.systemDefault())
+            is WorkoutRef.Legacy -> WorkoutEditor.loadLegacy(database, ref.date, ref.time, ref.comment, database.backupDao().exercises())
+        }
     }
+
+    /**
+     * Saves an edited workout in one transaction and says so; null when the save failed, with the
+     * error shown. A stale draft or a taken time writes nothing and is for the editor to explain.
+     */
+    suspend fun saveWorkoutDraft(ref: WorkoutRef, original: WorkoutDraft, edited: WorkoutDraft): WorkoutSaveResult? =
+        withContext(Dispatchers.IO) {
+            try {
+                val library = database.backupDao().exercises()
+                val result = when (ref) {
+                    is WorkoutRef.V2 -> WorkoutEditor.saveV2(
+                        database, ref.sessionId, original, edited, library, database.backupDao().groups(),
+                        ZoneId.systemDefault(), System.currentTimeMillis(),
+                    )
+                    is WorkoutRef.Legacy -> WorkoutEditor.saveLegacy(database, original, edited, library)
+                }
+                when (result) {
+                    WorkoutSaveResult.SAVED -> _snackbarMessage.value = UiMessage.RecordUpdated
+                    WorkoutSaveResult.DELETED -> _snackbarMessage.value = UiMessage.RecordDeleted
+                    else -> {}
+                }
+                result
+            } catch (e: Exception) {
+                _snackbarMessage.value = UiMessage.ErrorOccurred
+                null
+            }
+        }
 
     fun deleteV2Sets(sets: List<HistorySet>) = editV2(UiMessage.RecordDeleted) {
         V2HistoryEditor.delete(database, sets)

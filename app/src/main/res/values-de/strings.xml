@@ -889,4 +889,15 @@
         <item quantity="one">%d Wdh.</item>
         <item quantity="other">%d Wdh.</item>
     </plurals>
+    <!-- Workout editor (ADR 0009) -->
+    <string name="workout_edit_title">Training bearbeiten</string>
+    <string name="workout_edit_add_set">Satz hinzufügen</string>
+    <string name="workout_edit_add_exercise">Übung hinzufügen</string>
+    <string name="workout_edit_remove_set">Satz %1$d entfernen</string>
+    <string name="workout_edit_remove_exercise">%1$s entfernen</string>
+    <string name="workout_edit_changed">Dieses Training wurde geändert, nachdem du es geöffnet hast, und neu geladen. Nimm deine Änderungen bitte noch einmal vor.</string>
+    <string name="workout_edit_time_taken">Zu diesem Datum und dieser Uhrzeit ist schon ein anderes Training mit demselben Kommentar gespeichert. Wähle eine andere Uhrzeit.</string>
+    <string name="workout_edit_delete_title">Dieses Training löschen?</string>
+    <string name="workout_edit_delete_message">Es sind keine Sätze mehr übrig, deshalb löscht das Speichern das ganze Training.</string>
+    <string name="workout_edit_unavailable">Dieses Training kann nicht mehr bearbeitet werden.</string>
 </resources>

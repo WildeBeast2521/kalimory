@@ -920,4 +920,15 @@
         <item quantity="many">%d rip</item>
         <item quantity="other">%d rip</item>
     </plurals>
+    <!-- Workout editor (ADR 0009) -->
+    <string name="workout_edit_title">Modifica allenamento</string>
+    <string name="workout_edit_add_set">Aggiungi serie</string>
+    <string name="workout_edit_add_exercise">Aggiungi esercizio</string>
+    <string name="workout_edit_remove_set">Rimuovi la serie %1$d</string>
+    <string name="workout_edit_remove_exercise">Rimuovi %1$s</string>
+    <string name="workout_edit_changed">Questo allenamento è cambiato dopo che l’hai aperto, quindi è stato ricaricato. Ripeti le modifiche.</string>
+    <string name="workout_edit_time_taken">Un altro allenamento è già salvato in questa data e ora con lo stesso commento. Scegli un’altra ora.</string>
+    <string name="workout_edit_delete_title">Eliminare questo allenamento?</string>
+    <string name="workout_edit_delete_message">Non resta nessuna serie, quindi salvando si elimina l’intero allenamento.</string>
+    <string name="workout_edit_unavailable">Questo allenamento non può più essere modificato.</string>
 </resources>

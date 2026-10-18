@@ -102,40 +102,6 @@ class V2HistoryEditorTest {
     }
 
     @Test
-    fun sessionEditMovesTheWholeWorkoutAndAppliesComment() = runBlocking {
-        val lunge = shown(2)
-        V2HistoryEditor.updateSession(
-            database, listOf(lunge), "2025-02-02", "07:30", "after",
-            distancesCm = listOf(null), weightsG = listOf(5_000), assistancesG = listOf(null),
-            zone = zone, nowEpochMillis = 123,
-        )
-        val moved = ZonedDateTime.of(2025, 2, 2, 7, 30, 0, 0, zone).toInstant().toEpochMilli()
-        val shift = moved - startedAt
-        val session = database.workoutSessionDao().session(sessionId)!!
-        assertEquals(moved, session.startedAtEpochMillis)
-        assertEquals(startedAt + 600_000 + shift, session.endedAtEpochMillis)
-        assertEquals(TimePrecision.MINUTE, session.timePrecision)
-        assertEquals(123L, session.updatedAtEpochMillis)
-        assertEquals("after", session.comment)
-        // Every set in the workout shifts by the same amount, the other exercise included.
-        assertEquals(listOf(0L, 1L, 2L).map { startedAt + 60_000 * it + shift }, entries(lungeId).map { it.completedAtEpochMillis })
-        assertEquals(startedAt + shift, entries(plankId).single().completedAtEpochMillis)
-        assertEquals(setOf("2025-02-02" to "07:30"), history().map { it.date to it.time }.toSet())
-        // The weight applies to both sides of the displayed set only.
-        assertEquals(listOf(5_000, 5_000, null), entries(lungeId).map { it.addedWeightGrams })
-    }
-
-    @Test
-    fun sameTimeKeepsExactPrecision() = runBlocking {
-        V2HistoryEditor.updateSession(
-            database, listOf(shown(4)), "2025-02-01", "06:00", "", listOf(null), listOf(null), listOf(null), zone, 1,
-        )
-        val session = database.workoutSessionDao().session(sessionId)!!
-        assertEquals(TimePrecision.EXACT, session.timePrecision)
-        assertNull(session.comment)
-    }
-
-    @Test
     fun deleteRemovesTheOccurrenceThenTheEmptyWorkout() = runBlocking {
         V2HistoryEditor.delete(database, listOf(shown(2)))
         // The skipped lunge set goes with it; the plank stays.

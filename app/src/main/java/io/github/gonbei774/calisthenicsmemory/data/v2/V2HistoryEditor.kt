@@ -42,47 +42,6 @@ object V2HistoryEditor {
     }
 
     /**
-     * Applies the session edit dialog to v2 sets: [date] and [time] move each whole workout
-     * the sets belong to (its set times shift by the same amount, and its time becomes
-     * minute precision because that is what was entered), [comment] becomes the workout
-     * comment, and the metric lists apply to the displayed sets in order.
-     */
-    suspend fun updateSession(
-        database: AppDatabase,
-        sets: List<HistorySet>,
-        date: String,
-        time: String,
-        comment: String,
-        distancesCm: List<Int?>,
-        weightsG: List<Int?>,
-        assistancesG: List<Int?>,
-        zone: ZoneId,
-        nowEpochMillis: Long,
-    ) {
-        require(sets.all { it.source == HistorySource.V2 }) { "Not v2 sets" }
-        val start = LocalDate.parse(date).atTime(LocalTime.parse(time)).atZone(zone).toInstant().toEpochMilli()
-        val dao = database.workoutSessionDao()
-        database.withTransaction {
-            val occurrences = dao.sessionExercisesByIds(sets.mapNotNull { it.sessionExerciseId }.distinct())
-            for (sessionId in occurrences.map { it.workoutSessionId }.distinct()) {
-                moveSession(database, sessionId, start, comment, nowEpochMillis)
-            }
-            // After the move, so the metric edits apply to the shifted rows.
-            sets.forEachIndexed { index, set ->
-                dao.updateSetEntries(
-                    dao.setEntriesByIds(set.setEntryIds).map {
-                        it.copy(
-                            distanceCm = distancesCm.getOrNull(index),
-                            addedWeightGrams = weightsG.getOrNull(index),
-                            assistanceGrams = assistancesG.getOrNull(index),
-                        )
-                    }
-                )
-            }
-        }
-    }
-
-    /**
      * Moves a whole workout to [date] and [time] in [zone] and sets its [comment]. Every set
      * time shifts by the same amount, and a moved workout becomes MINUTE precision.
      */
