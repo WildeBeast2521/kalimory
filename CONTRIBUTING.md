@@ -2,6 +2,8 @@
 
 Bug reports, catalogue corrections and ideas are welcome. Please use the issue templates on this repository.
 
+Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md). For a security problem, don't open an issue: follow [SECURITY.md](SECURITY.md) to report it privately.
+
 ## Ground rules
 
 These keep the app what it is. Changes that break them cannot be accepted.

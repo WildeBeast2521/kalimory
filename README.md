@@ -136,7 +136,7 @@ The full local check, run before every merge, is in [CONTRIBUTING.md](CONTRIBUTI
 
 ## Contributing
 
-Bug reports, catalogue corrections and ideas are welcome through the issue templates. What is planned next is in the [roadmap](ROADMAP.md). Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+Bug reports, catalogue corrections and ideas are welcome through the issue templates. What is planned next is in the [roadmap](ROADMAP.md). Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md), and security problems are reported privately as described in [SECURITY.md](SECURITY.md).
 
 ## Credits
 
