@@ -175,7 +175,7 @@ One standard, for every release:
   (`.github/workflows/release-notes.yml`) rewrites every published release that no longer matches
   (`--check-published` reports drift, `--sync` fixes it by hand). No tool or AI attribution appears
   in the CHANGELOG, the Fastlane changelog or the release; the scripts refuse notes that contain it.
-- Assets: `Kalimory-x.y.z.apk` and `Kalimory-x.y.z.apk.sha256`.
+- Assets: `kalimory-x.y.z.apk` and `kalimory-x.y.z.apk.sha256`, in lower case.
 
 ## Wiki
 

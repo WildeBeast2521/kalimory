@@ -100,8 +100,8 @@ jobs:
       - name: Name the files and write the checksum and notes
         run: |
           mkdir dist
-          cp app/build/outputs/apk/release/app-release.apk "dist/Kalimory-$VERSION.apk"
-          (cd dist && sha256sum "Kalimory-$VERSION.apk" | tee "Kalimory-$VERSION.apk.sha256")
+          cp app/build/outputs/apk/release/app-release.apk "dist/kalimory-$VERSION.apk"
+          (cd dist && sha256sum "kalimory-$VERSION.apk" | tee "kalimory-$VERSION.apk.sha256")
           python3 -I scripts/release-notes.py "$VERSION" > release-notes.md
 
       - name: Keep the R8 mapping file
@@ -118,5 +118,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
-          gh release create "$GITHUB_REF_NAME" "dist/Kalimory-$VERSION.apk" "dist/Kalimory-$VERSION.apk.sha256"
+          gh release create "$GITHUB_REF_NAME" "dist/kalimory-$VERSION.apk" "dist/kalimory-$VERSION.apk.sha256"
           --draft --verify-tag --title "$GITHUB_REF_NAME" --notes-file release-notes.md
