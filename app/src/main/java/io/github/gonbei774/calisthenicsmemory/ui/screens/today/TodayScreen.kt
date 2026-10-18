@@ -120,8 +120,7 @@ fun TodayScreen(
     val firstDay = firstDayOfWeek()
     val week = remember(today, firstDay) { weekOf(today, firstDay) }
     val trainedDays = remember(history, intervalHistory) {
-        (history.map { it.date } + intervalHistory.map { it.record.date })
-            .mapNotNull { runCatching { LocalDate.parse(it) }.getOrNull() }.toSet()
+        trainedDays(history.map { it.date } + intervalHistory.map { it.record.date })
     }
     val doneToday = remember(history, today) {
         history.filter { it.date == today.toString() }

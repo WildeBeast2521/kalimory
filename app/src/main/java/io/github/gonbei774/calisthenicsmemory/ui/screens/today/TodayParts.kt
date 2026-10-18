@@ -139,6 +139,10 @@ internal fun WeekStrip(
     }
 }
 
+/** The days with any training, from the dates of their sets and interval records; unreadable dates are skipped. */
+internal fun trainedDays(dates: List<String>): Set<LocalDate> =
+    dates.mapNotNull { runCatching { LocalDate.parse(it) }.getOrNull() }.toSet()
+
 /** The days of the week containing [today], starting on the locale's first day. */
 internal fun weekOf(today: LocalDate, firstDay: DayOfWeek): List<LocalDate> {
     val shift = (today.dayOfWeek.value - firstDay.value + 7) % 7

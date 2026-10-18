@@ -935,49 +935,13 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         try {
             // Every set in history, legacy or v2, so v2-only workouts are exported too.
             val currentRecords = CompatibilityHistory.read(database, ZoneId.systemDefault())
-            val currentExercises = exercises.value
-
-            // 種目IDから種目情報へのマップを作成
-            val exerciseMap = currentExercises.associateBy { it.id }
-
-            val csvBuilder = StringBuilder()
-
-            // ヘッダー (v12: 11列)
-            csvBuilder.appendLine("exerciseName,exerciseType,date,time,setNumber,valueRight,valueLeft,comment,distanceCm,weightG,assistanceG")
-
-            // 記録データを出力（日付・時刻・セット番号で並べ替え）
-            currentRecords
-                .sortedWith(compareBy({ it.date }, { it.time }, { it.setNumber }))
-                .forEach { record ->
-                    val exercise = exerciseMap[record.exerciseId]
-                    if (exercise != null) {
-                        val valueLeft = record.valueLeft?.toString() ?: ""
-                        val distanceCm = record.distanceCm?.toString() ?: ""
-                        val weightG = record.weightG?.toString() ?: ""
-                        val assistanceG = record.assistanceG?.toString() ?: ""
-                        csvBuilder.appendLine(
-                            csvRow(
-                                exercise.name,
-                                exercise.type,
-                                record.date,
-                                record.time,
-                                record.setNumber.toString(),
-                                record.valueRight.toString(),
-                                valueLeft,
-                                record.comment,
-                                distanceCm,
-                                weightG,
-                                assistanceG
-                            )
-                        )
-                    }
-                }
+            val csv = recordsCsv(currentRecords, exercises.value)
 
             withContext(Dispatchers.Main) {
                 _snackbarMessage.value = UiMessage.CsvExportSuccess("Records", currentRecords.size)
             }
 
-            csvBuilder.toString()
+            csv
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
                 _snackbarMessage.value = UiMessage.ExportError(e.message ?: "")
