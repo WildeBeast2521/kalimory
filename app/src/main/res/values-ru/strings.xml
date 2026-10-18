@@ -144,7 +144,7 @@
         <item quantity="one">%d подход</item>
         <item quantity="few">%d подхода</item>
         <item quantity="many">%d подходов</item>
-        <item quantity="other">%d подхода</item>
+        <item quantity="other">%d подходов</item>
     </plurals>
     <string name="value_with_unit">%1$d %2$s</string>
     <string name="app_original_project">Исходный проект</string>
@@ -179,7 +179,7 @@
         <item quantity="one">Записать %d упражнение</item>
         <item quantity="few">Записать %d упражнения</item>
         <item quantity="many">Записать %d упражнений</item>
-        <item quantity="other">Записать %d упражнения</item>
+        <item quantity="other">Записать %d упражнений</item>
     </plurals>
     <!-- Restoring the raw database from a recovery file. -->
     <string name="recovery_restore_button">Восстановить из файла восстановления</string>
@@ -286,13 +286,13 @@
         <item quantity="one">%d упражнение</item>
         <item quantity="few">%d упражнения</item>
         <item quantity="many">%d упражнений</item>
-        <item quantity="other">%d упражнения</item>
+        <item quantity="other">%d упражнений</item>
     </plurals>
     <plurals name="complete_reps">
         <item quantity="one">Завершить (%d повторение)</item>
         <item quantity="few">Завершить (%d повторения)</item>
         <item quantity="many">Завершить (%d повторений)</item>
-        <item quantity="other">Завершить (%d повторения)</item>
+        <item quantity="other">Завершить (%d повторений)</item>
     </plurals>
     <string name="exit_workout_message">Несохранённые подходы будут потеряны. Чтобы сохранить их, нажмите «Сохранить и выйти».</string>
     <string name="new_interval_program">Новый интервал</string>
@@ -765,7 +765,7 @@
         <item quantity="one">%d круг</item>
         <item quantity="few">%d круга</item>
         <item quantity="many">%d кругов</item>
-        <item quantity="other">%d круга</item>
+        <item quantity="other">%d кругов</item>
     </plurals>
     <string name="crash_report_title">Приложение Kalimory неожиданно закрылось</string>
     <string name="crash_report_message">Отчётом об ошибке можно поделиться, чтобы её исправили. В нём есть сведения об ошибке, версия приложения и модель телефона, и перед отправкой его можно прочитать.</string>
@@ -775,7 +775,7 @@
         <item quantity="one">Записан %d подход!</item>
         <item quantity="few">Записано %d подхода!</item>
         <item quantity="many">Записано %d подходов!</item>
-        <item quantity="other">Записано %d подхода!</item>
+        <item quantity="other">Записано %d подходов!</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="one">%d шт.</item>
@@ -787,19 +787,19 @@
         <item quantity="one">%d запись</item>
         <item quantity="few">%d записи</item>
         <item quantity="many">%d записей</item>
-        <item quantity="other">%d записи</item>
+        <item quantity="other">%d записей</item>
     </plurals>
     <plurals name="group_count">
         <item quantity="one">%d группа</item>
         <item quantity="few">%d группы</item>
         <item quantity="many">%d групп</item>
-        <item quantity="other">%d группы</item>
+        <item quantity="other">%d групп</item>
     </plurals>
     <plurals name="csv_error_count">
         <item quantity="one">%d ошибка</item>
         <item quantity="few">%d ошибки</item>
         <item quantity="many">%d ошибок</item>
-        <item quantity="other">%d ошибки</item>
+        <item quantity="other">%d ошибок</item>
     </plurals>
     <plurals name="csv_import_more_items">
         <item quantity="one">… и ещё %d</item>
@@ -817,7 +817,7 @@
         <item quantity="one">%1$d / %2$d подход</item>
         <item quantity="few">%1$d / %2$d подхода</item>
         <item quantity="many">%1$d / %2$d подходов</item>
-        <item quantity="other">%1$d / %2$d подхода</item>
+        <item quantity="other">%1$d / %2$d подходов</item>
     </plurals>
     <plurals name="interval_full_complete_format">
         <item quantity="one">Выполнено кругов: %1$d / %2$d</item>

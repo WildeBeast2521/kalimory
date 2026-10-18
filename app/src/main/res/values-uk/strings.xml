@@ -129,7 +129,7 @@
     <string name="already_in_use_format">«%1$s (%2$s)» вже використовується</string>
     <string name="program_target_format">%1$d %2$s</string>
     <string name="interval_label">Інтервал</string>
-    <string name="program_interval_format">Відпочинок %d с</string>
+    <string name="program_interval_format">Відпочинок %d\u00A0с</string>
     <string name="app_feedback">Зворотний зв’язок</string>
     <string name="tab_list">Список</string>
     <string name="tab_graph">Графік</string>
@@ -257,12 +257,12 @@
     <string name="left_short">Ліва</string>
     <string name="todo_title">Список завдань</string>
     <string name="unit_seconds">с</string>
-    <string name="minus_10sec">-10 с</string>
-    <string name="plus_10sec">+10 с</string>
+    <string name="minus_10sec">-10\u00A0с</string>
+    <string name="plus_10sec">+10\u00A0с</string>
     <string name="skipped_label">Пропущено</string>
     <string name="nav_skipped">Пропущено</string>
     <string name="record_workout">Записати</string>
-    <string name="complete_with_time">Завершити (%d с)</string>
+    <string name="complete_with_time">Завершити (%d\u00A0с)</string>
     <string name="statistics_summary">Статистика</string>
     <string name="import_data_preview_title">Підтвердження імпорту</string>
     <string name="data_management">Керування даними</string>
@@ -616,7 +616,7 @@
         <item quantity="one">%d підхід</item>
         <item quantity="few">%d підходи</item>
         <item quantity="many">%d підходів</item>
-        <item quantity="other">%d підходу</item>
+        <item quantity="other">%d підходів</item>
     </plurals>
     <string name="value_with_unit">%1$d %2$s</string>
     <string name="app_original_project">Оригінальний проєкт</string>
@@ -649,7 +649,7 @@
         <item quantity="one">Записати %d вправу</item>
         <item quantity="few">Записати %d вправи</item>
         <item quantity="many">Записати %d вправ</item>
-        <item quantity="other">Записати %d вправи</item>
+        <item quantity="other">Записати %d вправ</item>
     </plurals>
     <!-- Restoring the raw database from a recovery file. -->
     <string name="recovery_restore_button">Відновити з файлу відновлення</string>
@@ -755,20 +755,20 @@
         <item quantity="one">%d вправа</item>
         <item quantity="few">%d вправи</item>
         <item quantity="many">%d вправ</item>
-        <item quantity="other">%d вправи</item>
+        <item quantity="other">%d вправ</item>
     </plurals>
     <plurals name="complete_reps">
         <item quantity="one">Завершити (%d раз)</item>
         <item quantity="few">Завершити (%d рази)</item>
         <item quantity="many">Завершити (%d разів)</item>
-        <item quantity="other">Завершити (%d рази)</item>
+        <item quantity="other">Завершити (%d разів)</item>
     </plurals>
     <string name="theme_system_short">Системна</string>
     <plurals name="loop_round_count">
         <item quantity="one">%d раунд</item>
         <item quantity="few">%d раунди</item>
         <item quantity="many">%d раундів</item>
-        <item quantity="other">%d раунду</item>
+        <item quantity="other">%d раундів</item>
     </plurals>
     <string name="crash_report_title">Застосунок Kalimory неочікувано закрився</string>
     <string name="crash_report_message">Звітом про помилку можна поділитися, щоб її виправили. Він містить відомості про помилку, версію застосунку та модель телефона, і перед надсиланням його можна прочитати.</string>
@@ -778,31 +778,31 @@
         <item quantity="one">Записано %d підхід!</item>
         <item quantity="few">Записано %d підходи!</item>
         <item quantity="many">Записано %d підходів!</item>
-        <item quantity="other">Записано %d підходу!</item>
+        <item quantity="other">Записано %d підходів!</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="one">%d елемент</item>
         <item quantity="few">%d елементи</item>
         <item quantity="many">%d елементів</item>
-        <item quantity="other">%d елемента</item>
+        <item quantity="other">%d елементів</item>
     </plurals>
     <plurals name="count_records">
         <item quantity="one">%d запис</item>
         <item quantity="few">%d записи</item>
         <item quantity="many">%d записів</item>
-        <item quantity="other">%d запису</item>
+        <item quantity="other">%d записів</item>
     </plurals>
     <plurals name="group_count">
         <item quantity="one">%d група</item>
         <item quantity="few">%d групи</item>
         <item quantity="many">%d груп</item>
-        <item quantity="other">%d групи</item>
+        <item quantity="other">%d груп</item>
     </plurals>
     <plurals name="csv_error_count">
         <item quantity="one">%d помилка</item>
         <item quantity="few">%d помилки</item>
         <item quantity="many">%d помилок</item>
-        <item quantity="other">%d помилки</item>
+        <item quantity="other">%d помилок</item>
     </plurals>
     <plurals name="csv_import_more_items">
         <item quantity="one">… і ще %d</item>
@@ -814,49 +814,49 @@
         <item quantity="one">Зараз: %d секунда</item>
         <item quantity="few">Зараз: %d секунди</item>
         <item quantity="many">Зараз: %d секунд</item>
-        <item quantity="other">Зараз: %d секунди</item>
+        <item quantity="other">Зараз: %d секунд</item>
     </plurals>
     <plurals name="nav_sets_format">
         <item quantity="one">%1$d / %2$d підхід</item>
         <item quantity="few">%1$d / %2$d підходи</item>
         <item quantity="many">%1$d / %2$d підходів</item>
-        <item quantity="other">%1$d / %2$d підходу</item>
+        <item quantity="other">%1$d / %2$d підходів</item>
     </plurals>
     <plurals name="interval_full_complete_format">
         <item quantity="one">%1$d / %2$d раунд завершено</item>
         <item quantity="few">%1$d / %2$d раунди завершено</item>
         <item quantity="many">%1$d / %2$d раундів завершено</item>
-        <item quantity="other">%1$d / %2$d раунду завершено</item>
+        <item quantity="other">%1$d / %2$d раундів завершено</item>
     </plurals>
     <plurals name="interval_rounds_progress">
         <item quantity="one">%1$d / %2$d раунд</item>
         <item quantity="few">%1$d / %2$d раунди</item>
         <item quantity="many">%1$d / %2$d раундів</item>
-        <item quantity="other">%1$d / %2$d раунду</item>
+        <item quantity="other">%1$d / %2$d раундів</item>
     </plurals>
     <plurals name="interval_exercises_progress">
         <item quantity="one">%1$d / %2$d вправа</item>
         <item quantity="few">%1$d / %2$d вправи</item>
         <item quantity="many">%1$d / %2$d вправ</item>
-        <item quantity="other">%1$d / %2$d вправи</item>
+        <item quantity="other">%1$d / %2$d вправ</item>
     </plurals>
     <plurals name="challenge_clear_days">
         <item quantity="one">Виконано %1$d/%2$d день</item>
         <item quantity="few">Виконано %1$d/%2$d дні</item>
         <item quantity="many">Виконано %1$d/%2$d днів</item>
-        <item quantity="other">Виконано %1$d/%2$d дня</item>
+        <item quantity="other">Виконано %1$d/%2$d днів</item>
     </plurals>
     <plurals name="change_format">
         <item quantity="one">%+d підхід</item>
         <item quantity="few">%+d підходи</item>
         <item quantity="many">%+d підходів</item>
-        <item quantity="other">%+d підходу</item>
+        <item quantity="other">%+d підходів</item>
     </plurals>
     <plurals name="share_program_loops_format">
         <item quantity="one">, %1$d цикл</item>
         <item quantity="few">, %1$d цикли</item>
         <item quantity="many">, %1$d циклів</item>
-        <item quantity="other">, %1$d циклу</item>
+        <item quantity="other">, %1$d циклів</item>
     </plurals>
     <plurals name="share_preview_auto_included">
         <item quantity="one">(%1$d додано автоматично)</item>
@@ -886,7 +886,7 @@
         <item quantity="one">%d раз</item>
         <item quantity="few">%d рази</item>
         <item quantity="many">%d разів</item>
-        <item quantity="other">%d раза</item>
+        <item quantity="other">%d разів</item>
     </plurals>
     <!-- Workout editor (ADR 0009) -->
     <string name="workout_edit_title">Редагувати тренування</string>
