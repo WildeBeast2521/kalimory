@@ -14,6 +14,7 @@ Calisthenics Memory by Gonbei774.
 - After a crash, the app offers on its next start to share a report of the error through the share sheet, or to delete it; the report stays on the phone and is never sent by itself ([#192](https://github.com/WildeBeast2521/kalimory/pull/192))
 
 ### Fixed
+- Exercise targets say "1 rep" for a single repetition, with the right form in Arabic, Spanish and Ukrainian too ([#199](https://github.com/WildeBeast2521/kalimory/pull/199))
 - Counts read correctly in every language, such as "1 set" instead of "1 sets", with the right word form for each number in Arabic, Russian and Ukrainian ([#198](https://github.com/WildeBeast2521/kalimory/pull/198))
 - French labels put a space before the colon, as French typography does, and the exercise search and import lists end in a proper ellipsis (…) in every language ([#197](https://github.com/WildeBeast2521/kalimory/pull/197))
 - Two workouts saved in the same minute show as separate cards in History, so editing or deleting one no longer changes the other ([#196](https://github.com/WildeBeast2521/kalimory/pull/196))

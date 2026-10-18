@@ -26,8 +26,8 @@
     <string name="set_challenge">Définir un Objectif</string>
     <string name="sets_count">Séries</string>
     <!-- Will be replaced with "Reps" or "Seconds" -->
-    <string name="target_format">%1$s × %2$d %3$s</string>
-    <string name="target_format_unilateral">%1$s × %2$d %3$s (par côté)</string>
+    <string name="target_format">%1$s × %2$s</string>
+    <string name="target_format_unilateral">%1$s × %2$s (par côté)</string>
     <string name="laterality">Latéralité</string>
     <string name="one_sided">Un côté</string>
     <string name="group_optional">Groupe (Facultatif)</string>
@@ -49,8 +49,8 @@
     <string name="select_exercise_please">Veuillez sélectionner un exercice</string>
     <string name="select_from_top">Choisissez depuis \"Sélectionner un Exercice\" ci-dessus</string>
     <string name="no_records_for_exercise">Aucun enregistrement pour cet exercice</string>
-    <string name="target_display">Objectif : %1$s × %2$d %3$s</string>
-    <string name="target_display_unilateral">Objectif : %1$s × %2$d %3$s (par côté)</string>
+    <string name="target_display">Objectif : %1$s × %2$s</string>
+    <string name="target_display_unilateral">Objectif : %1$s × %2$s (par côté)</string>
     <string name="right">Droit</string>
     <string name="left">Gauche</string>
     <string name="right_value_short">D : %1$d %2$s</string>
@@ -909,5 +909,10 @@
         <item quantity="one">%1$d ignoré</item>
         <item quantity="many">%1$d ignorés</item>
         <item quantity="other">%1$d ignorés</item>
+    </plurals>
+    <plurals name="target_reps">
+        <item quantity="one">%d rép.</item>
+        <item quantity="many">%d rép.</item>
+        <item quantity="other">%d rép.</item>
     </plurals>
 </resources>

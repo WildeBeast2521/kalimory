@@ -1009,12 +1009,11 @@ fun WorkoutExerciseItem(
                         modifier = Modifier.padding(top = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val unit = if (exercise.type == "Dynamic") stringResource(R.string.unit_reps) else stringResource(R.string.unit_seconds)
                         Text(
                             text = targetText(
                                 exercise.targetSets ?: 0,
                                 exercise.targetValue ?: 0,
-                                unit,
+                                dynamic = exercise.type == "Dynamic",
                                 unilateral = exercise.laterality == "Unilateral",
                             ),
                             fontSize = 12.sp,
@@ -2991,12 +2990,11 @@ fun WorkoutSearchResultItem(
                         modifier = Modifier.padding(top = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val unit = if (exercise.type == "Dynamic") stringResource(R.string.unit_reps) else stringResource(R.string.unit_seconds)
                         Text(
                             text = targetText(
                                 exercise.targetSets ?: 0,
                                 exercise.targetValue ?: 0,
-                                unit,
+                                dynamic = exercise.type == "Dynamic",
                                 unilateral = exercise.laterality == "Unilateral",
                             ),
                             fontSize = 12.sp,
