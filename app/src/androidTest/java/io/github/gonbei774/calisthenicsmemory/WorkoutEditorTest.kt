@@ -27,8 +27,14 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSessionEntity
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSessionStatus
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSourceType
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSummaryBuilder
+import io.github.gonbei774.calisthenicsmemory.ui.screens.today.trainedDays
+import io.github.gonbei774.calisthenicsmemory.ui.screens.today.weekOf
+import io.github.gonbei774.calisthenicsmemory.ui.screens.view.historyCards
 import io.github.gonbei774.calisthenicsmemory.viewmodel.BackupResult
 import io.github.gonbei774.calisthenicsmemory.viewmodel.BackupService
+import io.github.gonbei774.calisthenicsmemory.viewmodel.RECORDS_CSV_HEADER
+import io.github.gonbei774.calisthenicsmemory.viewmodel.parseCsvRecords
+import io.github.gonbei774.calisthenicsmemory.viewmodel.recordsCsv
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -40,6 +46,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
@@ -315,6 +322,49 @@ class WorkoutEditorTest {
         val corrected = loadV2()
         saveV2(corrected, corrected.withExercise(pushUpId) { it.copy(sets = it.sets + DraftSet(value = 14)) })
         assertEquals(emptyList<Int>(), best())
+    }
+
+    @Test
+    fun theRecordsCsvExportsTheEditedWorkout() = runBlocking {
+        val loaded = loadV2()
+        // One set corrected, one removed, one added, and the workout moved.
+        val edited = loaded.withExercise(pushUpId) { it.copy(sets = listOf(it.sets[0].copy(value = 13), DraftSet(value = 9, weightG = 5_000))) }
+            .copy(date = LocalDate.of(2026, 3, 4), time = LocalTime.of(18, 5), comment = "Moved, \"edited\"")
+        assertEquals(WorkoutSaveResult.SAVED, saveV2(loaded, edited))
+
+        val rows = parseCsvRecords(recordsCsv(history(), library))
+        assertEquals(RECORDS_CSV_HEADER.split(","), rows.first())
+        val expected = history().sortedWith(compareBy({ it.date }, { it.time }, { it.setNumber })).map { set ->
+            val exercise = library.single { it.id == set.exerciseId }
+            listOf(
+                exercise.name, exercise.type, set.date, set.time, set.setNumber.toString(), set.valueRight.toString(),
+                set.valueLeft?.toString().orEmpty(), set.comment, set.distanceCm?.toString().orEmpty(),
+                set.weightG?.toString().orEmpty(), set.assistanceG?.toString().orEmpty(),
+            )
+        }
+        assertEquals(expected, rows.drop(1))
+        fun valuesOf(name: String) = rows.drop(1).filter { it[0] == name }.map { listOf(it[5], it[6], it[9]) }
+        assertEquals(listOf(listOf("13", "", ""), listOf("9", "", "5000")), valuesOf("Push-up"))
+        assertEquals(listOf(listOf("8", "7", "")), valuesOf("Lunge"))
+        assertTrue(rows.drop(1).all { it[2] == "2026-03-04" && it[3] == "18:05" && it[7] == "Moved, \"edited\"" })
+    }
+
+    @Test
+    fun aMovedWorkoutMovesOnTheCalendarAndInTheWeeklyCount() = runBlocking {
+        fun trainedIn(weekOfDay: LocalDate, history: List<io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet>) =
+            weekOf(weekOfDay, DayOfWeek.MONDAY).count { it in trainedDays(history.map { set -> set.date }) }
+        val monday = LocalDate.of(2026, 3, 2)
+        val nextMonday = LocalDate.of(2026, 3, 9)
+        assertEquals(1, trainedIn(monday, history()))
+        assertEquals(0, trainedIn(nextMonday, history()))
+
+        val loaded = loadV2()
+        assertEquals(WorkoutSaveResult.SAVED, saveV2(loaded, loaded.copy(date = nextMonday.plusDays(2))))
+
+        // The calendar and History draw the cards' dates; Today counts the trained days of the week.
+        assertEquals(listOf("2026-03-11"), historyCards(history()).map { it.date }.distinct())
+        assertEquals(0, trainedIn(monday, history()))
+        assertEquals(1, trainedIn(nextMonday, history()))
     }
 
     private suspend fun assertRoundTrip() {
