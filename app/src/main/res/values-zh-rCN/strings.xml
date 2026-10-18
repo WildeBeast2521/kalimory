@@ -524,6 +524,7 @@
     <string name="share_preview_programs">计划 (%1$d)</string>
     <string name="share_preview_intervals">间歇 (%1$d)</string>
     <string name="share_preview_total_exercises">动作总数：%1$d</string>
+    <string name="share_preview_total_with_auto">%1$s%2$s</string>
     <string name="share_preview_groups">分组：%1$d</string>
     <string name="share_no_programs">无训练计划</string>
     <string name="share_no_intervals">无间歇训练计划</string>

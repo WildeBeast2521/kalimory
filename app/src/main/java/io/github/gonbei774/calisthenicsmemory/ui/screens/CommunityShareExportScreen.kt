@@ -347,8 +347,12 @@ fun CommunityShareExportScreen(
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = stringResource(R.string.share_preview_total_exercises, totalExerciseCount) +
-                                if (autoIncludedExerciseCount > 0) countText(R.plurals.share_preview_auto_included, autoIncludedExerciseCount) else "",
+                        text = stringResource(R.string.share_preview_total_exercises, totalExerciseCount).let { total ->
+                            if (autoIncludedExerciseCount > 0) stringResource(
+                                R.string.share_preview_total_with_auto, total,
+                                countText(R.plurals.share_preview_auto_included, autoIncludedExerciseCount)
+                            ) else total
+                        },
                         fontSize = 13.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

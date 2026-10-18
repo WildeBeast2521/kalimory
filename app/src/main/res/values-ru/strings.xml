@@ -59,8 +59,8 @@
     <string name="isometric_type">Время</string>
     <string name="exercise_type_dynamic">Динамическое</string>
     <string name="exercise_type_isometric">Статическое</string>
-    <string name="exercise_type_dynamic_description">пример: Отжимания, Подтягивания. Учёт по повторениям</string>
-    <string name="exercise_type_isometric_description">пример: Планка, L-приседания. Учёт по времени удержания.</string>
+    <string name="exercise_type_dynamic_description">Например, отжимания, подтягивания. Учёт по повторениям.</string>
+    <string name="exercise_type_isometric_description">Например, планка, уголок. Учёт по времени удержания.</string>
     <string name="no_records_yet">Нет записей</string>
     <string name="unknown_exercise">Неизвестное упражнение</string>
     <string name="edit_session_info">Редактировать тренировку</string>
@@ -746,6 +746,7 @@
     <string name="share_preview_programs">Программы (%1$d)</string>
     <string name="share_preview_intervals">Интервалы (%1$d)</string>
     <string name="share_preview_total_exercises">Всего упражнений: %1$d</string>
+    <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">Групп: %1$d</string>
     <string name="share_no_programs">Нет программ</string>
     <string name="share_no_intervals">Нет интервалов</string>
@@ -771,10 +772,10 @@
     <string name="crash_report_share">Поделиться отчётом</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="one">Записан %d подход</item>
-        <item quantity="few">Записано %d подхода</item>
-        <item quantity="many">Записано %d подходов</item>
-        <item quantity="other">Записано %d подхода</item>
+        <item quantity="one">Записан %d подход!</item>
+        <item quantity="few">Записано %d подхода!</item>
+        <item quantity="many">Записано %d подходов!</item>
+        <item quantity="other">Записано %d подхода!</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="one">%d шт.</item>

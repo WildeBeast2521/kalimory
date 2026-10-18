@@ -519,6 +519,7 @@
     <string name="share_preview_programs">Programme (%1$d)</string>
     <string name="share_preview_intervals">Intervalle (%1$d)</string>
     <string name="share_preview_total_exercises">Übungen gesamt: %1$d</string>
+    <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">Gruppen: %1$d</string>
     <string name="share_no_programs">Keine Programme</string>
     <string name="share_no_intervals">Keine Intervallprogramme</string>
@@ -870,8 +871,8 @@
         <item quantity="other">, %1$d Schleifen</item>
     </plurals>
     <plurals name="share_preview_auto_included">
-        <item quantity="one"> (%1$d automatisch einbezogen)</item>
-        <item quantity="other"> (%1$d automatisch einbezogen)</item>
+        <item quantity="one">(%1$d automatisch einbezogen)</item>
+        <item quantity="other">(%1$d automatisch einbezogen)</item>
     </plurals>
     <plurals name="share_import_added">
         <item quantity="one">%1$d hinzugefügt</item>

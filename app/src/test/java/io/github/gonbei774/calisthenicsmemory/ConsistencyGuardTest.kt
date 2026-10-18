@@ -58,6 +58,16 @@ class ConsistencyGuardTest {
         assertTrue("Use … instead of ...: $offenders", offenders.isEmpty())
     }
 
+    @Test fun `strings never start or end with a space, which Android drops`() {
+        // An unquoted resource loses its outer spaces when it is compiled, so text glued on with a
+        // leading space shows without it. Join the parts with a format string instead.
+        val offenders = stringFiles.flatMap { file ->
+            stringValue.findAll(file.readText()).filter { it.groupValues[2].let { v -> v.startsWith(" ") || v.endsWith(" ") } }
+                .map { "${file.parentFile.name}/${it.groupValues[1]}" }
+        }
+        assertTrue("Remove the outer space and use a format string: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `French puts a space before colons, semicolons, question and exclamation marks`() {
         val offenders = stringFiles.filter { it.parentFile.name == "values-fr" }.flatMap { file ->
             stringValue.findAll(file.readText()).filter { Regex("""\p{L}[:;?!]""").containsMatchIn(it.groupValues[2]) }
