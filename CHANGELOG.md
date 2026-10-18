@@ -5,8 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Each entry is one user-facing change, linked to the pull request that made it; the GitHub release
-for a version shows the same section. Versions 1.26.0 and earlier are releases of the original
-Calisthenics Memory by Gonbei774.
+for a version shows the same section. The entries headed "Calisthenics Memory" are releases of the original app by Gonbei774,
+from which Kalimory was forked; their version numbers are the original app's, not Kalimory's.
 
 ## [Unreleased]
 
@@ -69,7 +69,7 @@ Kalimory is a fork of Calisthenics Memory with its own name, application ID (`io
 - The Challenge tab, replaced by Progressions
 
 
-## [1.26.0] - 2026-07-20
+## [Calisthenics Memory 1.26.0] - 2026-07-20
 
 ### Added
 - **Explanation text for the bulk-apply options** (Program/Exercise/Previous) on the program confirmation screen
@@ -84,14 +84,14 @@ Kalimory is a fork of Calisthenics Memory with its own name, application ID (`io
 
 This release includes translation contributions from @gallegonovato (Spanish) and @gl0bix (German).
 
-## [1.25.1] - 2026-06-30
+## [Calisthenics Memory 1.25.1] - 2026-06-30
 
 ### Fixed
 - **Loop execution order**: each round now completes all of its exercises before moving to the next round (previously, after changing values or set counts, one exercise was run across all rounds first) ([GitHub #18](https://github.com/Gonbei774/CalisthenicsMemory/issues/18))
 
 This release includes translation contributions from @SomeTr (Ukrainian).
 
-## [1.25.0] - 2026-06-28
+## [Calisthenics Memory 1.25.0] - 2026-06-28
 
 ### Added
 - **Clear-days heat strip** on the challenge tab, showing cleared/total days at a glance
@@ -101,7 +101,7 @@ This release includes translation contributions from @SomeTr (Ukrainian).
 
 This release includes translation contributions from @SomeTr (Ukrainian).
 
-## [1.24.0] - 2026-06-22
+## [Calisthenics Memory 1.24.0] - 2026-06-22
 
 ### Added
 - **Per-set weight/distance/assistance input** when completing a set in manual workout mode
@@ -121,7 +121,7 @@ This release includes translation contributions from @SomeTr (Ukrainian).
 
 This release includes translation contributions from @SomeTr (Ukrainian) and @gallegonovato (Spanish).
 
-## [1.23.0] - 2026-06-08
+## [Calisthenics Memory 1.23.0] - 2026-06-08
 
 ### Added
 - **Redesigned workout executing screens** for both single and program modes
@@ -140,7 +140,7 @@ This release includes translation contributions from @SomeTr (Ukrainian) and @ga
 
 This release includes contributions from @gallegonovato, @SomeTr, @nautilusx, and @unsealed211.
 
-## [1.22.0] - 2026-04-30
+## [Calisthenics Memory 1.22.0] - 2026-04-30
 
 ### Added
 - **Calendar heatmap** showing daily activity intensity in record view
@@ -164,7 +164,7 @@ This release includes contributions from @gallegonovato, @SomeTr, @nautilusx, an
 
 This release includes translation contributions from @gallegonovato (Spanish) and @SomeTr (Ukrainian).
 
-## [1.21.0] - 2026-04-21
+## [Calisthenics Memory 1.21.0] - 2026-04-21
 
 ### Added
 - **Per-set tracking** for weight, distance, and assistance values
@@ -186,7 +186,7 @@ This release includes translation contributions from @gallegonovato (Spanish) an
 
 This release includes translation contributions from @lejun (French) and @SomeTr (Ukrainian).
 
-## [1.20.0] - 2026-03-15
+## [Calisthenics Memory 1.20.0] - 2026-03-15
 
 ### Added
 - **Tap-to-pause timer** - Tap the timer to pause/resume, replacing the pause button
@@ -205,7 +205,7 @@ This release includes translation contributions from @lejun (French) and @SomeTr
 
 This release includes contributions from @Leoni, @gallegonovato, @nautilusx, @komeko, @SomeTr, and @scream.
 
-## [1.19.0] - 2026-02-15
+## [Calisthenics Memory 1.19.0] - 2026-02-15
 
 ### Added
 - **Community Share** - Export and import exercises, programs, and intervals as JSON files
@@ -235,7 +235,7 @@ This release includes contributions from @Leoni, @gallegonovato, @nautilusx, @ko
 
 This release includes contributions from @SomeTr and @nautilusx.
 
-## [1.18.0] - 2026-02-12
+## [Calisthenics Memory 1.18.0] - 2026-02-12
 
 ### Added
 - **Interval mode** - Create timed work/rest cycles with customizable rounds
@@ -263,7 +263,7 @@ This release includes contributions from @SomeTr and @nautilusx.
 
 This release includes contributions from @SomeTr.
 
-## [1.17.1] - 2026-02-08
+## [Calisthenics Memory 1.17.1] - 2026-02-08
 
 ### Improved
 - Graph type buttons now scroll horizontally
@@ -275,7 +275,7 @@ This release includes contributions from @SomeTr.
 
 This release includes contributions from @nautilusx and @SomeTr.
 
-## [1.17.0] - 2026-02-02
+## [Calisthenics Memory 1.17.0] - 2026-02-02
 
 ### Added
 - **Light mode with user-selectable theme option**
@@ -293,14 +293,14 @@ This release includes contributions from @nautilusx and @SomeTr.
 
 This release includes contributions from @nautilusx, @SomeTr, and @balaraz.
 
-## [1.16.1] - 2026-01-20
+## [Calisthenics Memory 1.16.1] - 2026-01-20
 
 ### Fixed
 - App state resetting when rotating the device
 
 This release includes contributions from @SomeTr.
 
-## [1.16.0] - 2026-01-19
+## [Calisthenics Memory 1.16.0] - 2026-01-19
 
 ### Added
 - **Loop feature for Program mode** (Issue #21)
@@ -326,7 +326,7 @@ This release includes contributions from @SomeTr.
 
 This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 
-## [1.15.0] - 2025-12-31
+## [Calisthenics Memory 1.15.0] - 2025-12-31
 
 ### Added
 - **Program Mode Navigation**
@@ -339,14 +339,14 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Collapsible UI
   - Bulk adjustments
 
-## [1.14.1] - 2025-12-14
+## [Calisthenics Memory 1.14.1] - 2025-12-14
 
 ### Fixed
 - **JSON import now preserves program data** (Issue #8)
   - Program configurations are now included in backup/restore
   - Importing backups no longer deletes program data
 
-## [1.14.0] - 2025-12-14
+## [Calisthenics Memory 1.14.0] - 2025-12-14
 
 ### Added
 - **Program duplication feature**
@@ -372,7 +372,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Start countdown now respects program settings (ignores global setting)
 - Program screen accent colors unified with workout theme
 
-## [1.13.0] - 2025-12-13
+## [Calisthenics Memory 1.13.0] - 2025-12-13
 
 ### Added
 - **Program feature for multi-exercise routines**
@@ -384,7 +384,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Configurable rest intervals between sets
   - Complete result screen with editable values
 
-## [1.12.0] - 2025-12-11
+## [Calisthenics Memory 1.12.0] - 2025-12-11
 
 ### Added
 - **Auto-fill previous record feature**
@@ -396,7 +396,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Section now scrolls when content is long
   - "View all records" button always accessible
 
-## [1.11.0] - 2025-12-07
+## [Calisthenics Memory 1.11.0] - 2025-12-07
 
 ### Added
 - **To Do feature for planning workouts**
@@ -408,7 +408,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 ### Improved
 - Simplified record list UI
 
-## [1.10.0] - 2025-12-05
+## [Calisthenics Memory 1.10.0] - 2025-12-05
 
 ### Added
 - **Distance graph with dual Y-axis display**
@@ -427,7 +427,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Workout settings screen now scrollable for better accessibility
 - Statistics summary UI simplified for better internationalization support
 
-## [1.9.0] - 2025-12-04
+## [Calisthenics Memory 1.9.0] - 2025-12-04
 
 ### Added
 - **Distance and weight tracking for exercises**
@@ -442,14 +442,14 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Timer continues accurately even when screen is off
   - More reliable background operation
 
-## [1.8.1] - 2025-11-29
+## [Calisthenics Memory 1.8.1] - 2025-11-29
 
 ### Fixed
 - **Timer stops when screen is off**
   - Added WakeLock to keep timer running in background
   - Ensures workout timer continues even with screen off
 
-## [1.8.0] - 2025-11-29
+## [Calisthenics Memory 1.8.0] - 2025-11-29
 
 ### Added
 - **LED flash notification for workout mode**
@@ -464,14 +464,14 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 ### Technical
 - Updated license screen with JetBrains KMP and Reorderable library entries
 
-## [1.7.1] - 2025-11-26
+## [Calisthenics Memory 1.7.1] - 2025-11-26
 
 ### Fixed
 - **Reproducible build for F-Droid**
   - Excluded timestamp from AboutLibraries metadata
   - Fixes build verification failure on F-Droid and IzzyOnDroid
 
-## [1.7.0] - 2025-11-26
+## [Calisthenics Memory 1.7.0] - 2025-11-26
 
 ### Added
 - **Exercise reordering feature**
@@ -509,7 +509,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - CSV export format updated to 11 columns (backward compatible import)
 - Removed `RecordPreferences.kt` (replaced by manual apply button)
 
-## [1.6.0] - 2025-11-24
+## [Calisthenics Memory 1.6.0] - 2025-11-24
 
 ### Added
 - **Home screen dashboard**
@@ -532,7 +532,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Added enable/disable toggles for preparation time and rep duration
   - Unified dialog colors to orange theme
 
-## [1.5.0] - 2025-11-19
+## [Calisthenics Memory 1.5.0] - 2025-11-19
 
 ### Added
 - **Customizable workout timer settings**
@@ -547,7 +547,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Streamlined screenshot organization
 - UI/UX refinements across the app
 
-## [1.4.0] - 2025-11-15
+## [Calisthenics Memory 1.4.0] - 2025-11-15
 
 ### Improved
 - **Comprehensive CSV import/export enhancement**
@@ -574,7 +574,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 ### Fixed
 - Fixed language setting not applied to ViewModel snackbar messages
 
-## [1.3.0] - 2025-11-13
+## [Calisthenics Memory 1.3.0] - 2025-11-13
 
 ### Added
 - In-app language selection feature - change language directly from Settings
@@ -586,7 +586,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Enhanced challenge tab UI consistency and selection colors
 - Fixed achievement rate calculation logic
 
-## [1.2.0] - 2025-11-09
+## [Calisthenics Memory 1.2.0] - 2025-11-09
 
 ### Added
 - Favorite exercise feature with badge display
@@ -603,7 +603,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 ### Technical
 - Database schema version updated to 9 (added `isFavorite` field to Exercise table)
 
-## [1.1.0] - 2025-01-XX
+## [Calisthenics Memory 1.1.0] - 2025-01-XX
 
 ### Added
 - CSV import/export feature for training records
@@ -618,7 +618,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Export data initialization bug
 - String format warnings
 
-## [1.0.0] - 2025-01-XX
+## [Calisthenics Memory 1.0.0] - 2025-01-XX
 
 ### Added
 - Initial release
@@ -631,36 +631,40 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Multi-language support (Japanese, English)
 - Completely offline, privacy-focused design
 
-[1.26.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.26.0
-[1.25.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.25.1
-[1.25.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.25.0
-[1.24.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.24.0
-[1.23.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.23.0
-[1.22.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.22.0
-[1.21.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.21.0
-[1.20.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.20.0
-[1.19.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.19.0
-[1.18.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.18.0
-[1.17.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.17.1
-[1.17.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.17.0
-[1.16.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.16.1
-[1.16.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.16.0
-[1.15.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.15.0
-[1.14.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.14.1
-[1.14.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.14.0
-[1.13.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.13.0
-[1.12.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.12.0
-[1.11.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.11.0
-[1.10.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.10.0
-[1.9.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.9.0
-[1.8.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.8.1
-[1.8.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.8.0
-[1.7.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.7.1
-[1.7.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.7.0
-[1.6.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.6.0
-[1.5.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.5.0
-[1.4.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.4.0
-[1.3.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.3.0
-[1.2.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.2.0
-[1.1.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.1.0
-[1.0.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.0.0
+[Unreleased]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/WildeBeast2521/kalimory/releases/tag/v1.0.2
+[1.0.1]: https://github.com/WildeBeast2521/kalimory/releases/tag/v1.0.1
+[1.0.0]: https://github.com/WildeBeast2521/kalimory/releases/tag/v1.0.0
+[Calisthenics Memory 1.26.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.26.0
+[Calisthenics Memory 1.25.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.25.1
+[Calisthenics Memory 1.25.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.25.0
+[Calisthenics Memory 1.24.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.24.0
+[Calisthenics Memory 1.23.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.23.0
+[Calisthenics Memory 1.22.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.22.0
+[Calisthenics Memory 1.21.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.21.0
+[Calisthenics Memory 1.20.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.20.0
+[Calisthenics Memory 1.19.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.19.0
+[Calisthenics Memory 1.18.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.18.0
+[Calisthenics Memory 1.17.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.17.1
+[Calisthenics Memory 1.17.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.17.0
+[Calisthenics Memory 1.16.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.16.1
+[Calisthenics Memory 1.16.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.16.0
+[Calisthenics Memory 1.15.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.15.0
+[Calisthenics Memory 1.14.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.14.1
+[Calisthenics Memory 1.14.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.14.0
+[Calisthenics Memory 1.13.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.13.0
+[Calisthenics Memory 1.12.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.12.0
+[Calisthenics Memory 1.11.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.11.0
+[Calisthenics Memory 1.10.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.10.0
+[Calisthenics Memory 1.9.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.9.0
+[Calisthenics Memory 1.8.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.8.1
+[Calisthenics Memory 1.8.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.8.0
+[Calisthenics Memory 1.7.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.7.1
+[Calisthenics Memory 1.7.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.7.0
+[Calisthenics Memory 1.6.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.6.0
+[Calisthenics Memory 1.5.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.5.0
+[Calisthenics Memory 1.4.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.4.0
+[Calisthenics Memory 1.3.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.3.0
+[Calisthenics Memory 1.2.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.2.0
+[Calisthenics Memory 1.1.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.1.0
+[Calisthenics Memory 1.0.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.0.0
