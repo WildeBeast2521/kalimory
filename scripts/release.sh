@@ -26,11 +26,9 @@ git fetch --quiet origin master --tags
 version_name="$(scripts/release-checks.sh)"
 tag="v$version_name"
 git rev-parse --quiet --verify "refs/tags/$tag" >/dev/null && fail "tag $tag already exists"
-previous="$(git describe --tags --abbrev=0 --match 'v*' HEAD 2>/dev/null || true)"
-[ -n "$previous" ] || fail "no previous v* tag to compare with"
 
 step "Release notes for $tag"
-python3 -I scripts/release-notes.py "$version_name" "$previous" "$(cat .github/release-certificate.sha256)"
+python3 -I scripts/release-notes.py "$version_name"
 
 if $dry_run; then
     step "Dry run: no tag was created"

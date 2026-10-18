@@ -32,6 +32,6 @@ if grep -qiE "claude|generated with|co-authored" "$changelog_file"; then
 fi
 
 # The notes render: the section exists, is not empty and carries no attribution.
-python3 -I scripts/release-notes.py "$version_name" vPREVIOUS "$(cat .github/release-certificate.sha256)" > /dev/null
+python3 -I scripts/release-notes.py "$version_name" > /dev/null
 
 echo "$version_name"
