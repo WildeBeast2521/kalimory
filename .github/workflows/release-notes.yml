@@ -1,0 +1,38 @@
+# Keeps every published release's text equal to its CHANGELOG.md block, so the changelog is the one
+# source and the release pages cannot drift. Runs when the changelog or the notes format changes on
+# master; drafts are left to the release workflow. See scripts/release-notes.py.
+name: Release notes
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - CHANGELOG.md
+      - .github/release-notes-template.md
+      - .github/release-certificate.sha256
+      - scripts/release-notes.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-notes
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Match published releases to CHANGELOG.md
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    # Editing a release needs write access; only this job, on master, has it.
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Rewrite the releases that differ
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -I scripts/release-notes.py --sync

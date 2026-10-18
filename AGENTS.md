@@ -167,12 +167,15 @@ One standard, for every release:
   it to the version and date.
 - The Fastlane changelog `changelogs/<versionCode>.txt` (500 characters at most) is a two- or
   three-sentence summary of the same section, for app stores.
-- The GitHub release is titled `vx.y.z` and its text is exactly that CHANGELOG section in
-  `.github/release-notes-template.md` (the comparison with the previous tag and how to verify the
-  APK), written by `scripts/release-notes.py`. Nothing is edited by hand on the release page, and
-  no tool or AI attribution appears in the CHANGELOG, the Fastlane changelog or the release; the
-  scripts refuse notes that contain it.
-- Assets: `Kalimory-x.y.z.apk` and `Kalimory-x.y.z.apk.sha256`.
+- The GitHub release is titled `vx.y.z`. Its text is that version's CHANGELOG block exactly as the
+  file has it (the `## [x.y.z] - YYYY-MM-DD` heading, its sections and its link definition, so the
+  heading links to the comparison), followed by the footer in `.github/release-notes-template.md`
+  (how to verify the APK). `scripts/release-notes.py` writes it, so CHANGELOG.md is the one source.
+  Never edit a release page by hand: correct CHANGELOG.md instead, and the Release notes workflow
+  (`.github/workflows/release-notes.yml`) rewrites every published release that no longer matches
+  (`--check-published` reports drift, `--sync` fixes it by hand). No tool or AI attribution appears
+  in the CHANGELOG, the Fastlane changelog or the release; the scripts refuse notes that contain it.
+- Assets: `kalimory-x.y.z.apk` and `kalimory-x.y.z.apk.sha256`, in lower case.
 
 ## Wiki
 

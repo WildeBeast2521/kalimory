@@ -34,8 +34,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # Tags and history, for the previous tag in the release notes.
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Set up Java 17
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
@@ -101,10 +100,9 @@ jobs:
       - name: Name the files and write the checksum and notes
         run: |
           mkdir dist
-          cp app/build/outputs/apk/release/app-release.apk "dist/Kalimory-$VERSION.apk"
-          (cd dist && sha256sum "Kalimory-$VERSION.apk" | tee "Kalimory-$VERSION.apk.sha256")
-          previous="$(git describe --tags --abbrev=0 --match 'v*' "$GITHUB_REF_NAME^")"
-          python3 -I scripts/release-notes.py "$VERSION" "$previous" "$(cat .github/release-certificate.sha256)" > release-notes.md
+          cp app/build/outputs/apk/release/app-release.apk "dist/kalimory-$VERSION.apk"
+          (cd dist && sha256sum "kalimory-$VERSION.apk" | tee "kalimory-$VERSION.apk.sha256")
+          python3 -I scripts/release-notes.py "$VERSION" > release-notes.md
 
       - name: Keep the R8 mapping file
         # Turns a reported stack trace back into source names. Download it from this run and keep
@@ -120,5 +118,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
-          gh release create "$GITHUB_REF_NAME" "dist/Kalimory-$VERSION.apk" "dist/Kalimory-$VERSION.apk.sha256"
+          gh release create "$GITHUB_REF_NAME" "dist/kalimory-$VERSION.apk" "dist/kalimory-$VERSION.apk.sha256"
           --draft --verify-tag --title "$GITHUB_REF_NAME" --notes-file release-notes.md
