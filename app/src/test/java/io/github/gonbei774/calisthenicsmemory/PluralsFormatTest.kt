@@ -53,8 +53,8 @@ class PluralsFormatTest {
         fun recorded(tag: String, n: Int) = context(tag).resources.getQuantityString(R.plurals.sets_recorded, n, n)
         assertEquals("1 set recorded!", recorded("en", 1))
         assertEquals("2 sets recorded!", recorded("en", 2))
-        assertEquals("سُجّلت مجموعتان", recorded("ar", 2))
-        assertEquals("Записано 5 подходов", recorded("ru", 5))
+        assertEquals("سُجّلت مجموعتان!", recorded("ar", 2))
+        assertEquals("Записано 5 подходов!", recorded("ru", 5))
     }
 
     @Test fun `a target reads with the right forms for its sets and repetitions`() {
@@ -72,5 +72,19 @@ class PluralsFormatTest {
         assertEquals("3 підходи × 1 раз", target("uk", 3, 1))
         assertEquals("5 підходів × 3 рази", target("uk", 5, 3))
         assertEquals("3セット × 10回", target("ja", 3, 10))
+    }
+
+    @Test fun `the share preview keeps the space before the auto-included count`() {
+        // Compiled resources lose their outer spaces, so the space has to come from the join.
+        fun preview(tag: String, total: Int, auto: Int): String {
+            val resources = context(tag).resources
+            return resources.getString(
+                R.string.share_preview_total_with_auto,
+                resources.getString(R.string.share_preview_total_exercises, total),
+                resources.getQuantityString(R.plurals.share_preview_auto_included, auto, auto),
+            )
+        }
+        assertEquals("Total exercises: 5 (2 auto-included)", preview("en", 5, 2))
+        assertEquals("动作总数：5（2 自动包含）", preview("zh-CN", 5, 2))
     }
 }

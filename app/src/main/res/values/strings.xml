@@ -582,6 +582,7 @@
     <string name="share_preview_programs">Programs (%1$d)</string>
     <string name="share_preview_intervals">Intervals (%1$d)</string>
     <string name="share_preview_total_exercises">Total exercises: %1$d</string>
+    <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">Groups: %1$d</string>
     <string name="share_no_programs">No programs</string>
     <string name="share_no_intervals">No interval programs</string>
@@ -878,8 +879,8 @@
         <item quantity="other">, %1$d loops</item>
     </plurals>
     <plurals name="share_preview_auto_included">
-        <item quantity="one"> (%1$d auto-included)</item>
-        <item quantity="other"> (%1$d auto-included)</item>
+        <item quantity="one">(%1$d auto-included)</item>
+        <item quantity="other">(%1$d auto-included)</item>
     </plurals>
     <plurals name="share_import_added">
         <item quantity="one">%1$d added</item>

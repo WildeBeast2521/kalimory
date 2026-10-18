@@ -524,6 +524,7 @@
     <string name="share_preview_programs">Programmi (%1$d)</string>
     <string name="share_preview_intervals">Intervalli (%1$d)</string>
     <string name="share_preview_total_exercises">Totale esercizi: %1$d</string>
+    <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">Gruppi: %1$d</string>
     <string name="share_no_programs">Nessun programma</string>
     <string name="share_no_intervals">Nessun programma a intervalli</string>
@@ -896,9 +897,9 @@
         <item quantity="other">, %1$d cicli</item>
     </plurals>
     <plurals name="share_preview_auto_included">
-        <item quantity="one"> (%1$d incluso automaticamente)</item>
-        <item quantity="many"> (%1$d inclusi automaticamente)</item>
-        <item quantity="other"> (%1$d inclusi automaticamente)</item>
+        <item quantity="one">(%1$d incluso automaticamente)</item>
+        <item quantity="many">(%1$d inclusi automaticamente)</item>
+        <item quantity="other">(%1$d inclusi automaticamente)</item>
     </plurals>
     <plurals name="share_import_added">
         <item quantity="one">%1$d aggiunto</item>

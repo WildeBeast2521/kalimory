@@ -584,6 +584,7 @@
     <string name="share_preview_programs">プログラム (%1$d)</string>
     <string name="share_preview_intervals">インターバル (%1$d)</string>
     <string name="share_preview_total_exercises">種目合計: %1$d</string>
+    <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">グループ: %1$d</string>
     <string name="share_no_programs">プログラムなし</string>
     <string name="share_no_intervals">インターバルプログラムなし</string>
@@ -862,7 +863,7 @@
         <item quantity="other">、%1$d ループ</item>
     </plurals>
     <plurals name="share_preview_auto_included">
-        <item quantity="other"> (%1$d 自動追加)</item>
+        <item quantity="other">(%1$d 自動追加)</item>
     </plurals>
     <plurals name="share_import_added">
         <item quantity="other">%1$d 追加</item>

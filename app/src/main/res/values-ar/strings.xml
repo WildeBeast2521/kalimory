@@ -756,6 +756,7 @@
     <string name="share_preview_programs">البرامج (%1$d)</string>
     <string name="share_preview_intervals">الفترات (%1$d)</string>
     <string name="share_preview_total_exercises">إجمالي التمارين: %1$d</string>
+    <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">المجموعات: %1$d</string>
     <string name="share_no_programs">لا توجد برامج</string>
     <string name="share_no_intervals">لا توجد فترات</string>
@@ -783,12 +784,12 @@
     <string name="crash_report_share">مشاركة التقرير</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="zero">سُجّلت %d مجموعات</item>
-        <item quantity="one">سُجّلت مجموعة واحدة</item>
-        <item quantity="two">سُجّلت مجموعتان</item>
-        <item quantity="few">سُجّلت %d مجموعات</item>
-        <item quantity="many">سُجّلت %d مجموعة</item>
-        <item quantity="other">سُجّلت %d مجموعة</item>
+        <item quantity="zero">سُجّلت %d مجموعات!</item>
+        <item quantity="one">سُجّلت مجموعة واحدة!</item>
+        <item quantity="two">سُجّلت مجموعتان!</item>
+        <item quantity="few">سُجّلت %d مجموعات!</item>
+        <item quantity="many">سُجّلت %d مجموعة!</item>
+        <item quantity="other">سُجّلت %d مجموعة!</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="zero">%d عنصر</item>

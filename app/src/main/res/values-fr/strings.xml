@@ -520,6 +520,7 @@
     <string name="share_preview_programs">Programmes (%1$d)</string>
     <string name="share_preview_intervals">Intervalles (%1$d)</string>
     <string name="share_preview_total_exercises">Total des exercices : %1$d</string>
+    <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">Groupes : %1$d</string>
     <string name="share_no_programs">Aucun programme</string>
     <string name="share_no_intervals">Aucun programme d\'intervalles</string>
@@ -891,9 +892,9 @@
         <item quantity="other">, %1$d boucles</item>
     </plurals>
     <plurals name="share_preview_auto_included">
-        <item quantity="one"> (%1$d inclus automatiquement)</item>
-        <item quantity="many"> (%1$d inclus automatiquement)</item>
-        <item quantity="other"> (%1$d inclus automatiquement)</item>
+        <item quantity="one">(%1$d inclus automatiquement)</item>
+        <item quantity="many">(%1$d inclus automatiquement)</item>
+        <item quantity="other">(%1$d inclus automatiquement)</item>
     </plurals>
     <plurals name="share_import_added">
         <item quantity="one">%1$d ajouté</item>
