@@ -100,8 +100,11 @@ deterministic and offline. A known flaky test is named in the release log, never
   update the dependency checksums, so its Gradle pull requests fail until
   `scripts/update-dependency-verification.sh` runs on the branch and the result is pushed. Review the
   release notes, let CI pass, and merge one group at a time; a major update gets its own pull request.
-- `ROADMAP.md` mirrors the GitHub milestones: when an issue is added, moved or closed, update
-  its line in the same pull request (or right after a milestone ships).
+- `ROADMAP.md` mirrors the GitHub milestones as a checklist: when an issue is added, moved or
+  closed, update its line in the same pull request. A closed issue is ticked with the pull request
+  that closed it, and the milestone's "done" count follows; an issue closed as not planned leaves
+  the list. The README's roadmap section is the short overview: change it only when a milestone's
+  theme or status changes (for example, when one ships and the next is in progress).
 
 ## Versions and releases
 
