@@ -535,8 +535,8 @@
     <string name="share_import_added_reused">%1$s, %2$s</string>
     <string name="share_import_added_skipped">%1$s, %2$s</string>
     <string name="share_import_errors">Erreurs (%1$d)</string>
-    <string name="exercise_type_dynamic_description">Par exemple : pompes, tractions… Comptées en répétitions.</string>
-    <string name="exercise_type_isometric_description">Par exemple : planche, équerre… Comptées en temps.</string>
+    <string name="exercise_type_dynamic_description">Par exemple : pompes, tractions… Comptées en répétitions.</string>
+    <string name="exercise_type_isometric_description">Par exemple : planche, équerre… Comptées en temps.</string>
     <string name="import_anomalies_notice">Éléments ne correspondant pas au format de l\'application : %1$d. Ils seront importés tels quels.</string>
     <string name="db_unavailable_title">Impossible d\'ouvrir tes données d\'entraînement</string>
     <string name="db_unavailable_unsupported">Cette base de données (version %1$d) a été créée par une version de l\'application que cette version ne peut pas mettre à jour. Rien n\'a été modifié ni supprimé.</string>
@@ -749,13 +749,13 @@
     <string name="progressions_top">Sommet de cette chaîne</string>
     <plurals name="exercise_count">
         <item quantity="one">%d exercice</item>
-        <item quantity="other">%d exercices</item>
         <item quantity="many">%d exercices</item>
+        <item quantity="other">%d exercices</item>
     </plurals>
     <plurals name="complete_reps">
         <item quantity="one">Terminer (%d rép.)</item>
-        <item quantity="other">Terminer (%d rép.)</item>
         <item quantity="many">Terminer (%d rép.)</item>
+        <item quantity="other">Terminer (%d rép.)</item>
     </plurals>
     <string name="theme_system_short">Système</string>
     <string name="add_exercise_to_group">Ajouter un exercice au groupe</string>
