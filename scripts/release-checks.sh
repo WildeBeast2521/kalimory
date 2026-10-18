@@ -18,10 +18,11 @@ fi
 github="https://github.com/WildeBeast2521/kalimory"
 grep -q "^## \[$version_name\] - [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}$" CHANGELOG.md \
     || fail "CHANGELOG.md needs a dated entry: ## [$version_name] - YYYY-MM-DD"
-grep -qxF "[$version_name]: $github/releases/tag/v$version_name" CHANGELOG.md \
-    || fail "CHANGELOG.md needs the link [$version_name]: $github/releases/tag/v$version_name"
+# Keep a Changelog 1.1.0 and every link, including [Unreleased] comparing this version with HEAD.
+python3 -I scripts/changelog-links.py --check >/dev/null \
+    || fail "CHANGELOG.md breaks the rules; see python3 -I scripts/changelog-links.py --check"
 grep -qxF "[Unreleased]: $github/compare/v$version_name...HEAD" CHANGELOG.md \
-    || fail "CHANGELOG.md needs [Unreleased]: $github/compare/v$version_name...HEAD"
+    || fail "$version_name is not the newest version in CHANGELOG.md"
 
 changelog_file="fastlane/metadata/android/en-US/changelogs/$version_code.txt"
 [ -f "$changelog_file" ] || fail "$changelog_file is missing"

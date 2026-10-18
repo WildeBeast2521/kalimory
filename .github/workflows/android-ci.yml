@@ -43,6 +43,11 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
 
+      # Every heading has its link and the file follows Keep a Changelog 1.1.0; this also runs
+      # on every release tag. Fix the links with: python3 -I scripts/changelog-links.py
+      - name: Check CHANGELOG.md
+        run: python3 -I scripts/changelog-links.py --check
+
       # Runs before the build, which would otherwise regenerate the schema first.
       - name: Check Room schemas
         timeout-minutes: 15

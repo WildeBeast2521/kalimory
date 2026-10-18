@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Each entry is one user-facing change, linked to the pull request that made it; the GitHub release
 for a version shows the same section. The entries headed "Calisthenics Memory" are releases of the original app by Gonbei774,
@@ -69,27 +69,24 @@ Kalimory is a fork of Calisthenics Memory with its own name, application ID (`io
 ### Removed
 - The Challenge tab, replaced by Progressions
 
-
 ## [Calisthenics Memory 1.26.0] - 2026-07-20
 
 ### Added
 - **Explanation text for the bulk-apply options** (Program/Exercise/Previous) on the program confirmation screen
 
-### Improved
+### Changed
 - **Community share export**: the exercise list now shows badges (favorite, level, type, tracking options, challenge) and follows your custom sort order
 
 ### Fixed
 - Favorite exercises appeared twice in the challenge tab exercise picker
 - "Previous" prefill inflated set counts for exercises inside loops ([GitHub #18](https://github.com/Gonbei774/CalisthenicsMemory/issues/18))
 - Level and several other labels were hardcoded in English and now appear translated (Ukrainian, Chinese, Spanish, French, Italian)
-
 This release includes translation contributions from @gallegonovato (Spanish) and @gl0bix (German).
 
 ## [Calisthenics Memory 1.25.1] - 2026-06-30
 
 ### Fixed
 - **Loop execution order**: each round now completes all of its exercises before moving to the next round (previously, after changing values or set counts, one exercise was run across all rounds first) ([GitHub #18](https://github.com/Gonbei774/CalisthenicsMemory/issues/18))
-
 This release includes translation contributions from @SomeTr (Ukrainian).
 
 ## [Calisthenics Memory 1.25.0] - 2026-06-28
@@ -97,9 +94,8 @@ This release includes translation contributions from @SomeTr (Ukrainian).
 ### Added
 - **Clear-days heat strip** on the challenge tab, showing cleared/total days at a glance
 
-### Improved
+### Changed
 - **Single workout setup screen** redesigned with round stepper buttons
-
 This release includes translation contributions from @SomeTr (Ukrainian).
 
 ## [Calisthenics Memory 1.24.0] - 2026-06-22
@@ -109,7 +105,7 @@ This release includes translation contributions from @SomeTr (Ukrainian).
 - **"Set to target"** option in the record confirm dialog
 - **Auto-scroll to the next set** after completing a set in record mode
 
-### Improved
+### Changed
 - **Record option chips** (weight/distance/assistance) shown on the exercise list
 - **Finish and save** during the prep timer or rest period in single mode
 - Program mode prefills the set count to match the previous record
@@ -119,7 +115,6 @@ This release includes translation contributions from @SomeTr (Ukrainian).
 ### Fixed
 - Crash when recording a unilateral exercise that has a previous record
 - Could not move an exercise out of a loop in the program editor
-
 This release includes translation contributions from @SomeTr (Ukrainian) and @gallegonovato (Spanish).
 
 ## [Calisthenics Memory 1.23.0] - 2026-06-08
@@ -138,7 +133,6 @@ This release includes translation contributions from @SomeTr (Ukrainian) and @ga
 - Default to the Previous tab on program confirm when prefill is applied (#89)
 - Merge same-exercise sessions per day in calendar summary
 - Use 0 kg baseline for the max weight chart Y-axis
-
 This release includes contributions from @gallegonovato, @SomeTr, @nautilusx, and @unsealed211.
 
 ## [Calisthenics Memory 1.22.0] - 2026-04-30
@@ -154,7 +148,7 @@ This release includes contributions from @gallegonovato, @SomeTr, @nautilusx, an
 - **Multi-select bulk exercise add** in program edit screen
 - **Estimated time** displayed on To Do cards
 
-### Improved
+### Changed
 - Refreshed input UX for record mode and program confirm screen (label placement, auto-scroll, value carry-over)
 - Unified navigation stepper button color with theme color
 - TalkBack accessibility on stepper buttons
@@ -162,7 +156,6 @@ This release includes contributions from @gallegonovato, @SomeTr, @nautilusx, an
 
 ### Fixed
 - Incorrect total set count on program mode result screen
-
 This release includes translation contributions from @gallegonovato (Spanish) and @SomeTr (Ukrainian).
 
 ## [Calisthenics Memory 1.21.0] - 2026-04-21
@@ -173,7 +166,7 @@ This release includes translation contributions from @gallegonovato (Spanish) an
 - **"Add another set"** button on single-mode result screen
 - **Estimated program duration** displayed on edit and preview screens
 
-### Improved
+### Changed
 - Migrated sound effects from ToneGenerator to SoundPool
 - Unified circular timer font size to 80sp across all workout modes
 - Allow 0 as rest interval value in exercise settings
@@ -184,7 +177,6 @@ This release includes translation contributions from @gallegonovato (Spanish) an
 ### Fixed
 - Repeating completion alarm in single isometric manual mode
 - Exercise selection order in interval add dialog (#40)
-
 This release includes translation contributions from @lejun (French) and @SomeTr (Ukrainian).
 
 ## [Calisthenics Memory 1.20.0] - 2026-03-15
@@ -194,7 +186,7 @@ This release includes translation contributions from @lejun (French) and @SomeTr
 - **Previous session value display** - Show last session's value next to the target on workout screens
 - **Redo current set** in program mode
 
-### Improved
+### Changed
 - Unified timer layout across all workout modes (240dp, status labels removed)
 - Streamlined workout button layout with navigation sheet
 - Center-aligned reps counter for long translations
@@ -203,7 +195,6 @@ This release includes translation contributions from @lejun (French) and @SomeTr
 - Redo skipping completed sets in unilateral exercises
 - Next exercise display showing completed sets during redo
 - Checkmark visibility for long exercise names in challenge view (#39)
-
 This release includes contributions from @Leoni, @gallegonovato, @nautilusx, @komeko, @SomeTr, and @scream.
 
 ## [Calisthenics Memory 1.19.0] - 2026-02-15
@@ -223,7 +214,7 @@ This release includes contributions from @Leoni, @gallegonovato, @nautilusx, @ko
 - **Description text for Dynamic/Isometric exercise type selection**
 - **50MB file size limit on import** to prevent out-of-memory crashes
 
-### Improved
+### Changed
 - **Settings screen reorganized** into separate sections (Backup, CSV Data Management, Share Hub)
 - **SAF file picker** for pre-import backup instead of auto-saving to Downloads
 - **Adaptive ScrollableTabRow** for better multi-language tab layout support
@@ -233,7 +224,6 @@ This release includes contributions from @Leoni, @gallegonovato, @nautilusx, @ko
 - Navigation state not preserved across Activity recreation
 - Interval screen briefly showing and beeping when interval is 0 seconds
 - ToDo add dialog tab layout and content alignment
-
 This release includes contributions from @SomeTr and @nautilusx.
 
 ## [Calisthenics Memory 1.18.0] - 2026-02-12
@@ -254,26 +244,24 @@ This release includes contributions from @SomeTr and @nautilusx.
 - **Exercise description field** (max 60 chars)
 - **Swipe navigation between record view tabs**
 
-### Improved
+### Changed
 - Calendar period filter: gray out out-of-range dates, show all records below
 - Unified "Start" button translations and ToDo translations for all languages
 - Various UI refinements (toggle buttons, timer layout, prepare timer, etc.)
 
 ### Fixed
 - Long-press on drag handle triggering repeat dialog
-
 This release includes contributions from @SomeTr.
 
 ## [Calisthenics Memory 1.17.1] - 2026-02-08
 
-### Improved
+### Changed
 - Graph type buttons now scroll horizontally
 - Clearer auto mode description text
 
 ### Fixed
 - Assistance tracking not included in backup/export
 - Assistance graph Y-axis now starts from 0kg
-
 This release includes contributions from @nautilusx and @SomeTr.
 
 ## [Calisthenics Memory 1.17.0] - 2026-02-02
@@ -291,14 +279,12 @@ This release includes contributions from @nautilusx and @SomeTr.
 - Assistance chart X-axis now aligned with main chart date range
 - Exercise type labels now translatable on Add/Edit screen (Issue #28)
 - Auto Mode description not updating based on switch state (Issue #25)
-
 This release includes contributions from @nautilusx, @SomeTr, and @balaraz.
 
 ## [Calisthenics Memory 1.16.1] - 2026-01-20
 
 ### Fixed
 - App state resetting when rotating the device
-
 This release includes contributions from @SomeTr.
 
 ## [Calisthenics Memory 1.16.0] - 2026-01-19
@@ -313,7 +299,7 @@ This release includes contributions from @SomeTr.
 - **Exercise search on all screens**
   - Relevance-based ranking for better results
 
-### Improved
+### Changed
 - Navigation UX with discard confirmation dialog
 - Overall workout progress display (replaces per-exercise set numbers)
 - Loop display in navigation sheet and edit screen
@@ -324,7 +310,6 @@ This release includes contributions from @SomeTr.
 - Exercise display numbers after reordering
 - Loop info preserved when using autofill in preview screen
 - Pause function now correctly stops timers in training exercises
-
 This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 
 ## [Calisthenics Memory 1.15.0] - 2025-12-31
@@ -363,7 +348,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - "Add exercise" button fixed at bottom of screen
   - Delete confirmation dialog for programs
 
-### Improved
+### Changed
 - Swipe-to-delete animation in program edit screen
 - Program/Challenge buttons now update set count along with target values
 
@@ -406,7 +391,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Swipe to delete tasks
   - Jump directly to Record or Workout screen from each task
 
-### Improved
+### Changed
 - Simplified record list UI
 
 ## [Calisthenics Memory 1.10.0] - 2025-12-05
@@ -423,7 +408,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Total volume, max/avg daily volume, max/avg weight
   - Left/right breakdown for unilateral exercises
 
-### Improved
+### Changed
 - Training record editing now allows distance and weight value changes
 - Workout settings screen now scrollable for better accessibility
 - Statistics summary UI simplified for better internationalization support
@@ -438,7 +423,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Prevents screen from turning off during workouts
   - Toggle available in Settings
 
-### Improved
+### Changed
 - **Timer reliability with Foreground Service**
   - Timer continues accurately even when screen is off
   - More reliable background operation
@@ -461,8 +446,6 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - **Redesigned app info section in Settings**
   - Improved layout with cleaner organization
   - Better visual hierarchy
-
-### Technical
 - Updated license screen with JetBrains KMP and Reorderable library entries
 
 ## [Calisthenics Memory 1.7.1] - 2025-11-26
@@ -479,12 +462,10 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Reorder exercises within groups using up/down arrow buttons
   - Display order persisted in database (`displayOrder` field)
   - Reordering disabled in Favorites group (to preserve original group order)
-
 - **Per-exercise timer settings**
   - Configure rest interval per exercise (overrides global setting)
   - Configure rep duration per exercise for Dynamic exercises
   - Timer settings shown in full-screen exercise edit dialog
-
 - **Open-source licenses display**
   - View third-party library licenses from Settings > App Info
   - Uses AboutLibraries for accurate license information
@@ -494,18 +475,14 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Replaced auto-fill feature with explicit button
   - Available in both Record and Workout screens
   - More predictable user experience
-
 - **Full-screen exercise edit dialog**
   - Exercise add/edit now uses full-screen dialog
   - Better keyboard handling with `imePadding`
   - Form sections organized in cards
-
 - **Set interval toggle in Settings**
   - ON/OFF toggle for set interval feature
   - Maximum value limited to 600 seconds (10 minutes)
   - Note about per-exercise settings taking priority
-
-### Technical
 - Database schema version updated to 10 (added `displayOrder`, `restInterval`, `repDuration` fields)
 - CSV export format updated to 11 columns (backward compatible import)
 - Removed `RecordPreferences.kt` (replaced by manual apply button)
@@ -523,7 +500,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Added Italian translation
   - Now supports 7 languages: English, Japanese, German, Spanish, French, Chinese, Italian
 
-### Improved
+### Changed
 - **Home screen redesign**
   - Reordered buttons (Record button moved to top)
   - Added "View all records" link
@@ -541,7 +518,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Configure rep duration for isometric exercises
   - Adjustable settings in Settings screen
 
-### Improved
+### Changed
 - Enhanced app icon quality (converted from WebP to PNG format)
 - Simplified README and documentation structure
 - Removed redundant multi-language README files
@@ -550,7 +527,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 
 ## [Calisthenics Memory 1.4.0] - 2025-11-15
 
-### Improved
+### Changed
 - **Comprehensive CSV import/export enhancement**
   - Previously: Only training records could be exported/imported
   - Now: Full data backup including exercises, groups, and training records
@@ -558,17 +535,14 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Data preview before import
   - Confirmation dialog before overwriting existing data
   - Export with data verification
-
 - **Enhanced backup/import functionality**
   - Added confirmation dialog before import (warns about data overwrite)
   - Display result messages for backup and import operations
   - Improved user experience with clearer feedback
-
 - **Complete multi-language support**
   - Full support for 6 languages (English, Japanese, German, Spanish, French, Chinese)
   - Added CSV-related strings for all languages
   - Fixed ViewModel messages to follow language changes
-
 - **Workout alarm enhancement**
   - Triple beep pattern for set completion notifications
 
@@ -582,7 +556,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Extended existing period filter to Challenge tab
 - Training days count display for each period
 
-### Improved
+### Changed
 - Fixed favorite group name to support language switching
 - Enhanced challenge tab UI consistency and selection colors
 - Fixed achievement rate calculation logic
@@ -595,22 +569,20 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
   - Favorites displayed in dedicated group at top of exercise list
   - Star prefix (★) shown in exercise selection screens
 
-### Improved
+### Changed
 - Graph data point visibility with smaller and more transparent markers
 - UI consistency across workout and exercise setup screens
 - Badge styling for better visual consistency
 - Overall UI polish and refinement
-
-### Technical
 - Database schema version updated to 9 (added `isFavorite` field to Exercise table)
 
-## [Calisthenics Memory 1.1.0] - 2025-01-XX
+## [Calisthenics Memory 1.1.0] - 2025-11-09
 
 ### Added
 - CSV import/export feature for training records
 - Settings screen with categorized sections
 
-### Improved
+### Changed
 - UI compactness for Japanese text
 - Graph layout and display area balance
 - Settings screen organization
@@ -619,7 +591,7 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Export data initialization bug
 - String format warnings
 
-## [Calisthenics Memory 1.0.0] - 2025-01-XX
+## [Calisthenics Memory 1.0.0] - 2025-11-08
 
 ### Added
 - Initial release
@@ -633,8 +605,8 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Completely offline, privacy-focused design
 
 [Unreleased]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.2...HEAD
-[1.0.2]: https://github.com/WildeBeast2521/kalimory/releases/tag/v1.0.2
-[1.0.1]: https://github.com/WildeBeast2521/kalimory/releases/tag/v1.0.1
+[1.0.2]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/WildeBeast2521/kalimory/releases/tag/v1.0.0
 [Calisthenics Memory 1.26.0]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.26.0
 [Calisthenics Memory 1.25.1]: https://codeberg.org/Gonbei774/CalisthenicsMemory/releases/tag/v1.25.1
