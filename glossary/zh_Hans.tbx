@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE martif PUBLIC "ISO 12200:1999A//DTD MARTIF core (DXFcdV04)//EN" "TBXcdv04.dtd">
-<martif type="TBX">
+<martif type="TBX" xml:lang="en">
     <martifHeader>
         <fileDesc>
             <sourceDesc>
@@ -10,6 +10,34 @@
     </martifHeader>
     <text>
         <body>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>set</term></tig></langSet>
+                <langSet xml:lang="zh_Hans"><tig><term>组</term></tig></langSet>
+            </termEntry>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>rep</term></tig></langSet>
+                <langSet xml:lang="zh_Hans"><tig><term>次</term></tig></langSet>
+            </termEntry>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>rest</term></tig></langSet>
+                <langSet xml:lang="zh_Hans"><tig><term>休息</term></tig></langSet>
+            </termEntry>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>program</term></tig></langSet>
+                <langSet xml:lang="zh_Hans"><tig><term>计划</term></tig></langSet>
+            </termEntry>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>Progressions</term></tig></langSet>
+                <langSet xml:lang="zh_Hans"><tig><term>进阶</term></tig></langSet>
+            </termEntry>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>Kalimory</term></tig></langSet>
+                <langSet xml:lang="zh_Hans"><tig><term>Kalimory</term></tig></langSet>
+            </termEntry>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>AMOLED</term></tig></langSet>
+                <langSet xml:lang="zh_Hans"><tig><term>AMOLED</term></tig></langSet>
+            </termEntry>
         </body>
     </text>
 </martif>
