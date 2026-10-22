@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.DisposableEffect
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import androidx.activity.enableEdgeToEdge
@@ -217,6 +218,8 @@ class MainActivity : ComponentActivity() {
     /**
      * Context の言語設定を更新する（全Androidバージョン対応）
      */
+    // The app ships as one APK with every language inside; there are no language splits to download.
+    @SuppressLint("AppBundleLocaleChanges")
     private fun updateBaseContextLocale(context: Context): Context {
         val languagePrefs = LanguagePreferences(context)
         val selectedLanguage = languagePrefs.getLanguage()

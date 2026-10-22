@@ -26,7 +26,7 @@ class WorkoutPreferences(context: Context) {
      * @param seconds 保存する秒数
      */
     fun setStartCountdown(seconds: Int) {
-        prefs.edit().putInt(KEY_START_COUNTDOWN, seconds).apply()
+        prefs.edit { putInt(KEY_START_COUNTDOWN, seconds) }
     }
 
     /**
@@ -42,7 +42,7 @@ class WorkoutPreferences(context: Context) {
      * @param seconds 保存する秒数
      */
     fun setSetInterval(seconds: Int) {
-        prefs.edit().putInt(KEY_SET_INTERVAL, seconds).apply()
+        prefs.edit { putInt(KEY_SET_INTERVAL, seconds) }
     }
 
     /**
@@ -58,7 +58,7 @@ class WorkoutPreferences(context: Context) {
      * @param enabled 有効: true, 無効: false
      */
     fun setStartCountdownEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_START_COUNTDOWN_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(KEY_START_COUNTDOWN_ENABLED, enabled) }
     }
 
     /**
@@ -74,7 +74,7 @@ class WorkoutPreferences(context: Context) {
      * @param enabled 有効: true, 無効: false
      */
     fun setSetIntervalEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_SET_INTERVAL_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(KEY_SET_INTERVAL_ENABLED, enabled) }
     }
 
     /**
@@ -90,7 +90,7 @@ class WorkoutPreferences(context: Context) {
      * @param enabled 有効: true, 無効: false
      */
     fun setFlashNotificationEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_FLASH_NOTIFICATION_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(KEY_FLASH_NOTIFICATION_ENABLED, enabled) }
     }
 
     /**
@@ -106,7 +106,7 @@ class WorkoutPreferences(context: Context) {
      * @param enabled 有効: true, 無効: false
      */
     fun setKeepScreenOnEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_KEEP_SCREEN_ON_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(KEY_KEEP_SCREEN_ON_ENABLED, enabled) }
     }
 
     /** A short vibration when a set is done (default: on). The system's touch feedback setting still applies. */
@@ -132,7 +132,7 @@ class WorkoutPreferences(context: Context) {
      * @param enabled 有効: true, 無効: false
      */
     fun setPrefillPreviousRecordEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_PREFILL_PREVIOUS_RECORD, enabled).apply()
+        prefs.edit { putBoolean(KEY_PREFILL_PREVIOUS_RECORD, enabled) }
     }
 
     /**
@@ -148,7 +148,7 @@ class WorkoutPreferences(context: Context) {
      * @param auto 自動: true, 手動: false
      */
     fun setAutoMode(auto: Boolean) {
-        prefs.edit().putBoolean(KEY_TIMER_MODE_AUTO, auto).apply()
+        prefs.edit { putBoolean(KEY_TIMER_MODE_AUTO, auto) }
     }
 
     /**
@@ -164,7 +164,7 @@ class WorkoutPreferences(context: Context) {
      * @param enabled 有効: true, 無効: false
      */
     fun setDynamicCountSoundEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_DYNAMIC_COUNT_SOUND_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(KEY_DYNAMIC_COUNT_SOUND_ENABLED, enabled) }
     }
 
     /**
@@ -180,7 +180,7 @@ class WorkoutPreferences(context: Context) {
      * @param enabled 有効: true, 無効: false
      */
     fun setIsometricIntervalSoundEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_ISOMETRIC_INTERVAL_SOUND_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(KEY_ISOMETRIC_INTERVAL_SOUND_ENABLED, enabled) }
     }
 
     /**
@@ -196,7 +196,7 @@ class WorkoutPreferences(context: Context) {
      * @param seconds 間隔秒数
      */
     fun setIsometricIntervalSeconds(seconds: Int) {
-        prefs.edit().putInt(KEY_ISOMETRIC_INTERVAL_SECONDS, seconds).apply()
+        prefs.edit { putInt(KEY_ISOMETRIC_INTERVAL_SECONDS, seconds) }
     }
 
     companion object {

@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import android.annotation.SuppressLint
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
@@ -348,6 +349,8 @@ fun ToDoScreen(
 }
 
 @Composable
+// dragHandleModifier styles the drag handle, not the root layout, so it is not "modifier".
+@SuppressLint("ModifierParameter")
 private fun ActiveTaskContent(
     task: TodoTask,
     exerciseMap: Map<Long, Exercise>,
@@ -598,6 +601,8 @@ private fun InactiveTaskContent(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
+// dragHandleModifier styles the drag handle, not the root layout, so it is not "modifier".
+@SuppressLint("ModifierParameter")
 private fun GroupTaskCard(
     group: ExerciseGroup,
     groupExercises: List<Exercise>,
@@ -824,6 +829,8 @@ private fun GroupTaskCard(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
+// dragHandleModifier styles the drag handle, not the root layout, so it is not "modifier".
+@SuppressLint("ModifierParameter")
 private fun ExerciseTaskCard(
     exercise: Exercise,
     task: TodoTask,
@@ -958,6 +965,8 @@ private fun UnavailableTaskCard(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
+// dragHandleModifier styles the drag handle, not the root layout, so it is not "modifier".
+@SuppressLint("ModifierParameter")
 private fun ProgramTaskCard(
     program: Program,
     estimatedSeconds: Int?,
@@ -1039,6 +1048,8 @@ private fun ProgramTaskCard(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
+// dragHandleModifier styles the drag handle, not the root layout, so it is not "modifier".
+@SuppressLint("ModifierParameter")
 private fun IntervalTaskCard(
     intervalProgram: IntervalProgram,
     exerciseCount: Int,

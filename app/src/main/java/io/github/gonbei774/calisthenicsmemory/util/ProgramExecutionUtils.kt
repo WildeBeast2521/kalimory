@@ -95,67 +95,67 @@ fun buildProgramValueSets(
 
         for (setNum in 1..pe.sets) {
             val isLastSetOfRound = setNum == pe.sets
-                if (exercise.laterality == "Unilateral") {
-                    val priorRight = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == "Right" && it.roundNumber == round }
-                    val priorLeft = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == "Left" && it.roundNumber == round }
-                    val priorTracking = priorRight ?: priorLeft  // tracking値はR/L共通
-                    sets.add(ProgramWorkoutSet(
-                        exerciseIndex = index,
-                        setNumber = setNum,
-                        side = "Right",
-                        targetValue = pe.targetValue,
-                        intervalSeconds = pe.intervalSeconds,
-                        previousValue = priorRight?.previousValue,
-                        loopId = loopId,
-                        roundNumber = round,
-                        totalRounds = totalRounds,
-                        loopRestAfterSeconds = 0,  // Rightの後はLeftが来る
-                        weightG = priorTracking?.weightG,
-                        distanceCm = priorTracking?.distanceCm,
-                        assistanceG = priorTracking?.assistanceG,
-                        previousWeightG = priorTracking?.previousWeightG,
-                        previousDistanceCm = priorTracking?.previousDistanceCm,
-                        previousAssistanceG = priorTracking?.previousAssistanceG
-                    ))
-                    sets.add(ProgramWorkoutSet(
-                        exerciseIndex = index,
-                        setNumber = setNum,
-                        side = "Left",
-                        targetValue = pe.targetValue,
-                        intervalSeconds = pe.intervalSeconds,
-                        previousValue = priorLeft?.previousValue,
-                        loopId = loopId,
-                        roundNumber = round,
-                        totalRounds = totalRounds,
-                        loopRestAfterSeconds = if (isLastSetOfRound) loopRestAfter else 0,
-                        weightG = priorTracking?.weightG,
-                        distanceCm = priorTracking?.distanceCm,
-                        assistanceG = priorTracking?.assistanceG,
-                        previousWeightG = priorTracking?.previousWeightG,
-                        previousDistanceCm = priorTracking?.previousDistanceCm,
-                        previousAssistanceG = priorTracking?.previousAssistanceG
-                    ))
-                } else {
-                    val priorSet = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == null && it.roundNumber == round }
-                    sets.add(ProgramWorkoutSet(
-                        exerciseIndex = index,
-                        setNumber = setNum,
-                        side = null,
-                        targetValue = pe.targetValue,
-                        intervalSeconds = pe.intervalSeconds,
-                        previousValue = priorSet?.previousValue,
-                        loopId = loopId,
-                        roundNumber = round,
-                        totalRounds = totalRounds,
-                        loopRestAfterSeconds = if (isLastSetOfRound) loopRestAfter else 0,
-                        weightG = priorSet?.weightG,
-                        distanceCm = priorSet?.distanceCm,
-                        assistanceG = priorSet?.assistanceG,
-                        previousWeightG = priorSet?.previousWeightG,
-                        previousDistanceCm = priorSet?.previousDistanceCm,
-                        previousAssistanceG = priorSet?.previousAssistanceG
-                    ))
-                }
+            if (exercise.laterality == "Unilateral") {
+                val priorRight = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == "Right" && it.roundNumber == round }
+                val priorLeft = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == "Left" && it.roundNumber == round }
+                val priorTracking = priorRight ?: priorLeft  // tracking値はR/L共通
+                sets.add(ProgramWorkoutSet(
+                    exerciseIndex = index,
+                    setNumber = setNum,
+                    side = "Right",
+                    targetValue = pe.targetValue,
+                    intervalSeconds = pe.intervalSeconds,
+                    previousValue = priorRight?.previousValue,
+                    loopId = loopId,
+                    roundNumber = round,
+                    totalRounds = totalRounds,
+                    loopRestAfterSeconds = 0,  // Rightの後はLeftが来る
+                    weightG = priorTracking?.weightG,
+                    distanceCm = priorTracking?.distanceCm,
+                    assistanceG = priorTracking?.assistanceG,
+                    previousWeightG = priorTracking?.previousWeightG,
+                    previousDistanceCm = priorTracking?.previousDistanceCm,
+                    previousAssistanceG = priorTracking?.previousAssistanceG
+                ))
+                sets.add(ProgramWorkoutSet(
+                    exerciseIndex = index,
+                    setNumber = setNum,
+                    side = "Left",
+                    targetValue = pe.targetValue,
+                    intervalSeconds = pe.intervalSeconds,
+                    previousValue = priorLeft?.previousValue,
+                    loopId = loopId,
+                    roundNumber = round,
+                    totalRounds = totalRounds,
+                    loopRestAfterSeconds = if (isLastSetOfRound) loopRestAfter else 0,
+                    weightG = priorTracking?.weightG,
+                    distanceCm = priorTracking?.distanceCm,
+                    assistanceG = priorTracking?.assistanceG,
+                    previousWeightG = priorTracking?.previousWeightG,
+                    previousDistanceCm = priorTracking?.previousDistanceCm,
+                    previousAssistanceG = priorTracking?.previousAssistanceG
+                ))
+            } else {
+                val priorSet = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == null && it.roundNumber == round }
+                sets.add(ProgramWorkoutSet(
+                    exerciseIndex = index,
+                    setNumber = setNum,
+                    side = null,
+                    targetValue = pe.targetValue,
+                    intervalSeconds = pe.intervalSeconds,
+                    previousValue = priorSet?.previousValue,
+                    loopId = loopId,
+                    roundNumber = round,
+                    totalRounds = totalRounds,
+                    loopRestAfterSeconds = if (isLastSetOfRound) loopRestAfter else 0,
+                    weightG = priorSet?.weightG,
+                    distanceCm = priorSet?.distanceCm,
+                    assistanceG = priorSet?.assistanceG,
+                    previousWeightG = priorSet?.previousWeightG,
+                    previousDistanceCm = priorSet?.previousDistanceCm,
+                    previousAssistanceG = priorSet?.previousAssistanceG
+                ))
+            }
             }
         }
     return sets
@@ -193,67 +193,67 @@ fun buildChallengeValueSets(
 
         for (setNum in 1..setCount) {
             val isLastSetOfRound = setNum == setCount
-                if (exercise.laterality == "Unilateral") {
-                    val priorRight = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == "Right" && it.roundNumber == round }
-                    val priorLeft = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == "Left" && it.roundNumber == round }
-                    val priorTracking = priorRight ?: priorLeft  // tracking値はR/L共通
-                    sets.add(ProgramWorkoutSet(
-                        exerciseIndex = index,
-                        setNumber = setNum,
-                        side = "Right",
-                        targetValue = targetValue,
-                        intervalSeconds = interval,
-                        previousValue = priorRight?.previousValue,
-                        loopId = loopId,
-                        roundNumber = round,
-                        totalRounds = totalRounds,
-                        loopRestAfterSeconds = 0,  // Rightの後はLeftが来る
-                        weightG = priorTracking?.weightG,
-                        distanceCm = priorTracking?.distanceCm,
-                        assistanceG = priorTracking?.assistanceG,
-                        previousWeightG = priorTracking?.previousWeightG,
-                        previousDistanceCm = priorTracking?.previousDistanceCm,
-                        previousAssistanceG = priorTracking?.previousAssistanceG
-                    ))
-                    sets.add(ProgramWorkoutSet(
-                        exerciseIndex = index,
-                        setNumber = setNum,
-                        side = "Left",
-                        targetValue = targetValue,
-                        intervalSeconds = interval,
-                        previousValue = priorLeft?.previousValue,
-                        loopId = loopId,
-                        roundNumber = round,
-                        totalRounds = totalRounds,
-                        loopRestAfterSeconds = if (isLastSetOfRound) loopRestAfter else 0,
-                        weightG = priorTracking?.weightG,
-                        distanceCm = priorTracking?.distanceCm,
-                        assistanceG = priorTracking?.assistanceG,
-                        previousWeightG = priorTracking?.previousWeightG,
-                        previousDistanceCm = priorTracking?.previousDistanceCm,
-                        previousAssistanceG = priorTracking?.previousAssistanceG
-                    ))
-                } else {
-                    val priorSet = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == null && it.roundNumber == round }
-                    sets.add(ProgramWorkoutSet(
-                        exerciseIndex = index,
-                        setNumber = setNum,
-                        side = null,
-                        targetValue = targetValue,
-                        intervalSeconds = interval,
-                        previousValue = priorSet?.previousValue,
-                        loopId = loopId,
-                        roundNumber = round,
-                        totalRounds = totalRounds,
-                        loopRestAfterSeconds = if (isLastSetOfRound) loopRestAfter else 0,
-                        weightG = priorSet?.weightG,
-                        distanceCm = priorSet?.distanceCm,
-                        assistanceG = priorSet?.assistanceG,
-                        previousWeightG = priorSet?.previousWeightG,
-                        previousDistanceCm = priorSet?.previousDistanceCm,
-                        previousAssistanceG = priorSet?.previousAssistanceG
-                    ))
-                }
+            if (exercise.laterality == "Unilateral") {
+                val priorRight = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == "Right" && it.roundNumber == round }
+                val priorLeft = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == "Left" && it.roundNumber == round }
+                val priorTracking = priorRight ?: priorLeft  // tracking値はR/L共通
+                sets.add(ProgramWorkoutSet(
+                    exerciseIndex = index,
+                    setNumber = setNum,
+                    side = "Right",
+                    targetValue = targetValue,
+                    intervalSeconds = interval,
+                    previousValue = priorRight?.previousValue,
+                    loopId = loopId,
+                    roundNumber = round,
+                    totalRounds = totalRounds,
+                    loopRestAfterSeconds = 0,  // Rightの後はLeftが来る
+                    weightG = priorTracking?.weightG,
+                    distanceCm = priorTracking?.distanceCm,
+                    assistanceG = priorTracking?.assistanceG,
+                    previousWeightG = priorTracking?.previousWeightG,
+                    previousDistanceCm = priorTracking?.previousDistanceCm,
+                    previousAssistanceG = priorTracking?.previousAssistanceG
+                ))
+                sets.add(ProgramWorkoutSet(
+                    exerciseIndex = index,
+                    setNumber = setNum,
+                    side = "Left",
+                    targetValue = targetValue,
+                    intervalSeconds = interval,
+                    previousValue = priorLeft?.previousValue,
+                    loopId = loopId,
+                    roundNumber = round,
+                    totalRounds = totalRounds,
+                    loopRestAfterSeconds = if (isLastSetOfRound) loopRestAfter else 0,
+                    weightG = priorTracking?.weightG,
+                    distanceCm = priorTracking?.distanceCm,
+                    assistanceG = priorTracking?.assistanceG,
+                    previousWeightG = priorTracking?.previousWeightG,
+                    previousDistanceCm = priorTracking?.previousDistanceCm,
+                    previousAssistanceG = priorTracking?.previousAssistanceG
+                ))
+            } else {
+                val priorSet = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == null && it.roundNumber == round }
+                sets.add(ProgramWorkoutSet(
+                    exerciseIndex = index,
+                    setNumber = setNum,
+                    side = null,
+                    targetValue = targetValue,
+                    intervalSeconds = interval,
+                    previousValue = priorSet?.previousValue,
+                    loopId = loopId,
+                    roundNumber = round,
+                    totalRounds = totalRounds,
+                    loopRestAfterSeconds = if (isLastSetOfRound) loopRestAfter else 0,
+                    weightG = priorSet?.weightG,
+                    distanceCm = priorSet?.distanceCm,
+                    assistanceG = priorSet?.assistanceG,
+                    previousWeightG = priorSet?.previousWeightG,
+                    previousDistanceCm = priorSet?.previousDistanceCm,
+                    previousAssistanceG = priorSet?.previousAssistanceG
+                ))
+            }
             }
         }
     return sets

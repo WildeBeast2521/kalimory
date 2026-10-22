@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -51,9 +52,9 @@ fun BackupScreen(
     var showImportWarning by remember { mutableStateOf(false) }
     var pendingImportData by remember { mutableStateOf<BackupData?>(null) }
     var importFileName by remember { mutableStateOf<String?>(null) }
-    var importGroupCount by remember { mutableStateOf(0) }
-    var importExerciseCount by remember { mutableStateOf(0) }
-    var importRecordCount by remember { mutableStateOf(0) }
+    var importGroupCount by remember { mutableIntStateOf(0) }
+    var importExerciseCount by remember { mutableIntStateOf(0) }
+    var importRecordCount by remember { mutableIntStateOf(0) }
     // Everything else the file replaces, so the preview names all of it.
     var importOtherCounts by remember { mutableStateOf(listOf<Pair<Int, Int>>()) }
     var importAnomalyCount by remember { mutableIntStateOf(0) }

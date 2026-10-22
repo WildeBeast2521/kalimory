@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.data
 
+import androidx.core.content.edit
 import android.content.Context
 import android.content.SharedPreferences
 
@@ -26,7 +27,7 @@ class LanguagePreferences(context: Context) {
      * @param language 保存する言語
      */
     fun setLanguage(language: AppLanguage) {
-        prefs.edit().putString(KEY_LANGUAGE, language.code).apply()
+        prefs.edit { putString(KEY_LANGUAGE, language.code) }
     }
 
     companion object {

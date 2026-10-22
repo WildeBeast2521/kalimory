@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import java.util.Locale
+import androidx.compose.ui.platform.LocalConfiguration
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import kotlin.math.abs
 import androidx.compose.ui.graphics.toArgb
@@ -511,9 +513,9 @@ fun prepareGraphData(
         val (valueRight, valueLeft, distanceCm) = values
 
         val label = if (valueLeft != null) {
-            String.format("$date: R%d$unit / L%d$unit", valueRight.roundToInt(), valueLeft.roundToInt())
+            String.format(Locale.getDefault(), "$date: R%d$unit / L%d$unit", valueRight.roundToInt(), valueLeft.roundToInt())
         } else {
-            String.format("$date: %d$unit", valueRight.roundToInt())
+            String.format(Locale.getDefault(), "$date: %d$unit", valueRight.roundToInt())
         }
 
         GraphDataPoint(
@@ -1287,6 +1289,8 @@ fun SimpleVolumeChart(
     period: Period?,
     allTimeVolumeMax: Float
 ) {
+    // The app's language: numbers use its decimal mark, and the text updates if it changes.
+    val numberLocale = LocalConfiguration.current.locales[0]
     val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
     val isUnilateral = data.any { it.volumeLeft != null }
@@ -1344,7 +1348,7 @@ fun SimpleVolumeChart(
             )
 
             val labelText = if (labelValue >= 1000) {
-                String.format("%.1ft", labelValue / 1000f)
+                String.format(numberLocale, "%.1ft", labelValue / 1000f)
             } else {
                 "${labelValue.toInt()}kg"
             }
@@ -1582,6 +1586,8 @@ fun SimpleAssistanceChart(
     allTimeAssistanceRange: Pair<Float, Float>,
     allRecordsDateRange: Pair<LocalDate, LocalDate>? = null
 ) {
+    // The app's language: numbers use its decimal mark, and the text updates if it changes.
+    val numberLocale = LocalConfiguration.current.locales[0]
     val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
     Canvas(
@@ -1639,7 +1645,7 @@ fun SimpleAssistanceChart(
                 strokeWidth = 1.dp.toPx()
             )
 
-            val labelText = String.format("%.1fkg", labelValue)
+            val labelText = String.format(numberLocale, "%.1fkg", labelValue)
 
             drawContext.canvas.nativeCanvas.drawText(
                 labelText,
@@ -1831,6 +1837,8 @@ fun SimpleWeightChart(
     allTimeWeightRange: Pair<Float, Float>,
     allRecordsDateRange: Pair<LocalDate, LocalDate>? = null
 ) {
+    // The app's language: numbers use its decimal mark, and the text updates if it changes.
+    val numberLocale = LocalConfiguration.current.locales[0]
     val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
     Canvas(
@@ -1886,7 +1894,7 @@ fun SimpleWeightChart(
                 strokeWidth = 1.dp.toPx()
             )
 
-            val labelText = String.format("%.1fkg", labelValue)
+            val labelText = String.format(numberLocale, "%.1fkg", labelValue)
 
             drawContext.canvas.nativeCanvas.drawText(
                 labelText,
@@ -2091,6 +2099,8 @@ fun StatisticsSummary(
     statistics: Statistics,
     exercise: Exercise
 ) {
+    // The app's language: numbers use its decimal mark, and the text updates if it changes.
+    val numberLocale = LocalConfiguration.current.locales[0]
     val cs = MaterialTheme.colorScheme
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -2163,33 +2173,33 @@ fun StatisticsSummary(
                         statistics.maxDailyVolume?.let { maxVolRight ->
                             StatItemDual(
                                 label = stringResource(R.string.max_daily_volume),
-                                valueRight = String.format("%.1f kg", maxVolRight),
-                                valueLeft = String.format("%.1f kg", statistics.maxDailyVolumeLeft ?: 0f)
+                                valueRight = String.format(numberLocale, "%.1f kg", maxVolRight),
+                                valueLeft = String.format(numberLocale, "%.1f kg", statistics.maxDailyVolumeLeft ?: 0f)
                             )
                         }
                         statistics.avgDailyVolume?.let { avgVolRight ->
                             StatItemDual(
                                 label = stringResource(R.string.avg_daily_volume),
-                                valueRight = String.format("%.1f kg", avgVolRight),
-                                valueLeft = String.format("%.1f kg", statistics.avgDailyVolumeLeft ?: 0f)
+                                valueRight = String.format(numberLocale, "%.1f kg", avgVolRight),
+                                valueLeft = String.format(numberLocale, "%.1f kg", statistics.avgDailyVolumeLeft ?: 0f)
                             )
                         }
                     } else {
                         // Bilateral: 従来通り
                         statistics.maxDailyVolume?.let { maxVol ->
-                            StatItem(stringResource(R.string.max_daily_volume), String.format("%.1f kg", maxVol))
+                            StatItem(stringResource(R.string.max_daily_volume), String.format(numberLocale, "%.1f kg", maxVol))
                         }
                         statistics.avgDailyVolume?.let { avgVol ->
-                            StatItem(stringResource(R.string.avg_daily_volume), String.format("%.1f kg", avgVol))
+                            StatItem(stringResource(R.string.avg_daily_volume), String.format(numberLocale, "%.1f kg", avgVol))
                         }
                     }
 
                     // 荷重統計（左右共通）
                     statistics.maxWeight?.let { maxW ->
-                        StatItem(stringResource(R.string.max_weight), String.format("%.1f kg", maxW))
+                        StatItem(stringResource(R.string.max_weight), String.format(numberLocale, "%.1f kg", maxW))
                     }
                     statistics.avgWeight?.let { avgW ->
-                        StatItem(stringResource(R.string.avg_weight), String.format("%.1f kg", avgW))
+                        StatItem(stringResource(R.string.avg_weight), String.format(numberLocale, "%.1f kg", avgW))
                     }
                 }
             }
