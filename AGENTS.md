@@ -53,7 +53,10 @@ application ID changed.
   Never edit generated output directly.
 - **Room schemas.** Bump the database version, add a migration and let the build export the new
   schema. Committed schema files are immutable; `scripts/check-room-schemas.sh` enforces it.
-- **Lint baseline.** Never regenerate `app/lint-baseline.xml` to hide new problems. Fix them.
+- **Lint.** There is no baseline: every lint warning is an error and fails the build. Fix the finding,
+  or suppress it at the line with a comment saying why the rule does not apply there. Never add a
+  baseline or disable a check to get a change through. The only checks turned off are the ones that
+  report newer library, plugin or target API releases (Dependabot handles those).
 - **Dependency checksums.** `gradle/verification-metadata.xml` holds the SHA-256 of everything
   Gradle downloads; a missing or different checksum fails the build. After any dependency change,
   run `scripts/update-dependency-verification.sh` (needs the emulator) and review the diff: every
@@ -93,8 +96,8 @@ scripts/check-room-schemas.sh --stacktrace
 ./gradlew assembleRelease
 ```
 
-Expect all unit and instrumented tests to pass and lint to report only the baseline's dependency
-warnings. Add or update a test with each fix: JVM tests for logic in `workout/`, `data/` and
+Expect all unit and instrumented tests to pass and lint to report nothing (any finding fails the
+build). Add or update a test with each fix: JVM tests for logic in `workout/`, `data/` and
 pure helpers; instrumented tests for screens, database and file round trips. Tests are
 deterministic and offline. A known flaky test is named in the release log, never disabled.
 

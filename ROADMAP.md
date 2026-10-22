@@ -12,7 +12,7 @@ Ideas that need any of those are out of scope.
 
 Make the app sturdier before it grows.
 
-7 of 13 done.
+8 of 13 done.
 
 - [x] Crash reports kept on the phone, shared only if you choose to ([#148](https://github.com/WildeBeast2521/kalimory/issues/148), done in [#192](https://github.com/WildeBeast2521/kalimory/pull/192))
 - [x] Screenshot tests, so the look stays consistent ([#150](https://github.com/WildeBeast2521/kalimory/issues/150), done in [#190](https://github.com/WildeBeast2521/kalimory/pull/190))
@@ -28,7 +28,7 @@ Behind the scenes:
 
 - [x] Dependency updates ([#152](https://github.com/WildeBeast2521/kalimory/issues/152), done in [#179](https://github.com/WildeBeast2521/kalimory/pull/179))
 - [x] Dependency verification ([#153](https://github.com/WildeBeast2521/kalimory/issues/153), done in [#191](https://github.com/WildeBeast2521/kalimory/pull/191))
-- [ ] A clean lint report ([#154](https://github.com/WildeBeast2521/kalimory/issues/154))
+- [x] A clean lint report ([#154](https://github.com/WildeBeast2521/kalimory/issues/154), done in [#219](https://github.com/WildeBeast2521/kalimory/pull/219))
 - [ ] Start-up measurements ([#155](https://github.com/WildeBeast2521/kalimory/issues/155))
 
 ## 1.2 Training insight
