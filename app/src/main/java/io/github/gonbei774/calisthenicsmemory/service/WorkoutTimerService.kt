@@ -10,18 +10,25 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
-import androidx.core.app.NotificationCompat
 import io.github.gonbei774.calisthenicsmemory.MainActivity
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutProgressBus
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.launch
 
 /**
  * Foreground Service for workout timer.
  * Keeps the timer running accurately even when the screen is off
  * by maintaining a WakeLock and showing a foreground notification.
  *
- * The actual timer logic remains in WorkoutScreen.kt - this service
+ * The actual timer logic remains in the workout screens - this service
  * only provides the infrastructure (WakeLock + Foreground notification)
- * to keep the app alive during workouts.
+ * to keep the app alive during workouts. The notification shows the progress
+ * the screens publish to [WorkoutProgressBus], updated in place.
  */
 class WorkoutTimerService : Service() {
 
@@ -58,21 +65,38 @@ class WorkoutTimerService : Service() {
     // WakeLock
     private var wakeLock: PowerManager.WakeLock? = null
 
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private var foreground = false
+
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
+        // Each change of progress replaces the same notification; it never adds another one.
+        scope.launch {
+            WorkoutProgressBus.progress.drop(1).collect {
+                if (foreground) {
+                    getSystemService(NotificationManager::class.java).notify(NOTIFICATION_ID, createNotification())
+                }
+            }
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> {
                 startForeground(NOTIFICATION_ID, createNotification())
+                foreground = true
                 acquireWakeLock()
             }
             ACTION_STOP -> {
-                releaseWakeLock()
-                stopForeground(STOP_FOREGROUND_REMOVE)
-                stopSelf()
+                // Stop only if no start came after this stop. A plain stopSelf() would destroy the
+                // service while a newer start waits, and Android ends the app when that start never
+                // reaches startForeground().
+                if (stopSelfResult(startId)) {
+                    foreground = false
+                    releaseWakeLock()
+                    stopForeground(STOP_FOREGROUND_REMOVE)
+                }
             }
         }
         return START_NOT_STICKY
@@ -83,12 +107,15 @@ class WorkoutTimerService : Service() {
     }
 
     override fun onDestroy() {
+        foreground = false
+        scope.cancel()
         super.onDestroy()
         releaseWakeLock()
     }
 
     // Swiping the app away ends the workout screen; the checkpoint lets it resume later.
     override fun onTaskRemoved(rootIntent: Intent?) {
+        foreground = false
         releaseWakeLock()
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
@@ -118,14 +145,7 @@ class WorkoutTimerService : Service() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(getString(R.string.notification_workout_title))
-            .setContentText(getString(R.string.notification_workout_text))
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentIntent(pendingIntent)
-            .setOngoing(true)
-            .setSilent(true)
-            .build()
+        return buildWorkoutNotification(this, CHANNEL_ID, pendingIntent, WorkoutProgressBus.progress.value)
     }
 
     private fun acquireWakeLock() {

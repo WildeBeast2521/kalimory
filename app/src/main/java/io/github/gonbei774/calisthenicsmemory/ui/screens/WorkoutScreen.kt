@@ -79,6 +79,10 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutTone
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.setLabel
 import io.github.gonbei774.calisthenicsmemory.ui.components.countdownSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.rememberStepStopwatch
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.ReportWorkoutProgress
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.countdownProgress
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutPhase
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutProgressBus
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Job
@@ -261,7 +265,10 @@ fun WorkoutScreen(
             is WorkoutStep.StartInterval,
             is WorkoutStep.Executing,
             is WorkoutStep.Interval -> WorkoutTimerService.startService(context)
-            else -> WorkoutTimerService.stopService(context)
+            else -> {
+                WorkoutProgressBus.clear()
+                WorkoutTimerService.stopService(context)
+            }
         }
     }
 
@@ -292,6 +299,7 @@ fun WorkoutScreen(
             window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             soundPlayer.release()
             flashController.turnOff()
+            WorkoutProgressBus.clear()
             WorkoutTimerService.stopService(context)
             // 残っている書き込みは完了させる
             checkpointWriter.shutdown()
@@ -1715,6 +1723,15 @@ fun StartIntervalStep(
     val progress = if (totalMillis > 0) remainingMillis.coerceAtLeast(0).toFloat() / totalMillis else 0f
     val currentSet = session.sets.getOrNull(currentSetIndex)
 
+    val detail = currentSet?.let { setLabel(it.setNumber, session.totalSets, it.side) }.orEmpty()
+    ReportWorkoutProgress(currentSetIndex, isPaused || isNavigationOpen) { now ->
+        countdownProgress(
+            now, session.exercise.name, detail, WorkoutPhase.GET_READY,
+            totalMillis - stopwatch.elapsedMillis, isPaused || isNavigationOpen,
+            session.sets.count { it.isCompleted || it.isSkipped }, session.sets.size,
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -1798,6 +1815,14 @@ fun IntervalStep(
     val progress = restDialProgress(session.intervalDuration * 1_000L, remainingMillis)
 
     val nextSet = session.sets.getOrNull(nextSetIndex)
+    val restDetail = nextSet?.let { setLabel(it.setNumber, session.totalSets, it.side) }.orEmpty()
+    ReportWorkoutProgress(nextSetIndex, !isRunning || isNavigationOpen, extraMillis) { now ->
+        countdownProgress(
+            now, session.exercise.name, restDetail, WorkoutPhase.REST,
+            session.intervalDuration * 1_000L + extraMillis - stopwatch.elapsedMillis, !isRunning || isNavigationOpen,
+            session.sets.count { it.isCompleted || it.isSkipped }, session.sets.size,
+        )
+    }
     val previousSet = session.sets.getOrNull(nextSetIndex - 1)
 
     Column(

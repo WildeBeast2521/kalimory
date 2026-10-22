@@ -35,6 +35,9 @@ import io.github.gonbei774.calisthenicsmemory.util.FlashController
 import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
 import io.github.gonbei774.calisthenicsmemory.ui.components.countdownSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.rememberStepStopwatch
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.ReportWorkoutProgress
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.countdownProgress
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutPhase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -89,6 +92,14 @@ internal fun ProgramStartIntervalStep(
     val remainingMillis = totalMillis - stopwatch.elapsedMillis
     val remainingTime = countdownSeconds(remainingMillis)
     val progress = if (totalMillis > 0) remainingMillis.coerceAtLeast(0).toFloat() / totalMillis else 0f
+
+    val detail = programSetDetail(session, currentSetIndex)
+    ReportWorkoutProgress(currentSetIndex, effectivelyPaused) { now ->
+        countdownProgress(
+            now, exercise.name, detail, WorkoutPhase.GET_READY,
+            totalMillis - stopwatch.elapsedMillis, effectivelyPaused, session.setsDone(), session.sets.size,
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -177,6 +188,17 @@ internal fun ProgramIntervalStep(
     val remainingMillis = totalInterval * 1_000L + extraMillis - stopwatch.elapsedMillis
     val remainingTime = countdownSeconds(remainingMillis)
     val progress = restDialProgress(totalInterval * 1_000L, remainingMillis)
+
+    // Resting before the next set: the notification names what comes next.
+    val restTitle = session.exerciseNameOf(if (nextSet != null) nextSetIndex else currentSetIndex)
+    val restDetail = programSetDetail(session, if (nextSet != null) nextSetIndex else currentSetIndex)
+    ReportWorkoutProgress(currentSetIndex, nextSetIndex, effectivelyRunning, extraMillis) { now ->
+        countdownProgress(
+            now, restTitle, restDetail, WorkoutPhase.REST,
+            totalInterval * 1_000L + extraMillis - stopwatch.elapsedMillis, !effectivelyRunning,
+            session.setsDone(), session.sets.size,
+        )
+    }
 
     Column(
         modifier = Modifier

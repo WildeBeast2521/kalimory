@@ -354,6 +354,12 @@
     <string name="notification_channel_workout_description">训练计时器运行时显示通知</string>
     <string name="notification_workout_title">训练进行中</string>
     <string name="notification_workout_text">计时器正在运行</string>
+    <string name="notification_hold">保持</string>
+    <string name="notification_paused">已暂停</string>
+    <string name="notification_paused_time_left">已暂停，剩余 %1$s</string>
+    <plurals name="notification_reps_progress">
+        <item quantity="other">%1$d / %2$d次</item>
+    </plurals>
     <!-- Program Feature -->
     <string name="program_list_title">训练计划</string>
     <string name="program_empty">暂无训练计划\n点击 + 创建</string>

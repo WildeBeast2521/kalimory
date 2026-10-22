@@ -399,6 +399,12 @@
     <string name="notification_channel_workout_description">ワークアウトタイマー実行中の通知を表示</string>
     <string name="notification_workout_title">ワークアウト実行中</string>
     <string name="notification_workout_text">タイマーが動作しています</string>
+    <string name="notification_hold">キープ</string>
+    <string name="notification_paused">一時停止中</string>
+    <string name="notification_paused_time_left">一時停止中・残り %1$s</string>
+    <plurals name="notification_reps_progress">
+        <item quantity="other">%1$d / %2$d回</item>
+    </plurals>
     <!-- Program Mode -->
     <string name="single_mode_description">1種目ずつ実行</string>
     <string name="program_list_title">プログラム</string>

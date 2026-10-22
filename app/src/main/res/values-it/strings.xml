@@ -354,6 +354,14 @@
     <string name="notification_channel_workout_description">Mostra notifica mentre il timer allenamento è attivo</string>
     <string name="notification_workout_title">Allenamento in corso</string>
     <string name="notification_workout_text">Il timer è attivo</string>
+    <string name="notification_hold">Tenuta</string>
+    <string name="notification_paused">In pausa</string>
+    <string name="notification_paused_time_left">In pausa, mancano %1$s</string>
+    <plurals name="notification_reps_progress">
+        <item quantity="one">%1$d / %2$d rip</item>
+        <item quantity="many">%1$d / %2$d rip</item>
+        <item quantity="other">%1$d / %2$d rip</item>
+    </plurals>
     <!-- Program Feature -->
     <string name="program_list_title">Programmi</string>
     <string name="program_empty">Nessun programma\nTocca + per crearne uno</string>

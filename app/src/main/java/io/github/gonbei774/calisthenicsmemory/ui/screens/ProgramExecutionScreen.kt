@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutProgressBus
 import androidx.compose.material3.LoadingIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.view.WindowManager
@@ -242,7 +243,10 @@ fun ProgramExecutionScreen(
             is ProgramExecutionStep.StartInterval,
             is ProgramExecutionStep.Executing,
             is ProgramExecutionStep.Interval -> WorkoutTimerService.startService(context)
-            else -> WorkoutTimerService.stopService(context)
+            else -> {
+                WorkoutProgressBus.clear()
+                WorkoutTimerService.stopService(context)
+            }
         }
     }
 
@@ -272,6 +276,7 @@ fun ProgramExecutionScreen(
             window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             soundPlayer.release()
             flashController.turnOff()
+            WorkoutProgressBus.clear()
             WorkoutTimerService.stopService(context)
             // 残っている書き込みは完了させる
             checkpointWriter.shutdown()

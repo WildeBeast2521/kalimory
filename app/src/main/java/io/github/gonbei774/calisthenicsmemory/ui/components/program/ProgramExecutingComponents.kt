@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.ReportWorkoutProgress
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.holdProgress
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.repsProgress
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.CountDisplay
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.StepButton
@@ -106,6 +109,11 @@ internal fun ProgramExecutingStepDynamicManual(
     // タイマー完了フラグ
     val isTimerComplete = currentCount >= currentSet.targetValue
 
+
+    val notificationDetail = programSetDetail(session, currentSetIndex)
+    ReportWorkoutProgress(currentSetIndex, effectivelyPaused, recordValue) { _ ->
+        repsProgress(exercise.name, notificationDetail, recordValue, currentSet.targetValue, effectivelyPaused, session.setsDone(), session.sets.size)
+    }
 
     Column(
         modifier = Modifier
@@ -236,6 +244,12 @@ internal fun ProgramExecutingStepIsometricManual(
 
 
 
+    val notificationDetail = programSetDetail(session, currentSetIndex)
+    val holdReached = stopwatch.elapsedMillis >= currentSet.targetValue * 1_000L
+    ReportWorkoutProgress(currentSetIndex, effectivelyPaused, holdReached) { now ->
+        holdProgress(now, exercise.name, notificationDetail, currentSet.targetValue, stopwatch.elapsedMillis, effectivelyPaused, session.setsDone(), session.sets.size)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -353,6 +367,12 @@ internal fun ProgramExecutingStepIsometricAuto(
     val activeColor = WorkoutTone.work
 
 
+    val notificationDetail = programSetDetail(session, currentSetIndex)
+    val holdReached = stopwatch.elapsedMillis >= currentSet.targetValue * 1_000L
+    ReportWorkoutProgress(currentSetIndex, effectivelyPaused, holdReached) { now ->
+        holdProgress(now, exercise.name, notificationDetail, currentSet.targetValue, stopwatch.elapsedMillis, effectivelyPaused, session.setsDone(), session.sets.size)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -464,6 +484,11 @@ internal fun ProgramExecutingStepDynamicAuto(
     val isTimerComplete = currentCount >= currentSet.targetValue
 
 
+    val notificationDetail = programSetDetail(session, currentSetIndex)
+    ReportWorkoutProgress(currentSetIndex, effectivelyPaused, recordValue) { _ ->
+        repsProgress(exercise.name, notificationDetail, recordValue, currentSet.targetValue, effectivelyPaused, session.setsDone(), session.sets.size)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -534,6 +559,11 @@ internal fun ProgramExecutingStepDynamicSimple(
 
     // 状態管理: 初期値は目標回数
     var repsCount by remember(currentSetIndex) { mutableIntStateOf(currentSet.targetValue) }
+
+    val notificationDetail = programSetDetail(session, currentSetIndex)
+    ReportWorkoutProgress(currentSetIndex, repsCount) { _ ->
+        repsProgress(exercise.name, notificationDetail, repsCount, currentSet.targetValue, false, session.setsDone(), session.sets.size)
+    }
 
     Column(
         modifier = Modifier

@@ -598,6 +598,15 @@
     <string name="notification_channel_workout_description">Уведомление, пока идёт таймер тренировки</string>
     <string name="notification_workout_title">Идёт тренировка</string>
     <string name="notification_workout_text">Таймер запущен</string>
+    <string name="notification_hold">Удержание</string>
+    <string name="notification_paused">Пауза</string>
+    <string name="notification_paused_time_left">Пауза, осталось %1$s</string>
+    <plurals name="notification_reps_progress">
+        <item quantity="one">%1$d / %2$d повт.</item>
+        <item quantity="few">%1$d / %2$d повт.</item>
+        <item quantity="many">%1$d / %2$d повт.</item>
+        <item quantity="other">%1$d / %2$d повт.</item>
+    </plurals>
     <string name="single_mode_description">По одному упражнению</string>
     <string name="program_list_title">Программы</string>
     <string name="program_empty">Программ пока нет\nНажмите +, чтобы создать</string>
