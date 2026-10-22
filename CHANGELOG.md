@@ -15,6 +15,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - After a crash, the app offers on its next start to share a report of the error through the share sheet, or to delete it; the report stays on the phone and is never sent by itself ([#192](https://github.com/WildeBeast2521/kalimory/pull/192))
 
 ### Fixed
+- In auto mode, ending a set early with Complete asks for the value to save, as manual mode does, instead of saving the count so far; reaching the target still moves on by itself ([#216](https://github.com/WildeBeast2521/kalimory/pull/216))
 - In Chinese, the question before removing a ToDo item shows the item's name in quotes ([#209](https://github.com/WildeBeast2521/kalimory/pull/209))
 - The share preview puts a space before the count of automatically included exercises, and several Russian, Ukrainian and Arabic texts are corrected, such as the Russian and Ukrainian names for the L-sit ([#202](https://github.com/WildeBeast2521/kalimory/pull/202))
 - Exercise targets say "1 rep" for a single repetition, with the right form in Arabic, Spanish and Ukrainian too ([#199](https://github.com/WildeBeast2521/kalimory/pull/199))
