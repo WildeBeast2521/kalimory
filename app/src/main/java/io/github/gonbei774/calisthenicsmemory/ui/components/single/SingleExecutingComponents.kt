@@ -22,6 +22,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.workout.setLabel
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.screens.NextSetText
 import io.github.gonbei774.calisthenicsmemory.ui.screens.WorkoutSession
+import io.github.gonbei774.calisthenicsmemory.ui.screens.WorkoutSet
 import io.github.gonbei774.calisthenicsmemory.util.FlashController
 import io.github.gonbei774.calisthenicsmemory.util.SoundPlayer
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -127,42 +128,17 @@ fun SingleExecutingStepDynamicManual(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
-        // 完了ボタン（押下で記録確認シートを表示）
-        var showConfirm by remember(currentSetIndex) { mutableStateOf(false) }
-        WorkoutPrimaryButton(
+        // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
+        CompleteSetButton(
             text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
-            onClick = {
-                isPaused = true
-                showConfirm = true
-            },
+            recordValue = recordValue,
+            unit = stringResource(R.string.unit_reps),
+            session = session,
+            currentSet = currentSet,
+            currentSetIndex = currentSetIndex,
+            onPausedChange = { isPaused = it },
+            onSetComplete = onSetComplete,
         )
-
-        if (showConfirm) {
-            RecordAdjustDialog(
-                initialValue = recordValue,
-                unit = stringResource(R.string.unit_reps),
-                targetValue = currentSet.targetValue,
-                weightTrackingEnabled = session.exercise.weightTrackingEnabled,
-                distanceTrackingEnabled = session.exercise.distanceTrackingEnabled,
-                assistanceTrackingEnabled = session.exercise.assistanceTrackingEnabled,
-                initialWeightG = currentSet.weightG,
-                initialDistanceCm = currentSet.distanceCm,
-                initialAssistanceG = currentSet.assistanceG,
-                onConfirm = { adjusted, weightG, distanceCm, assistanceG ->
-                    currentSet.actualValue = adjusted
-                    currentSet.weightG = weightG
-                    currentSet.distanceCm = distanceCm
-                    currentSet.assistanceG = assistanceG
-                    currentSet.isCompleted = true
-                    showConfirm = false
-                    onSetComplete(session)
-                },
-                onDismiss = {
-                    showConfirm = false
-                    isPaused = false
-                }
-            )
-        }
 
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
@@ -271,14 +247,16 @@ fun SingleExecutingStepDynamicAuto(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
-        // 完了ボタン（早期完了用）
-        WorkoutPrimaryButton(
+        // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
+        CompleteSetButton(
             text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
-            onClick = {
-                currentSet.actualValue = recordValue
-                currentSet.isCompleted = true
-                onSetComplete(session)
-            },
+            recordValue = recordValue,
+            unit = stringResource(R.string.unit_reps),
+            session = session,
+            currentSet = currentSet,
+            currentSetIndex = currentSetIndex,
+            onPausedChange = { isPaused = it },
+            onSetComplete = onSetComplete,
         )
 
         NextSetText(session = session, currentSetIndex = currentSetIndex)
@@ -454,42 +432,17 @@ fun SingleExecutingStepIsometricManual(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
-        // 完了ボタン（押下で記録確認シートを表示）
-        var showConfirm by remember(currentSetIndex) { mutableStateOf(false) }
-        WorkoutPrimaryButton(
+        // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
+        CompleteSetButton(
             text = stringResource(R.string.complete_with_time, recordValue),
-            onClick = {
-                isPaused = true
-                showConfirm = true
-            },
+            recordValue = recordValue,
+            unit = stringResource(R.string.unit_seconds_short),
+            session = session,
+            currentSet = currentSet,
+            currentSetIndex = currentSetIndex,
+            onPausedChange = { isPaused = it },
+            onSetComplete = onSetComplete,
         )
-
-        if (showConfirm) {
-            RecordAdjustDialog(
-                initialValue = recordValue,
-                unit = stringResource(R.string.unit_seconds_short),
-                targetValue = currentSet.targetValue,
-                weightTrackingEnabled = session.exercise.weightTrackingEnabled,
-                distanceTrackingEnabled = session.exercise.distanceTrackingEnabled,
-                assistanceTrackingEnabled = session.exercise.assistanceTrackingEnabled,
-                initialWeightG = currentSet.weightG,
-                initialDistanceCm = currentSet.distanceCm,
-                initialAssistanceG = currentSet.assistanceG,
-                onConfirm = { adjusted, weightG, distanceCm, assistanceG ->
-                    currentSet.actualValue = adjusted
-                    currentSet.weightG = weightG
-                    currentSet.distanceCm = distanceCm
-                    currentSet.assistanceG = assistanceG
-                    currentSet.isCompleted = true
-                    showConfirm = false
-                    onSetComplete(session)
-                },
-                onDismiss = {
-                    showConfirm = false
-                    isPaused = false
-                }
-            )
-        }
 
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
@@ -593,16 +546,70 @@ fun SingleExecutingStepIsometricAuto(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
-        // 完了ボタン（早期完了用）
-        WorkoutPrimaryButton(
+        // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
+        CompleteSetButton(
             text = stringResource(R.string.complete_with_time, recordValue),
-            onClick = {
-                currentSet.actualValue = recordValue
-                currentSet.isCompleted = true
-                onSetComplete(session)
-            },
+            recordValue = recordValue,
+            unit = stringResource(R.string.unit_seconds_short),
+            session = session,
+            currentSet = currentSet,
+            currentSetIndex = currentSetIndex,
+            onPausedChange = { isPaused = it },
+            onSetComplete = onSetComplete,
         )
 
         NextSetText(session = session, currentSetIndex = currentSetIndex)
+    }
+}
+
+/**
+ * The complete button of a set. It pauses the set and asks for the value to save, in manual and auto
+ * mode alike; auto mode also completes the set by itself when the target is reached. Dismissing the
+ * dialog resumes the set.
+ */
+@Composable
+private fun CompleteSetButton(
+    text: String,
+    recordValue: Int,
+    unit: String,
+    session: WorkoutSession,
+    currentSet: WorkoutSet,
+    currentSetIndex: Int,
+    onPausedChange: (Boolean) -> Unit,
+    onSetComplete: (WorkoutSession) -> Unit,
+) {
+    var showConfirm by remember(currentSetIndex) { mutableStateOf(false) }
+    WorkoutPrimaryButton(
+        text = text,
+        onClick = {
+            onPausedChange(true)
+            showConfirm = true
+        },
+    )
+    if (showConfirm) {
+        RecordAdjustDialog(
+            initialValue = recordValue,
+            unit = unit,
+            targetValue = currentSet.targetValue,
+            weightTrackingEnabled = session.exercise.weightTrackingEnabled,
+            distanceTrackingEnabled = session.exercise.distanceTrackingEnabled,
+            assistanceTrackingEnabled = session.exercise.assistanceTrackingEnabled,
+            initialWeightG = currentSet.weightG,
+            initialDistanceCm = currentSet.distanceCm,
+            initialAssistanceG = currentSet.assistanceG,
+            onConfirm = { adjusted, weightG, distanceCm, assistanceG ->
+                currentSet.actualValue = adjusted
+                currentSet.weightG = weightG
+                currentSet.distanceCm = distanceCm
+                currentSet.assistanceG = assistanceG
+                currentSet.isCompleted = true
+                showConfirm = false
+                onSetComplete(session)
+            },
+            onDismiss = {
+                showConfirm = false
+                onPausedChange(false)
+            }
+        )
     }
 }

@@ -31,7 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
+import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.PreviousTargetRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.RecordAdjustDialog
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.RepPaceIndicator
@@ -144,43 +146,17 @@ internal fun ProgramExecutingStepDynamicManual(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
-        // 完了ボタン（押下で記録確認シートを表示）
-        var showConfirm by remember(currentSetIndex) { mutableStateOf(false) }
-        WorkoutPrimaryButton(
+        // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
+        ProgramCompleteSetButton(
             text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
-            onClick = {
-                isPaused = true
-                showConfirm = true
-            },
+            recordValue = recordValue,
+            unit = stringResource(R.string.unit_reps),
+            currentSet = currentSet,
+            exercise = exercise,
+            currentSetIndex = currentSetIndex,
+            onPausedChange = { isPaused = it },
+            onSetComplete = onSetComplete,
         )
-
-        if (showConfirm) {
-            RecordAdjustDialog(
-                initialValue = recordValue,
-                unit = stringResource(R.string.unit_reps),
-                targetValue = currentSet.targetValue,
-                weightTrackingEnabled = exercise.weightTrackingEnabled,
-                distanceTrackingEnabled = exercise.distanceTrackingEnabled,
-                assistanceTrackingEnabled = exercise.assistanceTrackingEnabled,
-                initialWeightG = currentSet.weightG,
-                initialDistanceCm = currentSet.distanceCm,
-                initialAssistanceG = currentSet.assistanceG,
-                previousWeightG = currentSet.previousWeightG,
-                previousDistanceCm = currentSet.previousDistanceCm,
-                previousAssistanceG = currentSet.previousAssistanceG,
-                onConfirm = { adjusted, weightG, distanceCm, assistanceG ->
-                    currentSet.weightG = weightG
-                    currentSet.distanceCm = distanceCm
-                    currentSet.assistanceG = assistanceG
-                    showConfirm = false
-                    onSetComplete(adjusted)
-                },
-                onDismiss = {
-                    showConfirm = false
-                    isPaused = false
-                }
-            )
-        }
 
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
     }
@@ -289,43 +265,17 @@ internal fun ProgramExecutingStepIsometricManual(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
-        // 完了ボタン（押下で記録確認シートを表示）
-        var showConfirm by remember(currentSetIndex) { mutableStateOf(false) }
-        WorkoutPrimaryButton(
+        // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
+        ProgramCompleteSetButton(
             text = stringResource(R.string.complete_with_time, recordValue),
-            onClick = {
-                isPaused = true
-                showConfirm = true
-            },
+            recordValue = recordValue,
+            unit = stringResource(R.string.unit_seconds_short),
+            currentSet = currentSet,
+            exercise = exercise,
+            currentSetIndex = currentSetIndex,
+            onPausedChange = { isPaused = it },
+            onSetComplete = onSetComplete,
         )
-
-        if (showConfirm) {
-            RecordAdjustDialog(
-                initialValue = recordValue,
-                unit = stringResource(R.string.unit_seconds_short),
-                targetValue = currentSet.targetValue,
-                weightTrackingEnabled = exercise.weightTrackingEnabled,
-                distanceTrackingEnabled = exercise.distanceTrackingEnabled,
-                assistanceTrackingEnabled = exercise.assistanceTrackingEnabled,
-                initialWeightG = currentSet.weightG,
-                initialDistanceCm = currentSet.distanceCm,
-                initialAssistanceG = currentSet.assistanceG,
-                previousWeightG = currentSet.previousWeightG,
-                previousDistanceCm = currentSet.previousDistanceCm,
-                previousAssistanceG = currentSet.previousAssistanceG,
-                onConfirm = { adjusted, weightG, distanceCm, assistanceG ->
-                    currentSet.weightG = weightG
-                    currentSet.distanceCm = distanceCm
-                    currentSet.assistanceG = assistanceG
-                    showConfirm = false
-                    onSetComplete(adjusted)
-                },
-                onDismiss = {
-                    showConfirm = false
-                    isPaused = false
-                }
-            )
-        }
 
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
     }
@@ -432,10 +382,16 @@ internal fun ProgramExecutingStepIsometricAuto(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
-        // 完了ボタン（早期完了用）
-        WorkoutPrimaryButton(
+        // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
+        ProgramCompleteSetButton(
             text = stringResource(R.string.complete_with_time, recordValue),
-            onClick = { onSetComplete(recordValue) },
+            recordValue = recordValue,
+            unit = stringResource(R.string.unit_seconds_short),
+            currentSet = currentSet,
+            exercise = exercise,
+            currentSetIndex = currentSetIndex,
+            onPausedChange = { isPaused = it },
+            onSetComplete = onSetComplete,
         )
 
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
@@ -547,10 +503,16 @@ internal fun ProgramExecutingStepDynamicAuto(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
-        // 完了ボタン（早期完了用）
-        WorkoutPrimaryButton(
+        // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
+        ProgramCompleteSetButton(
             text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
-            onClick = { onSetComplete(recordValue) },
+            recordValue = recordValue,
+            unit = stringResource(R.string.unit_reps),
+            currentSet = currentSet,
+            exercise = exercise,
+            currentSetIndex = currentSetIndex,
+            onPausedChange = { isPaused = it },
+            onSetComplete = onSetComplete,
         )
 
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
@@ -634,4 +596,57 @@ internal fun ProgramSetHeader(session: ProgramExecutionSession, exerciseName: St
             stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds)
         } else null,
     )
+}
+
+/**
+ * The complete button of a program set. It pauses the set and asks for the value to save, in manual
+ * and auto mode alike; auto mode also completes the set by itself when the target is reached.
+ * Dismissing the dialog resumes the set.
+ */
+@Composable
+private fun ProgramCompleteSetButton(
+    text: String,
+    recordValue: Int,
+    unit: String,
+    currentSet: ProgramWorkoutSet,
+    exercise: Exercise,
+    currentSetIndex: Int,
+    onPausedChange: (Boolean) -> Unit,
+    onSetComplete: (Int) -> Unit,
+) {
+    var showConfirm by remember(currentSetIndex) { mutableStateOf(false) }
+    WorkoutPrimaryButton(
+        text = text,
+        onClick = {
+            onPausedChange(true)
+            showConfirm = true
+        },
+    )
+    if (showConfirm) {
+        RecordAdjustDialog(
+            initialValue = recordValue,
+            unit = unit,
+            targetValue = currentSet.targetValue,
+            weightTrackingEnabled = exercise.weightTrackingEnabled,
+            distanceTrackingEnabled = exercise.distanceTrackingEnabled,
+            assistanceTrackingEnabled = exercise.assistanceTrackingEnabled,
+            initialWeightG = currentSet.weightG,
+            initialDistanceCm = currentSet.distanceCm,
+            initialAssistanceG = currentSet.assistanceG,
+            previousWeightG = currentSet.previousWeightG,
+            previousDistanceCm = currentSet.previousDistanceCm,
+            previousAssistanceG = currentSet.previousAssistanceG,
+            onConfirm = { adjusted, weightG, distanceCm, assistanceG ->
+                currentSet.weightG = weightG
+                currentSet.distanceCm = distanceCm
+                currentSet.assistanceG = assistanceG
+                showConfirm = false
+                onSetComplete(adjusted)
+            },
+            onDismiss = {
+                showConfirm = false
+                onPausedChange(false)
+            }
+        )
+    }
 }
