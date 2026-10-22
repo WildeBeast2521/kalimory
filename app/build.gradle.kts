@@ -92,10 +92,14 @@ android {
     }
 
     lint {
-        baseline = file("lint-baseline.xml")
-        // Cleared from the baseline (#154); new findings fail the build. A count that is not a
-        // plural (an abbreviation, an ordinal) is marked tools:ignore="PluralsCandidate".
+        // No baseline (#154): every finding is an error, so a warning fails the build. A count
+        // that is not a plural (an abbreviation, an ordinal) is marked tools:ignore="PluralsCandidate".
+        warningsAsErrors = true
         error += setOf("PluralsCandidate", "TypographyEllipsis")
+        // These report that a newer library, plugin or target API exists, so their result changes
+        // whenever something is released, not when the code changes. Dependabot opens the
+        // dependency updates; raising targetSdk is a deliberate change of its own.
+        disable += setOf("GradleDependency", "NewerVersionAvailable", "AndroidGradlePluginVersion", "OldTargetApi")
     }
 
     testOptions {
@@ -155,65 +159,65 @@ ksp {
 dependencies {
     // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3:1.5.0-beta01")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     // Activity Compose
-    implementation("androidx.activity:activity-compose:1.9.3")
+    implementation(libs.androidx.activity.compose)
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // Room Database
-    implementation("androidx.room:room-runtime:2.8.5")
-    implementation("androidx.room:room-ktx:2.8.5")
-    ksp("androidx.room:room-compiler:2.8.5")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     // Core KTX
-    implementation("androidx.core:core-ktx:1.19.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.kotlinx.serialization.json)
     // Declared so the tests compile against the same coroutines as the app (one version ref).
     implementation(libs.kotlinx.coroutines.android)
 
     // AppCompat for language settings
-    implementation("androidx.appcompat:appcompat:1.8.0")
+    implementation(libs.androidx.appcompat)
 
     // AboutLibraries
-    implementation("com.mikepenz:aboutlibraries-core:15.2.0")
-    implementation("com.mikepenz:aboutlibraries-compose-m3:15.2.0")
+    implementation(libs.aboutlibraries.core)
+    implementation(libs.aboutlibraries.compose.m3)
 
     // Reorderable (drag and drop)
-    implementation("sh.calvin.reorderable:reorderable:3.1.0")
+    implementation(libs.reorderable)
 
     // Installs the Baseline Profile on devices without Play Store cloud profiles (F-Droid).
     implementation(libs.androidx.profileinstaller)
     baselineProfile(project(":baselineprofile"))
 
     // Testing
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation("androidx.room:room-testing:2.8.5")
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("org.mockito:mockito-core:5.24.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:6.4.0")
+    testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.androidx.arch.core.testing)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
     testImplementation(libs.robolectric)
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
     testImplementation(libs.roborazzi.junit.rule)
     testImplementation(platform(libs.androidx.compose.bom))
-    testImplementation("androidx.compose.ui:ui-test-junit4")
+    testImplementation(libs.androidx.compose.ui.test.junit4)
     robolectricRuntime(libs.robolectric.android.all)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
-    androidTestImplementation("androidx.room:room-testing:2.8.5")
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.arch.core.testing)
+    androidTestImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")   
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }
