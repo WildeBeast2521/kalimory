@@ -210,6 +210,15 @@
     <string name="example_unilateral">напр., присідання на одній нозі, віджимання на одній руці</string>
     <string name="notification_channel_workout_description">Показує сповіщення, коли працює таймер тренування</string>
     <string name="notification_workout_text">Таймер запущено</string>
+    <string name="notification_hold">Утримання</string>
+    <string name="notification_paused">Пауза</string>
+    <string name="notification_paused_time_left">Пауза, залишилося %1$s</string>
+    <plurals name="notification_reps_progress">
+        <item quantity="one">%1$d / %2$d раз</item>
+        <item quantity="few">%1$d / %2$d рази</item>
+        <item quantity="many">%1$d / %2$d разів</item>
+        <item quantity="other">%1$d / %2$d разів</item>
+    </plurals>
     <string name="notification_workout_title">Триває тренування</string>
     <string name="todo_empty">Щоб додати вправу, натисніть +</string>
     <string name="section_workout_settings_description">Налаштувати поведінку екрана тренування.</string>

@@ -34,7 +34,7 @@ Graphs, bests and progressions follow the corrected workout. Tapping a single se
 
 ## If the app is closed during a workout
 
-Timers keep running in a notification. If the app is stopped anyway, Today offers to continue where you left off.
+Timers keep running in a notification. It shows where you are: the exercise or routine, the set or round, the reps counted against your goal, and the time left of a rest, a hold or a countdown, with a bar for how much of the workout is done. It updates quietly in place, without new alerts. If the app is stopped anyway, Today offers to continue where you left off.
 
 ## Sounds and vibration
 

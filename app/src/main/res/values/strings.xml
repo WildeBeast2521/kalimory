@@ -413,6 +413,13 @@
     <string name="notification_channel_workout_description">Shows notification while workout timer is running</string>
     <string name="notification_workout_title">Workout in progress</string>
     <string name="notification_workout_text">Timer is running</string>
+    <string name="notification_hold">Hold</string>
+    <string name="notification_paused">Paused</string>
+    <string name="notification_paused_time_left">Paused, %1$s left</string>
+    <plurals name="notification_reps_progress">
+        <item quantity="one">%1$d / %2$d rep</item>
+        <item quantity="other">%1$d / %2$d reps</item>
+    </plurals>
     <!-- Program Mode -->
     <string name="single_mode_description">One exercise at a time</string>
     <string name="program_list_title">Programs</string>

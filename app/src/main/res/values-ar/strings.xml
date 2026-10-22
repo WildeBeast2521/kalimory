@@ -608,6 +608,17 @@
     <string name="notification_channel_workout_description">يعرض إشعارًا أثناء عمل مؤقت التمرين</string>
     <string name="notification_workout_title">تمرين قيد التنفيذ</string>
     <string name="notification_workout_text">المؤقت يعمل</string>
+    <string name="notification_hold">ثبات</string>
+    <string name="notification_paused">متوقف مؤقتًا</string>
+    <string name="notification_paused_time_left">متوقف مؤقتًا، متبقٍّ %1$s</string>
+    <plurals name="notification_reps_progress">
+        <item quantity="zero">%1$d / %2$d تكرار</item>
+        <item quantity="one">%1$d / %2$d تكرار</item>
+        <item quantity="two">%1$d / %2$d تكرار</item>
+        <item quantity="few">%1$d / %2$d تكرارات</item>
+        <item quantity="many">%1$d / %2$d تكرارًا</item>
+        <item quantity="other">%1$d / %2$d تكرار</item>
+    </plurals>
     <string name="single_mode_description">تمرين واحد في كل مرة</string>
     <string name="program_list_title">البرامج</string>
     <string name="program_empty">لا توجد برامج بعد\nاضغط + لإنشاء برنامج</string>

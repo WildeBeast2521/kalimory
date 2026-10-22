@@ -1,5 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.ReportWorkoutProgress
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.countdownProgress
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutPhase
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutProgressBus
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.ui.res.pluralStringResource
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
@@ -235,6 +239,7 @@ fun IntervalExecutionScreen(
         if (phase is IntervalPhase.Running) {
             WorkoutTimerService.startService(context)
         } else {
+            WorkoutProgressBus.clear()
             WorkoutTimerService.stopService(context)
         }
     }
@@ -246,6 +251,7 @@ fun IntervalExecutionScreen(
             window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             soundPlayer.release()
             flashController.turnOff()
+            WorkoutProgressBus.clear()
             WorkoutTimerService.stopService(context)
             // Queued checkpoint writes still finish; no new ones are accepted.
             checkpointWriter.shutdown()
@@ -533,6 +539,23 @@ fun IntervalExecutionScreen(
             val remainingSeconds = displaySeconds(state.remainingInStep(nowMillis) ?: 0)
             val totalSeconds = displaySeconds((state.currentStep.kind as StepKind.Countdown).durationMillis)
             val isPaused = state.timer is StepTimer.Paused
+            val roundLabel = stringResource(R.string.interval_round_format, step.round, program!!.rounds)
+            val progressDetail = when (step.type) {
+                IntervalStepType.PREPARE -> ""
+                IntervalStepType.WORK -> exercises[step.exerciseIndex].name + " · " + roundLabel
+                else -> roundLabel
+            }
+            ReportWorkoutProgress(state.stepIndex, isPaused) { now ->
+                countdownProgress(
+                    now, program!!.name, progressDetail,
+                    when (step.type) {
+                        IntervalStepType.PREPARE -> WorkoutPhase.GET_READY
+                        IntervalStepType.WORK -> WorkoutPhase.WORK
+                        else -> WorkoutPhase.REST
+                    },
+                    state.remainingInStep(clock.nowMillis()) ?: 0L, isPaused, state.stepIndex, state.steps.size,
+                )
+            }
             when (step.type) {
                 IntervalStepType.PREPARE -> IntervalPrepareContent(
                     exercises = exercises,

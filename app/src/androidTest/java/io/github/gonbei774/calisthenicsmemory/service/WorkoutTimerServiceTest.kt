@@ -1,9 +1,15 @@
 package io.github.gonbei774.calisthenicsmemory.service
 
+import android.app.Notification
+import android.app.NotificationManager
 import android.os.ParcelFileDescriptor
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.After
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutPhase
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutProgress
+import io.github.gonbei774.calisthenicsmemory.workout.WorkoutProgressBus
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -38,7 +44,30 @@ class WorkoutTimerServiceTest {
 
     @After
     fun stop() {
+        WorkoutProgressBus.clear()
         WorkoutTimerService.stopService(context)
+    }
+
+    private val notifications = context.getSystemService(NotificationManager::class.java)
+
+    private fun shownText(): String? = notifications.activeNotifications.singleOrNull()
+        ?.notification?.extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString()
+
+    @Test
+    fun progressUpdatesTheOneNotificationInPlace() {
+        WorkoutTimerService.startService(context)
+        assertTrue("notification shown", waitUntil { notifications.activeNotifications.isNotEmpty() })
+
+        fun reps(done: Int) = WorkoutProgress("Push-up", "Set 1 of 3", WorkoutPhase.REPS, repsDone = done, repsTarget = 10, stepsTotal = 3)
+        WorkoutProgressBus.publish(reps(1))
+        assertTrue("first count shown", waitUntil { shownText()?.startsWith("1 / 10") == true })
+        WorkoutProgressBus.publish(reps(2))
+        assertTrue("count updated", waitUntil { shownText()?.startsWith("2 / 10") == true })
+
+        // Still one notification, updated in place, and it stays silent.
+        val shown = notifications.activeNotifications
+        assertEquals(1, shown.size)
+        assertEquals("Push-up", shown.single().notification.extras.getCharSequence(Notification.EXTRA_TITLE).toString())
     }
 
     @Test

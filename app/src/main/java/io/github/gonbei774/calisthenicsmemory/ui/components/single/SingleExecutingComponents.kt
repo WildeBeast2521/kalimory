@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.single
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.ReportWorkoutProgress
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.holdProgress
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.repsProgress
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -82,6 +85,11 @@ fun SingleExecutingStepDynamicManual(
     val repTimeElapsed = elapsedTime % repDuration
     val isTimerComplete = currentCount >= currentSet.targetValue
 
+
+    val notificationDetail = setLabel(currentSet.setNumber, session.totalSets, currentSet.side)
+    ReportWorkoutProgress(currentSetIndex, effectivelyPaused, recordValue) { _ ->
+        repsProgress(session.exercise.name, notificationDetail, recordValue, currentSet.targetValue, effectivelyPaused, session.sets.count { it.isCompleted || it.isSkipped }, session.sets.size)
+    }
 
     Column(
         modifier = Modifier
@@ -202,6 +210,11 @@ fun SingleExecutingStepDynamicAuto(
     val isTimerComplete = currentCount >= currentSet.targetValue
 
 
+    val notificationDetail = setLabel(currentSet.setNumber, session.totalSets, currentSet.side)
+    ReportWorkoutProgress(currentSetIndex, effectivelyPaused, recordValue) { _ ->
+        repsProgress(session.exercise.name, notificationDetail, recordValue, currentSet.targetValue, effectivelyPaused, session.sets.count { it.isCompleted || it.isSkipped }, session.sets.size)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -284,6 +297,11 @@ fun SingleExecutingStepDynamicSimple(
     var reps by remember(currentSetIndex) { mutableIntStateOf(currentSet.targetValue) }
 
     val scope = rememberCoroutineScope()
+
+    val notificationDetail = setLabel(currentSet.setNumber, session.totalSets, currentSet.side)
+    ReportWorkoutProgress(currentSetIndex, reps) { _ ->
+        repsProgress(session.exercise.name, notificationDetail, reps, currentSet.targetValue, false, session.sets.count { it.isCompleted || it.isSkipped }, session.sets.size)
+    }
 
     Column(
         modifier = Modifier
@@ -396,6 +414,12 @@ fun SingleExecutingStepIsometricManual(
 
     val activeColor = WorkoutTone.work
 
+
+    val notificationDetail = setLabel(currentSet.setNumber, session.totalSets, currentSet.side)
+    val holdReached = stopwatch.elapsedMillis >= currentSet.targetValue * 1_000L
+    ReportWorkoutProgress(currentSetIndex, effectivelyPaused, holdReached) { now ->
+        holdProgress(now, session.exercise.name, notificationDetail, currentSet.targetValue, stopwatch.elapsedMillis, effectivelyPaused, session.sets.count { it.isCompleted || it.isSkipped }, session.sets.size)
+    }
 
     Column(
         modifier = Modifier
@@ -510,6 +534,12 @@ fun SingleExecutingStepIsometricAuto(
 
     val activeColor = WorkoutTone.work
 
+
+    val notificationDetail = setLabel(currentSet.setNumber, session.totalSets, currentSet.side)
+    val holdReached = stopwatch.elapsedMillis >= currentSet.targetValue * 1_000L
+    ReportWorkoutProgress(currentSetIndex, effectivelyPaused, holdReached) { now ->
+        holdProgress(now, session.exercise.name, notificationDetail, currentSet.targetValue, stopwatch.elapsedMillis, effectivelyPaused, session.sets.count { it.isCompleted || it.isSkipped }, session.sets.size)
+    }
 
     Column(
         modifier = Modifier
