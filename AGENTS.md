@@ -72,6 +72,11 @@ resource, counts use `<plurals>`, and English uses sentence case. A new key goes
 locale in the same change; mark machine-assisted translations for native review in the release
 log. Arabic is right-to-left: check layouts in RTL.
 
+Translation happens in Hosted Weblate, which commits to this repository through pull requests.
+`glossary/<language>.tbx` is the project glossary (the Weblate component "Glossary", slug `terms`):
+terms such as "set" and "rep" with the translation each language uses, and names like Kalimory
+that stay untranslated. Edit it in Weblate, not by hand, so the two never disagree.
+
 ## Verification
 
 ```bash

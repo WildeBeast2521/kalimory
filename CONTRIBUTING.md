@@ -74,7 +74,7 @@ This writes `Catalogue.kt` and the English `catalogue_strings.xml`. Add the same
 
 ## Translations
 
-The app ships in ten languages. English strings live in `app/src/main/res/values/`, and each language has its own `values-*` folder. Corrections from native speakers are especially welcome: open a catalogue or translation issue, or a pull request.
+The app ships in ten languages. English strings live in `app/src/main/res/values/`, and each language has its own `values-*` folder. Corrections from native speakers are especially welcome: open a catalogue or translation issue, or a pull request. The glossary in `glossary/` lists the words each language uses for terms such as "set" and "rep"; it is edited in Weblate.
 
 ## License
 
