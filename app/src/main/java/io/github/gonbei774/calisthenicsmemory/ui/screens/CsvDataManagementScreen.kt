@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -51,7 +52,7 @@ fun CsvDataManagementScreen(
     var showCsvExportDialog by remember { mutableStateOf(false) }
     var showCsvImportPreview by remember { mutableStateOf(false) }
     var csvImportType by remember { mutableStateOf<CsvType?>(null) }
-    var csvImportDataCount by remember { mutableStateOf(0) }
+    var csvImportDataCount by remember { mutableIntStateOf(0) }
     var pendingCsvString by remember { mutableStateOf<String?>(null) }
     var csvFileName by remember { mutableStateOf<String?>(null) }
     var showImportResult by remember { mutableStateOf(false) }

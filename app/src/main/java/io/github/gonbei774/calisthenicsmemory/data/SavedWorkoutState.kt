@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.data
 
+import androidx.core.content.edit
 import android.content.Context
 import android.content.SharedPreferences
 import kotlinx.serialization.encodeToString
@@ -29,16 +30,14 @@ class SavedWorkoutState(context: Context) {
         startedAtWallMillis: Long? = null
     ) {
         val setsJson = json.encodeToString(sets)
-        prefs.edit()
-            .putLong(KEY_PROGRAM_ID, programId)
-            .putInt(KEY_CURRENT_SET_INDEX, currentSetIndex)
-            .putString(KEY_SETS, setsJson)
-            .putString(KEY_COMMENT, comment)
-            .putLong(KEY_SAVED_AT, System.currentTimeMillis())
-            .apply {
-                if (startedAtWallMillis != null) putLong(KEY_STARTED_AT, startedAtWallMillis) else remove(KEY_STARTED_AT)
-            }
-            .apply()
+        prefs.edit {
+            putLong(KEY_PROGRAM_ID, programId)
+            putInt(KEY_CURRENT_SET_INDEX, currentSetIndex)
+            putString(KEY_SETS, setsJson)
+            putString(KEY_COMMENT, comment)
+            putLong(KEY_SAVED_AT, System.currentTimeMillis())
+            if (startedAtWallMillis != null) putLong(KEY_STARTED_AT, startedAtWallMillis) else remove(KEY_STARTED_AT)
+        }
     }
 
     /**
@@ -100,7 +99,7 @@ class SavedWorkoutState(context: Context) {
      * 途中状態をクリア
      */
     fun clear() {
-        prefs.edit().clear().apply()
+        prefs.edit { clear() }
     }
 
     companion object {

@@ -500,11 +500,11 @@ private fun DayCell(
     dayOfMonth: Int,
     isToday: Boolean,
     isSelected: Boolean,
-    isOutOfRange: Boolean = false,
     level: Int,
     hasInterval: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isOutOfRange: Boolean = false,
 ) {
     val showHeatmap = level > 0 && !isOutOfRange
     val textColor = when {

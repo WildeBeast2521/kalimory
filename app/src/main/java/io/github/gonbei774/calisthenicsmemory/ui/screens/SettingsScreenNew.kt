@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.core.net.toUri
+import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -11,7 +13,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -451,8 +452,8 @@ fun SettingsScreenNew(
             item {
                 val workoutPrefs = remember { io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences(context) }
                 var prefillEnabled by remember { mutableStateOf(workoutPrefs.isPrefillPreviousRecordEnabled()) }
-                var startCountdown by remember { mutableStateOf(workoutPrefs.getStartCountdown()) }
-                var setInterval by remember { mutableStateOf(workoutPrefs.getSetInterval()) }
+                var startCountdown by remember { mutableIntStateOf(workoutPrefs.getStartCountdown()) }
+                var setInterval by remember { mutableIntStateOf(workoutPrefs.getSetInterval()) }
                 var startCountdownEnabled by remember { mutableStateOf(workoutPrefs.isStartCountdownEnabled()) }
                 var setIntervalEnabled by remember { mutableStateOf(workoutPrefs.isSetIntervalEnabled()) }
                 var flashNotificationEnabled by remember { mutableStateOf(workoutPrefs.isFlashNotificationEnabled()) }
@@ -1010,7 +1011,7 @@ fun SettingsScreenNew(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(REPOSITORY_URL))
+                                    val intent = Intent(Intent.ACTION_VIEW, REPOSITORY_URL.toUri())
                                     context.startActivity(intent)
                                 },
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -1138,7 +1139,7 @@ fun SettingsScreenNew(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(UPSTREAM_URL)))
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, UPSTREAM_URL.toUri()))
                                 },
                             horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -1189,7 +1190,7 @@ fun SettingsScreenNew(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("$REPOSITORY_URL/issues"))
+                                    val intent = Intent(Intent.ACTION_VIEW, "$REPOSITORY_URL/issues".toUri())
                                     context.startActivity(intent)
                                 },
                             horizontalArrangement = Arrangement.spacedBy(16.dp),

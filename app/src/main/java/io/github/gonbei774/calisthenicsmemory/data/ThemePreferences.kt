@@ -27,7 +27,7 @@ class ThemePreferences(context: Context) {
      * @param theme 保存するテーマ
      */
     fun setTheme(theme: AppTheme) {
-        prefs.edit().putString(KEY_THEME, theme.code).apply()
+        prefs.edit { putString(KEY_THEME, theme.code) }
     }
 
     /** Whether colours follow the wallpaper (Android 12+); off by default so the app keeps its own palette. */

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.AppFab
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import androidx.compose.foundation.layout.ColumnScope
@@ -746,7 +747,7 @@ fun UnifiedAddDialog(
     var selectedType by remember { mutableStateOf(exercise?.type ?: "Dynamic") }
     var selectedLaterality by remember { mutableStateOf(exercise?.laterality ?: "Bilateral") }
     var selectedGroup by remember { mutableStateOf(exercise?.group ?: presetGroup) }
-    var selectedLevel by remember { mutableStateOf(exercise?.sortOrder?.coerceIn(1, 10) ?: 5) }
+    var selectedLevel by remember { mutableIntStateOf(exercise?.sortOrder?.coerceIn(1, 10) ?: 5) }
     var showGroupDropdown by remember { mutableStateOf(false) }
     var newGroupName by remember { mutableStateOf("") }
     var isCreatingNewGroup by remember { mutableStateOf(false) }

@@ -13,6 +13,7 @@
     <application
         android:name=".CalisthenicsMemoryApplication"
         android:enableOnBackInvokedCallback="true"
+        tools:targetApi="33"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -21,11 +22,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CalisthenicsMemory">
+        <!-- Portrait only: the workout screens (timer dial, counters, start buttons) are laid out
+             for a phone held upright during training. Android honours this while the app targets
+             API 35; a landscape layout would be needed before targeting API 36+ on large screens. -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity,DiscouragedApi"
             android:configChanges="uiMode"
             android:theme="@style/Theme.CalisthenicsMemory">
             <intent-filter>
