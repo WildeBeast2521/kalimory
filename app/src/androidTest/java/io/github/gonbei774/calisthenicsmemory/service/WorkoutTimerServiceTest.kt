@@ -54,6 +54,20 @@ class WorkoutTimerServiceTest {
         ?.notification?.extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString()
 
     @Test
+    fun aStartRightAfterAStopKeepsTheServiceInTheForeground() {
+        // Screens stop and start the service as a workout moves between steps. A stop must not
+        // destroy the service while a newer start is waiting, or Android ends the app because
+        // that start never reached startForeground().
+        repeat(20) {
+            WorkoutTimerService.stopService(context)
+            WorkoutTimerService.startService(context)
+        }
+        assertTrue("still in the foreground", waitUntil { notifications.activeNotifications.isNotEmpty() })
+        Thread.sleep(6_000) // past the time Android allows a start to reach startForeground()
+        assertTrue("still in the foreground", notifications.activeNotifications.isNotEmpty())
+    }
+
+    @Test
     fun progressUpdatesTheOneNotificationInPlace() {
         WorkoutTimerService.startService(context)
         assertTrue("notification shown", waitUntil { notifications.activeNotifications.isNotEmpty() })

@@ -18,6 +18,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - The workout notification shows your progress: the exercise or routine, the set or round, the reps counted against your goal, the time left of a rest, hold or countdown, and a bar for the whole workout; it updates quietly in place instead of adding notifications ([#217](https://github.com/WildeBeast2521/kalimory/pull/217))
 
 ### Fixed
+- The app no longer closes when a workout ends a step and starts the next one in quick succession ([#217](https://github.com/WildeBeast2521/kalimory/pull/217))
 - In auto mode, ending a set early with Complete asks for the value to save, as manual mode does, instead of saving the count so far; reaching the target still moves on by itself ([#216](https://github.com/WildeBeast2521/kalimory/pull/216))
 - In Chinese, the question before removing a ToDo item shows the item's name in quotes ([#209](https://github.com/WildeBeast2521/kalimory/pull/209))
 - The share preview puts a space before the count of automatically included exercises, and several Russian, Ukrainian and Arabic texts are corrected, such as the Russian and Ukrainian names for the L-sit ([#202](https://github.com/WildeBeast2521/kalimory/pull/202))

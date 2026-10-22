@@ -89,10 +89,14 @@ class WorkoutTimerService : Service() {
                 acquireWakeLock()
             }
             ACTION_STOP -> {
-                foreground = false
-                releaseWakeLock()
-                stopForeground(STOP_FOREGROUND_REMOVE)
-                stopSelf()
+                // Stop only if no start came after this stop. A plain stopSelf() would destroy the
+                // service while a newer start waits, and Android ends the app when that start never
+                // reaches startForeground().
+                if (stopSelfResult(startId)) {
+                    foreground = false
+                    releaseWakeLock()
+                    stopForeground(STOP_FOREGROUND_REMOVE)
+                }
             }
         }
         return START_NOT_STICKY
