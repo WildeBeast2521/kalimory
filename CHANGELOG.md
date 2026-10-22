@@ -14,6 +14,9 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Edit a whole saved workout from Progress › List: change its date, time, comment and sets, add or remove sets and exercises, and save everything at once ([#200](https://github.com/WildeBeast2521/kalimory/pull/200))
 - After a crash, the app offers on its next start to share a report of the error through the share sheet, or to delete it; the report stays on the phone and is never sent by itself ([#192](https://github.com/WildeBeast2521/kalimory/pull/192))
 
+### Changed
+- The workout notification shows your progress: the exercise or routine, the set or round, the reps counted against your goal, the time left of a rest, hold or countdown, and a bar for the whole workout; it updates quietly in place instead of adding notifications ([#217](https://github.com/WildeBeast2521/kalimory/pull/217))
+
 ### Fixed
 - In auto mode, ending a set early with Complete asks for the value to save, as manual mode does, instead of saving the count so far; reaching the target still moves on by itself ([#216](https://github.com/WildeBeast2521/kalimory/pull/216))
 - In Chinese, the question before removing a ToDo item shows the item's name in quotes ([#209](https://github.com/WildeBeast2521/kalimory/pull/209))
