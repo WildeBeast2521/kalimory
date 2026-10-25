@@ -114,7 +114,11 @@ scripts/check-room-schemas.sh --stacktrace
 ```
 
 Expect all unit and instrumented tests to pass and lint to report nothing (any finding fails the
-build). Add or update a test with each fix: JVM tests for logic in `workout/`, `data/` and
+build). Cold start is measured on pull requests that change the app or the build: the
+Startup workflow (`.github/workflows/startup.yml`) runs `StartupBenchmark` without and with the
+Baseline Profile on the API 29 emulator and comments the table (`scripts/startup-report.py`). It
+never fails on the numbers, which vary between emulator runs; look at the trend, and treat a clear
+slowdown as a bug to explain before merging. Add or update a test with each fix: JVM tests for logic in `workout/`, `data/` and
 pure helpers; instrumented tests for screens, database and file round trips. Tests are
 deterministic and offline. A known flaky test is named in the release log, never disabled.
 
@@ -138,7 +142,10 @@ deterministic and offline. A known flaky test is named in the release log, never
 
 The first Kalimory release is 1.0.0 (versionCode 1). For a release:
 
-1. Bump `versionCode` (always +1) and `versionName` in `app/build.gradle.kts`.
+1. Bump `versionCode` (always +1) and `versionName` in `app/build.gradle.kts`. For a minor release
+   (x.y.0), first regenerate the Baseline Profile on the API 29 emulator with
+   `./gradlew :app:generateReleaseBaselineProfile` and commit the changed
+   `app/src/release/generated/baselineProfiles/` files, so the new screens start fast too.
 2. Date the CHANGELOG entry (`## [x.y.z] - YYYY-MM-DD`), keep an empty `## [Unreleased]` above it,
    then run `python3 -I scripts/changelog-links.py`, which rewrites the link definitions at the
    bottom. Add
