@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.workIntervalsDone
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import org.json.JSONArray
@@ -793,8 +794,7 @@ private fun calcIntervalScore(record: IntervalRecord): Double {
     } catch (e: Exception) {
         0
     }
-    return record.workSeconds.toDouble() *
-        (record.completedRounds * exerciseCount + record.completedExercisesInLastRound)
+    return record.workSeconds.toDouble() * record.workIntervalsDone(exerciseCount)
 }
 
 private fun scoreToLevel(score: Double): Int = when {

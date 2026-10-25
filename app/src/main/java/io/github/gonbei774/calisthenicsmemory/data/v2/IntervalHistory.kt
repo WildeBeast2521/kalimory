@@ -33,9 +33,17 @@ data class IntervalHistoryItem(val record: IntervalRecord, val v2SessionId: Long
     /** Work intervals done, each counted as one set, so weekly totals include interval workouts. */
     val completedSets: Int get() {
         val exerciseCount = runCatching { Json.decodeFromString(ListSerializer(String.serializer()), record.exercisesJson).size }.getOrDefault(0)
-        return record.completedRounds * exerciseCount + record.completedExercisesInLastRound
+        return record.workIntervalsDone(exerciseCount)
     }
 }
+
+/**
+ * Work intervals done in this run, given how many exercises a round has. A full run is stored as
+ * (rounds, all exercises), not (rounds, 0), so its last round must not be counted twice.
+ */
+fun IntervalRecord.workIntervalsDone(exerciseCount: Int): Int =
+    if (completedRounds >= rounds) rounds * exerciseCount
+    else completedRounds * exerciseCount + completedExercisesInLastRound
 
 /** Legacy interval records plus v2 interval workouts, each shown once. */
 object IntervalHistory {
