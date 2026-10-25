@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
+import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CommunityShareContent
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CommunityShareImportReport
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CommunityShareImporter
@@ -74,6 +75,17 @@ class CommunityShareImporterTest {
         assertEquals(1, after.programLoops.size)
         assertEquals(after.programLoops.single().id, after.programExercises.single().loopId)
         assertEquals(after.exercises.first { it.name == "Plank" }.id, after.intervalProgramExercises.single().exerciseId)
+    }
+
+    @Test
+    fun newGroupsComeAfterTheExistingOnes() = runBlocking {
+        val groups = database.exerciseGroupDao()
+        groups.insertGroup(ExerciseGroup(name = "Legs", displayOrder = 0))
+        groups.insertGroup(ExerciseGroup(name = "Core", displayOrder = 1))
+
+        CommunityShareImporter(database).import(content.copy(groups = listOf(ShareGroup("Push"), ShareGroup("Pull"))))
+
+        assertEquals(listOf("Legs", "Core", "Push", "Pull"), groups.getAllGroupsSync().map { it.name })
     }
 
     @Test

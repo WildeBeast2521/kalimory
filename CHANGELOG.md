@@ -31,6 +31,9 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - The Progressions tab label shows in full on narrow phones in every language, instead of being cut off ([#195](https://github.com/WildeBeast2521/kalimory/pull/195))
 - A program shows the same estimated time in the Train and To Do lists as on its start screen, including after a workout changes what it will open with ([#178](https://github.com/WildeBeast2521/kalimory/pull/178))
 - Today's weekly set count no longer counts the last round of a finished interval workout twice ([#226](https://github.com/WildeBeast2521/kalimory/pull/226))
+- A backup made while a workout is being saved can always be restored ([#227](https://github.com/WildeBeast2521/kalimory/pull/227))
+- Importing records from CSV refuses dates, times and numbers the app cannot read, and imports a row repeated in the file only once ([#227](https://github.com/WildeBeast2521/kalimory/pull/227))
+- Groups added by a CSV import or a shared file appear after your existing groups instead of at the top ([#227](https://github.com/WildeBeast2521/kalimory/pull/227))
 
 ## [1.0.2] - 2026-10-07
 

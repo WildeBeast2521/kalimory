@@ -59,7 +59,6 @@ interface BackupDao {
     @Query("SELECT * FROM todo_tasks ORDER BY id")
     suspend fun todoTasks(): List<TodoTask>
 
-    @Transaction
     @Query("SELECT * FROM workout_sessions ORDER BY id")
     suspend fun workoutSessions(): List<WorkoutSessionEntity>
 
@@ -78,6 +77,8 @@ interface BackupDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertChainPlacements(items: List<ChainPlacement>)
 
+    /** Every table, read in one transaction so a workout saved meanwhile is either wholly in or wholly out. */
+    @Transaction
     suspend fun snapshot(): BackupSnapshot = BackupSnapshot(
         groups(), exercises(), records(), programs(), programExercises(), programLoops(),
         intervalPrograms(), intervalProgramExercises(), intervalRecords(), todoTasks(),
