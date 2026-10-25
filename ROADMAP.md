@@ -12,14 +12,14 @@ Ideas that need any of those are out of scope.
 
 Make the app sturdier before it grows.
 
-8 of 13 done.
+9 of 13 done.
 
 - [x] Crash reports kept on the phone, shared only if you choose to ([#148](https://github.com/WildeBeast2521/kalimory/issues/148), done in [#192](https://github.com/WildeBeast2521/kalimory/pull/192))
 - [x] Screenshot tests, so the look stays consistent ([#150](https://github.com/WildeBeast2521/kalimory/issues/150), done in [#190](https://github.com/WildeBeast2521/kalimory/pull/190))
 - [x] Edit any saved workout fully, including its date ([#156](https://github.com/WildeBeast2521/kalimory/issues/156), done in [#200](https://github.com/WildeBeast2521/kalimory/pull/200))
 - [x] One time estimate everywhere ([#157](https://github.com/WildeBeast2521/kalimory/issues/157), done in [#178](https://github.com/WildeBeast2521/kalimory/pull/178))
 - [x] Whole tab labels on narrow phones ([#194](https://github.com/WildeBeast2521/kalimory/issues/194), done in [#195](https://github.com/WildeBeast2521/kalimory/pull/195))
-- [ ] An accessibility pass across every screen ([#149](https://github.com/WildeBeast2521/kalimory/issues/149))
+- [x] An accessibility pass across every screen ([#149](https://github.com/WildeBeast2521/kalimory/issues/149), done in [#223](https://github.com/WildeBeast2521/kalimory/pull/223))
 - [ ] Native-speaker review of translations through Weblate ([#151](https://github.com/WildeBeast2521/kalimory/issues/151))
 - [ ] Fresh screenshots for the README and the stores ([#158](https://github.com/WildeBeast2521/kalimory/issues/158))
 - [ ] A careful review of every file for bugs, performance and maintainability before the app grows ([#184](https://github.com/WildeBeast2521/kalimory/issues/184))
