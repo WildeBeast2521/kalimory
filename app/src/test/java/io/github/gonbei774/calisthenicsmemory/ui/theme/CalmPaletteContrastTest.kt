@@ -4,49 +4,60 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import kotlin.math.pow
 
-/** Every text/background pair of the calm palette meets WCAG AA in both themes. */
+/**
+ * WCAG AA contrast for Kalimory's own themes (Light, Dark and AMOLED): text at least 4.5:1 against
+ * every background it can sit on, and borders and other non-text parts at least 3:1. Wallpaper
+ * colours are made readable at run time instead (ReadableColorsTest).
+ */
 class CalmPaletteContrastTest {
-    private fun channel(c: Float) = if (c <= 0.03928f) c / 12.92 else ((c + 0.055) / 1.055).pow(2.4)
-    private fun luminance(c: Color) = 0.2126 * channel(c.red) + 0.7152 * channel(c.green) + 0.0722 * channel(c.blue)
-    private fun ratio(a: Color, b: Color): Double {
-        val (hi, lo) = listOf(luminance(a), luminance(b)).sortedDescending()
-        return (hi + 0.05) / (lo + 0.05)
-    }
-
-    private fun textPairs(s: ColorScheme) = mapOf(
-        "onBackground/background" to (s.onBackground to s.background),
-        "onSurface/surface" to (s.onSurface to s.surface),
-        "onSurfaceVariant/surface" to (s.onSurfaceVariant to s.surface),
-        "onSurface/surfaceContainerHighest" to (s.onSurface to s.surfaceContainerHighest),
-        "onSurfaceVariant/surfaceContainerHigh" to (s.onSurfaceVariant to s.surfaceContainerHigh),
-        "primary/surface" to (s.primary to s.surface),
-        "onPrimary/primary" to (s.onPrimary to s.primary),
-        "onPrimaryContainer/primaryContainer" to (s.onPrimaryContainer to s.primaryContainer),
-        "onSecondary/secondary" to (s.onSecondary to s.secondary),
-        "onSecondaryContainer/secondaryContainer" to (s.onSecondaryContainer to s.secondaryContainer),
-        "tertiary/surface" to (s.tertiary to s.surface),
-        "onTertiary/tertiary" to (s.onTertiary to s.tertiary),
-        "onTertiaryContainer/tertiaryContainer" to (s.onTertiaryContainer to s.tertiaryContainer),
-        "error/surface" to (s.error to s.surface),
-        "onError/error" to (s.onError to s.error),
-        "onErrorContainer/errorContainer" to (s.onErrorContainer to s.errorContainer),
-        "inverseOnSurface/inverseSurface" to (s.inverseOnSurface to s.inverseSurface),
+    private val themes = mapOf(
+        "Light" to CalmPalette.light,
+        "Dark" to CalmPalette.dark,
+        "AMOLED" to CalmPalette.dark.trueBlack(),
     )
 
-    private fun check(name: String, scheme: ColorScheme) {
-        val failures = textPairs(scheme).mapNotNull { (pair, colors) ->
-            val r = ratio(colors.first, colors.second)
-            if (r < 4.5) "$pair = ${"%.2f".format(r)}" else null
-        } + listOfNotNull(
-            // Borders and other non-text UI need 3:1 (WCAG 1.4.11).
-            ratio(scheme.outline, scheme.surface).takeIf { it < 3.0 }?.let { "outline/surface = ${"%.2f".format(it)}" },
-        )
-        assertTrue("$name below AA: $failures", failures.isEmpty())
+    private fun ColorScheme.surfaces() = mapOf(
+        "background" to background, "surface" to surface, "surfaceDim" to surfaceDim, "surfaceBright" to surfaceBright,
+        "surfaceContainerLowest" to surfaceContainerLowest, "surfaceContainerLow" to surfaceContainerLow,
+        "surfaceContainer" to surfaceContainer, "surfaceContainerHigh" to surfaceContainerHigh,
+        "surfaceContainerHighest" to surfaceContainerHighest, "surfaceVariant" to surfaceVariant,
+    )
+
+    private fun ColorScheme.textPairs(): List<Triple<String, Color, Color>> = buildList {
+        add(Triple("onPrimary on primary", onPrimary, primary))
+        add(Triple("onPrimaryContainer on primaryContainer", onPrimaryContainer, primaryContainer))
+        add(Triple("onSecondary on secondary", onSecondary, secondary))
+        add(Triple("onSecondaryContainer on secondaryContainer", onSecondaryContainer, secondaryContainer))
+        add(Triple("onTertiary on tertiary", onTertiary, tertiary))
+        add(Triple("onTertiaryContainer on tertiaryContainer", onTertiaryContainer, tertiaryContainer))
+        add(Triple("onError on error", onError, error))
+        add(Triple("onErrorContainer on errorContainer", onErrorContainer, errorContainer))
+        add(Triple("inverseOnSurface on inverseSurface", inverseOnSurface, inverseSurface))
+        add(Triple("onBackground on background", onBackground, background))
+        for ((name, back) in surfaces()) {
+            add(Triple("onSurface on $name", onSurface, back))
+            add(Triple("onSurfaceVariant on $name", onSurfaceVariant, back))
+            // Text buttons, links and selected labels are written in the primary colour.
+            add(Triple("primary on $name", primary, back))
+        }
     }
 
-    @Test fun `light palette meets AA`() = check("light", CalmPalette.light)
+    private fun failures(minimum: Double, pairs: (ColorScheme) -> List<Triple<String, Color, Color>>) =
+        themes.flatMap { (theme, scheme) ->
+            pairs(scheme).mapNotNull { (name, fore, back) ->
+                val ratio = contrastRatio(fore, back)
+                if (ratio < minimum) "$theme: $name is %.2f:1".format(ratio) else null
+            }
+        }
 
-    @Test fun `dark palette meets AA`() = check("dark", CalmPalette.dark)
+    @Test fun `text reaches 4·5 to 1 on everything it sits on`() {
+        val problems = failures(MIN_TEXT_CONTRAST) { it.textPairs() }
+        assertTrue(problems.joinToString("\n"), problems.isEmpty())
+    }
+
+    @Test fun `borders reach 3 to 1 on every surface`() {
+        val problems = failures(3.0) { scheme -> scheme.surfaces().map { (name, back) -> Triple("outline on $name", scheme.outline, back) } }
+        assertTrue(problems.joinToString("\n"), problems.isEmpty())
+    }
 }

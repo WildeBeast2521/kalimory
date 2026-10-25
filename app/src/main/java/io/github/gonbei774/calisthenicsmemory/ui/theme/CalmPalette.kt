@@ -68,7 +68,7 @@ object CalmPalette {
         onBackground = Color(0xFFE3E9E5),
         surface = Color(0xFF121816),
         onSurface = Color(0xFFE3E9E5),
-        surfaceVariant = Color(0xFF3A4541),
+        surfaceVariant = Color(0xFF38433F), // primary text on it reaches 4.5:1 (CalmPaletteContrastTest)
         onSurfaceVariant = Color(0xFFBAC5C0),
         surfaceTint = Color(0xFF7DB8A9),
         inverseSurface = Color(0xFFE3E9E5),
