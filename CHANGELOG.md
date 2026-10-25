@@ -18,6 +18,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - The workout notification shows your progress: the exercise or routine, the set or round, the reps counted against your goal, the time left of a rest, hold or countdown, and a bar for the whole workout; it updates quietly in place instead of adding notifications ([#217](https://github.com/WildeBeast2521/kalimory/pull/217))
 
 ### Fixed
+- With Android's largest font size, labels stay whole: the navigation bar, the Progress tabs and calendar, the rest timer's buttons and the settings' choices no longer break words or cut them off, and long program and exercise names in lists take two lines ([#222](https://github.com/WildeBeast2521/kalimory/pull/222))
 - Each day of the week on Today is easier to tap: on a small phone every day now has a full-size touch target ([#220](https://github.com/WildeBeast2521/kalimory/pull/220))
 - The app no longer closes when a workout ends a step and starts the next one in quick succession ([#217](https://github.com/WildeBeast2521/kalimory/pull/217))
 - In auto mode, ending a set early with Complete asks for the value to save, as manual mode does, instead of saving the count so far; reaching the target still moves on by itself ([#216](https://github.com/WildeBeast2521/kalimory/pull/216))

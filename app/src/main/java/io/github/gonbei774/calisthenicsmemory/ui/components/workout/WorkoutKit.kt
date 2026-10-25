@@ -2,6 +2,8 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.workout
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.FitText
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material3.HorizontalFloatingToolbar
@@ -399,7 +401,7 @@ fun WorkoutSkipButton(onSkip: () -> Unit) {
     androidx.compose.material3.TextButton(onClick = onSkip, modifier = Modifier.heightIn(min = 48.dp)) {
         Icon(AppIcons.SkipNext, contentDescription = null)
         Spacer(Modifier.size(Spacing.s))
-        Text(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
+        FitText(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
     }
 }
 
@@ -411,19 +413,24 @@ fun WorkoutSkipButton(onSkip: () -> Unit) {
 fun RestToolbar(onMinus: () -> Unit, onPlus: () -> Unit, onSkip: () -> Unit, modifier: Modifier = Modifier) {
     HorizontalFloatingToolbar(expanded = true, modifier = modifier) {
         androidx.compose.material3.TextButton(onClick = onMinus, modifier = Modifier.heightIn(min = 48.dp)) {
-            Text(stringResource(R.string.minus_10sec), style = MaterialTheme.typography.titleMedium)
+            FitText(stringResource(R.string.minus_10sec), style = MaterialTheme.typography.titleMedium)
         }
         androidx.compose.material3.TextButton(onClick = onPlus, modifier = Modifier.heightIn(min = 48.dp)) {
-            Text(stringResource(R.string.plus_10sec), style = MaterialTheme.typography.titleMedium)
+            FitText(stringResource(R.string.plus_10sec), style = MaterialTheme.typography.titleMedium)
         }
         androidx.compose.material3.FilledTonalButton(
             onClick = onSkip,
             shapes = ButtonDefaults.shapes(),
             modifier = Modifier.heightIn(min = 48.dp),
         ) {
-            Icon(AppIcons.SkipNext, contentDescription = null)
-            Spacer(Modifier.size(Spacing.s))
-            Text(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
+            // With a large font the row has no room left for the word; the icon then says it alone.
+            if (isLargeFontScale()) {
+                Icon(AppIcons.SkipNext, contentDescription = stringResource(R.string.skip_button))
+            } else {
+                Icon(AppIcons.SkipNext, contentDescription = null)
+                Spacer(Modifier.size(Spacing.s))
+                FitText(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
+            }
         }
     }
 }

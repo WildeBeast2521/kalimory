@@ -135,6 +135,13 @@ class ConsistencyGuardTest {
         assertTrue("Use sentence case: $offenders", offenders.isEmpty())
     }
 
+    @Test fun `one-line labels that shrink to fit use FitText`() {
+        // FitText keeps a label whole at large font sizes without shrinking it out of reach; a
+        // screen with its own TextAutoSize would pick different limits.
+        val offenders = uses(Regex("""TextAutoSize"""), except = setOf("FitText.kt"))
+        assertTrue("Use FitText: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `there is one start card style`() {
         // Resume, next up and start-a-workout cards on Today and Train all look the same.
         val offenders = uses(Regex("""emphasised"""))

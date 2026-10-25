@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.navigation
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.FitText
 import androidx.compose.ui.unit.dp
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -43,7 +44,7 @@ fun PrimaryNavigationBar(
                         contentDescription = null,
                     )
                 },
-                label = { Text(stringResource(destination.label)) },
+                label = { FitText(stringResource(destination.label)) },
                 // The default selected label uses the secondary color, green here, which clashes with the blue
                 // indicator and is low-contrast on the dark bar. Match the indicator's content color instead.
                 colors = ShortNavigationBarItemDefaults.colors(
