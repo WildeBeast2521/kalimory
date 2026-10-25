@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.today
 
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.layout.layout
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -88,7 +90,13 @@ internal fun WeekStrip(
     Row(
         // Without taps the strip reads as one summary; with them, each day speaks for itself.
         modifier = Modifier.fillMaxWidth().then(
-            if (onDayClick == null) Modifier.clearAndSetSemantics { contentDescription = description } else Modifier
+            if (onDayClick == null) {
+                Modifier.clearAndSetSemantics { contentDescription = description }
+            } else {
+                // Days that can be tapped reach 4 dp into the screen's margin on each side, so on a
+                // 360 dp phone every day's touch target is 48 dp wide.
+                Modifier.bleed(DAY_TARGET_BLEED)
+            }
         ),
     ) {
         days.forEach { day ->
@@ -310,4 +318,17 @@ internal fun Section(title: String, onOpenAll: (() -> Unit)?, actionLabel: Strin
         }
         content()
     }
+}
+
+private val DAY_TARGET_BLEED = 4.dp
+
+/** Lays the content out [each] wider on both sides than the space it was given, centred on it. */
+private fun Modifier.bleed(each: Dp) = layout { measurable, constraints ->
+    val extra = (each * 2).roundToPx()
+    val wider = if (constraints.hasBoundedWidth) {
+        constraints.copy(minWidth = constraints.minWidth + extra, maxWidth = constraints.maxWidth + extra)
+    } else constraints
+    val placeable = measurable.measure(wider)
+    val width = if (constraints.hasBoundedWidth) placeable.width - extra else placeable.width
+    layout(width, placeable.height) { placeable.place(-extra / 2, 0) }
 }
