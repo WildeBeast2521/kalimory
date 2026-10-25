@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -48,6 +49,13 @@ class MainScreenAccessibilityTest {
     @Test fun library() {
         open("Library")
         audit("Library", waitFor = "4")
+    }
+
+    @Test fun settings() {
+        // Opened from Today's top bar.
+        compose.waitUntil(STARTUP_TIMEOUT_MS) { compose.onAllNodes(hasContentDescription("Settings")).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNode(hasContentDescription("Settings")).performClick()
+        audit("Settings", waitFor = "Settings")
     }
 
     private fun open(tab: String) {

@@ -19,7 +19,7 @@ These hold for every change. A change that breaks one is wrong, however good it 
   exercise. Do not add UI copy explaining that nothing is locked.
 - **One behaviour everywhere.** Use the shared components (`AppFab`, `StartButton`,
   `NumberStepButton`/`NumberStepper`, `SwipeToDeleteBackground`, `CalmTopBar`, `TimerDial`,
-  `RollingNumber`, `WorkoutPrimaryButton`) instead of a local variant. `ConsistencyGuardTest`
+  `RollingNumber`, `WorkoutPrimaryButton`, `FitText`) instead of a local variant. `ConsistencyGuardTest`
   fails when a screen brings its own.
 - **No private material in git.** Never commit keystores, `keystore.properties`,
   `local.properties`, tokens, databases, real backups or exports. Fixtures use made-up data.
@@ -79,6 +79,23 @@ Translation happens in Hosted Weblate, which commits to this repository through 
 `glossary/<language>.tbx` is the project glossary (the Weblate component "Glossary", slug `terms`):
 terms such as "set" and "rep" with the translation each language uses, and names like Kalimory
 that stay untranslated. Edit it in Weblate, not by hand, so the two never disagree.
+
+## Accessibility
+
+Check every new or changed screen against this list; the tests named enforce it where they can.
+
+- **Labels.** Everything that can be tapped says what it is: its text, or a `contentDescription` on an
+  icon-only control. Decorative icons beside a text have `contentDescription = null`.
+- **Touch targets.** At least 48 × 48 dp, counting Compose's widening and the space to neighbours.
+- **Large text.** At 200 % font size on a 360 dp phone no text is cut off, shortened with "…" or split
+  inside a word. One-line labels in a fixed width use `FitText`; a crowded row changes its layout
+  when `isLargeFontScale()` instead of shrinking text out of reach.
+- **Contrast.** Text at least 4.5:1 on what it sits on, borders at least 3:1, in Light, Dark and
+  AMOLED; wallpaper colours go through `withReadableText`.
+- **Right to left and TalkBack.** Check the screen in Arabic, and that TalkBack reads it in order.
+- **Tests.** Add a new screen to `MainScreenAccessibilityTest`/`LargeTextTest` or
+  `WorkoutScreensAccessibilityTest` (tap targets via `tapTargetProblems`, text via `textFitProblems`);
+  `CalmPaletteContrastTest` covers the colours.
 
 ## Verification
 

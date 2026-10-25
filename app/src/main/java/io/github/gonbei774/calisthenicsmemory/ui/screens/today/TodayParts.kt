@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.today
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.FitText
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.layout.layout
 import androidx.compose.foundation.Canvas
@@ -218,7 +219,7 @@ internal fun TodayRow(icon: ImageVector, name: String, kind: String, trailing: I
         ShapeBadge(icon, MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.onSecondaryContainer)
         Spacer(Modifier.width(Spacing.l))
         Column(Modifier.weight(1f)) {
-            Text(name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, maxLines = 2, overflow = TextOverflow.Ellipsis)
             Text(kind, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             if (note != null) {
                 Text(note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

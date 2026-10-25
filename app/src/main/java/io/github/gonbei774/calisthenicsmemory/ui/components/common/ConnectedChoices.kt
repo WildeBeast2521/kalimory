@@ -2,7 +2,6 @@ package io.github.gonbei774.calisthenicsmemory.ui.components.common
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -18,7 +17,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * A single choice as an Expressive connected button group: the buttons sit edge to edge, and the
@@ -62,12 +60,7 @@ fun <T> ConnectedChoices(
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 10.dp),
             ) {
                 // Long labels ("Follow system" beside three others) shrink before they are cut.
-                Text(
-                    label(option),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    autoSize = TextAutoSize.StepBased(minFontSize = 11.sp, maxFontSize = MaterialTheme.typography.labelLarge.fontSize),
-                )
+                FitText(label(option), style = MaterialTheme.typography.labelLarge)
             }
         }
     }

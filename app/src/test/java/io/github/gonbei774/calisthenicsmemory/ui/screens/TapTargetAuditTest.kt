@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,9 +19,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 
-/** The audit itself: it reports what it should and passes what it should. */
+/** The accessibility audits themselves: they report what they should and pass what they should. */
 @RunWith(RobolectricTestRunner::class)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [35])
 class TapTargetAuditTest {
     @get:Rule
@@ -41,5 +45,22 @@ class TapTargetAuditTest {
     @Test fun `a labelled Material button passes`() {
         compose.setContent { Button(onClick = {}) { Text("Start") } }
         assertEquals(emptyList<String>(), tapTargetProblems(compose, compose.density))
+    }
+
+    @Test fun `a word too wide for its space is reported, wrapped or shortened`() {
+        compose.setContent {
+            androidx.compose.foundation.layout.Column {
+                Text("Progressions", Modifier.width(40.dp))
+                Text("Progressions", Modifier.width(40.dp), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+        }
+        val problems = textFitProblems(compose)
+        assertEquals(problems.joinToString("\n"), 2, problems.size)
+        assertTrue(problems.any { "splits a word" in it } && problems.any { "shortened" in it })
+    }
+
+    @Test fun `a word that fits passes`() {
+        compose.setContent { Text("Rest", Modifier.width(200.dp)) }
+        assertEquals(emptyList<String>(), textFitProblems(compose))
     }
 }

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.FitText
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import android.text.format.DateUtils
 import androidx.compose.ui.draw.alpha
@@ -331,7 +332,7 @@ private fun MonthGrid(
         val locale = LocalConfiguration.current.locales[0]
         Row(modifier = Modifier.fillMaxWidth()) {
             weekDaysFrom(firstDay).forEach { day ->
-                Text(
+                FitText(
                     text = day.getDisplayName(TextStyle.SHORT, locale),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -584,7 +585,7 @@ private fun WeekDayCell(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(
+            FitText(
                 text = dayOfWeekText,
                 fontSize = 11.sp,
                 // On a filled (trained) day the label takes the fill's own text colour; grey on a
