@@ -35,7 +35,9 @@ class CommunityShareImporter(private val database: AppDatabase) {
                 if (existing != null) {
                     groupsReused++
                 } else {
-                    database.exerciseGroupDao().insertGroup(ExerciseGroup(name = shareGroup.name))
+                    // After the existing groups, as a group added by hand is.
+                    val order = database.exerciseGroupDao().nextGroupDisplayOrder()
+                    database.exerciseGroupDao().insertGroup(ExerciseGroup(name = shareGroup.name, displayOrder = order))
                     groupsAdded++
                 }
             }

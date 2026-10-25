@@ -84,6 +84,10 @@ class HistoryReadersViewModelTest {
         database.exerciseDao().deleteExerciseById(exerciseId)
     }
 
+    private companion object {
+        const val RECORDS_HEADER = "exerciseName,exerciseType,date,time,setNumber,valueRight,valueLeft,comment,distanceCm,weightG,assistanceG"
+    }
+
     private fun viewModel(): TrainingViewModel = runBlocking {
         val viewModel = TrainingViewModel(application)
         // Export resolves exercise names from the loaded list.
@@ -105,6 +109,39 @@ class HistoryReadersViewModelTest {
         val report = viewModel.importRecordsFromCsv(csv)
         assertEquals(0, report.successCount)
         assertEquals(1, database.trainingRecordDao().countByExercise(exerciseId))
+    }
+
+    @Test
+    fun csvImportTakesARowRepeatedInTheFileOnceAndRefusesMalformedDates() = runBlocking {
+        val row = "$exerciseName,Dynamic,2020-01-02,07:30,1,12,,,,,"
+        val csv = listOf(
+            RECORDS_HEADER, row, row,
+            "$exerciseName,Dynamic,2020-1-2,07:30,2,12,,,,,",
+            "$exerciseName,Dynamic,2020-01-02,7:30:00,3,12,,,,,",
+        ).joinToString("\n")
+
+        val report = viewModel().importRecordsFromCsv(csv)
+
+        assertEquals(1, report.successCount)
+        assertEquals(1, report.skippedCount)
+        assertEquals(2, report.errorCount)
+        // The seeded record plus the one imported row.
+        assertEquals(2, database.trainingRecordDao().countByExercise(exerciseId))
+    }
+
+    @Test
+    fun csvGroupsComeAfterTheExistingOnes() = runBlocking {
+        val names = listOf("Groups test A ${System.nanoTime()}", "Groups test B ${System.nanoTime()}")
+        try {
+            val before = database.exerciseGroupDao().nextGroupDisplayOrder()
+            viewModel().importGroups((listOf("name") + names).joinToString("\n"))
+            assertEquals(
+                listOf(before, before + 1),
+                names.map { database.exerciseGroupDao().getGroupByName(it)!!.displayOrder },
+            )
+        } finally {
+            names.forEach { database.exerciseGroupDao().deleteGroupByName(it) }
+        }
     }
 
     @Test

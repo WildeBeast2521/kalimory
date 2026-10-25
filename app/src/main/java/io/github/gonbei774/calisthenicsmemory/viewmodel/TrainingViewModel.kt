@@ -991,8 +991,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                         return@forEachIndexed
                     }
 
-                    val group = ExerciseGroup(name = name)
-                    groupDao.insertGroup(group)
+                    // After the existing groups, as a group added by hand is.
+                    groupDao.insertGroup(ExerciseGroup(name = name, displayOrder = groupDao.nextGroupDisplayOrder()))
                     successCount++
 
                 } catch (e: Exception) {
@@ -1088,7 +1088,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                         val groupExists = groupDao.getGroupByName(group) != null
                         if (!groupExists) {
                             // グループを自動作成
-                            val newGroup = ExerciseGroup(name = group)
+                            val newGroup = ExerciseGroup(name = group, displayOrder = groupDao.nextGroupDisplayOrder())
                             groupDao.insertGroup(newGroup)
                             groupsCreatedCount++
                         }
@@ -1197,84 +1197,46 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
 
             dataRecords.forEachIndexed { index, columns ->
                 try {
-                    if (columns.size < 8) {
-                        errors.add("Line ${index + 2}: Invalid format (not enough columns)")
-                        errorCount++
-                        return@forEachIndexed
-                    }
-
-                    val exerciseName = columns[0].trim()
-                    val exerciseType = columns[1].trim()
-                    val date = columns[2].trim()
-                    val time = columns[3].trim()
-                    val setNumberStr = columns[4].trim()
-                    val valueRightStr = columns[5].trim()
-                    val valueLeftStr = columns[6].trim()
-                    val comment = columns.getOrNull(7)?.trim() ?: ""
-                    // v11+ 新フィールド（オプション）
-                    val distanceCmStr = columns.getOrNull(8)?.trim() ?: ""
-                    val weightGStr = columns.getOrNull(9)?.trim() ?: ""
-                    // v12 新フィールド（オプション）
-                    val assistanceGStr = columns.getOrNull(10)?.trim() ?: ""
-
-                    // 必須フィールドチェック
-                    if (exerciseName.isEmpty() || exerciseType.isEmpty() ||
-                        date.isEmpty() || time.isEmpty() ||
-                        setNumberStr.isEmpty() || valueRightStr.isEmpty()) {
-                        errors.add("Line ${index + 2}: Missing required fields")
+                    val row = parseRecordCsvRow(columns).getOrElse {
+                        errors.add("Line ${index + 2}: ${it.message}")
                         errorCount++
                         return@forEachIndexed
                     }
 
                     // 種目を検索
                     val exercise = exercises.value.find {
-                        it.name == exerciseName && it.type == exerciseType
+                        it.name == row.exerciseName && it.type == row.exerciseType
                     }
 
                     if (exercise == null) {
-                        errors.add("Line ${index + 2}: Exercise not found: $exerciseName ($exerciseType)")
+                        errors.add("Line ${index + 2}: Exercise not found: ${row.exerciseName} (${row.exerciseType})")
                         errorCount++
                         return@forEachIndexed
                     }
 
-                    // 数値変換
-                    val setNumber = setNumberStr.toIntOrNull()
-                    val valueRight = valueRightStr.toIntOrNull()
-                    val valueLeft = if (valueLeftStr.isEmpty()) null else valueLeftStr.toIntOrNull()
-                    val distanceCm = if (distanceCmStr.isEmpty()) null else distanceCmStr.toIntOrNull()
-                    val weightG = if (weightGStr.isEmpty()) null else weightGStr.toIntOrNull()
-                    val assistanceG = if (assistanceGStr.isEmpty()) null else assistanceGStr.toIntOrNull()
-
-                    if (setNumber == null || valueRight == null) {
-                        errors.add("Line ${index + 2}: Invalid number format")
-                        errorCount++
-                        return@forEachIndexed
-                    }
-
-                    // 重複チェック
-                    val isDuplicate = listOf(exercise.id, date, time, setNumber) in existingSets
-
-                    if (isDuplicate) {
-                        skippedItems.add("\"$exerciseName ($exerciseType)\" - $date $time Set $setNumber (already exists)")
+                    // 重複チェック: history, and rows already imported from this file.
+                    val key = listOf(exercise.id, row.date, row.time, row.setNumber)
+                    if (key in existingSets) {
+                        skippedItems.add("\"${row.exerciseName} (${row.exerciseType})\" - ${row.date} ${row.time} Set ${row.setNumber} (already exists)")
                         skippedCount++
                         return@forEachIndexed
                     }
 
-                    // レコード作成
                     val record = TrainingRecord(
                         exerciseId = exercise.id,
-                        valueRight = valueRight,
-                        valueLeft = valueLeft,
-                        setNumber = setNumber,
-                        date = date,
-                        time = time,
-                        comment = comment,
-                        distanceCm = distanceCm,
-                        weightG = weightG,
-                        assistanceG = assistanceG
+                        valueRight = row.valueRight,
+                        valueLeft = row.valueLeft,
+                        setNumber = row.setNumber,
+                        date = row.date,
+                        time = row.time,
+                        comment = row.comment,
+                        distanceCm = row.distanceCm,
+                        weightG = row.weightG,
+                        assistanceG = row.assistanceG
                     )
 
                     recordDao.insertRecord(record)
+                    existingSets.add(key)
                     successCount++
 
                 } catch (e: Exception) {

@@ -58,6 +58,10 @@ interface ExerciseGroupDao {
     @Query("SELECT COALESCE(MAX(displayOrder), -1) FROM exercise_groups")
     fun maxGroupDisplayOrder(): Int
 
+    /** The display order after every existing group, for a group added by an import. */
+    @Query("SELECT COALESCE(MAX(displayOrder), -1) + 1 FROM exercise_groups")
+    suspend fun nextGroupDisplayOrder(): Int
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertGroupBlocking(group: ExerciseGroup): Long
 
