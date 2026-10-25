@@ -37,7 +37,7 @@ app/schemas/   Exported Room schemas: migration-test inputs, never edited by han
 app/src/test/          JVM unit tests
 app/src/androidTest/   Instrumented tests (API 29 emulator)
 baselineprofile/       Baseline Profile generator
-scripts/       Catalogue generator, schema check, icon, sound and README tools
+scripts/       Catalogue generator, schema check, icon, sound, screenshot and README tools
 docs/wiki/     User guide (the only public documentation folder)
 fastlane/      Store metadata
 ```
@@ -67,6 +67,11 @@ application ID changed.
   Screens read "today" through `AppClock`, which the tests fix to a set date. After a deliberate visual
   change, run `./gradlew recordRoborazziDebug`, look at every changed image and commit them with
   the change. Never re-record to make an unexplained difference pass.
+- **Store and README images.** `scripts/screenshots/update-screenshots.sh` draws six screens with
+  made-up data (`StoreScreenshotsTest`, `StoreRestScreenshotTest`; skipped in normal test runs) and
+  writes the Fastlane phone screenshots, the README screens and the social preview. Run it when a
+  pictured screen changes, look at every image, and upload the social preview in the repository's
+  settings by hand.
 
 ## Strings and translations
 

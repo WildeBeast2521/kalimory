@@ -36,7 +36,7 @@ Requires JDK 17 or later and the Android SDK. Instrumented tests run on an emula
 ./gradlew testDebugUnitTest lintDebug assembleDebug :app:connectedDebugAndroidTest
 ```
 
-`testDebugUnitTest` also compares the shared components with the golden images in `app/src/test/screenshots`. After a deliberate visual change, run `./gradlew recordRoborazziDebug` and commit the updated images with the change.
+`testDebugUnitTest` also compares the shared components with the golden images in `app/src/test/screenshots`. After a deliberate visual change, run `./gradlew recordRoborazziDebug` and commit the updated images with the change. The store and README images come from `scripts/screenshots/update-screenshots.sh`.
 
 Run `scripts/check-room-schemas.sh` when a Room schema changes, and `scripts/update-dependency-verification.sh` when a dependency changes (Gradle checks the SHA-256 of everything it downloads against `gradle/verification-metadata.xml`). Lint has no baseline and fails on any warning: fix the finding, or suppress it at the line with a comment saying why. Do not add a baseline, weaken validation or skip tests to make the check pass.
 
