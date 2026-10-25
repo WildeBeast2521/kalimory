@@ -37,7 +37,11 @@ def main() -> None:
     without, with_profile = rows[0][1], rows[1][1]
     if without and with_profile and without["median"] > 0:
         saved = without["median"] - with_profile["median"]
-        print(f"\nThe Baseline Profile saves {saved:.0f} ms ({saved / without['median']:.0%}) at the median.")
+        share = abs(saved) / without["median"]
+        if saved >= 0:
+            print(f"\nThe Baseline Profile saves {saved:.0f} ms ({share:.0%}) at the median.")
+        else:
+            print(f"\nWith the Baseline Profile the median is {-saved:.0f} ms ({share:.0%}) slower in this run.")
 
 
 if __name__ == "__main__":
