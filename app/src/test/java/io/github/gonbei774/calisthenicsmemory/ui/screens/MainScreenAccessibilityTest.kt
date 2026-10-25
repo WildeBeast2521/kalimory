@@ -4,6 +4,7 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isHeading
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.performClick
 import io.github.gonbei774.calisthenicsmemory.MainActivity
@@ -21,9 +22,10 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * What TalkBack and touch need on the four main screens: every element that can be tapped says what
- * it is (a text, a description or a state) and is at least 48 × 48 dp, from the real app with the
- * screenshot tests' made-up history.
+ * What TalkBack and touch need on the four main screens and Settings: every element that can be
+ * tapped says what it is (a text, a description or a state) and is at least 48 × 48 dp, and titles
+ * and sections are headings TalkBack can jump between, from the real app with the screenshot tests'
+ * made-up history.
  */
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -34,21 +36,27 @@ class MainScreenAccessibilityTest {
     @get:Rule
     val rules: TestRule = RuleChain.outerRule(MainScreenFixture.state(AppTheme.LIGHT)).around(compose)
 
-    @Test fun today() = audit("Today", waitFor = MainScreenFixture.PROGRAM)
+    @Test fun today() {
+        audit("Today", waitFor = MainScreenFixture.PROGRAM)
+        assertHeadings("Today", "Done today")
+    }
 
     @Test fun train() {
         open("Train")
         audit("Train", waitFor = MainScreenFixture.PROGRAM)
+        assertHeadings("Train", "Programs", "Interval")
     }
 
     @Test fun progress() {
         open("Progress")
         audit("Progress", waitFor = "Australian row")
+        assertHeadings("Progress")
     }
 
     @Test fun library() {
         open("Library")
         audit("Library", waitFor = "4")
+        assertHeadings("Library")
     }
 
     @Test fun settings() {
@@ -56,6 +64,12 @@ class MainScreenAccessibilityTest {
         compose.waitUntil(STARTUP_TIMEOUT_MS) { compose.onAllNodes(hasContentDescription("Settings")).fetchSemanticsNodes().isNotEmpty() }
         compose.onNode(hasContentDescription("Settings")).performClick()
         audit("Settings", waitFor = "Settings")
+    }
+
+    /** TalkBack users move between headings: the screen's title and each section are marked as one. */
+    private fun assertHeadings(vararg titles: String) {
+        val missing = titles.filter { compose.onAllNodes(hasText(it) and isHeading()).fetchSemanticsNodes().isEmpty() }
+        assertTrue("Not marked as headings: $missing", missing.isEmpty())
     }
 
     private fun open(tab: String) {
