@@ -74,7 +74,11 @@ This writes `Catalogue.kt` and the English `catalogue_strings.xml`. Add the same
 
 ## Translations
 
-The app ships in ten languages. English strings live in `app/src/main/res/values/`, and each language has its own `values-*` folder. Corrections from native speakers are especially welcome: open a catalogue or translation issue, or a pull request. The glossary in `glossary/` lists the words each language uses for terms such as "set" and "rep"; it is edited in Weblate.
+The app ships in ten languages. English strings live in `app/src/main/res/values/`, and each language has its own `values-*` folder.
+
+Translations are made on [Hosted Weblate](https://hosted.weblate.org/engage/kalimory/): the app strings, the exercise catalogue and the store listing. Corrections and reviews from native speakers are especially welcome there; Weblate sends them to this repository as pull requests. Please change existing translations in Weblate rather than by hand, so the two never disagree. A new English string still goes into every `values-*` folder in the same pull request (see [AGENTS.md](AGENTS.md)).
+
+The glossary in `glossary/` lists the words each language uses for terms such as "set" and "rep"; it is edited in Weblate too.
 
 ## License
 

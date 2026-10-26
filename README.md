@@ -12,6 +12,7 @@
   <img src="https://img.shields.io/badge/Internet-none-2F6B5E?style=for-the-badge" alt="No internet permission">
   <img src="https://img.shields.io/badge/Tracking-zero-2F6B5E?style=for-the-badge" alt="No tracking">
   <img src="https://img.shields.io/badge/Languages-10-B07A22?style=for-the-badge&logo=googletranslate&logoColor=white" alt="Ten languages">
+  <a href="https://hosted.weblate.org/engage/kalimory/"><img src="https://img.shields.io/weblate/progress/kalimory?server=https%3A%2F%2Fhosted.weblate.org&style=for-the-badge&label=Translated&color=B07A22&logo=weblate&logoColor=white" alt="Translation status on Hosted Weblate"></a>
   <img src="https://img.shields.io/badge/License-GPL--3.0-B07A22?style=for-the-badge&logo=gnu&logoColor=white" alt="License: GPL-3.0">
 </p>
 
@@ -147,7 +148,7 @@ The full local check, run before every merge, is in [CONTRIBUTING.md](CONTRIBUTI
 
 ## Contributing
 
-Bug reports, catalogue corrections and ideas are welcome through the issue templates. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md), and security problems are reported privately as described in [SECURITY.md](SECURITY.md).
+Bug reports, catalogue corrections and ideas are welcome through the issue templates. Translations are made on [Hosted Weblate](https://hosted.weblate.org/engage/kalimory/), where anyone can correct or review the text in their language without touching Git; Weblate sends the changes here as pull requests. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md), and security problems are reported privately as described in [SECURITY.md](SECURITY.md).
 
 ## Credits
 
