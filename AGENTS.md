@@ -69,9 +69,9 @@ application ID changed.
   the change. Never re-record to make an unexplained difference pass.
 - **Store and README images.** `scripts/screenshots/update-screenshots.sh` draws six screens with
   made-up data (`StoreScreenshotsTest`, `StoreRestScreenshotTest`; skipped in normal test runs) and
-  writes the Fastlane phone screenshots, the README screens and the social preview. Run it when a
-  pictured screen changes, look at every image, and upload the social preview in the repository's
-  settings by hand.
+  writes the Fastlane phone screenshots and store banner (`featureGraphic.png`), the README screens
+  and the social preview. Run it when a pictured screen changes, look at every image, and upload
+  the social preview in the repository's settings by hand.
 
 ## Strings and translations
 

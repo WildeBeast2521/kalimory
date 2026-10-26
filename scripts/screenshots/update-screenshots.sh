@@ -9,7 +9,8 @@
 #
 # Writes fastlane/metadata/android/en-US/images/phoneScreenshots/1-6.png (Light, 1080 x 1920),
 # .github/readme/screens/<screen>-<light|dark>.png (540 x 960) and
-# .github/readme/social-preview-<light|dark>.png (2560 x 1280). Look at every changed image before
+# .github/readme/social-preview-<light|dark>.png (2560 x 1280) and the store banner
+# fastlane/metadata/android/en-US/images/featureGraphic.png (1024 x 500). Look at every changed image before
 # committing it. The social preview is uploaded by hand in the repository's settings.
 set -euo pipefail
 
@@ -43,4 +44,8 @@ for theme in light dark; do
         ".github/readme/screens/today-$theme.png" ".github/readme/screens/progressions-$theme.png" "$shots/social-$theme.svg"
     rsvg-convert -w 2560 -h 1280 "$shots/social-$theme.svg" | magick - -strip ".github/readme/social-preview-$theme.png"
 done
+
+# The store banner (F-Droid and Play: 1024 x 500) is the light social preview, scaled and trimmed.
+magick .github/readme/social-preview-light.png -resize 1024x512 -gravity center -crop 1024x500+0+0 +repage -strip \
+    fastlane/metadata/android/en-US/images/featureGraphic.png
 echo "update-screenshots: done; review the changed images with git status"
