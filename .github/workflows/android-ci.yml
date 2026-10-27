@@ -70,6 +70,27 @@ jobs:
         timeout-minutes: 20
         run: ./gradlew testDebugUnitTest lintDebug assembleDebug compileDebugAndroidTestKotlin --stacktrace
 
+      # Kalimory is offline by design. Inspect the built APK so a transitive manifest contribution
+      # cannot add network access unnoticed between the source review and a release.
+      - name: Verify debug APK has no network permission
+        run: |
+          aapt="$(find "$ANDROID_HOME/build-tools" -type f -name aapt -print -quit)"
+          if [ -z "$aapt" ]; then
+            echo "::error::Android build tools do not provide aapt" >&2
+            exit 1
+          fi
+          apks=(app/build/outputs/apk/debug/*.apk)
+          if [ "${#apks[@]}" -ne 1 ]; then
+            echo "::error::expected exactly one debug APK, found ${#apks[@]}" >&2
+            printf '%s\n' "${apks[@]}" >&2
+            exit 1
+          fi
+          if "$aapt" dump permissions "${apks[0]}" | grep -F "android.permission.INTERNET"; then
+            echo "::error::debug APK requests INTERNET, violating Kalimory's offline design" >&2
+            exit 1
+          fi
+          echo "debug APK has no INTERNET permission"
+
       - name: Upload debug APK
         if: success()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
