@@ -2,6 +2,9 @@ package io.github.gonbei774.calisthenicsmemory.service
 
 import android.app.Notification
 import android.app.NotificationManager
+import android.content.ComponentName
+import android.content.ContextWrapper
+import android.content.Intent
 import android.os.ParcelFileDescriptor
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -52,6 +55,31 @@ class WorkoutTimerServiceTest {
 
     private fun shownText(): String? = notifications.activeNotifications.singleOrNull()
         ?.notification?.extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString()
+
+    /** A context in the background without a foreground service: Android refuses start commands. */
+    private inner class RefusingContext : ContextWrapper(context) {
+        override fun startService(service: Intent?): ComponentName? =
+            throw IllegalStateException("Not allowed to start service: app is in background")
+
+        override fun startForegroundService(service: Intent?): ComponentName? =
+            throw IllegalStateException("startForegroundService() not allowed")
+    }
+
+    @Test
+    fun aRefusedStopStillStopsTheService() {
+        WorkoutTimerService.startService(context)
+        assertTrue(waitUntil { wakeLockHeld() })
+
+        WorkoutTimerService.stopService(RefusingContext())
+
+        assertTrue(waitUntil { !wakeLockHeld() })
+    }
+
+    @Test
+    fun aRefusedStartIsNotACrash() {
+        WorkoutTimerService.startService(RefusingContext())
+        assertFalse(wakeLockHeld())
+    }
 
     @Test
     fun aStartRightAfterAStopKeepsTheServiceInTheForeground() {
