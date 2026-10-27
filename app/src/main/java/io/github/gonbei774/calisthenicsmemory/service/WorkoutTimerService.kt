@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
+import android.util.Log
 import io.github.gonbei774.calisthenicsmemory.MainActivity
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.workout.WorkoutProgressBus
@@ -33,6 +34,7 @@ import kotlinx.coroutines.launch
 class WorkoutTimerService : Service() {
 
     companion object {
+        private const val TAG = "WorkoutTimerService"
         private const val NOTIFICATION_ID = 1
         private const val CHANNEL_ID = "workout_timer_channel"
 
@@ -40,18 +42,37 @@ class WorkoutTimerService : Service() {
         const val ACTION_START = "io.github.gonbei774.calisthenicsmemory.action.START"
         const val ACTION_STOP = "io.github.gonbei774.calisthenicsmemory.action.STOP"
 
+        /**
+         * Starts or renews the foreground service. Android refuses a start while the app is in the
+         * background and its service is not already in the foreground; the workout's timers do not
+         * depend on the service (they read the monotonic clock), so a refusal is logged, never a crash.
+         */
         fun startService(context: Context) {
             val intent = Intent(context, WorkoutTimerService::class.java).apply {
                 action = ACTION_START
             }
-            context.startForegroundService(intent)
+            try {
+                context.startForegroundService(intent)
+            } catch (e: IllegalStateException) {
+                Log.w(TAG, "The workout service could not start", e)
+            }
         }
 
+        /**
+         * Stops the service unless a newer start is waiting (see [onStartCommand]). The stop travels
+         * as a start command, which Android refuses while the app is in the background without a
+         * foreground service, for example when a screen closes long after its workout ended. Then
+         * no start can be waiting either, so the service is stopped directly.
+         */
         fun stopService(context: Context) {
             val intent = Intent(context, WorkoutTimerService::class.java).apply {
                 action = ACTION_STOP
             }
-            context.startService(intent)
+            try {
+                context.startService(intent)
+            } catch (e: IllegalStateException) {
+                context.stopService(Intent(context, WorkoutTimerService::class.java))
+            }
         }
     }
 
