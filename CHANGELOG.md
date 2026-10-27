@@ -34,6 +34,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - A backup made while a workout is being saved can always be restored ([#227](https://github.com/WildeBeast2521/kalimory/pull/227))
 - Importing records from CSV refuses dates, times and numbers the app cannot read, and imports a row repeated in the file only once ([#227](https://github.com/WildeBeast2521/kalimory/pull/227))
 - Groups added by a CSV import or a shared file appear after your existing groups instead of at the top ([#227](https://github.com/WildeBeast2521/kalimory/pull/227))
+- The app no longer crashes when a workout screen closes after the app has been in the background for a while ([#230](https://github.com/WildeBeast2521/kalimory/pull/230))
 
 ## [1.0.2] - 2026-10-07
 
