@@ -883,13 +883,12 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    private val programActions = ProgramActions(database)
+
     fun deleteProgram(programId: Long) {
         viewModelScope.launch {
             try {
-                database.withTransaction {
-                    programDao.deleteById(programId)
-                    todoTaskDao.deleteByReference(TodoTask.TYPE_PROGRAM, programId)
-                }
+                programActions.deleteProgram(programId)
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
@@ -899,45 +898,9 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun duplicateProgram(programId: Long, copySuffix: String) {
         viewModelScope.launch {
             try {
-                val sourceProgram = programDao.getProgramById(programId) ?: return@launch
-                val sourceExercises = programExerciseDao.getExercisesForProgramSync(programId)
-                val sourceLoops = programLoopDao.getLoopsForProgramSync(programId)
-
-                // One transaction: a failure part-way leaves no half-made copy.
-                database.withTransaction {
-                    // Create new program with copy suffix
-                    val newProgram = Program(name = "${sourceProgram.name} $copySuffix")
-                    val newProgramId = programDao.insert(newProgram)
-
-                    // Copy all loops and create ID mapping
-                    val loopIdMapping = mutableMapOf<Long, Long>()
-                    sourceLoops.forEach { loop ->
-                        val newLoop = ProgramLoop(
-                            programId = newProgramId,
-                            sortOrder = loop.sortOrder,
-                            rounds = loop.rounds,
-                            restBetweenRounds = loop.restBetweenRounds
-                        )
-                        val newLoopId = programLoopDao.insert(newLoop)
-                        loopIdMapping[loop.id] = newLoopId
-                    }
-
-                    // Copy all exercises with updated loopId
-                    sourceExercises.forEach { pe ->
-                        val newPe = ProgramExercise(
-                            programId = newProgramId,
-                            exerciseId = pe.exerciseId,
-                            sortOrder = pe.sortOrder,
-                            sets = pe.sets,
-                            targetValue = pe.targetValue,
-                            intervalSeconds = pe.intervalSeconds,
-                            loopId = pe.loopId?.let { loopIdMapping[it] }
-                        )
-                        programExerciseDao.insert(newPe)
-                    }
+                if (programActions.duplicateProgram(programId, copySuffix) != null) {
+                    _snackbarMessage.value = UiMessage.ProgramDuplicated
                 }
-
-                _snackbarMessage.value = UiMessage.ProgramDuplicated
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
@@ -1036,17 +999,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
 
     suspend fun reorderProgramExercises(programId: Long, fromIndex: Int, toIndex: Int) {
         try {
-            val currentExercises = programExerciseDao.getExercisesForProgramSync(programId).toMutableList()
-            if (fromIndex < 0 || toIndex < 0 ||
-                fromIndex >= currentExercises.size || toIndex >= currentExercises.size) {
-                return
-            }
-
-            val item = currentExercises.removeAt(fromIndex)
-            currentExercises.add(toIndex, item)
-
-            val reorderedIds = currentExercises.map { it.id }
-            programExerciseDao.reorderExercises(reorderedIds)
+            programActions.moveProgramExercise(programId, fromIndex, toIndex)
         } catch (e: Exception) {
             _snackbarMessage.value = UiMessage.ErrorOccurred
         }
@@ -1180,10 +1133,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun deleteIntervalProgram(programId: Long) {
         viewModelScope.launch {
             try {
-                database.withTransaction {
-                    intervalProgramDao.deleteById(programId)
-                    todoTaskDao.deleteByReference(TodoTask.TYPE_INTERVAL, programId)
-                }
+                programActions.deleteIntervalProgram(programId)
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
@@ -1197,33 +1147,9 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun duplicateIntervalProgram(programId: Long, copySuffix: String) {
         viewModelScope.launch {
             try {
-                val source = intervalProgramDao.getProgramById(programId) ?: return@launch
-                val sourceExercises = intervalProgramExerciseDao.getExercisesForProgramSync(programId)
-
-                // One transaction: a failure part-way leaves no half-made copy.
-                database.withTransaction {
-                    val newId = intervalProgramDao.insert(
-                        IntervalProgram(
-                            name = "${source.name} $copySuffix",
-                            workSeconds = source.workSeconds,
-                            restSeconds = source.restSeconds,
-                            rounds = source.rounds,
-                            roundRestSeconds = source.roundRestSeconds
-                        )
-                    )
-
-                    sourceExercises.forEach { exercise ->
-                        intervalProgramExerciseDao.insert(
-                            IntervalProgramExercise(
-                                programId = newId,
-                                exerciseId = exercise.exerciseId,
-                                sortOrder = exercise.sortOrder
-                            )
-                        )
-                    }
+                if (programActions.duplicateIntervalProgram(programId, copySuffix) != null) {
+                    _snackbarMessage.value = UiMessage.ProgramDuplicated
                 }
-
-                _snackbarMessage.value = UiMessage.ProgramDuplicated
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
