@@ -38,6 +38,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - A new group always appears after your existing groups, also after you have deleted one ([#231](https://github.com/WildeBeast2521/kalimory/pull/231))
 - Moving exercises quickly in the library no longer leaves two of them in the same place ([#231](https://github.com/WildeBeast2521/kalimory/pull/231))
 - A quick double tap on a button that saves and closes a screen, such as "Record workout", no longer saves the workout twice ([#238](https://github.com/WildeBeast2521/kalimory/pull/238))
+- Today, To Do and the calendar show the new day when you open the app the morning after leaving it open, instead of yesterday's week and to-dos ([#239](https://github.com/WildeBeast2521/kalimory/pull/239))
 
 ## [1.0.2] - 2026-10-07
 
