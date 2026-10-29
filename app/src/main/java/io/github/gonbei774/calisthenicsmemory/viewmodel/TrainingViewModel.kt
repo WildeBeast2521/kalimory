@@ -682,125 +682,25 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             initialValue = emptyList()
         )
 
-    fun addTodoTask(exerciseId: Long) {
+    private val todoActions = TodoActions(database)
+
+    private fun addTodo(type: String, referenceIds: List<Long>) {
         viewModelScope.launch {
             try {
-                val sortOrder = todoTaskDao.getNextSortOrder()
-                val task = TodoTask(
-                    type = TodoTask.TYPE_EXERCISE,
-                    referenceId = exerciseId,
-                    sortOrder = sortOrder
-                )
-                todoTaskDao.insert(task)
+                todoActions.add(type, referenceIds)
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
         }
     }
 
-    fun addTodoTasks(exerciseIds: List<Long>) {
-        viewModelScope.launch {
-            try {
-                var sortOrder = todoTaskDao.getNextSortOrder()
-                exerciseIds.forEach { exerciseId ->
-                    val task = TodoTask(
-                        type = TodoTask.TYPE_EXERCISE,
-                        referenceId = exerciseId,
-                        sortOrder = sortOrder++
-                    )
-                    todoTaskDao.insert(task)
-                }
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
-    fun addTodoTaskProgram(programId: Long) {
-        viewModelScope.launch {
-            try {
-                val sortOrder = todoTaskDao.getNextSortOrder()
-                val task = TodoTask(
-                    type = TodoTask.TYPE_PROGRAM,
-                    referenceId = programId,
-                    sortOrder = sortOrder
-                )
-                todoTaskDao.insert(task)
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
-    fun addTodoTaskPrograms(programIds: List<Long>) {
-        viewModelScope.launch {
-            try {
-                var sortOrder = todoTaskDao.getNextSortOrder()
-                programIds.forEach { programId ->
-                    val task = TodoTask(
-                        type = TodoTask.TYPE_PROGRAM,
-                        referenceId = programId,
-                        sortOrder = sortOrder++
-                    )
-                    todoTaskDao.insert(task)
-                }
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
-    fun addTodoTaskGroups(groupIds: List<Long>) {
-        viewModelScope.launch {
-            try {
-                var sortOrder = todoTaskDao.getNextSortOrder()
-                groupIds.forEach { groupId ->
-                    val task = TodoTask(
-                        type = TodoTask.TYPE_GROUP,
-                        referenceId = groupId,
-                        sortOrder = sortOrder++
-                    )
-                    todoTaskDao.insert(task)
-                }
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
-    fun addTodoTaskInterval(intervalProgramId: Long) {
-        viewModelScope.launch {
-            try {
-                val sortOrder = todoTaskDao.getNextSortOrder()
-                val task = TodoTask(
-                    type = TodoTask.TYPE_INTERVAL,
-                    referenceId = intervalProgramId,
-                    sortOrder = sortOrder
-                )
-                todoTaskDao.insert(task)
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
-    fun addTodoTaskIntervals(intervalProgramIds: List<Long>) {
-        viewModelScope.launch {
-            try {
-                var sortOrder = todoTaskDao.getNextSortOrder()
-                intervalProgramIds.forEach { intervalProgramId ->
-                    val task = TodoTask(
-                        type = TodoTask.TYPE_INTERVAL,
-                        referenceId = intervalProgramId,
-                        sortOrder = sortOrder++
-                    )
-                    todoTaskDao.insert(task)
-                }
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
+    fun addTodoTask(exerciseId: Long) = addTodo(TodoTask.TYPE_EXERCISE, listOf(exerciseId))
+    fun addTodoTasks(exerciseIds: List<Long>) = addTodo(TodoTask.TYPE_EXERCISE, exerciseIds)
+    fun addTodoTaskProgram(programId: Long) = addTodo(TodoTask.TYPE_PROGRAM, listOf(programId))
+    fun addTodoTaskPrograms(programIds: List<Long>) = addTodo(TodoTask.TYPE_PROGRAM, programIds)
+    fun addTodoTaskGroups(groupIds: List<Long>) = addTodo(TodoTask.TYPE_GROUP, groupIds)
+    fun addTodoTaskInterval(intervalProgramId: Long) = addTodo(TodoTask.TYPE_INTERVAL, listOf(intervalProgramId))
+    fun addTodoTaskIntervals(intervalProgramIds: List<Long>) = addTodo(TodoTask.TYPE_INTERVAL, intervalProgramIds)
 
     fun deleteTodoTask(taskId: Long) {
         viewModelScope.launch {
@@ -894,51 +794,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    private suspend fun completeTodoTask(type: String, referenceId: Long) {
-        val task = todoTaskDao.getTaskByReference(type, referenceId)
-        if (task != null && task.isRepeating()) {
-            val todayStr = AppClock.today().toString()
-            todoTaskDao.updateLastCompletedDate(type, referenceId, todayStr)
-        } else {
-            todoTaskDao.deleteByReference(type, referenceId)
-        }
-
-        // 種目完了時にグループToDoの完了もチェック
-        if (type == TodoTask.TYPE_EXERCISE) {
-            checkGroupTodoCompletion(referenceId)
-        }
-    }
-
-    private suspend fun checkGroupTodoCompletion(exerciseId: Long) {
-        val exercise = exercises.value.find { it.id == exerciseId } ?: return
-        val groupName = exercise.group ?: return
-        val group = groupDao.getGroupByName(groupName) ?: return
-
-        // このグループがToDoに登録されているか
-        val groupTask = todoTaskDao.getTaskByReference(TodoTask.TYPE_GROUP, group.id) ?: return
-
-        // 今日のアクティブなタスクかチェック
-        val todayStr = AppClock.today().toString()
-        if (groupTask.isRepeating()) {
-            val todayDayNumber = AppClock.today().dayOfWeek.value
-            if (todayDayNumber !in groupTask.getRepeatDayNumbers()) return
-            if (groupTask.lastCompletedDate == todayStr) return
-        }
-
-        // グループ内の全種目に今日の記録があるか確認
-        val groupExercises = exercises.value.filter { it.group == groupName }
-        val allCompleted = groupExercises.all { ex ->
-            hasRecordOnDate(ex.id, todayStr)
-        }
-
-        if (allCompleted) {
-            if (groupTask.isRepeating()) {
-                todoTaskDao.updateLastCompletedDate(TodoTask.TYPE_GROUP, group.id, todayStr)
-            } else {
-                todoTaskDao.deleteByReference(TodoTask.TYPE_GROUP, group.id)
-            }
-        }
-    }
+    private suspend fun completeTodoTask(type: String, referenceId: Long) =
+        todoActions.complete(type, referenceId, AppClock.today(), ZoneId.systemDefault())
 
     suspend fun hasRecordOnDate(exerciseId: Long, date: String): Boolean =
         CompatibilityHistory.hasSetOn(database, exerciseId, LocalDate.parse(date), ZoneId.systemDefault())
