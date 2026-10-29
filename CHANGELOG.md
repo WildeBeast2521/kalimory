@@ -35,6 +35,8 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Importing records from CSV refuses dates, times and numbers the app cannot read, and imports a row repeated in the file only once ([#227](https://github.com/WildeBeast2521/kalimory/pull/227))
 - Groups added by a CSV import or a shared file appear after your existing groups instead of at the top ([#227](https://github.com/WildeBeast2521/kalimory/pull/227))
 - The app no longer crashes when a workout screen closes after the app has been in the background for a while ([#230](https://github.com/WildeBeast2521/kalimory/pull/230))
+- A new group always appears after your existing groups, also after you have deleted one ([#231](https://github.com/WildeBeast2521/kalimory/pull/231))
+- Moving exercises quickly in the library no longer leaves two of them in the same place ([#231](https://github.com/WildeBeast2521/kalimory/pull/231))
 
 ## [1.0.2] - 2026-10-07
 
