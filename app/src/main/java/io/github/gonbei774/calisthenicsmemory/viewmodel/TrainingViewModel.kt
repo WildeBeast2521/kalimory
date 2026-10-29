@@ -2,7 +2,6 @@ package io.github.gonbei774.calisthenicsmemory.viewmodel
 
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import android.app.Application
-import androidx.room.withTransaction
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
@@ -492,58 +491,12 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     // 階層データ準備
     val hierarchicalExercises: StateFlow<List<GroupWithExercises>> =
         combine(groups, exercises, expandedGroups, _localGroupOrder) { dbGroups, exercises, expanded, localOrder ->
-            prepareHierarchicalData(localOrder ?: dbGroups, exercises, expanded)
+            libraryHierarchy(localOrder ?: dbGroups, exercises, expanded)
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
             initialValue = emptyList()
         )
-
-    private fun prepareHierarchicalData(
-        groups: List<ExerciseGroup>,
-        exercises: List<Exercise>,
-        expandedGroups: Set<String>
-    ): List<GroupWithExercises> {
-        // 0. Favourites first, shown only once something is marked as a favourite.
-        // A fixed key; the UI translates it.
-        val favoriteGroupKey = FAVORITE_GROUP_KEY
-        val favoriteExercises = exercises.filter { it.isFavorite }.sortedBy { it.displayOrder }
-        val favoriteGroup = if (favoriteExercises.isEmpty()) emptyList() else listOf(
-            GroupWithExercises(
-                groupName = favoriteGroupKey,
-                exercises = favoriteExercises,
-                isExpanded = favoriteGroupKey in expandedGroups
-            )
-        )
-
-        // 1. groupsテーブルを基準にグループを表示（0件でも表示）
-        // groups は既に displayOrder 順で取得されている
-        val groupedExercises = groups.map { group ->
-            val groupExercises = exercises.filter { it.group == group.name }
-            GroupWithExercises(
-                groupName = group.name,
-                exercises = groupExercises.sortedBy { it.displayOrder },
-                isExpanded = group.name in expandedGroups  // 全て閉じた状態も可能
-            )
-        }
-
-        // 2. グループなし種目
-        val ungroupedExercises = exercises.filter { it.group == null }
-        val ungroupedGroup = if (ungroupedExercises.isNotEmpty()) {
-            listOf(
-                GroupWithExercises(
-                    groupName = null,
-                    exercises = ungroupedExercises.sortedBy { it.displayOrder },
-                    isExpanded = "ungrouped" in expandedGroups  // 全て閉じた状態も可能
-                )
-            )
-        } else {
-            emptyList()
-        }
-
-        // お気に入りグループを先頭に配置
-        return favoriteGroup + groupedExercises + ungroupedGroup
-    }
 
     // ========================================
     // 並び替え機能
@@ -557,34 +510,10 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
      */
     fun reorderExercises(groupName: String?, fromIndex: Int, toIndex: Int) {
         viewModelScope.launch {
-            // お気に入りグループでは並び替え不可（元のグループでの順序に影響するため）
-            if (groupName == FAVORITE_GROUP_KEY) {
-                return@launch
-            }
-
-            // Read and rewrite the order in one transaction, so quick moves never interleave.
-            database.withTransaction {
-                // 対象グループの種目を取得
-                val targetExercises = when (groupName) {
-                    null -> exerciseDao.getUngroupedExercises()
-                    else -> exerciseDao.getExercisesByGroup(groupName)
-                }
-
-                if (fromIndex < 0 || toIndex < 0 ||
-                    fromIndex >= targetExercises.size ||
-                    toIndex >= targetExercises.size) {
-                    return@withTransaction
-                }
-
-                // 並び替え
-                val reordered = targetExercises.toMutableList()
-                val item = reordered.removeAt(fromIndex)
-                reordered.add(toIndex, item)
-
-                // displayOrderを更新
-                reordered.forEachIndexed { index, exercise ->
-                    exerciseDao.updateExercise(exercise.copy(displayOrder = index))
-                }
+            try {
+                libraryActions.moveExercise(groupName, fromIndex, toIndex)
+            } catch (e: Exception) {
+                _snackbarMessage.value = UiMessage.ErrorOccurred
             }
         }
     }
@@ -626,14 +555,9 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         writeGroupOrder(order)
     }
 
-    /** Writes a group order in one transaction, so the list never shows it half applied. */
-    private suspend fun writeGroupOrder(order: List<ExerciseGroup>) {
-        database.withTransaction {
-            order.forEachIndexed { index, group ->
-                groupDao.updateGroup(group.copy(displayOrder = index))
-            }
-        }
-    }
+    private val libraryActions = LibraryActions(database)
+
+    private suspend fun writeGroupOrder(order: List<ExerciseGroup>) = libraryActions.saveGroupOrder(order)
 
     // ========================================
     // エクスポート・インポート機能
