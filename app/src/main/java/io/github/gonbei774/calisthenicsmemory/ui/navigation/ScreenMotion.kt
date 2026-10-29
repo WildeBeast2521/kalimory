@@ -1,6 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.navigation
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -9,6 +11,9 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import io.github.gonbei774.calisthenicsmemory.Screen
 
 /**
@@ -52,3 +57,19 @@ internal fun tabTransition(): ContentTransform =
 
 /** Identifies a screen and its arguments, for keeping its saved state while it is on the way back. */
 internal fun Screen.stateKey(): String = toString()
+
+/**
+ * Stops taps from reaching a screen once it has started to leave. [AnimatedContent] keeps the old
+ * screen on display while it animates out, and it would still take input: a double tap on
+ * "Record workout" would save the workout twice. Read in composition, so it follows the transition.
+ */
+internal fun Modifier.ignoreInputWhileLeaving(scope: AnimatedVisibilityScope): Modifier =
+    if (scope.transition.targetState != EnterExitState.PostExit) this
+    else pointerInput(Unit) {
+        awaitPointerEventScope {
+            while (true) {
+                // The first pass runs parent first, so no child sees an unconsumed tap.
+                awaitPointerEvent(PointerEventPass.Initial).changes.forEach { it.consume() }
+            }
+        }
+    }
