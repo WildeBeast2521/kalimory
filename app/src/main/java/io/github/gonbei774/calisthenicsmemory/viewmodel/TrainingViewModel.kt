@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.viewmodel
 
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import android.app.Application
+import androidx.room.withTransaction
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
@@ -50,6 +51,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import android.database.sqlite.SQLiteConstraintException
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -297,6 +299,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         recordDao.getAllRecords(),
         database.workoutSessionDao().observeV2OnlyHistoryRows()
     ) { legacy, v2 -> CompatibilityHistory.merge(legacy, v2, ZoneId.systemDefault()) }
+        // The whole history is merged and sorted on each change; keep that off the main thread.
+        .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
@@ -323,7 +327,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             intervals = runs.filter { it.sourceType == WorkoutSourceType.INTERVAL_TEMPLATE }
                 .associate { it.sourceTemplateId to day(it.lastStartedAtEpochMillis) },
         )
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, LastDone())
+    }.flowOn(Dispatchers.Default).stateIn(viewModelScope, SharingStarted.Eagerly, LastDone())
 
     // Snackbar message (UiMessage型で言語変更に追従)
     private val _snackbarMessage = MutableStateFlow<UiMessage?>(null)
@@ -577,8 +581,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             flushGroupOrder()
             try {
-                val existingGroups = groupDao.getAllGroupsSync()
-                val group = ExerciseGroup(name = name, displayOrder = existingGroups.size)
+                // After every existing group; the group count can repeat an order once one is deleted.
+                val group = ExerciseGroup(name = name, displayOrder = groupDao.nextGroupDisplayOrder())
                 groupDao.insertGroup(group)
                 _snackbarMessage.value = UiMessage.GroupCreated
             } catch (e: Exception) {
@@ -712,32 +716,29 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                 return@launch
             }
 
-            // 対象グループの種目を取得
-            val targetExercises = when (groupName) {
-                null -> {
-                    // グループなし
-                    exerciseDao.getUngroupedExercises()
+            // Read and rewrite the order in one transaction, so quick moves never interleave.
+            database.withTransaction {
+                // 対象グループの種目を取得
+                val targetExercises = when (groupName) {
+                    null -> exerciseDao.getUngroupedExercises()
+                    else -> exerciseDao.getExercisesByGroup(groupName)
                 }
-                else -> {
-                    // 通常グループ
-                    exerciseDao.getExercisesByGroup(groupName)
+
+                if (fromIndex < 0 || toIndex < 0 ||
+                    fromIndex >= targetExercises.size ||
+                    toIndex >= targetExercises.size) {
+                    return@withTransaction
                 }
-            }
 
-            if (fromIndex < 0 || toIndex < 0 ||
-                fromIndex >= targetExercises.size ||
-                toIndex >= targetExercises.size) {
-                return@launch
-            }
+                // 並び替え
+                val reordered = targetExercises.toMutableList()
+                val item = reordered.removeAt(fromIndex)
+                reordered.add(toIndex, item)
 
-            // 並び替え
-            val reordered = targetExercises.toMutableList()
-            val item = reordered.removeAt(fromIndex)
-            reordered.add(toIndex, item)
-
-            // displayOrderを更新
-            reordered.forEachIndexed { index, exercise ->
-                exerciseDao.updateExercise(exercise.copy(displayOrder = index))
+                // displayOrderを更新
+                reordered.forEachIndexed { index, exercise ->
+                    exerciseDao.updateExercise(exercise.copy(displayOrder = index))
+                }
             }
         }
     }
@@ -767,11 +768,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun saveGroupOrder() {
         val order = _localGroupOrder.value ?: return
         _localGroupOrder.value = null
-        viewModelScope.launch {
-            order.forEachIndexed { index, group ->
-                groupDao.updateGroup(group.copy(displayOrder = index))
-            }
-        }
+        viewModelScope.launch { writeGroupOrder(order) }
     }
 
     /**
@@ -780,8 +777,15 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     private suspend fun flushGroupOrder() {
         val order = _localGroupOrder.value ?: return
         _localGroupOrder.value = null
-        order.forEachIndexed { index, group ->
-            groupDao.updateGroup(group.copy(displayOrder = index))
+        writeGroupOrder(order)
+    }
+
+    /** Writes a group order in one transaction, so the list never shows it half applied. */
+    private suspend fun writeGroupOrder(order: List<ExerciseGroup>) {
+        database.withTransaction {
+            order.forEachIndexed { index, group ->
+                groupDao.updateGroup(group.copy(displayOrder = index))
+            }
         }
     }
 
@@ -1612,8 +1616,10 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun deleteProgram(programId: Long) {
         viewModelScope.launch {
             try {
-                programDao.deleteById(programId)
-                todoTaskDao.deleteByReference(TodoTask.TYPE_PROGRAM, programId)
+                database.withTransaction {
+                    programDao.deleteById(programId)
+                    todoTaskDao.deleteByReference(TodoTask.TYPE_PROGRAM, programId)
+                }
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
@@ -1627,35 +1633,38 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                 val sourceExercises = programExerciseDao.getExercisesForProgramSync(programId)
                 val sourceLoops = programLoopDao.getLoopsForProgramSync(programId)
 
-                // Create new program with copy suffix
-                val newProgram = Program(name = "${sourceProgram.name} $copySuffix")
-                val newProgramId = programDao.insert(newProgram)
+                // One transaction: a failure part-way leaves no half-made copy.
+                database.withTransaction {
+                    // Create new program with copy suffix
+                    val newProgram = Program(name = "${sourceProgram.name} $copySuffix")
+                    val newProgramId = programDao.insert(newProgram)
 
-                // Copy all loops and create ID mapping
-                val loopIdMapping = mutableMapOf<Long, Long>()
-                sourceLoops.forEach { loop ->
-                    val newLoop = ProgramLoop(
-                        programId = newProgramId,
-                        sortOrder = loop.sortOrder,
-                        rounds = loop.rounds,
-                        restBetweenRounds = loop.restBetweenRounds
-                    )
-                    val newLoopId = programLoopDao.insert(newLoop)
-                    loopIdMapping[loop.id] = newLoopId
-                }
+                    // Copy all loops and create ID mapping
+                    val loopIdMapping = mutableMapOf<Long, Long>()
+                    sourceLoops.forEach { loop ->
+                        val newLoop = ProgramLoop(
+                            programId = newProgramId,
+                            sortOrder = loop.sortOrder,
+                            rounds = loop.rounds,
+                            restBetweenRounds = loop.restBetweenRounds
+                        )
+                        val newLoopId = programLoopDao.insert(newLoop)
+                        loopIdMapping[loop.id] = newLoopId
+                    }
 
-                // Copy all exercises with updated loopId
-                sourceExercises.forEach { pe ->
-                    val newPe = ProgramExercise(
-                        programId = newProgramId,
-                        exerciseId = pe.exerciseId,
-                        sortOrder = pe.sortOrder,
-                        sets = pe.sets,
-                        targetValue = pe.targetValue,
-                        intervalSeconds = pe.intervalSeconds,
-                        loopId = pe.loopId?.let { loopIdMapping[it] }
-                    )
-                    programExerciseDao.insert(newPe)
+                    // Copy all exercises with updated loopId
+                    sourceExercises.forEach { pe ->
+                        val newPe = ProgramExercise(
+                            programId = newProgramId,
+                            exerciseId = pe.exerciseId,
+                            sortOrder = pe.sortOrder,
+                            sets = pe.sets,
+                            targetValue = pe.targetValue,
+                            intervalSeconds = pe.intervalSeconds,
+                            loopId = pe.loopId?.let { loopIdMapping[it] }
+                        )
+                        programExerciseDao.insert(newPe)
+                    }
                 }
 
                 _snackbarMessage.value = UiMessage.ProgramDuplicated
@@ -1901,8 +1910,10 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun deleteIntervalProgram(programId: Long) {
         viewModelScope.launch {
             try {
-                intervalProgramDao.deleteById(programId)
-                todoTaskDao.deleteByReference(TodoTask.TYPE_INTERVAL, programId)
+                database.withTransaction {
+                    intervalProgramDao.deleteById(programId)
+                    todoTaskDao.deleteByReference(TodoTask.TYPE_INTERVAL, programId)
+                }
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
@@ -1919,24 +1930,27 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                 val source = intervalProgramDao.getProgramById(programId) ?: return@launch
                 val sourceExercises = intervalProgramExerciseDao.getExercisesForProgramSync(programId)
 
-                val newId = intervalProgramDao.insert(
-                    IntervalProgram(
-                        name = "${source.name} $copySuffix",
-                        workSeconds = source.workSeconds,
-                        restSeconds = source.restSeconds,
-                        rounds = source.rounds,
-                        roundRestSeconds = source.roundRestSeconds
-                    )
-                )
-
-                sourceExercises.forEach { exercise ->
-                    intervalProgramExerciseDao.insert(
-                        IntervalProgramExercise(
-                            programId = newId,
-                            exerciseId = exercise.exerciseId,
-                            sortOrder = exercise.sortOrder
+                // One transaction: a failure part-way leaves no half-made copy.
+                database.withTransaction {
+                    val newId = intervalProgramDao.insert(
+                        IntervalProgram(
+                            name = "${source.name} $copySuffix",
+                            workSeconds = source.workSeconds,
+                            restSeconds = source.restSeconds,
+                            rounds = source.rounds,
+                            roundRestSeconds = source.roundRestSeconds
                         )
                     )
+
+                    sourceExercises.forEach { exercise ->
+                        intervalProgramExerciseDao.insert(
+                            IntervalProgramExercise(
+                                programId = newId,
+                                exerciseId = exercise.exerciseId,
+                                sortOrder = exercise.sortOrder
+                            )
+                        )
+                    }
                 }
 
                 _snackbarMessage.value = UiMessage.ProgramDuplicated
