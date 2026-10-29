@@ -1,6 +1,5 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.today
 
-import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -71,6 +70,7 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import io.github.gonbei774.calisthenicsmemory.util.rememberToday
 
 /**
  * Today (ADR 0004): the week at a glance, then the one thing to do next, then what else is
@@ -99,7 +99,7 @@ fun TodayScreen(
     val todoTasks by viewModel.todoTasks.collectAsState()
     val history by viewModel.history.collectAsState()
     val intervalHistory by viewModel.intervalHistory.collectAsState()
-    val today = remember { AppClock.today() }
+    val today = rememberToday()
 
     // Read each time Today is shown, so a workout finished or interrupted elsewhere is reflected.
     var resumeSources by remember { mutableStateOf<ResumeSources?>(null) }
