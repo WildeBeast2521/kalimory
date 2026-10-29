@@ -37,6 +37,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - The app no longer crashes when a workout screen closes after the app has been in the background for a while ([#230](https://github.com/WildeBeast2521/kalimory/pull/230))
 - A new group always appears after your existing groups, also after you have deleted one ([#231](https://github.com/WildeBeast2521/kalimory/pull/231))
 - Moving exercises quickly in the library no longer leaves two of them in the same place ([#231](https://github.com/WildeBeast2521/kalimory/pull/231))
+- A quick double tap on a button that saves and closes a screen, such as "Record workout", no longer saves the workout twice ([#238](https://github.com/WildeBeast2521/kalimory/pull/238))
 
 ## [1.0.2] - 2026-10-07
 

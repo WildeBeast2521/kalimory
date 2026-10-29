@@ -91,6 +91,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBar
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.depth
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.stateKey
+import io.github.gonbei774.calisthenicsmemory.ui.navigation.ignoreInputWhileLeaving
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.screenTransition
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.tabTransition
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
@@ -500,7 +501,10 @@ fun CalisthenicsMemoryApp(
                 CompositionLocalProvider(LocalScreenAnimationScope provides this) {
                 keptScreens[screen.stateKey()] = screen.depth()
                 screenStates.SaveableStateProvider(screen.stateKey()) {
-                Box(if (screen is Screen.Home) Modifier.fillMaxSize() else Modifier.fillMaxSize().navigationBarsPadding()) {
+                Box(
+                    (if (screen is Screen.Home) Modifier.fillMaxSize() else Modifier.fillMaxSize().navigationBarsPadding())
+                        .ignoreInputWhileLeaving(this@AnimatedContent)
+                ) {
                 when (screen) {
                     is Screen.Home -> Column(Modifier.fillMaxSize()) {
                         BackHandler(enabled = primaryDestination != PrimaryDestination.TODAY) {
