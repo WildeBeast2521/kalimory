@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.util
 
 import java.time.Clock
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 /**
@@ -20,4 +21,6 @@ object AppClock {
     fun today(): LocalDate = LocalDate.now(clock())
 
     fun timeNow(): LocalTime = LocalTime.now(clock())
+
+    fun now(): LocalDateTime = LocalDateTime.now(clock())
 }

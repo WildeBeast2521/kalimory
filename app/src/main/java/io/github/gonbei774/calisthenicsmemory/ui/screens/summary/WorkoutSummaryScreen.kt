@@ -1,6 +1,5 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.summary
 
-import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.animation.core.Animatable
@@ -56,6 +55,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.firstDayOfWeek
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import java.time.LocalDate
 import kotlin.math.roundToInt
+import io.github.gonbei774.calisthenicsmemory.util.rememberToday
 
 private val Decelerate = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
 private val Overshoot = CubicBezierEasing(0.34f, 1.56f, 0.64f, 1f)
@@ -129,7 +129,7 @@ private fun SummaryContent(viewModel: TrainingViewModel, summary: WorkoutSummary
     // The week, with today filling in as the last beat.
     val history by viewModel.history.collectAsState()
     val intervalHistory by viewModel.intervalHistory.collectAsState()
-    val today = remember { AppClock.today() }
+    val today = rememberToday()
     val week = weekOf(today, firstDayOfWeek())
     val trained = remember(history, intervalHistory) {
         (history.map { it.date } + intervalHistory.map { it.record.date })

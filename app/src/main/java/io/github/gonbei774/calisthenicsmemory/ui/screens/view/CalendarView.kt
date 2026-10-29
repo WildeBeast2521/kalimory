@@ -1,7 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.FitText
-import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import android.text.format.DateUtils
 import androidx.compose.ui.draw.alpha
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.weekOf
@@ -43,6 +42,7 @@ import java.time.YearMonth
 import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.Locale
+import io.github.gonbei774.calisthenicsmemory.util.rememberToday
 
 @Composable
 fun CalendarView(
@@ -86,7 +86,7 @@ fun CalendarView(
             onFocusShown()
         }
     }
-    val today = remember { AppClock.today() }
+    val today = rememberToday()
     val exerciseMap = remember(exercises) { exercises.associateBy { it.id } }
 
     val statsRange = remember(items, selectedPeriod, selectedDate, today) {
