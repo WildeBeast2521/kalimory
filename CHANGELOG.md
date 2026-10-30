@@ -39,6 +39,9 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Moving exercises quickly in the library no longer leaves two of them in the same place ([#231](https://github.com/WildeBeast2521/kalimory/pull/231))
 - A quick double tap on a button that saves and closes a screen, such as "Record workout", no longer saves the workout twice ([#238](https://github.com/WildeBeast2521/kalimory/pull/238))
 - Today, To Do and the calendar show the new day when you open the app the morning after leaving it open, instead of yesterday's week and to-dos ([#239](https://github.com/WildeBeast2521/kalimory/pull/239))
+- Tapping Save twice in the program or interval editor no longer saves the program twice, and a save that is interrupted or fails leaves the program as it was ([#242](https://github.com/WildeBeast2521/kalimory/pull/242))
+- Deleting an exercise asks for confirmation only once its own number of records is shown ([#242](https://github.com/WildeBeast2521/kalimory/pull/242))
+- A group created by adding a catalogue exercise appears after your existing groups ([#242](https://github.com/WildeBeast2521/kalimory/pull/242))
 
 ## [1.0.2] - 2026-10-07
 
