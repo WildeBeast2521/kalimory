@@ -574,6 +574,9 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     fun parseBackupData(jsonString: String): BackupResult<ParsedBackup> =
         backupService.parse(jsonString)
 
+    /** Whether the database holds anything a restore would overwrite. */
+    suspend fun hasUserData(): Boolean = withContext(Dispatchers.IO) { database.backupDao().userRowCount() > 0 }
+
     /** Atomically replace all backup tables with an already parsed payload. */
     suspend fun importData(backupData: BackupData): BackupResult<BackupSummary> =
         withContext(Dispatchers.IO) {

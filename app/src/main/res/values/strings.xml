@@ -128,6 +128,8 @@
     <string name="data_overwrite_title">Data overwrite</string>
     <string name="existing_data_will_be_deleted">All existing data will be deleted.</string>
     <string name="cannot_undo">This action cannot be undone.</string>
+    <string name="import_backup_required">Save a backup of your current data first. You can restore once it is saved and checked.</string>
+    <string name="import_backup_verified">Backup saved and checked.</string>
     <string name="import_confirm">Import</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">\"%1$s (%2$s)\" is already registered</string>

@@ -111,6 +111,8 @@
     <string name="data_overwrite_title">数据覆盖</string>
     <string name="existing_data_will_be_deleted">所有现有数据将被删除。</string>
     <string name="cannot_undo">此操作无法撤销。</string>
+    <string name="import_backup_required">请先备份当前数据。备份保存并校验后即可恢复。</string>
+    <string name="import_backup_verified">备份已保存并校验。</string>
     <string name="import_confirm">导入</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">「%1$s（%2$s）」已注册</string>

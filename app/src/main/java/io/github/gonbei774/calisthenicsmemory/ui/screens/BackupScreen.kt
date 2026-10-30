@@ -51,6 +51,10 @@ fun BackupScreen(
     var showDataPreview by remember { mutableStateOf(false) }
     var showImportWarning by remember { mutableStateOf(false) }
     var pendingImportData by remember { mutableStateOf<BackupData?>(null) }
+    // A restore overwrites everything (ADR 0003, stage 7): it needs a backup that was saved and read
+    // back for this very restore, unless there is nothing to overwrite. A new file starts over.
+    var restoreBackupVerified by remember(pendingImportData) { mutableStateOf(false) }
+    var hasUserData by remember { mutableStateOf<Boolean?>(null) }
     var importFileName by remember { mutableStateOf<String?>(null) }
     var importGroupCount by remember { mutableIntStateOf(0) }
     var importExerciseCount by remember { mutableIntStateOf(0) }
@@ -109,15 +113,20 @@ fun BackupScreen(
                 try {
                     when (val result = viewModel.exportData()) {
                         is BackupResult.Success -> {
-                            withContext(Dispatchers.IO) {
-                                BackupFileIo.writeUtf8(
-                                    { context.contentResolver.openOutputStream(uri) },
-                                    result.value.json
+                            val readable = withContext(Dispatchers.IO) {
+                                BackupFileIo.writeAndVerify(
+                                    openOutput = { context.contentResolver.openOutputStream(uri) },
+                                    openInput = { context.contentResolver.openInputStream(uri) },
+                                    value = result.value.json,
+                                    isRestorable = { viewModel.parseBackupData(it) is BackupResult.Success },
                                 )
                             }
-                            success = true
-                            markBackedUp()
-                            viewModel.showBackupResult(true)
+                            if (readable) {
+                                success = true
+                                restoreBackupVerified = true
+                                markBackedUp()
+                            }
+                            viewModel.showBackupResult(readable)
                             showImportWarning = true
                         }
                         is BackupResult.Failure -> viewModel.showBackupResult(false)
@@ -549,6 +558,9 @@ fun BackupScreen(
     }
 
     // 第2段階: インポート警告ダイアログ
+    LaunchedEffect(showImportWarning) {
+        if (showImportWarning) hasUserData = viewModel.hasUserData()
+    }
     if (showImportWarning) {
         AlertDialog(
             onDismissRequest = {
@@ -573,6 +585,10 @@ fun BackupScreen(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.error
                     )
+                    when {
+                        restoreBackupVerified -> Text(stringResource(R.string.import_backup_verified), fontSize = 16.sp)
+                        hasUserData == true -> Text(stringResource(R.string.import_backup_required), fontSize = 16.sp)
+                    }
                     // The backup offer lives here, so an import asks twice (preview, then this)
                     // rather than three times.
                     OutlinedButton(
@@ -615,6 +631,7 @@ fun BackupScreen(
                             }
                         }
                     },
+                    enabled = restoreAllowed(hasUserData, restoreBackupVerified, busy = isLoading),
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.error
                     )
@@ -644,3 +661,11 @@ fun BackupScreen(
 internal fun formatBackupTime(epochMillis: Long, zone: java.time.ZoneId = java.time.ZoneId.systemDefault()): String =
     java.time.Instant.ofEpochMilli(epochMillis).atZone(zone)
         .format(DateTimeFormatter.ofLocalizedDateTime(java.time.format.FormatStyle.MEDIUM, java.time.format.FormatStyle.SHORT))
+
+/**
+ * Whether a full restore may start: nothing else is running, and either a backup of the current data
+ * was saved and read back for this restore, or the database holds nothing to overwrite. Unknown
+ * ([hasUserData] null, still being read) counts as having data.
+ */
+internal fun restoreAllowed(hasUserData: Boolean?, backupVerified: Boolean, busy: Boolean): Boolean =
+    !busy && (backupVerified || hasUserData == false)

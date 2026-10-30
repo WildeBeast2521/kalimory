@@ -111,6 +111,8 @@
     <string name="data_overwrite_title">Sovrascrittura Dati</string>
     <string name="existing_data_will_be_deleted">Tutti i dati esistenti saranno eliminati.</string>
     <string name="cannot_undo">Questa azione non può essere annullata.</string>
+    <string name="import_backup_required">Prima salva un backup dei tuoi dati attuali. Potrai ripristinare quando sarà salvato e verificato.</string>
+    <string name="import_backup_verified">Backup salvato e verificato.</string>
     <string name="import_confirm">Importa</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">\"%1$s (%2$s)\" è già registrato</string>

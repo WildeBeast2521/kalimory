@@ -43,4 +43,20 @@ object BackupFileIo {
             it.flush()
         }
     }
+
+    /**
+     * Writes [value], then reads the file back: true only when it holds exactly [value] and
+     * [isRestorable] accepts it, so a backup taken before a restore is known to be readable.
+     */
+    @Throws(IOException::class)
+    fun writeAndVerify(
+        openOutput: () -> OutputStream?,
+        openInput: () -> InputStream?,
+        value: String,
+        isRestorable: (String) -> Boolean,
+    ): Boolean {
+        writeUtf8(openOutput, value)
+        val readBack = readUtf8(openInput)
+        return readBack == value && isRestorable(readBack)
+    }
 }

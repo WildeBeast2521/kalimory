@@ -349,6 +349,8 @@
     <string name="data_overwrite_title">Перезапись данных</string>
     <string name="existing_data_will_be_deleted">Все текущие данные будут удалены.</string>
     <string name="cannot_undo">Это действие нельзя отменить.</string>
+    <string name="import_backup_required">Сначала сохраните резервную копию текущих данных. Восстановление станет доступно, когда копия будет сохранена и проверена.</string>
+    <string name="import_backup_verified">Резервная копия сохранена и проверена.</string>
     <string name="import_confirm">Импортировать</string>
     <string name="already_registered_format">«%1$s (%2$s)» уже есть</string>
     <string name="dynamic_label">Повторения</string>

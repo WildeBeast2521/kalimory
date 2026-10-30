@@ -16,6 +16,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 
 ### Changed
 - The workout notification shows your progress: the exercise or routine, the set or round, the reps counted against your goal, the time left of a rest, hold or countdown, and a bar for the whole workout; it updates quietly in place instead of adding notifications ([#217](https://github.com/WildeBeast2521/kalimory/pull/217))
+- Restoring a full backup first asks you to save a backup of your current data, and only continues once that backup is saved and checked; with no data on the phone it restores straight away ([#243](https://github.com/WildeBeast2521/kalimory/pull/243))
 
 ### Fixed
 - With Android's largest font size, labels stay whole: the navigation bar, the Progress tabs and calendar, the rest timer's buttons and the settings' choices no longer break words or cut them off, and long program and exercise names in lists take two lines ([#222](https://github.com/WildeBeast2521/kalimory/pull/222))
@@ -42,6 +43,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Tapping Save twice in the program or interval editor no longer saves the program twice, and a save that is interrupted or fails leaves the program as it was ([#242](https://github.com/WildeBeast2521/kalimory/pull/242))
 - Deleting an exercise asks for confirmation only once its own number of records is shown ([#242](https://github.com/WildeBeast2521/kalimory/pull/242))
 - A group created by adding a catalogue exercise appears after your existing groups ([#242](https://github.com/WildeBeast2521/kalimory/pull/242))
+- The workout notification is shown in the language chosen in Settings, not the phone's language ([#243](https://github.com/WildeBeast2521/kalimory/pull/243))
 
 ## [1.0.2] - 2026-10-07
 

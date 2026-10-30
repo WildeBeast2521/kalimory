@@ -204,6 +204,8 @@
     <string name="discard_changes_message">У вас є незбережені зміни. Відхилити їх?</string>
     <string name="next">Далі</string>
     <string name="cannot_undo">Цю дію неможливо скасувати.</string>
+    <string name="import_backup_required">Спершу збережіть резервну копію поточних даних. Відновлення стане доступним, коли копію буде збережено й перевірено.</string>
+    <string name="import_backup_verified">Резервну копію збережено й перевірено.</string>
     <string name="dynamic_count_sound_label">Звук відліку часу</string>
     <string name="isometric_interval_sound_label">Сповіщення інтервалу</string>
     <string name="program_name_hint">напр., Ранкова зарядка</string>

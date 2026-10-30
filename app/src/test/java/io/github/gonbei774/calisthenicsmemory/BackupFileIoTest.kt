@@ -84,4 +84,18 @@ class BackupFileIoTest {
             if (failure == FailurePoint.CLOSE) throw IOException(FailurePoint.CLOSE.name)
         }
     }
+
+    @Test fun `a backup taken before a restore counts only when it reads back whole and restorable`() {
+        val json = """{"app":"CalisthenicsMemory","version":11}"""
+        var stored = ByteArray(0)
+        val sink = { object : ByteArrayOutputStream() { override fun close() { stored = toByteArray(); super.close() } } }
+        val source = { ByteArrayInputStream(stored) }
+
+        assertTrue(BackupFileIo.writeAndVerify(sink, source, json) { it == json })
+        assertEquals(json, String(stored, StandardCharsets.UTF_8))
+        // The file reads back cut short, as a full disk or a failing provider can leave it.
+        assertEquals(false, BackupFileIo.writeAndVerify(sink, { ByteArrayInputStream(stored.copyOf(stored.size / 2)) }, json) { true })
+        // It reads back whole but would not restore.
+        assertEquals(false, BackupFileIo.writeAndVerify(sink, source, json) { false })
+    }
 }
