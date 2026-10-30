@@ -53,6 +53,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.program.LoopBlock
 import io.github.gonbei774.calisthenicsmemory.ui.components.program.LoopSettingsDialog
 import io.github.gonbei774.calisthenicsmemory.ui.components.program.ProgramExerciseItem
 import io.github.gonbei774.calisthenicsmemory.ui.components.program.ProgramListItem
+import io.github.gonbei774.calisthenicsmemory.viewmodel.ProgramDraft
 
 @Composable
 fun ProgramEditScreen(
@@ -156,131 +157,21 @@ fun ProgramEditScreen(
         (standaloneExercises + loops).sortedBy { it.sortOrder }
     }
 
+    // One save at a time: a second tap while saving would apply the same changes twice.
+    var saving by remember { mutableStateOf(false) }
     fun saveProgram() {
+        if (saving) return
+        saving = true
         coroutineScope.launch {
-            if (programId != null) {
-                // Update existing program
-                program?.copy(name = name)?.let { updatedProgram ->
-                    viewModel.updateProgram(updatedProgram)
-                }
-
-                // ========================================
-                // Sync loops first (exercises depend on loop IDs)
-                // ========================================
-                val originalLoopIds = originalProgramLoops.map { it.id }.toSet()
-                val currentLoopIds = programLoops.map { it.id }.toSet()
-
-                // Map from temporary loop IDs to new DB IDs
-                val loopIdMapping = mutableMapOf<Long, Long>()
-
-                // Delete removed loops (cascade deletes exercises inside)
-                val deletedLoopIds = originalLoopIds - currentLoopIds
-                deletedLoopIds.forEach { id ->
-                    originalProgramLoops.find { it.id == id }?.let { loop ->
-                        viewModel.deleteProgramLoop(loop)
-                    }
-                }
-
-                // Add new loops (temporary IDs are timestamps)
-                val addedLoops = programLoops.filter { it.id !in originalLoopIds }
-                addedLoops.forEach { loop ->
-                    val newLoopId = viewModel.addProgramLoop(
-                        programId = programId,
-                        rounds = loop.rounds,
-                        restBetweenRounds = loop.restBetweenRounds
-                    )
-                    if (newLoopId != null) {
-                        loopIdMapping[loop.id] = newLoopId
-                    }
-                }
-
-                // Update modified loops
-                val existingLoops = programLoops.filter { it.id in originalLoopIds }
-                existingLoops.forEach { loop ->
-                    val original = originalProgramLoops.find { it.id == loop.id }
-                    if (original != null && loop != original) {
-                        viewModel.updateProgramLoop(loop)
-                    }
-                    // Keep original IDs in mapping
-                    loopIdMapping[loop.id] = loop.id
-                }
-
-                // ========================================
-                // Sync exercises with updated loop IDs
-                // ========================================
-                val originalIds = originalProgramExercises.map { it.id }.toSet()
-                val currentIds = programExercises.map { it.id }.toSet()
-
-                // Delete removed exercises
-                val deletedIds = originalIds - currentIds
-                deletedIds.forEach { id ->
-                    originalProgramExercises.find { it.id == id }?.let { pe ->
-                        viewModel.deleteProgramExercise(pe)
-                    }
-                }
-
-                // Add new exercises (temporary IDs are timestamps, not in original)
-                val addedExercises = programExercises.filter { it.id !in originalIds }
-                addedExercises.forEach { pe ->
-                    val mappedLoopId = pe.loopId?.let { loopIdMapping[it] }
-                    viewModel.addProgramExerciseSync(
-                        programId = programId,
-                        exerciseId = pe.exerciseId,
-                        sets = pe.sets,
-                        targetValue = pe.targetValue,
-                        intervalSeconds = pe.intervalSeconds,
-                        loopId = mappedLoopId,
-                        sortOrder = pe.sortOrder
-                    )
-                }
-
-                // Update modified exercises (existing ones that changed)
-                // Note: sortOrder is already set correctly in programExercises, so we just
-                // need to update exercises that have changed (including sortOrder changes)
-                val existingExercises = programExercises.filter { it.id in originalIds }
-                existingExercises.forEach { pe ->
-                    val original = originalProgramExercises.find { it.id == pe.id }
-                    val mappedLoopId = pe.loopId?.let { loopIdMapping[it] }
-                    val updatedPe = pe.copy(loopId = mappedLoopId)
-                    if (original != null && updatedPe != original) {
-                        viewModel.updateProgramExercise(updatedPe)
-                    }
-                }
-            } else {
-                // Create new program
-                val newProgramId = viewModel.createProgramAndGetId(name)
-                if (newProgramId != null) {
-                    // Map from temporary loop IDs to new DB IDs
-                    val loopIdMapping = mutableMapOf<Long, Long>()
-
-                    // Add loops first
-                    programLoops.forEach { loop ->
-                        val newLoopId = viewModel.addProgramLoop(
-                            programId = newProgramId,
-                            rounds = loop.rounds,
-                            restBetweenRounds = loop.restBetweenRounds
-                        )
-                        if (newLoopId != null) {
-                            loopIdMapping[loop.id] = newLoopId
-                        }
-                    }
-
-                    // Add exercises to new program with mapped loop IDs
-                    programExercises.forEach { pe ->
-                        val mappedLoopId = pe.loopId?.let { loopIdMapping[it] }
-                        viewModel.addProgramExerciseSync(
-                            programId = newProgramId,
-                            exerciseId = pe.exerciseId,
-                            sets = pe.sets,
-                            targetValue = pe.targetValue,
-                            intervalSeconds = pe.intervalSeconds,
-                            loopId = mappedLoopId,
-                            sortOrder = pe.sortOrder
-                        )
-                    }
-                }
-            }
-            onSaved()
+            val draft = ProgramDraft(
+                program = program,
+                name = name,
+                originalLoops = originalProgramLoops,
+                loops = programLoops,
+                originalExercises = originalProgramExercises,
+                exercises = programExercises,
+            )
+            if (viewModel.saveProgramDraft(programId, draft)) onSaved() else saving = false
         }
     }
 
@@ -296,7 +187,7 @@ fun ProgramEditScreen(
                 onBack = { handleBackPress() },
                 scrollBehavior = topBarScroll,
             ) {
-                TopBarAction(stringResource(R.string.save), enabled = isValid) { saveProgram() }
+                TopBarAction(stringResource(R.string.save), enabled = isValid && !saving) { saveProgram() }
             }
         }
     ) { paddingValues ->

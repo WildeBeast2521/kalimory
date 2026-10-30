@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory
 
 import android.content.Context
+import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -13,10 +14,12 @@ import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramLoop
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.viewmodel.ProgramActions
+import io.github.gonbei774.calisthenicsmemory.viewmodel.ProgramDraft
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertThrows
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -101,5 +104,80 @@ class ProgramActionsTest {
         val after = database.programExerciseDao().getExercisesForProgramSync(program)
         assertEquals(listOf(ids[1], ids[2], ids[0]), after.map { it.id })
         assertEquals(listOf(0, 1, 2), after.map { it.sortOrder })
+    }
+
+    @Test
+    fun anEditIsAppliedOnceWithItsNewLoopMapped() = runBlocking {
+        val pushUp = exercise("Push-up")
+        val squat = exercise("Squat")
+        val program = database.programDao().insert(Program(name = "Old name"))
+        val kept = database.programExerciseDao().insert(
+            ProgramExercise(programId = program, exerciseId = pushUp, sortOrder = 0, sets = 3, targetValue = 10, intervalSeconds = 60)
+        )
+        val original = database.programExerciseDao().getExercisesForProgramSync(program)
+        // The editor adds a loop and an exercise inside it, both with temporary ids.
+        val newLoop = ProgramLoop(id = 9_000, programId = program, sortOrder = 1, rounds = 2, restBetweenRounds = 30)
+        val added = ProgramExercise(id = 9_001, programId = program, exerciseId = squat, sortOrder = 1, sets = 2, targetValue = 15, intervalSeconds = 45, loopId = 9_000)
+        val draft = ProgramDraft(
+            program = database.programDao().getProgramById(program),
+            name = "New name",
+            originalLoops = emptyList(),
+            loops = listOf(newLoop),
+            originalExercises = original,
+            exercises = original + added,
+        )
+
+        actions.saveProgram(program, draft)
+
+        assertEquals("New name", database.programDao().getProgramById(program)!!.name)
+        val loop = database.programLoopDao().getLoopsForProgramSync(program).single()
+        val saved = database.programExerciseDao().getExercisesForProgramSync(program)
+        assertEquals(kept, saved.first().id) // The existing exercise is kept, not re-added.
+        assertEquals(listOf(null, loop.id), saved.map { it.loopId })
+        assertEquals(2, saved.size)
+    }
+
+    @Test
+    fun aNewProgramIsSavedWithItsLoop() = runBlocking {
+        val plank = exercise("Plank")
+        val draft = ProgramDraft(
+            program = null,
+            name = "Core",
+            originalLoops = emptyList(),
+            loops = listOf(ProgramLoop(id = 5, programId = 0, sortOrder = 0, rounds = 3, restBetweenRounds = 60)),
+            originalExercises = emptyList(),
+            exercises = listOf(ProgramExercise(id = 6, programId = 0, exerciseId = plank, sortOrder = 0, sets = 1, targetValue = 30, intervalSeconds = 60, loopId = 5)),
+        )
+
+        actions.saveProgram(null, draft)
+
+        val program = database.programDao().getProgramByName("Core")!!
+        val loop = database.programLoopDao().getLoopsForProgramSync(program.id).single()
+        assertEquals(loop.id, database.programExerciseDao().getExercisesForProgramSync(program.id).single().loopId)
+    }
+
+    @Test
+    fun aSaveThatFailsPartWayChangesNothing() = runBlocking {
+        val pushUp = exercise("Push-up")
+        val program = database.programDao().insert(Program(name = "Keep me"))
+        database.programExerciseDao().insert(ProgramExercise(programId = program, exerciseId = pushUp, sortOrder = 0, sets = 3, targetValue = 10, intervalSeconds = 60))
+        val original = database.programExerciseDao().getExercisesForProgramSync(program)
+        // The second new exercise names no exercise, so its insert fails after the rename and the first insert.
+        val draft = ProgramDraft(
+            program = database.programDao().getProgramById(program),
+            name = "Renamed",
+            originalLoops = emptyList(),
+            loops = emptyList(),
+            originalExercises = original,
+            exercises = original + listOf(
+                ProgramExercise(id = 9_001, programId = program, exerciseId = pushUp, sortOrder = 1, sets = 1, targetValue = 5, intervalSeconds = 60),
+                ProgramExercise(id = 9_002, programId = program, exerciseId = 999_999, sortOrder = 2, sets = 1, targetValue = 5, intervalSeconds = 60),
+            ),
+        )
+
+        assertThrows(SQLiteConstraintException::class.java) { runBlocking { actions.saveProgram(program, draft) } }
+
+        assertEquals("Keep me", database.programDao().getProgramById(program)!!.name)
+        assertEquals(original, database.programExerciseDao().getExercisesForProgramSync(program))
     }
 }

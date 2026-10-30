@@ -49,6 +49,7 @@ import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import kotlinx.coroutines.launch
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
+import io.github.gonbei774.calisthenicsmemory.viewmodel.IntervalProgramDraft
 
 @Composable
 fun IntervalEditScreen(
@@ -136,75 +137,23 @@ fun IntervalEditScreen(
         exercises.associateBy { it.id }
     }
 
+    // One save at a time: a second tap while saving would apply the same changes twice.
+    var saving by remember { mutableStateOf(false) }
     fun saveProgram() {
+        if (saving) return
+        saving = true
         coroutineScope.launch {
-            val workSecondsVal = workSeconds.toIntOrNull() ?: 40
-            val restSecondsVal = restSeconds.toIntOrNull() ?: 20
-            val roundsVal = rounds.toIntOrNull() ?: 3
-            val roundRestSecondsVal = roundRestSeconds.toIntOrNull() ?: 60
-
-            if (programId != null) {
-                // Update existing program
-                program?.copy(
-                    name = name,
-                    workSeconds = workSecondsVal,
-                    restSeconds = restSecondsVal,
-                    rounds = roundsVal,
-                    roundRestSeconds = roundRestSecondsVal
-                )?.let { updatedProgram ->
-                    viewModel.updateIntervalProgram(updatedProgram)
-                }
-
-                // Sync exercises
-                val originalIds = originalProgramExercises.map { it.id }.toSet()
-                val currentIds = programExercises.map { it.id }.toSet()
-
-                // Delete removed exercises
-                val deletedIds = originalIds - currentIds
-                deletedIds.forEach { id ->
-                    originalProgramExercises.find { it.id == id }?.let { pe ->
-                        viewModel.deleteIntervalProgramExercise(pe)
-                    }
-                }
-
-                // Add new exercises
-                val addedExercises = programExercises.filter { it.id !in originalIds }
-                addedExercises.forEach { pe ->
-                    viewModel.addIntervalProgramExerciseSync(
-                        programId = programId,
-                        exerciseId = pe.exerciseId,
-                        sortOrder = pe.sortOrder
-                    )
-                }
-
-                // Update modified exercises (sortOrder changes)
-                val existingExercises = programExercises.filter { it.id in originalIds }
-                existingExercises.forEach { pe ->
-                    val original = originalProgramExercises.find { it.id == pe.id }
-                    if (original != null && pe != original) {
-                        viewModel.updateIntervalProgramExercise(pe)
-                    }
-                }
-            } else {
-                // Create new program
-                val newProgramId = viewModel.createIntervalProgramAndGetId(
-                    name = name,
-                    workSeconds = workSecondsVal,
-                    restSeconds = restSecondsVal,
-                    rounds = roundsVal,
-                    roundRestSeconds = roundRestSecondsVal
-                )
-                if (newProgramId != null) {
-                    programExercises.forEach { pe ->
-                        viewModel.addIntervalProgramExerciseSync(
-                            programId = newProgramId,
-                            exerciseId = pe.exerciseId,
-                            sortOrder = pe.sortOrder
-                        )
-                    }
-                }
-            }
-            onSaved()
+            val draft = IntervalProgramDraft(
+                program = program,
+                name = name,
+                workSeconds = workSeconds.toIntOrNull() ?: 40,
+                restSeconds = restSeconds.toIntOrNull() ?: 20,
+                rounds = rounds.toIntOrNull() ?: 3,
+                roundRestSeconds = roundRestSeconds.toIntOrNull() ?: 60,
+                originalExercises = originalProgramExercises,
+                exercises = programExercises,
+            )
+            if (viewModel.saveIntervalProgramDraft(programId, draft)) onSaved() else saving = false
         }
     }
 
@@ -223,7 +172,7 @@ fun IntervalEditScreen(
                 onBack = { handleBackPress() },
                 scrollBehavior = topBarScroll,
             ) {
-                TopBarAction(stringResource(R.string.save), enabled = isValid) { saveProgram() }
+                TopBarAction(stringResource(R.string.save), enabled = isValid && !saving) { saveProgram() }
             }
         }
     ) { paddingValues ->
