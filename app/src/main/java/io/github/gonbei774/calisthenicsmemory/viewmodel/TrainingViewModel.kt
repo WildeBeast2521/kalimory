@@ -59,6 +59,8 @@ import kotlinx.coroutines.withContext
 
 // 種目削除の影響範囲
 data class ExerciseDeleteImpact(
+    /** The exercise this was read for, so a dialog never shows another exercise's counts. */
+    val exerciseId: Long,
     val recordCount: Int,
     val programNames: List<String>,
     val intervalNames: List<String>
@@ -305,7 +307,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             val recordCount = recordDao.countByExercise(exercise.id)
             val programNames = programExerciseDao.getProgramNamesUsingExercise(exercise.id)
             val intervalNames = intervalProgramExerciseDao.getProgramNamesUsingExercise(exercise.id)
-            _deleteImpact.value = ExerciseDeleteImpact(recordCount, programNames, intervalNames)
+            _deleteImpact.value = ExerciseDeleteImpact(exercise.id, recordCount, programNames, intervalNames)
         }
     }
 
