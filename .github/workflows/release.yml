@@ -82,7 +82,7 @@ jobs:
 
       - name: Verify the APK
         # The project's certificate (Android refuses updates signed with another key), the package
-        # and version, and no INTERNET permission.
+        # and version, no INTERNET permission, and no permission the app does not declare.
         run: |
           apk=app/build/outputs/apk/release/app-release.apk
           test -f "$apk" || { echo "::error::no signed release APK; the signing secrets are missing or wrong"; exit 1; }
@@ -95,6 +95,8 @@ jobs:
           if "$tools/aapt2" dump permissions "$apk" | grep -q android.permission.INTERNET; then
             echo "::error::the APK requests INTERNET"; exit 1
           fi
+          # No other permission either that the app does not declare itself (a library's, merged in).
+          scripts/check-apk-permissions.sh "$apk"
           echo "signed with the release key, version $VERSION ($code), no INTERNET"
 
       - name: Name the files and write the checksum and notes

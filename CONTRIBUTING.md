@@ -8,7 +8,7 @@ Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md). For a se
 
 These keep the app what it is. Changes that break them cannot be accepted.
 
-- **Offline.** The app has no `INTERNET` permission and never will. No feature may need the network.
+- **Offline.** The app has no `INTERNET` permission and never will. No feature may need the network. CI fails when the built APK asks for any permission the app's manifest does not declare.
 - **No tracking.** No analytics, telemetry, ads, Firebase, Crashlytics or Google Play Services.
 - **Your data is safe.** Database migrations are additive only. Never invent timestamps or workout groupings that old data does not contain.
 - **Nothing is locked.** Progressions guide; they never stop anyone training what they want.

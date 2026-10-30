@@ -91,6 +91,12 @@ jobs:
           fi
           echo "debug APK has no INTERNET permission"
 
+      # A library can merge other permissions into the APK through its own manifest (an
+      # advertising ID, network state, ...). Every permission the APK asks for must be one the
+      # app declares itself, so none arrives with a dependency update unseen.
+      - name: Verify debug APK asks only for the app's own permissions
+        run: scripts/check-apk-permissions.sh app/build/outputs/apk/debug/*.apk
+
       - name: Upload debug APK
         if: success()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
