@@ -70,7 +70,7 @@ The catalogue is generated. Edit `scripts/catalogue/catalogue_spec.py`, then run
 python3 scripts/catalogue/generate_catalogue.py .
 ```
 
-This writes `Catalogue.kt` and the English `catalogue_strings.xml`. Add the same keys to every `values-*/catalogue_strings.xml`; `CatalogueTranslationTest` and lint check that none are missing. Catalogue text must be written for this project. See `docs/wiki/Credits.md`.
+This writes `Catalogue.kt` and the English `catalogue_strings.xml`. Never edit those two by hand: CI fails when they differ from what the spec generates. Add the same keys to every `values-*/catalogue_strings.xml`; `CatalogueTranslationTest` and lint check that none are missing. Catalogue text must be written for this project. See `docs/wiki/Credits.md`.
 
 ## Translations
 

@@ -3,12 +3,18 @@
 Edit catalogue_spec.py, then run from the repository root:
 
     python3 scripts/catalogue/generate_catalogue.py .
+
+With --check it writes nothing and fails when the files differ from what the spec generates (CI runs
+this, so the generated files are never edited by hand or left stale):
+
+    python3 scripts/catalogue/generate_catalogue.py . --check
 """
 import sys, os
 sys.path.insert(0, os.path.dirname(__file__))
 from catalogue_spec import CHAINS
 
 root = sys.argv[1]
+check = "--check" in sys.argv[2:]
 kt = os.path.join(root, "app/src/main/java/io/github/gonbei774/calisthenicsmemory/data/catalogue/Catalogue.kt")
 xml = os.path.join(root, "app/src/main/res/values/catalogue_strings.xml")
 
@@ -81,8 +87,8 @@ out.append('''    )
     fun chain(id: String): CatalogueChain? = chainsById[id]
 }
 ''')
-open(kt, "w").write("\n".join(out))
-open(xml, "w").write('''<?xml version="1.0" encoding="utf-8"?>
+generated = {kt: "\n".join(out)}
+generated[xml] = ('''<?xml version="1.0" encoding="utf-8"?>
 <!--
     The built-in exercise catalogue (ADR 0006), written for this project. Each step has a name, a
     description (_desc) and form cues, one per line (_cues). Generated with Catalogue.kt by scripts/catalogue/generate_catalogue.py.
@@ -91,4 +97,16 @@ open(xml, "w").write('''<?xml version="1.0" encoding="utf-8"?>
 -->
 <resources>
 ''' + "\n".join(strings) + "\n</resources>\n")
+
+if check:
+    stale = [os.path.relpath(path, root) for path, text in generated.items()
+             if not os.path.isfile(path) or open(path, encoding="utf-8").read() != text]
+    if stale:
+        sys.exit("generate_catalogue: out of date with catalogue_spec.py: " + ", ".join(stale)
+                 + "\nRun: python3 scripts/catalogue/generate_catalogue.py .")
+    print("generate_catalogue: Catalogue.kt and catalogue_strings.xml match catalogue_spec.py")
+    sys.exit(0)
+for path, text in generated.items():
+    with open(path, "w", encoding="utf-8") as handle:
+        handle.write(text)
 print("steps", sum(len(c[3]) for c in CHAINS), "strings", len(strings))

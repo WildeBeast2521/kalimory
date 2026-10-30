@@ -59,6 +59,8 @@ import kotlinx.coroutines.withContext
 
 // 種目削除の影響範囲
 data class ExerciseDeleteImpact(
+    /** The exercise this was read for, so a dialog never shows another exercise's counts. */
+    val exerciseId: Long,
     val recordCount: Int,
     val programNames: List<String>,
     val intervalNames: List<String>
@@ -305,7 +307,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             val recordCount = recordDao.countByExercise(exercise.id)
             val programNames = programExerciseDao.getProgramNamesUsingExercise(exercise.id)
             val intervalNames = intervalProgramExerciseDao.getProgramNamesUsingExercise(exercise.id)
-            _deleteImpact.value = ExerciseDeleteImpact(recordCount, programNames, intervalNames)
+            _deleteImpact.value = ExerciseDeleteImpact(exercise.id, recordCount, programNames, intervalNames)
         }
     }
 
@@ -789,24 +791,6 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    suspend fun createProgramAndGetId(name: String): Long? {
-        return try {
-            val program = Program(name = name)
-            programDao.insert(program)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-            null
-        }
-    }
-
-    suspend fun updateProgram(program: Program) {
-        try {
-            programDao.update(program)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-        }
-    }
-
     private val programActions = ProgramActions(database)
 
     fun deleteProgram(programId: Long) {
@@ -829,6 +813,26 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
         }
+    }
+
+    /** Saves the program editor in one transaction; false, with the error shown, when it failed. */
+    suspend fun saveProgramDraft(programId: Long?, draft: ProgramDraft): Boolean = saveDraft {
+        programActions.saveProgram(programId, draft)
+    }
+
+    /** Saves the interval editor in one transaction; false, with the error shown, when it failed. */
+    suspend fun saveIntervalProgramDraft(programId: Long?, draft: IntervalProgramDraft): Boolean = saveDraft {
+        programActions.saveIntervalProgram(programId, draft)
+    }
+
+    private suspend fun saveDraft(save: suspend () -> Unit): Boolean = try {
+        save()
+        true
+    } catch (e: kotlinx.coroutines.CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        _snackbarMessage.value = UiMessage.ErrorOccurred
+        false
     }
 
     suspend fun getProgramById(programId: Long): Program? {
@@ -870,49 +874,6 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    suspend fun addProgramExerciseSync(
-        programId: Long,
-        exerciseId: Long,
-        sets: Int = 1,
-        targetValue: Int,
-        intervalSeconds: Int = 60,
-        loopId: Long? = null,
-        sortOrder: Int? = null
-    ): Long? {
-        return try {
-            val finalSortOrder = sortOrder ?: programExerciseDao.getNextSortOrder(programId)
-            val programExercise = ProgramExercise(
-                programId = programId,
-                exerciseId = exerciseId,
-                sortOrder = finalSortOrder,
-                sets = sets,
-                targetValue = targetValue,
-                intervalSeconds = intervalSeconds,
-                loopId = loopId
-            )
-            programExerciseDao.insert(programExercise)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-            null
-        }
-    }
-
-    suspend fun updateProgramExercise(programExercise: ProgramExercise) {
-        try {
-            programExerciseDao.update(programExercise)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-        }
-    }
-
-    suspend fun deleteProgramExercise(programExercise: ProgramExercise) {
-        try {
-            programExerciseDao.delete(programExercise)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-        }
-    }
-
     suspend fun reorderProgramExercises(exerciseIds: List<Long>) {
         try {
             programExerciseDao.reorderExercises(exerciseIds)
@@ -941,42 +902,6 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
 
     suspend fun getProgramLoopById(loopId: Long): ProgramLoop? {
         return programLoopDao.getLoopById(loopId)
-    }
-
-    suspend fun addProgramLoop(
-        programId: Long,
-        rounds: Int = 3,
-        restBetweenRounds: Int = 60
-    ): Long? {
-        return try {
-            val sortOrder = programLoopDao.getNextSortOrder(programId)
-            val loop = ProgramLoop(
-                programId = programId,
-                sortOrder = sortOrder,
-                rounds = rounds,
-                restBetweenRounds = restBetweenRounds
-            )
-            programLoopDao.insert(loop)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-            null
-        }
-    }
-
-    suspend fun updateProgramLoop(loop: ProgramLoop) {
-        try {
-            programLoopDao.update(loop)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-        }
-    }
-
-    suspend fun deleteProgramLoop(loop: ProgramLoop) {
-        try {
-            programLoopDao.delete(loop)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-        }
     }
 
     suspend fun addProgramExerciseToLoop(
@@ -1024,36 +949,6 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             initialValue = emptyList()
         )
 
-    suspend fun createIntervalProgramAndGetId(
-        name: String,
-        workSeconds: Int,
-        restSeconds: Int,
-        rounds: Int,
-        roundRestSeconds: Int
-    ): Long? {
-        return try {
-            val program = IntervalProgram(
-                name = name,
-                workSeconds = workSeconds,
-                restSeconds = restSeconds,
-                rounds = rounds,
-                roundRestSeconds = roundRestSeconds
-            )
-            intervalProgramDao.insert(program)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-            null
-        }
-    }
-
-    suspend fun updateIntervalProgram(program: IntervalProgram) {
-        try {
-            intervalProgramDao.update(program)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-        }
-    }
-
     fun deleteIntervalProgram(programId: Long) {
         viewModelScope.launch {
             try {
@@ -1089,41 +984,6 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
 
     suspend fun getIntervalProgramExercisesSync(programId: Long): List<IntervalProgramExercise> {
         return intervalProgramExerciseDao.getExercisesForProgramSync(programId)
-    }
-
-    suspend fun addIntervalProgramExerciseSync(
-        programId: Long,
-        exerciseId: Long,
-        sortOrder: Int? = null
-    ): Long? {
-        return try {
-            val finalSortOrder = sortOrder ?: intervalProgramExerciseDao.getNextSortOrder(programId)
-            val exercise = IntervalProgramExercise(
-                programId = programId,
-                exerciseId = exerciseId,
-                sortOrder = finalSortOrder
-            )
-            intervalProgramExerciseDao.insert(exercise)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-            null
-        }
-    }
-
-    suspend fun deleteIntervalProgramExercise(exercise: IntervalProgramExercise) {
-        try {
-            intervalProgramExerciseDao.delete(exercise)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-        }
-    }
-
-    suspend fun updateIntervalProgramExercise(exercise: IntervalProgramExercise) {
-        try {
-            intervalProgramExerciseDao.update(exercise)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-        }
     }
 
     suspend fun reorderIntervalProgramExercises(exerciseIds: List<Long>) {

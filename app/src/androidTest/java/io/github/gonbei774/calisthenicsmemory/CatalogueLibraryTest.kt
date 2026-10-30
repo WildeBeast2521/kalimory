@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
+import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueAddResult
@@ -54,6 +55,20 @@ class CatalogueLibraryTest {
         assertEquals("Hang and pull.", exercise.description)
         assertEquals("pull.full", exercise.catalogId)
         assertEquals(listOf("Pull-up"), database.exerciseGroupDao().getAllGroupsSync().map { it.name })
+    }
+
+    @Test
+    fun aNewChainGroupComesAfterEveryGroupEvenAfterADeletion() = runBlocking {
+        val groups = database.exerciseGroupDao()
+        groups.insertGroup(ExerciseGroup(name = "Legs", displayOrder = 0))
+        groups.insertGroup(ExerciseGroup(name = "Core", displayOrder = 1))
+        groups.deleteGroupByName("Legs")
+
+        CatalogueLibrary.add(database, pullUp, pullUpText)
+
+        // Counting the groups would give the chain's group order 1, tying it with Core.
+        assertEquals(listOf("Core", "Pull-up"), groups.getAllGroupsSync().map { it.name })
+        assertTrue(groups.getGroupByName("Pull-up")!!.displayOrder > groups.getGroupByName("Core")!!.displayOrder)
     }
 
     @Test

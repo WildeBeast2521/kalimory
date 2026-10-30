@@ -348,8 +348,10 @@ fun CreateScreen(
 
     // 種目削除確認ダイアログ
     showDeleteDialog?.let { exercise ->
-        val deleteImpact by viewModel.deleteImpact.collectAsState()
+        val loadedImpact by viewModel.deleteImpact.collectAsState()
         LaunchedEffect(exercise.id) { viewModel.loadDeleteImpact(exercise) }
+        // Deleting removes the exercise's records for good: confirm only once its own counts are read.
+        val deleteImpact = loadedImpact?.takeIf { it.exerciseId == exercise.id }
 
         val dismiss = {
             showDeleteDialog = null
@@ -361,13 +363,10 @@ fun CreateScreen(
             text = {
                 Column {
                     Text(stringResource(R.string.delete_exercise_confirm_title, exercise.name))
-                    Spacer(Modifier.height(12.dp))
-                    Text(
-                        stringResource(
-                            R.string.delete_exercise_record_count,
-                            deleteImpact?.recordCount ?: 0
-                        )
-                    )
+                    if (deleteImpact != null) {
+                        Spacer(Modifier.height(12.dp))
+                        Text(stringResource(R.string.delete_exercise_record_count, deleteImpact.recordCount))
+                    }
 
                     val programNames = deleteImpact?.programNames ?: emptyList()
                     val intervalNames = deleteImpact?.intervalNames ?: emptyList()
@@ -401,6 +400,7 @@ fun CreateScreen(
                         viewModel.deleteExercise(exercise)
                         dismiss()
                     },
+                    enabled = deleteImpact != null,
                     colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
                 ) {
                     Text(stringResource(R.string.delete))
