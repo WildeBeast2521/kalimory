@@ -109,6 +109,8 @@
     <string name="data_overwrite_title">Daten überschreiben</string>
     <string name="existing_data_will_be_deleted">Alle vorhandenen Daten werden gelöscht.</string>
     <string name="cannot_undo">Diese Aktion kann nicht rückgängig gemacht werden.</string>
+    <string name="import_backup_required">Sichere zuerst deine aktuellen Daten. Du kannst wiederherstellen, sobald die Sicherung gespeichert und geprüft ist.</string>
+    <string name="import_backup_verified">Sicherung gespeichert und geprüft.</string>
     <string name="import_confirm">Importieren</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">\"%1$s (%2$s)\" ist bereits registriert</string>

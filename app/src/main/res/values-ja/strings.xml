@@ -123,6 +123,8 @@
     <string name="data_overwrite_title">データの上書き</string>
     <string name="existing_data_will_be_deleted">既存のデータは全て削除されます。</string>
     <string name="cannot_undo">インポート後は元に戻せません。</string>
+    <string name="import_backup_required">まず現在のデータをバックアップしてください。保存と確認が済むと復元できます。</string>
+    <string name="import_backup_verified">バックアップを保存し、確認しました。</string>
     <string name="import_confirm">インポートする</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">「%1$s (%2$s)」は既に登録されています</string>

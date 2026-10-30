@@ -111,6 +111,8 @@
     <string name="data_overwrite_title">Écrasement des Données</string>
     <string name="existing_data_will_be_deleted">Toutes les données existantes seront supprimées.</string>
     <string name="cannot_undo">Cette action ne peut pas être annulée.</string>
+    <string name="import_backup_required">Sauvegardez d\'abord vos données actuelles. Vous pourrez restaurer une fois la sauvegarde enregistrée et vérifiée.</string>
+    <string name="import_backup_verified">Sauvegarde enregistrée et vérifiée.</string>
     <string name="import_confirm">Importer</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">\"%1$s (%2$s)\" est déjà enregistré</string>

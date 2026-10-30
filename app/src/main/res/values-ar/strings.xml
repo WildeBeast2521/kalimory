@@ -359,6 +359,8 @@
     <string name="data_overwrite_title">استبدال البيانات</string>
     <string name="existing_data_will_be_deleted">ستُحذف كل البيانات الحالية.</string>
     <string name="cannot_undo">لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="import_backup_required">احفظ أولًا نسخة احتياطية من بياناتك الحالية. يمكنك الاستعادة بعد حفظها والتحقق منها.</string>
+    <string name="import_backup_verified">حُفظت النسخة الاحتياطية وتم التحقق منها.</string>
     <string name="import_confirm">استيراد</string>
     <string name="already_registered_format">«%1$s (%2$s)» مسجّل بالفعل</string>
     <string name="dynamic_label">التكرارات</string>

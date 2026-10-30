@@ -71,6 +71,18 @@ interface BackupDao {
     @Query("SELECT * FROM chain_placements ORDER BY exerciseId")
     suspend fun chainPlacements(): List<ChainPlacement>
 
+    /**
+     * Rows the user owns across the backed-up tables (child rows need these parents, so they are
+     * not counted). 0 means a restore can overwrite nothing.
+     */
+    @Query(
+        "SELECT (SELECT COUNT(*) FROM exercise_groups) + (SELECT COUNT(*) FROM exercises) + " +
+            "(SELECT COUNT(*) FROM training_records) + (SELECT COUNT(*) FROM programs) + " +
+            "(SELECT COUNT(*) FROM interval_programs) + (SELECT COUNT(*) FROM interval_records) + " +
+            "(SELECT COUNT(*) FROM todo_tasks) + (SELECT COUNT(*) FROM workout_sessions)"
+    )
+    suspend fun userRowCount(): Int
+
     @Query("DELETE FROM chain_placements")
     suspend fun deleteChainPlacements()
 
