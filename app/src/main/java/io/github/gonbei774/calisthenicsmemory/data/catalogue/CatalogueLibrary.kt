@@ -49,7 +49,8 @@ object CatalogueLibrary {
 
             val groups = database.exerciseGroupDao()
             if (groups.getGroupByName(text.chainName) == null) {
-                groups.insertGroup(ExerciseGroup(name = text.chainName, displayOrder = groups.getAllGroupsSync().size))
+                // After every existing group; the group count can repeat an order once one is deleted.
+                groups.insertGroup(ExerciseGroup(name = text.chainName, displayOrder = groups.nextGroupDisplayOrder()))
             }
             val id = exercises.insertExercise(
                 Exercise(
