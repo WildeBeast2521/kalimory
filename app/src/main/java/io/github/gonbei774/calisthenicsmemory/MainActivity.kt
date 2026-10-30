@@ -1,6 +1,5 @@
 package io.github.gonbei774.calisthenicsmemory
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.DisposableEffect
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import androidx.activity.enableEdgeToEdge
@@ -38,17 +37,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
-import io.github.gonbei774.calisthenicsmemory.data.AppLanguage
 import io.github.gonbei774.calisthenicsmemory.data.DatabaseQuarantine
 import io.github.gonbei774.calisthenicsmemory.data.DatabaseStartupCheck
 import io.github.gonbei774.calisthenicsmemory.data.DatabaseStartupState
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.data.AppTheme
-import io.github.gonbei774.calisthenicsmemory.data.LanguagePreferences
 import io.github.gonbei774.calisthenicsmemory.data.ThemePreferences
 import io.github.gonbei774.calisthenicsmemory.data.OnboardingPreferences
 import io.github.gonbei774.calisthenicsmemory.ui.screens.onboarding.WelcomeGuide
-import java.util.Locale
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -127,12 +123,13 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.ShareHubScreen
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalFirstDayOfWeekSetting
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
+import io.github.gonbei774.calisthenicsmemory.util.withAppLanguage
 
 class MainActivity : ComponentActivity() {
     private val systemDarkMode = mutableStateOf(false)
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(updateBaseContextLocale(newBase))
+        super.attachBaseContext(withAppLanguage(newBase))
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -219,42 +216,6 @@ class MainActivity : ComponentActivity() {
     /**
      * Context の言語設定を更新する（全Androidバージョン対応）
      */
-    // The app ships as one APK with every language inside; there are no language splits to download.
-    @SuppressLint("AppBundleLocaleChanges")
-    private fun updateBaseContextLocale(context: Context): Context {
-        val languagePrefs = LanguagePreferences(context)
-        val selectedLanguage = languagePrefs.getLanguage()
-
-        android.util.Log.d("MainActivity", "Selected language: ${selectedLanguage.code}")
-
-        // システム設定に従う場合は何もしない
-        if (selectedLanguage == AppLanguage.SYSTEM) {
-            android.util.Log.d("MainActivity", "Using system language")
-            return context
-        }
-
-        val locale = when (selectedLanguage) {
-            AppLanguage.JAPANESE -> Locale("ja")
-            AppLanguage.ENGLISH -> Locale("en")
-            AppLanguage.SPANISH -> Locale("es")
-            AppLanguage.GERMAN -> Locale("de")
-            AppLanguage.CHINESE -> Locale("zh", "CN")
-            AppLanguage.FRENCH -> Locale("fr")
-            AppLanguage.ITALIAN -> Locale("it")
-            AppLanguage.UKRAINIAN -> Locale("uk")
-            AppLanguage.RUSSIAN -> Locale("ru")
-            AppLanguage.ARABIC -> Locale("ar")
-            AppLanguage.SYSTEM -> return context
-        }
-
-        android.util.Log.d("MainActivity", "Setting locale to: ${locale.language}")
-        Locale.setDefault(locale)
-
-        val config = Configuration(context.resources.configuration)
-        config.setLocale(locale)
-
-        return context.createConfigurationContext(config)
-    }
 }
 
 /**

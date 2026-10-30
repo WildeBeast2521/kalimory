@@ -20,6 +20,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import io.github.gonbei774.calisthenicsmemory.util.withAppLanguage
 
 /**
  * Foreground Service for workout timer.
@@ -74,6 +75,11 @@ class WorkoutTimerService : Service() {
                 context.stopService(Intent(context, WorkoutTimerService::class.java))
             }
         }
+    }
+
+    // The notification is built with this service's context: it needs the app's language too.
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(withAppLanguage(newBase))
     }
 
     // Binder for local binding
