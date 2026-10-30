@@ -11,7 +11,9 @@ These hold for every change. A change that breaks one is wrong, however good it 
 
 - **Offline and private.** No `INTERNET` permission, no network library, telemetry, analytics, ads,
   Firebase, Crashlytics, Google Play Services, accounts or remote configuration. Files move only
-  through the Storage Access Framework and share sheets the user starts.
+  through the Storage Access Framework and share sheets the user starts. CI checks the built APKs:
+  no `INTERNET`, and no permission the app's own manifest does not declare
+  (`scripts/check-apk-permissions.sh`), so a library cannot merge one in unseen.
 - **User data is kept.** Room migrations are additive and keep every row. Never invent
   timestamps, workout groupings or values that old data does not contain. Backups, CSV, sharing
   and restore must round-trip what they claim to.
@@ -161,7 +163,8 @@ The first Kalimory release is 1.0.0 (versionCode 1). For a release:
 4. The tag starts `.github/workflows/release.yml`. It runs the whole CI (unit tests, lint, builds
    and the API 29 instrumented tests), then the release checks again, builds the APK signed with
    the key from the `release` environment's secrets, verifies it (certificate, package, version,
-   no INTERNET) and drafts the GitHub release with the APK and its SHA-256.
+   no INTERNET, only the app's own permissions) and drafts the GitHub release with the APK and its
+   SHA-256.
 5. Read the draft, then publish it. Download the run's `mapping-x.y.z` artifact (kept 90 days) and
    keep it to read stack traces.
 
