@@ -48,6 +48,11 @@ jobs:
       - name: Check CHANGELOG.md
         run: python3 -I scripts/changelog-links.py --check
 
+      # Catalogue.kt and the English catalogue strings are generated; this fails when either was
+      # edited by hand or the spec changed without regenerating. Fix: python3 scripts/catalogue/generate_catalogue.py .
+      - name: Check the generated catalogue
+        run: python3 -I scripts/catalogue/generate_catalogue.py . --check
+
       # Runs before the build, which would otherwise regenerate the schema first.
       - name: Check Room schemas
         timeout-minutes: 15

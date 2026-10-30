@@ -52,7 +52,8 @@ application ID changed.
 - **Catalogue.** Edit `scripts/catalogue/catalogue_spec.py`, then run
   `python3 scripts/catalogue/generate_catalogue.py .`. It writes `Catalogue.kt` and English
   `catalogue_strings.xml`. Add each new key to every `values-*/catalogue_strings.xml` by hand.
-  Never edit generated output directly.
+  Never edit generated output directly: CI runs the generator with `--check` and fails when the
+  committed files differ from what the spec generates.
 - **Room schemas.** Bump the database version, add a migration and let the build export the new
   schema. Committed schema files are immutable; `scripts/check-room-schemas.sh` enforces it.
 - **Lint.** There is no baseline: every lint warning is an error and fails the build. Fix the finding,
