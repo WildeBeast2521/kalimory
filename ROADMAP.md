@@ -12,7 +12,7 @@ Ideas that need any of those are out of scope.
 
 Make the app sturdier before it grows.
 
-11 of 13 done.
+12 of 13 done.
 
 - [x] Crash reports kept on the phone, shared only if you choose to ([#148](https://github.com/WildeBeast2521/kalimory/issues/148), done in [#192](https://github.com/WildeBeast2521/kalimory/pull/192))
 - [x] Screenshot tests, so the look stays consistent ([#150](https://github.com/WildeBeast2521/kalimory/issues/150), done in [#190](https://github.com/WildeBeast2521/kalimory/pull/190))
@@ -22,7 +22,7 @@ Make the app sturdier before it grows.
 - [x] An accessibility pass across every screen ([#149](https://github.com/WildeBeast2521/kalimory/issues/149), done in [#223](https://github.com/WildeBeast2521/kalimory/pull/223))
 - [ ] Native-speaker review of translations through Weblate ([#151](https://github.com/WildeBeast2521/kalimory/issues/151))
 - [x] Fresh screenshots for the README and the stores ([#158](https://github.com/WildeBeast2521/kalimory/issues/158), done in [#225](https://github.com/WildeBeast2521/kalimory/pull/225))
-- [ ] A careful review of every file for bugs, performance and maintainability before the app grows ([#184](https://github.com/WildeBeast2521/kalimory/issues/184))
+- [x] A careful review of every file for bugs, performance and maintainability before the app grows ([#184](https://github.com/WildeBeast2521/kalimory/issues/184), done in [#245](https://github.com/WildeBeast2521/kalimory/pull/245))
 
 Behind the scenes:
 
