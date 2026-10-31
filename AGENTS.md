@@ -73,8 +73,9 @@ application ID changed.
 - **Store and README images.** `scripts/screenshots/update-screenshots.sh` draws six screens with
   made-up data (`StoreScreenshotsTest`, `StoreRestScreenshotTest`; skipped in normal test runs) and
   writes the Fastlane phone screenshots and store banner (`featureGraphic.png`), the README screens
-  and the social preview. Run it when a pictured screen changes, look at every image, and upload
-  the social preview in the repository's settings by hand.
+  and the social preview. Run it in the release pull request when a pictured screen has changed
+  since the last release (not in the feature's pull request), look at every image, and upload the
+  social preview in the repository's settings by hand.
 
 ## Strings and translations
 
@@ -135,7 +136,9 @@ deterministic and offline. A known flaky test is named in the release log, never
 - Inspect before editing; keep each change small and coherent; use Conventional Commits.
 - Remove code, resources or assets only after proving they are unused (references, lint, tests).
   Never delete migrations, schemas or recovery tooling because they look old.
-- Keep README, CHANGELOG, wiki, Fastlane metadata and this guide true to the shipped app.
+- Keep README, CHANGELOG, wiki, Fastlane metadata and this guide true to the shipped app. Public
+  pages describe released features only: a feature's README, wiki and store image changes wait for
+  the release pull request, while its CHANGELOG bullet goes under `## [Unreleased]` with the change.
 - Dependabot opens grouped update pull requests each month (`.github/dependabot.yml`). It cannot
   update the dependency checksums, so its Gradle pull requests fail until
   `scripts/update-dependency-verification.sh` runs on the branch and the result is pushed. Review the
@@ -163,6 +166,8 @@ The first Kalimory release is 1.0.0 (versionCode 1). For a release:
    then run `python3 -I scripts/changelog-links.py`, which rewrites the link definitions at the
    bottom. Add
    `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt` (500 characters at most).
+   In the same pull request, bring the public pages up to the release: the README, the wiki pages
+   and, when a pictured screen changed, the store and README images (`update-screenshots.sh`).
 3. Merge to master, then run `scripts/release.sh --dry-run` and, when it passes,
    `scripts/release.sh`. It runs `scripts/release-checks.sh`, shows the release notes, and tags
    and pushes `v<versionName>`.
@@ -225,6 +230,7 @@ One standard, for every release:
 
 ## Wiki
 
-`docs/wiki` is the source of the GitHub wiki. Edit pages there with the change they describe; after
-the merge, `scripts/sync-wiki.sh` publishes them (links rewritten, sidebar and footer added).
+`docs/wiki` is the source of the GitHub wiki. Pages describe the released app, so edit them in the
+release pull request for the changes it ships, not with each change; after the merge,
+`scripts/sync-wiki.sh` publishes them (links rewritten, sidebar and footer added).
 
