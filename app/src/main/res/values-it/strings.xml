@@ -943,4 +943,40 @@
     <string name="workout_edit_delete_title">Eliminare questo allenamento?</string>
     <string name="workout_edit_delete_message">Non resta nessuna serie, quindi salvando si elimina l’intero allenamento.</string>
     <string name="workout_edit_unavailable">Questo allenamento non può più essere modificato.</string>
+    <!-- Weekly review -->
+    <string name="weekly_review_title">Riepilogo settimanale</string>
+    <string name="weekly_review_open">Riepilogo settimanale</string>
+    <string name="weekly_review_this_week">Questa settimana</string>
+    <string name="weekly_review_last_week">La settimana scorsa</string>
+    <string name="weekly_review_range">%1$s – %2$s</string>
+    <string name="weekly_review_previous">Settimana precedente</string>
+    <string name="weekly_review_next">Settimana successiva</string>
+    <plurals name="weekly_review_sets">
+        <item quantity="one">serie</item>
+        <item quantity="many">serie</item>
+        <item quantity="other">serie</item>
+    </plurals>
+    <plurals name="weekly_review_days">
+        <item quantity="one">Giorni di allenamento: %d</item>
+        <item quantity="many">Giorni di allenamento: %d</item>
+        <item quantity="other">Giorni di allenamento: %d</item>
+    </plurals>
+    <plurals name="weekly_review_days_goal">
+        <item quantity="one">Giorni di allenamento: %1$d su %2$d</item>
+        <item quantity="many">Giorni di allenamento: %1$d su %2$d</item>
+        <item quantity="other">Giorni di allenamento: %1$d su %2$d</item>
+    </plurals>
+    <string name="weekly_review_by_movement">Serie per movimento</string>
+    <string name="weekly_review_push">Spinta</string>
+    <string name="weekly_review_pull">Trazione</string>
+    <string name="weekly_review_legs">Gambe</string>
+    <string name="weekly_review_core">Core</string>
+    <string name="weekly_review_conditioning">Condizionamento</string>
+    <string name="weekly_review_mobility">Mobilità</string>
+    <string name="weekly_review_other">Altri esercizi</string>
+    <string name="weekly_review_other_detail">Non collegati al catalogo</string>
+    <string name="weekly_review_intervals">Intervalli</string>
+    <string name="weekly_review_intervals_detail">Ogni intervallo di lavoro conta come una serie</string>
+    <string name="weekly_review_reference">Il segno indica 10 serie a settimana. Una revisione di 15 studi ha rilevato una maggiore crescita muscolare con 10 o più serie impegnative a settimana per ogni gruppo muscolare (Schoenfeld et al., 2017).</string>
+    <string name="weekly_review_empty">Nessuna serie registrata in questa settimana</string>
 </resources>

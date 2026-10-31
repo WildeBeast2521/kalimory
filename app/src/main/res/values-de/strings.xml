@@ -911,4 +911,37 @@
     <string name="workout_edit_delete_title">Dieses Training löschen?</string>
     <string name="workout_edit_delete_message">Es sind keine Sätze mehr übrig, deshalb löscht das Speichern das ganze Training.</string>
     <string name="workout_edit_unavailable">Dieses Training kann nicht mehr bearbeitet werden.</string>
+    <!-- Weekly review -->
+    <string name="weekly_review_title">Wochenrückblick</string>
+    <string name="weekly_review_open">Wochenrückblick</string>
+    <string name="weekly_review_this_week">Diese Woche</string>
+    <string name="weekly_review_last_week">Letzte Woche</string>
+    <string name="weekly_review_range">%1$s – %2$s</string>
+    <string name="weekly_review_previous">Vorige Woche</string>
+    <string name="weekly_review_next">Nächste Woche</string>
+    <plurals name="weekly_review_sets">
+        <item quantity="one">Satz</item>
+        <item quantity="other">Sätze</item>
+    </plurals>
+    <plurals name="weekly_review_days">
+        <item quantity="one">An %d Tag trainiert</item>
+        <item quantity="other">An %d Tagen trainiert</item>
+    </plurals>
+    <plurals name="weekly_review_days_goal">
+        <item quantity="one">An %1$d von %2$d Tag trainiert</item>
+        <item quantity="other">An %1$d von %2$d Tagen trainiert</item>
+    </plurals>
+    <string name="weekly_review_by_movement">Sätze nach Bewegung</string>
+    <string name="weekly_review_push">Drücken</string>
+    <string name="weekly_review_pull">Ziehen</string>
+    <string name="weekly_review_legs">Beine</string>
+    <string name="weekly_review_core">Rumpf</string>
+    <string name="weekly_review_conditioning">Kondition</string>
+    <string name="weekly_review_mobility">Mobilität</string>
+    <string name="weekly_review_other">Andere Übungen</string>
+    <string name="weekly_review_other_detail">Nicht mit dem Katalog verknüpft</string>
+    <string name="weekly_review_intervals">Intervalle</string>
+    <string name="weekly_review_intervals_detail">Jedes Arbeitsintervall zählt als Satz</string>
+    <string name="weekly_review_reference">Die Markierung zeigt 10 Sätze pro Woche. Eine Auswertung von 15 Studien fand mehr Muskelwachstum bei 10 oder mehr harten Sätzen pro Woche und Muskelgruppe (Schoenfeld et al., 2017).</string>
+    <string name="weekly_review_empty">Keine Sätze in dieser Woche erfasst</string>
 </resources>

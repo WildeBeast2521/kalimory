@@ -22,7 +22,7 @@ import io.github.gonbei774.calisthenicsmemory.Screen
  */
 internal fun Screen.depth(): Int = when (this) {
     Screen.Home -> 0
-    Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList, Screen.Catalogue -> 1
+    Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList, Screen.Catalogue, Screen.WeeklyReview -> 1
     is Screen.CatalogueChain -> if (fromHome) 1 else 2
     is Screen.Record -> if (fromToDo) 2 else 1
     is Screen.Workout -> if (fromToDo && !fromToday) 2 else 1

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.assertCountEquals
 import java.time.format.FormatStyle
 import java.time.format.DateTimeFormatter
@@ -24,6 +25,7 @@ import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.Program
 import io.github.gonbei774.calisthenicsmemory.data.SavedWorkoutState
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
+import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PRIMARY_NAVIGATION_BAR_TAG
 import io.github.gonbei774.calisthenicsmemory.ui.screens.SingleSessionCheckpoint
 import kotlinx.coroutines.runBlocking
@@ -96,6 +98,28 @@ class TodayScreenTest {
         rule.waitForIdle()
         scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
         rule.waitForIdle()
+    }
+
+    @Test
+    fun weeklyReviewOpensFromTodayWithTheSameWeeklyTotal() {
+        runBlocking {
+            database.trainingRecordDao().insertRecords(
+                (1..2).map { TrainingRecord(exerciseId = exerciseId, valueRight = 10, setNumber = it, date = LocalDate.now().toString(), time = "07:00") }
+            )
+        }
+        launch()
+        // Today's anchor reads "N sets this week" (at least the two seeded sets, so the plural is "other").
+        val todayLabel = context.resources.getQuantityString(R.plurals.today_week_sets, 2)
+        val todayTotal = rule.onNode(hasContentDescription(" $todayLabel", substring = true)).fetchSemanticsNode()
+            .config[SemanticsProperties.ContentDescription].first().removeSuffix(" $todayLabel").toInt()
+        rule.onNode(hasText(text(R.string.weekly_review_open)) and hasClickAction()).performScrollTo().performClick()
+        rule.onNode(hasText(text(R.string.weekly_review_this_week)) and isHeading()).assertExists()
+        // The seeded exercise has no catalogue link.
+        rule.onNodeWithText(text(R.string.weekly_review_other)).assertExists()
+        val reviewTotal = context.resources.getQuantityString(R.plurals.weekly_review_sets, todayTotal)
+        rule.onNode(hasContentDescription("$todayTotal $reviewTotal")).assertExists()
+        pressBack()
+        rule.onNode(hasText(text(PrimaryDestination.TODAY.label)) and isHeading()).assertExists()
     }
 
     @Test
