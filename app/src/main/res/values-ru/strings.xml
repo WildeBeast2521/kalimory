@@ -403,6 +403,7 @@
     <string name="interval_label">Интервал</string>
     <string name="loop_round_rest">Отдых между кругами</string>
     <string name="loop_round_current">Круг %1$d/%2$d</string>
+    <string name="round_badge">К%1$d</string>
     <string name="next_set_format">Далее: подход %1$d/%2$d</string>
     <string name="next_set_format_with_side">Далее: подход %1$d/%2$d — %3$s</string>
     <string name="minus_10sec">−10 с</string>

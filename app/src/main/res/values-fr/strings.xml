@@ -440,6 +440,7 @@
     <!-- Loop Feature -->
     <string name="loop_round_rest">Repos de tour</string>
     <string name="loop_round_current">Tour %1$d/%2$d</string>
+    <string name="round_badge">T%1$d</string>
     <string name="add_loop">Ajouter une boucle</string>
     <string name="loop_label">Boucle</string>
     <string name="loop_settings">Paramètres de la boucle</string>

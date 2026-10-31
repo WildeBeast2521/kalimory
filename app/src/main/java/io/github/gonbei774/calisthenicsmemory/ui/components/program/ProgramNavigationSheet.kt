@@ -1041,7 +1041,7 @@ private fun NavigationBilateralSetRow(
                             .padding(horizontal = 5.dp, vertical = 2.dp)
                     ) {
                         Text(
-                            text = "R${set.roundNumber}",
+                            text = stringResource(R.string.round_badge, set.roundNumber),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = cs.secondary
@@ -1188,7 +1188,7 @@ private fun NavigationUnilateralSetRow(
                             .padding(horizontal = 5.dp, vertical = 2.dp)
                     ) {
                         Text(
-                            text = "R${loopSet.roundNumber}",
+                            text = stringResource(R.string.round_badge, loopSet.roundNumber),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = cs.secondary

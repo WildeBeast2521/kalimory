@@ -437,6 +437,7 @@
     <!-- Loop Feature -->
     <string name="loop_round_rest">Rundenpause</string>
     <string name="loop_round_current">Runde %1$d/%2$d</string>
+    <string name="round_badge">R%1$d</string>
     <string name="add_loop">Schleife hinzufügen</string>
     <string name="loop_label">Schleife</string>
     <string name="loop_settings">Schleifeneinstellungen</string>

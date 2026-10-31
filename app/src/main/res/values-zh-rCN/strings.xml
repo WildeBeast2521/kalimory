@@ -438,6 +438,7 @@
     <!-- Loop Feature -->
     <string name="loop_round_rest">回合休息</string>
     <string name="loop_round_current">回合 %1$d/%2$d</string>
+    <string name="round_badge">回合%1$d</string>
     <string name="add_loop">添加循环</string>
     <string name="loop_label">循环</string>
     <string name="loop_settings">循环设置</string>

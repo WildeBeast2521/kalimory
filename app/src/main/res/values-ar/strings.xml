@@ -413,6 +413,7 @@
     <string name="interval_label">الفترات</string>
     <string name="loop_round_rest">الراحة بين الجولات</string>
     <string name="loop_round_current">الجولة %1$d/%2$d</string>
+    <string name="round_badge">ج%1$d</string>
     <string name="next_set_format">التالي: المجموعة %1$d/%2$d</string>
     <string name="next_set_format_with_side">التالي: المجموعة %1$d/%2$d - %3$s</string>
     <string name="minus_10sec">−10 ث</string>

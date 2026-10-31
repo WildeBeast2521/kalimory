@@ -44,6 +44,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Deleting an exercise asks for confirmation only once its own number of records is shown ([#242](https://github.com/WildeBeast2521/kalimory/pull/242))
 - A group created by adding a catalogue exercise appears after your existing groups ([#242](https://github.com/WildeBeast2521/kalimory/pull/242))
 - The workout notification is shown in the language chosen in Settings, not the phone's language ([#243](https://github.com/WildeBeast2521/kalimory/pull/243))
+- The round badge on loop sets in the program overview is shown in your language instead of always "R" ([#244](https://github.com/WildeBeast2521/kalimory/pull/244))
 
 ## [1.0.2] - 2026-10-07
 

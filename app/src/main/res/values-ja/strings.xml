@@ -496,6 +496,7 @@
     <!-- Loop Feature -->
     <string name="loop_round_rest">ラウンド休憩</string>
     <string name="loop_round_current">ラウンド %1$d/%2$d</string>
+    <string name="round_badge">R%1$d</string>
     <string name="add_loop">ループを追加</string>
     <string name="loop_label">ループ</string>
     <string name="loop_settings">ループ設定</string>

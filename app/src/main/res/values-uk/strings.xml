@@ -353,6 +353,7 @@
     <string name="interval_short">Відпочинок:</string>
     <string name="loop_label">Цикл</string>
     <string name="loop_round_current">Раунд %1$d/%2$d</string>
+    <string name="round_badge">Р%1$d</string>
     <string name="loop_empty">Щоб додати вправу, натисніть +</string>
     <string name="loop_round_rest">Відпочинок раунду</string>
     <string name="warning_title">Попередження</string>
