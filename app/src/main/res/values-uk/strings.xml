@@ -911,4 +911,43 @@
     <string name="workout_edit_delete_title">Видалити це тренування?</string>
     <string name="workout_edit_delete_message">Підходів не залишилося, тому збереження видалить усе тренування.</string>
     <string name="workout_edit_unavailable">Це тренування більше не можна редагувати.</string>
+    <!-- Weekly review -->
+    <string name="weekly_review_title">Підсумки тижня</string>
+    <string name="weekly_review_open">Підсумки тижня</string>
+    <string name="weekly_review_this_week">Цей тиждень</string>
+    <string name="weekly_review_last_week">Минулий тиждень</string>
+    <string name="weekly_review_range">%1$s – %2$s</string>
+    <string name="weekly_review_previous">Попередній тиждень</string>
+    <string name="weekly_review_next">Наступний тиждень</string>
+    <plurals name="weekly_review_sets" tools:ignore="ImpliedQuantity">
+        <item quantity="one">підхід</item>
+        <item quantity="few">підходи</item>
+        <item quantity="many">підходів</item>
+        <item quantity="other">підходів</item>
+    </plurals>
+    <plurals name="weekly_review_days">
+        <item quantity="one">Днів із тренуваннями: %d</item>
+        <item quantity="few">Днів із тренуваннями: %d</item>
+        <item quantity="many">Днів із тренуваннями: %d</item>
+        <item quantity="other">Днів із тренуваннями: %d</item>
+    </plurals>
+    <plurals name="weekly_review_days_goal">
+        <item quantity="one">Днів із тренуваннями: %1$d з %2$d</item>
+        <item quantity="few">Днів із тренуваннями: %1$d з %2$d</item>
+        <item quantity="many">Днів із тренуваннями: %1$d з %2$d</item>
+        <item quantity="other">Днів із тренуваннями: %1$d з %2$d</item>
+    </plurals>
+    <string name="weekly_review_by_movement">Підходи за рухами</string>
+    <string name="weekly_review_push">Жими</string>
+    <string name="weekly_review_pull">Тяги</string>
+    <string name="weekly_review_legs">Ноги</string>
+    <string name="weekly_review_core">Кор</string>
+    <string name="weekly_review_conditioning">Витривалість</string>
+    <string name="weekly_review_mobility">Рухливість</string>
+    <string name="weekly_review_other">Інші вправи</string>
+    <string name="weekly_review_other_detail">Не пов\'язані з каталогом</string>
+    <string name="weekly_review_intervals">Інтервали</string>
+    <string name="weekly_review_intervals_detail">Кожен робочий інтервал рахується як підхід</string>
+    <string name="weekly_review_reference">Позначка — 10 підходів на тиждень. Огляд 15 досліджень виявив більший ріст м\'язів при 10 і більше важких підходах на тиждень для кожної групи м\'язів (Schoenfeld et al., 2017).</string>
+    <string name="weekly_review_empty">За цей тиждень підходів немає</string>
 </resources>

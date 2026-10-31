@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
@@ -64,6 +65,15 @@ class MainScreenAccessibilityTest {
         compose.waitUntil(STARTUP_TIMEOUT_MS) { compose.onAllNodes(hasContentDescription("Settings")).fetchSemanticsNodes().isNotEmpty() }
         compose.onNode(hasContentDescription("Settings")).performClick()
         audit("Settings", waitFor = "Settings")
+    }
+
+    @Test fun weeklyReview() {
+        // Opened from the line under Today's week.
+        val button = hasText("Weekly review") and hasClickAction()
+        compose.waitUntil(STARTUP_TIMEOUT_MS) { compose.onAllNodes(button).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNode(button).performClick()
+        audit("Weekly review", waitFor = "This week")
+        assertHeadings("Weekly review", "This week", "Sets by movement")
     }
 
     /** TalkBack users move between headings: the screen's title and each section are marked as one. */

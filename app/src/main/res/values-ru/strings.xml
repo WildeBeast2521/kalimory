@@ -908,4 +908,43 @@
     <string name="workout_edit_delete_title">Удалить эту тренировку?</string>
     <string name="workout_edit_delete_message">Подходов не осталось, поэтому при сохранении вся тренировка будет удалена.</string>
     <string name="workout_edit_unavailable">Эту тренировку больше нельзя изменить.</string>
+    <!-- Weekly review -->
+    <string name="weekly_review_title">Итоги недели</string>
+    <string name="weekly_review_open">Итоги недели</string>
+    <string name="weekly_review_this_week">Эта неделя</string>
+    <string name="weekly_review_last_week">Прошлая неделя</string>
+    <string name="weekly_review_range">%1$s – %2$s</string>
+    <string name="weekly_review_previous">Предыдущая неделя</string>
+    <string name="weekly_review_next">Следующая неделя</string>
+    <plurals name="weekly_review_sets" tools:ignore="ImpliedQuantity">
+        <item quantity="one">подход</item>
+        <item quantity="few">подхода</item>
+        <item quantity="many">подходов</item>
+        <item quantity="other">подходов</item>
+    </plurals>
+    <plurals name="weekly_review_days">
+        <item quantity="one">Дней с тренировками: %d</item>
+        <item quantity="few">Дней с тренировками: %d</item>
+        <item quantity="many">Дней с тренировками: %d</item>
+        <item quantity="other">Дней с тренировками: %d</item>
+    </plurals>
+    <plurals name="weekly_review_days_goal">
+        <item quantity="one">Дней с тренировками: %1$d из %2$d</item>
+        <item quantity="few">Дней с тренировками: %1$d из %2$d</item>
+        <item quantity="many">Дней с тренировками: %1$d из %2$d</item>
+        <item quantity="other">Дней с тренировками: %1$d из %2$d</item>
+    </plurals>
+    <string name="weekly_review_by_movement">Подходы по движениям</string>
+    <string name="weekly_review_push">Жимы</string>
+    <string name="weekly_review_pull">Тяги</string>
+    <string name="weekly_review_legs">Ноги</string>
+    <string name="weekly_review_core">Кор</string>
+    <string name="weekly_review_conditioning">Выносливость</string>
+    <string name="weekly_review_mobility">Подвижность</string>
+    <string name="weekly_review_other">Другие упражнения</string>
+    <string name="weekly_review_other_detail">Не связаны с каталогом</string>
+    <string name="weekly_review_intervals">Интервалы</string>
+    <string name="weekly_review_intervals_detail">Каждый рабочий интервал считается подходом</string>
+    <string name="weekly_review_reference">Отметка — 10 подходов в неделю. Обзор 15 исследований показал больший рост мышц при 10 и более тяжёлых подходах в неделю на каждую группу мышц (Schoenfeld et al., 2017).</string>
+    <string name="weekly_review_empty">За эту неделю подходов нет</string>
 </resources>

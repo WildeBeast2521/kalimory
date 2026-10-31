@@ -891,4 +891,34 @@
     <string name="workout_edit_delete_title">删除此训练？</string>
     <string name="workout_edit_delete_message">已没有任何组，保存将删除整个训练。</string>
     <string name="workout_edit_unavailable">此训练已无法编辑。</string>
+    <!-- Weekly review -->
+    <string name="weekly_review_title">每周回顾</string>
+    <string name="weekly_review_open">每周回顾</string>
+    <string name="weekly_review_this_week">本周</string>
+    <string name="weekly_review_last_week">上周</string>
+    <string name="weekly_review_range">%1$s – %2$s</string>
+    <string name="weekly_review_previous">上一周</string>
+    <string name="weekly_review_next">下一周</string>
+    <plurals name="weekly_review_sets">
+        <item quantity="other">组</item>
+    </plurals>
+    <plurals name="weekly_review_days">
+        <item quantity="other">训练了 %d 天</item>
+    </plurals>
+    <plurals name="weekly_review_days_goal">
+        <item quantity="other">训练了 %1$d / %2$d 天</item>
+    </plurals>
+    <string name="weekly_review_by_movement">按动作类型的组数</string>
+    <string name="weekly_review_push">推</string>
+    <string name="weekly_review_pull">拉</string>
+    <string name="weekly_review_legs">腿</string>
+    <string name="weekly_review_core">核心</string>
+    <string name="weekly_review_conditioning">体能</string>
+    <string name="weekly_review_mobility">灵活性</string>
+    <string name="weekly_review_other">其他动作</string>
+    <string name="weekly_review_other_detail">未关联动作目录</string>
+    <string name="weekly_review_intervals">间歇</string>
+    <string name="weekly_review_intervals_detail">每个训练间歇计为一组</string>
+    <string name="weekly_review_reference">标记表示每周 10 组。一项汇总 15 项研究的分析发现，每个肌群每周进行 10 组或以上高强度训练时，肌肉增长更多（Schoenfeld et al., 2017）。</string>
+    <string name="weekly_review_empty">本周没有记录的组</string>
 </resources>

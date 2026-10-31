@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
@@ -55,6 +56,13 @@ class LargeTextTest {
         compose.waitUntil(STARTUP_TIMEOUT_MS) { compose.onAllNodes(hasContentDescription("Settings")).fetchSemanticsNodes().isNotEmpty() }
         compose.onNode(hasContentDescription("Settings")).performClick()
         show(null, "Settings", label = "Settings")
+    }
+
+    @Test fun weeklyReview() {
+        val button = hasText("Weekly review") and hasClickAction()
+        compose.waitUntil(STARTUP_TIMEOUT_MS) { compose.onAllNodes(button).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNode(button).performClick()
+        show(null, "This week", label = "Weekly review")
     }
 
     @Test fun today() = show(null, MainScreenFixture.PROGRAM)

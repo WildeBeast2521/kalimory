@@ -71,6 +71,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import io.github.gonbei774.calisthenicsmemory.util.rememberToday
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 
 /**
  * Today (ADR 0004): the week at a glance, then the one thing to do next, then what else is
@@ -89,6 +90,7 @@ fun TodayScreen(
     onOpenDay: (LocalDate) -> Unit = {},
     onStartExercise: (Long, Standard) -> Unit = { _, _ -> },
     onOpenChain: (String) -> Unit = {},
+    onOpenWeeklyReview: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val locale = LocalConfiguration.current.locales[0]
@@ -246,7 +248,22 @@ fun TodayScreen(
             Spacer(Modifier.height(Spacing.m))
             WeekStrip(week, trainedDays, today, locale, weekSummary, onDayClick = onOpenDay)
             Spacer(Modifier.height(Spacing.s))
-            Text(weekSummary, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            val summaryText: @Composable (Modifier) -> Unit = { m ->
+                Text(weekSummary, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = m)
+            }
+            val reviewButton: @Composable () -> Unit = {
+                TextButton(onClick = onOpenWeeklyReview) { Text(stringResource(R.string.weekly_review_open)) }
+            }
+            // With a large font the button takes its own line, so the summary keeps its width.
+            if (isLargeFontScale()) {
+                summaryText(Modifier)
+                reviewButton()
+            } else {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    summaryText(Modifier.weight(1f))
+                    reviewButton()
+                }
+            }
         }
 
         // The one thing to do next.

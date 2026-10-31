@@ -960,4 +960,49 @@
     <string name="workout_edit_delete_title">حذف هذا التمرين؟</string>
     <string name="workout_edit_delete_message">لم تبقَ أي مجموعة، لذا يحذف الحفظ التمرين كله.</string>
     <string name="workout_edit_unavailable">لم يعد بالإمكان تعديل هذا التمرين.</string>
+    <!-- Weekly review -->
+    <string name="weekly_review_title">المراجعة الأسبوعية</string>
+    <string name="weekly_review_open">المراجعة الأسبوعية</string>
+    <string name="weekly_review_this_week">هذا الأسبوع</string>
+    <string name="weekly_review_last_week">الأسبوع الماضي</string>
+    <string name="weekly_review_range">%1$s – %2$s</string>
+    <string name="weekly_review_previous">الأسبوع السابق</string>
+    <string name="weekly_review_next">الأسبوع التالي</string>
+    <plurals name="weekly_review_sets">
+        <item quantity="zero">مجموعة</item>
+        <item quantity="one">مجموعة</item>
+        <item quantity="two">مجموعتان</item>
+        <item quantity="few">مجموعات</item>
+        <item quantity="many">مجموعة</item>
+        <item quantity="other">مجموعة</item>
+    </plurals>
+    <plurals name="weekly_review_days">
+        <item quantity="zero">أيام التمرين: %d</item>
+        <item quantity="one">أيام التمرين: %d</item>
+        <item quantity="two">أيام التمرين: %d</item>
+        <item quantity="few">أيام التمرين: %d</item>
+        <item quantity="many">أيام التمرين: %d</item>
+        <item quantity="other">أيام التمرين: %d</item>
+    </plurals>
+    <plurals name="weekly_review_days_goal">
+        <item quantity="zero">أيام التمرين: %1$d من %2$d</item>
+        <item quantity="one">أيام التمرين: %1$d من %2$d</item>
+        <item quantity="two">أيام التمرين: %1$d من %2$d</item>
+        <item quantity="few">أيام التمرين: %1$d من %2$d</item>
+        <item quantity="many">أيام التمرين: %1$d من %2$d</item>
+        <item quantity="other">أيام التمرين: %1$d من %2$d</item>
+    </plurals>
+    <string name="weekly_review_by_movement">المجموعات حسب الحركة</string>
+    <string name="weekly_review_push">الدفع</string>
+    <string name="weekly_review_pull">السحب</string>
+    <string name="weekly_review_legs">الساقان</string>
+    <string name="weekly_review_core">الجذع</string>
+    <string name="weekly_review_conditioning">اللياقة</string>
+    <string name="weekly_review_mobility">المرونة</string>
+    <string name="weekly_review_other">تمارين أخرى</string>
+    <string name="weekly_review_other_detail">غير مرتبطة بكتالوج التمارين</string>
+    <string name="weekly_review_intervals">الفترات</string>
+    <string name="weekly_review_intervals_detail">تُحسب كل فترة عمل مجموعةً واحدة</string>
+    <string name="weekly_review_reference">تشير العلامة إلى 10 مجموعات أسبوعيًا. وجدت مراجعة لـ15 دراسة نموًا عضليًا أكبر مع 10 مجموعات شاقة أو أكثر أسبوعيًا لكل مجموعة عضلية (Schoenfeld et al., 2017).</string>
+    <string name="weekly_review_empty">لم تُسجَّل أي مجموعات في هذا الأسبوع</string>
 </resources>

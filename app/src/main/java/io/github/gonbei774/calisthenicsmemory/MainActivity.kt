@@ -103,6 +103,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.RecordScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.CreateScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.SettingsScreenNew
 import io.github.gonbei774.calisthenicsmemory.ui.screens.LicensesScreen
+import io.github.gonbei774.calisthenicsmemory.ui.screens.review.WeeklyReviewScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.WorkoutScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.view.ViewScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ToDoScreen
@@ -338,7 +339,7 @@ fun CalisthenicsMemoryApp(
     // registered later and still take precedence.
     val backTarget: Screen? = when (val screen = currentScreen) {
         Screen.Home -> null
-        Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList, Screen.Catalogue -> Screen.Home
+        Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList, Screen.Catalogue, Screen.WeeklyReview -> Screen.Home
         is Screen.CatalogueChain -> if (screen.fromHome) Screen.Home else Screen.Catalogue
         Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub -> Screen.Settings
         Screen.CommunityShareExport -> Screen.ShareHub
@@ -483,6 +484,7 @@ fun CalisthenicsMemoryApp(
                                     viewModel = viewModel,
                                     onStartExercise = { id, target -> currentScreen = Screen.Workout(exerciseId = id, fromToday = true, suggestedTarget = target) },
                                     onOpenChain = { chainId -> currentScreen = Screen.CatalogueChain(chainId, fromHome = true) },
+                                    onOpenWeeklyReview = { currentScreen = Screen.WeeklyReview },
                                     onResume = { workout ->
                                         currentScreen = when (workout) {
                                             // The single-workout screen offers its checkpoint whenever it opens.
@@ -642,6 +644,9 @@ fun CalisthenicsMemoryApp(
                             onOpenChain = { chainId -> currentScreen = Screen.CatalogueChain(chainId) }
                         )
                     }
+                    is Screen.WeeklyReview -> {
+                        WeeklyReviewScreen(viewModel = viewModel, onNavigateBack = { currentScreen = Screen.Home })
+                    }
                     is Screen.CatalogueChain -> {
                         CatalogueChainScreen(
                             viewModel = viewModel,
@@ -770,6 +775,7 @@ sealed class Screen {
     object Create : Screen()
     object Settings : Screen()
     object Licenses : Screen()
+    object WeeklyReview : Screen()
     data class Record(val exerciseId: Long? = null, val fromToDo: Boolean = false) : Screen()
     // fromToday: opened from the Today destination, so back returns there.
     // suggestedTarget: sets and value from Today's suggestion, which the settings step starts at.
@@ -825,6 +831,7 @@ private val ScreenSaver = mapSaver(
                 Screen.Create -> put("type", "Create")
                 Screen.Settings -> put("type", "Settings")
                 Screen.Licenses -> put("type", "Licenses")
+                Screen.WeeklyReview -> put("type", "WeeklyReview")
                 Screen.ProgramList -> put("type", "ProgramList")
                 Screen.IntervalList -> put("type", "IntervalList")
                 is Screen.Record -> {
@@ -884,6 +891,7 @@ private val ScreenSaver = mapSaver(
             "Create" -> Screen.Create
             "Settings" -> Screen.Settings
             "Licenses" -> Screen.Licenses
+            "WeeklyReview" -> Screen.WeeklyReview
             "ProgramList" -> Screen.ProgramList
             "IntervalList" -> Screen.IntervalList
             "Record" -> Screen.Record(

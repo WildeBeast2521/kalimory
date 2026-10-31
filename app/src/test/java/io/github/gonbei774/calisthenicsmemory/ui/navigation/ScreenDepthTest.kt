@@ -13,6 +13,7 @@ class ScreenDepthTest {
     @Test fun `back destinations are shallower`() {
         assertBack(Screen.ToDo, Screen.Home)
         assertBack(Screen.Settings, Screen.Home)
+        assertBack(Screen.WeeklyReview, Screen.Home)
         assertBack(Screen.Licenses, Screen.Settings)
         assertBack(Screen.Backup, Screen.Settings)
         assertBack(Screen.CsvDataManagement, Screen.Settings)

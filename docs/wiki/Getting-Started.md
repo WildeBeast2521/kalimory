@@ -4,7 +4,7 @@ The first time you open the app, a short welcome guide explains the basics. You 
 
 ## The four tabs
 
-- **Today.** What you have done this week, what is due, suggestions from your progressions, and a button to start a workout. Tap a day in the week strip to see that day in Progress.
+- **Today.** What you have done this week, what is due, suggestions from your progressions, and a button to start a workout. Tap a day in the week strip to see that day in Progress. Weekly review, beside the week's summary, shows the days you trained and your sets by movement for this week and every week before it.
 - **Train.** Start a single exercise, a program or an interval routine, or log a workout you already did.
 - **Progress.** Your history as a calendar, a list and graphs, plus your progressions and exercise targets.
 - **Library.** Your exercises and groups, programs, interval routines, the To Do list, the exercise catalogue, and Settings.

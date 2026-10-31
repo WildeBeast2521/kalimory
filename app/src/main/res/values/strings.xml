@@ -920,4 +920,37 @@
     <string name="workout_edit_delete_title">Delete this workout?</string>
     <string name="workout_edit_delete_message">No sets are left, so saving deletes the whole workout.</string>
     <string name="workout_edit_unavailable">This workout can no longer be edited.</string>
+    <!-- Weekly review -->
+    <string name="weekly_review_title">Weekly review</string>
+    <string name="weekly_review_open">Weekly review</string>
+    <string name="weekly_review_this_week">This week</string>
+    <string name="weekly_review_last_week">Last week</string>
+    <string name="weekly_review_range">%1$s – %2$s</string>
+    <string name="weekly_review_previous">Previous week</string>
+    <string name="weekly_review_next">Next week</string>
+    <plurals name="weekly_review_sets">
+        <item quantity="one">set</item>
+        <item quantity="other">sets</item>
+    </plurals>
+    <plurals name="weekly_review_days">
+        <item quantity="one">Trained on %d day</item>
+        <item quantity="other">Trained on %d days</item>
+    </plurals>
+    <plurals name="weekly_review_days_goal">
+        <item quantity="one">Trained on %1$d of %2$d day</item>
+        <item quantity="other">Trained on %1$d of %2$d days</item>
+    </plurals>
+    <string name="weekly_review_by_movement">Sets by movement</string>
+    <string name="weekly_review_push">Push</string>
+    <string name="weekly_review_pull">Pull</string>
+    <string name="weekly_review_legs">Legs</string>
+    <string name="weekly_review_core">Core</string>
+    <string name="weekly_review_conditioning">Conditioning</string>
+    <string name="weekly_review_mobility">Mobility</string>
+    <string name="weekly_review_other">Other exercises</string>
+    <string name="weekly_review_other_detail">Not linked to the catalogue</string>
+    <string name="weekly_review_intervals">Intervals</string>
+    <string name="weekly_review_intervals_detail">Each work interval counts as a set</string>
+    <string name="weekly_review_reference">The mark shows 10 sets a week. A review of 15 studies found more muscle growth with 10 or more hard sets a week for each muscle group (Schoenfeld et al., 2017).</string>
+    <string name="weekly_review_empty">No sets logged in this week</string>
 </resources>

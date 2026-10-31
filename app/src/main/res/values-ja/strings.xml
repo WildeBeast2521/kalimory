@@ -897,4 +897,34 @@
     <string name="workout_edit_delete_title">このワークアウトを削除しますか？</string>
     <string name="workout_edit_delete_message">セットが残っていないため、保存するとワークアウト全体が削除されます。</string>
     <string name="workout_edit_unavailable">このワークアウトはもう編集できません。</string>
+    <!-- Weekly review -->
+    <string name="weekly_review_title">週間レビュー</string>
+    <string name="weekly_review_open">週間レビュー</string>
+    <string name="weekly_review_this_week">今週</string>
+    <string name="weekly_review_last_week">先週</string>
+    <string name="weekly_review_range">%1$s – %2$s</string>
+    <string name="weekly_review_previous">前の週</string>
+    <string name="weekly_review_next">次の週</string>
+    <plurals name="weekly_review_sets">
+        <item quantity="other">セット</item>
+    </plurals>
+    <plurals name="weekly_review_days">
+        <item quantity="other">%d日トレーニング</item>
+    </plurals>
+    <plurals name="weekly_review_days_goal">
+        <item quantity="other">%2$d日中%1$d日トレーニング</item>
+    </plurals>
+    <string name="weekly_review_by_movement">動きごとのセット数</string>
+    <string name="weekly_review_push">プッシュ</string>
+    <string name="weekly_review_pull">プル</string>
+    <string name="weekly_review_legs">脚</string>
+    <string name="weekly_review_core">体幹</string>
+    <string name="weekly_review_conditioning">コンディショニング</string>
+    <string name="weekly_review_mobility">モビリティ</string>
+    <string name="weekly_review_other">その他の種目</string>
+    <string name="weekly_review_other_detail">カタログと未連携</string>
+    <string name="weekly_review_intervals">インターバル</string>
+    <string name="weekly_review_intervals_detail">ワーク区間1回を1セットとして数えます</string>
+    <string name="weekly_review_reference">目印は週10セットです。15件の研究をまとめた分析では、筋群ごとに週10セット以上のきついセットを行うと筋肉がより大きく成長しました（Schoenfeld et al., 2017）。</string>
+    <string name="weekly_review_empty">この週のセットの記録はありません</string>
 </resources>
