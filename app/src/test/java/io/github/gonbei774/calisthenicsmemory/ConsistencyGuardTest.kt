@@ -41,6 +41,21 @@ class ConsistencyGuardTest {
         assertTrue("Use StartButton: $offenders", offenders.isEmpty())
     }
 
+    @Test fun `user-visible text comes from string resources, not literals`() {
+        // Every user-visible string is a resource (AGENTS.md), so all ten languages get it. Proper
+        // names stay as they are.
+        val names = setOf("WildeBeast2521", "Gonbei774")
+        val literal = Regex("""(?:\bText\(\s*|\btext\s*=\s*)"([^"]*)"""")
+        // What a reader sees: without templates (${'$'}{…}, ${'$'}name) and escapes (\u2022, \n).
+        val code = Regex("""\$\{[^}]*}|\$[A-Za-z_][A-Za-z0-9_.]*|\\u[0-9A-Fa-f]{4}|\\[ntr]""")
+        val offenders = kotlin.flatMap { file ->
+            literal.findAll(file.readText()).map { it.groupValues[1] }
+                .filter { text -> text !in names && code.replace(text, "").any { it.isLetter() } }
+                .map { "${file.name}: \"$it\"" }.toList()
+        }
+        assertTrue("Move these into strings.xml: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `english counts are plurals, never "(s)"`() {
         val strings = main.resolve("res/values/strings.xml").readText()
         val offenders = Regex("""<string name="([^"]+)">[^<]*\(s\)""").findAll(strings).map { it.groupValues[1] }.toList()
