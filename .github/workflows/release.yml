@@ -87,8 +87,11 @@ jobs:
           apk=app/build/outputs/apk/release/app-release.apk
           test -f "$apk" || { echo "::error::no signed release APK; the signing secrets are missing or wrong"; exit 1; }
           tools="$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)"
-          cert="$("$tools/apksigner" verify --print-certs "$apk" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')"
-          test "$cert" = "$(cat .github/release-certificate.sha256)" || { echo "::error::signed with an unexpected certificate"; exit 1; }
+          # Every signer's certificate must be the release key. apksigner's wording changed with
+          # build-tools 37 ("V2 Signer: certificate …" instead of "Signer #1 certificate …"), so any
+          # signer line counts; two different certificates, or none, never match.
+          cert="$("$tools/apksigner" verify --print-certs "$apk" | sed -n 's/^.*[Ss]igner.* certificate SHA-256 digest: //p' | sort -u)"
+          test "$cert" = "$(cat .github/release-certificate.sha256)" || { echo "::error::signed with an unexpected certificate: ${cert:-none read}"; exit 1; }
           code="$(sed -n 's/^ *versionCode = \([0-9]*\)/\1/p' app/build.gradle.kts)"
           "$tools/aapt2" dump badging "$apk" | grep -q "package: name='io.github.wildebeast2521.kalimory' versionCode='$code' versionName='$VERSION'" \
             || { echo "::error::package name or version in the APK does not match"; exit 1; }
