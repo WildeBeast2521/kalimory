@@ -143,8 +143,9 @@ deterministic and offline. A known flaky test is named in the release log, never
 - `ROADMAP.md` mirrors the GitHub milestones as a checklist: when an issue is added, moved or
   closed, update its line in the same pull request. A closed issue is ticked with the pull request
   that closed it, and the milestone's "done" count follows; an issue closed as not planned leaves
-  the list. The README's roadmap section is the short overview: change it only when a milestone's
-  theme or status changes (for example, when one ships and the next is in progress).
+  the list. The README's roadmap section is the same checklist in short form (milestone titles and
+  item titles, no links or details): change it in the same pull request, and mark a milestone
+  "released in x.y.0" when it ships and the next one "in progress".
 
 ## Versions and releases
 
@@ -153,7 +154,11 @@ The first Kalimory release is 1.0.0 (versionCode 1). For a release:
 1. Bump `versionCode` (always +1) and `versionName` in `app/build.gradle.kts`. For a minor release
    (x.y.0), first regenerate the Baseline Profile on the API 29 emulator with
    `./gradlew :app:generateReleaseBaselineProfile` and commit the changed
-   `app/src/release/generated/baselineProfiles/` files, so the new screens start fast too.
+   `app/src/release/generated/baselineProfiles/` files, so the new screens start fast too. With
+   Benchmark 1.5 the task can report "No baseline profile rules were generated" and leave the two
+   files deleted: the generator writes only `…-startup-prof.txt` under
+   `baselineprofile/build/outputs/connected_android_test_additional_output/`. Copy that file over
+   both `baseline-prof.txt` and `startup-prof.txt` (they were always identical).
 2. Date the CHANGELOG entry (`## [x.y.z] - YYYY-MM-DD`), keep an empty `## [Unreleased]` above it,
    then run `python3 -I scripts/changelog-links.py`, which rewrites the link definitions at the
    bottom. Add

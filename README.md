@@ -128,13 +128,52 @@ More in the [Privacy](docs/wiki/Privacy.md) and [Backups](docs/wiki/Backups-and-
 <h2 id="roadmap">Roadmap</h2>
 
 Each version has one theme. There are no dates: a version ships when its work is done and tested.
+The short checklist is below; [ROADMAP.md](ROADMAP.md) has each item with its issue and the pull
+request that did it.
 
-- **1.1 Trust and polish** (in progress). Make the app sturdier before it grows: crash reports that stay on the phone, full editing of saved workouts, an accessibility pass, native review of the translations and a review of every file.
-- **1.2 Training insight.** Show whether you are improving, from data the app already has: a weekly review, a body map, a climb chart for each chain, personal-best history and a larger catalogue.
-- **1.3 Progression v2.** Progressions that explain themselves: warm-up sets, an optional effort rating, supersets and targets that say why.
-- **1.4 Planning and reach.** Starter programs, schedules, a home-screen widget, spoken cues and imports from FitNotes, Strong and Hevy.
+**1.1 Trust and polish** (released in 1.1.0)
 
-Accounts, sync servers, cloud backup, ads and AI coaching are not planned. The checklist of every issue, ticked as each one is done, is in [ROADMAP.md](ROADMAP.md).
+- [x] Crash reports kept on the phone, shared only if you choose to
+- [x] Screenshot tests, so the look stays consistent
+- [x] Edit any saved workout fully, including its date
+- [x] One time estimate everywhere
+- [x] Whole tab labels on narrow phones
+- [x] An accessibility pass across every screen
+- [x] Fresh screenshots for the README and the stores
+- [x] A careful review of every file for bugs, performance and maintainability before the app grows
+- [x] Dependency updates
+- [x] Dependency verification
+- [x] A clean lint report
+- [x] Start-up measurements
+
+**1.2 Training insight** (in progress)
+
+- [ ] A weekly review
+- [ ] A body map of volume, recovery and untrained muscles
+- [ ] A climb chart for each chain you follow
+- [ ] Personal-best history
+- [ ] Exercise notes
+- [ ] A year heatmap
+- [ ] A "what I own" equipment profile
+- [ ] A larger catalogue, about 500 curated steps, with warm-up, mobility, stretching and conditioning
+
+**1.3 Progression v2**
+
+- [ ] The design
+- [ ] Warm-up sets and an optional effort rating
+- [ ] Supersets
+- [ ] Targets that say why, and help when progress stalls
+
+**1.4 Planning and reach**
+
+- [ ] Starter programs
+- [ ] Schedules by weekday or rotation
+- [ ] A home-screen widget and a Quick Settings rest timer
+- [ ] Spoken cues
+- [ ] Import from FitNotes, Strong and Hevy
+- [ ] Print or save a program as PDF
+
+Accounts, sync servers, cloud backup, ads and AI coaching are not planned.
 
 <h2 id="building">Building</h2>
 

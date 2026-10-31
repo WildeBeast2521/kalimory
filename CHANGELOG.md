@@ -10,6 +10,8 @@ from which Kalimory was forked; their version numbers are the original app's, no
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-31
+
 ### Added
 - Edit a whole saved workout from Progress › List: change its date, time, comment and sets, add or remove sets and exercises, and save everything at once ([#200](https://github.com/WildeBeast2521/kalimory/pull/200))
 - After a crash, the app offers on its next start to share a report of the error through the share sheet, or to delete it; the report stays on the phone and is never sent by itself ([#192](https://github.com/WildeBeast2521/kalimory/pull/192))
@@ -626,7 +628,8 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Multi-language support (Japanese, English)
 - Completely offline, privacy-focused design
 
-[Unreleased]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/WildeBeast2521/kalimory/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/WildeBeast2521/kalimory/releases/tag/v1.0.0
