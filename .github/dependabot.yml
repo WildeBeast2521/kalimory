@@ -16,6 +16,10 @@ updates:
         update-types:
           - minor
           - patch
+    ignore:
+      # Robolectric's Android framework jar must match the SDK the tests run on (@Config sdk 35)
+      # and the Robolectric release; it changes only together with a Robolectric update.
+      - dependency-name: "org.robolectric:android-all-instrumented"
 
   - package-ecosystem: github-actions
     directory: /
