@@ -35,7 +35,7 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 # The Android 15 (API 35) framework Robolectric 4.17 runs on, resolved by Gradle so the tests never
 # download it themselves. It must be the exact build listed in Robolectric's DefaultSdkProvider.
-robolectric-android-all = { group = "org.robolectric", name = "android-all-instrumented", version = "15-robolectric-13954326-i7" }
+robolectric-android-all = { group = "org.robolectric", name = "android-all-instrumented", version = "17-robolectric-15733970-i7" }
 roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
 roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
 roborazzi-junit-rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
