@@ -80,7 +80,9 @@ application ID changed.
 ## Strings and translations
 
 Ten languages ship: English plus `ar de es fr it ja ru uk zh-rCN`. Every user-visible string is a
-resource, counts use `<plurals>`, and English uses sentence case. A new key goes into every
+resource, counts use `<plurals>`, and English uses sentence case. A string that cites research names the
+source, and `docs/wiki/Credits.md` records it in the same change: the full citation, what it found
+and did not find, and the app's exact wording. A new key goes into every
 locale in the same change; mark machine-assisted translations for native review in the release
 log. Arabic is right-to-left: check layouts in RTL.
 

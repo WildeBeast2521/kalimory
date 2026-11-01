@@ -942,7 +942,7 @@
     <string name="weekly_review_other_detail">Nicht mit dem Katalog verknüpft</string>
     <string name="weekly_review_intervals">Intervalle</string>
     <string name="weekly_review_intervals_detail">Jedes Arbeitsintervall zählt als Satz</string>
-    <string name="weekly_review_reference">Die Markierung zeigt 10 Sätze pro Woche. Eine Auswertung von 15 Studien fand mehr Muskelwachstum bei 10 oder mehr harten Sätzen pro Woche und Muskelgruppe (Schoenfeld et al., 2017).</string>
+    <string name="weekly_review_reference">Die Markierung zeigt 10 Sätze pro Woche. In einer Auswertung von 15 Studien zum Training mit Gewichten gingen mehr Sätze pro Woche mit mehr Muskelwachstum einher, und Gruppen mit 10 oder mehr Sätzen pro Muskel legten am meisten zu (Schoenfeld et al., 2017).</string>
     <string name="weekly_review_empty">Keine Sätze in dieser Woche erfasst</string>
     <string name="weekly_review_bests">Neue Bestleistungen</string>
     <string name="weekly_review_best">%1$s, vorher %2$s</string>

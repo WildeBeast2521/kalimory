@@ -925,7 +925,7 @@
     <string name="weekly_review_other_detail">カタログと未連携</string>
     <string name="weekly_review_intervals">インターバル</string>
     <string name="weekly_review_intervals_detail">ワーク区間1回を1セットとして数えます</string>
-    <string name="weekly_review_reference">目印は週10セットです。15件の研究をまとめた分析では、筋群ごとに週10セット以上のきついセットを行うと筋肉がより大きく成長しました（Schoenfeld et al., 2017）。</string>
+    <string name="weekly_review_reference">目印は週10セットです。ウエイトトレーニングに関する15件の研究をまとめた分析では、週のセット数が多いほど筋肉の成長が大きく、筋肉ごとに週10セット以上行ったグループが最も成長しました（Schoenfeld et al., 2017）。</string>
     <string name="weekly_review_empty">この週のセットの記録はありません</string>
     <string name="weekly_review_bests">自己ベスト更新</string>
     <string name="weekly_review_best">%1$s（以前は%2$s）</string>

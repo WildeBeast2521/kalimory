@@ -972,7 +972,7 @@
     <string name="weekly_review_other_detail">Non liés au catalogue</string>
     <string name="weekly_review_intervals">Intervalles</string>
     <string name="weekly_review_intervals_detail">Chaque intervalle de travail compte comme une série</string>
-    <string name="weekly_review_reference">Le repère indique 10 séries par semaine. Une revue de 15 études a montré une croissance musculaire plus importante avec 10 séries difficiles ou plus par semaine pour chaque groupe musculaire (Schoenfeld et al., 2017).</string>
+    <string name="weekly_review_reference">Le repère indique 10 séries par semaine. Dans une revue de 15 études sur l\'entraînement avec charges, plus de séries par semaine allaient de pair avec une croissance musculaire plus importante, et les groupes faisant 10 séries ou plus par muscle ont le plus progressé (Schoenfeld et al., 2017).</string>
     <string name="weekly_review_empty">Aucune série enregistrée cette semaine</string>
     <string name="weekly_review_bests">Nouveaux records</string>
     <string name="weekly_review_best">%1$s, avant %2$s</string>
