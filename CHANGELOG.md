@@ -16,7 +16,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - The weekly review lists the progression steps you mastered that week; tap one to open its progression ([#254](https://github.com/WildeBeast2521/kalimory/pull/254))
 
 ### Changed
-- Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#PR](https://github.com/WildeBeast2521/kalimory/pull/PR))
+- Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ## [1.1.0] - 2026-10-31
 
