@@ -19,7 +19,8 @@ import org.robolectric.annotation.GraphicsMode
  */
 @RunWith(ParameterizedRobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Config(sdk = [35], qualifiers = "w360dp-h740dp-xhdpi")
+// Tall enough for every section of the sample week.
+@Config(sdk = [35], qualifiers = "w360dp-h1100dp-xhdpi")
 class WeeklyReviewScreenshotTest(private val theme: ScreenshotTheme) {
     @get:Rule
     val compose = createAndroidComposeRule<ComponentActivity>()

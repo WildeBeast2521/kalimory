@@ -27,6 +27,20 @@ fun MovementPattern.family(): MovementFamily = when (this) {
 
 data class FamilySets(val family: MovementFamily, val sets: Int)
 
+/**
+ * An exercise whose best single set this week beat every earlier one ([WeeklyReview.bests]).
+ * [value] and [previousBest] are reps when [dynamic], else seconds held.
+ */
+data class WeekBest(
+    val exerciseId: Long,
+    val name: String,
+    val dynamic: Boolean,
+    val value: Int,
+    val previousBest: Int,
+    /** The first day this week that a set reached [value]. */
+    val date: LocalDate,
+)
+
 /** One week of training, from history only: nothing here is stored or invented. */
 data class WeekReview(
     val weekStart: LocalDate,
@@ -40,6 +54,8 @@ data class WeekReview(
     val otherSets: Int,
     /** Work intervals done ([IntervalHistoryItem.completedSets]). */
     val intervalSets: Int,
+    /** New personal bests, in the order they were set. */
+    val bests: List<WeekBest> = emptyList(),
 ) {
     val isEmpty: Boolean get() = totalSets == 0 && daysTrained == 0
 }
@@ -89,8 +105,38 @@ object WeeklyReview {
             families = MovementFamily.entries.mapNotNull { family -> counts[family]?.let { FamilySets(family, it) } },
             otherSets = other,
             intervalSets = intervalSets,
+            bests = bests(weekStart, history, exercises),
         )
     }
+
+    /**
+     * Exercises whose best single-side value this week is higher than every set before the week,
+     * as the workout summary judges a best: sets with added weight, assistance or distance are
+     * left out on both sides, and an exercise first done this week has no best. Later weeks are
+     * ignored, so a past week keeps the bests it had.
+     */
+    fun bests(weekStart: LocalDate, history: List<HistorySet>, exercises: List<Exercise>): List<WeekBest> {
+        val end = weekStart.plusDays(6)
+        val exercisesById = exercises.associateBy { it.id }
+        return history.asSequence()
+            .filter { it.weightG == null && it.assistanceG == null && it.distanceCm == null }
+            .mapNotNull { set -> parse(set.date)?.let { set to it } }
+            .filter { (_, day) -> day <= end }
+            .groupBy { (set, _) -> set.exerciseId }
+            .mapNotNull { (exerciseId, sets) ->
+                val exercise = exercisesById[exerciseId] ?: return@mapNotNull null
+                val (week, before) = sets.partition { (_, day) -> day >= weekStart }
+                if (week.isEmpty() || before.isEmpty()) return@mapNotNull null
+                val best = week.maxOf { (set, _) -> set.best() }
+                val previous = before.maxOf { (set, _) -> set.best() }
+                if (best <= previous) return@mapNotNull null
+                val first = week.filter { (set, _) -> set.best() == best }.minWith(compareBy({ it.second }, { it.first.time }))
+                WeekBest(exerciseId, exercise.name, exercise.type == "Dynamic", best, previous, first.second)
+            }
+            .sortedWith(compareBy({ it.date }, { it.name }))
+    }
+
+    private fun HistorySet.best(): Int = maxOf(valueRight, valueLeft ?: 0)
 
     /** The group of a library exercise from its catalogue link; null when unlinked or unknown. */
     fun familyOf(exercise: Exercise?): MovementFamily? =

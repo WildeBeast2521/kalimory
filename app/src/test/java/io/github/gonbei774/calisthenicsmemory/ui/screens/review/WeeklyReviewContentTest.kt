@@ -82,6 +82,18 @@ class WeeklyReviewContentTest {
         compose.onNode(hasText("Intervals") and hasText("8 sets")).assertExists()
     }
 
+    @Test fun `each new best reads as one item with its day and the old best`() {
+        show()
+        compose.onNode(hasText("New bests") and isHeading).assertExists()
+        compose.onNode(hasText("Push-up") and hasText("Wednesday") and hasText("15 reps, was 12 reps")).assertExists()
+        compose.onNode(hasText("Plank") and hasText("Friday") and hasText("75 sec, was 60 sec")).assertExists()
+    }
+
+    @Test fun `a week without bests has no bests section`() {
+        show(review = WeeklyReviewSamples.week.copy(bests = emptyList()))
+        compose.onNodeWithText("New bests").assertDoesNotExist()
+    }
+
     @Test fun `the totals count against the weekly goal`() {
         show()
         compose.onNodeWithContentDescription("44 sets").assertExists()

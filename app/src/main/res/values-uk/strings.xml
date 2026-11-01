@@ -950,4 +950,6 @@
     <string name="weekly_review_intervals_detail">Кожен робочий інтервал рахується як підхід</string>
     <string name="weekly_review_reference">Позначка — 10 підходів на тиждень. Огляд 15 досліджень виявив більший ріст м\'язів при 10 і більше важких підходах на тиждень для кожної групи м\'язів (Schoenfeld et al., 2017).</string>
     <string name="weekly_review_empty">За цей тиждень підходів немає</string>
+    <string name="weekly_review_bests">Нові рекорди</string>
+    <string name="weekly_review_best">%1$s, було %2$s</string>
 </resources>

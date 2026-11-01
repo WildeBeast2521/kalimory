@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily
+import io.github.gonbei774.calisthenicsmemory.data.review.WeekBest
 import io.github.gonbei774.calisthenicsmemory.data.review.WeekReview
 import io.github.gonbei774.calisthenicsmemory.data.review.WeeklyReview
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -66,6 +67,7 @@ import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.time.format.TextStyle
 
 /**
  * The weekly review (ADR 0010): one week's days and sets by movement, from history only. Opens
@@ -151,6 +153,7 @@ internal fun WeeklyReviewContent(
             } else {
                 Totals(review, goal)
                 SetsByMovement(review)
+                if (review.bests.isNotEmpty()) NewBests(review.bests)
             }
         }
     }
@@ -244,6 +247,15 @@ private fun SetsByMovement(review: WeekReview) {
 /** One group: its name and count, read as one item, over a bar that is only a picture of the count. */
 @Composable
 private fun SetsRow(name: String, detail: String?, sets: Int, showMark: Boolean, scale: Int) {
+    ReviewRow(name, pluralStringResource(R.plurals.set_count, sets, sets), detail) { SetsBar(sets, scale, showMark) }
+}
+
+/**
+ * A row of the review: a name with a value at the end and an optional detail below, read by
+ * TalkBack as one item. With a large font the name and value share no line, so neither is squeezed.
+ */
+@Composable
+private fun ReviewRow(name: String, value: String, detail: String?, below: @Composable () -> Unit = {}) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -251,27 +263,48 @@ private fun SetsRow(name: String, detail: String?, sets: Int, showMark: Boolean,
             .padding(horizontal = Spacing.l, vertical = Spacing.s),
         verticalArrangement = Arrangement.spacedBy(Spacing.xs),
     ) {
-        val count = pluralStringResource(R.plurals.set_count, sets, sets)
         val nameText: @Composable (Modifier) -> Unit = { m ->
             Text(name, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface, modifier = m)
         }
-        val countText: @Composable () -> Unit = {
-            Text(count, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        val valueText: @Composable () -> Unit = {
+            Text(value, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        // With a large font the name and count share no line, so neither is squeezed.
         if (isLargeFontScale()) {
             nameText(Modifier)
-            countText()
+            valueText()
         } else {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 nameText(Modifier.weight(1f).padding(end = Spacing.s))
-                countText()
+                valueText()
             }
         }
         if (detail != null) {
             Text(detail, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        SetsBar(sets, scale, showMark)
+        below()
+    }
+}
+
+/** Exercises that beat every earlier set this week: the best now and before, and the day it came. */
+@Composable
+private fun NewBests(bests: List<WeekBest>) {
+    val locale = LocalConfiguration.current.locales[0]
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        SectionHeading(stringResource(R.string.weekly_review_bests))
+        RowGroup {
+            bests.forEach { best ->
+                val unit = stringResource(if (best.dynamic) R.string.unit_reps else R.string.unit_seconds)
+                ReviewRow(
+                    name = best.name,
+                    value = best.date.dayOfWeek.getDisplayName(TextStyle.FULL_STANDALONE, locale),
+                    detail = stringResource(
+                        R.string.weekly_review_best,
+                        stringResource(R.string.value_with_unit, best.value, unit),
+                        stringResource(R.string.value_with_unit, best.previousBest, unit),
+                    ),
+                )
+            }
+        }
     }
 }
 

@@ -12,6 +12,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 
 ### Added
 - A weekly review, opened from Today, shows the days you trained and your sets by movement (push, pull, legs, core and more) beside a mark at 10 sets a week, for this week and every week before it ([#248](https://github.com/WildeBeast2521/kalimory/pull/248))
+- The weekly review lists the week's new personal bests: each exercise whose best set beat every earlier one, with the day it came and the best before it ([#253](https://github.com/WildeBeast2521/kalimory/pull/253))
 
 ## [1.1.0] - 2026-10-31
 
