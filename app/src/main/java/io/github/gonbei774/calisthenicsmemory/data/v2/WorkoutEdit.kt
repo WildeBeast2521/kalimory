@@ -17,6 +17,10 @@ data class DraftSet(
     val distanceCm: Int? = null,
     val weightG: Int? = null,
     val assistanceG: Int? = null,
+    /** The user marked the set as a warm-up (ADR 0012). Never set on a legacy workout. */
+    val warmUp: Boolean = false,
+    /** The user's effort rating, 0..[Effort.MAX_EFFORT_LEFT], or null. Never set on a legacy workout. */
+    val effortLeft: Int? = null,
 )
 
 /**
@@ -149,6 +153,7 @@ data class WorkoutEditPlan(
             } else {
                 require(set.value != null && set.valueLeft == null) { "A bilateral set has one value" }
             }
+            require(Effort.isValid(set.effortLeft)) { "Effort must be 0..${Effort.MAX_EFFORT_LEFT}" }
         }
     }
 }

@@ -118,4 +118,18 @@ class WorkoutEditPlanTest {
         rejects(loaded.copy(exercises = listOf(pushUp.copy(sets = listOf(pushUp.sets[0], pushUp.sets[0])), lunge)))
         rejects(loaded.copy(exercises = loaded.exercises + DraftExercise(null, 1, false, listOf(pushUp.sets[0]))))
     }
+
+    @Test
+    fun aChangedWarmUpMarkOrRatingIsAChangedSet() {
+        val marked = loaded.copy(exercises = listOf(pushUp.copy(sets = listOf(pushUp.sets[0].copy(warmUp = true), pushUp.sets[1])), lunge))
+        assertFalse(plan(marked).isEmpty)
+        val rated = loaded.copy(exercises = listOf(pushUp.copy(sets = listOf(pushUp.sets[0], pushUp.sets[1].copy(effortLeft = 1))), lunge))
+        assertFalse(plan(rated).isEmpty)
+    }
+
+    @Test
+    fun aRatingOutsideTheScaleIsRefused() {
+        val wrong = loaded.copy(exercises = listOf(pushUp.copy(sets = listOf(pushUp.sets[0].copy(effortLeft = 7), pushUp.sets[1])), lunge))
+        assertThrows(IllegalArgumentException::class.java) { plan(wrong) }
+    }
 }

@@ -89,4 +89,18 @@ class ManualWorkoutWriterTest {
         val b = a.copy(time = LocalTime.of(19, 0))
         assertThrows(IllegalArgumentException::class.java) { ManualWorkoutWriter.rows(listOf(a, b), zone) }
     }
+
+    @Test fun `both sides of a one-sided set carry its warm-up mark and rating`() {
+        val rows = ManualWorkoutWriter.rows(
+            workout(listOf(ManualSet(8, 7, null, null, null, warmUp = true, effortLeft = 2)), laterality = Laterality.UNILATERAL), zone,
+        )
+        assertEquals(listOf(true, true), rows.sets.map { it.isWarmUp })
+        assertEquals(listOf(2, 2), rows.sets.map { it.effortLeft })
+    }
+
+    @Test fun `a rating outside the scale is refused`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            ManualWorkoutWriter.rows(workout(listOf(ManualSet(8, null, null, null, null, effortLeft = -1))), zone)
+        }
+    }
 }

@@ -73,6 +73,9 @@ data class ExportSetEntry(
     val timePrecision: String,
     val comment: String? = null,
     val legacyTrainingRecordId: Long? = null,
+    // Format 12: the user's warm-up mark and effort rating (ADR 0012).
+    val isWarmUp: Boolean = false,
+    val effortLeft: Int? = null,
 )
 
 internal fun WorkoutSessionEntity.toExport() = ExportWorkoutSession(
@@ -89,7 +92,7 @@ internal fun SessionExerciseEntity.toExport() = ExportSessionExercise(
 internal fun SetEntryEntity.toExport() = ExportSetEntry(
     id, sessionExerciseId, orderIndex, setNumber, roundNumber, status.code, side.code, repetitions, durationMillis,
     distanceCm, addedWeightGrams, assistanceGrams, targetRepetitions, targetDurationMillis, startedAtEpochMillis,
-    completedAtEpochMillis, timePrecision.code, comment, legacyTrainingRecordId,
+    completedAtEpochMillis, timePrecision.code, comment, legacyTrainingRecordId, isWarmUp, effortLeft,
 )
 
 // These throw IllegalArgumentException for unknown codes; validation rejects those first.
@@ -109,6 +112,7 @@ internal fun ExportSetEntry.toEntity() = SetEntryEntity(
     id, sessionExerciseId, orderIndex, setNumber, roundNumber, codeOf<SetEntryStatus>(status), codeOf<BodySide>(side),
     repetitions, durationMillis, distanceCm, addedWeightGrams, assistanceGrams, targetRepetitions, targetDurationMillis,
     startedAtEpochMillis, completedAtEpochMillis, codeOf<TimePrecision>(timePrecision), comment, legacyTrainingRecordId,
+    isWarmUp, effortLeft,
 )
 
 /** Returns the first code in the v2 collections that no enum knows, as an error message. */

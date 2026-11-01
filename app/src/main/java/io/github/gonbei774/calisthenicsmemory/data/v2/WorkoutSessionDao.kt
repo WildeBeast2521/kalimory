@@ -101,7 +101,7 @@ interface WorkoutSessionDao {
                t.orderIndex, t.side, t.repetitions, t.durationMillis, t.distanceCm, t.addedWeightGrams,
                t.assistanceGrams, t.completedAtEpochMillis, s.startedAtEpochMillis AS sessionStartedAtEpochMillis,
                s.comment AS sessionComment, s.id AS workoutSessionId, e.orderIndex AS sessionExerciseOrderIndex,
-               t.roundNumber
+               t.roundNumber, t.isWarmUp, t.effortLeft
         FROM set_entries t
         JOIN session_exercises e ON e.id = t.sessionExerciseId
         JOIN workout_sessions s ON s.id = e.workoutSessionId
@@ -119,7 +119,7 @@ interface WorkoutSessionDao {
                t.orderIndex, t.side, t.repetitions, t.durationMillis, t.distanceCm, t.addedWeightGrams,
                t.assistanceGrams, t.completedAtEpochMillis, s.startedAtEpochMillis AS sessionStartedAtEpochMillis,
                s.comment AS sessionComment, s.id AS workoutSessionId, e.orderIndex AS sessionExerciseOrderIndex,
-               t.roundNumber
+               t.roundNumber, t.isWarmUp, t.effortLeft
         FROM set_entries t
         JOIN session_exercises e ON e.id = t.sessionExerciseId
         JOIN workout_sessions s ON s.id = e.workoutSessionId
@@ -153,7 +153,7 @@ interface WorkoutSessionDao {
                t.orderIndex, t.side, t.repetitions, t.durationMillis, t.distanceCm, t.addedWeightGrams,
                t.assistanceGrams, t.completedAtEpochMillis, s.startedAtEpochMillis AS sessionStartedAtEpochMillis,
                s.comment AS sessionComment, s.id AS workoutSessionId, e.orderIndex AS sessionExerciseOrderIndex,
-               t.roundNumber
+               t.roundNumber, t.isWarmUp, t.effortLeft
         FROM set_entries t
         JOIN session_exercises e ON e.id = t.sessionExerciseId
         JOIN workout_sessions s ON s.id = e.workoutSessionId

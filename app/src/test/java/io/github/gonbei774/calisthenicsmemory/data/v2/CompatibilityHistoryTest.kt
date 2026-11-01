@@ -11,11 +11,12 @@ class CompatibilityHistoryTest {
     private val start = ZonedDateTime.of(2025, 2, 1, 9, 5, 30, 0, zone).toInstant().toEpochMilli()
 
     private fun row(id: Long, exercise: Long = 1, set: Int = 1, side: BodySide = BodySide.BILATERAL, reps: Int? = null,
-                    durationMillis: Long? = null, kind: ExerciseKind = ExerciseKind.DYNAMIC, completedAt: Long? = null) =
+                    durationMillis: Long? = null, kind: ExerciseKind = ExerciseKind.DYNAMIC, completedAt: Long? = null,
+                    warmUp: Boolean = false, effort: Int? = null) =
         V2HistoryRow(id, sessionExerciseId = exercise * 10, exerciseId = exercise, exerciseKindSnapshot = kind, setNumber = set,
             orderIndex = id.toInt(), side = side, repetitions = reps, durationMillis = durationMillis, distanceCm = null,
             addedWeightGrams = 2_000, assistanceGrams = null, completedAtEpochMillis = completedAt,
-            sessionStartedAtEpochMillis = start, sessionComment = "v2 workout")
+            sessionStartedAtEpochMillis = start, sessionComment = "v2 workout", isWarmUp = warmUp, effortLeft = effort)
 
     @Test fun `legacy records pass through unchanged`() {
         val legacy = TrainingRecord(7, 1, 12, 11, 2, "2024-12-31", "18:00", "old", 100, 200, 300)
@@ -101,5 +102,35 @@ class CompatibilityHistoryTest {
         // Set 2 was skipped, so only sets 1 and 3 have completed rows.
         val merged = CompatibilityHistory.merge(emptyList(), listOf(row(1, set = 1, reps = 5), row(3, set = 3, reps = 4)), zone)
         assertEquals(listOf(1 to 5, 2 to 4), merged.map { it.setNumber to it.valueRight })
+    }
+
+    // Warm-up marks and effort (ADR 0012)
+
+    @Test fun `a v2 set carries its warm-up mark and rating, and legacy sets have neither`() {
+        val legacy = TrainingRecord(7, 1, 12, null, 1, "2024-12-31", "18:00", "")
+        val merged = CompatibilityHistory.merge(listOf(legacy), listOf(row(1, reps = 5, warmUp = true, effort = 3)), zone)
+        val v2 = merged.single { it.source == HistorySource.V2 }
+        assertEquals(true to 3, v2.warmUp to v2.effortLeft)
+        val old = merged.single { it.source == HistorySource.LEGACY }
+        assertEquals(false to null, old.warmUp to old.effortLeft)
+    }
+
+    @Test fun `a one-sided set is a warm-up only when both sides are, and takes the harder rating`() {
+        val half = CompatibilityHistory.merge(emptyList(), listOf(
+            row(1, side = BodySide.RIGHT, reps = 8, warmUp = true, effort = 3),
+            row(2, side = BodySide.LEFT, reps = 7, warmUp = false, effort = 1),
+        ), zone).single()
+        assertEquals(false, half.warmUp)
+        assertEquals(1, half.effortLeft)
+        val both = CompatibilityHistory.merge(emptyList(), listOf(
+            row(1, side = BodySide.RIGHT, reps = 8, warmUp = true),
+            row(2, side = BodySide.LEFT, reps = 7, warmUp = true),
+        ), zone).single()
+        assertEquals(true to null, both.warmUp to both.effortLeft)
+    }
+
+    @Test fun `a stored rating outside the scale reads as the scale allows`() {
+        assertEquals(Effort.MAX_EFFORT_LEFT, CompatibilityHistory.merge(emptyList(), listOf(row(1, reps = 5, effort = 9)), zone).single().effortLeft)
+        assertEquals(null, CompatibilityHistory.merge(emptyList(), listOf(row(1, reps = 5, effort = -1)), zone).single().effortLeft)
     }
 }

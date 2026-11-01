@@ -14,6 +14,8 @@ import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramLoop
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.Effort
+import io.github.gonbei774.calisthenicsmemory.data.v2.SetEntryStatus
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
@@ -70,6 +72,11 @@ enum class BackupAnomalyKind {
      * likely from a newer catalogue. Kept, so the link works again once the catalogue has it.
      */
     UNKNOWN_CATALOGUE_ID,
+    /**
+     * A v2 set entry has an effort rating outside 0..[Effort.MAX_EFFORT_LEFT], or a warm-up mark or
+     * rating on a set that was not completed (ADR 0012). The app never writes one; restored as it is.
+     */
+    V2_UNEXPECTED_MARK,
 }
 
 data class BackupAnomaly(val kind: BackupAnomalyKind, val entityId: Long, val detail: String)
@@ -246,6 +253,13 @@ class BackupService(
             if (values.any { v -> v < 0 }) {
                 anomalies += BackupAnomaly(BackupAnomalyKind.V2_NEGATIVE_VALUE, it.id, "Set entry ${it.id} has a negative value")
             }
+            val completed = it.status == SetEntryStatus.COMPLETED.code
+            if (!Effort.isValid(it.effortLeft) || (!completed && (it.isWarmUp || it.effortLeft != null))) {
+                anomalies += BackupAnomaly(
+                    BackupAnomalyKind.V2_UNEXPECTED_MARK, it.id,
+                    "Set entry ${it.id} has warm-up ${it.isWarmUp} and effort ${it.effortLeft} the app does not write",
+                )
+            }
             if (it.legacyTrainingRecordId != null && it.legacyTrainingRecordId !in recordIds) {
                 anomalies += BackupAnomaly(
                     BackupAnomalyKind.V2_LEGACY_RECORD_MISSING, it.id,
@@ -297,7 +311,7 @@ class BackupService(
     companion object {
         const val APP_NAME = "CalisthenicsMemory"
         const val MIN_VERSION = 1
-        const val CURRENT_VERSION = 11
+        const val CURRENT_VERSION = 12
     }
 }
 

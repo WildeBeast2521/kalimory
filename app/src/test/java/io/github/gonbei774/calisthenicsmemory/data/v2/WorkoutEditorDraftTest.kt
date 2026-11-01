@@ -28,10 +28,11 @@ class WorkoutEditorDraftTest {
     private fun entry(
         id: Long, occurrence: Long, order: Int, number: Int, side: BodySide, reps: Int? = null, millis: Long? = null,
         status: SetEntryStatus = SetEntryStatus.COMPLETED, round: Int? = null, legacy: Long? = null, weight: Int? = null,
+        warmUp: Boolean = false, effort: Int? = null,
     ) = SetEntryEntity(
         id = id, sessionExerciseId = occurrence, orderIndex = order, setNumber = number, roundNumber = round, status = status,
         side = side, repetitions = reps, durationMillis = millis, addedWeightGrams = weight,
-        timePrecision = TimePrecision.EXACT, legacyTrainingRecordId = legacy,
+        timePrecision = TimePrecision.EXACT, legacyTrainingRecordId = legacy, isWarmUp = warmUp, effortLeft = effort,
     )
 
     @Test
@@ -116,5 +117,23 @@ class WorkoutEditorDraftTest {
         assertNull(WorkoutEditor.draftOf(listOf(TrainingRecord(1, 1, 5, null, 1, "2026-3-2", "07:30")), library))
         assertNull(WorkoutEditor.draftOf(listOf(TrainingRecord(1, 1, 5, null, 1, "2026-03-02", "7:30")), library))
         assertNull(WorkoutEditor.draftOf(emptyList(), library))
+    }
+
+    @Test
+    fun aSetReadsItsWarmUpMarkAndRatingByTheHistoryRule() {
+        val graph = WorkoutSessionGraph(
+            session(),
+            listOf(
+                occurrence(10, 1, ExerciseKind.DYNAMIC, Laterality.UNILATERAL) to listOf(
+                    entry(100, 10, 0, 1, BodySide.RIGHT, reps = 8, warmUp = true, effort = 3),
+                    entry(101, 10, 1, 1, BodySide.LEFT, reps = 7, warmUp = true, effort = 2),
+                    entry(102, 10, 2, 2, BodySide.RIGHT, reps = 8, warmUp = true),
+                    entry(103, 10, 3, 2, BodySide.LEFT, reps = 7),
+                ),
+            ),
+        )
+        val sets = WorkoutEditor.draftOf(graph, zone)!!.exercises.single().sets
+        // Both sides marked: a warm-up, at the harder side's rating. One side only: not a warm-up.
+        assertEquals(listOf(true to 2, false to null), sets.map { it.warmUp to it.effortLeft })
     }
 }

@@ -126,6 +126,8 @@ class BackupRoundTripTest {
                 startedAtEpochMillis = 2_000, completedAtEpochMillis = 3_000,
                 timePrecision = io.github.gonbei774.calisthenicsmemory.data.v2.TimePrecision.EXACT, comment = "set",
                 legacyTrainingRecordId = null,
+                // A warm-up mark and an effort rating travel with the set (database 26, backup format 12).
+                isWarmUp = true, effortLeft = 1,
             ),
             io.github.gonbei774.calisthenicsmemory.data.v2.SetEntryEntity(
                 id = 8, sessionExerciseId = 6, orderIndex = 1, setNumber = 1,
@@ -142,8 +144,9 @@ class BackupRoundTripTest {
 
         val exported = BackupService(source.backupDao()).export()
         val json = (exported as BackupResult.Success).value.json
-        assertTrue(json.contains("\"version\":11"))
+        assertTrue(json.contains("\"version\":${BackupService.CURRENT_VERSION}"))
         assertTrue(json.contains("\"intervalRoundRestSeconds\":60"))
+        assertTrue(json.contains("\"isWarmUp\":true") && json.contains("\"effortLeft\":1"))
         val parsed = BackupService(target.backupDao()).parse(json)
         assertTrue("parse: $parsed", parsed is BackupResult.Success)
         val restored = BackupService(target.backupDao()).restore((parsed as BackupResult.Success).value.data)

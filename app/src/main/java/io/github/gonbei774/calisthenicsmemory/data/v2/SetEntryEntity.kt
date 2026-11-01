@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.data.v2
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -12,6 +13,11 @@ import androidx.room.PrimaryKey
  * idempotent.
  * Values must not be negative; Room cannot declare CHECK constraints, so the write
  * path enforces this.
+ *
+ * [isWarmUp] and [effortLeft] are the user's own marks (ADR 0012). Both entries of a unilateral
+ * set carry the same values; a skipped entry is never a warm-up and never rated. [effortLeft] is
+ * 0..[Effort.MAX_EFFORT_LEFT]: reps left in reserve for a rep set, the same five-step scale for a
+ * hold; null means not rated. Neither is ever inferred for rows written before they existed.
  */
 @Entity(
     tableName = "set_entries",
@@ -49,4 +55,6 @@ data class SetEntryEntity(
     val timePrecision: TimePrecision,
     val comment: String? = null,
     val legacyTrainingRecordId: Long? = null,
+    @ColumnInfo(defaultValue = "0") val isWarmUp: Boolean = false,
+    val effortLeft: Int? = null,
 )
