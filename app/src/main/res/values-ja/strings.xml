@@ -929,4 +929,5 @@
     <string name="weekly_review_empty">この週のセットの記録はありません</string>
     <string name="weekly_review_bests">自己ベスト更新</string>
     <string name="weekly_review_best">%1$s（以前は%2$s）</string>
+    <string name="weekly_review_steps">達成したステップ</string>
 </resources>

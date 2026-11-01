@@ -1007,4 +1007,5 @@
     <string name="weekly_review_empty">لم تُسجَّل أي مجموعات في هذا الأسبوع</string>
     <string name="weekly_review_bests">أرقام قياسية جديدة</string>
     <string name="weekly_review_best">%1$s، وكان %2$s</string>
+    <string name="weekly_review_steps">الخطوات المتقنة</string>
 </resources>

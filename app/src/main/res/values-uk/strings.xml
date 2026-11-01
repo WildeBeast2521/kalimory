@@ -952,4 +952,5 @@
     <string name="weekly_review_empty">За цей тиждень підходів немає</string>
     <string name="weekly_review_bests">Нові рекорди</string>
     <string name="weekly_review_best">%1$s, було %2$s</string>
+    <string name="weekly_review_steps">Опановані кроки</string>
 </resources>

@@ -923,4 +923,5 @@
     <string name="weekly_review_empty">本周没有记录的组</string>
     <string name="weekly_review_bests">新纪录</string>
     <string name="weekly_review_best">%1$s，之前为 %2$s</string>
+    <string name="weekly_review_steps">已掌握的步骤</string>
 </resources>

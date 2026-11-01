@@ -73,9 +73,9 @@ application ID changed.
 - **Store and README images.** `scripts/screenshots/update-screenshots.sh` draws six screens with
   made-up data (`StoreScreenshotsTest`, `StoreRestScreenshotTest`; skipped in normal test runs) and
   writes the Fastlane phone screenshots and store banner (`featureGraphic.png`), the README screens
-  and the social preview. Run it in the release pull request when a pictured screen has changed
-  since the last release (not in the feature's pull request), look at every image, and upload the
-  social preview in the repository's settings by hand.
+  and the social preview. Run it once the issue that changed a pictured screen is closed (not in
+  each part's pull request), look at every image, and upload the social preview in the
+  repository's settings by hand.
 
 ## Strings and translations
 
@@ -137,8 +137,8 @@ deterministic and offline. A known flaky test is named in the release log, never
 - Remove code, resources or assets only after proving they are unused (references, lint, tests).
   Never delete migrations, schemas or recovery tooling because they look old.
 - Keep README, CHANGELOG, wiki, Fastlane metadata and this guide true to the shipped app. Public
-  pages describe released features only: a feature's README, wiki and store image changes wait for
-  the release pull request, while its CHANGELOG bullet goes under `## [Unreleased]` with the change.
+  pages describe finished features only: a feature's README, wiki and store image changes wait
+  until its issue is closed, while its CHANGELOG bullet goes under `## [Unreleased]` with the change.
 - Dependabot opens grouped update pull requests each month (`.github/dependabot.yml`). It cannot
   update the dependency checksums, so its Gradle pull requests fail until
   `scripts/update-dependency-verification.sh` runs on the branch and the result is pushed. Review the
@@ -147,8 +147,8 @@ deterministic and offline. A known flaky test is named in the release log, never
   closed, update its line in the same pull request. A closed issue is ticked with the pull request
   that closed it, and the milestone's "done" count follows; an issue closed as not planned leaves
   the list. The README's roadmap section is the same checklist in short form (milestone titles and
-  item titles, no links or details): change it in the same pull request, and mark a milestone
-  "released in x.y.0" when it ships and the next one "in progress".
+  item titles, no links or details): like the rest of the README it changes once the issue is
+  closed; mark a milestone "released in x.y.0" when it ships and the next one "in progress".
 
 ## Versions and releases
 
@@ -166,8 +166,7 @@ The first Kalimory release is 1.0.0 (versionCode 1). For a release:
    then run `python3 -I scripts/changelog-links.py`, which rewrites the link definitions at the
    bottom. Add
    `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt` (500 characters at most).
-   In the same pull request, bring the public pages up to the release: the README, the wiki pages
-   and, when a pictured screen changed, the store and README images (`update-screenshots.sh`).
+   In the same pull request, mark the milestone released in the README's roadmap section.
 3. Merge to master, then run `scripts/release.sh --dry-run` and, when it passes,
    `scripts/release.sh`. It runs `scripts/release-checks.sh`, shows the release notes, and tags
    and pushes `v<versionName>`.
@@ -230,7 +229,7 @@ One standard, for every release:
 
 ## Wiki
 
-`docs/wiki` is the source of the GitHub wiki. Pages describe the released app, so edit them in the
-release pull request for the changes it ships, not with each change; after the merge,
+`docs/wiki` is the source of the GitHub wiki. Pages describe finished features, so edit them once
+the change's issue is closed, not with each part; after the merge,
 `scripts/sync-wiki.sh` publishes them (links rewritten, sidebar and footer added).
 

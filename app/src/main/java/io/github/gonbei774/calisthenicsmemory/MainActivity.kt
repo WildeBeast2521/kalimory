@@ -340,7 +340,7 @@ fun CalisthenicsMemoryApp(
     val backTarget: Screen? = when (val screen = currentScreen) {
         Screen.Home -> null
         Screen.ToDo, Screen.Create, Screen.Settings, Screen.ProgramList, Screen.IntervalList, Screen.Catalogue, Screen.WeeklyReview -> Screen.Home
-        is Screen.CatalogueChain -> if (screen.fromHome) Screen.Home else Screen.Catalogue
+        is Screen.CatalogueChain -> screen.returnTo
         Screen.Licenses, Screen.Backup, Screen.CsvDataManagement, Screen.ShareHub -> Screen.Settings
         Screen.CommunityShareExport -> Screen.ShareHub
         is Screen.Record -> if (screen.fromToDo) Screen.ToDo else Screen.Home
@@ -645,13 +645,17 @@ fun CalisthenicsMemoryApp(
                         )
                     }
                     is Screen.WeeklyReview -> {
-                        WeeklyReviewScreen(viewModel = viewModel, onNavigateBack = { currentScreen = Screen.Home })
+                        WeeklyReviewScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { currentScreen = Screen.Home },
+                            onOpenChain = { chainId -> currentScreen = Screen.CatalogueChain(chainId, fromReview = true) },
+                        )
                     }
                     is Screen.CatalogueChain -> {
                         CatalogueChainScreen(
                             viewModel = viewModel,
                             chainId = screen.chainId,
-                            onNavigateBack = { currentScreen = if (screen.fromHome) Screen.Home else Screen.Catalogue }
+                            onNavigateBack = { currentScreen = screen.returnTo }
                         )
                     }
                     is Screen.ProgramList -> {
@@ -803,7 +807,14 @@ sealed class Screen {
     data class WorkoutSummary(val sessionId: Long) : Screen()
     object Catalogue : Screen()
     // fromHome: opened from Today or Progressions, so back returns there.
-    data class CatalogueChain(val chainId: String, val fromHome: Boolean = false) : Screen()
+    // fromHome: opened from Today or Progress; fromReview: opened from the weekly review.
+    data class CatalogueChain(val chainId: String, val fromHome: Boolean = false, val fromReview: Boolean = false) : Screen() {
+        val returnTo: Screen get() = when {
+            fromReview -> WeeklyReview
+            fromHome -> Home
+            else -> Catalogue
+        }
+    }
 }
 
 /** Where a workout screen goes when it ends or the user leaves it; null for other screens. */
@@ -881,6 +892,7 @@ private val ScreenSaver = mapSaver(
                     put("type", "CatalogueChain")
                     put("chainId", screen.chainId)
                     put("fromHome", screen.fromHome)
+                    put("fromReview", screen.fromReview)
                 }
             }
         }
@@ -929,7 +941,11 @@ private val ScreenSaver = mapSaver(
             "ShareHub" -> Screen.ShareHub
             "WorkoutSummary" -> Screen.WorkoutSummary(map["sessionId"] as Long)
             "Catalogue" -> Screen.Catalogue
-            "CatalogueChain" -> Screen.CatalogueChain(map["chainId"] as String, map["fromHome"] as? Boolean ?: false)
+            "CatalogueChain" -> Screen.CatalogueChain(
+                map["chainId"] as String,
+                fromHome = map["fromHome"] as? Boolean ?: false,
+                fromReview = map["fromReview"] as? Boolean ?: false,
+            )
             else -> Screen.Home
         }
     }

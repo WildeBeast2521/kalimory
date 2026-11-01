@@ -14,6 +14,7 @@ class ScreenDepthTest {
         assertBack(Screen.ToDo, Screen.Home)
         assertBack(Screen.Settings, Screen.Home)
         assertBack(Screen.WeeklyReview, Screen.Home)
+        assertBack(Screen.CatalogueChain("row", fromReview = true), Screen.WeeklyReview)
         assertBack(Screen.Licenses, Screen.Settings)
         assertBack(Screen.Backup, Screen.Settings)
         assertBack(Screen.CsvDataManagement, Screen.Settings)

@@ -30,7 +30,7 @@ class WeeklyReviewScreenshotTest(private val theme: ScreenshotTheme) {
             CalisthenicsMemoryTheme(darkTheme = theme.dark, dynamicColor = false, trueBlack = theme.trueBlack) {
                 WeeklyReviewContent(
                     WeeklyReviewSamples.week, "This week", WeeklyReviewSamples.RANGE, goal = 4,
-                    canGoBack = true, canGoForward = false, onPrevious = {}, onNext = {},
+                    canGoBack = true, canGoForward = false, onPrevious = {}, onNext = {}, onOpenChain = {},
                 )
             }
         }

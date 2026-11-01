@@ -955,4 +955,5 @@
     <string name="weekly_review_empty">No sets logged in this week</string>
     <string name="weekly_review_bests">New bests</string>
     <string name="weekly_review_best">%1$s, was %2$s</string>
+    <string name="weekly_review_steps">Steps mastered</string>
 </resources>

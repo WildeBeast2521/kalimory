@@ -231,4 +231,44 @@ class WeeklyReviewTest {
         )
         assertEquals(listOf(pull.id, push.id), WeeklyReview.build(monday, history, emptyList(), listOf(push, pull)).bests.map { it.exerciseId })
     }
+
+    // Steps met
+
+    /** A library exercise linked to [stepId] whose own target is 2 sets of 10. */
+    private fun linked(id: Long, stepId: String) = Exercise(id = id, name = "E$id", type = "Dynamic", catalogId = stepId, targetSets = 2, targetValue = 10)
+
+    private fun session(date: String, exerciseId: Long, vararg values: Int, time: String = "07:30") =
+        values.map { set(date, exerciseId, value = it, time = time) }
+
+    private val row = Catalogue.chains.first { it.pattern == MovementPattern.HORIZONTAL_PULL }
+
+    @Test fun `a step first met this week is listed with its day`() {
+        val step = row.steps.first()
+        val exercise = linked(20, step.id)
+        val history = session("2026-03-03", exercise.id, 8, 7) + session("2026-03-12", exercise.id, 10, 10)
+        assertEquals(listOf(WeekStep(row.id, step, LocalDate.of(2026, 3, 12))), WeeklyReview.stepsMet(monday, history, listOf(exercise)))
+    }
+
+    @Test fun `a step met before the week is not repeated`() {
+        val exercise = linked(20, row.steps.first().id)
+        val history = session("2026-03-03", exercise.id, 10, 10) + session("2026-03-12", exercise.id, 11, 11)
+        assertTrue(WeeklyReview.stepsMet(monday, history, listOf(exercise)).isEmpty())
+    }
+
+    @Test fun `a session short of the standard meets nothing`() {
+        val exercise = linked(20, row.steps.first().id)
+        assertTrue(WeeklyReview.stepsMet(monday, session("2026-03-12", exercise.id, 10, 9), listOf(exercise)).isEmpty())
+    }
+
+    @Test fun `an unlinked exercise meets no step`() {
+        val exercise = Exercise(id = 21, name = "Row", type = "Dynamic", targetSets = 1, targetValue = 1)
+        assertTrue(WeeklyReview.stepsMet(monday, session("2026-03-12", exercise.id, 10, 10), listOf(exercise)).isEmpty())
+    }
+
+    @Test fun `steps met come in the order they were met and are part of the review`() {
+        val first = linked(22, row.steps[0].id)
+        val second = linked(23, row.steps[1].id)
+        val history = session("2026-03-13", first.id, 10, 10) + session("2026-03-10", second.id, 10, 10)
+        assertEquals(listOf(row.steps[1], row.steps[0]), WeeklyReview.build(monday, history, emptyList(), listOf(first, second)).stepsMet.map { it.step })
+    }
 }

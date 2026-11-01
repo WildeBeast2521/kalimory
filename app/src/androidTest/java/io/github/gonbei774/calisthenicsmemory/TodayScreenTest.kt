@@ -22,6 +22,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.MovementPattern
 import io.github.gonbei774.calisthenicsmemory.data.Program
 import io.github.gonbei774.calisthenicsmemory.data.SavedWorkoutState
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
@@ -120,6 +122,32 @@ class TodayScreenTest {
         rule.onNode(hasContentDescription("$todayTotal $reviewTotal")).assertExists()
         pressBack()
         rule.onNode(hasText(text(PrimaryDestination.TODAY.label)) and isHeading()).assertExists()
+    }
+
+    @Test
+    fun aStepMasteredThisWeekOpensItsProgressionAndBackReturnsToTheReview() {
+        // The hardest step of a chain, with a target of one set of one rep, met today.
+        val chain = Catalogue.chains.first { it.pattern == MovementPattern.HORIZONTAL_PULL }
+        val step = chain.steps.last()
+        val linkedId = runBlocking {
+            database.exerciseDao().insertExercise(
+                Exercise(name = "Today test row $suffix", type = "Dynamic", catalogId = step.id, targetSets = 1, targetValue = 1)
+            ).also { id ->
+                database.trainingRecordDao().insertRecord(
+                    TrainingRecord(exerciseId = id, valueRight = 5, setNumber = 1, date = LocalDate.now().toString(), time = "07:00")
+                )
+            }
+        }
+        try {
+            launch()
+            rule.onNode(hasText(text(R.string.weekly_review_open)) and hasClickAction()).performScrollTo().performClick()
+            rule.onNode(hasText(text(step.name)) and hasClickAction()).performScrollTo().performClick()
+            rule.onNode(hasText(text(chain.name)) and isHeading()).assertExists()
+            pressBack()
+            rule.onNode(hasText(text(R.string.weekly_review_title)) and isHeading()).assertExists()
+        } finally {
+            runBlocking { database.exerciseDao().deleteExerciseAndTodoTasks(database.exerciseDao().getExerciseById(linkedId)!!) }
+        }
     }
 
     @Test
