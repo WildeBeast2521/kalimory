@@ -50,7 +50,7 @@ Android 8.0 (Oreo) or later.
 
 <table>
   <tr>
-    <td width="50%" valign="top"><img src=".github/readme/icon-today.svg" width="40" align="left" alt="">&nbsp;<b>Today</b><br>&nbsp;This week at a glance, what is due, and a suggestion for what to train next.</td>
+    <td width="50%" valign="top"><img src=".github/readme/icon-today.svg" width="40" align="left" alt="">&nbsp;<b>Today</b><br>&nbsp;This week at a glance with a weekly review, what is due, and a suggestion for what to train next.</td>
     <td width="50%" valign="top"><img src=".github/readme/icon-timer.svg" width="40" align="left" alt="">&nbsp;<b>Guided workouts</b><br>&nbsp;Rep counting, hold and rest timers, programs and intervals. Timers keep going with the screen off.</td>
   </tr>
   <tr>
@@ -71,14 +71,15 @@ Android 8.0 (Oreo) or later.
 
 <table>
   <tr>
-    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/today-dark.png"><img src=".github/readme/screens/today-light.png" width="100%" alt="Today: this week, what is due and a start button"></picture><br><sub>Today</sub></td>
-    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/rest-dark.png"><img src=".github/readme/screens/rest-light.png" width="100%" alt="Workout: the rest timer between sets"></picture><br><sub>Workout</sub></td>
-    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/progressions-dark.png"><img src=".github/readme/screens/progressions-light.png" width="100%" alt="Progressions: where you stand in each chain"></picture><br><sub>Progressions</sub></td>
+    <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/today-dark.png"><img src=".github/readme/screens/today-light.png" width="100%" alt="Today: this week, what is due and a start button"></picture><br><sub>Today</sub></td>
+    <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/review-dark.png"><img src=".github/readme/screens/review-light.png" width="100%" alt="Weekly review: days trained, sets by movement and new bests"></picture><br><sub>Weekly review</sub></td>
+    <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/rest-dark.png"><img src=".github/readme/screens/rest-light.png" width="100%" alt="Workout: the rest timer between sets"></picture><br><sub>Workout</sub></td>
+    <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/progressions-dark.png"><img src=".github/readme/screens/progressions-light.png" width="100%" alt="Progressions: where you stand in each chain"></picture><br><sub>Progressions</sub></td>
   </tr>
   <tr>
-    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/chain-dark.png"><img src=".github/readme/screens/chain-light.png" width="100%" alt="Chain: every step from easiest to hardest"></picture><br><sub>Chain</sub></td>
-    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/step-dark.png"><img src=".github/readme/screens/step-light.png" width="100%" alt="Step: form cues and the muscles it works"></picture><br><sub>Step</sub></td>
-    <td width="33%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/calendar-dark.png"><img src=".github/readme/screens/calendar-light.png" width="100%" alt="History: the week, its sets and exercises"></picture><br><sub>History</sub></td>
+    <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/chain-dark.png"><img src=".github/readme/screens/chain-light.png" width="100%" alt="Chain: every step from easiest to hardest"></picture><br><sub>Chain</sub></td>
+    <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/step-dark.png"><img src=".github/readme/screens/step-light.png" width="100%" alt="Step: form cues and the muscles it works"></picture><br><sub>Step</sub></td>
+    <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/calendar-dark.png"><img src=".github/readme/screens/calendar-light.png" width="100%" alt="History: the week, its sets and exercises"></picture><br><sub>History</sub></td>
   </tr>
 </table>
 
@@ -148,7 +149,7 @@ request that did it.
 
 **1.2 Training insight** (in progress)
 
-- [ ] A weekly review
+- [x] A weekly review
 - [ ] A body map of volume, recovery and untrained muscles
 - [ ] A climb chart for each chain you follow
 - [ ] Personal-best history

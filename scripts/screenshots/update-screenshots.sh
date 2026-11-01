@@ -7,7 +7,7 @@
 #
 #   scripts/screenshots/update-screenshots.sh
 #
-# Writes fastlane/metadata/android/en-US/images/phoneScreenshots/1-6.png (Light, 1080 x 1920),
+# Writes fastlane/metadata/android/en-US/images/phoneScreenshots/1-7.png (Light, 1080 x 1920),
 # .github/readme/screens/<screen>-<light|dark>.png (540 x 960) and
 # .github/readme/social-preview-<light|dark>.png (2560 x 1280) and the store banner
 # fastlane/metadata/android/en-US/images/featureGraphic.png (1024 x 500). Look at every changed image before
@@ -27,7 +27,7 @@ KALIMORY_SCREENSHOTS="$shots" ./gradlew -q recordRoborazziDebug \
     --tests '*StoreScreenshotsTest*' --tests '*StoreRestScreenshotTest*'
 
 # Store order: what a newcomer sees first.
-order=(today rest progressions chain step calendar)
+order=(today review rest progressions chain step calendar)
 store=fastlane/metadata/android/en-US/images/phoneScreenshots
 for i in "${!order[@]}"; do
     for theme in light dark; do

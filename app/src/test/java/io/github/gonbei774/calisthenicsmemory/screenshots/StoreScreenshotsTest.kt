@@ -79,6 +79,13 @@ class StoreScreenshotsTest(private val theme: AppTheme) {
         save("today")
     }
 
+    @Test fun weeklyReview() {
+        waitFor(PROGRAM)
+        compose.onNode(hasText("Weekly review") and hasClickAction()).performClick()
+        waitFor("Sets by movement")
+        save("review")
+    }
+
     @Test fun calendar() {
         open("Progress")
         waitFor("Pike push-up")
