@@ -32,6 +32,10 @@ data class HistorySet(
     val sessionExerciseId: Long? = null,
     /** The v2 workout this set belongs to; null for legacy rows. */
     val workoutSessionId: Long? = null,
+    /** The user marked this set as a warm-up (ADR 0012); always false for legacy rows. */
+    val warmUp: Boolean = false,
+    /** The user's effort rating, 0..[Effort.MAX_EFFORT_LEFT]; null when not rated, and for legacy rows. */
+    val effortLeft: Int? = null,
 ) {
     /** The legacy row behind this set, for legacy edit and delete actions; null for v2-only sets. */
     fun toLegacyRecord(): TrainingRecord? = legacyRecordId?.takeIf { source == HistorySource.LEGACY }?.let {
@@ -63,6 +67,8 @@ data class V2HistoryRow(
     /** The occurrence's position in its workout, for execution order across occurrences. */
     val sessionExerciseOrderIndex: Int = 0,
     val roundNumber: Int? = null,
+    val isWarmUp: Boolean = false,
+    val effortLeft: Int? = null,
 )
 
 /**
@@ -114,6 +120,10 @@ object CompatibilityHistory {
                 assistanceG = primary.assistanceGrams,
                 sessionExerciseId = primary.sessionExerciseId,
                 workoutSessionId = primary.workoutSessionId,
+                // A set is a warm-up only when every side is marked, so real work is never dropped by a
+                // half-marked set; two different ratings (only from an edited backup) read as the harder one.
+                warmUp = rows.all { it.isWarmUp },
+                effortLeft = rows.mapNotNull { Effort.normalized(it.effortLeft) }.minOrNull(),
             )
         }
         return (legacySets + v2Sets).sortedWith(

@@ -15,6 +15,9 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - The weekly review lists the week's new personal bests: each exercise whose best set beat every earlier one, with the day it came and the best before it ([#253](https://github.com/WildeBeast2521/kalimory/pull/253))
 - The weekly review lists the progression steps you mastered that week; tap one to open its progression ([#254](https://github.com/WildeBeast2521/kalimory/pull/254))
 
+### Changed
+- Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#PR](https://github.com/WildeBeast2521/kalimory/pull/PR))
+
 ## [1.1.0] - 2026-10-31
 
 ### Added

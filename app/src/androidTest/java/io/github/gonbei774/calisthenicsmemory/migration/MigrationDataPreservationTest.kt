@@ -307,4 +307,32 @@ class MigrationDataPreservationTest {
         assertEquals(emptyList<List<Any?>>(), db.rows("SELECT exerciseId FROM chain_placements"))
         db.close()
     }
+
+    @Test
+    fun migrate25To26KeepsEverySetUnmarkedAndUnrated() {
+        val db = migrate(25, 26) {
+            it.execSQL(
+                "INSERT INTO workout_sessions (id, status, sourceType, startedAtEpochMillis, updatedAtEpochMillis, timePrecision) " +
+                    "VALUES (1, 'COMPLETED', 'AD_HOC', 1000, 2000, 'EXACT')"
+            )
+            it.execSQL(
+                "INSERT INTO session_exercises (id, workoutSessionId, orderIndex, exerciseId, exerciseNameSnapshot, exerciseKindSnapshot, lateralitySnapshot) " +
+                    "VALUES (1, 1, 0, 2, 'Incline Push-up', 'DYNAMIC', 'BILATERAL')"
+            )
+            it.execSQL(
+                "INSERT INTO set_entries (id, sessionExerciseId, orderIndex, setNumber, status, side, repetitions, timePrecision, comment) " +
+                    "VALUES (1, 1, 0, 1, 'COMPLETED', 'BILATERAL', 12, 'EXACT', 'kept'), " +
+                    "(2, 1, 1, 2, 'SKIPPED', 'BILATERAL', NULL, 'MINUTE', NULL)"
+            )
+        }
+        // Every set is kept as it was, and none is given a mark or a rating it never had.
+        assertEquals(
+            listOf(listOf<Any?>(1L, "COMPLETED", 12L, "kept", 0L, null), listOf<Any?>(2L, "SKIPPED", null, null, 0L, null)),
+            db.rows("SELECT id, status, repetitions, comment, isWarmUp, effortLeft FROM set_entries ORDER BY id"),
+        )
+        // The new columns accept the values the app writes.
+        db.execSQL("UPDATE set_entries SET isWarmUp = 1, effortLeft = 2 WHERE id = 1")
+        assertEquals(listOf(listOf<Any?>(1L, 2L)), db.rows("SELECT isWarmUp, effortLeft FROM set_entries WHERE id = 1"))
+        db.close()
+    }
 }

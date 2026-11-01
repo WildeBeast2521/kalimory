@@ -267,4 +267,45 @@ class BackupValidationTest {
             BackupAnomalyKind.UNKNOWN_CATALOGUE_ID to 90L,
         )
     }
+
+    // Format 12 (ADR 0012): a set's warm-up mark and effort rating.
+    private fun validV12() = validV11().let { base ->
+        base.copy(
+            version = 12,
+            setEntries = base.setEntries.mapIndexed { index, set -> if (index == 0) set.copy(isWarmUp = true, effortLeft = 2) else set },
+        )
+    }
+
+    @Test fun `accepts a version 12 backup with warm-up marks and effort`() {
+        val result = service.parse(json.encodeToString(validV12()))
+        assertTrue("Expected success, got $result", result is BackupResult.Success)
+        assertEquals(ParsedBackup(validV12(), emptyList()), (result as BackupResult.Success).value)
+        val restored = result.value.data.setEntries.first().toEntity()
+        assertEquals(true to 2, restored.isWarmUp to restored.effortLeft)
+    }
+
+    @Test fun `a set is written with its marks and an unmarked set adds nothing to the file`() {
+        val text = json.encodeToString(validV12())
+        assertTrue(text.contains("\"isWarmUp\":true") && text.contains("\"effortLeft\":2"))
+        // Defaults are not written, so a backup without marks has no new keys.
+        val plain = json.encodeToString(validV11())
+        assertTrue(!plain.contains("isWarmUp") && !plain.contains("effortLeft"))
+    }
+
+    @Test fun `an older backup restores every set unmarked and unrated`() {
+        val result = service.parse(json.encodeToString(validV11()))
+        assertTrue(result is BackupResult.Success)
+        result as BackupResult.Success
+        assertTrue(result.value.data.setEntries.map { it.toEntity() }.all { !it.isWarmUp && it.effortLeft == null })
+    }
+
+    @Test fun `marks the app never writes are kept and reported`() {
+        val base = validV12()
+        val (done, skipped) = base.setEntries
+        assertAcceptedWith(
+            base.copy(setEntries = listOf(done.copy(effortLeft = 6), skipped.copy(isWarmUp = true))),
+            BackupAnomalyKind.V2_UNEXPECTED_MARK to 22L,
+            BackupAnomalyKind.V2_UNEXPECTED_MARK to 23L,
+        )
+    }
 }

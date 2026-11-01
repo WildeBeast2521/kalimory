@@ -75,4 +75,23 @@ class SingleWorkoutWriterTest {
     @Test fun `negative values are refused`() {
         assertThrows(IllegalArgumentException::class.java) { SingleWorkoutWriter.rows(workout(listOf(set(1, -1)))) }
     }
+
+    @Test fun `a done set keeps its warm-up mark and rating, a skipped one never has them`() {
+        val rows = SingleWorkoutWriter.rows(workout(listOf(
+            set(1, 8).copy(warmUp = true, effortLeft = 3),
+            set(2, 12).copy(effortLeft = 1),
+            set(3, 0).copy(warmUp = true, effortLeft = 0),
+        )))
+        assertEquals(listOf(true, false, false), rows.sets.map { it.isWarmUp })
+        assertEquals(listOf(3, 1, null), rows.sets.map { it.effortLeft })
+    }
+
+    @Test fun `a hold can be rated`() {
+        val rows = SingleWorkoutWriter.rows(workout(listOf(set(1, 40).copy(effortLeft = 0)), kind = ExerciseKind.ISOMETRIC))
+        assertEquals(0, rows.sets.single().effortLeft)
+    }
+
+    @Test fun `a rating outside the scale is refused`() {
+        assertThrows(IllegalArgumentException::class.java) { SingleWorkoutWriter.rows(workout(listOf(set(1, 8).copy(effortLeft = 5)))) }
+    }
 }

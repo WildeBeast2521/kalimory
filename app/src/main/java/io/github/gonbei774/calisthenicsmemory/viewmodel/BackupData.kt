@@ -25,7 +25,7 @@ data class BackupData(
     val todoTasks: List<ExportTodoTask> = emptyList(),                            // v8で追加
     val workoutSessions: List<ExportWorkoutSession> = emptyList(),                // v9で追加（v2 履歴）
     val sessionExercises: List<ExportSessionExercise> = emptyList(),              // v9で追加
-    val setEntries: List<ExportSetEntry> = emptyList(),                           // v9で追加
+    val setEntries: List<ExportSetEntry> = emptyList(),                           // v9で追加; v12: warm-up mark and effort
     val chainPlacements: List<ExportChainPlacement> = emptyList(),                // v11: custom exercises in built-in chains
 )
 

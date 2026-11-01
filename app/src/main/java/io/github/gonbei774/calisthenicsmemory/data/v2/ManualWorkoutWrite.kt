@@ -14,6 +14,10 @@ data class ManualSet(
     val distanceCm: Int?,
     val weightG: Int?,
     val assistanceG: Int?,
+    /** The user marked the set as a warm-up (ADR 0012). */
+    val warmUp: Boolean = false,
+    /** The user's effort rating, 0..[Effort.MAX_EFFORT_LEFT], or null. */
+    val effortLeft: Int? = null,
 )
 
 /** Sets entered by hand for one exercise, at a date and time the user chose. */
@@ -39,6 +43,7 @@ object ManualWorkoutWriter {
      */
     fun rows(workout: ManualWorkout, zone: ZoneId): SingleWorkoutRows {
         require(workout.sets.all { it.valueRight >= 0 && (it.valueLeft ?: 0) >= 0 }) { "Values must not be negative" }
+        require(workout.sets.all { Effort.isValid(it.effortLeft) }) { "Effort must be 0..${Effort.MAX_EFFORT_LEFT}" }
         // The screen's default time is "now", which carries seconds the user never chose.
         val start = workout.date.atTime(workout.time.truncatedTo(ChronoUnit.MINUTES)).atZone(zone).toInstant().toEpochMilli()
         val isometric = workout.kind == ExerciseKind.ISOMETRIC
@@ -54,6 +59,8 @@ object ManualWorkoutWriter {
             addedWeightGrams = set.weightG,
             assistanceGrams = set.assistanceG,
             timePrecision = TimePrecision.MINUTE,
+            isWarmUp = set.warmUp,
+            effortLeft = set.effortLeft,
         )
         val unilateral = workout.laterality == Laterality.UNILATERAL
         val entries = mutableListOf<SetEntryEntity>()

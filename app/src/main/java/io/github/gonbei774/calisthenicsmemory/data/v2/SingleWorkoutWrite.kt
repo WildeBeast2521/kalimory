@@ -15,6 +15,10 @@ data class SingleWorkoutSet(
     val assistanceG: Int?,
     /** When the set was observed to finish; null when it was not timed (for example typed in afterwards). */
     val completedAtWallMillis: Long?,
+    /** The user marked the set as a warm-up (ADR 0012); written only for a set that was done. */
+    val warmUp: Boolean = false,
+    /** The user's effort rating, 0..[Effort.MAX_EFFORT_LEFT], or null; written only for a set that was done. */
+    val effortLeft: Int? = null,
 )
 
 /** A finished single-exercise workout, ready to be written as one v2 session. */
@@ -54,6 +58,7 @@ object SingleWorkoutWriter {
      */
     fun rows(workout: SingleWorkout): SingleWorkoutRows {
         require(workout.sets.all { it.value >= 0 }) { "Values must not be negative" }
+        require(workout.sets.all { Effort.isValid(it.effortLeft) }) { "Effort must be 0..${Effort.MAX_EFFORT_LEFT}" }
         val start = workout.startedAtWallMillis
         val session = WorkoutSessionEntity(
             status = WorkoutSessionStatus.COMPLETED,
@@ -95,6 +100,8 @@ object SingleWorkoutWriter {
                 targetDurationMillis = if (isometric) set.targetValue * 1_000L else null,
                 completedAtEpochMillis = if (done) set.completedAtWallMillis else null,
                 timePrecision = if (done && set.completedAtWallMillis != null) TimePrecision.EXACT else TimePrecision.MINUTE,
+                isWarmUp = done && set.warmUp,
+                effortLeft = if (done) set.effortLeft else null,
             )
         }
         return SingleWorkoutRows(session, exercise, sets)

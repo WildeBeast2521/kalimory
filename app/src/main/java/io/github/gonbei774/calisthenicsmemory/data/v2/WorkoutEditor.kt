@@ -54,6 +54,9 @@ object WorkoutEditor {
                         distanceCm = primary.distanceCm,
                         weightG = primary.addedWeightGrams,
                         assistanceG = primary.assistanceGrams,
+                        // The merged history's rule: a warm-up only when every side is, the harder rating.
+                        warmUp = sides.all { it.isWarmUp },
+                        effortLeft = sides.mapNotNull { Effort.normalized(it.effortLeft) }.minOrNull(),
                     )
                 }
             DraftExercise(
@@ -217,8 +220,10 @@ object WorkoutEditor {
             if ((entry.durationMillis ?: -1) / 1_000 == value.toLong()) entry else entry.copy(durationMillis = value * 1_000L)
     }
 
-    private fun withMetrics(entry: SetEntryEntity, set: DraftSet) =
-        entry.copy(distanceCm = set.distanceCm, addedWeightGrams = set.weightG, assistanceGrams = set.assistanceG)
+    private fun withMetrics(entry: SetEntryEntity, set: DraftSet) = entry.copy(
+        distanceCm = set.distanceCm, addedWeightGrams = set.weightG, assistanceGrams = set.assistanceG,
+        isWarmUp = set.warmUp, effortLeft = set.effortLeft,
+    )
 
     private fun sidesOf(set: DraftSet, unilateral: Boolean): List<Pair<BodySide, Int>> =
         if (unilateral) listOfNotNull(set.value?.let { BodySide.RIGHT to it }, set.valueLeft?.let { BodySide.LEFT to it })
@@ -240,6 +245,8 @@ object WorkoutEditor {
         addedWeightGrams = set.weightG,
         assistanceGrams = set.assistanceG,
         timePrecision = TimePrecision.MINUTE,
+        isWarmUp = set.warmUp,
+        effortLeft = set.effortLeft,
     )
 
     // ---- legacy workouts ----
@@ -288,6 +295,10 @@ object WorkoutEditor {
         return database.withTransaction {
             val loaded = records.workoutRecords(original.date.format(DATE), original.time.format(TIME), original.comment)
             if (draftOf(loaded, library) != original) return@withTransaction WorkoutSaveResult.STALE
+            // Legacy records have no place for a warm-up mark or a rating (ADR 0012).
+            require(edited.exercises.all { exercise -> exercise.sets.all { !it.warmUp && it.effortLeft == null } }) {
+                "A legacy workout cannot hold warm-up marks or effort"
+            }
             val plan = WorkoutEditPlan.of(original, edited)
             if (plan.isEmpty) return@withTransaction WorkoutSaveResult.UNCHANGED
             val loadedIds = loaded.map { it.id }
