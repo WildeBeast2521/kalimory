@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens.review
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,8 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily
 import io.github.gonbei774.calisthenicsmemory.data.review.WeekBest
 import io.github.gonbei774.calisthenicsmemory.data.review.WeekReview
+import io.github.gonbei774.calisthenicsmemory.data.review.WeekStep
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.review.WeeklyReview
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
@@ -75,7 +78,7 @@ import java.time.format.TextStyle
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeeklyReviewScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit) {
+fun WeeklyReviewScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit, onOpenChain: (String) -> Unit = {}) {
     val history by viewModel.history.collectAsState()
     val intervalHistory by viewModel.intervalHistory.collectAsState()
     val exercises by viewModel.exercises.collectAsState()
@@ -115,6 +118,7 @@ fun WeeklyReviewScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit)
             canGoForward = WeeklyReview.canGoForward(weekStart, currentStart),
             onPrevious = { anchor = weekStart.minusWeeks(1).toString() },
             onNext = { anchor = weekStart.plusWeeks(1).toString() },
+            onOpenChain = onOpenChain,
             modifier = Modifier.padding(padding),
         )
     }
@@ -133,6 +137,7 @@ internal fun WeeklyReviewContent(
     canGoForward: Boolean,
     onPrevious: () -> Unit,
     onNext: () -> Unit,
+    onOpenChain: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     // A surface, not a plain background, so the buttons get the matching content colour.
@@ -154,6 +159,7 @@ internal fun WeeklyReviewContent(
                 Totals(review, goal)
                 SetsByMovement(review)
                 if (review.bests.isNotEmpty()) NewBests(review.bests)
+                if (review.stepsMet.isNotEmpty()) StepsMet(review.stepsMet, onOpenChain)
             }
         }
     }
@@ -255,11 +261,17 @@ private fun SetsRow(name: String, detail: String?, sets: Int, showMark: Boolean,
  * TalkBack as one item. With a large font the name and value share no line, so neither is squeezed.
  */
 @Composable
-private fun ReviewRow(name: String, value: String, detail: String?, below: @Composable () -> Unit = {}) {
+private fun ReviewRow(
+    name: String,
+    value: String,
+    detail: String?,
+    onClick: (() -> Unit)? = null,
+    below: @Composable () -> Unit = {},
+) {
     Column(
         Modifier
             .fillMaxWidth()
-            .semantics(mergeDescendants = true) {}
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier.semantics(mergeDescendants = true) {})
             .padding(horizontal = Spacing.l, vertical = Spacing.s),
         verticalArrangement = Arrangement.spacedBy(Spacing.xs),
     ) {
@@ -267,7 +279,11 @@ private fun ReviewRow(name: String, value: String, detail: String?, below: @Comp
             Text(name, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface, modifier = m)
         }
         val valueText: @Composable () -> Unit = {
-            Text(value, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(value, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                // A row that opens something ends in a chevron, as Today's rows do.
+                if (onClick != null) Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
         }
         if (isLargeFontScale()) {
             nameText(Modifier)
@@ -326,6 +342,25 @@ private fun SetsBar(sets: Int, scale: Int, showMark: Boolean) {
                 Spacer(Modifier.weight(WeeklyReview.REFERENCE_SETS.toFloat()))
                 Box(Modifier.width(2.dp).fillMaxHeight().background(MaterialTheme.colorScheme.outline))
                 Spacer(Modifier.weight((scale - WeeklyReview.REFERENCE_SETS).toFloat()))
+            }
+        }
+    }
+}
+
+/** Steps whose move-on standard was first met this week; each opens its progression. */
+@Composable
+private fun StepsMet(steps: List<WeekStep>, onOpenChain: (String) -> Unit) {
+    val locale = LocalConfiguration.current.locales[0]
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        SectionHeading(stringResource(R.string.weekly_review_steps))
+        RowGroup {
+            steps.forEach { met ->
+                ReviewRow(
+                    name = stringResource(met.step.name),
+                    value = met.date.dayOfWeek.getDisplayName(TextStyle.FULL_STANDALONE, locale),
+                    detail = Catalogue.chain(met.chainId)?.let { stringResource(it.name) },
+                    onClick = { onOpenChain(met.chainId) },
+                )
             }
         }
     }

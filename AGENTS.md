@@ -147,8 +147,9 @@ deterministic and offline. A known flaky test is named in the release log, never
   closed, update its line in the same pull request. A closed issue is ticked with the pull request
   that closed it, and the milestone's "done" count follows; an issue closed as not planned leaves
   the list. The README's roadmap section is the same checklist in short form (milestone titles and
-  item titles, no links or details): change it in the same pull request, and mark a milestone
-  "released in x.y.0" when it ships and the next one "in progress".
+  item titles, no links or details): like the rest of the README it changes in the release pull
+  request, which ticks what the release ships, marks the milestone "released in x.y.0" and the
+  next one "in progress".
 
 ## Versions and releases
 

@@ -2,7 +2,9 @@ package io.github.gonbei774.calisthenicsmemory.data.review
 
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.MovementPattern
+import io.github.gonbei774.calisthenicsmemory.data.progression.Progressions
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalHistoryItem
 import java.time.LocalDate
@@ -41,6 +43,9 @@ data class WeekBest(
     val date: LocalDate,
 )
 
+/** A catalogue step whose move-on standard was first met this week ([WeeklyReview.stepsMet]). */
+data class WeekStep(val chainId: String, val step: CatalogueStep, val date: LocalDate)
+
 /** One week of training, from history only: nothing here is stored or invented. */
 data class WeekReview(
     val weekStart: LocalDate,
@@ -56,6 +61,8 @@ data class WeekReview(
     val intervalSets: Int,
     /** New personal bests, in the order they were set. */
     val bests: List<WeekBest> = emptyList(),
+    /** Steps first met this week, in the order they were met. */
+    val stepsMet: List<WeekStep> = emptyList(),
 ) {
     val isEmpty: Boolean get() = totalSets == 0 && daysTrained == 0
 }
@@ -106,7 +113,23 @@ object WeeklyReview {
             otherSets = other,
             intervalSets = intervalSets,
             bests = bests(weekStart, history, exercises),
+            stepsMet = stepsMet(weekStart, history, exercises),
         )
+    }
+
+    /**
+     * Steps whose move-on standard was first met this week, from every chain with a step in the
+     * library, followed or not: it is a fact of history. Judged as the chain screen judges it
+     * ([Progressions.journey]), against the current standard, so a step met again later is not
+     * repeated and a raised target can move an old one.
+     */
+    fun stepsMet(weekStart: LocalDate, history: List<HistorySet>, exercises: List<Exercise>): List<WeekStep> {
+        val end = weekStart.plusDays(6)
+        return Catalogue.chains.flatMap { chain ->
+            Progressions.journey(chain, exercises, history).mapNotNull { journey ->
+                journey.metOn?.let(::parse)?.takeIf { it in weekStart..end }?.let { WeekStep(chain.id, journey.step, it) }
+            }
+        }.sortedBy { it.date }
     }
 
     /**

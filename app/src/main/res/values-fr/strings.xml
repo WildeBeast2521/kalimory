@@ -976,4 +976,5 @@
     <string name="weekly_review_empty">Aucune série enregistrée cette semaine</string>
     <string name="weekly_review_bests">Nouveaux records</string>
     <string name="weekly_review_best">%1$s, avant %2$s</string>
+    <string name="weekly_review_steps">Étapes maîtrisées</string>
 </resources>

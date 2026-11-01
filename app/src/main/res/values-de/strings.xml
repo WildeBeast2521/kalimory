@@ -946,4 +946,5 @@
     <string name="weekly_review_empty">Keine Sätze in dieser Woche erfasst</string>
     <string name="weekly_review_bests">Neue Bestleistungen</string>
     <string name="weekly_review_best">%1$s, vorher %2$s</string>
+    <string name="weekly_review_steps">Gemeisterte Stufen</string>
 </resources>

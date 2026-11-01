@@ -8,7 +8,10 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.getBoundsInRoot
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -42,10 +45,11 @@ class WeeklyReviewContentTest {
         canGoBack: Boolean = true,
         canGoForward: Boolean = false,
         direction: LayoutDirection = LayoutDirection.Ltr,
+        onOpenChain: (String) -> Unit = {},
     ) = compose.setContent {
         CalisthenicsMemoryTheme {
             CompositionLocalProvider(LocalLayoutDirection provides direction) {
-                WeeklyReviewContent(review, heading, WeeklyReviewSamples.RANGE, goal, canGoBack, canGoForward, onPrevious = {}, onNext = {})
+                WeeklyReviewContent(review, heading, WeeklyReviewSamples.RANGE, goal, canGoBack, canGoForward, onPrevious = {}, onNext = {}, onOpenChain = onOpenChain)
             }
         }
     }
@@ -87,6 +91,22 @@ class WeeklyReviewContentTest {
         compose.onNode(hasText("New bests") and isHeading).assertExists()
         compose.onNode(hasText("Push-up") and hasText("Wednesday") and hasText("15 reps, was 12 reps")).assertExists()
         compose.onNode(hasText("Plank") and hasText("Friday") and hasText("75 sec, was 60 sec")).assertExists()
+    }
+
+    @Test fun `a mastered step reads as one item and opens its progression`() {
+        val opened = mutableListOf<String>()
+        show(onOpenChain = { opened += it })
+        val context = androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
+        val step = context.getString(WeeklyReviewSamples.chain.steps[1].name)
+        val chain = context.getString(WeeklyReviewSamples.chain.name)
+        compose.onNode(hasText("Steps mastered") and isHeading).assertExists()
+        compose.onNode(hasText(step) and hasText("Thursday") and hasText(chain) and hasClickAction()).performScrollTo().performClick()
+        assertEquals(listOf(WeeklyReviewSamples.chain.id), opened)
+    }
+
+    @Test fun `a week without mastered steps has no steps section`() {
+        show(review = WeeklyReviewSamples.week.copy(stepsMet = emptyList()))
+        compose.onNodeWithText("Steps mastered").assertDoesNotExist()
     }
 
     @Test fun `a week without bests has no bests section`() {
