@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens.review
 
 import io.github.gonbei774.calisthenicsmemory.data.review.FamilySets
 import io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily
+import io.github.gonbei774.calisthenicsmemory.data.review.WeekBest
 import io.github.gonbei774.calisthenicsmemory.data.review.WeekReview
 import java.time.LocalDate
 
@@ -17,6 +18,10 @@ internal object WeeklyReviewSamples {
         ),
         otherSets = 3,
         intervalSets = 8,
+        bests = listOf(
+            WeekBest(1, "Push-up", dynamic = true, value = 15, previousBest = 12, date = LocalDate.of(2026, 3, 11)),
+            WeekBest(2, "Plank", dynamic = false, value = 75, previousBest = 60, date = LocalDate.of(2026, 3, 13)),
+        ),
     )
     val empty = WeekReview(LocalDate.of(2026, 3, 9), 0, 0, emptyList(), 0, 0)
     const val RANGE = "9 Mar 2026 – 15 Mar 2026"

@@ -18,10 +18,13 @@ class WeeklyReviewTest {
     // Monday 9 to Sunday 15 March 2026.
     private val monday = LocalDate.of(2026, 3, 9)
 
-    private fun set(date: String, exerciseId: Long, source: HistorySource = HistorySource.V2, left: Int? = null) = HistorySet(
+    private fun set(
+        date: String, exerciseId: Long, source: HistorySource = HistorySource.V2, left: Int? = null,
+        value: Int = 10, time: String = "07:30", weightG: Int? = null,
+    ) = HistorySet(
         source = source, legacyRecordId = if (source == HistorySource.LEGACY) 1 else null, setEntryIds = emptyList(),
-        exerciseId = exerciseId, date = date, time = "07:30", setNumber = 1, valueRight = 10, valueLeft = left,
-        comment = "", distanceCm = null, weightG = null, assistanceG = null,
+        exerciseId = exerciseId, date = date, time = time, setNumber = 1, valueRight = value, valueLeft = left,
+        comment = "", distanceCm = null, weightG = weightG, assistanceG = null,
     )
 
     private fun interval(date: String, rounds: Int, done: Int, inLast: Int = 0) = IntervalHistoryItem(
@@ -167,5 +170,65 @@ class WeeklyReviewTest {
         assertFalse(WeeklyReview.canGoBack(monday, null))
         assertTrue(WeeklyReview.canGoForward(LocalDate.of(2026, 3, 2), monday))
         assertFalse(WeeklyReview.canGoForward(monday, monday))
+    }
+
+    // New bests
+
+    @Test fun `a week's best that beats every earlier set is a new best`() {
+        val history = listOf(set("2026-03-02", push.id, value = 12), set("2026-03-11", push.id, value = 15))
+        assertEquals(
+            listOf(WeekBest(push.id, push.name, dynamic = true, value = 15, previousBest = 12, date = LocalDate.of(2026, 3, 11))),
+            WeeklyReview.bests(monday, history, listOf(push)),
+        )
+    }
+
+    @Test fun `equalling the old best is not a new best`() {
+        val history = listOf(set("2026-03-02", push.id, value = 12), set("2026-03-11", push.id, value = 12))
+        assertTrue(WeeklyReview.bests(monday, history, listOf(push)).isEmpty())
+    }
+
+    @Test fun `an exercise first done this week has no best`() {
+        val history = listOf(set("2026-03-10", push.id, value = 8), set("2026-03-12", push.id, value = 11))
+        assertTrue(WeeklyReview.bests(monday, history, listOf(push)).isEmpty())
+    }
+
+    @Test fun `sets after the week do not take away its best`() {
+        val history = listOf(set("2026-03-02", push.id, value = 12), set("2026-03-11", push.id, value = 15), set("2026-03-18", push.id, value = 20))
+        assertEquals(15, WeeklyReview.bests(monday, history, listOf(push)).single().value)
+    }
+
+    @Test fun `weighted sets are left out on both sides`() {
+        val history = listOf(
+            set("2026-03-02", push.id, value = 20, weightG = 5000), set("2026-03-03", push.id, value = 10),
+            set("2026-03-11", push.id, value = 12), set("2026-03-12", push.id, value = 30, weightG = 5000),
+        )
+        val best = WeeklyReview.bests(monday, history, listOf(push)).single()
+        assertEquals(12, best.value)
+        assertEquals(10, best.previousBest)
+    }
+
+    @Test fun `a one-sided set counts its better side`() {
+        val history = listOf(set("2026-03-02", push.id, value = 10, left = 9), set("2026-03-11", push.id, value = 9, left = 11))
+        assertEquals(11, WeeklyReview.bests(monday, history, listOf(push)).single().value)
+    }
+
+    @Test fun `the best is dated by the first set that reached it and holds are seconds`() {
+        val hold = Exercise(id = 7, name = "Plank", type = "Isometric")
+        val history = listOf(
+            set("2026-03-02", hold.id, value = 40),
+            set("2026-03-13", hold.id, value = 60, time = "06:00"), set("2026-03-10", hold.id, value = 60, time = "19:00"),
+        )
+        val best = WeeklyReview.bests(monday, history, listOf(hold)).single()
+        assertEquals(LocalDate.of(2026, 3, 10), best.date)
+        assertFalse(best.dynamic)
+    }
+
+    @Test fun `bests come in the order they were set and are part of the review`() {
+        val pull = exercise(8, stepOf(MovementPattern.VERTICAL_PULL))
+        val history = listOf(
+            set("2026-03-01", push.id, value = 5), set("2026-03-01", pull.id, value = 5),
+            set("2026-03-13", push.id, value = 6), set("2026-03-10", pull.id, value = 6),
+        )
+        assertEquals(listOf(pull.id, push.id), WeeklyReview.build(monday, history, emptyList(), listOf(push, pull)).bests.map { it.exerciseId })
     }
 }

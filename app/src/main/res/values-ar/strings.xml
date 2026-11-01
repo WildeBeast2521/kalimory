@@ -1005,4 +1005,6 @@
     <string name="weekly_review_intervals_detail">تُحسب كل فترة عمل مجموعةً واحدة</string>
     <string name="weekly_review_reference">تشير العلامة إلى 10 مجموعات أسبوعيًا. وجدت مراجعة لـ15 دراسة نموًا عضليًا أكبر مع 10 مجموعات شاقة أو أكثر أسبوعيًا لكل مجموعة عضلية (Schoenfeld et al., 2017).</string>
     <string name="weekly_review_empty">لم تُسجَّل أي مجموعات في هذا الأسبوع</string>
+    <string name="weekly_review_bests">أرقام قياسية جديدة</string>
+    <string name="weekly_review_best">%1$s، وكان %2$s</string>
 </resources>
