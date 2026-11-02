@@ -45,6 +45,7 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
 import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseResult
 import io.github.gonbei774.calisthenicsmemory.data.v2.PersonalBest
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.warmUpLabel
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSourceType
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSummary
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
@@ -209,11 +210,16 @@ private fun ExerciseRow(exercise: ExerciseResult, interval: Boolean, delayMillis
     LaunchedEffect(Unit) { ring.animateTo(done, tween(520, delayMillis = delayMillis, easing = Decelerate)) }
 
     val unit = stringResource(if (exercise.kind == ExerciseKind.DYNAMIC) R.string.unit_reps else R.string.unit_seconds)
+    // A warm-up is listed with its label, in words (ADR 0012); the totals above leave it out.
+    val warmUp = warmUpLabel()
     val setsLine = when {
         interval -> pluralStringResource(R.plurals.set_count, exercise.sets.size, exercise.sets.size)
-        exercise.sets.size > 1 && exercise.sets.all { it == exercise.sets.first() && it.left == null } ->
+        exercise.sets.size > 1 && exercise.sets.none { it.warmUp } && exercise.sets.all { it == exercise.sets.first() && it.left == null } ->
             "${exercise.sets.size} × ${stringResource(R.string.value_with_unit, exercise.sets.first().right, unit)}"
-        else -> exercise.sets.joinToString(", ") { set -> set.left?.let { "${set.right}/$it" } ?: "${set.right}" } + " " + unit
+        else -> exercise.sets.joinToString(", ") { set ->
+            val value = set.left?.let { "${set.right}/$it" } ?: "${set.right}"
+            if (set.warmUp) "$value ($warmUp)" else value
+        } + " " + unit
     }
     val lastTimeLine = exercise.lastTimeTotal?.takeIf { !interval }?.let { total ->
         stringResource(R.string.summary_last_time, stringResource(R.string.value_with_unit, total, unit))

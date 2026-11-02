@@ -49,6 +49,7 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.Laterality
 import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SetMarks
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
@@ -684,6 +685,11 @@ fun WorkoutInputScreen(
     // セット完了で次セットが実行中に昇格したとき、そのセットへ自動スクロールするための状態
     var pendingScrollToSetIndex by remember { mutableStateOf<Int?>(null) }
 
+    // Warm-up marks (ADR 0012), one per set. Never prefilled: a preset mark that went unnoticed
+    // would silently take a working set out of records.
+    val showWarmUp = run { val context = LocalContext.current; remember { WorkoutPreferences(context).isWarmUpMarkingEnabled() } }
+    var warmUps by remember(prefillData) { mutableStateOf(List(numberOfSets) { false }) }
+
     // Unilateral用の左右別の値管理（プリフィルデータで初期化）
     var setValuesRight by remember(prefillData) {
         mutableStateOf(
@@ -807,6 +813,7 @@ fun WorkoutInputScreen(
         distanceInputs.joinToString(","),
         weightInputs.joinToString(","),
         assistanceInputs.joinToString(","),
+        warmUps.joinToString(","),
         comment
     ).joinToString("|")
 
@@ -860,7 +867,7 @@ fun WorkoutInputScreen(
                     manualWorkout(
                         exercise, groups, selectedDate, selectedTime, comment,
                         valuesRight.indices.map { i ->
-                            ManualSet(valuesRight[i], valuesLeft[i], distancesCm[i], weightsG[i], assistancesG[i])
+                            ManualSet(valuesRight[i], valuesLeft[i], distancesCm[i], weightsG[i], assistancesG[i], warmUp = warmUps.getOrElse(validIndices[i]) { false })
                         }
                     )
                 )
@@ -887,7 +894,7 @@ fun WorkoutInputScreen(
                     manualWorkout(
                         exercise, groups, selectedDate, selectedTime, comment,
                         values.indices.map { i ->
-                            ManualSet(values[i], null, distancesCm[i], weightsG[i], assistancesG[i])
+                            ManualSet(values[i], null, distancesCm[i], weightsG[i], assistancesG[i], warmUp = warmUps.getOrElse(validIndices[i]) { false })
                         }
                     )
                 )
@@ -909,6 +916,7 @@ fun WorkoutInputScreen(
             }
         }
         // 距離・荷重・アシストもセット数に合わせてリサイズ
+        warmUps = List(numberOfSets) { index -> warmUps.getOrElse(index) { false } }
         distanceInputs = List(numberOfSets) { index -> distanceInputs.getOrElse(index) { "" } }
         weightInputs = List(numberOfSets) { index -> weightInputs.getOrElse(index) { "" } }
         assistanceInputs = List(numberOfSets) { index -> assistanceInputs.getOrElse(index) { "" } }
@@ -951,6 +959,7 @@ fun WorkoutInputScreen(
         if (numberOfSets > 1) {
             setValuesRight = setValuesRight.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             setValuesLeft = setValuesLeft.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
+            warmUps = warmUps.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             distanceInputs = distanceInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             weightInputs = weightInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             assistanceInputs = assistanceInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
@@ -1212,6 +1221,12 @@ fun WorkoutInputScreen(
                                 },
                                 previousSession = previousSession
                             )
+                            if (showWarmUp) {
+                                SetMarks(
+                                    warmUps.getOrElse(index) { false },
+                                    onWarmUp = { marked -> warmUps = warmUps.toMutableList().also { if (index in it.indices) it[index] = marked } },
+                                )
+                            }
 
                             if (status == SetStatus.CURRENT) {
                                 SetCompleteButton(
@@ -1296,6 +1311,12 @@ fun WorkoutInputScreen(
                                 },
                                 previousSession = previousSession
                             )
+                            if (showWarmUp) {
+                                SetMarks(
+                                    warmUps.getOrElse(index) { false },
+                                    onWarmUp = { marked -> warmUps = warmUps.toMutableList().also { if (index in it.indices) it[index] = marked } },
+                                )
+                            }
 
                             if (status == SetStatus.CURRENT) {
                                 SetCompleteButton(
@@ -1317,6 +1338,8 @@ fun WorkoutInputScreen(
                             // ローカル状態にも最後の値をコピーしてから親に通知
                             setValuesRight = setValuesRight + (setValuesRight.lastOrNull() ?: "")
                             setValuesLeft = setValuesLeft + (setValuesLeft.lastOrNull() ?: "")
+                            // A new set starts unmarked, whatever the last one was.
+                            warmUps = warmUps + false
                             distanceInputs = distanceInputs + (distanceInputs.lastOrNull() ?: "")
                             weightInputs = weightInputs + (weightInputs.lastOrNull() ?: "")
                             assistanceInputs = assistanceInputs + (assistanceInputs.lastOrNull() ?: "")

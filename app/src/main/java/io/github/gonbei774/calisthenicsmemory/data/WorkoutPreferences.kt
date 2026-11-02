@@ -135,6 +135,13 @@ class WorkoutPreferences(context: Context) {
         prefs.edit { putBoolean(KEY_PREFILL_PREVIOUS_RECORD, enabled) }
     }
 
+    /** Whether sets can be marked as warm-ups (ADR 0012); off by default. Turning it off hides the control only. */
+    fun isWarmUpMarkingEnabled(): Boolean = prefs.getBoolean(KEY_WARM_UP_MARKING, false)
+
+    fun setWarmUpMarkingEnabled(enabled: Boolean) {
+        prefs.edit { putBoolean(KEY_WARM_UP_MARKING, enabled) }
+    }
+
     /**
      * オートモード（自動/手動）を取得
      * @return 自動: true, 手動: false（デフォルト: false）
@@ -209,6 +216,7 @@ class WorkoutPreferences(context: Context) {
         private const val KEY_KEEP_SCREEN_ON_ENABLED = "keep_screen_on_enabled"
         private const val KEY_SET_DONE_VIBRATION_ENABLED = "set_done_vibration_enabled"
         private const val KEY_PREFILL_PREVIOUS_RECORD = "prefill_previous_record"
+        private const val KEY_WARM_UP_MARKING = "warmup_sets_enabled"
         private const val KEY_TIMER_MODE_AUTO = "timer_mode_auto"
         private const val KEY_DYNAMIC_COUNT_SOUND_ENABLED = "dynamic_count_sound_enabled"
         private const val KEY_ISOMETRIC_INTERVAL_SOUND_ENABLED = "isometric_interval_sound_enabled"

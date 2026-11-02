@@ -947,4 +947,8 @@
     <string name="weekly_review_bests">Neue Bestleistungen</string>
     <string name="weekly_review_best">%1$s, vorher %2$s</string>
     <string name="weekly_review_steps">Gemeisterte Stufen</string>
+    <!-- Warm-up sets (ADR 0012) -->
+    <string name="settings_warm_up_sets">Aufwärmsätze</string>
+    <string name="settings_warm_up_sets_description">Markiere Sätze als Aufwärmsätze. Sie bleiben in deinem Verlauf und zählen nicht zu Summen, Bestleistungen und Progressionen.</string>
+    <string name="set_warm_up">Aufwärmen</string>
 </resources>

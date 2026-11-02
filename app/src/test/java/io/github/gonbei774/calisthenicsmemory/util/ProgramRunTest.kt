@@ -79,4 +79,10 @@ class ProgramRunTest {
         assertNull(lungeSets[1].completedAtEpochMillis)
         assertEquals(listOf(1_000, 1_000), lungeSets.map { it.addedWeightGrams })
     }
+
+    @Test fun `a set marked as a warm-up is saved as one`() {
+        val marked = session.copy(sets = session.sets.mapIndexed { i, set -> if (i == 0) set.copy(isWarmUp = true) else set }.toMutableList())
+        val rows = ProgramWorkoutWriter.rows(marked.toProgramRun(emptyList(), savedAtWallMillis = 5_000))
+        assertEquals(listOf(true, false), rows.exercises.first().second.map { it.isWarmUp })
+    }
 }

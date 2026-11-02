@@ -956,4 +956,8 @@
     <string name="weekly_review_bests">New bests</string>
     <string name="weekly_review_best">%1$s, was %2$s</string>
     <string name="weekly_review_steps">Steps mastered</string>
+    <!-- Warm-up sets (ADR 0012) -->
+    <string name="settings_warm_up_sets">Warm-up sets</string>
+    <string name="settings_warm_up_sets_description">Mark sets as warm-ups. They stay in your history and are left out of totals, bests and progressions.</string>
+    <string name="set_warm_up">Warm-up</string>
 </resources>

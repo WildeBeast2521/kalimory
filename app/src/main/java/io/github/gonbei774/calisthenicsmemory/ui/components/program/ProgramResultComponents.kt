@@ -18,6 +18,9 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
 import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
+import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SetMarks
+import androidx.compose.ui.platform.LocalContext
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 
 @Composable
@@ -26,6 +29,8 @@ internal fun ProgramResultStep(
     onSave: () -> Unit
 ) {
     var comment by remember { mutableStateOf(session.comment) }
+    val context = LocalContext.current
+    val showWarmUp = remember { WorkoutPreferences(context).isWarmUpMarkingEnabled() }
 
     // 0のセットがあるかチェック
     val hasZeroSets = remember(session.sets) {
@@ -124,7 +129,8 @@ internal fun ProgramResultStep(
                                     setNumber = setNumber,
                                     rightSet = rightSet,
                                     leftSet = leftSet,
-                                    exercise = exercise
+                                    exercise = exercise,
+                                    showWarmUp = showWarmUp,
                                 )
                             }
                         }
@@ -134,7 +140,8 @@ internal fun ProgramResultStep(
                             item(key = "exercise-$exerciseIndex-round-$roundNumber-set-${set.setNumber}") {
                                 ProgramBilateralSetItem(
                                     set = set,
-                                    exercise = exercise
+                                    exercise = exercise,
+                                    showWarmUp = showWarmUp,
                                 )
                             }
                         }
@@ -185,10 +192,13 @@ internal fun ProgramUnilateralSetItem(
     setNumber: Int,
     rightSet: ProgramWorkoutSet?,
     leftSet: ProgramWorkoutSet?,
-    exercise: Exercise
+    exercise: Exercise,
+    showWarmUp: Boolean = false,
 ) {
     val exerciseType = exercise.type
     var rightValue by remember(rightSet) { mutableStateOf(rightSet?.actualValue?.toString() ?: "0") }
+    // One warm-up mark for the whole set, both sides (ADR 0012).
+    var warmUp by remember(rightSet, leftSet) { mutableStateOf((rightSet ?: leftSet)?.isWarmUp == true) }
     var leftValue by remember(leftSet) { mutableStateOf(leftSet?.actualValue?.toString() ?: "0") }
 
     Card(
@@ -290,6 +300,13 @@ internal fun ProgramUnilateralSetItem(
                 onDistanceChange = { rightSet?.distanceCm = it; leftSet?.distanceCm = it },
                 onAssistanceChange = { rightSet?.assistanceG = it; leftSet?.assistanceG = it }
             )
+            if (showWarmUp && !(rightSet?.isSkipped == true && leftSet?.isSkipped == true)) {
+                SetMarks(warmUp, onWarmUp = { marked ->
+                    warmUp = marked
+                    rightSet?.isWarmUp = marked
+                    leftSet?.isWarmUp = marked
+                }, modifier = Modifier.padding(top = 8.dp))
+            }
         }
     }
 }
@@ -298,10 +315,12 @@ internal fun ProgramUnilateralSetItem(
 @Composable
 internal fun ProgramBilateralSetItem(
     set: ProgramWorkoutSet,
-    exercise: Exercise
+    exercise: Exercise,
+    showWarmUp: Boolean = false,
 ) {
     val exerciseType = exercise.type
     var value by remember(set) { mutableStateOf(set.actualValue.toString()) }
+    var warmUp by remember(set) { mutableStateOf(set.isWarmUp) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -365,6 +384,9 @@ internal fun ProgramBilateralSetItem(
                 onDistanceChange = { set.distanceCm = it },
                 onAssistanceChange = { set.assistanceG = it }
             )
+            if (showWarmUp && !set.isSkipped) {
+                SetMarks(warmUp, onWarmUp = { marked -> warmUp = marked; set.isWarmUp = marked }, modifier = Modifier.padding(top = 8.dp))
+            }
         }
     }
 }

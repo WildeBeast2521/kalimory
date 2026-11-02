@@ -1008,4 +1008,8 @@
     <string name="weekly_review_bests">أرقام قياسية جديدة</string>
     <string name="weekly_review_best">%1$s، وكان %2$s</string>
     <string name="weekly_review_steps">الخطوات المتقنة</string>
+    <!-- Warm-up sets (ADR 0012) -->
+    <string name="settings_warm_up_sets">مجموعات الإحماء</string>
+    <string name="settings_warm_up_sets_description">علّم المجموعات كإحماء. تبقى في سجلك ولا تُحتسب في المجاميع والأرقام القياسية والتدرّجات.</string>
+    <string name="set_warm_up">إحماء</string>
 </resources>

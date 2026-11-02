@@ -953,4 +953,8 @@
     <string name="weekly_review_bests">Нові рекорди</string>
     <string name="weekly_review_best">%1$s, було %2$s</string>
     <string name="weekly_review_steps">Опановані кроки</string>
+    <!-- Warm-up sets (ADR 0012) -->
+    <string name="settings_warm_up_sets">Розминкові підходи</string>
+    <string name="settings_warm_up_sets_description">Позначайте підходи як розминку. Вони залишаються в історії, але не враховуються в підсумках, рекордах і прогресіях.</string>
+    <string name="set_warm_up">Розминка</string>
 </resources>

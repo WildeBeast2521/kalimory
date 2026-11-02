@@ -58,6 +58,7 @@ fun ProgramExecutionSession.toProgramRun(groups: List<ExerciseGroup>, savedAtWal
                         weightG = set.weightG,
                         assistanceG = set.assistanceG,
                         completedAtWallMillis = set.completedAtWallMillis,
+                        warmUp = set.isWarmUp,
                     )
                 },
             )

@@ -94,4 +94,18 @@ class WorkoutEditorModelTest {
         val withoutSet = WorkoutEditorModel.withoutSet(state, 0, 0)
         assertEquals(listOf(listOf(101L)), WorkoutEditorModel.toDraft(withoutSet)!!.exercises[0].sets.map { it.ids })
     }
+
+    @Test fun `a warm-up mark and a rating survive an edit, and changing the mark is an edit`() {
+        val marked = draft.copy(exercises = listOf(
+            draft.exercises[0].copy(sets = listOf(draft.exercises[0].sets[0].copy(warmUp = true, effortLeft = 2), draft.exercises[0].sets[1])),
+            draft.exercises[1],
+        ))
+        val loaded = WorkoutEditorModel.from(marked, library)
+        // A rating has no control yet, so it must come back exactly as it was.
+        assertEquals(marked, WorkoutEditorModel.toDraft(loaded))
+        val unmarked = WorkoutEditorModel.withSet(loaded, 0, 0, loaded.exercises[0].sets[0].copy(warmUp = false))
+        val plan = WorkoutEditPlan.of(marked, WorkoutEditorModel.toDraft(unmarked)!!)
+        assertFalse(plan.isEmpty)
+        assertEquals(false to 2, plan.changedSets.single().second.let { it.warmUp to it.effortLeft })
+    }
 }

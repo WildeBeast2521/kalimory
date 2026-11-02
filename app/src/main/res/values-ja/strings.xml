@@ -930,4 +930,8 @@
     <string name="weekly_review_bests">自己ベスト更新</string>
     <string name="weekly_review_best">%1$s（以前は%2$s）</string>
     <string name="weekly_review_steps">達成したステップ</string>
+    <!-- Warm-up sets (ADR 0012) -->
+    <string name="settings_warm_up_sets">ウォームアップセット</string>
+    <string name="settings_warm_up_sets_description">セットをウォームアップとして記録します。履歴には残り、合計・自己ベスト・プログレッションには含まれません。</string>
+    <string name="set_warm_up">ウォームアップ</string>
 </resources>

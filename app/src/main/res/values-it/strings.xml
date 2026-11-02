@@ -982,4 +982,8 @@
     <string name="weekly_review_bests">Nuovi record</string>
     <string name="weekly_review_best">%1$s, prima %2$s</string>
     <string name="weekly_review_steps">Passi padroneggiati</string>
+    <!-- Warm-up sets (ADR 0012) -->
+    <string name="settings_warm_up_sets">Serie di riscaldamento</string>
+    <string name="settings_warm_up_sets_description">Segna le serie come riscaldamento. Restano nella tua cronologia e non contano nei totali, nei record né nelle progressioni.</string>
+    <string name="set_warm_up">Riscaldamento</string>
 </resources>
