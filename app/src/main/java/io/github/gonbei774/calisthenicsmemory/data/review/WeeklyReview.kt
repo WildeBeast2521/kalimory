@@ -7,6 +7,7 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.MovementPattern
 import io.github.gonbei774.calisthenicsmemory.data.progression.Progressions
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalHistoryItem
+import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 import java.time.LocalDate
 
 /**
@@ -93,6 +94,8 @@ object WeeklyReview {
         for (set in history) {
             val day = inWeek(set.date) ?: continue
             days += day
+            // A warm-up makes a day trained but is not a set of work (ADR 0012).
+            if (!set.countsAsWork) continue
             setCount++
             when (val family = familyOf(exercisesById[set.exerciseId])) {
                 null -> other++
@@ -142,7 +145,7 @@ object WeeklyReview {
         val end = weekStart.plusDays(6)
         val exercisesById = exercises.associateBy { it.id }
         return history.asSequence()
-            .filter { it.weightG == null && it.assistanceG == null && it.distanceCm == null }
+            .filter { it.countsAsWork && it.weightG == null && it.assistanceG == null && it.distanceCm == null }
             .mapNotNull { set -> parse(set.date)?.let { set to it } }
             .filter { (_, day) -> day <= end }
             .groupBy { (set, _) -> set.exerciseId }

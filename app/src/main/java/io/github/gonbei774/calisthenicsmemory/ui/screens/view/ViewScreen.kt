@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutRef
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySource
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
@@ -1264,7 +1265,8 @@ fun calculateActualTotal(
     firstDay: DayOfWeek
 ): Int {
     val targetSets = exercise.targetSets ?: return 0
-    var exerciseRecords = records.filter { it.exerciseId == exercise.id }
+    // Judged on sets of work; warm-ups are left out (ADR 0012).
+    var exerciseRecords = records.filter { it.countsAsWork && it.exerciseId == exercise.id }
 
     // 期間フィルター適用（指定されている場合）
     if (period != null) {
@@ -1401,7 +1403,8 @@ fun calculateClearDays(
             val bestRate = dayRecords
                 .groupBy { it.time }  // 同一時刻＝1セッション
                 .map { (_, sessionRecords) ->
-                    sessionAchievementRate(exercise, sessionRecords, targetSets, targetTotal)
+                    // A day of warm-ups only is a day trained, but they never reach the target (ADR 0012).
+                    sessionAchievementRate(exercise, sessionRecords.filter { it.countsAsWork }, targetSets, targetTotal)
                 }
                 .maxOrNull() ?: 0
             if (bestRate >= 100) {
@@ -1464,7 +1467,8 @@ fun calculateChallengeStatus(
     )
 
     // この種目の全記録を取得
-    var exerciseRecords = records.filter { it.exerciseId == exercise.id }
+    // Judged on sets of work; warm-ups are left out (ADR 0012).
+    var exerciseRecords = records.filter { it.countsAsWork && it.exerciseId == exercise.id }
 
     // 期間フィルター適用（指定されている場合）
     if (period != null) {

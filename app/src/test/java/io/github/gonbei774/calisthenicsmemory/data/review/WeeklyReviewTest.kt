@@ -7,6 +7,7 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.MovementPattern
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySource
 import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalHistoryItem
+import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -270,5 +271,30 @@ class WeeklyReviewTest {
         val second = linked(23, row.steps[1].id)
         val history = session("2026-03-13", first.id, 10, 10) + session("2026-03-10", second.id, 10, 10)
         assertEquals(listOf(row.steps[1], row.steps[0]), WeeklyReview.build(monday, history, emptyList(), listOf(first, second)).stepsMet.map { it.step })
+    }
+
+    // Warm-ups (ADR 0012)
+
+    @Test fun `a warm-up makes a day trained but is not counted, and Today agrees`() {
+        val history = listOf(
+            set("2026-03-09", push.id).copy(warmUp = true), set("2026-03-09", push.id),
+            set("2026-03-11", push.id).copy(warmUp = true),
+        )
+        val review = WeeklyReview.build(monday, history, emptyList(), listOf(push))
+        assertEquals(1, review.totalSets)
+        assertEquals(listOf(FamilySets(MovementFamily.PUSH, 1)), review.families)
+        assertEquals(2, review.daysTrained)
+        // Today's formula for the same week (TodayScreen).
+        val weekDates = (0L..6L).map { monday.plusDays(it).toString() }.toSet()
+        assertEquals(history.count { it.countsAsWork && it.date in weekDates }, review.totalSets)
+    }
+
+    @Test fun `a warm-up is never a best, this week or before`() {
+        val history = listOf(
+            set("2026-03-02", push.id, value = 30).copy(warmUp = true), set("2026-03-02", push.id, value = 10),
+            set("2026-03-11", push.id, value = 12), set("2026-03-12", push.id, value = 40).copy(warmUp = true),
+        )
+        val best = WeeklyReview.bests(monday, history, listOf(push)).single()
+        assertEquals(12 to 10, best.value to best.previousBest)
     }
 }

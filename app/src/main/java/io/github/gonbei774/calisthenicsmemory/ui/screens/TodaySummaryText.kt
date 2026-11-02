@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 
 /**
  * Format training records for clipboard copy
@@ -19,12 +20,14 @@ fun formatRecordsForClipboard(
     records: List<HistorySet>,
     exercises: List<Exercise>
 ): String {
-    if (records.isEmpty()) return ""
+    if (records.none { it.countsAsWork }) return ""
 
     val exerciseMap = exercises.associateBy { it.id }
 
     // Group by exercise and sort by time + set number
+    // The summary lists the work; warm-ups are left out (ADR 0012).
     val recordsByExercise = records
+        .filter { it.countsAsWork }
         .groupBy { it.exerciseId }
         .mapValues { (_, recs) ->
             recs.sortedWith(compareBy({ it.time }, { it.setNumber }))

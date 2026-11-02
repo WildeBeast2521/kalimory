@@ -151,4 +151,25 @@ class WorkoutSummaryBuilderTest {
         )
         assertNull(summary.durationMinutes)
     }
+
+    // Warm-ups (ADR 0012)
+
+    @Test fun `a warm-up is shown with its set but left out of the totals, last time and bests`() {
+        val warmUp = set(1, reps = 20).copy(isWarmUp = true)
+        val summary = WorkoutSummaryBuilder.build(
+            WorkoutSessionGraph(session(), listOf(exercise(1, "Push-up") to listOf(warmUp, set(2, reps = 12)))),
+            history = listOf(
+                history(1, "2026-01-01", "08:00", 30).copy(warmUp = true),
+                history(1, "2026-01-01", "08:00", 10),
+            ),
+        )
+        val result = summary.exercises.single()
+        assertEquals(listOf(SetResult(20, null, warmUp = true), SetResult(12, null)), result.sets)
+        assertEquals(1, summary.completedSets)
+        assertEquals(12, summary.totalRepetitions)
+        assertEquals(12, result.total)
+        assertEquals(10, result.lastTimeTotal)
+        // 12 beats the 10 of work before; neither 20 nor 30 counts, as both were warm-ups.
+        assertEquals(listOf(PersonalBest("Push-up", ExerciseKind.DYNAMIC, 12, 10)), summary.personalBests)
+    }
 }
