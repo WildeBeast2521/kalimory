@@ -30,7 +30,9 @@ data class ProgramWorkoutSet(
     val previousDistanceCm: Int? = null,
     val previousAssistanceG: Int? = null,
     // When the set was observed to finish (wall clock); null when not timed.
-    var completedAtWallMillis: Long? = null
+    var completedAtWallMillis: Long? = null,
+    // The user marked the set as a warm-up (ADR 0012); the default keeps older checkpoints loadable.
+    var isWarmUp: Boolean = false,
 )
 
 /**

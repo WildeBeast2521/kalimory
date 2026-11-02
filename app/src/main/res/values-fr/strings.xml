@@ -977,4 +977,8 @@
     <string name="weekly_review_bests">Nouveaux records</string>
     <string name="weekly_review_best">%1$s, avant %2$s</string>
     <string name="weekly_review_steps">Étapes maîtrisées</string>
+    <!-- Warm-up sets (ADR 0012) -->
+    <string name="settings_warm_up_sets">Séries d\'échauffement</string>
+    <string name="settings_warm_up_sets_description">Marquez des séries comme échauffement. Elles restent dans votre historique et ne comptent pas dans les totaux, les records ni les progressions.</string>
+    <string name="set_warm_up">Échauffement</string>
 </resources>

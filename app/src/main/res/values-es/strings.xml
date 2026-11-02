@@ -977,4 +977,8 @@
     <string name="weekly_review_bests">Nuevos récords</string>
     <string name="weekly_review_best">%1$s, antes %2$s</string>
     <string name="weekly_review_steps">Pasos dominados</string>
+    <!-- Warm-up sets (ADR 0012) -->
+    <string name="settings_warm_up_sets">Series de calentamiento</string>
+    <string name="settings_warm_up_sets_description">Marca series como calentamiento. Se quedan en tu historial y no cuentan en totales, récords ni progresiones.</string>
+    <string name="set_warm_up">Calentamiento</string>
 </resources>

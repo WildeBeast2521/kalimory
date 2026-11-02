@@ -924,4 +924,8 @@
     <string name="weekly_review_bests">新纪录</string>
     <string name="weekly_review_best">%1$s，之前为 %2$s</string>
     <string name="weekly_review_steps">已掌握的步骤</string>
+    <!-- Warm-up sets (ADR 0012) -->
+    <string name="settings_warm_up_sets">热身组</string>
+    <string name="settings_warm_up_sets_description">将组标记为热身。热身组保留在记录中，但不计入总计、纪录和进阶。</string>
+    <string name="set_warm_up">热身</string>
 </resources>

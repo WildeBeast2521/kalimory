@@ -53,6 +53,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
+import androidx.compose.ui.platform.LocalContext
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutDraft
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutRef
@@ -60,6 +62,7 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSaveResult
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepper
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SetMarks
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
@@ -79,6 +82,8 @@ const val WORKOUT_EDITOR_LIST_TAG = "workout-editor-list"
 @Composable
 fun WorkoutEditorScreen(ref: WorkoutRef, viewModel: TrainingViewModel, onClose: () -> Unit) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val showWarmUp = remember { WorkoutPreferences(context).isWarmUpMarkingEnabled() }
     var library by remember { mutableStateOf<List<Exercise>>(emptyList()) }
     // The workout as loaded, and what the user has made of it; null until loaded.
     var original by remember { mutableStateOf<WorkoutDraft?>(null) }
@@ -155,6 +160,7 @@ fun WorkoutEditorScreen(ref: WorkoutRef, viewModel: TrainingViewModel, onClose: 
                         padding = padding,
                         onChange = { state = it },
                         onAddExercise = { pickExercise = true },
+                        showWarmUp = showWarmUp,
                     )
                 }
             }
@@ -210,7 +216,13 @@ fun WorkoutEditorScreen(ref: WorkoutRef, viewModel: TrainingViewModel, onClose: 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EditorContent(state: EditorState, padding: PaddingValues, onChange: (EditorState) -> Unit, onAddExercise: () -> Unit) {
+internal fun EditorContent(
+    state: EditorState,
+    padding: PaddingValues,
+    onChange: (EditorState) -> Unit,
+    onAddExercise: () -> Unit,
+    showWarmUp: Boolean = false,
+) {
     var pickDate by remember { mutableStateOf(false) }
     var pickTime by remember { mutableStateOf(false) }
     LazyColumn(
@@ -238,6 +250,9 @@ internal fun EditorContent(state: EditorState, padding: PaddingValues, onChange:
         itemsIndexed(state.exercises) { exerciseIndex, exercise ->
             ExerciseCard(
                 exercise = exercise,
+                // Old-format workouts cannot hold a warm-up mark (ADR 0012).
+                showWarmUp = !state.legacy && showWarmUp,
+                marksAllowed = !state.legacy,
                 onSetChange = { setIndex, set -> onChange(WorkoutEditorModel.withSet(state, exerciseIndex, setIndex, set)) },
                 onRemoveSet = { setIndex -> onChange(WorkoutEditorModel.withoutSet(state, exerciseIndex, setIndex)) },
                 onAddSet = { onChange(WorkoutEditorModel.withNewSet(state, exerciseIndex)) },
@@ -284,6 +299,8 @@ internal fun EditorContent(state: EditorState, padding: PaddingValues, onChange:
 @Composable
 private fun ExerciseCard(
     exercise: EditorExercise,
+    showWarmUp: Boolean,
+    marksAllowed: Boolean,
     onSetChange: (Int, EditorSet) -> Unit,
     onRemoveSet: (Int) -> Unit,
     onAddSet: () -> Unit,
@@ -331,6 +348,10 @@ private fun ExerciseCard(
                         MetricField(R.string.assistance_input_label, set.assistanceKg, KeyboardType.Decimal) {
                             onSetChange(index, set.copy(assistanceKg = it))
                         }
+                    }
+                    // Shown while the setting is on, and always for a marked set, so a mark can be removed.
+                    if (marksAllowed && (showWarmUp || set.warmUp)) {
+                        SetMarks(set.warmUp, onWarmUp = { onSetChange(index, set.copy(warmUp = it)) })
                     }
                 }
             }

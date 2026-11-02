@@ -21,6 +21,9 @@ data class EditorSet(
     val distanceCm: String = "",
     val weightKg: String = "",
     val assistanceKg: String = "",
+    /** The warm-up mark and effort rating (ADR 0012), carried unchanged unless the user changes them. */
+    val warmUp: Boolean = false,
+    val effortLeft: Int? = null,
 )
 
 /** One exercise in the editor, with what its fields need from the library. */
@@ -63,6 +66,8 @@ object WorkoutEditorModel {
                         distanceCm = set.distanceCm?.toString().orEmpty(),
                         weightKg = set.weightG?.let(::kilograms).orEmpty(),
                         assistanceKg = set.assistanceG?.let(::kilograms).orEmpty(),
+                        warmUp = set.warmUp,
+                        effortLeft = set.effortLeft,
                     )
                 }
                 editorExercise(exercise.key, exercise.exerciseId, exercise.unilateral, byId[exercise.exerciseId], sets)
@@ -124,6 +129,8 @@ object WorkoutEditorModel {
             distanceCm = distance.value,
             weightG = weight.value,
             assistanceG = assistance.value,
+            warmUp = set.warmUp,
+            effortLeft = set.effortLeft,
         )
     }
 

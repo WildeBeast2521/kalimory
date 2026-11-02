@@ -34,6 +34,7 @@ import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
 import io.github.gonbei774.calisthenicsmemory.data.v2.workIntervalsDone
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import org.json.JSONArray
 import java.time.DayOfWeek
@@ -66,7 +67,7 @@ fun CalendarView(
         items.groupBy { it.date }.mapValues { (_, dayItems) ->
             val sessionScore = dayItems.filterIsInstance<RecordItem.Session>()
                 .sumOf { sItem ->
-                    sItem.session.records.sumOf { r -> calcSessionScore(r, exerciseLevelMap) }
+                    sItem.session.records.filter { it.countsAsWork }.sumOf { r -> calcSessionScore(r, exerciseLevelMap) }
                 }
             val intervalScore = dayItems.filterIsInstance<RecordItem.Interval>()
                 .sumOf { calcIntervalScore(it.record) }
@@ -108,12 +109,13 @@ fun CalendarView(
             items.filter { it.date == key }
         } ?: items
         val sessions = targetItems.filterIsInstance<RecordItem.Session>()
-        val totalSets = sessions.sumOf { it.session.records.size }
+        // Warm-ups are listed but not counted (ADR 0012).
+        val totalSets = sessions.sumOf { s -> s.session.records.count { it.countsAsWork } }
         val exerciseCount = sessions.map { it.session.exerciseId }.distinct().size
         val intervalCount = targetItems.count { it is RecordItem.Interval }
         val totalValue = if (selectedExerciseFilter != null) {
             sessions.sumOf { s ->
-                s.session.records.sumOf { r -> r.valueRight + (r.valueLeft ?: 0) }
+                s.session.records.filter { it.countsAsWork }.sumOf { r -> r.valueRight + (r.valueLeft ?: 0) }
             }
         } else 0
         StatsSummary(
@@ -649,7 +651,7 @@ private fun DayRecordSummary(
                 .filterIsInstance<RecordItem.Session>()
                 .groupBy { it.session.exerciseId }
                 .map { (exerciseId, sessionItems) ->
-                    exerciseId to sessionItems.sumOf { it.session.records.size }
+                    exerciseId to sessionItems.sumOf { item -> item.session.records.count { it.countsAsWork } }
                 }
             aggregatedSessions.forEach { (exerciseId, setCount) ->
                 SessionSummaryRow(
