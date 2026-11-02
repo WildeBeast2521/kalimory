@@ -7,6 +7,7 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
 import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 import java.time.LocalDate
 
 enum class SuggestionReason {
@@ -50,9 +51,11 @@ object Suggestions {
         dismissedChains: Set<String> = emptySet(),
         unfollowedChains: Set<String> = emptySet(),
     ): List<Suggestion> {
-        val progressions = Progressions.chains(exercises, history)
+        // Warm-ups neither rest a movement nor count toward a target (ADR 0012).
+        val work = history.filter { it.countsAsWork }
+        val progressions = Progressions.chains(exercises, work)
         val byCatalogId = exercises.filter { it.catalogId != null }.associateBy { it.catalogId!! }
-        val historyByExercise = history.groupBy { it.exerciseId }
+        val historyByExercise = work.groupBy { it.exerciseId }
 
         val lastTrained = progressions.associate { progress ->
             val dates = progress.chain.steps

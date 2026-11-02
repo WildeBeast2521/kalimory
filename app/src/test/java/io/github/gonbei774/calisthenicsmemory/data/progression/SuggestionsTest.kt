@@ -120,4 +120,11 @@ class SuggestionsTest {
         // Lower body mobility was trained yesterday and is suggested again; shoulder mobility was trained today.
         assertEquals(listOf("flex_lower"), Suggestions.forDay(today, exercises, history).map { it.chain.id })
     }
+
+    @Test fun `a warm-up rests nothing and does not change the target`() {
+        val exercises = listOf(exercise(1, "dip.bench"), exercise(3, "row.incline"))
+        val warmUp = session(1, "2026-09-30", 5).map { it.copy(warmUp = true) }
+        val chains = Suggestions.forDay(today, exercises, warmUp).map { it.chain.id }
+        assertTrue("a warm-up yesterday does not rest the dip: $chains", "dip" in chains)
+    }
 }

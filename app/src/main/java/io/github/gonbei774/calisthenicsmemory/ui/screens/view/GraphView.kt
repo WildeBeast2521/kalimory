@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import java.time.LocalDate
@@ -424,7 +425,8 @@ fun prepareGraphData(
     firstDay: DayOfWeek
 ): List<GraphDataPoint> {
     // 対象種目の記録を抽出
-    val exerciseRecords = records.filter { it.exerciseId == exercise.id }
+    // Warm-ups are not part of any graph or statistic (ADR 0012).
+    val exerciseRecords = records.filter { it.countsAsWork && it.exerciseId == exercise.id }
 
     if (exerciseRecords.isEmpty()) {
         return emptyList()
@@ -541,7 +543,8 @@ fun prepareVolumeData(
     }
 
     // 対象種目の記録を抽出
-    val exerciseRecords = records.filter { it.exerciseId == exercise.id }
+    // Warm-ups are not part of any graph or statistic (ADR 0012).
+    val exerciseRecords = records.filter { it.countsAsWork && it.exerciseId == exercise.id }
 
     if (exerciseRecords.isEmpty()) {
         return emptyList()
@@ -621,7 +624,8 @@ fun prepareAssistanceData(
     }
 
     // 対象種目の記録を抽出
-    val exerciseRecords = records.filter { it.exerciseId == exercise.id }
+    // Warm-ups are not part of any graph or statistic (ADR 0012).
+    val exerciseRecords = records.filter { it.countsAsWork && it.exerciseId == exercise.id }
 
     if (exerciseRecords.isEmpty()) {
         return emptyList()
@@ -687,7 +691,8 @@ fun prepareWeightData(
     }
 
     // 対象種目の記録を抽出
-    val exerciseRecords = records.filter { it.exerciseId == exercise.id }
+    // Warm-ups are not part of any graph or statistic (ADR 0012).
+    val exerciseRecords = records.filter { it.countsAsWork && it.exerciseId == exercise.id }
 
     if (exerciseRecords.isEmpty()) {
         return emptyList()
@@ -2287,7 +2292,8 @@ fun calculateStatistics(
     period: Period?,
     firstDay: DayOfWeek
 ): Statistics {
-    val exerciseRecords = records.filter { it.exerciseId == exercise.id }
+    // Warm-ups are not part of any graph or statistic (ADR 0012).
+    val exerciseRecords = records.filter { it.countsAsWork && it.exerciseId == exercise.id }
 
     if (exerciseRecords.isEmpty()) {
         return Statistics(0, 0f, 0, 0, 0, null, null, null)

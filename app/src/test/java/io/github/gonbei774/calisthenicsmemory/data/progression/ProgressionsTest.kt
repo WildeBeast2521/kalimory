@@ -117,4 +117,16 @@ class ProgressionsTest {
         assertTrue(Progressions.journey(pull, listOf(exercise(1, negative.id)), emptyList()).isEmpty())
         assertTrue(Progressions.journey(pull, listOf(exercise(1, null)), listOf(set(1, "2026-08-01", 5))).isEmpty())
     }
+
+    @Test fun `warm-ups never meet a standard and a session of warm-ups only is no session`() {
+        val exercises = listOf(exercise(1, negative.id, targetSets = 1, targetValue = 5))
+        val warmUps = listOf(set(1, "2026-09-01", 9).copy(warmUp = true))
+        val result = Progressions.chains(exercises, warmUps).single()
+        assertNull(result.lastSession)
+        assertFalse(result.mastered)
+        assertTrue(Progressions.journey(pull, exercises, warmUps).isEmpty())
+        // The work set in the same session still counts.
+        val mixed = warmUps + set(1, "2026-09-01", 6)
+        assertEquals(listOf(6), Progressions.chains(exercises, mixed).single().lastSession!!.values)
+    }
 }

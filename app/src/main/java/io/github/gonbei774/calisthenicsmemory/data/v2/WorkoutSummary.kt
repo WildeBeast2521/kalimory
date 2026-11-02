@@ -33,10 +33,12 @@ data class ExerciseResult(
      */
     val lastTimeTotal: Int?,
 ) {
-    val total: Int get() = sets.sumOf { it.right + (it.left ?: 0) }
+    /** Reps or seconds of the sets of work: warm-ups are shown but not counted (ADR 0012). */
+    val total: Int get() = sets.filterNot { it.warmUp }.sumOf { it.right + (it.left ?: 0) }
 }
 
-data class SetResult(val right: Int, val left: Int?)
+/** One set as done; [warmUp] when the user marked it as a warm-up (every side marked). */
+data class SetResult(val right: Int, val left: Int?, val warmUp: Boolean = false)
 
 data class PersonalBest(val exerciseName: String, val kind: ExerciseKind, val value: Int, val previousBest: Int)
 
@@ -46,7 +48,8 @@ object WorkoutSummaryBuilder {
         val session = graph.session
         val sessionEntryIds = graph.exercises.flatMap { (_, sets) -> sets.map { it.id } }.toSet()
         // Earlier sets only: this workout's own sets are already in the history.
-        val earlier = history.filter { set -> set.setEntryIds.none { it in sessionEntryIds } }
+        // Warm-ups are left out of "last time" and of bests, on both sides of the comparison.
+        val earlier = history.filter { set -> set.countsAsWork && set.setEntryIds.none { it in sessionEntryIds } }
             .groupBy { it.exerciseId }
 
         val results = mutableListOf<ExerciseResult>()
@@ -60,7 +63,11 @@ object WorkoutSummaryBuilder {
                 .map { sides ->
                     val left = sides.firstOrNull { it.side == BodySide.LEFT }
                     val right = sides.firstOrNull { it.side != BodySide.LEFT }
-                    SetResult(right?.let { value(it, exercise.exerciseKindSnapshot) } ?: 0, left?.let { value(it, exercise.exerciseKindSnapshot) })
+                    SetResult(
+                        right?.let { value(it, exercise.exerciseKindSnapshot) } ?: 0,
+                        left?.let { value(it, exercise.exerciseKindSnapshot) },
+                        warmUp = sides.all { it.isWarmUp },
+                    )
                 }
             val planned = entries
                 .filter { it.status == SetEntryStatus.COMPLETED || it.status == SetEntryStatus.SKIPPED }
@@ -78,7 +85,7 @@ object WorkoutSummaryBuilder {
                 lastTimeTotal = lastTimeTotal(previous),
             )
             results += result
-            personalBest(exercise, completed, sets, previous)?.let { bests += it }
+            personalBest(exercise, completed.filterNot { it.isWarmUp }, sets.filterNot { it.warmUp }, previous)?.let { bests += it }
         }
 
         val ended = session.endedAtEpochMillis
@@ -89,7 +96,7 @@ object WorkoutSummaryBuilder {
         return WorkoutSummary(
             sourceType = session.sourceType,
             title = session.sourceNameSnapshot.takeIf { session.sourceType != WorkoutSourceType.AD_HOC },
-            completedSets = results.sumOf { it.sets.size },
+            completedSets = results.sumOf { result -> result.sets.count { !it.warmUp } },
             totalRepetitions = results.filter { it.kind == ExerciseKind.DYNAMIC }.sumOf { it.total },
             totalHoldSeconds = results.filter { it.kind == ExerciseKind.ISOMETRIC }.sumOf { it.total },
             durationMinutes = duration,

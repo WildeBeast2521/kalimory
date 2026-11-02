@@ -71,6 +71,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import io.github.gonbei774.calisthenicsmemory.util.rememberToday
+import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 
 /**
@@ -230,7 +231,7 @@ fun TodayScreen(
             val weekDates = remember(week) { week.map { it.toString() }.toSet() }
             // Interval work counts too: each work interval done is one set, as the summary counts it.
             val setsThisWeek = remember(history, intervalHistory, weekDates) {
-                history.count { it.date in weekDates } + intervalHistory.filter { it.record.date in weekDates }.sumOf { it.completedSets }
+                history.count { it.countsAsWork && it.date in weekDates } + intervalHistory.filter { it.record.date in weekDates }.sumOf { it.completedSets }
             }
             val setsLabel = pluralStringResource(R.plurals.today_week_sets, setsThisWeek)
             Row(
@@ -334,8 +335,9 @@ fun TodayScreen(
                     }),
             ) {
                 Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
-                    // Today's totals first: sets, then reps and time held where there are any.
-                    val todaySets = doneToday.flatMap { it.second }
+                    // Today's totals first: sets, then reps and time held where there are any. Warm-ups
+                    // are listed below but not counted (ADR 0012).
+                    val todaySets = doneToday.flatMap { it.second }.filter { it.countsAsWork }
                     val reps = todaySets.filter { exercisesById[it.exerciseId]?.type == "Dynamic" }.sumOf { it.valueRight + (it.valueLeft ?: 0) }
                     val held = todaySets.filter { exercisesById[it.exerciseId]?.type == "Isometric" }.sumOf { it.valueRight + (it.valueLeft ?: 0) }
                     val totals = buildList {

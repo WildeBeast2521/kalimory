@@ -6,6 +6,7 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueChain
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
+import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 
 /** One session of a step: its sets, best first. Unilateral sets use the weaker side. */
 data class StepSession(val date: String, val time: String, val values: List<Int>)
@@ -91,9 +92,13 @@ object Progressions {
         return if (sets != null && value != null && sets > 0 && value > 0) Standard(sets, value) else step.moveOn
     }
 
-    /** Sessions oldest first. Sets logged at the same date and time from one source are one session. */
+    /**
+     * Sessions oldest first. Sets logged at the same date and time from one source are one session.
+     * Warm-up sets are left out (ADR 0012), so a session of warm-ups only is no session.
+     */
     fun sessions(history: List<HistorySet>, unilateral: Boolean): List<StepSession> =
         history
+            .filter { it.countsAsWork }
             .groupBy { Triple(it.source, it.date, it.time) }
             .map { (key, sets) ->
                 val values = sets.map { set ->
