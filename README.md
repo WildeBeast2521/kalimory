@@ -150,6 +150,7 @@ request that did it.
 **1.2 Training insight** (in progress)
 
 - [x] A weekly review
+- [x] Warm-up sets and an optional effort rating
 - [ ] A body map of volume, recovery and untrained muscles
 - [ ] A climb chart for each chain you follow
 - [ ] Personal-best history
@@ -161,7 +162,6 @@ request that did it.
 **1.3 Progression v2**
 
 - [ ] The design
-- [ ] Warm-up sets and an optional effort rating
 - [ ] Supersets
 - [ ] Targets that say why, and help when progress stalls
 
