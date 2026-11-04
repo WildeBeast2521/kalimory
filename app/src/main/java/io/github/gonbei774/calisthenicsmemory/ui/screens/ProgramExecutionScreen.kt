@@ -228,6 +228,7 @@ fun ProgramExecutionScreen(
     val soundPlayer = remember { SoundPlayer(context) }
     val flashController = remember { FlashController(context) }
     val isFlashEnabled = remember { workoutPreferences.isFlashNotificationEnabled() }
+    val isEffortRatingEnabled = remember { workoutPreferences.isEffortRatingEnabled() }
     val isKeepScreenOnEnabled = remember { workoutPreferences.isKeepScreenOnEnabled() }
 
     // 音声設定（ProgramConfirmStepで変更可能）
@@ -1290,6 +1291,7 @@ fun ProgramExecutionScreen(
                         ProgramIntervalStep(
                             session = step.session,
                             currentSetIndex = step.currentSetIndex,
+                            showEffort = isEffortRatingEnabled,
                             soundPlayer = soundPlayer,
                             flashController = flashController,
                             isFlashEnabled = isFlashEnabled,

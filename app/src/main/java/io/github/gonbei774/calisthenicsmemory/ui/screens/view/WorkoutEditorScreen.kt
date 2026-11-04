@@ -84,6 +84,7 @@ fun WorkoutEditorScreen(ref: WorkoutRef, viewModel: TrainingViewModel, onClose: 
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val showWarmUp = remember { WorkoutPreferences(context).isWarmUpMarkingEnabled() }
+    val showEffort = remember { WorkoutPreferences(context).isEffortRatingEnabled() }
     var library by remember { mutableStateOf<List<Exercise>>(emptyList()) }
     // The workout as loaded, and what the user has made of it; null until loaded.
     var original by remember { mutableStateOf<WorkoutDraft?>(null) }
@@ -161,6 +162,7 @@ fun WorkoutEditorScreen(ref: WorkoutRef, viewModel: TrainingViewModel, onClose: 
                         onChange = { state = it },
                         onAddExercise = { pickExercise = true },
                         showWarmUp = showWarmUp,
+                        showEffort = showEffort,
                     )
                 }
             }
@@ -222,6 +224,7 @@ internal fun EditorContent(
     onChange: (EditorState) -> Unit,
     onAddExercise: () -> Unit,
     showWarmUp: Boolean = false,
+    showEffort: Boolean = false,
 ) {
     var pickDate by remember { mutableStateOf(false) }
     var pickTime by remember { mutableStateOf(false) }
@@ -252,6 +255,7 @@ internal fun EditorContent(
                 exercise = exercise,
                 // Old-format workouts cannot hold a warm-up mark (ADR 0012).
                 showWarmUp = !state.legacy && showWarmUp,
+                showEffort = !state.legacy && showEffort,
                 marksAllowed = !state.legacy,
                 onSetChange = { setIndex, set -> onChange(WorkoutEditorModel.withSet(state, exerciseIndex, setIndex, set)) },
                 onRemoveSet = { setIndex -> onChange(WorkoutEditorModel.withoutSet(state, exerciseIndex, setIndex)) },
@@ -300,6 +304,7 @@ internal fun EditorContent(
 private fun ExerciseCard(
     exercise: EditorExercise,
     showWarmUp: Boolean,
+    showEffort: Boolean,
     marksAllowed: Boolean,
     onSetChange: (Int, EditorSet) -> Unit,
     onRemoveSet: (Int) -> Unit,
@@ -349,9 +354,18 @@ private fun ExerciseCard(
                             onSetChange(index, set.copy(assistanceKg = it))
                         }
                     }
-                    // Shown while the setting is on, and always for a marked set, so a mark can be removed.
-                    if (marksAllowed && (showWarmUp || set.warmUp)) {
-                        SetMarks(set.warmUp, onWarmUp = { onSetChange(index, set.copy(warmUp = it)) })
+                    // Shown while a setting is on, and always for a marked or rated set, so it can be removed.
+                    val warmUpShown = marksAllowed && (showWarmUp || set.warmUp)
+                    val effortShown = marksAllowed && (showEffort || set.effortLeft != null)
+                    if (warmUpShown || effortShown) {
+                        SetMarks(
+                            set.warmUp,
+                            onWarmUp = { onSetChange(index, set.copy(warmUp = it)) },
+                            showWarmUp = warmUpShown,
+                            effortLeft = set.effortLeft,
+                            dynamic = exercise.dynamic,
+                            onEffort = if (effortShown) { rating -> onSetChange(index, set.copy(effortLeft = rating)) } else null,
+                        )
                     }
                 }
             }

@@ -957,4 +957,25 @@
     <string name="settings_warm_up_sets">Розминкові підходи</string>
     <string name="settings_warm_up_sets_description">Позначайте підходи як розминку. Вони залишаються в історії, але не враховуються в підсумках, рекордах і прогресіях.</string>
     <string name="set_warm_up">Розминка</string>
+    <!-- Effort per set (ADR 0012) -->
+    <string name="settings_effort">Зусилля в підході</string>
+    <string name="settings_effort_description">Після підходу позначайте, скільки ще лишалося: скільки повторів ви могли б зробити або скільки ще протриматися.</string>
+    <string name="effort_question_reps">Скільки ще повторів ви могли б зробити?</string>
+    <string name="effort_question_hold">Скільки ще ви могли б протриматися?</string>
+    <string name="effort_reps_none">Жодного</string>
+    <string name="effort_reps_four_or_more">4 або більше</string>
+    <string name="effort_no_reps_left">У запасі немає повторів</string>
+    <plurals name="effort_reps_left">
+        <item quantity="one">У запасі %d повтор</item>
+        <item quantity="few">У запасі %d повтори</item>
+        <item quantity="many">У запасі %d повторів</item>
+        <item quantity="other">У запасі %d повторів</item>
+    </plurals>
+    <string name="effort_four_or_more_left">У запасі 4 або більше повторів</string>
+    <string name="effort_hold_history">Зусилля: %1$s</string>
+    <string name="effort_hold_0">Межа</string>
+    <string name="effort_hold_1">Мало</string>
+    <string name="effort_hold_2">Трохи</string>
+    <string name="effort_hold_3">Чимало</string>
+    <string name="effort_hold_4">Багато</string>
 </resources>

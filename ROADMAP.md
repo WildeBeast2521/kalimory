@@ -34,10 +34,10 @@ Behind the scenes:
 
 Answer "am I improving?" from the data the app already has.
 
-1 of 9 done.
+2 of 9 done.
 
 - [x] A weekly review ([#159](https://github.com/WildeBeast2521/kalimory/issues/159), done in [#254](https://github.com/WildeBeast2521/kalimory/pull/254))
-- [ ] Warm-up sets and an optional effort rating ([#168](https://github.com/WildeBeast2521/kalimory/issues/168))
+- [x] Warm-up sets and an optional effort rating ([#168](https://github.com/WildeBeast2521/kalimory/issues/168), done in [#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 - [ ] A body map of volume, recovery and untrained muscles ([#160](https://github.com/WildeBeast2521/kalimory/issues/160))
 - [ ] A climb chart for each chain you follow ([#161](https://github.com/WildeBeast2521/kalimory/issues/161))
 - [ ] Personal-best history ([#162](https://github.com/WildeBeast2521/kalimory/issues/162))

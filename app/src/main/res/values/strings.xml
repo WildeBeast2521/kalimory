@@ -960,4 +960,23 @@
     <string name="settings_warm_up_sets">Warm-up sets</string>
     <string name="settings_warm_up_sets_description">Mark sets as warm-ups. They stay in your history and are left out of totals, bests and progressions.</string>
     <string name="set_warm_up">Warm-up</string>
+    <!-- Effort per set (ADR 0012) -->
+    <string name="settings_effort">Effort per set</string>
+    <string name="settings_effort_description">After a set, note how much you had left: reps you could still have done, or how much longer you could have held.</string>
+    <string name="effort_question_reps">How many more reps could you have done?</string>
+    <string name="effort_question_hold">How much longer could you have held?</string>
+    <string name="effort_reps_none">None</string>
+    <string name="effort_reps_four_or_more">4 or more</string>
+    <string name="effort_no_reps_left">No reps left</string>
+    <plurals name="effort_reps_left">
+        <item quantity="one">%d rep left</item>
+        <item quantity="other">%d reps left</item>
+    </plurals>
+    <string name="effort_four_or_more_left">4 or more reps left</string>
+    <string name="effort_hold_history">Effort: %1$s</string>
+    <string name="effort_hold_0">Limit reached</string>
+    <string name="effort_hold_1">Little</string>
+    <string name="effort_hold_2">Some</string>
+    <string name="effort_hold_3">Fair</string>
+    <string name="effort_hold_4">Plenty</string>
 </resources>

@@ -981,4 +981,24 @@
     <string name="settings_warm_up_sets">Séries d\'échauffement</string>
     <string name="settings_warm_up_sets_description">Marquez des séries comme échauffement. Elles restent dans votre historique et ne comptent pas dans les totaux, les records ni les progressions.</string>
     <string name="set_warm_up">Échauffement</string>
+    <!-- Effort per set (ADR 0012) -->
+    <string name="settings_effort">Effort par série</string>
+    <string name="settings_effort_description">Après une série, notez ce qu\'il vous restait : les répétitions encore possibles, ou combien de temps de plus vous auriez tenu.</string>
+    <string name="effort_question_reps">Combien de répétitions de plus auriez-vous pu faire ?</string>
+    <string name="effort_question_hold">Combien de temps de plus auriez-vous pu tenir ?</string>
+    <string name="effort_reps_none">Aucune</string>
+    <string name="effort_reps_four_or_more">4 ou plus</string>
+    <string name="effort_no_reps_left">Aucune répétition en réserve</string>
+    <plurals name="effort_reps_left">
+        <item quantity="one">%d répétition en réserve</item>
+        <item quantity="many">%d de répétitions en réserve</item>
+        <item quantity="other">%d répétitions en réserve</item>
+    </plurals>
+    <string name="effort_four_or_more_left">4 répétitions ou plus en réserve</string>
+    <string name="effort_hold_history">Effort : %1$s</string>
+    <string name="effort_hold_0">Limite atteinte</string>
+    <string name="effort_hold_1">Peu</string>
+    <string name="effort_hold_2">Un peu</string>
+    <string name="effort_hold_3">Assez</string>
+    <string name="effort_hold_4">Beaucoup</string>
 </resources>

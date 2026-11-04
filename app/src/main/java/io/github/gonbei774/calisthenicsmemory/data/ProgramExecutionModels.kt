@@ -33,6 +33,8 @@ data class ProgramWorkoutSet(
     var completedAtWallMillis: Long? = null,
     // The user marked the set as a warm-up (ADR 0012); the default keeps older checkpoints loadable.
     var isWarmUp: Boolean = false,
+    // The user's effort rating, 0..4 (ADR 0012); null when not rated.
+    var effortLeft: Int? = null,
 )
 
 /**

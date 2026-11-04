@@ -87,6 +87,15 @@ class WorkoutScreensAccessibilityTest {
     @Test fun singleRest() = audit("Rest") {
         IntervalStep(single("Dynamic"), 1, sound, flash, isFlashEnabled = false, onIntervalComplete = {}, onSkip = {}, onUpdateInterval = {})
     }
+    // With effort rating on, the rest also asks about the set just done (ADR 0012).
+    @Test fun singleRestWithEffort() = audit("Rest, rating reps") {
+        val session = single("Dynamic").also { it.sets[0].isCompleted = true; it.sets[0].actualValue = 12 }
+        IntervalStep(session, 1, sound, flash, isFlashEnabled = false, onIntervalComplete = {}, onSkip = {}, onUpdateInterval = {}, showEffort = true)
+    }
+    @Test fun singleRestWithEffortOnAHold() = audit("Rest, rating a hold") {
+        val session = single("Isometric").also { it.sets[0].isCompleted = true; it.sets[0].actualValue = 40 }
+        IntervalStep(session, 1, sound, flash, isFlashEnabled = false, onIntervalComplete = {}, onSkip = {}, onUpdateInterval = {}, showEffort = true)
+    }
     @Test fun singleRepsManual() = audit("Reps, manual") {
         SingleExecutingStepDynamicManual(single("Dynamic"), 0, sound, flash, isFlashEnabled = false, isCountSoundEnabled = false, onSetComplete = {}, onSkip = {}, onAbort = {}, onRetry = {})
     }
@@ -108,6 +117,10 @@ class WorkoutScreensAccessibilityTest {
     }
     @Test fun programRest() = audit("Program rest") {
         ProgramIntervalStep(program("Dynamic"), 0, sound, flash, isFlashEnabled = false, onComplete = {}, onSkip = {})
+    }
+    @Test fun programRestWithEffort() = audit("Program rest, rating reps") {
+        val session = program("Dynamic").also { it.sets[0].isCompleted = true; it.sets[0].actualValue = 12 }
+        ProgramIntervalStep(session, 0, sound, flash, isFlashEnabled = false, onComplete = {}, onSkip = {}, showEffort = true)
     }
     @Test fun programRepsManual() = audit("Program reps, manual") {
         ProgramExecutingStepDynamicManual(program("Dynamic"), 0, sound, flash, isFlashEnabled = false, isCountSoundEnabled = false, onSetComplete = {}, onAbort = {}, onRetry = {})

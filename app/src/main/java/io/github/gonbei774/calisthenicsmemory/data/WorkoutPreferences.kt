@@ -142,6 +142,13 @@ class WorkoutPreferences(context: Context) {
         prefs.edit { putBoolean(KEY_WARM_UP_MARKING, enabled) }
     }
 
+    /** Whether a set's effort can be rated (ADR 0012); off by default. Turning it off hides the control only. */
+    fun isEffortRatingEnabled(): Boolean = prefs.getBoolean(KEY_EFFORT_RATING, false)
+
+    fun setEffortRatingEnabled(enabled: Boolean) {
+        prefs.edit { putBoolean(KEY_EFFORT_RATING, enabled) }
+    }
+
     /**
      * オートモード（自動/手動）を取得
      * @return 自動: true, 手動: false（デフォルト: false）
@@ -217,6 +224,7 @@ class WorkoutPreferences(context: Context) {
         private const val KEY_SET_DONE_VIBRATION_ENABLED = "set_done_vibration_enabled"
         private const val KEY_PREFILL_PREVIOUS_RECORD = "prefill_previous_record"
         private const val KEY_WARM_UP_MARKING = "warmup_sets_enabled"
+        private const val KEY_EFFORT_RATING = "effort_rating_enabled"
         private const val KEY_TIMER_MODE_AUTO = "timer_mode_auto"
         private const val KEY_DYNAMIC_COUNT_SOUND_ENABLED = "dynamic_count_sound_enabled"
         private const val KEY_ISOMETRIC_INTERVAL_SOUND_ENABLED = "isometric_interval_sound_enabled"

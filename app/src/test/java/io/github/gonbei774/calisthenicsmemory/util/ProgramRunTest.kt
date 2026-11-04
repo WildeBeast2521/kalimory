@@ -85,4 +85,10 @@ class ProgramRunTest {
         val rows = ProgramWorkoutWriter.rows(marked.toProgramRun(emptyList(), savedAtWallMillis = 5_000))
         assertEquals(listOf(true, false), rows.exercises.first().second.map { it.isWarmUp })
     }
+
+    @Test fun `a rated program set keeps its rating when saved`() {
+        val rated = session.copy(sets = session.sets.mapIndexed { i, set -> if (i == 0) set.copy(effortLeft = 1) else set }.toMutableList())
+        val rows = ProgramWorkoutWriter.rows(rated.toProgramRun(emptyList(), savedAtWallMillis = 5_000))
+        assertEquals(listOf(1, null), rows.exercises.first().second.map { it.effortLeft })
+    }
 }

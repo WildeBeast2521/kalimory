@@ -981,4 +981,24 @@
     <string name="settings_warm_up_sets">Series de calentamiento</string>
     <string name="settings_warm_up_sets_description">Marca series como calentamiento. Se quedan en tu historial y no cuentan en totales, récords ni progresiones.</string>
     <string name="set_warm_up">Calentamiento</string>
+    <!-- Effort per set (ADR 0012) -->
+    <string name="settings_effort">Esfuerzo por serie</string>
+    <string name="settings_effort_description">Tras una serie, anota cuánto te quedaba: las repeticiones que aún podías hacer o cuánto más podías aguantar.</string>
+    <string name="effort_question_reps">¿Cuántas repeticiones más podrías haber hecho?</string>
+    <string name="effort_question_hold">¿Cuánto más podrías haber aguantado?</string>
+    <string name="effort_reps_none">Ninguna</string>
+    <string name="effort_reps_four_or_more">4 o más</string>
+    <string name="effort_no_reps_left">Sin repeticiones en reserva</string>
+    <plurals name="effort_reps_left">
+        <item quantity="one">%d repetición en reserva</item>
+        <item quantity="many">%d de repeticiones en reserva</item>
+        <item quantity="other">%d repeticiones en reserva</item>
+    </plurals>
+    <string name="effort_four_or_more_left">4 o más repeticiones en reserva</string>
+    <string name="effort_hold_history">Esfuerzo: %1$s</string>
+    <string name="effort_hold_0">Límite alcanzado</string>
+    <string name="effort_hold_1">Poco</string>
+    <string name="effort_hold_2">Algo</string>
+    <string name="effort_hold_3">Bastante</string>
+    <string name="effort_hold_4">Mucho</string>
 </resources>

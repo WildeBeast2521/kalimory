@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.warmUpLabel
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.effortText
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import androidx.compose.foundation.clickable
@@ -236,8 +237,9 @@ fun SessionCard(
                             ) {
                                 // A warm-up says so in words, not by colour alone (ADR 0012).
                                 val setText = stringResource(R.string.set_number, record.setNumber)
+                                val effort = record.effortLeft?.let { effortText(it, exercise?.type == "Dynamic") }
                                 Text(
-                                    text = if (record.warmUp) "$setText · ${warmUpLabel()}" else setText,
+                                    text = listOfNotNull(setText, warmUpLabel().takeIf { record.warmUp }, effort).joinToString(" · "),
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )

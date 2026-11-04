@@ -52,4 +52,19 @@ class WorkoutEditorWarmUpTest {
         show(state(legacy = true), setting = true)
         compose.onAllNodesWithText("Warm-up").assertCountEquals(0)
     }
+
+    @Test fun `a rated set shows its rating even with the setting off, and an old-format workout never does`() {
+        val rated = state().let { it.copy(exercises = listOf(it.exercises[0].copy(sets = listOf(EditorSet(listOf(1), value = "8", effortLeft = 1))))) }
+        compose.setContent {
+            CalisthenicsMemoryTheme { EditorContent(rated, PaddingValues(), onChange = {}, onAddExercise = {}, showWarmUp = false, showEffort = false) }
+        }
+        compose.onAllNodesWithText("How many more reps could you have done?").assertCountEquals(1)
+    }
+
+    @Test fun `with the effort setting on an old-format workout offers no rating`() {
+        compose.setContent {
+            CalisthenicsMemoryTheme { EditorContent(state(legacy = true), PaddingValues(), onChange = {}, onAddExercise = {}, showEffort = true) }
+        }
+        compose.onAllNodesWithText("How many more reps could you have done?").assertCountEquals(0)
+    }
 }

@@ -954,4 +954,25 @@
     <string name="settings_warm_up_sets">Разминочные подходы</string>
     <string name="settings_warm_up_sets_description">Отмечайте подходы как разминку. Они остаются в истории, но не учитываются в итогах, рекордах и прогрессиях.</string>
     <string name="set_warm_up">Разминка</string>
+    <!-- Effort per set (ADR 0012) -->
+    <string name="settings_effort">Усилие в подходе</string>
+    <string name="settings_effort_description">После подхода отмечайте, сколько ещё оставалось: сколько повторов вы могли бы сделать или сколько ещё продержаться.</string>
+    <string name="effort_question_reps">Сколько ещё повторов вы могли бы сделать?</string>
+    <string name="effort_question_hold">Сколько ещё вы могли бы продержаться?</string>
+    <string name="effort_reps_none">Ни одного</string>
+    <string name="effort_reps_four_or_more">4 или больше</string>
+    <string name="effort_no_reps_left">В запасе нет повторов</string>
+    <plurals name="effort_reps_left">
+        <item quantity="one">В запасе %d повтор</item>
+        <item quantity="few">В запасе %d повтора</item>
+        <item quantity="many">В запасе %d повторов</item>
+        <item quantity="other">В запасе %d повторов</item>
+    </plurals>
+    <string name="effort_four_or_more_left">В запасе 4 или больше повторов</string>
+    <string name="effort_hold_history">Усилие: %1$s</string>
+    <string name="effort_hold_0">Предел</string>
+    <string name="effort_hold_1">Мало</string>
+    <string name="effort_hold_2">Немного</string>
+    <string name="effort_hold_3">Прилично</string>
+    <string name="effort_hold_4">Много</string>
 </resources>
