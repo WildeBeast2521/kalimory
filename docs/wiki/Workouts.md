@@ -22,6 +22,15 @@ Timed rounds of work and rest, for example 30 seconds on and 15 seconds off. Cre
 
 The To Do list holds what you plan to train: exercises, groups, programs and interval routines. Add items with + in Library › To Do; Today shows what is due. Each item's ⋮ menu sets the days it repeats on, or deletes it, and swiping it away deletes it too.
 
+## Warm-up sets and effort
+
+Two settings in Settings › Workout settings, both off by default:
+
+- **Warm-up sets** adds a Warm-up mark to each set when you review a workout before saving, on a program's results, when you log a past workout and when you correct one. A warm-up stays in your history, labelled "Warm-up", and still makes the day a training day, but it is left out of totals, bests, targets and progressions.
+- **Effort per set** asks how much you had left after a set: how many more reps you could have done (None, 1, 2, 3, 4 or more), or for a hold how much longer you could have held it (Limit reached, Little, Some, Fair, Plenty). It is asked while you rest after the set, and in the same places as the warm-up mark. Answering is never needed, and tapping your answer again clears it. History shows the rating after the set, for example "2 reps left". A rating changes no count, best or target.
+
+Turning a setting off hides it while you train; marks and ratings already saved stay, and you can still change them when you correct a workout. Workouts brought in from a CSV file or a Calisthenics Memory backup keep the older record format and cannot be marked.
+
 ## Log a past workout
 
 Train › Log a past workout records sets you already did, with their date and time. Use "Add another exercise" to put several exercises into one workout.
