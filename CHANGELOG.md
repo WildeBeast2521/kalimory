@@ -15,6 +15,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - The weekly review lists the week's new personal bests: each exercise whose best set beat every earlier one, with the day it came and the best before it ([#253](https://github.com/WildeBeast2521/kalimory/pull/253))
 - The weekly review lists the progression steps you mastered that week; tap one to open its progression ([#254](https://github.com/WildeBeast2521/kalimory/pull/254))
 - Mark sets as warm-ups when you review a workout, enter one by hand or edit it, after turning on Settings › Warm-up sets; a warm-up stays in your history and is left out of totals, bests and progressions ([#261](https://github.com/WildeBeast2521/kalimory/pull/261))
+- Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
