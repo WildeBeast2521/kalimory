@@ -928,4 +928,22 @@
     <string name="settings_warm_up_sets">热身组</string>
     <string name="settings_warm_up_sets_description">将组标记为热身。热身组保留在记录中，但不计入总计、纪录和进阶。</string>
     <string name="set_warm_up">热身</string>
+    <!-- Effort per set (ADR 0012) -->
+    <string name="settings_effort">每组余力</string>
+    <string name="settings_effort_description">完成一组后，记录还剩多少余力：还能做几次，或还能坚持多久。</string>
+    <string name="effort_question_reps">你还能再做几次？</string>
+    <string name="effort_question_hold">你还能再坚持多久？</string>
+    <string name="effort_reps_none">无</string>
+    <string name="effort_reps_four_or_more">4 次或更多</string>
+    <string name="effort_no_reps_left">没有余力</string>
+    <plurals name="effort_reps_left">
+        <item quantity="other">还能做 %d 次</item>
+    </plurals>
+    <string name="effort_four_or_more_left">还能做 4 次或更多</string>
+    <string name="effort_hold_history">余力：%1$s</string>
+    <string name="effort_hold_0">到达极限</string>
+    <string name="effort_hold_1">很少</string>
+    <string name="effort_hold_2">一些</string>
+    <string name="effort_hold_3">较多</string>
+    <string name="effort_hold_4">很多</string>
 </resources>

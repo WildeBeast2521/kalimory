@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SetMarks
@@ -48,6 +49,40 @@ class SetMarksTest {
         RuntimeEnvironment.setFontScale(2f)
         try {
             compose.setContent { CalisthenicsMemoryTheme { SetMarks(true, onWarmUp = {}) } }
+            compose.waitForIdle()
+            val problems = tapTargetProblems(compose, compose.density) + textFitProblems(compose)
+            assertTrue(problems.joinToString("\n"), problems.isEmpty())
+        } finally {
+            RuntimeEnvironment.setFontScale(1f)
+        }
+    }
+
+    @Test fun `an effort choice is picked, read in words, and cleared by tapping it again`() {
+        val ratings = mutableListOf<Int?>()
+        compose.setContent {
+            CalisthenicsMemoryTheme {
+                var effort by remember { mutableStateOf<Int?>(null) }
+                SetMarks(false, onWarmUp = {}, showWarmUp = false, effortLeft = effort, onEffort = { effort = it; ratings += it })
+            }
+        }
+        compose.onNodeWithText("How many more reps could you have done?").assertExists()
+        compose.onNodeWithContentDescription("2 reps left").assertIsNotSelected().performClick()
+        compose.onNodeWithContentDescription("2 reps left").assertIsSelected().performClick()
+        compose.onNodeWithContentDescription("No reps left").performClick()
+        assertEquals(listOf(2, null, 0), ratings)
+        compose.onNodeWithText("Warm-up").assertDoesNotExist()
+    }
+
+    @Test fun `a hold is rated on the owner's five words`() {
+        compose.setContent { CalisthenicsMemoryTheme { SetMarks(false, onWarmUp = {}, showWarmUp = false, dynamic = false, onEffort = {}) } }
+        compose.onNodeWithText("How much longer could you have held?").assertExists()
+        listOf("Limit reached", "Little", "Some", "Fair", "Plenty").forEach { compose.onNodeWithText(it).assertExists() }
+    }
+
+    @Test fun `with both parts at 200 percent font every chip is a full target and nothing is cut off`() {
+        RuntimeEnvironment.setFontScale(2f)
+        try {
+            compose.setContent { CalisthenicsMemoryTheme { SetMarks(true, onWarmUp = {}, effortLeft = 4, dynamic = false, onEffort = {}) } }
             compose.waitForIdle()
             val problems = tapTargetProblems(compose, compose.density) + textFitProblems(compose)
             assertTrue(problems.joinToString("\n"), problems.isEmpty())

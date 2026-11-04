@@ -689,6 +689,9 @@ fun WorkoutInputScreen(
     // would silently take a working set out of records.
     val showWarmUp = run { val context = LocalContext.current; remember { WorkoutPreferences(context).isWarmUpMarkingEnabled() } }
     var warmUps by remember(prefillData) { mutableStateOf(List(numberOfSets) { false }) }
+    // Effort ratings (ADR 0012), one per set; never prefilled either.
+    val showEffort = run { val context = LocalContext.current; remember { WorkoutPreferences(context).isEffortRatingEnabled() } }
+    var efforts by remember(prefillData) { mutableStateOf(List<Int?>(numberOfSets) { null }) }
 
     // Unilateral用の左右別の値管理（プリフィルデータで初期化）
     var setValuesRight by remember(prefillData) {
@@ -814,6 +817,7 @@ fun WorkoutInputScreen(
         weightInputs.joinToString(","),
         assistanceInputs.joinToString(","),
         warmUps.joinToString(","),
+        efforts.joinToString(","),
         comment
     ).joinToString("|")
 
@@ -867,7 +871,7 @@ fun WorkoutInputScreen(
                     manualWorkout(
                         exercise, groups, selectedDate, selectedTime, comment,
                         valuesRight.indices.map { i ->
-                            ManualSet(valuesRight[i], valuesLeft[i], distancesCm[i], weightsG[i], assistancesG[i], warmUp = warmUps.getOrElse(validIndices[i]) { false })
+                            ManualSet(valuesRight[i], valuesLeft[i], distancesCm[i], weightsG[i], assistancesG[i], warmUp = warmUps.getOrElse(validIndices[i]) { false }, effortLeft = efforts.getOrElse(validIndices[i]) { null })
                         }
                     )
                 )
@@ -894,7 +898,7 @@ fun WorkoutInputScreen(
                     manualWorkout(
                         exercise, groups, selectedDate, selectedTime, comment,
                         values.indices.map { i ->
-                            ManualSet(values[i], null, distancesCm[i], weightsG[i], assistancesG[i], warmUp = warmUps.getOrElse(validIndices[i]) { false })
+                            ManualSet(values[i], null, distancesCm[i], weightsG[i], assistancesG[i], warmUp = warmUps.getOrElse(validIndices[i]) { false }, effortLeft = efforts.getOrElse(validIndices[i]) { null })
                         }
                     )
                 )
@@ -917,6 +921,7 @@ fun WorkoutInputScreen(
         }
         // 距離・荷重・アシストもセット数に合わせてリサイズ
         warmUps = List(numberOfSets) { index -> warmUps.getOrElse(index) { false } }
+        efforts = List(numberOfSets) { index -> efforts.getOrElse(index) { null } }
         distanceInputs = List(numberOfSets) { index -> distanceInputs.getOrElse(index) { "" } }
         weightInputs = List(numberOfSets) { index -> weightInputs.getOrElse(index) { "" } }
         assistanceInputs = List(numberOfSets) { index -> assistanceInputs.getOrElse(index) { "" } }
@@ -960,6 +965,7 @@ fun WorkoutInputScreen(
             setValuesRight = setValuesRight.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             setValuesLeft = setValuesLeft.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             warmUps = warmUps.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
+            efforts = efforts.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             distanceInputs = distanceInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             weightInputs = weightInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             assistanceInputs = assistanceInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
@@ -1221,10 +1227,16 @@ fun WorkoutInputScreen(
                                 },
                                 previousSession = previousSession
                             )
-                            if (showWarmUp) {
+                            if (showWarmUp || showEffort) {
                                 SetMarks(
                                     warmUps.getOrElse(index) { false },
                                     onWarmUp = { marked -> warmUps = warmUps.toMutableList().also { if (index in it.indices) it[index] = marked } },
+                                    showWarmUp = showWarmUp,
+                                    effortLeft = efforts.getOrElse(index) { null },
+                                    dynamic = exercise.type == "Dynamic",
+                                    onEffort = if (showEffort) { rating ->
+                                        efforts = efforts.toMutableList().also { if (index in it.indices) it[index] = rating }
+                                    } else null,
                                 )
                             }
 
@@ -1311,10 +1323,16 @@ fun WorkoutInputScreen(
                                 },
                                 previousSession = previousSession
                             )
-                            if (showWarmUp) {
+                            if (showWarmUp || showEffort) {
                                 SetMarks(
                                     warmUps.getOrElse(index) { false },
                                     onWarmUp = { marked -> warmUps = warmUps.toMutableList().also { if (index in it.indices) it[index] = marked } },
+                                    showWarmUp = showWarmUp,
+                                    effortLeft = efforts.getOrElse(index) { null },
+                                    dynamic = exercise.type == "Dynamic",
+                                    onEffort = if (showEffort) { rating ->
+                                        efforts = efforts.toMutableList().also { if (index in it.indices) it[index] = rating }
+                                    } else null,
                                 )
                             }
 
@@ -1340,6 +1358,7 @@ fun WorkoutInputScreen(
                             setValuesLeft = setValuesLeft + (setValuesLeft.lastOrNull() ?: "")
                             // A new set starts unmarked, whatever the last one was.
                             warmUps = warmUps + false
+                            efforts = efforts + null
                             distanceInputs = distanceInputs + (distanceInputs.lastOrNull() ?: "")
                             weightInputs = weightInputs + (weightInputs.lastOrNull() ?: "")
                             assistanceInputs = assistanceInputs + (assistanceInputs.lastOrNull() ?: "")

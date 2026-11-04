@@ -31,6 +31,7 @@ internal fun ProgramResultStep(
     var comment by remember { mutableStateOf(session.comment) }
     val context = LocalContext.current
     val showWarmUp = remember { WorkoutPreferences(context).isWarmUpMarkingEnabled() }
+    val showEffort = remember { WorkoutPreferences(context).isEffortRatingEnabled() }
 
     // 0のセットがあるかチェック
     val hasZeroSets = remember(session.sets) {
@@ -131,6 +132,7 @@ internal fun ProgramResultStep(
                                     leftSet = leftSet,
                                     exercise = exercise,
                                     showWarmUp = showWarmUp,
+                                    showEffort = showEffort,
                                 )
                             }
                         }
@@ -142,6 +144,7 @@ internal fun ProgramResultStep(
                                     set = set,
                                     exercise = exercise,
                                     showWarmUp = showWarmUp,
+                                    showEffort = showEffort,
                                 )
                             }
                         }
@@ -194,11 +197,13 @@ internal fun ProgramUnilateralSetItem(
     leftSet: ProgramWorkoutSet?,
     exercise: Exercise,
     showWarmUp: Boolean = false,
+    showEffort: Boolean = false,
 ) {
     val exerciseType = exercise.type
     var rightValue by remember(rightSet) { mutableStateOf(rightSet?.actualValue?.toString() ?: "0") }
     // One warm-up mark for the whole set, both sides (ADR 0012).
     var warmUp by remember(rightSet, leftSet) { mutableStateOf((rightSet ?: leftSet)?.isWarmUp == true) }
+    var effort by remember(rightSet, leftSet) { mutableStateOf((rightSet ?: leftSet)?.effortLeft) }
     var leftValue by remember(leftSet) { mutableStateOf(leftSet?.actualValue?.toString() ?: "0") }
 
     Card(
@@ -300,12 +305,24 @@ internal fun ProgramUnilateralSetItem(
                 onDistanceChange = { rightSet?.distanceCm = it; leftSet?.distanceCm = it },
                 onAssistanceChange = { rightSet?.assistanceG = it; leftSet?.assistanceG = it }
             )
-            if (showWarmUp && !(rightSet?.isSkipped == true && leftSet?.isSkipped == true)) {
-                SetMarks(warmUp, onWarmUp = { marked ->
-                    warmUp = marked
-                    rightSet?.isWarmUp = marked
-                    leftSet?.isWarmUp = marked
-                }, modifier = Modifier.padding(top = 8.dp))
+            if ((showWarmUp || showEffort) && !(rightSet?.isSkipped == true && leftSet?.isSkipped == true)) {
+                SetMarks(
+                    warmUp,
+                    onWarmUp = { marked ->
+                        warmUp = marked
+                        rightSet?.isWarmUp = marked
+                        leftSet?.isWarmUp = marked
+                    },
+                    modifier = Modifier.padding(top = 8.dp),
+                    showWarmUp = showWarmUp,
+                    effortLeft = effort,
+                    dynamic = exerciseType == "Dynamic",
+                    onEffort = if (showEffort) { rating ->
+                        effort = rating
+                        rightSet?.effortLeft = rating
+                        leftSet?.effortLeft = rating
+                    } else null,
+                )
             }
         }
     }
@@ -317,10 +334,12 @@ internal fun ProgramBilateralSetItem(
     set: ProgramWorkoutSet,
     exercise: Exercise,
     showWarmUp: Boolean = false,
+    showEffort: Boolean = false,
 ) {
     val exerciseType = exercise.type
     var value by remember(set) { mutableStateOf(set.actualValue.toString()) }
     var warmUp by remember(set) { mutableStateOf(set.isWarmUp) }
+    var effort by remember(set) { mutableStateOf(set.effortLeft) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -384,8 +403,16 @@ internal fun ProgramBilateralSetItem(
                 onDistanceChange = { set.distanceCm = it },
                 onAssistanceChange = { set.assistanceG = it }
             )
-            if (showWarmUp && !set.isSkipped) {
-                SetMarks(warmUp, onWarmUp = { marked -> warmUp = marked; set.isWarmUp = marked }, modifier = Modifier.padding(top = 8.dp))
+            if ((showWarmUp || showEffort) && !set.isSkipped) {
+                SetMarks(
+                    warmUp,
+                    onWarmUp = { marked -> warmUp = marked; set.isWarmUp = marked },
+                    modifier = Modifier.padding(top = 8.dp),
+                    showWarmUp = showWarmUp,
+                    effortLeft = effort,
+                    dynamic = exerciseType == "Dynamic",
+                    onEffort = if (showEffort) { rating -> effort = rating; set.effortLeft = rating } else null,
+                )
             }
         }
     }

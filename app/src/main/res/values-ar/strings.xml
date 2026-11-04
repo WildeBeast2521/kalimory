@@ -1012,4 +1012,27 @@
     <string name="settings_warm_up_sets">مجموعات الإحماء</string>
     <string name="settings_warm_up_sets_description">علّم المجموعات كإحماء. تبقى في سجلك ولا تُحتسب في المجاميع والأرقام القياسية والتدرّجات.</string>
     <string name="set_warm_up">إحماء</string>
+    <!-- Effort per set (ADR 0012) -->
+    <string name="settings_effort">الجهد في كل مجموعة</string>
+    <string name="settings_effort_description">بعد المجموعة، سجّل ما تبقّى لديك: كم تكرارًا كان بإمكانك أداؤه أو كم كان بإمكانك الثبات أكثر.</string>
+    <string name="effort_question_reps">كم تكرارًا إضافيًا كان بإمكانك أداؤه؟</string>
+    <string name="effort_question_hold">كم من الوقت كان بإمكانك الثبات أكثر؟</string>
+    <string name="effort_reps_none">لا شيء</string>
+    <string name="effort_reps_four_or_more">4 أو أكثر</string>
+    <string name="effort_no_reps_left">لم يبقَ أي تكرار</string>
+    <plurals name="effort_reps_left">
+        <item quantity="zero">لم يبقَ أي تكرار</item>
+        <item quantity="one">بقي تكرار واحد</item>
+        <item quantity="two">بقي تكراران</item>
+        <item quantity="few">بقي %d تكرارات</item>
+        <item quantity="many">بقي %d تكرارًا</item>
+        <item quantity="other">بقي %d تكرار</item>
+    </plurals>
+    <string name="effort_four_or_more_left">بقي 4 تكرارات أو أكثر</string>
+    <string name="effort_hold_history">الجهد: %1$s</string>
+    <string name="effort_hold_0">بلغت الحد</string>
+    <string name="effort_hold_1">قليل</string>
+    <string name="effort_hold_2">بعض الشيء</string>
+    <string name="effort_hold_3">كثير نوعًا ما</string>
+    <string name="effort_hold_4">كثير</string>
 </resources>

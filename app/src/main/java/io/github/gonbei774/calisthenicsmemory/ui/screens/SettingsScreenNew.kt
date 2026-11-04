@@ -453,6 +453,7 @@ fun SettingsScreenNew(
                 val workoutPrefs = remember { io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences(context) }
                 var prefillEnabled by remember { mutableStateOf(workoutPrefs.isPrefillPreviousRecordEnabled()) }
                 var warmUpMarking by remember { mutableStateOf(workoutPrefs.isWarmUpMarkingEnabled()) }
+                var effortRating by remember { mutableStateOf(workoutPrefs.isEffortRatingEnabled()) }
                 var startCountdown by remember { mutableIntStateOf(workoutPrefs.getStartCountdown()) }
                 var setInterval by remember { mutableIntStateOf(workoutPrefs.getSetInterval()) }
                 var startCountdownEnabled by remember { mutableStateOf(workoutPrefs.isStartCountdownEnabled()) }
@@ -538,6 +539,41 @@ fun SettingsScreenNew(
                                 )
                             }
                             Switch(checked = warmUpMarking, onCheckedChange = null)
+                        }
+                    }
+
+                    // Effort per set (ADR 0012): off by default; turning it off hides the control only.
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+                        shape = MaterialTheme.shapes.large
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .toggleable(value = effortRating, role = Role.Switch, onValueChange = { enabled ->
+                                    effortRating = enabled
+                                    workoutPrefs.setEffortRatingEnabled(enabled)
+                                })
+                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(AppIcons.Chart, contentDescription = null, modifier = Modifier.size(24.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(R.string.settings_effort),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = stringResource(R.string.settings_effort_description),
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                            Switch(checked = effortRating, onCheckedChange = null)
                         }
                     }
 

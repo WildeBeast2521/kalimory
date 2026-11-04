@@ -14,6 +14,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -29,6 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.EffortChoices
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.util.FlashController
@@ -139,7 +143,8 @@ internal fun ProgramIntervalStep(
     isNavigationOpen: Boolean = false,
     nextSetIndexOverride: Int? = null,  // Redoモード時など、次のセットが+1でない場合に使用
     onComplete: () -> Unit,
-    onSkip: () -> Unit
+    onSkip: () -> Unit,
+    showEffort: Boolean = false,
 ) {
     val cs = MaterialTheme.colorScheme
     val currentSet = session.sets[currentSetIndex]
@@ -200,95 +205,117 @@ internal fun ProgramIntervalStep(
         )
     }
 
+    // The set just done can be rated while resting (ADR 0012); a one-sided set after its last
+    // side. Optional: the rest runs and ends the same whether or not it is answered.
+    fun sameSet(other: ProgramWorkoutSet?) = other != null && other.exerciseIndex == currentSet.exerciseIndex &&
+        other.roundNumber == currentSet.roundNumber && other.setNumber == currentSet.setNumber
+    val rating = showEffort && currentSet.isCompleted && !sameSet(nextSet)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = Spacing.l, vertical = Spacing.m),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // The one expressive moment: a completed set is acknowledged as the rest begins.
-        if (currentSet.isCompleted) {
-            SetDoneBadge(
-                label = stringResource(R.string.workout_set_done, currentSet.setNumber),
-                modifier = Modifier.padding(top = Spacing.s)
+        // With the rating shown the content can outgrow the screen (large text), so it scrolls above
+        // the pinned toolbar; without it the layout is as it always was.
+        Column(
+            modifier = if (rating) Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()) else Modifier.weight(1f).fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // The one expressive moment: a completed set is acknowledged as the rest begins.
+            if (currentSet.isCompleted) {
+                SetDoneBadge(
+                    label = stringResource(R.string.workout_set_done, currentSet.setNumber),
+                    modifier = Modifier.padding(top = Spacing.s)
+                )
+            }
+
+            Spacer(modifier = if (rating) Modifier.height(Spacing.l) else Modifier.weight(1f))
+
+            WorkoutStatus(
+                stringResource(if (hasLoopRest) R.string.loop_round_rest else R.string.interval_rest_label),
+                WorkoutTone.rest
             )
-        }
+            if (currentSet.loopId != null && currentSet.totalRounds > 1) {
+                Text(
+                    text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = cs.onSurfaceVariant,
+                    modifier = Modifier.padding(top = Spacing.xs)
+                )
+            }
 
-        Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(Spacing.l))
 
-        WorkoutStatus(
-            stringResource(if (hasLoopRest) R.string.loop_round_rest else R.string.interval_rest_label),
-            WorkoutTone.rest
-        )
-        if (currentSet.loopId != null && currentSet.totalRounds > 1) {
-            Text(
-                text = stringResource(R.string.loop_round_current, currentSet.roundNumber, currentSet.totalRounds),
-                style = MaterialTheme.typography.titleMedium,
-                color = cs.onSurfaceVariant,
-                modifier = Modifier.padding(top = Spacing.xs)
+            TimerDial(
+                progress = progress,
+                value = "$remainingTime",
+                accent = WorkoutTone.rest,
+                paused = !effectivelyRunning,
+                onToggle = { isRunning = !isRunning },
+                // Smaller than elsewhere: this rest also shows the next exercise.
+                size = 220.dp,
             )
-        }
 
-        Spacer(modifier = Modifier.height(Spacing.l))
+            Spacer(modifier = Modifier.height(Spacing.l))
 
-        TimerDial(
-            progress = progress,
-            value = "$remainingTime",
-            accent = WorkoutTone.rest,
-            paused = !effectivelyRunning,
-            onToggle = { isRunning = !isRunning },
-            // Smaller than elsewhere: this rest also shows the next exercise.
-            size = 220.dp,
-        )
+            if (rating) {
+                val sides = session.sets.filter { sameSet(it) }
+                var effort by remember(currentSet) { mutableStateOf(currentSet.effortLeft) }
+                EffortChoices(
+                    selected = effort,
+                    dynamic = session.exercises[currentSet.exerciseIndex].second.type == "Dynamic",
+                    onSelect = { value -> effort = value; sides.forEach { it.effortLeft = value } },
+                )
+            }
 
-        Spacer(modifier = Modifier.height(Spacing.l))
+            Spacer(modifier = if (rating) Modifier.height(Spacing.l) else Modifier.weight(1f))
 
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        // What comes next: the exercise, and its set within that exercise.
-        nextSet?.let { next ->
-            val (_, nextExercise) = session.exercises[next.exerciseIndex]
-            val nextExerciseSets = session.sets
-                .filter { it.exerciseIndex == next.exerciseIndex && it.roundNumber == next.roundNumber }
-                .map { it.setNumber }
-                .distinct()
-                .size
-            Surface(
-                shape = MaterialTheme.shapes.large,
-                color = cs.surfaceContainerLow,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(Spacing.l)) {
-                    Text(
-                        text = stringResource(R.string.interval_next),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = cs.secondary
-                    )
-                    Text(
-                        text = nextExercise.name,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = cs.onSurface,
-                        modifier = Modifier.padding(top = Spacing.xs)
-                    )
-                    Text(
-                        text = setLabel(next.setNumber, nextExerciseSets, next.side),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = cs.onSurfaceVariant
-                    )
-                    if (!nextExercise.description.isNullOrBlank()) {
+            // What comes next: the exercise, and its set within that exercise.
+            nextSet?.let { next ->
+                val (_, nextExercise) = session.exercises[next.exerciseIndex]
+                val nextExerciseSets = session.sets
+                    .filter { it.exerciseIndex == next.exerciseIndex && it.roundNumber == next.roundNumber }
+                    .map { it.setNumber }
+                    .distinct()
+                    .size
+                Surface(
+                    shape = MaterialTheme.shapes.large,
+                    color = cs.surfaceContainerLow,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(Spacing.l)) {
                         Text(
-                            text = nextExercise.description,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = cs.onSurfaceVariant,
+                            text = stringResource(R.string.interval_next),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = cs.secondary
+                        )
+                        Text(
+                            text = nextExercise.name,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = cs.onSurface,
                             modifier = Modifier.padding(top = Spacing.xs)
                         )
+                        Text(
+                            text = setLabel(next.setNumber, nextExerciseSets, next.side),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = cs.onSurfaceVariant
+                        )
+                        if (!nextExercise.description.isNullOrBlank()) {
+                            Text(
+                                text = nextExercise.description,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = cs.onSurfaceVariant,
+                                modifier = Modifier.padding(top = Spacing.xs)
+                            )
+                        }
                     }
                 }
             }
-        }
 
-        Spacer(modifier = Modifier.height(Spacing.s))
+            Spacer(modifier = Modifier.height(Spacing.s))
+        }
 
         RestToolbar(
             onMinus = {

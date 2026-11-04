@@ -951,4 +951,23 @@
     <string name="settings_warm_up_sets">Aufwärmsätze</string>
     <string name="settings_warm_up_sets_description">Markiere Sätze als Aufwärmsätze. Sie bleiben in deinem Verlauf und zählen nicht zu Summen, Bestleistungen und Progressionen.</string>
     <string name="set_warm_up">Aufwärmen</string>
+    <!-- Effort per set (ADR 0012) -->
+    <string name="settings_effort">Anstrengung pro Satz</string>
+    <string name="settings_effort_description">Halte nach einem Satz fest, wie viel noch ging: wie viele Wiederholungen mehr oder wie viel länger du hättest halten können.</string>
+    <string name="effort_question_reps">Wie viele Wiederholungen hättest du noch geschafft?</string>
+    <string name="effort_question_hold">Wie viel länger hättest du halten können?</string>
+    <string name="effort_reps_none">Keine</string>
+    <string name="effort_reps_four_or_more">4 oder mehr</string>
+    <string name="effort_no_reps_left">Keine Wiederholung übrig</string>
+    <plurals name="effort_reps_left">
+        <item quantity="one">%d Wiederholung übrig</item>
+        <item quantity="other">%d Wiederholungen übrig</item>
+    </plurals>
+    <string name="effort_four_or_more_left">4 oder mehr Wiederholungen übrig</string>
+    <string name="effort_hold_history">Anstrengung: %1$s</string>
+    <string name="effort_hold_0">Grenze erreicht</string>
+    <string name="effort_hold_1">Wenig</string>
+    <string name="effort_hold_2">Etwas</string>
+    <string name="effort_hold_3">Einiges</string>
+    <string name="effort_hold_4">Viel</string>
 </resources>

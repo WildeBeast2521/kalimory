@@ -59,6 +59,7 @@ import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SetMarks
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.EffortChoices
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -120,6 +121,8 @@ data class WorkoutSet(
     var completedAtWallMillis: Long? = null,
     // The user marked the set as a warm-up (ADR 0012); the default keeps older checkpoints loadable.
     var isWarmUp: Boolean = false,
+    // The user's effort rating, 0..4 (ADR 0012); null when not rated.
+    var effortLeft: Int? = null,
 )
 
 // ワークアウトセッションのデータ
@@ -189,6 +192,7 @@ fun WorkoutScreen(
     val flashController = remember { FlashController(context) }
     val workoutPreferences = remember { WorkoutPreferences(context) }
     val isFlashEnabled = remember { workoutPreferences.isFlashNotificationEnabled() }
+    val isEffortRatingEnabled = remember { workoutPreferences.isEffortRatingEnabled() }
     val isKeepScreenOnEnabled = remember { workoutPreferences.isKeepScreenOnEnabled() }
 
     // ワークアウトモードのコメント文字列
@@ -603,6 +607,7 @@ fun WorkoutScreen(
                     IntervalStep(
                         session = step.session,
                         nextSetIndex = step.currentSetIndex,
+                        showEffort = isEffortRatingEnabled,
                         soundPlayer = soundPlayer,
                         flashController = flashController,
                         isFlashEnabled = isFlashEnabled,
@@ -1780,7 +1785,8 @@ fun IntervalStep(
     isNavigationOpen: Boolean = false,
     onIntervalComplete: () -> Unit,
     onSkip: () -> Unit,
-    onUpdateInterval: (Int) -> Unit
+    onUpdateInterval: (Int) -> Unit,
+    showEffort: Boolean = false,
 ) {
     var isRunning by remember { mutableStateOf(true) }
 
@@ -1876,6 +1882,19 @@ fun IntervalStep(
 
         Spacer(modifier = Modifier.height(Spacing.l))
 
+        // The set just done can be rated while resting (ADR 0012); a one-sided set after its last
+        // side. Optional: the rest runs and ends the same whether or not it is answered.
+        val rated = previousSet?.takeIf { it.isCompleted && nextSet?.setNumber != it.setNumber }
+        if (showEffort && rated != null) {
+            val sides = session.sets.filter { it.setNumber == rated.setNumber }
+            var effort by remember(rated) { mutableStateOf(rated.effortLeft) }
+            EffortChoices(
+                selected = effort,
+                dynamic = session.exercise.type == "Dynamic",
+                onSelect = { rating -> effort = rating; sides.forEach { it.effortLeft = rating } },
+            )
+        }
+
         Spacer(modifier = Modifier.weight(1f))
 
         // −10 s and +10 s change only this rest; later rests keep the set duration.
@@ -1904,6 +1923,7 @@ fun ConfirmationStep(
     var showAddSetDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val showWarmUp = remember { WorkoutPreferences(context).isWarmUpMarkingEnabled() }
+    val showEffort = remember { WorkoutPreferences(context).isEffortRatingEnabled() }
 
     // Unilateralの場合、セット番号でグループ化
     val displaySets = remember(session) {
@@ -1998,6 +2018,11 @@ fun ConfirmationStep(
                             rightSet?.isWarmUp = marked
                             leftSet?.isWarmUp = marked
                         },
+                        showEffort = showEffort,
+                        onEffortChange = { rating ->
+                            rightSet?.effortLeft = rating
+                            leftSet?.effortLeft = rating
+                        },
                     )
                 }
             } else {
@@ -2015,6 +2040,8 @@ fun ConfirmationStep(
                         onAssistanceChange = { newValue -> set.assistanceG = newValue },
                         showWarmUp = showWarmUp,
                         onWarmUpChange = { marked -> set.isWarmUp = marked },
+                        showEffort = showEffort,
+                        onEffortChange = { rating -> set.effortLeft = rating },
                     )
                 }
             }
@@ -2277,12 +2304,15 @@ fun UnilateralSetItem(
     onAssistanceChange: (Int?) -> Unit,
     showWarmUp: Boolean = false,
     onWarmUpChange: (Boolean) -> Unit = {},
+    showEffort: Boolean = false,
+    onEffortChange: (Int?) -> Unit = {},
 ) {
     val exerciseType = exercise.type
     // 編集可能な状態として管理
     var rightValue by remember(rightSet) { mutableStateOf(rightSet?.actualValue?.toString() ?: "0") }
     // One mark for the whole set, both sides.
     var warmUp by remember(rightSet, leftSet) { mutableStateOf((rightSet ?: leftSet)?.isWarmUp == true) }
+    var effort by remember(rightSet, leftSet) { mutableStateOf((rightSet ?: leftSet)?.effortLeft) }
     var leftValue by remember(leftSet) { mutableStateOf(leftSet?.actualValue?.toString() ?: "0") }
     // L/R共通の重量/距離/アシスト（rightSet側を正とする）
     var distanceStr by remember(rightSet) {
@@ -2413,8 +2443,12 @@ fun UnilateralSetItem(
                 onWeightStrChange = { weightStr = it; onWeightChange(parseWeightGValue(it)) },
                 onAssistanceStrChange = { assistanceStr = it; onAssistanceChange(parseWeightGValue(it)) }
             )
-            if (showWarmUp) {
-                SetMarks(warmUp, onWarmUp = { warmUp = it; onWarmUpChange(it) }, modifier = Modifier.padding(top = 8.dp))
+            if (showWarmUp || showEffort) {
+                SetMarks(
+                    warmUp, onWarmUp = { warmUp = it; onWarmUpChange(it) }, modifier = Modifier.padding(top = 8.dp),
+                    showWarmUp = showWarmUp, effortLeft = effort, dynamic = exerciseType == "Dynamic",
+                    onEffort = if (showEffort) { rating -> effort = rating; onEffortChange(rating) } else null,
+                )
             }
         }
     }
@@ -2431,11 +2465,14 @@ fun BilateralSetItem(
     onAssistanceChange: (Int?) -> Unit,
     showWarmUp: Boolean = false,
     onWarmUpChange: (Boolean) -> Unit = {},
+    showEffort: Boolean = false,
+    onEffortChange: (Int?) -> Unit = {},
 ) {
     val exerciseType = exercise.type
     // 編集可能な状態として管理
     var value by remember(set) { mutableStateOf(set.actualValue.toString()) }
     var warmUp by remember(set) { mutableStateOf(set.isWarmUp) }
+    var effort by remember(set) { mutableStateOf(set.effortLeft) }
     var distanceStr by remember(set) {
         mutableStateOf(set.distanceCm?.toString() ?: "")
     }
@@ -2516,8 +2553,12 @@ fun BilateralSetItem(
                 onWeightStrChange = { weightStr = it; onWeightChange(parseWeightGValue(it)) },
                 onAssistanceStrChange = { assistanceStr = it; onAssistanceChange(parseWeightGValue(it)) }
             )
-            if (showWarmUp && !set.isSkipped) {
-                SetMarks(warmUp, onWarmUp = { warmUp = it; onWarmUpChange(it) }, modifier = Modifier.padding(top = 8.dp))
+            if ((showWarmUp || showEffort) && !set.isSkipped) {
+                SetMarks(
+                    warmUp, onWarmUp = { warmUp = it; onWarmUpChange(it) }, modifier = Modifier.padding(top = 8.dp),
+                    showWarmUp = showWarmUp, effortLeft = effort, dynamic = exerciseType == "Dynamic",
+                    onEffort = if (showEffort) { rating -> effort = rating; onEffortChange(rating) } else null,
+                )
             }
         }
     }
@@ -2665,6 +2706,7 @@ fun WorkoutSession.toSingleWorkout(
                 assistanceG = set.assistanceG,
                 completedAtWallMillis = set.completedAtWallMillis,
                 warmUp = set.isWarmUp,
+                effortLeft = set.effortLeft,
             )
         },
         // Only what the user wrote: an automatic "Workout Mode" note read as their own comment.
