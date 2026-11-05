@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.review
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleVolume
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleVolumeSummary
 import io.github.gonbei774.calisthenicsmemory.data.review.VolumeTier
@@ -67,6 +69,7 @@ fun BodyMapScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit) {
     val today = rememberToday()
     val firstDay = firstDayOfWeek()
     var periodName by rememberSaveable { mutableStateOf(Period.OneWeek.name) }
+    var viewName by rememberSaveable { mutableStateOf(BodyMapView.SETS.name) }
     val period = Period.valueOf(periodName)
     val start = period.startDate(today, firstDay)
     val summary = remember(start, today, history, intervalHistory, exercises) {
@@ -83,9 +86,17 @@ fun BodyMapScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit) {
             weeks = period.days / 7.0,
             period = period,
             onPeriod = { periodName = it.name },
+            view = BodyMapView.valueOf(viewName),
+            onView = { viewName = it.name },
             modifier = Modifier.padding(padding),
         )
     }
+}
+
+/** What the body map shows: sets per muscle, or the trainable muscles that got none. */
+internal enum class BodyMapView(@StringRes val label: Int) {
+    SETS(R.string.body_map_view_sets),
+    NOT_WORKED(R.string.body_map_view_untrained),
 }
 
 /** The body map without state: shown by the screen and by its tests. */
@@ -97,6 +108,8 @@ internal fun BodyMapContent(
     period: Period,
     onPeriod: (Period) -> Unit,
     modifier: Modifier = Modifier,
+    view: BodyMapView = BodyMapView.SETS,
+    onView: (BodyMapView) -> Unit = {},
 ) {
     Surface(modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
@@ -105,15 +118,27 @@ internal fun BodyMapContent(
                 .padding(horizontal = Spacing.l, vertical = Spacing.m),
             verticalArrangement = Arrangement.spacedBy(Spacing.xl),
         ) {
-            PeriodChips(period, onPeriod)
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                ViewChips(view, onView)
+                PeriodChips(period, onPeriod)
+            }
             if (summary.isEmpty) {
                 Text(stringResource(R.string.body_map_empty), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 return@Column
             }
             val tiers = remember(summary, weeks) { MuscleVolume.tiers(summary, weeks) }
+            val notWorked = remember(summary) { MuscleVolume.notWorked(summary) }
             // Decorative: the list below says the same in words.
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                VolumeMap(tiers, Modifier.widthIn(max = 320.dp).fillMaxWidth(0.85f).clearAndSetSemantics {})
+                VolumeMap(
+                    tiers,
+                    Modifier.widthIn(max = 320.dp).fillMaxWidth(0.85f).clearAndSetSemantics {},
+                    notWorked = if (view == BodyMapView.NOT_WORKED) notWorked.toSet() else emptySet(),
+                )
+            }
+            if (view == BodyMapView.NOT_WORKED) {
+                NotWorked(notWorked)
+                return@Column
             }
             Legend()
             if (summary.muscles.isNotEmpty()) {
@@ -132,6 +157,29 @@ internal fun BodyMapContent(
                 }
             }
             NotOnMap(summary)
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ViewChips(selected: BodyMapView, onView: (BodyMapView) -> Unit) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        BodyMapView.entries.forEach { view ->
+            FilterChip(selected = view == selected, onClick = { onView(view) }, label = { Text(stringResource(view.label)) })
+        }
+    }
+}
+
+/** Trainable muscles with no set in the period, outlined on the figure and listed by name. */
+@Composable
+private fun NotWorked(muscles: List<Muscle>) {
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        SectionHeading(stringResource(R.string.body_map_untrained_heading))
+        if (muscles.isEmpty()) {
+            Text(stringResource(R.string.body_map_untrained_none), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        } else {
+            RowGroup { muscles.forEach { ReviewRow(name = muscleLabel(it), value = "", detail = null) } }
         }
     }
 }

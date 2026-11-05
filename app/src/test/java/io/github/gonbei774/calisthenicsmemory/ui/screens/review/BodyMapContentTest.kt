@@ -38,10 +38,12 @@ class BodyMapContentTest {
         period: Period = Period.OneWeek,
         onPeriod: (Period) -> Unit = {},
         direction: LayoutDirection = LayoutDirection.Ltr,
+        view: BodyMapView = BodyMapView.SETS,
+        onView: (BodyMapView) -> Unit = {},
     ) = compose.setContent {
         CalisthenicsMemoryTheme {
             CompositionLocalProvider(LocalLayoutDirection provides direction) {
-                BodyMapContent(summary, weeks = period.days / 7.0, period = period, onPeriod = onPeriod)
+                BodyMapContent(summary, weeks = period.days / 7.0, period = period, onPeriod = onPeriod, view = view, onView = onView)
             }
         }
     }
@@ -98,5 +100,34 @@ class BodyMapContentTest {
         val name = compose.onNodeWithText("Chest", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
         val count = compose.onNodeWithText("12 sets", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
         assertTrue("name ${name.left} should be right of the count ${count.left}", name.left > count.left)
+    }
+
+    @Test fun `the view can be switched, and Sets is chosen at first`() {
+        val chosen = mutableListOf<BodyMapView>()
+        show(onView = { chosen += it })
+        compose.onNodeWithText("Sets").assertIsSelected()
+        compose.onNodeWithText("Not worked").performClick()
+        assertEquals(listOf(BodyMapView.NOT_WORKED), chosen)
+    }
+
+    @Test fun `not worked lists the muscles with no set and leaves the sets list out`() {
+        show(view = BodyMapView.NOT_WORKED)
+        compose.onNode(hasText("Not worked in this period") and isHeading).assertExists()
+        // The sample worked the chest; the hamstrings got nothing.
+        compose.onNodeWithText("Hamstrings").assertExists()
+        compose.onNodeWithText("Chest").assertDoesNotExist()
+        compose.onNodeWithText("Sets by muscle").assertDoesNotExist()
+    }
+
+    @Test fun `at 200 percent font the not worked view fits and every control is a full target`() {
+        RuntimeEnvironment.setFontScale(2f)
+        try {
+            show(view = BodyMapView.NOT_WORKED)
+            compose.waitForIdle()
+            val problems = tapTargetProblems(compose, compose.density) + textFitProblems(compose)
+            assertTrue(problems.joinToString("\n"), problems.isEmpty())
+        } finally {
+            RuntimeEnvironment.setFontScale(1f)
+        }
     }
 }

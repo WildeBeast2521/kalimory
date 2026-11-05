@@ -994,4 +994,8 @@
     <string name="body_map_not_on_map">Not on the map</string>
     <string name="body_map_mobility_detail">Stretches, not counted as training</string>
     <string name="body_map_empty">No sets logged in this period</string>
+    <string name="body_map_view_sets">Sets</string>
+    <string name="body_map_view_untrained">Not worked</string>
+    <string name="body_map_untrained_heading">Not worked in this period</string>
+    <string name="body_map_untrained_none">Every muscle got at least one set in this period</string>
 </resources>

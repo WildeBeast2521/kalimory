@@ -1054,4 +1054,8 @@
     <string name="body_map_not_on_map">خارج الخريطة</string>
     <string name="body_map_mobility_detail">تمارين إطالة، لا تُحتسب تدريبًا</string>
     <string name="body_map_empty">لم تُسجَّل أي مجموعات في هذه الفترة</string>
+    <string name="body_map_view_sets">المجموعات</string>
+    <string name="body_map_view_untrained">لم تُمرَّن</string>
+    <string name="body_map_untrained_heading">لم تُمرَّن في هذه الفترة</string>
+    <string name="body_map_untrained_none">حصلت كل عضلة على مجموعة واحدة على الأقل في هذه الفترة</string>
 </resources>

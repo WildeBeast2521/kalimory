@@ -985,4 +985,8 @@
     <string name="body_map_not_on_map">Nicht auf der Karte</string>
     <string name="body_map_mobility_detail">Dehnungen, zählen nicht als Training</string>
     <string name="body_map_empty">Keine Sätze in diesem Zeitraum erfasst</string>
+    <string name="body_map_view_sets">Sätze</string>
+    <string name="body_map_view_untrained">Nicht trainiert</string>
+    <string name="body_map_untrained_heading">In diesem Zeitraum nicht trainiert</string>
+    <string name="body_map_untrained_none">Jeder Muskel hatte in diesem Zeitraum mindestens einen Satz</string>
 </resources>

@@ -995,4 +995,8 @@
     <string name="body_map_not_on_map">Не на карті</string>
     <string name="body_map_mobility_detail">Розтяжка, не рахується як тренування</string>
     <string name="body_map_empty">За цей період підходів немає</string>
+    <string name="body_map_view_sets">Підходи</string>
+    <string name="body_map_view_untrained">Без навантаження</string>
+    <string name="body_map_untrained_heading">Без навантаження за цей період</string>
+    <string name="body_map_untrained_none">За цей період кожен м\'яз отримав принаймні один підхід</string>
 </resources>

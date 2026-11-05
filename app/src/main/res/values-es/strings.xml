@@ -1017,4 +1017,8 @@
     <string name="body_map_not_on_map">Fuera del mapa</string>
     <string name="body_map_mobility_detail">Estiramientos, no cuentan como entrenamiento</string>
     <string name="body_map_empty">No hay series registradas en este periodo</string>
+    <string name="body_map_view_sets">Series</string>
+    <string name="body_map_view_untrained">Sin trabajar</string>
+    <string name="body_map_untrained_heading">Sin trabajar en este periodo</string>
+    <string name="body_map_untrained_none">Todos los músculos tuvieron al menos una serie en este periodo</string>
 </resources>
