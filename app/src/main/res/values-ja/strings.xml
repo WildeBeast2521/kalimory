@@ -966,4 +966,8 @@
     <string name="body_map_not_on_map">マップ外</string>
     <string name="body_map_mobility_detail">ストレッチのため、トレーニングには数えません</string>
     <string name="body_map_empty">この期間のセットの記録はありません</string>
+    <string name="body_map_view_sets">セット</string>
+    <string name="body_map_view_untrained">未トレーニング</string>
+    <string name="body_map_untrained_heading">この期間に鍛えていない筋肉</string>
+    <string name="body_map_untrained_none">この期間、すべての筋肉に1セット以上ありました</string>
 </resources>

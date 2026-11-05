@@ -141,4 +141,20 @@ class MuscleVolumeTest {
         assertEquals(VolumeTier.LOW, MuscleVolume.tiers(summary, weeks = 30 / 7.0)[Muscle.CHEST])
         assertEquals(VolumeTier.HIGH, MuscleVolume.tiers(summary, weeks = 1.0)[Muscle.CHEST])
     }
+
+    // Not worked
+
+    @Test fun `the not worked view lists the 13 muscles training steps aim at`() {
+        assertEquals(13, MuscleVolume.trainable.size)
+        // Never named, or only ever as helping: never listed as not worked.
+        listOf(Muscle.NECK, Muscle.TRAPS, Muscle.ABDUCTORS, Muscle.ADDUCTORS).forEach { assertTrue(it.name, it !in MuscleVolume.trainable) }
+    }
+
+    @Test fun `a muscle that only helped this period counts as worked`() {
+        val summary = build(listOf(set("2026-03-10", linked.id)), listOf(linked))
+        val notWorked = MuscleVolume.notWorked(summary)
+        (stepWithHelpers.primaryMuscles + stepWithHelpers.secondaryMuscles).forEach { assertTrue(it.name, it !in notWorked) }
+        assertEquals(notWorked.sortedBy { it.ordinal }, notWorked)
+        assertEquals(MuscleVolume.trainable.size, MuscleVolume.notWorked(build(emptyList(), emptyList())).size)
+    }
 }

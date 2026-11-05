@@ -32,6 +32,15 @@ class BodyMapScreenshotTest(private val theme: ScreenshotTheme) {
         compose.onRoot().captureRoboImage("src/test/screenshots/BodyMap_${theme.label}.png")
     }
 
+    @Test fun notWorked() {
+        compose.setContent {
+            CalisthenicsMemoryTheme(darkTheme = theme.dark, dynamicColor = false, trueBlack = theme.trueBlack) {
+                BodyMapContent(BodyMapSamples.week, weeks = 1.0, period = Period.OneWeek, onPeriod = {}, view = BodyMapView.NOT_WORKED)
+            }
+        }
+        compose.onRoot().captureRoboImage("src/test/screenshots/BodyMapNotWorked_${theme.label}.png")
+    }
+
     companion object {
         @JvmStatic
         @ParameterizedRobolectricTestRunner.Parameters(name = "{0}")

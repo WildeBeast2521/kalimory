@@ -84,6 +84,23 @@ object MuscleVolume {
         return MuscleVolumeSummary(start, end, muscles, mapped, mobility, other, intervalSets)
     }
 
+    /**
+     * The muscles the catalogue's training steps name as doing the work (ADR 0011): the ones the
+     * "Not worked" view can list. Muscles only ever named as helping, and those of mobility steps,
+     * are left out, so the view never lists a muscle no training step aims at.
+     */
+    val trainable: Set<Muscle> by lazy {
+        Catalogue.chains.filter { it.pattern != MovementPattern.MOBILITY }
+            .flatMap { it.steps }.filterNot { it.retired }
+            .flatMapTo(mutableSetOf()) { it.primaryMuscles }
+    }
+
+    /** Trainable muscles with no set at all in the period, doing the work or helping, in [Muscle] order. */
+    fun notWorked(summary: MuscleVolumeSummary): List<Muscle> {
+        val worked = summary.muscles.mapTo(mutableSetOf()) { it.muscle }
+        return trainable.filterNot { it in worked }.sortedBy { it.ordinal }
+    }
+
     /** The catalogue step a library exercise is linked to; null when unlinked or unknown. */
     fun stepOf(exercise: Exercise?): CatalogueStep? = exercise?.catalogId?.let(Catalogue::step)
 

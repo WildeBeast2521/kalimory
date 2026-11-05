@@ -960,4 +960,8 @@
     <string name="body_map_not_on_map">不在图上</string>
     <string name="body_map_mobility_detail">拉伸，不计为训练</string>
     <string name="body_map_empty">此期间没有记录的组</string>
+    <string name="body_map_view_sets">组数</string>
+    <string name="body_map_view_untrained">未锻炼</string>
+    <string name="body_map_untrained_heading">此期间未锻炼</string>
+    <string name="body_map_untrained_none">此期间每块肌肉都至少有一组</string>
 </resources>

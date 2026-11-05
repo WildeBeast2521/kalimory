@@ -14,6 +14,8 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.review.VolumeTier
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.drawscope.scale
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
@@ -60,8 +62,15 @@ fun MuscleMap(primary: Set<Muscle>, secondary: Set<Muscle>, modifier: Modifier =
  * the body map lists every muscle and its sets as text.
  */
 @Composable
-fun VolumeMap(tiers: Map<Muscle, VolumeTier>, modifier: Modifier = Modifier) {
+fun VolumeMap(
+    tiers: Map<Muscle, VolumeTier>,
+    modifier: Modifier = Modifier,
+    /** Muscles to outline as not worked; a region is outlined only when no muscle drawn there was worked. */
+    notWorked: Set<Muscle> = emptySet(),
+) {
     val regions = remember(tiers) { regionTiers(tiers) }
+    val outlined = remember(regions, notWorked) { notWorked.flatMap(::muscleRegions).filterTo(mutableSetOf()) { regions[it] == null } }
+    val outline = MaterialTheme.colorScheme.onSurfaceVariant
     val none = tierColor(VolumeTier.NONE)
     val low = tierColor(VolumeTier.LOW)
     val mid = tierColor(VolumeTier.MID)
@@ -75,6 +84,7 @@ fun VolumeMap(tiers: Map<Muscle, VolumeTier>, modifier: Modifier = Modifier) {
                 VolumeTier.HIGH -> high
             }
         },
+        stroke = { region -> if (region in outlined) outline else null },
         modifier = modifier,
     )
 }
@@ -101,9 +111,9 @@ internal fun tierColor(tier: VolumeTier): Color {
     }
 }
 
-/** The body from the front and the back, each region filled by [fill]. */
+/** The body from the front and the back, each region filled by [fill] and outlined by [stroke] where it gives a colour. */
 @Composable
-internal fun BodyFigure(fill: (BodyRegion) -> Color, modifier: Modifier = Modifier) {
+internal fun BodyFigure(fill: (BodyRegion) -> Color, modifier: Modifier = Modifier, stroke: (BodyRegion) -> Color? = { null }) {
     val front = remember { BodyMapData.front.map { it.region to it.toPath() } }
     val back = remember { BodyMapData.back.map { it.region to it.toPath() } }
     Canvas(modifier.aspectRatio((2 * BodyMapData.WIDTH + GAP) / BodyMapData.HEIGHT)) {
@@ -111,7 +121,11 @@ internal fun BodyFigure(fill: (BodyRegion) -> Color, modifier: Modifier = Modifi
         fun DrawScope.side(shapes: List<Pair<BodyRegion, Path>>, left: Float) {
             translate(left = left) {
                 scale(unit, unit, pivot = Offset.Zero) {
-                    shapes.forEach { (region, path) -> drawPath(path, fill(region)) }
+                    shapes.forEach { (region, path) ->
+                        drawPath(path, fill(region))
+                        // The scale applies to the stroke too, so its width is divided back to 1.5 dp.
+                        stroke(region)?.let { drawPath(path, it, style = Stroke(width = 1.5.dp.toPx() / unit)) }
+                    }
                 }
             }
         }

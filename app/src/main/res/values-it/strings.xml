@@ -1022,4 +1022,8 @@
     <string name="body_map_not_on_map">Fuori dalla mappa</string>
     <string name="body_map_mobility_detail">Allungamenti, non contati come allenamento</string>
     <string name="body_map_empty">Nessuna serie registrata in questo periodo</string>
+    <string name="body_map_view_sets">Serie</string>
+    <string name="body_map_view_untrained">Non allenati</string>
+    <string name="body_map_untrained_heading">Non allenati in questo periodo</string>
+    <string name="body_map_untrained_none">Ogni muscolo ha avuto almeno una serie in questo periodo</string>
 </resources>
