@@ -1013,7 +1013,7 @@
     <string name="body_map_tier_low">Moins de 5 par semaine</string>
     <string name="body_map_tier_mid">De 5 à 9</string>
     <string name="body_map_tier_high">10 ou plus</string>
-    <string name="body_map_counting">Séries par semaine pour chaque muscle. Une série compte en entier pour les muscles qu\'elle sollicite surtout et pour moitié pour les muscles qui aident.</string>
+    <string name="body_map_counting">Séries par semaine pour chaque muscle. Une série compte en entier pour les muscles qu\'elle sollicite surtout et pour moitié pour les muscles qui aident : dans une revue de 67 études, ce mode de calcul correspondait le mieux à la croissance musculaire (Pelland et al., 2024).</string>
     <string name="body_map_not_on_map">Hors de la carte</string>
     <string name="body_map_mobility_detail">Étirements, non comptés comme entraînement</string>
     <string name="body_map_empty">Aucune série enregistrée sur cette période</string>

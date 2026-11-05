@@ -988,7 +988,7 @@
     <string name="body_map_tier_low">Меньше 5 в неделю</string>
     <string name="body_map_tier_mid">От 5 до 9</string>
     <string name="body_map_tier_high">10 и больше</string>
-    <string name="body_map_counting">Подходы в неделю для каждой мышцы. Подход засчитывается полностью мышцам, которые он в основном нагружает, и наполовину тем, что помогают.</string>
+    <string name="body_map_counting">Подходы в неделю для каждой мышцы. Подход засчитывается полностью мышцам, которые он в основном нагружает, и наполовину тем, что помогают: в обзоре 67 исследований такой подсчёт лучше всего совпал с ростом мышц (Pelland et al., 2024).</string>
     <string name="body_map_not_on_map">Не на карте</string>
     <string name="body_map_mobility_detail">Растяжка, не считается тренировкой</string>
     <string name="body_map_empty">За этот период подходов нет</string>

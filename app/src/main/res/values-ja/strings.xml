@@ -962,7 +962,7 @@
     <string name="body_map_tier_low">週5未満</string>
     <string name="body_map_tier_mid">5〜9</string>
     <string name="body_map_tier_high">10以上</string>
-    <string name="body_map_counting">筋肉ごとの週あたりのセット数。主に働く筋肉には1セット、補助する筋肉には0.5セットとして数えます。</string>
+    <string name="body_map_counting">筋肉ごとの週あたりのセット数。主に働く筋肉には1セット、補助する筋肉には0.5セットとして数えます。67件の研究をまとめた分析では、補助のセットを半分と数える方法が筋肥大と最もよく一致しました（Pelland et al., 2024）。</string>
     <string name="body_map_not_on_map">マップ外</string>
     <string name="body_map_mobility_detail">ストレッチのため、トレーニングには数えません</string>
     <string name="body_map_empty">この期間のセットの記録はありません</string>

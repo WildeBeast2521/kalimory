@@ -1050,7 +1050,7 @@
     <string name="body_map_tier_low">أقل من 5 أسبوعيًا</string>
     <string name="body_map_tier_mid">من 5 إلى 9</string>
     <string name="body_map_tier_high">10 أو أكثر</string>
-    <string name="body_map_counting">المجموعات أسبوعيًا لكل عضلة. تُحتسب المجموعة كاملة للعضلات التي تعمل أساسًا ونصفًا للعضلات المساعدة.</string>
+    <string name="body_map_counting">المجموعات أسبوعيًا لكل عضلة. تُحتسب المجموعة كاملة للعضلات التي تعمل أساسًا ونصفًا للعضلات المساعدة: في مراجعة لـ67 دراسة، كان احتساب مجموعات المساعدة نصفًا هو الأكثر توافقًا مع نمو العضلات (Pelland et al., 2024).</string>
     <string name="body_map_not_on_map">خارج الخريطة</string>
     <string name="body_map_mobility_detail">تمارين إطالة، لا تُحتسب تدريبًا</string>
     <string name="body_map_empty">لم تُسجَّل أي مجموعات في هذه الفترة</string>

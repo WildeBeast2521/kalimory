@@ -981,7 +981,7 @@
     <string name="body_map_tier_low">Unter 5 pro Woche</string>
     <string name="body_map_tier_mid">5 bis 9</string>
     <string name="body_map_tier_high">10 oder mehr</string>
-    <string name="body_map_counting">Sätze pro Woche je Muskel. Ein Satz zählt voll für die Muskeln, die er hauptsächlich trainiert, und halb für die Muskeln, die mithelfen.</string>
+    <string name="body_map_counting">Sätze pro Woche je Muskel. Ein Satz zählt voll für die Muskeln, die er hauptsächlich trainiert, und halb für die Muskeln, die mithelfen: In einer Auswertung von 67 Studien passte diese Zählweise am besten zum Muskelwachstum (Pelland et al., 2024).</string>
     <string name="body_map_not_on_map">Nicht auf der Karte</string>
     <string name="body_map_mobility_detail">Dehnungen, zählen nicht als Training</string>
     <string name="body_map_empty">Keine Sätze in diesem Zeitraum erfasst</string>

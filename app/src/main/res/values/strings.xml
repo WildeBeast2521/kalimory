@@ -990,7 +990,7 @@
     <string name="body_map_tier_low">Under 5 a week</string>
     <string name="body_map_tier_mid">5 to 9</string>
     <string name="body_map_tier_high">10 or more</string>
-    <string name="body_map_counting">Sets a week for each muscle. A set counts in full for the muscles it mainly works and as half for the muscles that help.</string>
+    <string name="body_map_counting">Sets a week for each muscle. A set counts in full for the muscles it mainly works and as half for the muscles that help: in a review of 67 studies, counting helping sets as half matched muscle growth best (Pelland et al., 2024).</string>
     <string name="body_map_not_on_map">Not on the map</string>
     <string name="body_map_mobility_detail">Stretches, not counted as training</string>
     <string name="body_map_empty">No sets logged in this period</string>
