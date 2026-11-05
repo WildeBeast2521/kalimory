@@ -14,6 +14,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - A weekly review, opened from Today, shows the days you trained and your sets by movement (push, pull, legs, core and more) beside a mark at 10 sets a week, for this week and every week before it ([#248](https://github.com/WildeBeast2521/kalimory/pull/248))
 - The weekly review lists the week's new personal bests: each exercise whose best set beat every earlier one, with the day it came and the best before it ([#253](https://github.com/WildeBeast2521/kalimory/pull/253))
 - The weekly review lists the progression steps you mastered that week; tap one to open its progression ([#254](https://github.com/WildeBeast2521/kalimory/pull/254))
+- A body map in Progress shows how many sets each muscle got this week, in the last month or in the last three months, shaded on a front and back figure and listed by muscle ([#264](https://github.com/WildeBeast2521/kalimory/pull/264))
 - Mark sets as warm-ups when you review a workout, enter one by hand or edit it, after turning on Settings › Warm-up sets; a warm-up stays in your history and is left out of totals, bests and progressions ([#261](https://github.com/WildeBeast2521/kalimory/pull/261))
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
