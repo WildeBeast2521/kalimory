@@ -952,4 +952,18 @@
     <string name="effort_hold_2">いくらか</string>
     <string name="effort_hold_3">かなり</string>
     <string name="effort_hold_4">たっぷり</string>
+    <!-- Body map (ADR 0011) -->
+    <string name="body_map_title">ボディマップ</string>
+    <string name="body_map_open">ボディマップ</string>
+    <string name="body_map_by_muscle">筋肉ごとのセット数</string>
+    <plurals name="body_map_helping">
+        <item quantity="other">補助として%dセット</item>
+    </plurals>
+    <string name="body_map_tier_low">週5未満</string>
+    <string name="body_map_tier_mid">5〜9</string>
+    <string name="body_map_tier_high">10以上</string>
+    <string name="body_map_counting">筋肉ごとの週あたりのセット数。主に働く筋肉には1セット、補助する筋肉には0.5セットとして数えます。</string>
+    <string name="body_map_not_on_map">マップ外</string>
+    <string name="body_map_mobility_detail">ストレッチのため、トレーニングには数えません</string>
+    <string name="body_map_empty">この期間のセットの記録はありません</string>
 </resources>

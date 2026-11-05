@@ -119,6 +119,7 @@ fun ViewScreen(
     onPageChange: (Int) -> Unit = {},
     onOpenChain: (String) -> Unit = {},
     onOpenCatalogue: () -> Unit = {},
+    onOpenBodyMap: () -> Unit = {},
 ) {
     val firstDay = firstDayOfWeek()
     val exercises by viewModel.exercises.collectAsState()
@@ -217,15 +218,21 @@ fun ViewScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            // The same large title as the other primary destinations.
-            Text(
-                text = stringResource(R.string.nav_progress),
-                style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .semantics { heading() }
-                    .padding(start = Spacing.l, end = Spacing.l, top = Spacing.xl, bottom = Spacing.s)
-            )
+            // The same large title as the other primary destinations, with the body map at its end.
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = stringResource(R.string.nav_progress),
+                    style = MaterialTheme.typography.displaySmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier
+                        .weight(1f)
+                        .semantics { heading() }
+                        .padding(start = Spacing.l, end = Spacing.l, top = Spacing.xl, bottom = Spacing.s)
+                )
+                IconButton(onClick = onOpenBodyMap, modifier = Modifier.padding(top = Spacing.xl, end = Spacing.s)) {
+                    Icon(AppIcons.BodyMap, contentDescription = stringResource(R.string.body_map_open), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
         },
     ) { paddingValues ->
         Column(

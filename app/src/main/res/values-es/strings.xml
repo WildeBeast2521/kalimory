@@ -1001,4 +1001,20 @@
     <string name="effort_hold_2">Algo</string>
     <string name="effort_hold_3">Bastante</string>
     <string name="effort_hold_4">Mucho</string>
+    <!-- Body map (ADR 0011) -->
+    <string name="body_map_title">Mapa corporal</string>
+    <string name="body_map_open">Mapa corporal</string>
+    <string name="body_map_by_muscle">Series por músculo</string>
+    <plurals name="body_map_helping">
+        <item quantity="one">También ayudó en %d serie</item>
+        <item quantity="many">También ayudó en %d de series</item>
+        <item quantity="other">También ayudó en %d series</item>
+    </plurals>
+    <string name="body_map_tier_low">Menos de 5 por semana</string>
+    <string name="body_map_tier_mid">De 5 a 9</string>
+    <string name="body_map_tier_high">10 o más</string>
+    <string name="body_map_counting">Series por semana para cada músculo. Una serie cuenta entera para los músculos que trabaja sobre todo y como media para los que ayudan.</string>
+    <string name="body_map_not_on_map">Fuera del mapa</string>
+    <string name="body_map_mobility_detail">Estiramientos, no cuentan como entrenamiento</string>
+    <string name="body_map_empty">No hay series registradas en este periodo</string>
 </resources>

@@ -58,6 +58,12 @@ class LargeTextTest {
         show(null, "Settings", label = "Settings")
     }
 
+    @Test fun bodyMap() {
+        show("Progress", "Progress")
+        compose.onNode(hasContentDescription("Body map")).performClick()
+        show(null, "Not on the map", label = "Body map")
+    }
+
     @Test fun weeklyReview() {
         val button = hasText("Weekly review") and hasClickAction()
         compose.waitUntil(STARTUP_TIMEOUT_MS) { compose.onAllNodes(button).fetchSemanticsNodes().isNotEmpty() }

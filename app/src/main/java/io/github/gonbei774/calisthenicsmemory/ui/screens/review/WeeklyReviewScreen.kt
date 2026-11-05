@@ -2,7 +2,6 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens.review
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -56,7 +55,6 @@ import io.github.gonbei774.calisthenicsmemory.data.review.WeekStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.review.WeeklyReview
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
-import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RollingNumber
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.RowGroup
@@ -254,51 +252,6 @@ private fun SetsByMovement(review: WeekReview) {
 @Composable
 private fun SetsRow(name: String, detail: String?, sets: Int, showMark: Boolean, scale: Int) {
     ReviewRow(name, pluralStringResource(R.plurals.set_count, sets, sets), detail) { SetsBar(sets, scale, showMark) }
-}
-
-/**
- * A row of the review: a name with a value at the end and an optional detail below, read by
- * TalkBack as one item. With a large font the name and value share no line, so neither is squeezed.
- */
-@Composable
-private fun ReviewRow(
-    name: String,
-    value: String,
-    detail: String?,
-    onClick: (() -> Unit)? = null,
-    below: @Composable () -> Unit = {},
-) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier.semantics(mergeDescendants = true) {})
-            .padding(horizontal = Spacing.l, vertical = Spacing.s),
-        verticalArrangement = Arrangement.spacedBy(Spacing.xs),
-    ) {
-        val nameText: @Composable (Modifier) -> Unit = { m ->
-            Text(name, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface, modifier = m)
-        }
-        val valueText: @Composable () -> Unit = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(value, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                // A row that opens something ends in a chevron, as Today's rows do.
-                if (onClick != null) Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-        }
-        if (isLargeFontScale()) {
-            nameText(Modifier)
-            valueText()
-        } else {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                nameText(Modifier.weight(1f).padding(end = Spacing.s))
-                valueText()
-            }
-        }
-        if (detail != null) {
-            Text(detail, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        below()
-    }
 }
 
 /** Exercises that beat every earlier set this week: the best now and before, and the day it came. */

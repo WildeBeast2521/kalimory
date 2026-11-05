@@ -970,4 +970,19 @@
     <string name="effort_hold_2">Etwas</string>
     <string name="effort_hold_3">Einiges</string>
     <string name="effort_hold_4">Viel</string>
+    <!-- Body map (ADR 0011) -->
+    <string name="body_map_title">Muskelkarte</string>
+    <string name="body_map_open">Muskelkarte</string>
+    <string name="body_map_by_muscle">Sätze nach Muskel</string>
+    <plurals name="body_map_helping">
+        <item quantity="one">Half in %d Satz mit</item>
+        <item quantity="other">Half in %d Sätzen mit</item>
+    </plurals>
+    <string name="body_map_tier_low">Unter 5 pro Woche</string>
+    <string name="body_map_tier_mid">5 bis 9</string>
+    <string name="body_map_tier_high">10 oder mehr</string>
+    <string name="body_map_counting">Sätze pro Woche je Muskel. Ein Satz zählt voll für die Muskeln, die er hauptsächlich trainiert, und halb für die Muskeln, die mithelfen.</string>
+    <string name="body_map_not_on_map">Nicht auf der Karte</string>
+    <string name="body_map_mobility_detail">Dehnungen, zählen nicht als Training</string>
+    <string name="body_map_empty">Keine Sätze in diesem Zeitraum erfasst</string>
 </resources>
