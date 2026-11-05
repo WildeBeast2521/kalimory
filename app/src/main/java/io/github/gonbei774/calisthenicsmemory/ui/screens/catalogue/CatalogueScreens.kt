@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
@@ -356,29 +357,6 @@ private fun Chip(label: String, strong: Boolean) {
 @Composable
 internal fun standardText(standard: Standard, kind: ExerciseKind): String =
     stringResource(if (kind == ExerciseKind.ISOMETRIC) R.string.standard_seconds else R.string.standard_reps, standard.sets, standard.value)
-
-@Composable
-internal fun muscleLabel(muscle: Muscle): String = stringResource(
-    when (muscle) {
-        Muscle.ABDOMINALS -> R.string.muscle_abdominals
-        Muscle.ABDUCTORS -> R.string.muscle_abductors
-        Muscle.ADDUCTORS -> R.string.muscle_adductors
-        Muscle.BICEPS -> R.string.muscle_biceps
-        Muscle.CALVES -> R.string.muscle_calves
-        Muscle.CHEST -> R.string.muscle_chest
-        Muscle.FOREARMS -> R.string.muscle_forearms
-        Muscle.GLUTES -> R.string.muscle_glutes
-        Muscle.HAMSTRINGS -> R.string.muscle_hamstrings
-        Muscle.LATS -> R.string.muscle_lats
-        Muscle.LOWER_BACK -> R.string.muscle_lower_back
-        Muscle.MIDDLE_BACK -> R.string.muscle_middle_back
-        Muscle.NECK -> R.string.muscle_neck
-        Muscle.QUADRICEPS -> R.string.muscle_quadriceps
-        Muscle.SHOULDERS -> R.string.muscle_shoulders
-        Muscle.TRAPS -> R.string.muscle_traps
-        Muscle.TRICEPS -> R.string.muscle_triceps
-    }
-)
 
 @Composable
 internal fun equipmentLabel(equipment: Equipment): String = stringResource(

@@ -975,4 +975,21 @@
     <string name="effort_hold_2">Немного</string>
     <string name="effort_hold_3">Прилично</string>
     <string name="effort_hold_4">Много</string>
+    <!-- Body map (ADR 0011) -->
+    <string name="body_map_title">Карта тела</string>
+    <string name="body_map_open">Карта тела</string>
+    <string name="body_map_by_muscle">Подходы по мышцам</string>
+    <plurals name="body_map_helping">
+        <item quantity="one">Помогала ещё в %d подходе</item>
+        <item quantity="few">Помогала ещё в %d подходах</item>
+        <item quantity="many">Помогала ещё в %d подходах</item>
+        <item quantity="other">Помогала ещё в %d подходах</item>
+    </plurals>
+    <string name="body_map_tier_low">Меньше 5 в неделю</string>
+    <string name="body_map_tier_mid">От 5 до 9</string>
+    <string name="body_map_tier_high">10 и больше</string>
+    <string name="body_map_counting">Подходы в неделю для каждой мышцы. Подход засчитывается полностью мышцам, которые он в основном нагружает, и наполовину тем, что помогают.</string>
+    <string name="body_map_not_on_map">Не на карте</string>
+    <string name="body_map_mobility_detail">Растяжка, не считается тренировкой</string>
+    <string name="body_map_empty">За этот период подходов нет</string>
 </resources>

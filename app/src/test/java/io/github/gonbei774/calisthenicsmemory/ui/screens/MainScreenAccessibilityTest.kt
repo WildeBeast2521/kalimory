@@ -67,6 +67,15 @@ class MainScreenAccessibilityTest {
         audit("Settings", waitFor = "Settings")
     }
 
+    @Test fun bodyMap() {
+        // Opened from the icon in Progress's title row.
+        open("Progress")
+        compose.waitUntil(STARTUP_TIMEOUT_MS) { compose.onAllNodes(hasContentDescription("Body map")).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNode(hasContentDescription("Body map")).performClick()
+        audit("Body map", waitFor = "Not on the map")
+        assertHeadings("Body map")
+    }
+
     @Test fun weeklyReview() {
         // Opened from the line under Today's week.
         val button = hasText("Weekly review") and hasClickAction()

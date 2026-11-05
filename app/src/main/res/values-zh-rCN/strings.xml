@@ -946,4 +946,18 @@
     <string name="effort_hold_2">一些</string>
     <string name="effort_hold_3">较多</string>
     <string name="effort_hold_4">很多</string>
+    <!-- Body map (ADR 0011) -->
+    <string name="body_map_title">身体图</string>
+    <string name="body_map_open">身体图</string>
+    <string name="body_map_by_muscle">按肌肉的组数</string>
+    <plurals name="body_map_helping">
+        <item quantity="other">另有 %d 组为辅助</item>
+    </plurals>
+    <string name="body_map_tier_low">每周少于 5 组</string>
+    <string name="body_map_tier_mid">5 至 9 组</string>
+    <string name="body_map_tier_high">10 组或以上</string>
+    <string name="body_map_counting">每块肌肉每周的组数。一组对主要锻炼的肌肉计为整组，对辅助的肌肉计为半组。</string>
+    <string name="body_map_not_on_map">不在图上</string>
+    <string name="body_map_mobility_detail">拉伸，不计为训练</string>
+    <string name="body_map_empty">此期间没有记录的组</string>
 </resources>

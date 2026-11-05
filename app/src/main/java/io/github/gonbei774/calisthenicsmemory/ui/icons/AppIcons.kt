@@ -16,6 +16,8 @@ object AppIcons {
     val Back: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_arrow_back)
     val Forward: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_chevron_right)
     val Previous: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_chevron_left)
+    // A standing figure, symmetrical, so it is not mirrored in right-to-left layouts.
+    val BodyMap: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_accessibility_new)
     val ExpandMore: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_keyboard_arrow_down)
     val ExpandLess: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_keyboard_arrow_up)
     val DropDown: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_arrow_drop_down)

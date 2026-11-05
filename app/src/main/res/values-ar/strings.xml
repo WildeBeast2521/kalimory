@@ -1035,4 +1035,23 @@
     <string name="effort_hold_2">بعض الشيء</string>
     <string name="effort_hold_3">كثير نوعًا ما</string>
     <string name="effort_hold_4">كثير</string>
+    <!-- Body map (ADR 0011) -->
+    <string name="body_map_title">خريطة الجسم</string>
+    <string name="body_map_open">خريطة الجسم</string>
+    <string name="body_map_by_muscle">المجموعات حسب العضلة</string>
+    <plurals name="body_map_helping">
+        <item quantity="zero">ساعدت أيضًا في %d مجموعة</item>
+        <item quantity="one">ساعدت أيضًا في مجموعة واحدة</item>
+        <item quantity="two">ساعدت أيضًا في مجموعتين</item>
+        <item quantity="few">ساعدت أيضًا في %d مجموعات</item>
+        <item quantity="many">ساعدت أيضًا في %d مجموعة</item>
+        <item quantity="other">ساعدت أيضًا في %d مجموعة</item>
+    </plurals>
+    <string name="body_map_tier_low">أقل من 5 أسبوعيًا</string>
+    <string name="body_map_tier_mid">من 5 إلى 9</string>
+    <string name="body_map_tier_high">10 أو أكثر</string>
+    <string name="body_map_counting">المجموعات أسبوعيًا لكل عضلة. تُحتسب المجموعة كاملة للعضلات التي تعمل أساسًا ونصفًا للعضلات المساعدة.</string>
+    <string name="body_map_not_on_map">خارج الخريطة</string>
+    <string name="body_map_mobility_detail">تمارين إطالة، لا تُحتسب تدريبًا</string>
+    <string name="body_map_empty">لم تُسجَّل أي مجموعات في هذه الفترة</string>
 </resources>

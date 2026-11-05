@@ -978,4 +978,21 @@
     <string name="effort_hold_2">Трохи</string>
     <string name="effort_hold_3">Чимало</string>
     <string name="effort_hold_4">Багато</string>
+    <!-- Body map (ADR 0011) -->
+    <string name="body_map_title">Карта тіла</string>
+    <string name="body_map_open">Карта тіла</string>
+    <string name="body_map_by_muscle">Підходи за м\'язами</string>
+    <plurals name="body_map_helping">
+        <item quantity="one">Допомагав ще в %d підході</item>
+        <item quantity="few">Допомагав ще в %d підходах</item>
+        <item quantity="many">Допомагав ще в %d підходах</item>
+        <item quantity="other">Допомагав ще в %d підходах</item>
+    </plurals>
+    <string name="body_map_tier_low">Менше 5 на тиждень</string>
+    <string name="body_map_tier_mid">Від 5 до 9</string>
+    <string name="body_map_tier_high">10 і більше</string>
+    <string name="body_map_counting">Підходи на тиждень для кожного м\'яза. Підхід зараховується повністю м\'язам, які він переважно навантажує, і наполовину тим, що допомагають.</string>
+    <string name="body_map_not_on_map">Не на карті</string>
+    <string name="body_map_mobility_detail">Розтяжка, не рахується як тренування</string>
+    <string name="body_map_empty">За цей період підходів немає</string>
 </resources>
