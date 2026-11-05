@@ -991,7 +991,7 @@
     <string name="body_map_tier_low">Менше 5 на тиждень</string>
     <string name="body_map_tier_mid">Від 5 до 9</string>
     <string name="body_map_tier_high">10 і більше</string>
-    <string name="body_map_counting">Підходи на тиждень для кожного м\'яза. Підхід зараховується повністю м\'язам, які він переважно навантажує, і наполовину тим, що допомагають.</string>
+    <string name="body_map_counting">Підходи на тиждень для кожного м\'яза. Підхід зараховується повністю м\'язам, які він переважно навантажує, і наполовину тим, що допомагають: в огляді 67 досліджень такий підрахунок найкраще збігся з ростом м\'язів (Pelland et al., 2024).</string>
     <string name="body_map_not_on_map">Не на карті</string>
     <string name="body_map_mobility_detail">Розтяжка, не рахується як тренування</string>
     <string name="body_map_empty">За цей період підходів немає</string>

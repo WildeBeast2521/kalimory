@@ -1018,7 +1018,7 @@
     <string name="body_map_tier_low">Meno di 5 a settimana</string>
     <string name="body_map_tier_mid">Da 5 a 9</string>
     <string name="body_map_tier_high">10 o più</string>
-    <string name="body_map_counting">Serie a settimana per ogni muscolo. Una serie conta per intero per i muscoli che lavora di più e a metà per quelli che aiutano.</string>
+    <string name="body_map_counting">Serie a settimana per ogni muscolo. Una serie conta per intero per i muscoli che lavora di più e a metà per quelli che aiutano: in una revisione di 67 studi, questo modo di contare è quello che si è accordato meglio con la crescita muscolare (Pelland et al., 2024).</string>
     <string name="body_map_not_on_map">Fuori dalla mappa</string>
     <string name="body_map_mobility_detail">Allungamenti, non contati come allenamento</string>
     <string name="body_map_empty">Nessuna serie registrata in questo periodo</string>

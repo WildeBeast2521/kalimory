@@ -956,7 +956,7 @@
     <string name="body_map_tier_low">每周少于 5 组</string>
     <string name="body_map_tier_mid">5 至 9 组</string>
     <string name="body_map_tier_high">10 组或以上</string>
-    <string name="body_map_counting">每块肌肉每周的组数。一组对主要锻炼的肌肉计为整组，对辅助的肌肉计为半组。</string>
+    <string name="body_map_counting">每块肌肉每周的组数。一组对主要锻炼的肌肉计为整组，对辅助的肌肉计为半组：一项汇总 67 项研究的分析发现，将辅助组计为半组与肌肉增长最为吻合（Pelland et al., 2024）。</string>
     <string name="body_map_not_on_map">不在图上</string>
     <string name="body_map_mobility_detail">拉伸，不计为训练</string>
     <string name="body_map_empty">此期间没有记录的组</string>
