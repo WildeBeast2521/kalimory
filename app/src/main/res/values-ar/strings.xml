@@ -1066,4 +1066,11 @@
     <string name="body_map_day_today">اليوم</string>
     <string name="body_map_day_yesterday">أمس</string>
     <string name="body_map_day_two_days_ago">قبل يومين</string>
+    <!-- Climb chart (#161) -->
+    <string name="climb_title">مسار تقدّمك</string>
+    <string name="climb_summary">من الخطوة %1$d في %2$s إلى الخطوة %3$d في %4$s</string>
+    <string name="climb_summary_same">في الخطوة %1$d منذ %2$s</string>
+    <string name="climb_legend_started">بدء خطوة</string>
+    <string name="climb_legend_met">تحقيق المعيار</string>
+    <string name="climb_step">الخطوة %d</string>
 </resources>

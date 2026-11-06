@@ -978,4 +978,11 @@
     <string name="body_map_day_today">今日</string>
     <string name="body_map_day_yesterday">昨日</string>
     <string name="body_map_day_two_days_ago">2日前</string>
+    <!-- Climb chart (#161) -->
+    <string name="climb_title">これまでの歩み</string>
+    <string name="climb_summary">%2$s のステップ%1$d から %4$s のステップ%3$d へ</string>
+    <string name="climb_summary_same">%2$s からステップ%1$d</string>
+    <string name="climb_legend_started">ステップ開始</string>
+    <string name="climb_legend_met">基準を達成</string>
+    <string name="climb_step">ステップ%d</string>
 </resources>

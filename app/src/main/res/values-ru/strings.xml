@@ -1004,4 +1004,11 @@
     <string name="body_map_day_today">Сегодня</string>
     <string name="body_map_day_yesterday">Вчера</string>
     <string name="body_map_day_two_days_ago">2 дня назад</string>
+    <!-- Climb chart (#161) -->
+    <string name="climb_title">Ваш подъём</string>
+    <string name="climb_summary">От шага %1$d (%2$s) до шага %3$d (%4$s)</string>
+    <string name="climb_summary_same">На шаге %1$d с %2$s</string>
+    <string name="climb_legend_started">Шаг начат</string>
+    <string name="climb_legend_met">Норматив выполнен</string>
+    <string name="climb_step">Шаг %d</string>
 </resources>
