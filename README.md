@@ -58,7 +58,7 @@ Android 8.0 (Oreo) or later.
     <td valign="top"><img src=".github/readme/icon-insights.svg" width="40" align="left" alt="">&nbsp;<b>Progressions</b><br>&nbsp;Where you stand in each chain, how close you are to the next step, and when you got there.</td>
   </tr>
   <tr>
-    <td valign="top"><img src=".github/readme/icon-history.svg" width="40" align="left" alt="">&nbsp;<b>History that lasts</b><br>&nbsp;A calendar, lists, graphs and personal bests. Log past workouts with several exercises at once.</td>
+    <td valign="top"><img src=".github/readme/icon-history.svg" width="40" align="left" alt="">&nbsp;<b>History that lasts</b><br>&nbsp;A calendar, lists, graphs and personal bests, and a body map of the sets each muscle got. Log past workouts with several exercises at once.</td>
     <td valign="top"><img src=".github/readme/icon-download.svg" width="40" align="left" alt="">&nbsp;<b>Your data, your files</b><br>&nbsp;Complete JSON backups, CSV import and export, and recovery files if the database is ever damaged.</td>
   </tr>
   <tr>
@@ -73,10 +73,11 @@ Android 8.0 (Oreo) or later.
   <tr>
     <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/today-dark.png"><img src=".github/readme/screens/today-light.png" width="100%" alt="Today: this week, what is due and a start button"></picture><br><sub>Today</sub></td>
     <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/review-dark.png"><img src=".github/readme/screens/review-light.png" width="100%" alt="Weekly review: days trained, sets by movement and new bests"></picture><br><sub>Weekly review</sub></td>
+    <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/bodymap-dark.png"><img src=".github/readme/screens/bodymap-light.png" width="100%" alt="Body map: sets per muscle on a front and back figure"></picture><br><sub>Body map</sub></td>
     <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/rest-dark.png"><img src=".github/readme/screens/rest-light.png" width="100%" alt="Workout: the rest timer between sets"></picture><br><sub>Workout</sub></td>
-    <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/progressions-dark.png"><img src=".github/readme/screens/progressions-light.png" width="100%" alt="Progressions: where you stand in each chain"></picture><br><sub>Progressions</sub></td>
   </tr>
   <tr>
+    <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/progressions-dark.png"><img src=".github/readme/screens/progressions-light.png" width="100%" alt="Progressions: where you stand in each chain"></picture><br><sub>Progressions</sub></td>
     <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/chain-dark.png"><img src=".github/readme/screens/chain-light.png" width="100%" alt="Chain: every step from easiest to hardest"></picture><br><sub>Chain</sub></td>
     <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/step-dark.png"><img src=".github/readme/screens/step-light.png" width="100%" alt="Step: form cues and the muscles it works"></picture><br><sub>Step</sub></td>
     <td width="25%" align="center"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/readme/screens/calendar-dark.png"><img src=".github/readme/screens/calendar-light.png" width="100%" alt="History: the week, its sets and exercises"></picture><br><sub>History</sub></td>
@@ -151,7 +152,7 @@ request that did it.
 
 - [x] A weekly review
 - [x] Warm-up sets and an optional effort rating
-- [ ] A body map of volume, recovery and untrained muscles
+- [x] A body map of volume, recovery and untrained muscles
 - [ ] A climb chart for each chain you follow
 - [ ] Personal-best history
 - [ ] Exercise notes

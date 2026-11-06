@@ -3,6 +3,7 @@ package io.github.gonbei774.calisthenicsmemory.screenshots
 import android.app.Application
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -84,6 +85,14 @@ class StoreScreenshotsTest(private val theme: AppTheme) {
         compose.onNode(hasText("Weekly review") and hasClickAction()).performClick()
         waitFor("Sets by movement")
         save("review")
+    }
+
+    @Test fun bodyMap() {
+        open("Progress")
+        compose.waitUntil(TIMEOUT_MS) { compose.onAllNodes(hasContentDescription("Body map")).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNode(hasContentDescription("Body map")).performClick()
+        waitFor("Sets by muscle")
+        save("bodymap")
     }
 
     @Test fun calendar() {
