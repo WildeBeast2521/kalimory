@@ -33,6 +33,8 @@ To stop following a chain, open it in the catalogue and turn off "Follow this pr
 
 On a chain's page, each step you have trained shows when you started it, and when you first met its standard. The dates come from your saved workouts.
 
+Above the steps, a chart shows your climb: the highest step you had started on each date, from your first session to today, with a mark wherever you started a step or first met its standard.
+
 ## Suggestions on Today
 
 Today can suggest what to train, from the chains you follow. It rests a movement for about two days after you train it, and gives a target based on your last session. Suggestions only suggest: nothing starts or changes unless you tap it. Tap "Not today" to hide one, or turn them all off in Settings › Suggestions on Today.

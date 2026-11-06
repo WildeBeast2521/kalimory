@@ -153,7 +153,7 @@ request that did it.
 - [x] A weekly review
 - [x] Warm-up sets and an optional effort rating
 - [x] A body map of volume, recovery and untrained muscles
-- [ ] A climb chart for each chain you follow
+- [x] A climb chart for each chain you follow
 - [ ] Personal-best history
 - [ ] Exercise notes
 - [ ] A year heatmap
