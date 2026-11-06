@@ -1007,4 +1007,11 @@
     <string name="body_map_day_today">Сьогодні</string>
     <string name="body_map_day_yesterday">Учора</string>
     <string name="body_map_day_two_days_ago">2 дні тому</string>
+    <!-- Climb chart (#161) -->
+    <string name="climb_title">Ваше сходження</string>
+    <string name="climb_summary">Від кроку %1$d (%2$s) до кроку %3$d (%4$s)</string>
+    <string name="climb_summary_same">На кроці %1$d з %2$s</string>
+    <string name="climb_legend_started">Крок розпочато</string>
+    <string name="climb_legend_met">Норматив виконано</string>
+    <string name="climb_step">Крок %d</string>
 </resources>

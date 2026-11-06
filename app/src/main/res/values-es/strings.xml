@@ -1029,4 +1029,11 @@
     <string name="body_map_day_today">Hoy</string>
     <string name="body_map_day_yesterday">Ayer</string>
     <string name="body_map_day_two_days_ago">Hace 2 días</string>
+    <!-- Climb chart (#161) -->
+    <string name="climb_title">Tu ascenso</string>
+    <string name="climb_summary">Del paso %1$d el %2$s al paso %3$d el %4$s</string>
+    <string name="climb_summary_same">En el paso %1$d desde el %2$s</string>
+    <string name="climb_legend_started">Paso empezado</string>
+    <string name="climb_legend_met">Estándar alcanzado</string>
+    <string name="climb_step">Paso %d</string>
 </resources>

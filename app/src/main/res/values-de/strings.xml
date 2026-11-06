@@ -997,4 +997,11 @@
     <string name="body_map_day_today">Heute</string>
     <string name="body_map_day_yesterday">Gestern</string>
     <string name="body_map_day_two_days_ago">Vor 2 Tagen</string>
+    <!-- Climb chart (#161) -->
+    <string name="climb_title">Dein Aufstieg</string>
+    <string name="climb_summary">Von Stufe %1$d am %2$s bis Stufe %3$d am %4$s</string>
+    <string name="climb_summary_same">Seit %2$s auf Stufe %1$d</string>
+    <string name="climb_legend_started">Stufe begonnen</string>
+    <string name="climb_legend_met">Standard erreicht</string>
+    <string name="climb_step">Stufe %d</string>
 </resources>

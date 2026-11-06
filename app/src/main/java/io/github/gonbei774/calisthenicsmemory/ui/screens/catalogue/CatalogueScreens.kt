@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue
 
+import io.github.gonbei774.calisthenicsmemory.data.progression.Climb
+import io.github.gonbei774.calisthenicsmemory.util.rememberToday
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -99,12 +101,17 @@ fun CatalogueChainScreen(viewModel: TrainingViewModel, chainId: String, onNaviga
 
     val unfollowed by viewModel.unfollowedChains.collectAsState()
     val history by viewModel.history.collectAsState()
-    val journey = remember(exercises, history) { Progressions.journey(chain, exercises, history).associateBy { it.step.id } }
+    val journeyList = remember(exercises, history) { Progressions.journey(chain, exercises, history) }
+    val journey = remember(journeyList) { journeyList.associateBy { it.step.id } }
+    val today = rememberToday()
+    val climb = remember(journeyList, today) { Climb.of(chain, journeyList, today) }
     CatalogueScaffold(chainName, onNavigateBack) {
         // Following only matters once a step is in the library (ADR 0007, decision 4).
         if (chain.steps.any { it.id in linked }) {
             item { FollowRow(followed = chain.id !in unfollowed) { viewModel.setChainFollowed(chain.id, it) } }
         }
+        // The climb so far (#161), once a step has been trained.
+        climb?.let { item { ClimbChart(it) } }
         item {
             RowGroup {
                 // Numbered by place in the chain, as Progressions counts "Step 3 of 11"; equal difficulty

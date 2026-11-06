@@ -972,4 +972,11 @@
     <string name="body_map_day_today">今天</string>
     <string name="body_map_day_yesterday">昨天</string>
     <string name="body_map_day_two_days_ago">2 天前</string>
+    <!-- Climb chart (#161) -->
+    <string name="climb_title">你的进阶历程</string>
+    <string name="climb_summary">从 %2$s 的第 %1$d 步到 %4$s 的第 %3$d 步</string>
+    <string name="climb_summary_same">自 %2$s 起在第 %1$d 步</string>
+    <string name="climb_legend_started">开始一步</string>
+    <string name="climb_legend_met">达到标准</string>
+    <string name="climb_step">第 %d 步</string>
 </resources>
