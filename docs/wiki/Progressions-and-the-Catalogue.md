@@ -6,6 +6,8 @@ Library › Exercise catalogue holds 157 steps in 29 chains. A chain goes from a
 
 The chains cover pushing, pulling, dips, rows, squats, lunges, calves, hips and back extensions, core, rotation and side core, grip, explosive work and conditioning; skills such as the handstand, L-sit, muscle-up, front lever, back lever, planche, human flag, back bridge and rings; and lower body, shoulder and wrist mobility.
 
+To find a step, type in the search field at the top. It looks through step and chain names, muscles and equipment, in the app's language, whatever the case or accents. Each result shows its chain and place in it, such as "Push-up · Step 5 of 9", and opens the same details as in its chain.
+
 Each step has:
 
 - a level from 1 to 10, on one scale for every chain;
