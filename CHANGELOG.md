@@ -18,6 +18,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - The body map can show which muscles got no sets in the chosen period, outlined on the figure and listed by name ([#266](https://github.com/WildeBeast2521/kalimory/pull/266))
 - The body map shows which muscles you worked in the last few days, and which are recovering from sets you rated hard ([#267](https://github.com/WildeBeast2521/kalimory/pull/267))
 - Each chain's page opens with your climb: the highest step you have started over time, marked where you started each step and where you met its standard ([#269](https://github.com/WildeBeast2521/kalimory/pull/269))
+- Search the exercise catalogue by the name of a step, its chain, a muscle or equipment; each result names its chain and place in it, and opens the same sheet as in the chain. Case and accents do not matter, nor Arabic short vowels ([#271](https://github.com/WildeBeast2521/kalimory/pull/271))
 - Mark sets as warm-ups when you review a workout, enter one by hand or edit it, after turning on Settings › Warm-up sets; a warm-up stays in your history and is left out of totals, bests and progressions ([#261](https://github.com/WildeBeast2521/kalimory/pull/261))
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 

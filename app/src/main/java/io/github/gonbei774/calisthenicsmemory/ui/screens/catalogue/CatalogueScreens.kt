@@ -4,6 +4,7 @@ import io.github.gonbei774.calisthenicsmemory.data.progression.Climb
 import io.github.gonbei774.calisthenicsmemory.util.rememberToday
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
@@ -45,6 +46,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueChain
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueSearch
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Equipment
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
@@ -73,16 +76,95 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.view.formatStoredDate
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
-/** The built-in catalogue (ADR 0006): every chain, from where to begin to where it leads. */
+/**
+ * The built-in catalogue (ADR 0006): every chain, from where to begin to where it leads. Searching finds
+ * a step by name, chain, muscle or equipment (#258) and opens the same sheet as its chain does.
+ */
 @Composable
 fun CatalogueScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit, onOpenChain: (String) -> Unit) {
     val exercises by viewModel.exercises.collectAsState()
     val linked = remember(exercises) { exercises.mapNotNull { it.catalogId }.toSet() }
+    var query by rememberSaveable { mutableStateOf("") }
+    var open by remember { mutableStateOf<CatalogueSearch.Entry?>(null) }
+    val entries = searchEntries()
+    val results = remember(entries, query) { CatalogueSearch.search(entries, query) }
     CatalogueScaffold(stringResource(R.string.library_catalogue), onNavigateBack) {
         item {
-            RowGroup {
-                Catalogue.chains.forEach { chain ->
-                    ChainRow(chain, inLibrary = chain.steps.count { it.id in linked }) { onOpenChain(chain.id) }
+            CalmSearchField(query = query, onQueryChange = { query = it }, placeholder = stringResource(R.string.search_exercise))
+        }
+        if (query.isBlank()) {
+            item {
+                RowGroup {
+                    Catalogue.chains.forEach { chain ->
+                        ChainRow(chain, inLibrary = chain.steps.count { it.id in linked }) { onOpenChain(chain.id) }
+                    }
+                }
+            }
+        } else {
+            item { CatalogueSearchResults(results, linked) { open = it } }
+        }
+    }
+
+    open?.let { entry ->
+        StepSheet(viewModel, entry.step, entry.number, entry.chainName, inLibrary = entry.step.id in linked) { open = null }
+    }
+}
+
+/** Every step still offered, with the text it is shown by in the app's language. */
+@Composable
+internal fun searchEntries(): List<CatalogueSearch.Entry> {
+    val muscles = Muscle.entries.associateWith { muscleLabel(it) }
+    val equipment = Equipment.entries.associateWith { equipmentLabel(it) }
+    val chainNames = Catalogue.chains.map { stringResource(it.name) }
+    val stepNames = Catalogue.chains.map { chain -> chain.steps.map { stringResource(it.name) } }
+    return remember(muscles, equipment, chainNames, stepNames) {
+        Catalogue.chains.flatMapIndexed { c, chain ->
+            chain.steps.mapIndexedNotNull { s, step ->
+                if (step.retired) return@mapIndexedNotNull null
+                CatalogueSearch.Entry(
+                    step = step,
+                    chain = chain,
+                    number = s + 1,
+                    name = stepNames[c][s],
+                    chainName = chainNames[c],
+                    muscles = (step.primaryMuscles + step.secondaryMuscles).map { muscles.getValue(it) },
+                    equipment = step.equipment.map { equipment.getValue(it) },
+                )
+            }
+        }
+    }
+}
+
+/** Search results: each step with its chain and place in it, so similar names can be told apart. */
+@Composable
+internal fun CatalogueSearchResults(results: List<CatalogueSearch.Entry>, linked: Set<String>, onOpen: (CatalogueSearch.Entry) -> Unit) {
+    if (results.isEmpty()) {
+        Text(
+            stringResource(R.string.no_results),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = Spacing.l),
+        )
+        return
+    }
+    RowGroup {
+        results.forEach { entry ->
+            Row(
+                Modifier.fillMaxWidth().clip(MaterialTheme.shapes.medium).clickable { onOpen(entry) }.padding(horizontal = Spacing.l, vertical = Spacing.m),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                LevelBadge(entry.number)
+                Spacer(Modifier.width(Spacing.l))
+                Column(Modifier.weight(1f)) {
+                    Text(entry.name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+                    Text(
+                        entry.chainName + " · " + stringResource(R.string.progressions_step_of, entry.number, entry.chain.steps.size),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                if (entry.step.id in linked) {
+                    Icon(AppIcons.Check, contentDescription = stringResource(R.string.catalogue_in_library), tint = MaterialTheme.colorScheme.primary)
                 }
             }
         }
@@ -122,13 +204,20 @@ fun CatalogueChainScreen(viewModel: TrainingViewModel, chainId: String, onNaviga
     }
 
     open?.let { step ->
-        val name = stringResource(step.name)
-        val description = stringResource(step.description)
-        ModalBottomSheet(onDismissRequest = { open = null }, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
-            StepDetails(step, number = chain.steps.indexOf(step) + 1, inLibrary = step.id in linked) {
-                viewModel.addFromCatalogue(step, name, description, chainName)
-                open = null
-            }
+        StepSheet(viewModel, step, chain.steps.indexOf(step) + 1, chainName, inLibrary = step.id in linked) { open = null }
+    }
+}
+
+/** A step's details in a sheet, where it can be added to the library: the same from its chain or a search. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun StepSheet(viewModel: TrainingViewModel, step: CatalogueStep, number: Int, chainName: String, inLibrary: Boolean, onDismiss: () -> Unit) {
+    val name = stringResource(step.name)
+    val description = stringResource(step.description)
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
+        StepDetails(step, number = number, inLibrary = inLibrary) {
+            viewModel.addFromCatalogue(step, name, description, chainName)
+            onDismiss()
         }
     }
 }
