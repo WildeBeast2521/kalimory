@@ -999,4 +999,12 @@
     <string name="body_map_view_untrained">Без навантаження</string>
     <string name="body_map_untrained_heading">Без навантаження за цей період</string>
     <string name="body_map_untrained_none">За цей період кожен м\'яз отримав принаймні один підхід</string>
+    <string name="body_map_view_recent">Нещодавно</string>
+    <string name="body_map_recovering">Відновлюється</string>
+    <string name="body_map_worked_recently">Працював нещодавно</string>
+    <string name="body_map_recent_legend">Відновлюється: навантажувався підходами із запасом в 1 повтор або без запасу чи утриманнями з оцінкою «Межа» або «Мало» сьогодні або у два попередні дні. Працював нещодавно: інші підходи сьогодні або вчора. Підходи без оцінки враховуються лише як нещодавня робота.</string>
+    <string name="body_map_recent_empty">Останніми днями м\'язи не навантажувалися</string>
+    <string name="body_map_day_today">Сьогодні</string>
+    <string name="body_map_day_yesterday">Учора</string>
+    <string name="body_map_day_two_days_ago">2 дні тому</string>
 </resources>

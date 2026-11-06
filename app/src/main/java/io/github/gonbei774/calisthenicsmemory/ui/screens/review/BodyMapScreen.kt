@@ -40,7 +40,9 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
+import io.github.gonbei774.calisthenicsmemory.data.review.MuscleRecent
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleVolume
+import io.github.gonbei774.calisthenicsmemory.data.review.RecentTier
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleVolumeSummary
 import io.github.gonbei774.calisthenicsmemory.data.review.VolumeTier
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -75,6 +77,7 @@ fun BodyMapScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit) {
     val summary = remember(start, today, history, intervalHistory, exercises) {
         MuscleVolume.build(start, today, history, intervalHistory, exercises)
     }
+    val recent = remember(today, history, exercises) { MuscleVolume.recent(today, history, exercises) }
 
     val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
@@ -88,6 +91,7 @@ fun BodyMapScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit) {
             onPeriod = { periodName = it.name },
             view = BodyMapView.valueOf(viewName),
             onView = { viewName = it.name },
+            recent = recent,
             modifier = Modifier.padding(padding),
         )
     }
@@ -96,6 +100,7 @@ fun BodyMapScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit) {
 /** What the body map shows: sets per muscle, or the trainable muscles that got none. */
 internal enum class BodyMapView(@StringRes val label: Int) {
     SETS(R.string.body_map_view_sets),
+    RECENT(R.string.body_map_view_recent),
     NOT_WORKED(R.string.body_map_view_untrained),
 }
 
@@ -110,6 +115,8 @@ internal fun BodyMapContent(
     modifier: Modifier = Modifier,
     view: BodyMapView = BodyMapView.SETS,
     onView: (BodyMapView) -> Unit = {},
+    /** Muscles worked in the last days, for the Recent view; it has no period. */
+    recent: List<MuscleRecent> = emptyList(),
 ) {
     Surface(modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
@@ -120,7 +127,11 @@ internal fun BodyMapContent(
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 ViewChips(view, onView)
-                PeriodChips(period, onPeriod)
+                if (view != BodyMapView.RECENT) PeriodChips(period, onPeriod)
+            }
+            if (view == BodyMapView.RECENT) {
+                Recent(recent)
+                return@Column
             }
             if (summary.isEmpty) {
                 Text(stringResource(R.string.body_map_empty), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -167,6 +178,60 @@ private fun ViewChips(selected: BodyMapView, onView: (BodyMapView) -> Unit) {
     FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
         BodyMapView.entries.forEach { view ->
             FilterChip(selected = view == selected, onClick = { onView(view) }, label = { Text(stringResource(view.label)) })
+        }
+    }
+}
+
+/**
+ * Muscles worked in the last days (ADR 0012): recovering in the strongest shade, worked recently in
+ * the middle one. Facts only: it never says to rest, wait or train.
+ */
+@Composable
+private fun Recent(recent: List<MuscleRecent>) {
+    if (recent.isEmpty()) {
+        Text(stringResource(R.string.body_map_recent_empty), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        return
+    }
+    val tiers = remember(recent) {
+        recent.associate { it.muscle to if (it.tier == RecentTier.RECOVERING) VolumeTier.HIGH else VolumeTier.MID }
+    }
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.xl)) {
+        // Decorative: the lists below say the same in words.
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            VolumeMap(tiers, Modifier.widthIn(max = 320.dp).fillMaxWidth(0.85f).clearAndSetSemantics {})
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            listOf(VolumeTier.HIGH to R.string.body_map_recovering, VolumeTier.MID to R.string.body_map_worked_recently).forEach { (tier, label) ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.padding(end = Spacing.m)) { Swatch(tier) }
+                    Text(stringResource(label), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
+                }
+            }
+            Text(stringResource(R.string.body_map_recent_legend), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        listOf(RecentTier.RECOVERING to R.string.body_map_recovering, RecentTier.WORKED to R.string.body_map_worked_recently).forEach { (tier, heading) ->
+            val muscles = recent.filter { it.tier == tier }
+            if (muscles.isNotEmpty()) {
+                Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                    SectionHeading(stringResource(heading))
+                    RowGroup {
+                        muscles.forEach { muscle ->
+                            ReviewRow(
+                                name = muscleLabel(muscle.muscle),
+                                value = stringResource(
+                                    when (muscle.daysAgo) {
+                                        0 -> R.string.body_map_day_today
+                                        1 -> R.string.body_map_day_yesterday
+                                        else -> R.string.body_map_day_two_days_ago
+                                    }
+                                ),
+                                detail = null,
+                                leading = { Swatch(tiers.getValue(muscle.muscle)) },
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }

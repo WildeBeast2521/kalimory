@@ -996,4 +996,12 @@
     <string name="body_map_view_untrained">Без нагрузки</string>
     <string name="body_map_untrained_heading">Без нагрузки за этот период</string>
     <string name="body_map_untrained_none">За этот период каждая мышца получила хотя бы один подход</string>
+    <string name="body_map_view_recent">Недавно</string>
+    <string name="body_map_recovering">Восстанавливается</string>
+    <string name="body_map_worked_recently">Работала недавно</string>
+    <string name="body_map_recent_legend">Восстанавливается: нагружалась подходами с запасом в 1 повтор или без запаса либо удержаниями с оценкой «Предел» или «Мало» сегодня или в два предыдущих дня. Работала недавно: другие подходы сегодня или вчера. Подходы без оценки считаются только как недавняя работа.</string>
+    <string name="body_map_recent_empty">В последние дни мышцы не нагружались</string>
+    <string name="body_map_day_today">Сегодня</string>
+    <string name="body_map_day_yesterday">Вчера</string>
+    <string name="body_map_day_two_days_ago">2 дня назад</string>
 </resources>

@@ -1021,4 +1021,12 @@
     <string name="body_map_view_untrained">Non travaillés</string>
     <string name="body_map_untrained_heading">Non travaillés sur cette période</string>
     <string name="body_map_untrained_none">Chaque muscle a eu au moins une série sur cette période</string>
+    <string name="body_map_view_recent">Récent</string>
+    <string name="body_map_recovering">En récupération</string>
+    <string name="body_map_worked_recently">Travaillé récemment</string>
+    <string name="body_map_recent_legend">En récupération : travaillé par des séries avec 1 répétition en réserve ou aucune, ou des gainages notés « Limite atteinte » ou « Peu », aujourd\'hui ou les deux jours précédents. Travaillé récemment : d\'autres séries aujourd\'hui ou hier. Les séries sans note comptent seulement comme travaillées récemment.</string>
+    <string name="body_map_recent_empty">Aucun muscle travaillé ces derniers jours</string>
+    <string name="body_map_day_today">Aujourd\'hui</string>
+    <string name="body_map_day_yesterday">Hier</string>
+    <string name="body_map_day_two_days_ago">Il y a 2 jours</string>
 </resources>

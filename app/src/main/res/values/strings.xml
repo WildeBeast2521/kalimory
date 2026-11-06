@@ -998,4 +998,12 @@
     <string name="body_map_view_untrained">Not worked</string>
     <string name="body_map_untrained_heading">Not worked in this period</string>
     <string name="body_map_untrained_none">Every muscle got at least one set in this period</string>
+    <string name="body_map_view_recent">Recent</string>
+    <string name="body_map_recovering">Recovering</string>
+    <string name="body_map_worked_recently">Worked recently</string>
+    <string name="body_map_recent_legend">Recovering: worked by sets with 1 rep left or none, or holds rated Limit reached or Little, today or in the two days before. Worked recently: other sets today or yesterday. Sets without an effort rating count only as worked recently.</string>
+    <string name="body_map_recent_empty">No muscles worked in the last few days</string>
+    <string name="body_map_day_today">Today</string>
+    <string name="body_map_day_yesterday">Yesterday</string>
+    <string name="body_map_day_two_days_ago">2 days ago</string>
 </resources>

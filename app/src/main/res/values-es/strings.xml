@@ -1021,4 +1021,12 @@
     <string name="body_map_view_untrained">Sin trabajar</string>
     <string name="body_map_untrained_heading">Sin trabajar en este periodo</string>
     <string name="body_map_untrained_none">Todos los músculos tuvieron al menos una serie en este periodo</string>
+    <string name="body_map_view_recent">Reciente</string>
+    <string name="body_map_recovering">Recuperándose</string>
+    <string name="body_map_worked_recently">Trabajado hace poco</string>
+    <string name="body_map_recent_legend">Recuperándose: trabajado con series en las que quedaba 1 repetición o ninguna, o con isométricos valorados «Límite alcanzado» o «Poco», hoy o en los dos días anteriores. Trabajado hace poco: otras series hoy o ayer. Las series sin valoración solo cuentan como trabajadas hace poco.</string>
+    <string name="body_map_recent_empty">Ningún músculo trabajado en los últimos días</string>
+    <string name="body_map_day_today">Hoy</string>
+    <string name="body_map_day_yesterday">Ayer</string>
+    <string name="body_map_day_two_days_ago">Hace 2 días</string>
 </resources>

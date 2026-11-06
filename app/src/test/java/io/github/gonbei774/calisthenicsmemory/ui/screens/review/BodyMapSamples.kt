@@ -1,7 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.review
 
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
+import io.github.gonbei774.calisthenicsmemory.data.review.MuscleRecent
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleSets
+import io.github.gonbei774.calisthenicsmemory.data.review.RecentTier
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleVolumeSummary
 import java.time.LocalDate
 
@@ -21,6 +23,11 @@ internal object BodyMapSamples {
         mobilitySets = 4,
         otherSets = 3,
         intervalSets = 8,
+    )
+    val recent = listOf(
+        MuscleRecent(Muscle.CHEST, RecentTier.RECOVERING, 0),
+        MuscleRecent(Muscle.TRICEPS, RecentTier.RECOVERING, 2),
+        MuscleRecent(Muscle.QUADRICEPS, RecentTier.WORKED, 1),
     )
     val empty = MuscleVolumeSummary(LocalDate.of(2026, 3, 9), LocalDate.of(2026, 3, 15), emptyList(), 0, 0, 0, 0)
 }

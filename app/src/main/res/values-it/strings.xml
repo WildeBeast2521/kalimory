@@ -1026,4 +1026,12 @@
     <string name="body_map_view_untrained">Non allenati</string>
     <string name="body_map_untrained_heading">Non allenati in questo periodo</string>
     <string name="body_map_untrained_none">Ogni muscolo ha avuto almeno una serie in questo periodo</string>
+    <string name="body_map_view_recent">Recente</string>
+    <string name="body_map_recovering">In recupero</string>
+    <string name="body_map_worked_recently">Allenato di recente</string>
+    <string name="body_map_recent_legend">In recupero: allenato con serie con 1 ripetizione di riserva o nessuna, o tenute valutate «Limite raggiunto» o «Poco», oggi o nei due giorni precedenti. Allenato di recente: altre serie oggi o ieri. Le serie senza valutazione contano solo come allenate di recente.</string>
+    <string name="body_map_recent_empty">Nessun muscolo allenato negli ultimi giorni</string>
+    <string name="body_map_day_today">Oggi</string>
+    <string name="body_map_day_yesterday">Ieri</string>
+    <string name="body_map_day_two_days_ago">2 giorni fa</string>
 </resources>
