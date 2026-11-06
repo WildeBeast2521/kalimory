@@ -70,7 +70,7 @@ application ID changed.
   Screens read "today" through `AppClock`, which the tests fix to a set date. After a deliberate visual
   change, run `./gradlew recordRoborazziDebug`, look at every changed image and commit them with
   the change. Never re-record to make an unexplained difference pass.
-- **Store and README images.** `scripts/screenshots/update-screenshots.sh` draws seven screens with
+- **Store and README images.** `scripts/screenshots/update-screenshots.sh` draws eight screens with
   made-up data (`StoreScreenshotsTest`, `StoreRestScreenshotTest`; skipped in normal test runs) and
   writes the Fastlane phone screenshots and store banner (`featureGraphic.png`), the README screens
   and the social preview. Run it once the issue that changed a pictured screen is closed (not in
