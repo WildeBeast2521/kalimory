@@ -964,4 +964,12 @@
     <string name="body_map_view_untrained">未锻炼</string>
     <string name="body_map_untrained_heading">此期间未锻炼</string>
     <string name="body_map_untrained_none">此期间每块肌肉都至少有一组</string>
+    <string name="body_map_view_recent">近期</string>
+    <string name="body_map_recovering">恢复中</string>
+    <string name="body_map_worked_recently">近期锻炼</string>
+    <string name="body_map_recent_legend">恢复中：今天或前两天用余力不超过 1 次的组，或评为“到达极限”“很少”的静态保持锻炼过。近期锻炼：今天或昨天的其他组。未评余力的组只算作近期锻炼。</string>
+    <string name="body_map_recent_empty">最近几天没有锻炼的肌肉</string>
+    <string name="body_map_day_today">今天</string>
+    <string name="body_map_day_yesterday">昨天</string>
+    <string name="body_map_day_two_days_ago">2 天前</string>
 </resources>

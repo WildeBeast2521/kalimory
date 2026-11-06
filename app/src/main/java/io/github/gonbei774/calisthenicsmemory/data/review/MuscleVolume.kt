@@ -5,10 +5,12 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.MovementPattern
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
+import io.github.gonbei774.calisthenicsmemory.data.v2.Effort
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalHistoryItem
 import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 /** One muscle's sets in a period (ADR 0011): sets where it does the work, and sets it helps in. */
 data class MuscleSets(val muscle: Muscle, val direct: Int, val helping: Int) {
@@ -37,6 +39,15 @@ data class MuscleVolumeSummary(
     val totalSets: Int get() = mappedSets + mobilitySets + otherSets + intervalSets
     val isEmpty: Boolean get() = totalSets == 0
 }
+
+/** How recently a muscle was worked (ADR 0011, ADR 0012), in calendar days. */
+enum class RecentTier { WORKED, RECOVERING }
+
+/**
+ * A muscle worked recently. [daysAgo] is 0 for today, 1 for yesterday, 2 for the day before: the
+ * last day of the sets that put it in its [tier].
+ */
+data class MuscleRecent(val muscle: Muscle, val tier: RecentTier, val daysAgo: Int)
 
 /** Sets per muscle from history and each exercise's catalogue step (ADR 0011). Pure, nothing stored. */
 object MuscleVolume {
@@ -99,6 +110,45 @@ object MuscleVolume {
     fun notWorked(summary: MuscleVolumeSummary): List<Muscle> {
         val worked = summary.muscles.mapTo(mutableSetOf()) { it.muscle }
         return trainable.filterNot { it in worked }.sortedBy { it.ordinal }
+    }
+
+    /**
+     * Muscles worked recently (ADR 0012, section 4). A muscle is [RecentTier.RECOVERING] when sets
+     * rated 0 or 1 left ([Effort.isHard]) add up to at least one full set for it today or in the two
+     * days before, and [RecentTier.WORKED] when any sets of work add up to one today or yesterday.
+     * A set counts 1 for a muscle it mainly works and 0.5 for one that helps. Warm-ups, mobility and
+     * unlinked exercises count for neither, and an unrated set is never "recovering": the app does
+     * not know how hard it was. Recovering first, then worked; each in [Muscle] order.
+     */
+    fun recent(today: LocalDate, history: List<HistorySet>, exercises: List<Exercise>): List<MuscleRecent> {
+        val exercisesById = exercises.associateBy { it.id }
+        val hard = mutableMapOf<Muscle, Double>()
+        val worked = mutableMapOf<Muscle, Double>()
+        val lastHard = mutableMapOf<Muscle, Int>()
+        val lastWorked = mutableMapOf<Muscle, Int>()
+        for (set in history) {
+            if (!set.countsAsWork) continue
+            val day = parse(set.date) ?: continue
+            val daysAgo = ChronoUnit.DAYS.between(day, today).toInt()
+            if (daysAgo !in 0..2) continue
+            val step = stepOf(exercisesById[set.exerciseId]) ?: continue
+            if (isMobility(step)) continue
+            val weights = step.primaryMuscles.associateWith { 1.0 } + (step.secondaryMuscles - step.primaryMuscles).associateWith { 0.5 }
+            weights.forEach { (muscle, weight) ->
+                if (Effort.isHard(set.effortLeft)) {
+                    hard[muscle] = (hard[muscle] ?: 0.0) + weight
+                    lastHard[muscle] = minOf(lastHard[muscle] ?: daysAgo, daysAgo)
+                }
+                if (daysAgo <= 1) {
+                    worked[muscle] = (worked[muscle] ?: 0.0) + weight
+                    lastWorked[muscle] = minOf(lastWorked[muscle] ?: daysAgo, daysAgo)
+                }
+            }
+        }
+        val recovering = hard.filterValues { it >= 1.0 }.keys
+        val recentlyWorked = worked.filterValues { it >= 1.0 }.keys - recovering
+        return recovering.sortedBy { it.ordinal }.map { MuscleRecent(it, RecentTier.RECOVERING, lastHard.getValue(it)) } +
+            recentlyWorked.sortedBy { it.ordinal }.map { MuscleRecent(it, RecentTier.WORKED, lastWorked.getValue(it)) }
     }
 
     /** The catalogue step a library exercise is linked to; null when unlinked or unknown. */

@@ -10,6 +10,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.LayoutDirection
+import io.github.gonbei774.calisthenicsmemory.data.review.MuscleRecent
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleVolumeSummary
 import io.github.gonbei774.calisthenicsmemory.ui.screens.tapTargetProblems
 import io.github.gonbei774.calisthenicsmemory.ui.screens.textFitProblems
@@ -40,10 +41,11 @@ class BodyMapContentTest {
         direction: LayoutDirection = LayoutDirection.Ltr,
         view: BodyMapView = BodyMapView.SETS,
         onView: (BodyMapView) -> Unit = {},
+        recent: List<MuscleRecent> = BodyMapSamples.recent,
     ) = compose.setContent {
         CalisthenicsMemoryTheme {
             CompositionLocalProvider(LocalLayoutDirection provides direction) {
-                BodyMapContent(summary, weeks = period.days / 7.0, period = period, onPeriod = onPeriod, view = view, onView = onView)
+                BodyMapContent(summary, weeks = period.days / 7.0, period = period, onPeriod = onPeriod, view = view, onView = onView, recent = recent)
             }
         }
     }
@@ -123,6 +125,32 @@ class BodyMapContentTest {
         RuntimeEnvironment.setFontScale(2f)
         try {
             show(view = BodyMapView.NOT_WORKED)
+            compose.waitForIdle()
+            val problems = tapTargetProblems(compose, compose.density) + textFitProblems(compose)
+            assertTrue(problems.joinToString("\n"), problems.isEmpty())
+        } finally {
+            RuntimeEnvironment.setFontScale(1f)
+        }
+    }
+
+    @Test fun `recent lists recovering and worked muscles with their day, and has no periods`() {
+        show(view = BodyMapView.RECENT)
+        compose.onNode(hasText("Recovering") and isHeading).assertExists()
+        compose.onNode(hasText("Worked recently") and isHeading).assertExists()
+        compose.onNode(hasText("Chest") and hasText("Today")).assertExists()
+        compose.onNode(hasText("Quads") and hasText("Yesterday")).assertExists()
+        compose.onNodeWithText("1 week").assertDoesNotExist()
+    }
+
+    @Test fun `recent with nothing to show says so in one line`() {
+        show(view = BodyMapView.RECENT, recent = emptyList())
+        compose.onNodeWithText("No muscles worked in the last few days").assertExists()
+    }
+
+    @Test fun `at 200 percent font the recent view fits and every control is a full target`() {
+        RuntimeEnvironment.setFontScale(2f)
+        try {
+            show(view = BodyMapView.RECENT)
             compose.waitForIdle()
             val problems = tapTargetProblems(compose, compose.density) + textFitProblems(compose)
             assertTrue(problems.joinToString("\n"), problems.isEmpty())

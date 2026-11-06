@@ -970,4 +970,12 @@
     <string name="body_map_view_untrained">未トレーニング</string>
     <string name="body_map_untrained_heading">この期間に鍛えていない筋肉</string>
     <string name="body_map_untrained_none">この期間、すべての筋肉に1セット以上ありました</string>
+    <string name="body_map_view_recent">最近</string>
+    <string name="body_map_recovering">回復中</string>
+    <string name="body_map_worked_recently">最近トレーニング</string>
+    <string name="body_map_recent_legend">回復中：今日またはその前の2日間に、余力1回以下のセット、または「限界」「少し」と評価したホールドで鍛えた筋肉。最近トレーニング：今日または昨日のそのほかのセット。余力を記録していないセットは「最近トレーニング」としてのみ数えます。</string>
+    <string name="body_map_recent_empty">ここ数日、鍛えた筋肉はありません</string>
+    <string name="body_map_day_today">今日</string>
+    <string name="body_map_day_yesterday">昨日</string>
+    <string name="body_map_day_two_days_ago">2日前</string>
 </resources>

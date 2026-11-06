@@ -1058,4 +1058,12 @@
     <string name="body_map_view_untrained">لم تُمرَّن</string>
     <string name="body_map_untrained_heading">لم تُمرَّن في هذه الفترة</string>
     <string name="body_map_untrained_none">حصلت كل عضلة على مجموعة واحدة على الأقل في هذه الفترة</string>
+    <string name="body_map_view_recent">مؤخرًا</string>
+    <string name="body_map_recovering">يتعافى</string>
+    <string name="body_map_worked_recently">عمل مؤخرًا</string>
+    <string name="body_map_recent_legend">يتعافى: عملت بمجموعات بقي فيها تكرار واحد أو لا شيء، أو بثبات قُيّم «بلغت الحد» أو «قليل»، اليوم أو في اليومين السابقين. عمل مؤخرًا: مجموعات أخرى اليوم أو أمس. المجموعات بلا تقييم تُحتسب فقط كعمل حديث.</string>
+    <string name="body_map_recent_empty">لم تعمل أي عضلة في الأيام الأخيرة</string>
+    <string name="body_map_day_today">اليوم</string>
+    <string name="body_map_day_yesterday">أمس</string>
+    <string name="body_map_day_two_days_ago">قبل يومين</string>
 </resources>

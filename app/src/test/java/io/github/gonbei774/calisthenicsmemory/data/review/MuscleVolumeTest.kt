@@ -19,9 +19,11 @@ class MuscleVolumeTest {
     private val start = LocalDate.of(2026, 3, 9)
     private val end = start.plusDays(6)
 
-    private fun set(date: String, exerciseId: Long, left: Int? = null, warmUp: Boolean = false, source: HistorySource = HistorySource.V2) = HistorySet(
+    private fun set(
+        date: String, exerciseId: Long, left: Int? = null, warmUp: Boolean = false, source: HistorySource = HistorySource.V2, effort: Int? = null,
+    ) = HistorySet(
         source, if (source == HistorySource.LEGACY) 1 else null, emptyList(), exerciseId, date, "07:30", 1, 10, left, "", null, null, null,
-        warmUp = warmUp,
+        warmUp = warmUp, effortLeft = effort,
     )
 
     private fun interval(date: String) = IntervalHistoryItem(
@@ -156,5 +158,56 @@ class MuscleVolumeTest {
         (stepWithHelpers.primaryMuscles + stepWithHelpers.secondaryMuscles).forEach { assertTrue(it.name, it !in notWorked) }
         assertEquals(notWorked.sortedBy { it.ordinal }, notWorked)
         assertEquals(MuscleVolume.trainable.size, MuscleVolume.notWorked(build(emptyList(), emptyList())).size)
+    }
+
+    // Recent (ADR 0012, section 4). Today is Thursday 12 March.
+
+    private val today = LocalDate.of(2026, 3, 12)
+    private val main = stepWithHelpers.primaryMuscles.first()
+    private val helper = (stepWithHelpers.secondaryMuscles - stepWithHelpers.primaryMuscles).first()
+
+    private fun recent(vararg sets: HistorySet, exercises: List<Exercise> = listOf(linked)) = MuscleVolume.recent(today, sets.toList(), exercises)
+
+    @Test fun `a hard set makes the muscles it mainly works recovering for that day and the two after`() {
+        assertEquals(MuscleRecent(main, RecentTier.RECOVERING, 0), recent(set("2026-03-12", linked.id, effort = 1)).single { it.muscle == main })
+        assertEquals(MuscleRecent(main, RecentTier.RECOVERING, 2), recent(set("2026-03-10", linked.id, effort = 0)).single { it.muscle == main })
+        assertTrue(recent(set("2026-03-09", linked.id, effort = 0)).isEmpty())
+    }
+
+    @Test fun `an unrated or easier set is only worked recently, today or yesterday`() {
+        assertEquals(MuscleRecent(main, RecentTier.WORKED, 1), recent(set("2026-03-11", linked.id)).single { it.muscle == main })
+        assertEquals(RecentTier.WORKED, recent(set("2026-03-12", linked.id, effort = 3)).single { it.muscle == main }.tier)
+        assertTrue(recent(set("2026-03-10", linked.id)).isEmpty())
+    }
+
+    @Test fun `a helping muscle needs two hard sets, as half each`() {
+        // One set is half a set for a helper: not enough to list it at all.
+        assertTrue(recent(set("2026-03-12", linked.id, effort = 0)).none { it.muscle == helper })
+        assertEquals(RecentTier.WORKED, recent(set("2026-03-12", linked.id, effort = 0), set("2026-03-12", linked.id)).single { it.muscle == helper }.tier)
+        val twoHard = recent(set("2026-03-12", linked.id, effort = 0), set("2026-03-11", linked.id, effort = 1))
+        assertEquals(MuscleRecent(helper, RecentTier.RECOVERING, 0), twoHard.single { it.muscle == helper })
+    }
+
+    @Test fun `a hold rated at its limit counts as hard`() {
+        val hold = Exercise(id = 6, name = "Hold", type = "Isometric", catalogId = stepWithHelpers.id)
+        assertEquals(RecentTier.RECOVERING, recent(set("2026-03-12", hold.id, effort = 0), exercises = listOf(hold)).single { it.muscle == main }.tier)
+    }
+
+    @Test fun `warm-ups, mobility and unlinked exercises count for nothing`() {
+        val stretch = exercise(2, mobilityStep.id)
+        val unlinked = exercise(4, null)
+        assertTrue(
+            recent(
+                set("2026-03-12", linked.id, warmUp = true, effort = 0), set("2026-03-12", stretch.id, effort = 0), set("2026-03-12", unlinked.id, effort = 0),
+                exercises = listOf(linked, stretch, unlinked),
+            ).isEmpty()
+        )
+    }
+
+    @Test fun `recovering muscles come first, each group in muscle order`() {
+        val list = recent(set("2026-03-12", linked.id, effort = 0), set("2026-03-12", linked.id))
+        val tiers = list.map { it.tier }
+        assertEquals(tiers.sortedByDescending { it.ordinal }, tiers)
+        list.groupBy { it.tier }.values.forEach { group -> assertEquals(group.sortedBy { it.muscle.ordinal }, group) }
     }
 }

@@ -989,4 +989,12 @@
     <string name="body_map_view_untrained">Nicht trainiert</string>
     <string name="body_map_untrained_heading">In diesem Zeitraum nicht trainiert</string>
     <string name="body_map_untrained_none">Jeder Muskel hatte in diesem Zeitraum mindestens einen Satz</string>
+    <string name="body_map_view_recent">Kürzlich</string>
+    <string name="body_map_recovering">Erholt sich</string>
+    <string name="body_map_worked_recently">Kürzlich trainiert</string>
+    <string name="body_map_recent_legend">Erholt sich: mit Sätzen trainiert, bei denen höchstens 1 Wiederholung übrig war, oder mit Halteübungen, bewertet mit „Grenze erreicht“ oder „Wenig“, heute oder an den zwei Tagen davor. Kürzlich trainiert: andere Sätze heute oder gestern. Sätze ohne Bewertung zählen nur als kürzlich trainiert.</string>
+    <string name="body_map_recent_empty">In den letzten Tagen wurde kein Muskel trainiert</string>
+    <string name="body_map_day_today">Heute</string>
+    <string name="body_map_day_yesterday">Gestern</string>
+    <string name="body_map_day_two_days_ago">Vor 2 Tagen</string>
 </resources>
