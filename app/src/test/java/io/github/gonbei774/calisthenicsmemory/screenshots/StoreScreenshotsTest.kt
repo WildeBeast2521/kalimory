@@ -9,6 +9,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.core.app.ApplicationProvider
 import com.github.takahirom.roborazzi.captureScreenRoboImage
 import io.github.gonbei774.calisthenicsmemory.MainActivity
@@ -117,7 +118,8 @@ class StoreScreenshotsTest(private val theme: AppTheme) {
         openProgressions()
         compose.onAllNodes(hasClickAction() and hasText("Step 4 of", substring = true)).onFirst().performClick()
         waitFor("Diamond push-up")
-        compose.onAllNodes(hasClickAction() and hasText("Diamond push-up", substring = true)).onFirst().performClick()
+        // The climb chart sits above the steps, so the row is below the fold until scrolled to.
+        compose.onAllNodes(hasClickAction() and hasText("Diamond push-up", substring = true)).onFirst().performScrollTo().performClick()
         waitFor("How to do it")
         save("step")
     }
