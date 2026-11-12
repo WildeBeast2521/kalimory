@@ -20,6 +20,14 @@ class ConsistencyGuardTest {
         assertTrue("Use AppFab instead: $offenders", offenders.isEmpty())
     }
 
+    @Test fun `the keyboard is applied once, by the shared helper`() {
+        // A screen padding for the keyboard on its own counted it twice (#280).
+        val offenders = uses(Regex("""imePadding\(|WindowInsets\.ime\b|isImeVisible"""), except = setOf("KeyboardInsets.kt"))
+        assertTrue("Use screenBottomInsets/keyboardInsets/keyboardVisible from KeyboardInsets.kt: $offenders", offenders.isEmpty())
+        val activity = Regex("""<activity\s[^>]*android:name="\.MainActivity"[^>]*>""").find(main.resolve("AndroidManifest.xml").readText())?.value
+        assertTrue("MainActivity must resize for the keyboard", activity?.contains("""android:windowSoftInputMode="adjustResize"""") == true)
+    }
+
     @Test fun `every swipe to delete draws the shared background`() {
         val swipes = uses(Regex("""SwipeToDismissBox\("""))
         val shared = uses(Regex("""backgroundContent = \{ SwipeToDeleteBackground\("""))

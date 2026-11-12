@@ -14,7 +14,10 @@ import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryNavigationBarHeight
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.navigationBarsPadding
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.keyboardInsets
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.keyboardVisible
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.screenBottomInsets
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.screenBottomPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.calculateEndPadding
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.LocalSharedTransitionScope
@@ -57,9 +60,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -433,17 +434,18 @@ fun CalisthenicsMemoryApp(
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
-                // Above the system bar, and above the navigation bar on the home screens.
+                // Above the keyboard or the system bar, and above the navigation bar on the home
+                // screens while it shows.
                 modifier = Modifier.padding(
-                    bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() +
-                        if (showPrimaryNavigation) PrimaryNavigationBarHeight else 0.dp
+                    bottom = screenBottomPadding() +
+                        if (showPrimaryNavigation && !keyboardVisible()) PrimaryNavigationBarHeight else 0.dp
                 )
             )
         }
     ) { paddingValues ->
         // The bottom is left to each screen: the home screens end with the navigation bar, other
-        // screens clear the system bar. Nothing resizes when a screen opens, so a pushed screen only
-        // slides in; it does not also shift as the bar leaves.
+        // screens clear the system bar, or the keyboard while it is open (#280). Nothing resizes when
+        // a screen opens, so a pushed screen only slides in; it does not also shift as the bar leaves.
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -465,7 +467,7 @@ fun CalisthenicsMemoryApp(
                 keptScreens[screen.stateKey()] = screen.depth()
                 screenStates.SaveableStateProvider(screen.stateKey()) {
                 Box(
-                    (if (screen is Screen.Home) Modifier.fillMaxSize() else Modifier.fillMaxSize().navigationBarsPadding())
+                    (if (screen is Screen.Home) Modifier.fillMaxSize().keyboardInsets() else Modifier.fillMaxSize().screenBottomInsets())
                         .ignoreInputWhileLeaving(this@AnimatedContent)
                 ) {
                 when (screen) {
@@ -563,11 +565,15 @@ fun CalisthenicsMemoryApp(
                             )
                         }
                         }
-                        // The navigation bar belongs to the home screens and slides with them.
-                        PrimaryNavigationBar(
-                            selected = primaryDestination,
-                            onSelect = { primaryDestination = it }
-                        )
+                        // The navigation bar belongs to the home screens and slides with them. It steps
+                        // aside while the keyboard is open, where it would only take room from the
+                        // field being typed in.
+                        if (!keyboardVisible()) {
+                            PrimaryNavigationBar(
+                                selected = primaryDestination,
+                                onSelect = { primaryDestination = it }
+                            )
+                        }
                     }
                     is Screen.ToDo -> {
                         ToDoScreen(
