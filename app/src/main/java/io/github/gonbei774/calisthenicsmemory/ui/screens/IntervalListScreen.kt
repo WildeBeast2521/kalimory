@@ -44,14 +44,16 @@ fun IntervalListScreen(
     val programs by viewModel.intervalPrograms.collectAsState()
     val lastDone by viewModel.lastDone.collectAsState()
 
-    // Load exercise counts for each program
+    // Load each program's exercises: their count for the row, their names for search (#278).
+    val allExercises by viewModel.exercises.collectAsState()
     val exerciseCounts = remember { mutableStateMapOf<Long, Int>() }
-    LaunchedEffect(programs) {
+    val exerciseNames = remember { mutableStateMapOf<Long, List<String>>() }
+    LaunchedEffect(programs, allExercises) {
+        val byId = allExercises.associateBy { it.id }
         programs.forEach { program ->
-            if (program.id !in exerciseCounts) {
-                val exercises = viewModel.getIntervalProgramExercisesSync(program.id)
-                exerciseCounts[program.id] = exercises.size
-            }
+            val exercises = viewModel.getIntervalProgramExercisesSync(program.id)
+            exerciseCounts[program.id] = exercises.size
+            exerciseNames[program.id] = exercises.mapNotNull { byId[it.exerciseId]?.name }
         }
     }
 
@@ -80,8 +82,9 @@ fun IntervalListScreen(
         } else {
             val copySuffix = stringResource(R.string.program_copy_suffix)
             var searchQuery by remember { mutableStateOf("") }
-            val filteredPrograms = remember(programs, searchQuery) {
-                SearchUtils.searchIntervalPrograms(programs, searchQuery)
+            val names = exerciseNames.toMap()
+            val filteredPrograms = remember(programs, searchQuery, names) {
+                SearchUtils.searchIntervalPrograms(programs, searchQuery) { names[it].orEmpty() }
             }
 
             Column(
@@ -115,10 +118,12 @@ fun IntervalListScreen(
                     ) {
                         items(
                             items = filteredPrograms,
-                            key = { it.id }
-                        ) { program ->
+                            key = { it.item.id }
+                        ) { found ->
+                            val program = found.item
                             IntervalProgramListItem(
                                 program = program,
+                                includes = found.includes,
                                 exerciseCount = exerciseCounts[program.id] ?: 0,
                                 lastDone = lastDoneText(lastDone.intervals[program.id]),
                                 onEdit = { onNavigateToEdit(program.id) },
@@ -138,6 +143,7 @@ fun IntervalListScreen(
 @Composable
 private fun IntervalProgramListItem(
     program: IntervalProgram,
+    includes: List<String>,
     exerciseCount: Int,
     lastDone: String?,
     onEdit: () -> Unit,
@@ -232,6 +238,14 @@ private fun IntervalProgramListItem(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(top = 2.dp)
                         )
+                        // Why a search found it, when its own name did not (#278).
+                        if (includes.isNotEmpty()) {
+                            Text(
+                                stringResource(R.string.search_includes, includes.joinToString(", ")),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary,
+                            )
+                        }
                         if (lastDone != null) {
                             Text(lastDone, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }

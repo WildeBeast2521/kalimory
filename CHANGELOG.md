@@ -24,6 +24,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 
 ### Changed
 - Search in Exercises and groups, Progress and every exercise picker also finds a group by its name, ignores accents and Arabic short vowels, and matches every word you type in any order; each result in a picker shows its group, and the best match comes first ([#282](https://github.com/WildeBeast2521/kalimory/pull/282))
+- Searching Programs and Intervals also finds them by the exercises they hold, and says which ones ("Includes Dips") when the name itself did not match ([#283](https://github.com/WildeBeast2521/kalimory/pull/283))
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed

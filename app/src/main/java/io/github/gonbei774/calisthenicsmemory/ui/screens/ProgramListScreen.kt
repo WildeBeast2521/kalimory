@@ -50,6 +50,14 @@ fun ProgramListScreen(
     val lastDone by viewModel.lastDone.collectAsState()
     val exercises by viewModel.exercises.collectAsState()
     val programSummaries = rememberProgramSummaries(viewModel, programs, exercises)
+    // The names of each program's exercises, so a search finds a program by them (#278).
+    val programExerciseNames = remember { mutableStateMapOf<Long, List<String>>() }
+    LaunchedEffect(programs, exercises) {
+        val byId = exercises.associateBy { it.id }
+        programs.forEach { program ->
+            programExerciseNames[program.id] = viewModel.getProgramExercisesSync(program.id).mapNotNull { byId[it.exerciseId]?.name }
+        }
+    }
     val context = LocalContext.current
     val savedWorkoutState = remember { SavedWorkoutState(context) }
     val savedProgramId = savedWorkoutState.getSavedProgramId()
@@ -81,8 +89,9 @@ fun ProgramListScreen(
             // Program list with swipe-to-delete
             val copySuffix = stringResource(R.string.program_copy_suffix)
             var searchQuery by remember { mutableStateOf("") }
-            val filteredPrograms = remember(programs, searchQuery) {
-                SearchUtils.searchPrograms(programs, searchQuery)
+            val names = programExerciseNames.toMap()
+            val filteredPrograms = remember(programs, searchQuery, names) {
+                SearchUtils.searchPrograms(programs, searchQuery) { names[it].orEmpty() }
             }
 
             Column(
@@ -116,10 +125,12 @@ fun ProgramListScreen(
                     ) {
                         items(
                             items = filteredPrograms,
-                            key = { it.id }
-                        ) { program ->
+                            key = { it.item.id }
+                        ) { found ->
+                            val program = found.item
                             ProgramListItem(
                                 program = program,
+                                includes = found.includes,
                                 summary = programSummaries[program.id].describe(),
                                 lastDone = lastDoneText(lastDone.programs[program.id]),
                                 hasSavedState = savedProgramId == program.id,
@@ -141,6 +152,7 @@ fun ProgramListScreen(
 @Composable
 private fun ProgramListItem(
     program: Program,
+    includes: List<String>,
     summary: String,
     lastDone: String?,
     hasSavedState: Boolean,
@@ -236,6 +248,14 @@ private fun ProgramListItem(
                                 text = summary,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        // Why a search found it, when its own name did not (#278).
+                        if (includes.isNotEmpty()) {
+                            Text(
+                                stringResource(R.string.search_includes, includes.joinToString(", ")),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary,
                             )
                         }
                         if (lastDone != null) {

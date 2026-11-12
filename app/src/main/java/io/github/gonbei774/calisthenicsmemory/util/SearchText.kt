@@ -33,6 +33,12 @@ class SearchQuery(raw: String) {
         return null
     }
 
+    /** Whether [text] contains any word of the query, such as an exercise that explains a match. */
+    fun mentions(text: String): Boolean {
+        val foldedText = fold(text)
+        return words.any { it in foldedText }
+    }
+
     companion object {
         private val WHITESPACE = Regex("\\s+")
 

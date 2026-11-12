@@ -149,6 +149,7 @@
     <string name="resume_button">Продовжити</string>
     <string name="nav_resume">Продовжити</string>
     <string name="no_results">Нічого не знайдено</string>
+    <string name="search_includes">Містить %1$s</string>
     <string name="export_complete">Експорт завершено: %1$s, %2$s, %3$s</string>
     <string name="import_complete">Імпорт завершено: %1$s, %2$s, %3$s</string>
     <string name="no_exercises_available">Немає доступних вправ</string>

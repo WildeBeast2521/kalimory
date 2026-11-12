@@ -212,6 +212,7 @@
     <string name="stats_total_min_sec_format">%1$d分%2$d秒</string>
     <string name="search_placeholder">検索</string>
     <string name="no_results">結果が見つかりません</string>
+    <string name="search_includes">%1$s を含む</string>
     <string name="clear">クリア</string>
     <string name="value_label">値</string>
     <string name="graph_type_average">平均</string>
