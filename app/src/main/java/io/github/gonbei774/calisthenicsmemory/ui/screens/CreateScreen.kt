@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.ColumnScope
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.screenBottomInsets
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.DialogSystemBars
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material3.TopAppBarDefaults
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -889,17 +891,23 @@ fun UnifiedAddDialog(
         }
     }
 
+    // Drawn edge to edge like the main window, so the keyboard reaches it as an inset and is applied
+    // once, by screenBottomInsets (#280), instead of the window sliding up under it.
     Dialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
+        properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
     ) {
+        DialogSystemBars()
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
             val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
             Scaffold(
-                modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
+                modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
+                    .screenBottomInsets()
+                    .nestedScroll(topBarScroll.nestedScrollConnection),
                 topBar = {
                     CalmTopBar(
                         title = stringResource(
@@ -942,7 +950,6 @@ fun UnifiedAddDialog(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
-                        .imePadding()
                         .verticalScroll(rememberScrollState())
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)

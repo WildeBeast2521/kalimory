@@ -27,6 +27,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 
 ### Fixed
 - Searching in Exercises and groups no longer offers to drag exercises into a new order, which saved the wrong order for the group, or shows a group menu that did nothing ([#279](https://github.com/WildeBeast2521/kalimory/pull/279))
+- Typing in a field near the bottom of a screen, such as an exercise's description, keeps the field just above the keyboard instead of moving it to the top with empty space below it, and top bars stay on screen while you type ([#281](https://github.com/WildeBeast2521/kalimory/pull/281))
 
 ## [1.1.0] - 2026-10-31
 

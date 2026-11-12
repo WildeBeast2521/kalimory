@@ -2,6 +2,11 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -60,6 +65,8 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutDraft
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutRef
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutSaveResult
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.screenBottomInsets
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.DialogSystemBars
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SetMarks
@@ -128,13 +135,18 @@ fun WorkoutEditorScreen(ref: WorkoutRef, viewModel: TrainingViewModel, onClose: 
         }
     }
 
-    Dialog(onDismissRequest = { close() }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    // Edge to edge like the main window, so the keyboard is applied once, by screenBottomInsets (#280).
+    Dialog(onDismissRequest = { close() }, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
+        DialogSystemBars()
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
             val current = state
             val draft = current?.let(WorkoutEditorModel::toDraft)
             Scaffold(
-                modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
+                modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))
+                    .screenBottomInsets()
+                    .nestedScroll(topBarScroll.nestedScrollConnection),
                 topBar = {
                     CalmTopBar(
                         title = stringResource(R.string.workout_edit_title),
