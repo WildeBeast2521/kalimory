@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.WindowInsets
@@ -414,14 +416,24 @@ private fun ExercisePicker(exercises: List<Exercise>, onPick: (Exercise) -> Unit
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 CalmSearchField(query = query, onQueryChange = { query = it }, placeholder = stringResource(R.string.search_exercise))
-                val shown = exercises.filter { query.isBlank() || it.name.contains(query.trim(), ignoreCase = true) }.sortedBy { it.name }
+                // The shared search (#278): names and group names, best match first, the group shown.
+                val searching = query.isNotBlank()
+                val shown = remember(exercises, query) {
+                    if (searching) SearchUtils.searchExercises(exercises, query) else exercises.sortedBy { it.name }
+                }
+                if (searching && shown.isEmpty()) {
+                    Text(stringResource(R.string.no_results), color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(vertical = 12.dp))
+                }
                 LazyColumn(modifier = Modifier.heightIn(max = 360.dp)) {
                     items(shown, key = { it.id }) { exercise ->
-                        Text(
-                            exercise.name,
-                            style = MaterialTheme.typography.bodyLarge,
+                        Row(
                             modifier = Modifier.fillMaxWidth().clickable { onPick(exercise) }.padding(vertical = 12.dp),
-                        )
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            Text(exercise.name, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f, fill = false))
+                            if (searching) exercise.group?.let { GroupBadge(it) }
+                        }
                     }
                 }
             }

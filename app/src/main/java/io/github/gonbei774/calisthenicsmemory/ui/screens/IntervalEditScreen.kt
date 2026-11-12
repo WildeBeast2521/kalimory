@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
@@ -710,7 +711,8 @@ private fun AddExerciseToIntervalDialog(
                                             } else {
                                                 selectedExercises + exerciseId
                                             }
-                                        }
+                                        },
+                                        showGroup = true,
                                     )
                                 }
                             }
@@ -770,7 +772,8 @@ private fun AddExerciseToIntervalDialog(
 private fun IntervalExerciseSelectItem(
     exercise: Exercise,
     isSelected: Boolean,
-    onToggle: (Long) -> Unit
+    onToggle: (Long) -> Unit,
+    showGroup: Boolean = false,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -805,6 +808,8 @@ private fun IntervalExerciseSelectItem(
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
+                    // The group, in search results only (#278).
+                    if (showGroup) exercise.group?.let { GroupBadge(it) }
                     if (exercise.isFavorite) {
                         Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
                     }

@@ -34,7 +34,7 @@ Behind the scenes:
 
 Answer "am I improving?" from the data the app already has.
 
-4 of 11 done.
+4 of 12 done.
 
 - [x] A weekly review ([#159](https://github.com/WildeBeast2521/kalimory/issues/159), done in [#254](https://github.com/WildeBeast2521/kalimory/pull/254))
 - [x] Warm-up sets and an optional effort rating ([#168](https://github.com/WildeBeast2521/kalimory/issues/168), done in [#262](https://github.com/WildeBeast2521/kalimory/pull/262))
@@ -47,6 +47,7 @@ Answer "am I improving?" from the data the app already has.
 - [ ] A larger catalogue, about 500 curated steps, with warm-up, mobility, stretching and conditioning ([#166](https://github.com/WildeBeast2521/kalimory/issues/166))
 - [ ] Body weight, counted in the volume of bodyweight exercises ([#276](https://github.com/WildeBeast2521/kalimory/issues/276))
 - [ ] Choose the muscles for your own exercises ([#275](https://github.com/WildeBeast2521/kalimory/issues/275))
+- [ ] Search that finds anything a section shows, such as group and program names ([#278](https://github.com/WildeBeast2521/kalimory/issues/278))
 
 ## 1.3 Progression v2
 

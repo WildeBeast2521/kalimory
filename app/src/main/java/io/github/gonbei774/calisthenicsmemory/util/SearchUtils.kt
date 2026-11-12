@@ -3,143 +3,57 @@ package io.github.gonbei774.calisthenicsmemory.util
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalProgram
 import io.github.gonbei774.calisthenicsmemory.data.Program
+import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
 /**
- * Search utility functions for ranking and filtering exercises
+ * The searches over the user's own exercises, groups and programs. Every one matches with
+ * [SearchQuery]: case, accents and Arabic marks are ignored, every word of the query must appear,
+ * and the best match comes first while equal matches keep the screen's own order (#278).
  */
 object SearchUtils {
 
     /**
-     * Search exercises with ranking by relevance (best to worst match)
-     *
-     * Ranking priorities:
-     * 1. Exact match (highest)
-     * 2. Starts with query (high)
-     * 3. Word boundary match (medium)
-     * 4. Contains substring (low)
+     * Exercises matching [query] by their name or their group's name; an exercise's own name ranks
+     * above a match on its group. A blank query finds nothing.
      */
     fun searchExercises(exercises: List<Exercise>, query: String): List<Exercise> {
-        if (query.isBlank()) return emptyList()
-
-        val queryLower = query.lowercase()
-
-        // Calculate relevance score for each exercise
-        val scoredExercises = exercises.mapNotNull { exercise ->
-            val nameLower = exercise.name.lowercase()
-            val score = calculateRelevanceScore(nameLower, queryLower)
-
-            if (score > 0) {
-                ScoredExercise(exercise, score)
-            } else {
-                null
-            }
-        }
-
-        // Sort by score (descending) then by name (ascending) for consistent ordering
-        return scoredExercises
-            .sortedWith(compareByDescending<ScoredExercise> { it.score }.thenBy { it.exercise.name })
-            .map { it.exercise }
+        val q = SearchQuery(query)
+        if (q.isBlank) return emptyList()
+        return exercises.rankedBy { q.rank(it.name, listOfNotNull(it.group)) }
     }
 
     /**
-     * Search hierarchical data (groups with exercises) with ranking by relevance
+     * Groups and their exercises matching [query]. A group whose name matches keeps all its
+     * exercises, in their usual order; otherwise it keeps the exercises that match, best first, and a
+     * group with none is left out. [groupLabel] is the name the screen shows for a group, such as the
+     * localized "Favorite" and "No group". A blank query leaves the list as it is.
      */
     fun searchHierarchicalExercises(
-        hierarchicalData: List<io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel.GroupWithExercises>,
-        query: String
-    ): List<io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel.GroupWithExercises> {
-        if (query.isBlank()) return hierarchicalData
-
-        val queryLower = query.lowercase()
-
-        return hierarchicalData.map { group ->
-            val filteredExercises = group.exercises.mapNotNull { exercise ->
-                val nameLower = exercise.name.lowercase()
-                val score = calculateRelevanceScore(nameLower, queryLower)
-
-                if (score > 0) {
-                    ScoredExercise(exercise, score)
-                } else {
-                    null
-                }
-            }.sortedWith(compareByDescending<ScoredExercise> { it.score }.thenBy { it.exercise.name })
-             .map { it.exercise }
-
-            io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel.GroupWithExercises(
-                groupName = group.groupName,
-                exercises = filteredExercises
-            )
-        }.filter { it.exercises.isNotEmpty() }
+        hierarchicalData: List<TrainingViewModel.GroupWithExercises>,
+        query: String,
+        groupLabel: (String?) -> String? = { it },
+    ): List<TrainingViewModel.GroupWithExercises> {
+        val q = SearchQuery(query)
+        if (q.isBlank) return hierarchicalData
+        return hierarchicalData.mapNotNull { group ->
+            val label = groupLabel(group.groupName)
+            if (label != null && q.rank(label) != null) return@mapNotNull group
+            val matching = group.exercises.rankedBy { q.rank(it.name, listOfNotNull(label)) }
+            if (matching.isEmpty()) null else group.copy(exercises = matching)
+        }
     }
 
-    /**
-     * Search programs by name with ranking by relevance.
-     * Empty query returns the original list unchanged.
-     */
+    /** Programs matching [query] by name. A blank query leaves the list as it is. */
     fun searchPrograms(programs: List<Program>, query: String): List<Program> {
-        if (query.isBlank()) return programs
-
-        val queryLower = query.lowercase()
-
-        return programs.mapNotNull { program ->
-            val score = calculateRelevanceScore(program.name.lowercase(), queryLower)
-            if (score > 0) program to score else null
-        }
-            .sortedWith(compareByDescending<Pair<Program, Int>> { it.second }.thenBy { it.first.name })
-            .map { it.first }
+        val q = SearchQuery(query)
+        if (q.isBlank) return programs
+        return programs.rankedBy { q.rank(it.name) }
     }
 
-    /**
-     * Search interval programs by name with ranking by relevance.
-     * Empty query returns the original list unchanged.
-     */
+    /** Interval programs matching [query] by name. A blank query leaves the list as it is. */
     fun searchIntervalPrograms(programs: List<IntervalProgram>, query: String): List<IntervalProgram> {
-        if (query.isBlank()) return programs
-
-        val queryLower = query.lowercase()
-
-        return programs.mapNotNull { program ->
-            val score = calculateRelevanceScore(program.name.lowercase(), queryLower)
-            if (score > 0) program to score else null
-        }
-            .sortedWith(compareByDescending<Pair<IntervalProgram, Int>> { it.second }.thenBy { it.first.name })
-            .map { it.first }
+        val q = SearchQuery(query)
+        if (q.isBlank) return programs
+        return programs.rankedBy { q.rank(it.name) }
     }
-
-    /**
-     * Calculate relevance score for an exercise name against a search query
-     */
-    private fun calculateRelevanceScore(exerciseName: String, query: String): Int {
-        // Exact match - highest priority
-        if (exerciseName == query) {
-            return 1000
-        }
-
-        // Starts with query - high priority
-        if (exerciseName.startsWith(query)) {
-            return 800
-        }
-
-        // Word boundary match - medium priority
-        // Check if query matches at word boundaries (after space, dash, underscore, etc.)
-        val wordBoundaryRegex = Regex("\\b${Regex.escape(query)}\\b", RegexOption.IGNORE_CASE)
-        if (wordBoundaryRegex.containsMatchIn(exerciseName)) {
-            return 600
-        }
-
-        // Contains substring - low priority
-        if (exerciseName.contains(query)) {
-            return 400
-        }
-
-        return 0 // No match
-    }
-
-    /**
-     * Data class to hold exercise with its relevance score
-     */
-    private data class ScoredExercise(
-        val exercise: Exercise,
-        val score: Int
-    )
 }

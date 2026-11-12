@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
@@ -408,7 +409,8 @@ fun ExerciseSelectionScreen(
                                 val exercise = searchResults[index]
                                 ExerciseSelectionItem(
                                     exercise = exercise,
-                                    onClick = { onExerciseSelected(exercise) }
+                                    onClick = { onExerciseSelected(exercise) },
+                                    showGroup = true,
                                 )
                             }
                         }
@@ -522,7 +524,8 @@ fun HierarchicalExerciseGroup(
 @Composable
 fun ExerciseSelectionItem(
     exercise: Exercise,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    showGroup: Boolean = false,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -550,6 +553,8 @@ fun ExerciseSelectionItem(
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier.padding(top = 4.dp)
                 ) {
+                    // The group, in search results only (#278).
+                    if (showGroup) exercise.group?.let { GroupBadge(it) }
                     // お気に入り
                     if (exercise.isFavorite) {
                         Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
