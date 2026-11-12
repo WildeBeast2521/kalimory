@@ -159,6 +159,7 @@ request that did it.
 - [ ] A year heatmap
 - [ ] A "what I own" equipment profile
 - [ ] A larger catalogue, about 500 curated steps, with warm-up, mobility, stretching and conditioning
+- [x] Search that finds anything a section shows
 
 **1.3 Progression v2**
 

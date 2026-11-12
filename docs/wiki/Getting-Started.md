@@ -16,6 +16,10 @@ The first time you open the app, a short welcome guide explains the basics. You 
 3. Do your sets. The app counts, times holds and rests, and ticks each set off.
 4. When you finish, the summary shows your totals and any new personal best.
 
+## Search
+
+Each list with a search field finds any name it shows. In Library › Exercises and groups, a group's name shows the whole group. In the lists where you pick an exercise, an exercise is found by its own name or its group's, and each result shows its group. Programs and interval routines are also found by the exercises they hold, and a row found that way says which, such as "Includes Dips". Case and accents don't matter, nor do Arabic short vowels, and the words can come in any order. The exercise catalogue also searches muscles and equipment.
+
 ## A weekly goal
 
 Settings › Weekly goal sets how many days a week you want to train, from 2 to 6, or Off. Today then shows "This week: 2 of 4" instead of "2 of 7".
