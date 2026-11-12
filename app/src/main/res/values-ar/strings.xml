@@ -445,6 +445,7 @@
     <string name="search_placeholder">بحث</string>
     <string name="clear">مسح</string>
     <string name="no_results">لا توجد نتائج</string>
+    <string name="search_includes">يتضمن %1$s</string>
     <string name="value_label">القيمة</string>
     <string name="graph_type_average">المتوسط</string>
     <string name="graph_type_max">الأقصى</string>

@@ -435,6 +435,7 @@
     <string name="search_placeholder">Поиск</string>
     <string name="clear">Очистить</string>
     <string name="no_results">Ничего не найдено</string>
+    <string name="search_includes">Включает %1$s</string>
     <string name="value_label">Значение</string>
     <string name="graph_type_average">Среднее</string>
     <string name="graph_type_max">Максимум</string>

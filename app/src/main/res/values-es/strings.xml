@@ -174,6 +174,7 @@
     <string name="tab_calendar">Calendario</string>
     <string name="search_placeholder">Buscar</string>
     <string name="no_results">No se encontraron resultados</string>
+    <string name="search_includes">Incluye %1$s</string>
     <string name="clear">Limpiar</string>
     <string name="value_label">Valor</string>
     <string name="graph_type_average">Promedio</string>

@@ -25,7 +25,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
-/** Search finds what a section shows (#278): group names in the library and in an exercise picker. */
+/** Search finds what a section shows (#278): group names, and programs by their exercises. */
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [35], qualifiers = "w360dp-h740dp-xhdpi")
@@ -76,5 +76,15 @@ class AppSearchTest {
         // The result's card carries the group's badge beside the name.
         compose.onNode(hasText("Australian row") and hasText("Pull")).assertExists()
         assertEquals(0, count(hasText("Pike push-up", substring = true)))
+    }
+
+    @Test fun `a program is found by one of its exercises and says which`() {
+        open("Library")
+        waitFor(hasText("Programs") and hasClickAction())
+        compose.onNode(hasText("Programs") and hasClickAction()).performClick()
+        // The seeded program "Upper body" holds Push-up, Australian row and Plank.
+        search("plank")
+        waitFor(hasText("Includes Plank", substring = true))
+        compose.onNode(hasText("Upper body", substring = true) and hasText("Includes Plank", substring = true)).assertExists()
     }
 }

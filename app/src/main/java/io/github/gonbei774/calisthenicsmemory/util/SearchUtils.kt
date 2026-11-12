@@ -43,17 +43,38 @@ object SearchUtils {
         }
     }
 
-    /** Programs matching [query] by name. A blank query leaves the list as it is. */
-    fun searchPrograms(programs: List<Program>, query: String): List<Program> {
-        val q = SearchQuery(query)
-        if (q.isBlank) return programs
-        return programs.rankedBy { q.rank(it.name) }
-    }
+    /**
+     * A program or interval a search found. [includes] names its exercises that the search matched
+     * when its own name did not, so the row can say why it is there; it is empty otherwise.
+     */
+    data class Found<T>(val item: T, val includes: List<String> = emptyList())
 
-    /** Interval programs matching [query] by name. A blank query leaves the list as it is. */
-    fun searchIntervalPrograms(programs: List<IntervalProgram>, query: String): List<IntervalProgram> {
+    /**
+     * Programs matching [query] by their name or the names of their exercises ([exerciseNames], by
+     * program id); a program's own name ranks above a match on one of its exercises. A blank query
+     * leaves the list as it is.
+     */
+    fun searchPrograms(programs: List<Program>, query: String, exerciseNames: (Long) -> List<String> = { emptyList() }): List<Found<Program>> =
+        searchWithExercises(programs, query, { it.name }) { exerciseNames(it.id) }
+
+    /** Interval programs, searched like [searchPrograms]. */
+    fun searchIntervalPrograms(
+        programs: List<IntervalProgram>,
+        query: String,
+        exerciseNames: (Long) -> List<String> = { emptyList() },
+    ): List<Found<IntervalProgram>> =
+        searchWithExercises(programs, query, { it.name }) { exerciseNames(it.id) }
+
+    private fun <T> searchWithExercises(items: List<T>, query: String, name: (T) -> String, exercises: (T) -> List<String>): List<Found<T>> {
         val q = SearchQuery(query)
-        if (q.isBlank) return programs
-        return programs.rankedBy { q.rank(it.name) }
+        if (q.isBlank) return items.map { Found(it) }
+        return items.mapIndexedNotNull { index, item ->
+            val names = exercises(item)
+            q.rank(name(item), names)?.let { rank ->
+                // Rank 2 or better is the program's own name; otherwise its exercises found it.
+                val includes = if (rank <= 2) emptyList() else names.filter { q.mentions(it) }.distinct()
+                Triple(rank, index, Found(item, includes))
+            }
+        }.sortedWith(compareBy({ it.first }, { it.second })).map { it.third }
     }
 }

@@ -108,10 +108,28 @@ class SearchUtilsTest {
         assertEquals(groups, SearchUtils.searchHierarchicalExercises(groups, " ", label))
     }
 
-    @Test fun `programs match by name, ties keep their order, blank keeps all`() {
-        val programs = listOf(Program(id = 1, name = "Upper body"), Program(id = 2, name = "Full body"), Program(id = 3, name = "Legs"))
-        assertEquals(listOf("Upper body", "Full body"), SearchUtils.searchPrograms(programs, "body").map { it.name })
-        assertEquals(listOf("Full body"), SearchUtils.searchPrograms(programs, "FULL").map { it.name })
-        assertEquals(programs, SearchUtils.searchPrograms(programs, ""))
+    private val programs = listOf(Program(id = 1, name = "Upper body"), Program(id = 2, name = "Full body"), Program(id = 3, name = "Legs"))
+    private val programExercises = mapOf(1L to listOf("Push-up", "Dips"), 2L to listOf("Squat", "Dips", "Plank"), 3L to listOf("Squat", "Lunge"))
+    private fun programs(query: String) = SearchUtils.searchPrograms(programs, query) { programExercises[it].orEmpty() }
+        .map { it.item.name to it.includes }
+
+    @Test fun `programs match by name, ties keep their order, blank keeps all with nothing to explain`() {
+        assertEquals(listOf("Upper body" to emptyList<String>(), "Full body" to emptyList()), programs("body"))
+        assertEquals(listOf("Full body" to emptyList<String>()), programs("FULL"))
+        assertEquals(programs.map { it.name to emptyList<String>() }, programs(""))
+    }
+
+    @Test fun `a program is found by its exercises and says which ones`() {
+        assertEquals(listOf("Upper body" to listOf("Dips"), "Full body" to listOf("Dips")), programs("dips"))
+    }
+
+    @Test fun `a program's own name ranks above a match on its exercises`() {
+        val list = listOf(Program(id = 1, name = "Squat day"), Program(id = 3, name = "Legs"))
+        val found = SearchUtils.searchPrograms(list.reversed(), "squat") { mapOf(1L to listOf("Lunge"), 3L to listOf("Squat"))[it].orEmpty() }
+        assertEquals(listOf("Squat day" to emptyList<String>(), "Legs" to listOf("Squat")), found.map { it.item.name to it.includes })
+    }
+
+    @Test fun `words can match across a program's name and its exercises`() {
+        assertEquals(listOf("Upper body" to listOf("Dips")), programs("upper dips"))
     }
 }
