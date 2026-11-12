@@ -25,6 +25,9 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ### Changed
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
+### Fixed
+- Searching in Exercises and groups no longer offers to drag exercises into a new order, which saved the wrong order for the group, or shows a group menu that did nothing ([#279](https://github.com/WildeBeast2521/kalimory/pull/279))
+
 ## [1.1.0] - 2026-10-31
 
 ### Added

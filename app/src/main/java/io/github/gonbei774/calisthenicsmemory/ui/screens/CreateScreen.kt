@@ -183,6 +183,8 @@ fun CreateScreen(
                                         isExpanded = true,
                                         onExpandToggle = { },
                                         onGroupMenuClick = { },
+                                        reorderable = false,
+                                        showGroupMenu = false,
                                         onExerciseEdit = { exercise ->
                                             editingExercise = exercise
                                             showAddDialog = true
@@ -430,7 +432,11 @@ fun ExpandableGroupCard(
     viewModel: TrainingViewModel,
     isDragging: Boolean = false,
     elevation: Dp = 0.dp,
-    dragHandle: (@Composable () -> Modifier)? = null
+    dragHandle: (@Composable () -> Modifier)? = null,
+    // Search results show only some of a group's exercises: reordering them, or the group's menu,
+    // would act on the whole group by positions in the filtered list.
+    reorderable: Boolean = true,
+    showGroupMenu: Boolean = true,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -492,7 +498,7 @@ fun ExpandableGroupCard(
                         )
                     }
 
-                    if (group.groupName != null) {
+                    if (group.groupName != null && showGroupMenu) {
                         Box {
                             IconButton(
                                 onClick = onGroupMenuClick,
@@ -521,11 +527,12 @@ fun ExpandableGroupCard(
             ) {
                 // お気に入りグループでは並び替え不可
                 val isFavoriteGroup = group.groupName == TrainingViewModel.FAVORITE_GROUP_KEY
+                val canReorder = reorderable && !isFavoriteGroup
 
                 ReorderableColumn(
                     list = group.exercises,
                     onSettle = { fromIndex, toIndex ->
-                        if (!isFavoriteGroup) {
+                        if (canReorder) {
                             viewModel.reorderExercises(
                                 groupName = group.groupName,
                                 fromIndex = fromIndex,
@@ -548,7 +555,7 @@ fun ExpandableGroupCard(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 // ドラッグハンドル（お気に入りグループ以外で表示）
-                                if (!isFavoriteGroup) {
+                                if (canReorder) {
                                     Icon(
                                         imageVector = AppIcons.DragHandle,
                                         contentDescription = stringResource(R.string.todo_drag_to_reorder),
