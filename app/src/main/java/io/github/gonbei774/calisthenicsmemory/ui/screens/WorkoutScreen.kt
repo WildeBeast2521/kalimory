@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.workout.restDialProgress
@@ -2995,19 +2996,7 @@ fun WorkoutSearchResultItem(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     // グループ名バッジ
-                    exercise.group?.let { groupName ->
-                        Text(
-                            text = groupName,
-                            fontSize = 10.sp,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                                .background(
-                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-                                    shape = RoundedCornerShape(4.dp)
-                                )
-                                .padding(horizontal = 6.dp, vertical = 2.dp)
-                        )
-                    }
+                    exercise.group?.let { GroupBadge(it) }
                 }
 
                 // バッジ行

@@ -23,6 +23,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- Search in Exercises and groups, Progress and every exercise picker also finds a group by its name, ignores accents and Arabic short vowels, and matches every word you type in any order; each result in a picker shows its group, and the best match comes first ([#282](https://github.com/WildeBeast2521/kalimory/pull/282))
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed

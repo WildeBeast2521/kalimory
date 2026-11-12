@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -116,7 +117,8 @@ fun AddExerciseToProgramDialog(
                                             } else {
                                                 selectedExercises + exerciseId
                                             }
-                                        }
+                                        },
+                                        showGroup = true,
                                     )
                                 }
                             }
@@ -176,7 +178,8 @@ fun AddExerciseToProgramDialog(
 private fun ProgramExerciseSelectItem(
     exercise: Exercise,
     isSelected: Boolean,
-    onToggle: (Long) -> Unit
+    onToggle: (Long) -> Unit,
+    showGroup: Boolean = false,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -210,6 +213,8 @@ private fun ProgramExerciseSelectItem(
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
+                    // The group, in search results only (#278).
+                    if (showGroup) exercise.group?.let { GroupBadge(it) }
                     if (exercise.isFavorite) {
                         Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
                     }

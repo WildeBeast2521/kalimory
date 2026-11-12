@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import android.annotation.SuppressLint
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
@@ -1362,7 +1363,8 @@ private fun ExercisesTabContent(
                             SearchResultExerciseItem(
                                 exercise = exercise,
                                 isSelected = exercise.id in selectedIds,
-                                onToggle = onToggle
+                                onToggle = onToggle,
+                                showGroup = true,
                             )
                         }
                     }
@@ -1796,7 +1798,8 @@ fun AddExerciseGroup(
 fun SearchResultExerciseItem(
     exercise: Exercise,
     isSelected: Boolean,
-    onToggle: (Long) -> Unit
+    onToggle: (Long) -> Unit,
+    showGroup: Boolean = false,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -1830,6 +1833,8 @@ fun SearchResultExerciseItem(
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
+                    // The group, in search results only (#278).
+                    if (showGroup) exercise.group?.let { GroupBadge(it) }
                     if (exercise.isFavorite) {
                         Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
                     }

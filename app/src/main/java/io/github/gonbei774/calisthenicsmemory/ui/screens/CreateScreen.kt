@@ -66,8 +66,17 @@ fun CreateScreen(
 
     // Search state
     var searchQuery by remember { mutableStateOf("") }
-    val searchResults = remember(hierarchicalData, searchQuery) {
-        SearchUtils.searchHierarchicalExercises(hierarchicalData, searchQuery)
+    // Groups are found by the names shown on their cards, "Favorite" and "No group" included (#278).
+    val favoriteLabel = stringResource(R.string.favorite)
+    val noGroupLabel = stringResource(R.string.no_group)
+    val searchResults = remember(hierarchicalData, searchQuery, favoriteLabel, noGroupLabel) {
+        SearchUtils.searchHierarchicalExercises(hierarchicalData, searchQuery) { name ->
+            when (name) {
+                TrainingViewModel.FAVORITE_GROUP_KEY -> favoriteLabel
+                null -> noGroupLabel
+                else -> name
+            }
+        }
     }
 
     // A group's menu, shown beside its own button (ExpandableGroupCard), not at the screen's corner.

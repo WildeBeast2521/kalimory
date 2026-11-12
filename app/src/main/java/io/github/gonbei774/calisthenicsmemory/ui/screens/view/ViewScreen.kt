@@ -719,9 +719,22 @@ fun FilterBottomSheetContent(
     var expandedGroups by remember { mutableStateOf(setOf<String?>()) }
     var searchQuery by remember { mutableStateOf("") }
 
-    // 検索フィルター
-    val filteredHierarchicalData = remember(hierarchicalData, searchQuery) {
-        SearchUtils.searchHierarchicalExercises(hierarchicalData, searchQuery)
+    // 検索フィルター: groups are found by the names shown on them too (#278).
+    val favoriteLabel = stringResource(R.string.favorite)
+    val noGroupLabel = stringResource(R.string.no_group_display)
+    val filteredHierarchicalData = remember(hierarchicalData, searchQuery, favoriteLabel, noGroupLabel) {
+        SearchUtils.searchHierarchicalExercises(hierarchicalData, searchQuery) { name ->
+            when (name) {
+                TrainingViewModel.FAVORITE_GROUP_KEY -> favoriteLabel
+                null -> noGroupLabel
+                else -> name
+            }
+        }
+    }
+    // While searching, every group with a result is open, so the matches show without a tap; a group
+    // can still be closed. Clearing the search closes them again.
+    LaunchedEffect(filteredHierarchicalData, searchQuery.isBlank()) {
+        expandedGroups = if (searchQuery.isBlank()) emptySet() else filteredHierarchicalData.map { it.groupName }.toSet()
     }
 
     Column(
@@ -769,6 +782,15 @@ fun FilterBottomSheetContent(
             }
 
             // 階層表示（アコーディオン式）
+            if (searchQuery.isNotBlank() && filteredHierarchicalData.isEmpty()) {
+                item {
+                    Text(
+                        text = stringResource(R.string.no_results),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
             filteredHierarchicalData.forEach { group ->
                 // グループヘッダー
                 if (group.groupName != null || group.exercises.isNotEmpty()) {
