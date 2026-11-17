@@ -95,7 +95,7 @@
     <string name="no_exercises_available">Nessun esercizio disponibile</string>
     <string name="no_exercises_in_period">Nessun esercizio praticato in %s</string>
     <!-- Settings Screen -->
-    <string name="data_management">Gestione Dati</string>
+    <string name="data_management">I tuoi dati</string>
     <string name="export_data">Esporta Dati</string>
     <string name="import_data">Importa Dati</string>
     <string name="restore_from_backup">Ripristina da Backup</string>
@@ -256,8 +256,7 @@
     <string name="add_to_favorites">Aggiungi ai preferiti</string>
     <string name="remove_from_favorites">Rimuovi dai preferiti</string>
     <!-- Language Settings -->
-    <string name="section_language">Impostazioni Lingua</string>
-    <string name="section_language_description">Cambia la lingua di visualizzazione dell\'app.</string>
+    <string name="section_language">Lingua</string>
     <string name="language_setting">Lingua</string>
     <string name="current_language">Attuale: %s</string>
     <!-- Open Source Licenses -->
@@ -275,12 +274,9 @@
     <string name="settings_prefill_previous">Pre-compila record precedente</string>
     <string name="settings_prefill_previous_description">Compila automaticamente i valori dell\'ultima sessione nelle schermate Registra e Allenamento</string>
     <!-- Workout Settings -->
-    <string name="section_workout_settings">Impostazioni Allenamento</string>
-    <string name="section_workout_settings_description">Personalizza il comportamento della schermata di allenamento.</string>
+    <string name="section_workout_settings">Allenamento</string>
     <string name="start_countdown_setting">Conto alla Rovescia Inizio</string>
     <string name="set_interval_setting">Intervallo Serie</string>
-    <string name="start_countdown_dialog_title">Conto alla Rovescia Inizio</string>
-    <string name="set_interval_dialog_title">Intervallo Serie</string>
     <string name="set_interval_note">Nota: Le impostazioni specifiche dell\'esercizio hanno la priorità se configurate.</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Impostazioni Timer (Opzionale)</string>
@@ -319,13 +315,11 @@
     <!-- Apply Exercise Settings Button -->
     <string name="apply_exercise_settings">Applica Impostazioni Esercizio</string>
     <!-- App Info Section -->
-    <string name="section_app_info">Info App</string>
-    <string name="section_app_info_description">Visualizza informazioni dell\'app e licenze.</string>
+    <string name="section_app_info">Info</string>
     <string name="app_description">App per registrare allenamenti a corpo libero</string>
     <string name="app_version">Versione</string>
     <string name="app_author">Autore</string>
     <string name="app_source_code">Codice Sorgente</string>
-    <string name="app_feedback">Feedback</string>
     <string name="report_issue_github">Segnala problema su GitHub</string>
     <!-- Flash Notification -->
     <string name="flash_notification_setting">Notifica Flash LED</string>
@@ -459,8 +453,8 @@
     <string name="description_optional">Descrizione (Opzionale)</string>
 
     <!-- Theme Settings -->
-    <string name="section_theme">Impostazioni tema</string>
-    <string name="section_theme_description">Cambia l\'aspetto dell\'applicazione.</string>
+    <string name="section_theme">Aspetto</string>
+    <string name="section_week">Settimana e suggerimenti</string>
     <string name="theme_setting">Tema</string>
     <string name="current_theme">Attuale: %s</string>
     <string name="theme_system">Segui il sistema</string>
@@ -868,11 +862,6 @@
         <item quantity="one">… e %d in più</item>
         <item quantity="many">… e %d in più</item>
         <item quantity="other">… e %d in più</item>
-    </plurals>
-    <plurals name="current_seconds">
-        <item quantity="one">Attuale: %d secondo</item>
-        <item quantity="many">Attuale: %d di secondi</item>
-        <item quantity="other">Attuale: %d secondi</item>
     </plurals>
     <plurals name="nav_sets_format">
         <item quantity="one">%1$d / %2$d serie</item>

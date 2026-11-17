@@ -112,7 +112,7 @@
     <string name="no_exercises_available">No exercises available</string>
     <string name="no_exercises_in_period">No exercises worked on in %s</string>
     <!-- Settings Screen -->
-    <string name="data_management">Data management</string>
+    <string name="data_management">Your data</string>
     <string name="export_data">Export data</string>
     <string name="import_data">Import data</string>
     <string name="restore_from_backup">Restore from backup</string>
@@ -322,13 +322,12 @@
     <string name="add_to_favorites">Add to favorites</string>
     <string name="remove_from_favorites">Remove from favorites</string>
     <!-- Language Settings -->
-    <string name="section_language">Language settings</string>
-    <string name="section_language_description">Change the app display language.</string>
+    <string name="section_language">Language</string>
     <string name="language_setting">Language</string>
     <string name="current_language">Current: %s</string>
     <!-- Theme Settings -->
-    <string name="section_theme">Theme settings</string>
-    <string name="section_theme_description">Change the app appearance.</string>
+    <string name="section_theme">Appearance</string>
+    <string name="section_week">Week and suggestions</string>
     <string name="theme_setting">Theme</string>
     <string name="current_theme">Current: %s</string>
     <string name="theme_system">Follow system</string>
@@ -350,12 +349,9 @@
     <string name="settings_prefill_previous">Pre-fill previous record</string>
     <string name="settings_prefill_previous_description">Auto-fill values from the last session in Record and Workout screens</string>
     <!-- Workout Settings -->
-    <string name="section_workout_settings">Workout settings</string>
-    <string name="section_workout_settings_description">Customize workout screen behavior.</string>
+    <string name="section_workout_settings">Workouts</string>
     <string name="start_countdown_setting">Start countdown</string>
     <string name="set_interval_setting">Rest between sets</string>
-    <string name="start_countdown_dialog_title">Start countdown</string>
-    <string name="set_interval_dialog_title">Rest between sets</string>
     <string name="set_interval_note">Note: Exercise-specific settings take priority if configured.</string>
     <string name="flash_notification_setting">LED flash notification</string>
     <string name="flash_notification_description">Flash LED in sync with sounds during workout</string>
@@ -387,13 +383,11 @@
     <!-- Apply Exercise Settings Button -->
     <string name="apply_exercise_settings">Apply exercise settings</string>
     <!-- App Info Section -->
-    <string name="section_app_info">App info</string>
-    <string name="section_app_info_description">View app information and licenses.</string>
+    <string name="section_app_info">About</string>
     <string name="app_description">Calm, offline bodyweight training</string>
     <string name="app_version">Version</string>
     <string name="app_author">Author</string>
     <string name="app_source_code">Source code</string>
-    <string name="app_feedback">Feedback</string>
     <string name="report_issue_github">Report issue on GitHub</string>
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
@@ -858,10 +852,6 @@
     <plurals name="csv_import_more_items">
         <item quantity="one">… and %d more</item>
         <item quantity="other">… and %d more</item>
-    </plurals>
-    <plurals name="current_seconds">
-        <item quantity="one">Current: %d second</item>
-        <item quantity="other">Current: %d seconds</item>
     </plurals>
     <plurals name="nav_sets_format">
         <item quantity="one">%1$d / %2$d set</item>

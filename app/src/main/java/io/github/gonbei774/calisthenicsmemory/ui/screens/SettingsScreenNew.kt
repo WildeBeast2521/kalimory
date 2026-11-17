@@ -1,5 +1,11 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingChoiceRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingValueRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingSwitchRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingLinkRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsGroup
 import androidx.core.net.toUri
 import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepper
@@ -75,78 +81,27 @@ fun SettingsScreenNew(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(horizontal = Spacing.l, vertical = Spacing.m),
+            verticalArrangement = Arrangement.spacedBy(Spacing.xl)
         ) {
-            // ========================================
-            // セクション: 言語設定
-            // ========================================
-
-            // セクションタイトルと説明
-            item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.section_language),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.section_language_description),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        lineHeight = 20.sp
-                    )
-                }
-            }
-
-            // 言語選択カード
+            // Language
             item {
                 val languagePrefs = remember { LanguagePreferences(context) }
                 var selectedLanguage by remember { mutableStateOf(languagePrefs.getLanguage()) }
                 var showLanguageDialog by remember { mutableStateOf(false) }
 
-
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    onClick = { showLanguageDialog = true }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Language, contentDescription = null, modifier = Modifier.size(24.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.language_setting),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(
-                                    R.string.current_language,
-                                    if (selectedLanguage == AppLanguage.SYSTEM) stringResource(R.string.theme_system) else selectedLanguage.nativeName
-                                ),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                    }
+                SettingsGroup(stringResource(R.string.section_language)) {
+                    SettingLinkRow(
+                        title = stringResource(R.string.language_setting),
+                        description = stringResource(
+                            R.string.current_language,
+                            if (selectedLanguage == AppLanguage.SYSTEM) stringResource(R.string.theme_system) else selectedLanguage.nativeName
+                        ),
+                        icon = AppIcons.Language,
+                        onClick = { showLanguageDialog = true },
+                    )
                 }
 
-                // 言語選択ダイアログ
                 if (showLanguageDialog) {
                     AlertDialog(
                         onDismissRequest = { showLanguageDialog = false },
@@ -173,13 +128,10 @@ fun SettingsScreenNew(
                                             }
                                         ),
                                         onClick = {
-                                            android.util.Log.d("SettingsScreen", "Language selected: ${language.code}")
                                             selectedLanguage = language
                                             languagePrefs.setLanguage(language)
-                                            android.util.Log.d("SettingsScreen", "Language saved, recreating activity")
                                             showLanguageDialog = false
-
-                                            // Activity を再作成して言語を適用
+                                            // The activity is recreated so the language applies.
                                             (context as? Activity)?.recreate()
                                         }
                                     ) {
@@ -187,7 +139,7 @@ fun SettingsScreenNew(
                                             text = if (language == AppLanguage.SYSTEM) stringResource(R.string.theme_system) else language.nativeName,
                                             modifier = Modifier.padding(16.dp),
                                             color = MaterialTheme.colorScheme.onSurface,
-                                            fontSize = 16.sp
+                                            style = MaterialTheme.typography.bodyLarge
                                         )
                                     }
                                 }
@@ -202,33 +154,7 @@ fun SettingsScreenNew(
                 }
             }
 
-            // ========================================
-            // セクション: テーマ設定
-            // ========================================
-
-            // セクションタイトルと説明
-            item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.section_theme),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.section_theme_description),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        lineHeight = 20.sp
-                    )
-                }
-            }
-
-            // Theme: an Expressive connected button group, chosen in place.
+            // Appearance
             item {
                 @Composable
                 fun themeName(theme: AppTheme) = when (theme) {
@@ -237,28 +163,12 @@ fun SettingsScreenNew(
                     AppTheme.DARK -> stringResource(R.string.theme_dark)
                     AppTheme.AMOLED -> stringResource(R.string.theme_amoled)
                 }
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                    shape = MaterialTheme.shapes.large,
-                ) {
-                    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.m), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Icon(AppIcons.Theme, contentDescription = null, modifier = Modifier.size(24.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(R.string.theme_setting),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = stringResource(R.string.current_theme, themeName(currentTheme)),
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                        }
+                SettingsGroup(stringResource(R.string.section_theme)) {
+                    SettingChoiceRow(
+                        title = stringResource(R.string.theme_setting),
+                        description = stringResource(R.string.current_theme, themeName(currentTheme)),
+                        icon = AppIcons.Theme,
+                    ) {
                         ConnectedChoices(
                             options = AppTheme.entries,
                             selected = currentTheme,
@@ -267,46 +177,20 @@ fun SettingsScreenNew(
                             label = { if (it == AppTheme.SYSTEM) stringResource(R.string.theme_system_short) else themeName(it) },
                         )
                     }
-                }
-            }
-
-            // Wallpaper colours (Material You), Android 12+ only
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                item {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                        shape = MaterialTheme.shapes.large
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                // The whole row toggles, not only the small switch.
-                                .toggleable(value = dynamicColor, role = Role.Switch, onValueChange = onDynamicColorChange)
-                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(R.string.dynamic_color_title),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = stringResource(R.string.dynamic_color_description),
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                            Switch(checked = dynamicColor, onCheckedChange = null)
-                        }
+                    // Wallpaper colours (Material You), Android 12+ only
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                        SettingSwitchRow(
+                            title = stringResource(R.string.dynamic_color_title),
+                            description = stringResource(R.string.dynamic_color_description),
+                            checked = dynamicColor,
+                            onCheckedChange = onDynamicColorChange,
+                            icon = AppIcons.Theme,
+                        )
                     }
                 }
             }
 
-            // First day of the week, used by Today's week strip, the Progress calendar and To Do.
+            // Week and suggestions
             item {
                 val locale = LocalConfiguration.current.locales[0]
                 val automaticDay = java.time.temporal.WeekFields.of(locale).firstDayOfWeek
@@ -316,28 +200,15 @@ fun SettingsScreenNew(
                 val current = firstDayOfWeek?.let(::dayName) ?: automaticLabel
                 // null stands for "Automatic", which follows the language's own week.
                 val options = listOf<java.time.DayOfWeek?>(null, java.time.DayOfWeek.MONDAY, java.time.DayOfWeek.SATURDAY, java.time.DayOfWeek.SUNDAY)
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                    shape = MaterialTheme.shapes.large,
-                ) {
-                    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.m), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Icon(AppIcons.Today, contentDescription = null, modifier = Modifier.size(24.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(R.string.first_day_of_week),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = current,
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                        }
+                val weeklyGoal by viewModel.weeklyGoal.collectAsState()
+                val showSuggestions by viewModel.showSuggestions.collectAsState()
+                @Composable
+                fun goalLabel(days: Int?) =
+                    if (days == null) stringResource(R.string.weekly_goal_off) else stringResource(R.string.weekly_goal_days, days)
+
+                SettingsGroup(stringResource(R.string.section_week)) {
+                    // The first day is used by Today's week strip, the Progress calendar and To Do.
+                    SettingChoiceRow(title = stringResource(R.string.first_day_of_week), description = current, icon = AppIcons.Today) {
                         ConnectedChoices(
                             options = options,
                             selected = firstDayOfWeek,
@@ -346,109 +217,28 @@ fun SettingsScreenNew(
                             description = { day -> day?.let(::dayName) ?: automaticLabel },
                         )
                     }
-                }
-            }
-
-            // Weekly goal (ADR 0005, decision 6): training days a week, which Today counts against.
-            item {
-                val weeklyGoal by viewModel.weeklyGoal.collectAsState()
-                @Composable
-                fun label(days: Int?) =
-                    if (days == null) stringResource(R.string.weekly_goal_off) else stringResource(R.string.weekly_goal_days, days)
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                    shape = MaterialTheme.shapes.large,
-                ) {
-                    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.m), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Icon(AppIcons.Done, contentDescription = null, modifier = Modifier.size(24.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(R.string.weekly_goal),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = label(weeklyGoal),
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                        }
+                    // Training days a week, which Today counts against.
+                    SettingChoiceRow(title = stringResource(R.string.weekly_goal), description = goalLabel(weeklyGoal), icon = AppIcons.Done) {
                         ConnectedChoices(
                             options = listOf<Int?>(null) + ProgressionPreferences.WEEKLY_GOAL_RANGE,
                             selected = weeklyGoal,
                             onSelect = { days -> viewModel.setWeeklyGoal(days) },
                             label = { days -> days?.toString() ?: stringResource(R.string.weekly_goal_off) },
-                            description = { days -> label(days) },
+                            description = { days -> goalLabel(days) },
                         )
                     }
-                }
-            }
-
-            // Today's suggestions (ADR 0005, decision 1): on by default, and hidden entirely when off.
-            item {
-                val showSuggestions by viewModel.showSuggestions.collectAsState()
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                    shape = MaterialTheme.shapes.large
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .toggleable(value = showSuggestions, role = Role.Switch, onValueChange = viewModel::setShowSuggestions)
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.settings_suggestions),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.settings_suggestions_description),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                        Switch(checked = showSuggestions, onCheckedChange = null)
-                    }
-                }
-            }
-
-            // ========================================
-            // セクション: ワークアウト設定
-            // ========================================
-
-            // セクションタイトルと説明
-            item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.section_workout_settings),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.section_workout_settings_description),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        lineHeight = 20.sp
+                    // On by default, and hidden entirely when off.
+                    SettingSwitchRow(
+                        title = stringResource(R.string.settings_suggestions),
+                        description = stringResource(R.string.settings_suggestions_description),
+                        checked = showSuggestions,
+                        onCheckedChange = viewModel::setShowSuggestions,
+                        icon = AppIcons.Chart,
                     )
                 }
             }
 
-            // ワークアウト設定カード
+            // Workouts
             item {
                 val workoutPrefs = remember { io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences(context) }
                 var prefillEnabled by remember { mutableStateOf(workoutPrefs.isPrefillPreviousRecordEnabled()) }
@@ -461,824 +251,170 @@ fun SettingsScreenNew(
                 var flashNotificationEnabled by remember { mutableStateOf(workoutPrefs.isFlashNotificationEnabled()) }
                 var keepScreenOnEnabled by remember { mutableStateOf(workoutPrefs.isKeepScreenOnEnabled()) }
                 var setDoneVibrationEnabled by remember { mutableStateOf(workoutPrefs.isSetDoneVibrationEnabled()) }
-                var showStartCountdownDialog by remember { mutableStateOf(false) }
-                var showSetIntervalDialog by remember { mutableStateOf(false) }
 
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    // プリフィル設定
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                        ),
-                        shape = MaterialTheme.shapes.large
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(AppIcons.RecordManually, contentDescription = null, modifier = Modifier.size(24.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(R.string.settings_prefill_previous),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = stringResource(R.string.settings_prefill_previous_description),
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                            Switch(
-                                checked = prefillEnabled,
-                                onCheckedChange = { enabled ->
-                                    prefillEnabled = enabled
-                                    workoutPrefs.setPrefillPreviousRecordEnabled(enabled)
-                                }
-                            )
-                        }
-                    }
-
-                    // Warm-up sets (ADR 0012): off by default; turning it off hides the control only.
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                        shape = MaterialTheme.shapes.large
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .toggleable(value = warmUpMarking, role = Role.Switch, onValueChange = { enabled ->
-                                    warmUpMarking = enabled
-                                    workoutPrefs.setWarmUpMarkingEnabled(enabled)
-                                })
-                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(AppIcons.Exercise, contentDescription = null, modifier = Modifier.size(24.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(R.string.settings_warm_up_sets),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = stringResource(R.string.settings_warm_up_sets_description),
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                            Switch(checked = warmUpMarking, onCheckedChange = null)
-                        }
-                    }
-
-                    // Effort per set (ADR 0012): off by default; turning it off hides the control only.
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                        shape = MaterialTheme.shapes.large
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .toggleable(value = effortRating, role = Role.Switch, onValueChange = { enabled ->
-                                    effortRating = enabled
-                                    workoutPrefs.setEffortRatingEnabled(enabled)
-                                })
-                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(AppIcons.Chart, contentDescription = null, modifier = Modifier.size(24.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(R.string.settings_effort),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = stringResource(R.string.settings_effort_description),
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                            Switch(checked = effortRating, onCheckedChange = null)
-                        }
-                    }
-
-                    // 開始カウントダウン設定
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                        ),
-                        shape = MaterialTheme.shapes.large,
-                        onClick = { if (startCountdownEnabled) showStartCountdownDialog = true }
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(AppIcons.Timer, contentDescription = null, modifier = Modifier.size(24.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(R.string.start_countdown_setting),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = countText(R.plurals.current_seconds, startCountdown),
-                                    fontSize = 14.sp,
-                                    color = if (startCountdownEnabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                            Switch(
-                                checked = startCountdownEnabled,
-                                onCheckedChange = { enabled ->
-                                    startCountdownEnabled = enabled
-                                    workoutPrefs.setStartCountdownEnabled(enabled)
-                                }
-                            )
-                        }
-                    }
-
-                    // セット間インターバル設定
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                        ),
-                        shape = MaterialTheme.shapes.large,
-                        onClick = { if (setIntervalEnabled) showSetIntervalDialog = true }
-                    ) {
-                        Column {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(AppIcons.Rest, contentDescription = null, modifier = Modifier.size(24.dp))
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text(
-                                        text = stringResource(R.string.set_interval_setting),
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                    )
-                                    Text(
-                                        text = countText(R.plurals.current_seconds, setInterval),
-                                        fontSize = 14.sp,
-                                        color = if (setIntervalEnabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                                        modifier = Modifier.padding(top = 4.dp)
-                                    )
-                                }
-                                Switch(
-                                    checked = setIntervalEnabled,
-                                    onCheckedChange = { enabled ->
-                                        setIntervalEnabled = enabled
-                                        workoutPrefs.setSetIntervalEnabled(enabled)
-                                    }
-                                )
-                            }
-                            // 注意書き
-                            Text(
-                                text = stringResource(R.string.set_interval_note),
-                                fontSize = 12.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(start = 68.dp, end = 20.dp, bottom = 16.dp)
-                            )
-                        }
-                    }
-
-                    // LEDフラッシュ通知設定
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                        ),
-                        shape = MaterialTheme.shapes.large
-                    ) {
-                        Column {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(AppIcons.Camera, contentDescription = null, modifier = Modifier.size(24.dp))
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text(
-                                        text = stringResource(R.string.flash_notification_setting),
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                    )
-                                    Text(
-                                        text = stringResource(R.string.flash_notification_description),
-                                        fontSize = 14.sp,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        modifier = Modifier.padding(top = 4.dp)
-                                    )
-                                }
-                                Switch(
-                                    checked = flashNotificationEnabled,
-                                    onCheckedChange = { enabled ->
-                                        flashNotificationEnabled = enabled
-                                        workoutPrefs.setFlashNotificationEnabled(enabled)
-                                    }
-                                )
-                            }
-                        }
-                    }
-
-                    // 画面オン維持設定
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                        ),
-                        shape = MaterialTheme.shapes.large
-                    ) {
-                        Column {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(AppIcons.Brightness, contentDescription = null, modifier = Modifier.size(24.dp))
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text(
-                                        text = stringResource(R.string.keep_screen_on_setting),
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                    )
-                                    Text(
-                                        text = stringResource(R.string.keep_screen_on_description),
-                                        fontSize = 14.sp,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        modifier = Modifier.padding(top = 4.dp)
-                                    )
-                                }
-                                Switch(
-                                    checked = keepScreenOnEnabled,
-                                    onCheckedChange = { enabled ->
-                                        keepScreenOnEnabled = enabled
-                                        workoutPrefs.setKeepScreenOnEnabled(enabled)
-                                    }
-                                )
-                            }
-                        }
-                    }
-
-                    // セット完了時の振動
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                        ),
-                        shape = MaterialTheme.shapes.large
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(AppIcons.Vibration, contentDescription = null, modifier = Modifier.size(24.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(R.string.set_done_vibration_setting),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = stringResource(R.string.set_done_vibration_description),
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                            Switch(
-                                checked = setDoneVibrationEnabled,
-                                onCheckedChange = { enabled ->
-                                    setDoneVibrationEnabled = enabled
-                                    workoutPrefs.setSetDoneVibrationEnabled(enabled)
-                                }
-                            )
-                        }
-                    }
-                }
-
-                // 開始カウントダウン設定ダイアログ
-                if (showStartCountdownDialog) {
-                    var inputValue by remember { mutableStateOf(startCountdown.toString()) }
-
-                    AlertDialog(
-                        onDismissRequest = { showStartCountdownDialog = false },
-                        title = {
-                            Text(
-                                text = stringResource(R.string.start_countdown_dialog_title),
-                                fontWeight = FontWeight.Bold
-                            )
+                SettingsGroup(stringResource(R.string.section_workout_settings)) {
+                    SettingSwitchRow(
+                        title = stringResource(R.string.settings_prefill_previous),
+                        description = stringResource(R.string.settings_prefill_previous_description),
+                        checked = prefillEnabled,
+                        onCheckedChange = { enabled ->
+                            prefillEnabled = enabled
+                            workoutPrefs.setPrefillPreviousRecordEnabled(enabled)
                         },
-                        text = {
-                            NumberStepper(value = inputValue, onValueChange = { inputValue = it }, unit = stringResource(R.string.unit_seconds_short), max = 60)
-                        },
-                        confirmButton = {
-                            TextButton(
-                                onClick = {
-                                    val newValue = inputValue.toIntOrNull() ?: io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences.DEFAULT_START_COUNTDOWN
-                                    workoutPrefs.setStartCountdown(newValue)
-                                    startCountdown = newValue
-                                    showStartCountdownDialog = false
-                                },
-                                colors = ButtonDefaults.textButtonColors(
-                                    contentColor = MaterialTheme.colorScheme.primary
-                                )
-                            ) {
-                                Text(stringResource(R.string.save))
-                            }
-                        },
-                        dismissButton = {
-                            TextButton(onClick = { showStartCountdownDialog = false }) {
-                                Text(stringResource(R.string.cancel))
-                            }
-                        }
+                        icon = AppIcons.RecordManually,
                     )
-                }
-
-                // セット間インターバル設定ダイアログ
-                if (showSetIntervalDialog) {
-                    var inputValue by remember { mutableStateOf(setInterval.toString()) }
-                    val maxInterval = io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences.MAX_SET_INTERVAL
-
-                    AlertDialog(
-                        onDismissRequest = { showSetIntervalDialog = false },
-                        title = {
-                            Text(
-                                text = stringResource(R.string.set_interval_dialog_title),
-                                fontWeight = FontWeight.Bold
-                            )
+                    // Warm-up sets and effort (ADR 0012): off by default; turning one off hides its control only.
+                    SettingSwitchRow(
+                        title = stringResource(R.string.settings_warm_up_sets),
+                        description = stringResource(R.string.settings_warm_up_sets_description),
+                        checked = warmUpMarking,
+                        onCheckedChange = { enabled ->
+                            warmUpMarking = enabled
+                            workoutPrefs.setWarmUpMarkingEnabled(enabled)
                         },
-                        text = {
-                            NumberStepper(value = inputValue, onValueChange = { inputValue = it }, unit = stringResource(R.string.unit_seconds_short), step = 5, min = 1, max = maxInterval)
+                        icon = AppIcons.Exercise,
+                    )
+                    SettingSwitchRow(
+                        title = stringResource(R.string.settings_effort),
+                        description = stringResource(R.string.settings_effort_description),
+                        checked = effortRating,
+                        onCheckedChange = { enabled ->
+                            effortRating = enabled
+                            workoutPrefs.setEffortRatingEnabled(enabled)
                         },
-                        confirmButton = {
-                            TextButton(
-                                onClick = {
-                                    val newValue = (inputValue.toIntOrNull() ?: io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences.DEFAULT_SET_INTERVAL)
-                                        .coerceIn(1, maxInterval)
-                                    workoutPrefs.setSetInterval(newValue)
-                                    setInterval = newValue
-                                    showSetIntervalDialog = false
-                                },
-                                colors = ButtonDefaults.textButtonColors(
-                                    contentColor = MaterialTheme.colorScheme.primary
-                                )
-                            ) {
-                                Text(stringResource(R.string.save))
-                            }
+                        icon = AppIcons.Chart,
+                    )
+                    SettingValueRow(
+                        title = stringResource(R.string.start_countdown_setting),
+                        checked = startCountdownEnabled,
+                        onCheckedChange = { enabled ->
+                            startCountdownEnabled = enabled
+                            workoutPrefs.setStartCountdownEnabled(enabled)
                         },
-                        dismissButton = {
-                            TextButton(onClick = { showSetIntervalDialog = false }) {
-                                Text(stringResource(R.string.cancel))
-                            }
-                        }
+                        value = startCountdown,
+                        onValueChange = { seconds ->
+                            startCountdown = seconds
+                            workoutPrefs.setStartCountdown(seconds)
+                        },
+                        unit = stringResource(R.string.unit_seconds_short),
+                        icon = AppIcons.Timer,
+                        max = 60,
+                    )
+                    SettingValueRow(
+                        title = stringResource(R.string.set_interval_setting),
+                        description = stringResource(R.string.set_interval_note),
+                        checked = setIntervalEnabled,
+                        onCheckedChange = { enabled ->
+                            setIntervalEnabled = enabled
+                            workoutPrefs.setSetIntervalEnabled(enabled)
+                        },
+                        value = setInterval,
+                        onValueChange = { seconds ->
+                            setInterval = seconds
+                            workoutPrefs.setSetInterval(seconds)
+                        },
+                        unit = stringResource(R.string.unit_seconds_short),
+                        icon = AppIcons.Rest,
+                        step = 5,
+                        max = io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences.MAX_SET_INTERVAL,
+                    )
+                    SettingSwitchRow(
+                        title = stringResource(R.string.flash_notification_setting),
+                        description = stringResource(R.string.flash_notification_description),
+                        checked = flashNotificationEnabled,
+                        onCheckedChange = { enabled ->
+                            flashNotificationEnabled = enabled
+                            workoutPrefs.setFlashNotificationEnabled(enabled)
+                        },
+                        icon = AppIcons.Camera,
+                    )
+                    SettingSwitchRow(
+                        title = stringResource(R.string.keep_screen_on_setting),
+                        description = stringResource(R.string.keep_screen_on_description),
+                        checked = keepScreenOnEnabled,
+                        onCheckedChange = { enabled ->
+                            keepScreenOnEnabled = enabled
+                            workoutPrefs.setKeepScreenOnEnabled(enabled)
+                        },
+                        icon = AppIcons.Brightness,
+                    )
+                    SettingSwitchRow(
+                        title = stringResource(R.string.set_done_vibration_setting),
+                        description = stringResource(R.string.set_done_vibration_description),
+                        checked = setDoneVibrationEnabled,
+                        onCheckedChange = { enabled ->
+                            setDoneVibrationEnabled = enabled
+                            workoutPrefs.setSetDoneVibrationEnabled(enabled)
+                        },
+                        icon = AppIcons.Vibration,
                     )
                 }
             }
 
-            // ========================================
-            // セクション: データ管理
-            // ========================================
-
-            // セクションタイトル
+            // Your data
             item {
-                Text(
-                    text = stringResource(R.string.data_management),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-            }
-
-            // ナビゲーションカード: 完全バックアップ
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    onClick = { onNavigateToBackup() }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Save, contentDescription = null, modifier = Modifier.size(24.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.section_full_backup),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.section_full_backup_description),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp),
-                                maxLines = 4
-                            )
-                        }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                }
-            }
-
-            // ナビゲーションカード: 部分データ管理 (CSV)
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    onClick = { onNavigateToCsvDataManagement() }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.List, contentDescription = null, modifier = Modifier.size(24.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.section_partial_data_management),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.section_partial_data_management_description),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp),
-                                maxLines = 2
-                            )
-                        }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                }
-            }
-
-            // ナビゲーションカード: Share
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    onClick = { onNavigateToShareHub() }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Share, contentDescription = null, modifier = Modifier.size(24.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.share_section_title),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.share_section_description),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp),
-                                maxLines = 2
-                            )
-                        }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                }
-            }
-
-            // ========================================
-            // セクション: アプリ情報
-            // ========================================
-
-            // セクションタイトルと説明
-            item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.section_app_info),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 4.dp)
+                SettingsGroup(stringResource(R.string.data_management)) {
+                    SettingLinkRow(
+                        title = stringResource(R.string.section_full_backup),
+                        description = stringResource(R.string.section_full_backup_description),
+                        icon = AppIcons.Save,
+                        onClick = onNavigateToBackup,
                     )
-                    Text(
-                        text = stringResource(R.string.section_app_info_description),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        lineHeight = 20.sp
+                    SettingLinkRow(
+                        title = stringResource(R.string.section_partial_data_management),
+                        description = stringResource(R.string.section_partial_data_management_description),
+                        icon = AppIcons.List,
+                        onClick = onNavigateToCsvDataManagement,
+                    )
+                    SettingLinkRow(
+                        title = stringResource(R.string.share_section_title),
+                        description = stringResource(R.string.share_section_description),
+                        icon = AppIcons.Share,
+                        onClick = onNavigateToShareHub,
                     )
                 }
             }
 
-            // アプリ情報カード
+            // About
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large
-                ) {
+                SettingsGroup(stringResource(R.string.section_app_info)) {
                     Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.m),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // アプリ名と説明（中央揃え）
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = stringResource(R.string.app_name),
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.app_description),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-
-                        // バージョン
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = AppIcons.Info,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Column {
-                                Text(
-                                    text = stringResource(R.string.app_version),
-                                    fontSize = 16.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = BuildConfig.VERSION_NAME,
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-
-                        // ソースコード
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    val intent = Intent(Intent.ACTION_VIEW, REPOSITORY_URL.toUri())
-                                    context.startActivity(intent)
-                                },
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = AppIcons.SourceCode,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Text(
-                                text = stringResource(R.string.app_source_code),
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Spacer(Modifier.weight(1f))
-                            // Every link in About shows where it leads, like the rows above.
-                            Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-
-                        // 使用許諾（ライセンス）
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { onNavigateToLicenses() },
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(AppIcons.Document, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                            Text(
-                                text = stringResource(R.string.open_source_licenses),
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Spacer(Modifier.weight(1f))
-                            // Every link in About shows where it leads, like the rows above.
-                            Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-
-                        // The welcome guide from the first launch, again.
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { onOpenWelcomeGuide() },
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(AppIcons.Info, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                            Text(
-                                text = stringResource(R.string.settings_welcome_guide),
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Spacer(Modifier.weight(1f))
-                            // Every link in About shows where it leads, like the rows above.
-                            Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    }
-                }
-            }
-
-            // 著者カード
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        // セクションタイトル
                         Text(
-                            text = stringResource(R.string.app_author),
-                            fontSize = 14.sp,
+                            text = stringResource(R.string.app_name),
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = stringResource(R.string.app_description),
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-
-                        // Kalimory's maintainer, then the original author (GPL-3.0 attribution).
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = AppIcons.Exercise,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Text(
-                                text = "WildeBeast2521",
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-
-                        // 開発者
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = AppIcons.Exercise,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Text(
-                                text = "Gonbei774",
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-
-                        // The upstream project this app is based on (GPL-3.0 attribution).
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    context.startActivity(Intent(Intent.ACTION_VIEW, UPSTREAM_URL.toUri()))
-                                },
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = AppIcons.SourceCode,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Text(
-                                text = stringResource(R.string.app_original_project),
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Spacer(Modifier.weight(1f))
-                            // Every link in About shows where it leads, like the rows above.
-                            Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
                     }
-                }
-            }
-
-            // フィードバックカード
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        // セクションタイトル
-                        Text(
-                            text = stringResource(R.string.app_feedback),
-                            fontSize = 14.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-
-                        // GitHubで問題を報告
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    val intent = Intent(Intent.ACTION_VIEW, "$REPOSITORY_URL/issues".toUri())
-                                    context.startActivity(intent)
-                                },
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(AppIcons.RecordManually, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                            Text(
-                                text = stringResource(R.string.report_issue_github),
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Spacer(Modifier.weight(1f))
-                            // Every link in About shows where it leads, like the rows above.
-                            Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    }
+                    SettingRow(title = stringResource(R.string.app_version), description = BuildConfig.VERSION_NAME, icon = AppIcons.Info)
+                    SettingLinkRow(
+                        title = stringResource(R.string.app_source_code),
+                        icon = AppIcons.SourceCode,
+                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, REPOSITORY_URL.toUri())) },
+                    )
+                    SettingLinkRow(title = stringResource(R.string.open_source_licenses), icon = AppIcons.Document, onClick = onNavigateToLicenses)
+                    // The welcome guide from the first launch, again.
+                    SettingLinkRow(title = stringResource(R.string.settings_welcome_guide), icon = AppIcons.Info, onClick = onOpenWelcomeGuide)
+                    SettingLinkRow(
+                        title = stringResource(R.string.report_issue_github),
+                        icon = AppIcons.RecordManually,
+                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, "$REPOSITORY_URL/issues".toUri())) },
+                    )
+                    // Kalimory's maintainer, then the original author and project (GPL-3.0 attribution).
+                    SettingRow(title = "WildeBeast2521", description = stringResource(R.string.app_author), icon = AppIcons.Exercise)
+                    SettingRow(title = "Gonbei774", icon = AppIcons.Exercise)
+                    SettingLinkRow(
+                        title = stringResource(R.string.app_original_project),
+                        icon = AppIcons.SourceCode,
+                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, UPSTREAM_URL.toUri())) },
+                    )
                 }
             }
         }

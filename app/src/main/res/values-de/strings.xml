@@ -93,7 +93,7 @@
     <string name="no_exercises_available">Keine Übungen verfügbar</string>
     <string name="no_exercises_in_period">Keine Übungen in %s durchgeführt</string>
     <!-- Settings Screen -->
-    <string name="data_management">Datenverwaltung</string>
+    <string name="data_management">Deine Daten</string>
     <string name="export_data">Daten exportieren</string>
     <string name="import_data">Daten importieren</string>
     <string name="restore_from_backup">Aus Sicherung wiederherstellen</string>
@@ -252,8 +252,7 @@
     <string name="add_to_favorites">Zu Favoriten hinzufügen</string>
     <string name="remove_from_favorites">Aus Favoriten entfernen</string>
     <!-- Language Settings -->
-    <string name="section_language">Spracheinstellungen</string>
-    <string name="section_language_description">Anzeigesprache der App ändern.</string>
+    <string name="section_language">Sprache</string>
     <string name="language_setting">Sprache</string>
     <string name="current_language">Aktuell: %s</string>
     <!-- Open Source Licenses -->
@@ -271,12 +270,9 @@
     <string name="settings_prefill_previous">Vorherigen Eintrag vorausfüllen</string>
     <string name="settings_prefill_previous_description">Werte der letzten Einheit automatisch in Aufnahme- und Traninigsfeldern ausfüllen</string>
     <!-- Workout Settings -->
-    <string name="section_workout_settings">Trainingseinstellungen</string>
-    <string name="section_workout_settings_description">Verhalten des Trainingsbildschirms anpassen.</string>
+    <string name="section_workout_settings">Training</string>
     <string name="start_countdown_setting">Start-Countdown</string>
     <string name="set_interval_setting">Satzpause</string>
-    <string name="start_countdown_dialog_title">Start-Countdown</string>
-    <string name="set_interval_dialog_title">Satzpause</string>
     <string name="set_interval_note">Hinweis: Übungsspezifische Einstellungen haben Vorrang, falls konfiguriert.</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Timer-Einstellungen (optional)</string>
@@ -315,13 +311,11 @@
     <!-- Apply Exercise Settings Button -->
     <string name="apply_exercise_settings">Übungseinstellungen anwenden</string>
     <!-- App Info Section -->
-    <string name="section_app_info">App-Info</string>
-    <string name="section_app_info_description">App-Informationen und Lizenzen anzeigen.</string>
+    <string name="section_app_info">Info</string>
     <string name="app_description">Eigengewichtstraining Aufzeichnungs-App</string>
     <string name="app_version">Version</string>
     <string name="app_author">Autor</string>
     <string name="app_source_code">Quellcode</string>
-    <string name="app_feedback">Feedback</string>
     <string name="report_issue_github">Problem auf GitHub melden</string>
     <!-- Flash Notification -->
     <string name="flash_notification_setting">LED-Blitz-Benachrichtigung</string>
@@ -453,8 +447,8 @@
     <string name="loop_number_format">Schleife %d</string>
     <string name="exercise_type_dynamic">Dynamisch</string>
     <string name="exercise_type_isometric">Isometrisch</string>
-    <string name="section_theme">Designeinstellungen</string>
-    <string name="section_theme_description">Das Erscheinungsbild der App ändern.</string>
+    <string name="section_theme">Darstellung</string>
+    <string name="section_week">Woche und Vorschläge</string>
     <string name="theme_setting">Design</string>
     <string name="current_theme">Aktuell: %s</string>
     <string name="theme_system">Systemeinstellung folgen</string>
@@ -849,10 +843,6 @@
     <plurals name="csv_import_more_items">
         <item quantity="one">… und %d weiteres</item>
         <item quantity="other">… und %d weitere</item>
-    </plurals>
-    <plurals name="current_seconds">
-        <item quantity="one">Aktuell: %d Sekunde</item>
-        <item quantity="other">Aktuell: %d Sekunden</item>
     </plurals>
     <plurals name="nav_sets_format">
         <item quantity="one">%1$d / %2$d Satz</item>

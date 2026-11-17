@@ -95,7 +95,7 @@
     <string name="no_exercises_available">Aucun exercice disponible</string>
     <string name="no_exercises_in_period">Aucun exercice effectué dans %s</string>
     <!-- Settings Screen -->
-    <string name="data_management">Gestion des Données</string>
+    <string name="data_management">Vos données</string>
     <string name="export_data">Exporter les Données</string>
     <string name="import_data">Importer les Données</string>
     <string name="restore_from_backup">Restaurer depuis une Sauvegarde</string>
@@ -256,8 +256,7 @@
     <string name="add_to_favorites">Ajouter aux favoris</string>
     <string name="remove_from_favorites">Retirer des favoris</string>
     <!-- Language Settings -->
-    <string name="section_language">Paramètres de Langue</string>
-    <string name="section_language_description">Changer la langue d\'affichage de l\'application.</string>
+    <string name="section_language">Langue</string>
     <string name="language_setting">Langue</string>
     <string name="current_language">Actuelle : %s</string>
     <!-- Open Source Licenses -->
@@ -275,12 +274,9 @@
     <string name="settings_prefill_previous">Pré-remplir l\'enregistrement précédent</string>
     <string name="settings_prefill_previous_description">Remplir automatiquement les valeurs de la dernière séance dans les écrans Enregistrement et Entraînement</string>
     <!-- Workout Settings -->
-    <string name="section_workout_settings">Paramètres d\'Entraînement</string>
-    <string name="section_workout_settings_description">Personnaliser le comportement de l\'écran d\'entraînement.</string>
+    <string name="section_workout_settings">Entraînement</string>
     <string name="start_countdown_setting">Compte à Rebours de Départ</string>
     <string name="set_interval_setting">Intervalle entre Séries</string>
-    <string name="start_countdown_dialog_title">Compte à Rebours de Départ</string>
-    <string name="set_interval_dialog_title">Intervalle entre Séries</string>
     <string name="set_interval_note">Remarque : Les paramètres spécifiques à l\'exercice ont la priorité s\'ils sont configurés.</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Paramètres du Minuteur (Optionnel)</string>
@@ -319,13 +315,11 @@
     <!-- Apply Exercise Settings Button -->
     <string name="apply_exercise_settings">Appliquer les Paramètres de l\'Exercice</string>
     <!-- App Info Section -->
-    <string name="section_app_info">Infos sur l\'Application</string>
-    <string name="section_app_info_description">Voir les informations de l\'application et les licences.</string>
+    <string name="section_app_info">À propos</string>
     <string name="app_description">Application d\'enregistrement d\'entraînement au poids du corps</string>
     <string name="app_version">Version</string>
     <string name="app_author">Auteur</string>
     <string name="app_source_code">Code Source</string>
-    <string name="app_feedback">Commentaires</string>
     <string name="report_issue_github">Signaler un problème sur GitHub</string>
     <!-- Flash Notification -->
     <string name="flash_notification_setting">Notification par Flash LED</string>
@@ -457,8 +451,8 @@
     <!-- Exercise Description -->
     <string name="description_optional">Description (Optionnel)</string>
     <!-- Theme Settings -->
-    <string name="section_theme">Paramètres du thème</string>
-    <string name="section_theme_description">Changer l\'apparence de l\'application.</string>
+    <string name="section_theme">Apparence</string>
+    <string name="section_week">Semaine et suggestions</string>
     <string name="theme_setting">Thème</string>
     <string name="current_theme">Actuel : %s</string>
     <string name="theme_system">Suivre le système</string>
@@ -863,11 +857,6 @@
         <item quantity="one">… et %d de plus</item>
         <item quantity="many">… et %d de plus</item>
         <item quantity="other">… et %d de plus</item>
-    </plurals>
-    <plurals name="current_seconds">
-        <item quantity="one">Actuel : %d seconde</item>
-        <item quantity="many">Actuel : %d de secondes</item>
-        <item quantity="other">Actuel : %d secondes</item>
     </plurals>
     <plurals name="nav_sets_format">
         <item quantity="one">%1$d / %2$d série</item>

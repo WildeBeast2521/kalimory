@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import androidx.compose.ui.test.hasClickAction
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasContentDescription
@@ -95,7 +96,8 @@ class ConsistencyRegressionTest {
         libraryRow(R.string.settings).performClick()
         rule.onNodeWithText(text(R.string.theme_amoled)).performScrollTo().assertExists()
 
-        rule.onNodeWithText(text(R.string.language_setting)).performScrollTo().performClick()
+        // The group heading is also "Language"; the row under it is the one that opens the choices.
+        rule.onNode(hasText(text(R.string.language_setting)) and hasClickAction()).performScrollTo().performClick()
         listOf("Русский", "العربية", "日本語", "English").forEach { rule.onNodeWithText(it).assertExists() }
         rule.onNodeWithText(text(R.string.cancel)).performClick()
     }

@@ -19,7 +19,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * The workout and program setup screens and the Programs and To Do lists at 200 % text on a 360 dp phone: no text cut off. These rows used
+ * The workout and program setup screens, Settings and the Programs and To Do lists at 200 % text on a 360 dp phone: no text cut off. These rows used
  * fixed widths and heights that only fit at 100 %, so switches left the card, buttons lost their text and
  * numbers were clipped. (Switch names and touch targets are checked in SwitchRowTest.)
  */
@@ -61,4 +61,6 @@ class SetupScreensLargeTextTest {
     @Test fun `new interval`() = audit(ignore = "\"New interval\"") { IntervalEditScreen(it, null, {}, {}) }
 
     @Test fun `log a past workout entry`() = audit { RecordScreen(it, {}, initialExerciseId = 1L) }
+
+    @Test fun `settings`() = audit { SettingsScreenNew(it, {}, {}, {}, {}, {}, {}) }
 }
