@@ -824,9 +824,11 @@ fun UnifiedAddDialog(
     val isExerciseNameValid = exerciseName.isNotBlank() && exerciseName.length <= nameLimit && !isDuplicate
     val isGroupNameValid = groupName.isNotBlank() && groupName.length <= TextLimits.GROUP_NAME && !isGroupDuplicate
 
+    // A target needs both sets and reps (or seconds); half of one used to be saved silently.
+    val targetHalfFilled = isTargetHalfFilled(hasTarget, targetSets, targetValue)
     val isFormValid = when {
         creationType == "group" && exercise == null -> isGroupNameValid
-        else -> isExerciseNameValid && (!isCreatingNewGroup || newGroupName.isNotBlank())
+        else -> isExerciseNameValid && (!isCreatingNewGroup || newGroupName.isNotBlank()) && !targetHalfFilled
     }
 
     // 保存処理
@@ -1225,6 +1227,7 @@ fun UnifiedAddDialog(
                                             },
                                             label = { Text(stringResource(R.string.sets_count)) },
                                             placeholder = { Text(stringResource(R.string.example_3)) },
+                                            isError = targetHalfFilled && targetSets.isEmpty(),
                                             modifier = Modifier.weight(1f),
                                             singleLine = true,
                                             keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
@@ -1241,6 +1244,7 @@ fun UnifiedAddDialog(
                                             },
                                             label = { Text(stringResource(if (selectedType == "Dynamic") R.string.reps_label else R.string.time_label)) },
                                             placeholder = { Text(stringResource(if (selectedType == "Dynamic") R.string.example_10 else R.string.example_30)) },
+                                            isError = targetHalfFilled && targetValue.isEmpty(),
                                             modifier = Modifier.weight(1f),
                                             singleLine = true,
                                             keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
@@ -1511,3 +1515,6 @@ fun GroupEditDialog(
 
 /** An edited exercise keeps its stored level (0 = not set) unless the user moved the slider. */
 internal fun levelToSave(changed: Boolean, selected: Int, stored: Int): Int = if (changed) selected else stored
+
+/** A target with only one of its two numbers, which can't be saved. Both empty means no target. */
+internal fun isTargetHalfFilled(hasTarget: Boolean, sets: String, value: String): Boolean = hasTarget && sets.isEmpty() != value.isEmpty()
