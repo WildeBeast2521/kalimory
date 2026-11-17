@@ -29,6 +29,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- Progress graphs: holds no longer show a volume chart or volume statistics (seconds times kilograms meant nothing), "Weekly change" compares the last 7 days with the 7 before whatever period is chosen, and a one-sided exercise is charted as right and left even when a day's first set has no left value ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - The − and + step buttons are named for TalkBack ("One fewer", "One more") and have a full-size touch target even where the circle is drawn small, as in the program setup ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - The calendar's month title follows your language's own order and script, and one-sided sets on Today and in the copied summary use your language's letters for right and left instead of English R and L ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - The program overview's status bar icons are readable in the light theme ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))

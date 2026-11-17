@@ -266,7 +266,8 @@ fun GraphView(
 
         // ボリュームグラフ（荷重トラッキング有効時のみ）
         if (selectedExerciseFilter.weightTrackingEnabled) {
-            item {
+            // Volume (reps x kg) only means something for rep exercises; a hold has the max weight chart alone.
+            if (selectedExerciseFilter.type == "Dynamic") item {
                 val volumeData = remember(selectedExerciseFilter, records, selectedPeriod) {
                     prepareVolumeData(
                         exercise = selectedExerciseFilter,
@@ -416,6 +417,13 @@ fun GraphView(
 }
 
 // グラフデータ準備関数
+/**
+ * Whether a day's sets are charted as right and left: the exercise is one-sided, or a set that day has a
+ * left value. Deciding from the first set alone drew a one-sided day as two-sided when that set had no left.
+ */
+internal fun isOneSided(exercise: Exercise, sets: List<HistorySet>): Boolean =
+    exercise.laterality == "Unilateral" || sets.any { it.valueLeft != null }
+
 fun prepareGraphData(
     exercise: Exercise,
     records: List<HistorySet>,
@@ -457,7 +465,7 @@ fun prepareGraphData(
         .groupBy { it.date }
         .mapValues { (_, sessionRecords) ->
             // Bilateral/Unilateral で分岐
-            val isUnilateral = sessionRecords.firstOrNull()?.valueLeft != null
+            val isUnilateral = isOneSided(exercise, sessionRecords)
 
             // 距離の加重平均を計算（距離トラッキング有効時のみ）
             val weightedDistance: Float? = if (exercise.distanceTrackingEnabled) {
@@ -538,7 +546,9 @@ fun prepareVolumeData(
     firstDay: DayOfWeek
 ): List<VolumeDataPoint> {
     // 荷重トラッキングが無効な場合は空リスト
-    if (!exercise.weightTrackingEnabled) {
+    // Volume is reps times kilograms. For a hold it would be seconds times kilograms, a number that
+    // means nothing, so holds have none (their max weight is still charted).
+    if (!exercise.weightTrackingEnabled || exercise.type != "Dynamic") {
         return emptyList()
     }
 
@@ -580,7 +590,7 @@ fun prepareVolumeData(
     val volumeByDate = recordsWithWeight
         .groupBy { it.date }
         .mapValues { (_, sessionRecords) ->
-            val isUnilateral = sessionRecords.firstOrNull()?.valueLeft != null
+            val isUnilateral = isOneSided(exercise, sessionRecords)
 
             if (isUnilateral) {
                 // Unilateral: 左右別々にボリューム計算
@@ -2318,21 +2328,22 @@ fun calculateStatistics(
     }
 
     // Unilateral判定
-    val isUnilateral = filteredRecords.any { it.valueLeft != null }
+    val isUnilateral = isOneSided(exercise, filteredRecords)
 
     // 右側の値
     val valuesRight = filteredRecords.map { it.valueRight }
 
-    // 今週のデータ
-    val weekStart = AppClock.today().minusDays(7)
-    val thisWeekRecords = filteredRecords.filter {
+    // The last 7 days against the 7 before, from all of the exercise's history: judged inside the chosen
+    // period, "1 week" had no earlier week to compare and the change was just this week's count.
+    val weekStart = AppClock.today().minusDays(6)
+    val thisWeekRecords = exerciseRecords.filter {
         try {
             LocalDate.parse(it.date) >= weekStart
         } catch (e: Exception) {
             false
         }
     }
-    val lastWeekRecords = filteredRecords.filter {
+    val lastWeekRecords = exerciseRecords.filter {
         try {
             val date = LocalDate.parse(it.date)
             date >= weekStart.minusDays(7) && date < weekStart
@@ -2372,11 +2383,13 @@ fun calculateStatistics(
 
             val weights = recordsWithWeight.map { (it.weightG ?: 0) / 1000f }
 
+            // Holds have no volume (seconds times kilograms means nothing), only their weights.
+            val hasVolume = exercise.type == "Dynamic"
             object {
-                val maxDailyVolume = volumeByDateRight.maxOrNull()
-                val avgDailyVolume = if (volumeByDateRight.isNotEmpty()) volumeByDateRight.average().toFloat() else null
-                val maxDailyVolumeLeft = volumeByDateLeft?.maxOrNull()
-                val avgDailyVolumeLeft = if (volumeByDateLeft != null && volumeByDateLeft.isNotEmpty()) volumeByDateLeft.average().toFloat() else null
+                val maxDailyVolume = if (hasVolume) volumeByDateRight.maxOrNull() else null
+                val avgDailyVolume = if (hasVolume && volumeByDateRight.isNotEmpty()) volumeByDateRight.average().toFloat() else null
+                val maxDailyVolumeLeft = if (hasVolume) volumeByDateLeft?.maxOrNull() else null
+                val avgDailyVolumeLeft = if (hasVolume && volumeByDateLeft != null && volumeByDateLeft.isNotEmpty()) volumeByDateLeft.average().toFloat() else null
                 val maxWeight = weights.maxOrNull()
                 val avgWeight = if (weights.isNotEmpty()) weights.average().toFloat() else null
             }
