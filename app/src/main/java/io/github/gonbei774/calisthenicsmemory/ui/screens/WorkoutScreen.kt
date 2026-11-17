@@ -1586,8 +1586,9 @@ fun SettingsStep(
                 val totalSets = sets.toIntOrNull() ?: 3
                 val target = targetValue.toIntOrNull() ?: 10
                 val repDur = if (exercise.type == "Dynamic") repDuration.toIntOrNull() ?: 5 else null
-                val start = startInterval.toIntOrNull() ?: 5
-                val inter = interval.toIntOrNull() ?: 240
+                // An empty field is the switch being off (Settings), so no countdown and no rest.
+                val start = startInterval.toIntOrNull() ?: 0
+                val inter = interval.toIntOrNull() ?: 0
 
                 // 距離・荷重・アシストの値を取得（空の場合はnull）— 設定画面の値を全セットのデフォルトとして使用
                 val distanceCm = distanceInput.ifEmpty { null }?.toIntOrNull()

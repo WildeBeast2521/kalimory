@@ -28,6 +28,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- Turning off Start countdown or Rest between sets in Settings now works: workouts no longer count down 5 seconds or rest 4 minutes anyway, and programs no longer count down before each set ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Restoring a backup shows how many sets it holds, counting workouts saved in Kalimory, where it showed only records from older versions, often 0, right before replacing your data; the export and restore messages count the same way ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Exercises and groups with long names, such as catalogue steps in German or Russian, can be edited and saved again; names may now be up to 60 characters, groups 50 and descriptions 200 ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Searching in Exercises and groups no longer offers to drag exercises into a new order, which saved the wrong order for the group, or shows a group menu that did nothing ([#279](https://github.com/WildeBeast2521/kalimory/pull/279))

@@ -164,7 +164,7 @@ fun ProgramExecutionScreen(
 
                 // 保存されたセットインデックスから再開（準備カウントダウンありの場合）
                 val resumeIndex = savedSetIndex.coerceIn(0, savedSets.size - 1)
-                if (workoutPreferences.getStartCountdown() > 0) {
+                if (workoutPreferences.effectiveStartCountdown() > 0) {
                     currentStep = ProgramExecutionStep.StartInterval(newSession, resumeIndex)
                 } else {
                     currentStep = ProgramExecutionStep.Executing(newSession, resumeIndex)
@@ -233,7 +233,7 @@ fun ProgramExecutionScreen(
 
     // 音声設定（ProgramConfirmStepで変更可能）
     var isAutoMode by remember { mutableStateOf(workoutPreferences.isAutoMode()) }
-    var startCountdownSeconds by remember { mutableIntStateOf(workoutPreferences.getStartCountdown()) }
+    var startCountdownSeconds by remember { mutableIntStateOf(workoutPreferences.effectiveStartCountdown()) }
     var isDynamicCountSoundEnabled by remember { mutableStateOf(workoutPreferences.isDynamicCountSoundEnabled()) }
     var isIsometricIntervalSoundEnabled by remember { mutableStateOf(workoutPreferences.isIsometricIntervalSoundEnabled()) }
     var isometricIntervalSeconds by remember { mutableIntStateOf(workoutPreferences.getIsometricIntervalSeconds()) }
@@ -332,7 +332,7 @@ fun ProgramExecutionScreen(
                     val index = checkpoint.currentSetIndex.coerceIn(0, resumed.sets.size - 1)
                     currentStep = when {
                         checkpoint.atResult -> ProgramExecutionStep.Result(resumed)
-                        workoutPreferences.getStartCountdown() > 0 -> ProgramExecutionStep.StartInterval(resumed, index)
+                        workoutPreferences.effectiveStartCountdown() > 0 -> ProgramExecutionStep.StartInterval(resumed, index)
                         else -> ProgramExecutionStep.Executing(resumed, index)
                     }
                 }) {

@@ -73,7 +73,7 @@ object ProgramTimeEstimator {
      * estimates with it, so one program shows the same time everywhere.
      */
     fun startCountdownSeconds(preferences: io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences): Int =
-        if (preferences.isStartCountdownEnabled()) preferences.getStartCountdown() else 0
+        preferences.effectiveStartCountdown()
 
     fun formatMinutes(seconds: Int): Int =
         (seconds / 60.0).roundToInt().coerceAtLeast(1)
