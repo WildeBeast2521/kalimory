@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.InfoActionRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import android.annotation.SuppressLint
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
@@ -852,14 +853,10 @@ private fun ExerciseTaskCard(
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
-                .alpha(if (showStartButton) 1f else 0.4f),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        InfoActionRow(
+            modifier = Modifier.padding(12.dp),
+            infoModifier = Modifier.combinedClickable(onClick = {}, onLongClick = onLongClick),
+            leading = {
             // Drag handle
             Icon(
                 AppIcons.DragHandle,
@@ -871,7 +868,8 @@ private fun ExerciseTaskCard(
             )
 
             // Exercise info
-            Column(modifier = Modifier.weight(1f).combinedClickable(onClick = {}, onLongClick = onLongClick)) {
+            },
+            info = {
                 Text(
                     text = exercise.name,
                     fontSize = 16.sp,
@@ -920,7 +918,8 @@ private fun ExerciseTaskCard(
                     )
                 }
                 RepeatDaysLabel(repeatDays = task.repeatDays)
-            }
+            },
+            actions = {
 
             // Start button
             TaskMenu(onRepeat = onLongClick, onDelete = onDelete)
@@ -928,6 +927,7 @@ private fun ExerciseTaskCard(
                 StartButton(onClick = onStart)
             }
         }
+        )
     }
 }
 
@@ -989,14 +989,10 @@ private fun ProgramTaskCard(
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
-                .alpha(if (showStartButton) 1f else 0.4f),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        InfoActionRow(
+            modifier = Modifier.padding(12.dp),
+            infoModifier = Modifier.combinedClickable(onClick = {}, onLongClick = onLongClick),
+            leading = {
             // Drag handle
             Icon(
                 AppIcons.DragHandle,
@@ -1008,7 +1004,8 @@ private fun ProgramTaskCard(
             )
 
             // Program info
-            Column(modifier = Modifier.weight(1f).combinedClickable(onClick = {}, onLongClick = onLongClick)) {
+            },
+            info = {
                 Text(
                     text = program.name,
                     fontSize = 16.sp,
@@ -1036,7 +1033,8 @@ private fun ProgramTaskCard(
                     }
                 }
                 RepeatDaysLabel(repeatDays = repeatDays)
-            }
+            },
+            actions = {
 
             // Start button
             TaskMenu(onRepeat = onLongClick, onDelete = onDelete)
@@ -1044,6 +1042,7 @@ private fun ProgramTaskCard(
                 StartButton(onClick = onNavigate)
             }
         }
+        )
     }
 }
 
@@ -1072,14 +1071,10 @@ private fun IntervalTaskCard(
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
-                .alpha(if (showStartButton) 1f else 0.4f),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        InfoActionRow(
+            modifier = Modifier.padding(12.dp),
+            infoModifier = Modifier.combinedClickable(onClick = {}, onLongClick = onLongClick),
+            leading = {
             // Drag handle
             Icon(
                 AppIcons.DragHandle,
@@ -1091,7 +1086,8 @@ private fun IntervalTaskCard(
             )
 
             // Interval program info
-            Column(modifier = Modifier.weight(1f).combinedClickable(onClick = {}, onLongClick = onLongClick)) {
+            },
+            info = {
                 Text(
                     text = intervalProgram.name,
                     fontSize = 16.sp,
@@ -1106,7 +1102,8 @@ private fun IntervalTaskCard(
                 )
                 // The summary above already ends with the estimate ("~14 min").
                 RepeatDaysLabel(repeatDays = repeatDays)
-            }
+            },
+            actions = {
 
             // Start button
             TaskMenu(onRepeat = onLongClick, onDelete = onDelete)
@@ -1114,6 +1111,7 @@ private fun IntervalTaskCard(
                 StartButton(onClick = onNavigate)
             }
         }
+        )
     }
 }
 
