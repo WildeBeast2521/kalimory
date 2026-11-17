@@ -1906,7 +1906,7 @@ private fun InlineStepperRow(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
-                .width(72.dp)
+                .width(56.dp)
                 .padding(horizontal = 4.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
@@ -1933,7 +1933,7 @@ private fun InlineStepperRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.End,
                 maxLines = 1,
-                modifier = Modifier.widthIn(min = 56.dp)
+                modifier = Modifier.widthIn(min = 44.dp)
             )
         }
     }
