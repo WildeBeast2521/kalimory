@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.DialogSystemBars
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.ui.res.pluralStringResource
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
@@ -96,6 +97,7 @@ fun ProgramNavigationSheet(
             decorFitsSystemWindows = false
         )
     ) {
+        DialogSystemBars()
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = cs.background

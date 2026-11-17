@@ -29,6 +29,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- The program overview's status bar icons are readable in the light theme ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - Targets on the Progressions tab are judged over all your history by the same rule as the progression cards, instead of a hidden one-week filter and a formula where one big set could clear a target of several sets; the day strip shows the last month ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - A negative distance, which the app lets you enter, no longer stops a records CSV from importing, and backups no longer report it as a problem ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - The Favorite card in Exercises and groups no longer offers Rename and Delete, which did nothing while reporting success ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))

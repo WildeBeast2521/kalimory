@@ -28,6 +28,14 @@ class ConsistencyGuardTest {
         assertTrue("MainActivity must resize for the keyboard", activity?.contains("""android:windowSoftInputMode="adjustResize"""") == true)
     }
 
+    @Test fun `a full-screen dialog drawn edge to edge sets its bar icons`() {
+        // Such a dialog is its own window: without DialogSystemBars its status bar icons come out white on light.
+        val offenders = kotlin.filter { it.name != "DialogSystemBars.kt" }
+            .filter { Regex("""decorFitsSystemWindows\s*=\s*false""").containsMatchIn(it.readText()) && !it.readText().contains("DialogSystemBars()") }
+            .map { it.name }
+        assertTrue("Call DialogSystemBars() in: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `every swipe to delete draws the shared background`() {
         val swipes = uses(Regex("""SwipeToDismissBox\("""))
         val shared = uses(Regex("""backgroundContent = \{ SwipeToDeleteBackground\("""))
