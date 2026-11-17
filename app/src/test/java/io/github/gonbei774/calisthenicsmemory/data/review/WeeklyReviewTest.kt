@@ -183,6 +183,11 @@ class WeeklyReviewTest {
         )
     }
 
+    @Test fun `a typed 0 kg counts as a plain set for bests`() {
+        val history = listOf(set("2026-03-02", push.id, value = 12, weightG = 0), set("2026-03-11", push.id, value = 15, weightG = 0))
+        assertEquals(15, WeeklyReview.bests(monday, history, listOf(push)).single().value)
+    }
+
     @Test fun `equalling the old best is not a new best`() {
         val history = listOf(set("2026-03-02", push.id, value = 12), set("2026-03-11", push.id, value = 12))
         assertTrue(WeeklyReview.bests(monday, history, listOf(push)).isEmpty())

@@ -28,6 +28,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- Exercises you sometimes do with weight still get new personal bests for their sets without it, and a weight of 0 kg counts as no weight ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Editing an exercise keeps its level: turning its target off no longer erases the level, and an exercise without a level no longer gets level 1 when saved ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Turning off Start countdown or Rest between sets in Settings now works: workouts no longer count down 5 seconds or rest 4 minutes anyway, and programs no longer count down before each set ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Restoring a backup shows how many sets it holds, counting workouts saved in Kalimory, where it showed only records from older versions, often 0, right before replacing your data; the export and restore messages count the same way ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))

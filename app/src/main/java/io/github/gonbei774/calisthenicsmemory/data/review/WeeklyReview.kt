@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.data.review
 
+import io.github.gonbei774.calisthenicsmemory.data.v2.isPlain
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
@@ -145,7 +146,7 @@ object WeeklyReview {
         val end = weekStart.plusDays(6)
         val exercisesById = exercises.associateBy { it.id }
         return history.asSequence()
-            .filter { it.countsAsWork && it.weightG == null && it.assistanceG == null && it.distanceCm == null }
+            .filter { it.countsAsWork && it.isPlain }
             .mapNotNull { set -> parse(set.date)?.let { set to it } }
             .filter { (_, day) -> day <= end }
             .groupBy { (set, _) -> set.exerciseId }
