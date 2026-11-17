@@ -226,16 +226,11 @@ class CsvRecordV11Test {
 
     @Test
     fun validation_distanceCmField() {
-        // distanceCm should be non-negative integer (or null)
-        val validValues = listOf(0, 1, 50, 100, 500, 10000)
-        val invalidValues = listOf(-1, -100)
-
+        // distanceCm is any integer (or null): the app's distance inputs allow negative values, so
+        // import must accept them too (RecordCsvRowTest checks the parser itself).
+        val validValues = listOf(-100, -1, 0, 1, 50, 100, 500, 10000)
         validValues.forEach { value ->
-            assertTrue("$value should be valid", value >= 0)
-        }
-
-        invalidValues.forEach { value ->
-            assertFalse("$value should be invalid", value >= 0)
+            assertTrue("$value should be valid", value.toString().toIntOrNull() != null)
         }
     }
 

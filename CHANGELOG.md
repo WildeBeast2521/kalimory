@@ -28,6 +28,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- A negative distance, which the app lets you enter, no longer stops a records CSV from importing, and backups no longer report it as a problem ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - The Favorite card in Exercises and groups no longer offers Rename and Delete, which did nothing while reporting success ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - An exercise's target can no longer be saved with only its sets or only its reps filled in; the missing one is marked ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Exercises you sometimes do with weight still get new personal bests for their sets without it, and a weight of 0 kg counts as no weight ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))

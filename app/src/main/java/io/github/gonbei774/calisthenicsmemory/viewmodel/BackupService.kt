@@ -62,7 +62,10 @@ enum class BackupAnomalyKind {
     TODO_UNKNOWN_TYPE,
     TODO_INVALID_REPEAT_DAYS,
     PROGRAM_EXERCISE_FOREIGN_LOOP,
-    /** A v2 set entry has a negative metric or target, or a session a negative interval setting; the app never writes one. */
+    /**
+     * A v2 set entry has a negative metric (other than distance, which may be negative) or target, or a
+     * session a negative interval setting; the app never writes one.
+     */
     V2_NEGATIVE_VALUE,
     /**
      * A v2 set entry names a legacy training record the backup does not contain. The
@@ -249,7 +252,8 @@ class BackupService(
         }
         data.setEntries.forEach {
             val values = listOfNotNull(
-                it.repetitions?.toLong(), it.durationMillis, it.distanceCm?.toLong(), it.addedWeightGrams?.toLong(),
+                // Distance is left out: it may be negative, as every distance input in the app allows.
+                it.repetitions?.toLong(), it.durationMillis, it.addedWeightGrams?.toLong(),
                 it.assistanceGrams?.toLong(), it.targetRepetitions?.toLong(), it.targetDurationMillis,
             )
             if (values.any { v -> v < 0 }) {

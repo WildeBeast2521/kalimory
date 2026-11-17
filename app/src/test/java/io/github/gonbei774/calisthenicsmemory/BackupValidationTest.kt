@@ -192,6 +192,12 @@ class BackupValidationTest {
         )
     }
 
+    @Test fun `a negative distance is not an anomaly, as the app saves one`() {
+        val base = validV9()
+        val set = base.setEntries.first()
+        assertAcceptedWith(base.copy(setEntries = listOf(set.copy(distanceCm = -40))))
+    }
+
     private fun validV10() = validV9().copy(
         version = 10,
         workoutSessions = validV9().workoutSessions + ExportWorkoutSession(
