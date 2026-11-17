@@ -823,11 +823,8 @@ private fun heatBackground(level: Int): Color = when (level) {
 private fun heatContent(level: Int): Color =
     if (level >= 3) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onPrimaryContainer
 
-private fun formatYearMonth(yearMonth: YearMonth): String {
-    val locale = Locale.getDefault()
-    return if (locale.language == "ja") {
-        "${yearMonth.year}年${yearMonth.monthValue}月"
-    } else {
-        "${yearMonth.month.getDisplayName(TextStyle.FULL, locale)} ${yearMonth.year}"
-    }
+/** "November 2026", "2026年11月", "novembre 2026": the locale's own year and month order. */
+internal fun formatYearMonth(yearMonth: YearMonth, locale: Locale = Locale.getDefault()): String {
+    val pattern = android.text.format.DateFormat.getBestDateTimePattern(locale, "yMMMM")
+    return java.time.format.DateTimeFormatter.ofPattern(pattern, locale).format(yearMonth)
 }

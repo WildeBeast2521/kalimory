@@ -57,6 +57,7 @@
     <string name="left">Left</string>
     <string name="right_value_short">R: %1$d %2$s</string>
     <string name="left_value_short">L: %1$d %2$s</string>
+    <string name="side_values_short">R%1$d L%2$d</string>
     <string name="set_number_format">Set %d</string>
     <string name="date_format">Date: %s</string>
     <string name="time_format">Time: %s</string>
