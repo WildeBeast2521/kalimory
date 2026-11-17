@@ -15,6 +15,11 @@ class ConsistencyGuardTest {
     private fun uses(pattern: Regex, except: Set<String> = emptySet()) =
         kotlin.filter { it.name !in except && pattern.containsMatchIn(it.readText()) }.map { it.name }
 
+    @Test fun `the guards can see the sources`() {
+        // If neither path resolved, every guard below would pass on an empty list.
+        assertTrue("Found ${kotlin.size} Kotlin files: the guards are not reading the app", kotlin.size > 100)
+    }
+
     @Test fun `every floating action button is the shared AppFab`() {
         val offenders = uses(Regex("""\b(Medium|Large|Small)?FloatingActionButton\("""), except = setOf("AppFab.kt"))
         assertTrue("Use AppFab instead: $offenders", offenders.isEmpty())
