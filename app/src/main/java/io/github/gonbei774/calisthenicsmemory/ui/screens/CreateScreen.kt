@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.util.TextLimits
 import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.AppFab
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
@@ -813,8 +814,11 @@ fun UnifiedAddDialog(
         }
     }
 
-    val isExerciseNameValid = exerciseName.isNotBlank() && exerciseName.length <= 30 && !isDuplicate
-    val isGroupNameValid = groupName.isNotBlank() && groupName.length <= 20 && !isGroupDuplicate
+    // Stored text is never blocked: a name longer than the limit can still be edited and saved (TextLimits).
+    val nameLimit = TextLimits.allowed(TextLimits.EXERCISE_NAME, exercise?.name)
+    val descriptionLimit = TextLimits.allowed(TextLimits.DESCRIPTION, exercise?.description)
+    val isExerciseNameValid = exerciseName.isNotBlank() && exerciseName.length <= nameLimit && !isDuplicate
+    val isGroupNameValid = groupName.isNotBlank() && groupName.length <= TextLimits.GROUP_NAME && !isGroupDuplicate
 
     val isFormValid = when {
         creationType == "group" && exercise == null -> isGroupNameValid
@@ -998,7 +1002,7 @@ fun UnifiedAddDialog(
                             Column(modifier = Modifier.padding(16.dp)) {
                                 OutlinedTextField(
                                     value = groupName,
-                                    onValueChange = { if (it.length <= 20) groupName = it },
+                                    onValueChange = { if (it.length <= TextLimits.GROUP_NAME) groupName = it },
                                     label = { Text(stringResource(R.string.group_name)) },
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true,
@@ -1006,7 +1010,7 @@ fun UnifiedAddDialog(
                                     supportingText = {
                                         when {
                                             isGroupDuplicate -> Text(stringResource(R.string.duplicate_group_name), color = MaterialTheme.colorScheme.error)
-                                            else -> Text(stringResource(R.string.character_count, groupName.length, 20), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            else -> Text(stringResource(R.string.character_count, groupName.length, TextLimits.GROUP_NAME), color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
                                     }
                                 )
@@ -1028,7 +1032,7 @@ fun UnifiedAddDialog(
                             ) {
                                 OutlinedTextField(
                                     value = exerciseName,
-                                    onValueChange = { if (it.length <= 30) exerciseName = it },
+                                    onValueChange = { if (it.length <= nameLimit) exerciseName = it },
                                     label = { Text(stringResource(R.string.exercise_name)) },
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true,
@@ -1036,7 +1040,7 @@ fun UnifiedAddDialog(
                                     supportingText = {
                                         when {
                                             isDuplicate -> Text(stringResource(R.string.duplicate_exercise_name), color = MaterialTheme.colorScheme.error)
-                                            else -> Text(stringResource(R.string.character_count, exerciseName.length, 30), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            else -> Text(stringResource(R.string.character_count, exerciseName.length, nameLimit), color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
                                     }
                                 )
@@ -1114,11 +1118,11 @@ fun UnifiedAddDialog(
                                 if (isCreatingNewGroup) {
                                     OutlinedTextField(
                                         value = newGroupName,
-                                        onValueChange = { if (it.length <= 20) newGroupName = it },
+                                        onValueChange = { if (it.length <= TextLimits.GROUP_NAME) newGroupName = it },
                                         label = { Text(stringResource(R.string.new_group_name)) },
                                         modifier = Modifier.fillMaxWidth(),
                                         singleLine = true,
-                                        supportingText = { Text("${newGroupName.length}/20", color = MaterialTheme.colorScheme.onSurfaceVariant) },
+                                        supportingText = { Text(stringResource(R.string.character_count, newGroupName.length, TextLimits.GROUP_NAME), color = MaterialTheme.colorScheme.onSurfaceVariant) },
                                         trailingIcon = {
                                             IconButton(onClick = {
                                                 isCreatingNewGroup = false
@@ -1439,13 +1443,13 @@ fun UnifiedAddDialog(
                                 )
                                 OutlinedTextField(
                                     value = description,
-                                    onValueChange = { if (it.length <= 120) description = it },
+                                    onValueChange = { if (it.length <= descriptionLimit) description = it },
                                     modifier = Modifier.fillMaxWidth(),
                                     minLines = 2,
                                     maxLines = 5,
                                     supportingText = {
                                         Text(
-                                            stringResource(R.string.character_count, description.length, 120),
+                                            stringResource(R.string.character_count, description.length, descriptionLimit),
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
@@ -1470,6 +1474,8 @@ fun GroupEditDialog(
     onConfirm: (String) -> Unit
 ) {
     var newName by remember { mutableStateOf(oldName) }
+    // A group from the catalogue or a shared file may be longer than the limit; it stays renamable.
+    val limit = TextLimits.allowed(TextLimits.GROUP_NAME, oldName)
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -1477,10 +1483,10 @@ fun GroupEditDialog(
         text = {
             OutlinedTextField(
                 value = newName,
-                onValueChange = { if (it.length <= 20) newName = it },
+                onValueChange = { if (it.length <= limit) newName = it },
                 label = { Text(stringResource(R.string.group_name)) },
                 singleLine = true,
-                supportingText = { Text("${newName.length}/20") }
+                supportingText = { Text(stringResource(R.string.character_count, newName.length, limit)) }
             )
         },
         confirmButton = {
