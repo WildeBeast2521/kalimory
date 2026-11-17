@@ -510,7 +510,8 @@ fun ExpandableGroupCard(
                         )
                     }
 
-                    if (group.groupName != null && showGroupMenu) {
+                    // Favourites are a view of other groups: renaming or deleting them did nothing but report success.
+                    if (group.groupName != null && group.groupName != TrainingViewModel.FAVORITE_GROUP_KEY && showGroupMenu) {
                         Box {
                             IconButton(
                                 onClick = onGroupMenuClick,
