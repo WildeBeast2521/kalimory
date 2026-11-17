@@ -47,6 +47,8 @@ data class BackupSummary(
     val todoTasks: Int,
     val workoutSessions: Int = 0,
     val setEntries: Int = 0,
+    /** Sets the user did, in both stores ([BackupData.setCount]); what the app reports. */
+    val sets: Int = records,
 )
 
 /**
@@ -355,5 +357,16 @@ private fun BackupData.toSnapshot() = BackupSnapshot(
 private fun BackupData.summary() = BackupSummary(
     groups.size, exercises.size, records.size, programs.size, programExercises.size,
     programLoops.size, intervalPrograms.size, intervalProgramExercises.size,
-    intervalRecords.size, todoTasks.size, workoutSessions.size, setEntries.size
+    intervalRecords.size, todoTasks.size, workoutSessions.size, setEntries.size, setCount()
 )
+
+/**
+ * The sets a backup holds, as the user counts them: rows of the original record table, plus completed
+ * sets of Kalimory's workouts. A one-sided set is stored as one row per side but is one set; a row
+ * copied from an original record is already counted there.
+ */
+internal fun BackupData.setCount(): Int =
+    records.size + setEntries
+        .filter { it.status == "COMPLETED" && it.legacyTrainingRecordId == null }
+        .distinctBy { Triple(it.sessionExerciseId, it.setNumber, it.roundNumber) }
+        .size
