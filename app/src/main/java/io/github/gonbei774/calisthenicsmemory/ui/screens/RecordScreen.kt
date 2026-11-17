@@ -328,7 +328,7 @@ fun ExerciseSelectionScreen(
                             .fillMaxWidth()
                             .navigationBarsPadding()
                             .padding(16.dp)
-                            .height(56.dp),
+                            .heightIn(min = 56.dp),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Icon(AppIcons.Check, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
@@ -1067,7 +1067,7 @@ fun WorkoutInputScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(48.dp),
+                            .heightIn(min = 48.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary,
                             disabledContainerColor = MaterialTheme.colorScheme.outline
@@ -1445,7 +1445,7 @@ fun WorkoutInputScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .heightIn(min = 56.dp),
                     enabled = enteredCount > 0,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -1489,7 +1489,7 @@ fun WorkoutInputScreen(
                         addingExercise = false
                     },
                     enabled = enteredCount > 0,
-                    modifier = Modifier.fillMaxWidth().height(48.dp),
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Icon(AppIcons.Add, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
