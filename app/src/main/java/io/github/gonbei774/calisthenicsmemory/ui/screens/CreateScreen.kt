@@ -766,7 +766,11 @@ fun UnifiedAddDialog(
     var selectedType by remember { mutableStateOf(exercise?.type ?: "Dynamic") }
     var selectedLaterality by remember { mutableStateOf(exercise?.laterality ?: "Bilateral") }
     var selectedGroup by remember { mutableStateOf(exercise?.group ?: presetGroup) }
-    var selectedLevel by remember { mutableIntStateOf(exercise?.sortOrder?.coerceIn(1, 10) ?: 5) }
+    // The stored level (0 = not set) is kept unless the slider is moved: turning the target off used to
+    // wipe it, and a stored 0 came back as 1, a value nobody chose.
+    val storedLevel = exercise?.sortOrder ?: 0
+    var selectedLevel by remember { mutableIntStateOf(if (storedLevel in 1..10) storedLevel else 5) }
+    var levelChanged by remember { mutableStateOf(false) }
     var showGroupDropdown by remember { mutableStateOf(false) }
     var newGroupName by remember { mutableStateOf("") }
     var isCreatingNewGroup by remember { mutableStateOf(false) }
@@ -844,7 +848,7 @@ fun UnifiedAddDialog(
 
                 val finalTargetSets = if (hasTarget) targetSets.toIntOrNull() else null
                 val finalTargetValue = if (hasTarget) targetValue.toIntOrNull() else null
-                val finalSortOrder = if (hasTarget) selectedLevel else 0
+                val finalSortOrder = levelToSave(levelChanged, selectedLevel, storedLevel)
                 val finalRepDuration = repDuration.toIntOrNull()
                 val finalRestInterval = restInterval.toIntOrNull()
 
@@ -1262,7 +1266,7 @@ fun UnifiedAddDialog(
                                         )
                                         Slider(
                                             value = selectedLevel.toFloat(),
-                                            onValueChange = { selectedLevel = it.toInt() },
+                                            onValueChange = { selectedLevel = it.toInt(); levelChanged = true },
                                             valueRange = 1f..10f,
                                             steps = 8,
                                             modifier = Modifier.fillMaxWidth()
@@ -1504,3 +1508,6 @@ fun GroupEditDialog(
         }
     )
 }
+
+/** An edited exercise keeps its stored level (0 = not set) unless the user moved the slider. */
+internal fun levelToSave(changed: Boolean, selected: Int, stored: Int): Int = if (changed) selected else stored
