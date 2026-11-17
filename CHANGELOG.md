@@ -23,6 +23,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- Sets done with band or machine assistance no longer count toward a progression's move-on standard or its progress; they still show as your last session and start the step ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Search in Exercises and groups, Progress and every exercise picker also finds a group by its name, ignores accents and Arabic short vowels, and matches every word you type in any order; each result in a picker shows its group, and the best match comes first ([#282](https://github.com/WildeBeast2521/kalimory/pull/282))
 - Searching Programs and Intervals also finds them by the exercises they hold, and says which ones ("Includes Dips") when the name itself did not match ([#283](https://github.com/WildeBeast2521/kalimory/pull/283))
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))

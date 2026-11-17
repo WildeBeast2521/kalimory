@@ -9,7 +9,11 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 
 /** One session of a step: its sets, best first. Unilateral sets use the weaker side. */
-data class StepSession(val date: String, val time: String, val values: List<Int>)
+/**
+ * One session of a step: [values] of every set, best first, as shown and used for the next target;
+ * [unassisted] the same without band or machine assistance, which alone count toward moving on.
+ */
+data class StepSession(val date: String, val time: String, val values: List<Int>, val unassisted: List<Int> = values)
 
 /** Where the user stands in one chain they follow (ADR 0005, decision 7). */
 data class ChainProgress(
@@ -101,23 +105,27 @@ object Progressions {
             .filter { it.countsAsWork }
             .groupBy { Triple(it.source, it.date, it.time) }
             .map { (key, sets) ->
-                val values = sets.map { set ->
+                fun value(set: HistorySet): Int {
                     val left = set.valueLeft
-                    if (unilateral && left != null) minOf(set.valueRight, left) else set.valueRight
+                    return if (unilateral && left != null) minOf(set.valueRight, left) else set.valueRight
                 }
-                StepSession(key.second, key.third, values.sortedDescending())
+                StepSession(
+                    key.second, key.third,
+                    sets.map(::value).sortedDescending(),
+                    sets.filter { (it.assistanceG ?: 0) == 0 }.map(::value).sortedDescending(),
+                )
             }
             .sortedWith(compareBy({ it.date }, { it.time }))
 
-    /** The move-on standard is met when enough sets each reach its value. */
+    /** The move-on standard is met when enough sets, done without assistance, each reach its value. */
     fun meets(session: StepSession, standard: Standard): Boolean =
-        session.values.count { it >= standard.value } >= standard.sets
+        session.unassisted.count { it >= standard.value } >= standard.sets
 
     /** The best sets, each counted up to the standard's value, as a share of the standard. */
     fun percentOf(session: StepSession, standard: Standard): Int {
         val total = standard.sets * standard.value
         if (total <= 0) return 0
-        val done = session.values.take(standard.sets).sumOf { minOf(it, standard.value) }
+        val done = session.unassisted.take(standard.sets).sumOf { minOf(it, standard.value) }
         return done * 100 / total
     }
 }
