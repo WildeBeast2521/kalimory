@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
@@ -1884,17 +1885,15 @@ private fun InlineStepperRow(
     onIncrement: () -> Boolean,
     previousText: String? = null
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+    val labelText: @Composable (Modifier) -> Unit = { modifier ->
         Text(
             text = label,
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f)
+            modifier = modifier
         )
+    }
+    val controls: @Composable () -> Unit = {
         RepeatableStepButton(
             label = "−",
             size = 36.dp,
@@ -1935,6 +1934,26 @@ private fun InlineStepperRow(
                 maxLines = 1,
                 modifier = Modifier.widthIn(min = 44.dp)
             )
+        }
+    }
+    // At large text the label goes above the controls, so neither is squeezed ("Re/ps") or clipped.
+    if (isLargeFontScale()) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            labelText(Modifier.fillMaxWidth())
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+            ) { controls() }
+        }
+    } else {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            labelText(Modifier.weight(1f))
+            controls()
         }
     }
 }

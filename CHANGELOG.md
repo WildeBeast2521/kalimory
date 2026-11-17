@@ -30,6 +30,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- At large text sizes, the interval editor's timer settings and the stepper rows in Log a past workout no longer clip their units or split words: the label moves above the stepper ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - At large text sizes, the Programs, Intervals and To Do lists keep names readable: the Start and other buttons move under the text instead of squeezing a name into a few letters per line ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - The workout and program setup screens fit at large text sizes: switches stay on their cards, buttons show their full text, the program setup's steppers are no longer squeezed, and the numbers in the small boxes are no longer clipped ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - Progress graphs: holds no longer show a volume chart or volume statistics (seconds times kilograms meant nothing), "Weekly change" compares the last 7 days with the 7 before whatever period is chosen, and a one-sided exercise is charted as right and left even when a day's first set has no left value ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
