@@ -100,19 +100,19 @@ class WorkoutScreensAccessibilityTest {
         val session = single("Isometric").also { it.sets[0].isCompleted = true; it.sets[0].actualValue = 40 }
         IntervalStep(session, 1, sound, flash, isFlashEnabled = false, onIntervalComplete = {}, onSkip = {}, onUpdateInterval = {}, showEffort = true)
     }
-    @Test fun singleRepsManual() = audit("Reps, manual", actions = listOf("Restart set")) {
+    @Test fun singleRepsManual() = audit("Reps, manual", actions = listOf("Restart set", "Skip set")) {
         SingleExecutingStepDynamicManual(single("Dynamic"), 0, sound, flash, isFlashEnabled = false, isCountSoundEnabled = false, onSetComplete = {}, onSkip = {}, onAbort = {}, onRetry = {})
     }
-    @Test fun singleRepsAuto() = audit("Reps, auto", actions = listOf("Restart set")) {
+    @Test fun singleRepsAuto() = audit("Reps, auto", actions = listOf("Restart set", "Skip set")) {
         SingleExecutingStepDynamicAuto(single("Dynamic"), 0, sound, flash, isFlashEnabled = false, isCountSoundEnabled = false, onSetComplete = {}, onSkip = {}, onAbort = {}, onRetry = {})
     }
-    @Test fun singleRepsCounter() = audit("Reps, counter", actions = listOf("Restart set")) {
+    @Test fun singleRepsCounter() = audit("Reps, counter", actions = listOf("Restart set", "Skip set")) {
         SingleExecutingStepDynamicSimple(single("Dynamic"), 0, sound, flash, isFlashEnabled = false, onSetComplete = {}, onSkip = {}, onAbort = {}, onRetry = {})
     }
-    @Test fun singleHoldManual() = audit("Hold, manual", actions = listOf("Restart set")) {
+    @Test fun singleHoldManual() = audit("Hold, manual", actions = listOf("Restart set", "Skip set")) {
         SingleExecutingStepIsometricManual(single("Isometric"), 0, sound, flash, isFlashEnabled = false, isIntervalSoundEnabled = false, intervalSeconds = 0, onSetComplete = {}, onSkip = {}, onAbort = {}, onRetry = {})
     }
-    @Test fun singleHoldAuto() = audit("Hold, auto", actions = listOf("Restart set")) {
+    @Test fun singleHoldAuto() = audit("Hold, auto", actions = listOf("Restart set", "Skip set")) {
         SingleExecutingStepIsometricAuto(single("Isometric"), 0, sound, flash, isFlashEnabled = false, isIntervalSoundEnabled = false, intervalSeconds = 0, onSetComplete = {}, onSkip = {}, onAbort = {}, onRetry = {})
     }
 
@@ -126,19 +126,19 @@ class WorkoutScreensAccessibilityTest {
         val session = program("Dynamic").also { it.sets[0].isCompleted = true; it.sets[0].actualValue = 12 }
         ProgramIntervalStep(session, 0, sound, flash, isFlashEnabled = false, onComplete = {}, onSkip = {}, showEffort = true)
     }
-    @Test fun programRepsManual() = audit("Program reps, manual", actions = listOf("Restart set")) {
-        ProgramExecutingStepDynamicManual(program("Dynamic"), 0, sound, flash, isFlashEnabled = false, isCountSoundEnabled = false, onSetComplete = {}, onAbort = {}, onRetry = {})
+    @Test fun programRepsManual() = audit("Program reps, manual", actions = listOf("Restart set", "Skip set", "Skip exercise")) {
+        ProgramExecutingStepDynamicManual(program("Dynamic"), 0, sound, flash, isFlashEnabled = false, isCountSoundEnabled = false, onSetComplete = {}, onAbort = {}, onRetry = {}, onSkipSet = {}, onSkipExercise = {})
     }
-    @Test fun programRepsAuto() = audit("Program reps, auto", actions = listOf("Restart set")) {
-        ProgramExecutingStepDynamicAuto(program("Dynamic"), 0, sound, flash, isFlashEnabled = false, isCountSoundEnabled = false, onSetComplete = {}, onAbort = {}, onRetry = {})
+    @Test fun programRepsAuto() = audit("Program reps, auto", actions = listOf("Restart set", "Skip set", "Skip exercise")) {
+        ProgramExecutingStepDynamicAuto(program("Dynamic"), 0, sound, flash, isFlashEnabled = false, isCountSoundEnabled = false, onSetComplete = {}, onAbort = {}, onRetry = {}, onSkipSet = {}, onSkipExercise = {})
     }
-    @Test fun programRepsCounter() = audit("Program reps, counter", actions = listOf("Restart set")) {
-        ProgramExecutingStepDynamicSimple(program("Dynamic"), 0, onSetComplete = {}, onAbort = {}, onRetry = {})
+    @Test fun programRepsCounter() = audit("Program reps, counter", actions = listOf("Restart set", "Skip set", "Skip exercise")) {
+        ProgramExecutingStepDynamicSimple(program("Dynamic"), 0, onSetComplete = {}, onAbort = {}, onRetry = {}, onSkipSet = {}, onSkipExercise = {})
     }
-    @Test fun programHoldManual() = audit("Program hold, manual", actions = listOf("Restart set")) {
-        ProgramExecutingStepIsometricManual(program("Isometric"), 0, sound, flash, isFlashEnabled = false, isIntervalSoundEnabled = false, intervalSeconds = 0, onSetComplete = {}, onAbort = {}, onRetry = {})
+    @Test fun programHoldManual() = audit("Program hold, manual", actions = listOf("Restart set", "Skip set", "Skip exercise")) {
+        ProgramExecutingStepIsometricManual(program("Isometric"), 0, sound, flash, isFlashEnabled = false, isIntervalSoundEnabled = false, intervalSeconds = 0, onSetComplete = {}, onAbort = {}, onRetry = {}, onSkipSet = {}, onSkipExercise = {})
     }
-    @Test fun programHoldAuto() = audit("Program hold, auto", actions = listOf("Restart set")) {
-        ProgramExecutingStepIsometricAuto(program("Isometric"), 0, sound, flash, isFlashEnabled = false, isIntervalSoundEnabled = false, intervalSeconds = 0, onSetComplete = {}, onAbort = {}, onRetry = {})
+    @Test fun programHoldAuto() = audit("Program hold, auto", actions = listOf("Restart set", "Skip set", "Skip exercise")) {
+        ProgramExecutingStepIsometricAuto(program("Isometric"), 0, sound, flash, isFlashEnabled = false, isIntervalSoundEnabled = false, intervalSeconds = 0, onSetComplete = {}, onAbort = {}, onRetry = {}, onSkipSet = {}, onSkipExercise = {})
     }
 }

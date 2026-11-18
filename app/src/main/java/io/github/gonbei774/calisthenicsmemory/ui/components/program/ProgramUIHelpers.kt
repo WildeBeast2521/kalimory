@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.data.nextPendingIndex
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,10 +18,8 @@ fun NextExerciseText(
     session: ProgramExecutionSession,
     currentSetIndex: Int
 ) {
-    // 次の未完了セットを探す（Redoモード時に完了済みセットをスキップ）
-    val nextSet = ((currentSetIndex + 1) until session.sets.size)
-        .map { session.sets[it] }
-        .firstOrNull { !it.isCompleted && !it.isSkipped } ?: return
+    // The set that will actually run next: the same rule afterSet() follows.
+    val nextSet = nextPendingIndex(session.sets, currentSetIndex)?.let { session.sets[it] } ?: return
 
     val (_, nextExercise) = session.exercises[nextSet.exerciseIndex]
     val nextSideText = when (nextSet.side) {

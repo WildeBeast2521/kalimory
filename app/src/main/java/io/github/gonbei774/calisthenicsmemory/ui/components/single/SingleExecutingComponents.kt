@@ -149,7 +149,7 @@ fun SingleExecutingStepDynamicManual(
             onSetComplete = onSetComplete,
         )
 
-        SetActions(onRestart = onRetry)
+        SetActions(onRestart = onRetry, onSkipSet = { onSkip(session) })
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -274,7 +274,7 @@ fun SingleExecutingStepDynamicAuto(
             onSetComplete = onSetComplete,
         )
 
-        SetActions(onRestart = onRetry)
+        SetActions(onRestart = onRetry, onSkipSet = { onSkip(session) })
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -354,7 +354,7 @@ fun SingleExecutingStepDynamicSimple(
             },
         )
 
-        SetActions(onRestart = onRetry)
+        SetActions(onRestart = onRetry, onSkipSet = { onSkip(session) })
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -472,7 +472,7 @@ fun SingleExecutingStepIsometricManual(
             onSetComplete = onSetComplete,
         )
 
-        SetActions(onRestart = onRetry)
+        SetActions(onRestart = onRetry, onSkipSet = { onSkip(session) })
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -593,7 +593,7 @@ fun SingleExecutingStepIsometricAuto(
             onSetComplete = onSetComplete,
         )
 
-        SetActions(onRestart = onRetry)
+        SetActions(onRestart = onRetry, onSkipSet = { onSkip(session) })
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
 }

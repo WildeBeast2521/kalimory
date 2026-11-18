@@ -10,6 +10,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.workout.restDialProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
+import io.github.gonbei774.calisthenicsmemory.data.AfterSet
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -130,6 +131,22 @@ data class WorkoutSet(
     // The user's effort rating, 0..4 (ADR 0012); null when not rated.
     var effortLeft: Int? = null,
 )
+
+/**
+ * Where a single workout goes after the set at [index] is done or skipped: the result after the last set,
+ * otherwise a rest of [restSeconds] when the set was finished, otherwise the next set. A skipped set has no
+ * rest, and the next set shows the start countdown when [countdownSeconds] is above zero (the caller passes
+ * zero after a finished set, since the countdown belongs before the first set and after a retry or skip).
+ * For REST the index is the finished set; otherwise it is the next set.
+ */
+internal fun singleAfterSet(sets: List<WorkoutSet>, index: Int, restSeconds: Int, countdownSeconds: Int): AfterSet {
+    if (index + 1 >= sets.size) return AfterSet(AfterSet.Kind.RESULT, index, redoMode = false)
+    val skipped = sets[index].isSkipped && !sets[index].isCompleted
+    if (skipped) {
+        return AfterSet(if (countdownSeconds > 0) AfterSet.Kind.COUNTDOWN else AfterSet.Kind.RUN, index + 1, redoMode = false)
+    }
+    return if (restSeconds > 0) AfterSet(AfterSet.Kind.REST, index, redoMode = false) else AfterSet(AfterSet.Kind.RUN, index + 1, redoMode = false)
+}
 
 // ワークアウトセッションのデータ
 data class WorkoutSession(
@@ -436,26 +453,30 @@ fun WorkoutScreen(
                 is WorkoutStep.Executing -> {
                     // 設定に基づいて適切なExecutingコンポーネントを選択
                     val exercise = step.session.exercise
-                    val nextStepAfterSet: (WorkoutSession, Int) -> WorkoutStep = { updatedSession, nextIndex ->
-                        if (nextIndex >= updatedSession.sets.size) {
-                            WorkoutStep.Confirmation(updatedSession)
-                        } else if (updatedSession.intervalDuration <= 0) {
-                            // No rest: straight to the next set. The countdown is for the first set and a retry.
-                            WorkoutStep.Executing(updatedSession, nextIndex)
-                        } else {
-                            WorkoutStep.Interval(updatedSession, nextIndex)
+                    // Moves to whatever singleAfterSet() decided; a rest is shown before the next set.
+                    val followSet: (WorkoutSession, AfterSet) -> WorkoutStep = { session, after ->
+                        when (after.kind) {
+                            AfterSet.Kind.REST -> WorkoutStep.Interval(session, after.index + 1)
+                            AfterSet.Kind.COUNTDOWN -> WorkoutStep.StartInterval(session, after.index)
+                            AfterSet.Kind.RUN -> WorkoutStep.Executing(session, after.index)
+                            AfterSet.Kind.RESULT -> WorkoutStep.Confirmation(session)
                         }
                     }
                     val setDoneHaptic = rememberSetDoneHaptic()
                     val onSetComplete: (WorkoutSession) -> Unit = { updatedSession ->
                         setDoneHaptic()
                         updatedSession.sets.getOrNull(step.currentSetIndex)?.completedAtWallMillis = System.currentTimeMillis()
-                        val nextIndex = step.currentSetIndex + 1
-                        currentStep = nextStepAfterSet(updatedSession, nextIndex)
+                        currentStep = followSet(updatedSession, singleAfterSet(updatedSession.sets, step.currentSetIndex, updatedSession.intervalDuration, 0))
                     }
+                    // Skipping records no value, no vibration and no rest; the next set gets the countdown.
                     val onSkip: (WorkoutSession) -> Unit = { updatedSession ->
-                        val nextIndex = step.currentSetIndex + 1
-                        currentStep = nextStepAfterSet(updatedSession, nextIndex)
+                        updatedSession.sets.getOrNull(step.currentSetIndex)?.let {
+                            it.isSkipped = true
+                            it.isCompleted = false
+                            it.actualValue = 0
+                            it.completedAtWallMillis = null
+                        }
+                        currentStep = followSet(updatedSession, singleAfterSet(updatedSession.sets, step.currentSetIndex, updatedSession.intervalDuration, updatedSession.startInterval))
                     }
                     val onAbort: (WorkoutSession) -> Unit = { updatedSession ->
                         // The set in progress ends now; it counts only if it has a value.

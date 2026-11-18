@@ -65,12 +65,39 @@ data class AfterSet(val kind: Kind, val index: Int, val redoMode: Boolean) {
     enum class Kind { REST, COUNTDOWN, RUN, RESULT }
 }
 
+/** A set still to do: neither finished nor skipped. */
+val ProgramWorkoutSet.isPending: Boolean get() = !isCompleted && !isSkipped
+
+/** The first set after [after] that is still to do, or null when nothing is left. */
+fun nextPendingIndex(sets: List<ProgramWorkoutSet>, after: Int): Int? =
+    (after + 1 until sets.size).firstOrNull { sets[it].isPending }
+
+/** Marks the set at [index] skipped: no value, no finish time. A set already done is left as it is. */
+fun MutableList<ProgramWorkoutSet>.markSkipped(index: Int) {
+    val set = this[index]
+    if (set.isCompleted) return
+    this[index] = set.copy(isSkipped = true, actualValue = 0, completedAtWallMillis = null)
+}
+
 /**
- * Where a program goes after the set at [index] is done, the same for every timer mode and for the end of
- * a rest ([restDone]). A set with a rest after it goes to the rest first. The next set then starts at
- * once: the start countdown belongs before the first set and after a jump or retry, not between sets.
- * Finishing a set that was redone moves on to the next unfinished set, which is a jump, so the countdown
- * shows when [startCountdownSeconds] is above zero.
+ * Skip exercise from [index]: marks the rest of this exercise's run in this round, both sides of a
+ * one-sided set, as skipped. Sets already done stay as they are, and other rounds are not touched.
+ * Returns the index of the last set of the run.
+ */
+fun skipExercise(sets: MutableList<ProgramWorkoutSet>, index: Int): Int {
+    val first = sets[index]
+    var last = index
+    while (last + 1 < sets.size && sets[last + 1].let { it.exerciseIndex == first.exerciseIndex && it.roundNumber == first.roundNumber }) last++
+    for (i in index..last) sets.markSkipped(i)
+    return last
+}
+
+/**
+ * Where a program goes after the set at [index] is done or skipped, the same for every timer mode and for
+ * the end of a rest ([restDone]). The next set is the first one still to do. A skipped set has no rest of
+ * its own, but the rest between rounds is kept. The next set starts at once after a finished set: the start
+ * countdown belongs before the first set and after a retry or a jump, so it shows after a skip or a redo,
+ * when [startCountdownSeconds] is above zero.
  */
 fun afterSet(
     sets: List<ProgramWorkoutSet>,
@@ -79,15 +106,11 @@ fun afterSet(
     startCountdownSeconds: Int,
     restDone: Boolean = false,
 ): AfterSet {
-    val next = index + 1
-    if (next >= sets.size) return AfterSet(AfterSet.Kind.RESULT, index, redoMode = false)
+    val target = nextPendingIndex(sets, index) ?: return AfterSet(AfterSet.Kind.RESULT, index, redoMode = false)
     val done = sets[index]
-    if (!restDone && (done.intervalSeconds > 0 || done.loopRestAfterSeconds > 0)) {
-        return AfterSet(AfterSet.Kind.REST, index, redoMode)
-    }
-    if (!redoMode) return AfterSet(AfterSet.Kind.RUN, next, redoMode = false)
-    val target = (next until sets.size).firstOrNull { !sets[it].isCompleted }
-        ?: return AfterSet(AfterSet.Kind.RESULT, index, redoMode = false)
-    val kind = if (startCountdownSeconds > 0) AfterSet.Kind.COUNTDOWN else AfterSet.Kind.RUN
-    return AfterSet(kind, target, redoMode = false)
+    val skipped = done.isSkipped && !done.isCompleted
+    val rest = (if (skipped) 0 else done.intervalSeconds) + done.loopRestAfterSeconds
+    if (!restDone && rest > 0) return AfterSet(AfterSet.Kind.REST, index, redoMode)
+    val ready = if (startCountdownSeconds > 0) AfterSet.Kind.COUNTDOWN else AfterSet.Kind.RUN
+    return AfterSet(if (redoMode || skipped) ready else AfterSet.Kind.RUN, target, redoMode = false)
 }

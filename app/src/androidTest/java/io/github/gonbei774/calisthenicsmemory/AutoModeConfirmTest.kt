@@ -87,13 +87,13 @@ class AutoModeConfirmTest {
                 ProgramExecutingStepDynamicAuto(
                     session = session, currentSetIndex = 0, soundPlayer = sound, flashController = flash,
                     isFlashEnabled = false, isCountSoundEnabled = false,
-                    onSetComplete = { completed += it }, onAbort = {}, onRetry = {},
+                    onSetComplete = { completed += it }, onAbort = {}, onRetry = {}, onSkipSet = {}, onSkipExercise = {},
                 )
             } else {
                 ProgramExecutingStepIsometricAuto(
                     session = session, currentSetIndex = 0, soundPlayer = sound, flashController = flash,
                     isFlashEnabled = false, isIntervalSoundEnabled = false, intervalSeconds = 0,
-                    onSetComplete = { completed += it }, onAbort = {}, onRetry = {},
+                    onSetComplete = { completed += it }, onAbort = {}, onRetry = {}, onSkipSet = {}, onSkipExercise = {},
                 )
             }
         }

@@ -32,6 +32,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.skipExercise
+import io.github.gonbei774.calisthenicsmemory.data.nextPendingIndex
+import io.github.gonbei774.calisthenicsmemory.data.markSkipped
 import io.github.gonbei774.calisthenicsmemory.data.AfterSet
 import io.github.gonbei774.calisthenicsmemory.data.afterSet
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
@@ -303,6 +306,16 @@ fun ProgramExecutionScreen(
 
     // Redoモード（やり直し後は次の未完了セットへ自動ジャンプ）
     var isRedoMode by remember { mutableStateOf(false) }
+    // Moves to whatever afterSet() decided: a rest, the start countdown, the next set or the result.
+    val follow: (ProgramExecutionSession, AfterSet) -> Unit = { session, after ->
+        isRedoMode = after.redoMode
+        currentStep = when (after.kind) {
+            AfterSet.Kind.REST -> ProgramExecutionStep.Interval(session, after.index)
+            AfterSet.Kind.COUNTDOWN -> ProgramExecutionStep.StartInterval(session, after.index)
+            AfterSet.Kind.RUN -> ProgramExecutionStep.Executing(session, after.index)
+            AfterSet.Kind.RESULT -> ProgramExecutionStep.Result(session)
+        }
+    }
 
     // 戻るボタンのハンドリング
     BackHandler {
@@ -919,16 +932,23 @@ fun ProgramExecutionScreen(
                             sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
                                 actualValue = actualValue,
                                 isCompleted = true,
+                                // A set reached again after a jump may have been skipped: now it is done.
+                                isSkipped = false,
                                 completedAtWallMillis = System.currentTimeMillis()
                             )
-                            val after = afterSet(sets, step.currentSetIndex, isRedoMode, startCountdownSeconds)
-                            isRedoMode = after.redoMode
-                            currentStep = when (after.kind) {
-                                AfterSet.Kind.REST -> ProgramExecutionStep.Interval(step.session, after.index)
-                                AfterSet.Kind.COUNTDOWN -> ProgramExecutionStep.StartInterval(step.session, after.index)
-                                AfterSet.Kind.RUN -> ProgramExecutionStep.Executing(step.session, after.index)
-                                AfterSet.Kind.RESULT -> ProgramExecutionStep.Result(step.session)
-                            }
+                            follow(step.session, afterSet(sets, step.currentSetIndex, isRedoMode, startCountdownSeconds))
+                        }
+
+                        // Skipping records no value, no vibration and no rest of its own; see afterSet().
+                        val skipSet: () -> Unit = {
+                            val sets = step.session.sets
+                            sets.markSkipped(step.currentSetIndex)
+                            follow(step.session, afterSet(sets, step.currentSetIndex, isRedoMode, startCountdownSeconds))
+                        }
+                        val skipWholeExercise: () -> Unit = {
+                            val sets = step.session.sets
+                            val last = skipExercise(sets, step.currentSetIndex)
+                            follow(step.session, afterSet(sets, last, isRedoMode, startCountdownSeconds))
                         }
 
                         val handleRetry: () -> Unit = {
@@ -959,6 +979,8 @@ fun ProgramExecutionScreen(
                                             currentStep = ProgramExecutionStep.Result(step.session)
                                         },
                                         onRetry = handleRetry,
+                                        onSkipSet = skipSet,
+                                        onSkipExercise = skipWholeExercise,
                                         onOpenNavigation = { showNavigationSheet = true }
                                     )
                                 } else if (!isDynamicCountSoundEnabled) {
@@ -971,6 +993,8 @@ fun ProgramExecutionScreen(
                                         currentStep = ProgramExecutionStep.Result(step.session)
                                     },
                                     onRetry = handleRetry,
+                                    onSkipSet = skipSet,
+                                    onSkipExercise = skipWholeExercise,
                                     onOpenNavigation = { showNavigationSheet = true }
                                 )
                             } else {
@@ -988,6 +1012,8 @@ fun ProgramExecutionScreen(
                                         currentStep = ProgramExecutionStep.Result(step.session)
                                     },
                                     onRetry = handleRetry,
+                                    onSkipSet = skipSet,
+                                    onSkipExercise = skipWholeExercise,
                                     onOpenNavigation = { showNavigationSheet = true }
                                 )
                             }
@@ -1009,6 +1035,8 @@ fun ProgramExecutionScreen(
                                             currentStep = ProgramExecutionStep.Result(step.session)
                                         },
                                         onRetry = handleRetry,
+                                        onSkipSet = skipSet,
+                                        onSkipExercise = skipWholeExercise,
                                         onOpenNavigation = { showNavigationSheet = true }
                                     )
                                 } else if (!isDynamicCountSoundEnabled) {
@@ -1021,6 +1049,8 @@ fun ProgramExecutionScreen(
                                             currentStep = ProgramExecutionStep.Result(step.session)
                                         },
                                         onRetry = handleRetry,
+                                        onSkipSet = skipSet,
+                                        onSkipExercise = skipWholeExercise,
                                         onOpenNavigation = { showNavigationSheet = true }
                                     )
                                 } else {
@@ -1038,6 +1068,8 @@ fun ProgramExecutionScreen(
                                             currentStep = ProgramExecutionStep.Result(step.session)
                                         },
                                         onRetry = handleRetry,
+                                        onSkipSet = skipSet,
+                                        onSkipExercise = skipWholeExercise,
                                         onOpenNavigation = { showNavigationSheet = true }
                                     )
                                 }
@@ -1046,26 +1078,6 @@ fun ProgramExecutionScreen(
                     }
 
                     is ProgramExecutionStep.Interval -> {
-                        // Redoモード時は次の未完了セットを探す処理
-                        val findNextIncompleteSetIndex: () -> Int = {
-                            val sets = step.session.sets
-                            var nextIndex = -1
-                            for (i in (step.currentSetIndex + 1) until sets.size) {
-                                if (!sets[i].isCompleted) {
-                                    nextIndex = i
-                                    break
-                                }
-                            }
-                            nextIndex
-                        }
-
-                        // Redoモード時は次の未完了セットのインデックスを計算
-                        val nextSetIndexForDisplay = if (isRedoMode) {
-                            findNextIncompleteSetIndex().takeIf { it >= 0 }
-                        } else {
-                            null
-                        }
-
                         ProgramIntervalStep(
                             session = step.session,
                             currentSetIndex = step.currentSetIndex,
@@ -1074,44 +1086,13 @@ fun ProgramExecutionScreen(
                             flashController = flashController,
                             isFlashEnabled = isFlashEnabled,
                             isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
-                            nextSetIndexOverride = nextSetIndexForDisplay,
+                            nextSetIndexOverride = nextPendingIndex(step.session.sets, step.currentSetIndex),
+                            // Skipping a rest is the rest ending: no countdown between sets.
                             onComplete = {
-                                val after = afterSet(step.session.sets, step.currentSetIndex, isRedoMode, startCountdownSeconds, restDone = true)
-                                isRedoMode = after.redoMode
-                                currentStep = when (after.kind) {
-                                    AfterSet.Kind.REST -> ProgramExecutionStep.Interval(step.session, after.index)
-                                    AfterSet.Kind.COUNTDOWN -> ProgramExecutionStep.StartInterval(step.session, after.index)
-                                    AfterSet.Kind.RUN -> ProgramExecutionStep.Executing(step.session, after.index)
-                                    AfterSet.Kind.RESULT -> ProgramExecutionStep.Result(step.session)
-                                }
+                                follow(step.session, afterSet(step.session.sets, step.currentSetIndex, isRedoMode, startCountdownSeconds, restDone = true))
                             },
                             onSkip = {
-                                if (isRedoMode) {
-                                    // Redoモード: 次の未完了セットを探す
-                                    val nextIncompleteIndex = findNextIncompleteSetIndex()
-                                    isRedoMode = false // Redoモード終了
-                                    if (nextIncompleteIndex >= 0) {
-                                        if (startCountdownSeconds > 0) {
-                                            currentStep = ProgramExecutionStep.StartInterval(step.session, nextIncompleteIndex)
-                                        } else {
-                                            currentStep = ProgramExecutionStep.Executing(step.session, nextIncompleteIndex)
-                                        }
-                                    } else {
-                                        currentStep = ProgramExecutionStep.Result(step.session)
-                                    }
-                                } else {
-                                    // 通常モード: 順番に進む
-                                    val nextIndex = step.currentSetIndex + 1
-                                    if (nextIndex < step.session.sets.size) {
-                                        if (startCountdownSeconds > 0) {
-                                            currentStep = ProgramExecutionStep.StartInterval(step.session, nextIndex)
-                                        } else {
-                                            currentStep = ProgramExecutionStep.Executing(step.session, nextIndex)
-                                        }
-                                    } else {
-                                        currentStep = ProgramExecutionStep.Result(step.session)
-                                    }
-                                }
+                                follow(step.session, afterSet(step.session.sets, step.currentSetIndex, isRedoMode, startCountdownSeconds, restDone = true))
                             }
                         )
                     }
@@ -1198,9 +1179,7 @@ fun ProgramExecutionScreen(
                 // 現在のセットからジャンプ先までのセットをスキップ済みにする（Result画面からの場合はスキップしない）
                 if (!isFromResult) {
                     for (i in navCurrentSetIndex until targetIndex) {
-                        if (!navSession.sets[i].isCompleted) {
-                            navSession.sets[i] = navSession.sets[i].copy(isSkipped = true)
-                        }
+                        navSession.sets.markSkipped(i)
                     }
                 }
                 // ジャンプ先に遷移

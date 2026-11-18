@@ -61,6 +61,8 @@ internal fun ProgramExecutingStepDynamicManual(
     onSetComplete: (Int) -> Unit,
     onAbort: () -> Unit,
     onRetry: () -> Unit,
+    onSkipSet: () -> Unit,
+    onSkipExercise: () -> Unit,
     onOpenNavigation: () -> Unit = {}
 ) {
     val cs = MaterialTheme.colorScheme
@@ -167,7 +169,7 @@ internal fun ProgramExecutingStepDynamicManual(
             onSetComplete = onSetComplete,
         )
 
-        SetActions(onRestart = onRetry)
+        SetActions(onRestart = onRetry, onSkipSet = onSkipSet, onSkipExercise = onSkipExercise)
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -186,6 +188,8 @@ internal fun ProgramExecutingStepIsometricManual(
     onSetComplete: (Int) -> Unit,
     onAbort: () -> Unit,
     onRetry: () -> Unit,
+    onSkipSet: () -> Unit,
+    onSkipExercise: () -> Unit,
     onOpenNavigation: () -> Unit = {}
 ) {
     val cs = MaterialTheme.colorScheme
@@ -293,7 +297,7 @@ internal fun ProgramExecutingStepIsometricManual(
             onSetComplete = onSetComplete,
         )
 
-        SetActions(onRestart = onRetry)
+        SetActions(onRestart = onRetry, onSkipSet = onSkipSet, onSkipExercise = onSkipExercise)
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -312,6 +316,8 @@ internal fun ProgramExecutingStepIsometricAuto(
     onSetComplete: (Int) -> Unit,
     onAbort: () -> Unit,
     onRetry: () -> Unit,
+    onSkipSet: () -> Unit,
+    onSkipExercise: () -> Unit,
     onOpenNavigation: () -> Unit = {}
 ) {
     val cs = MaterialTheme.colorScheme
@@ -417,7 +423,7 @@ internal fun ProgramExecutingStepIsometricAuto(
             onSetComplete = onSetComplete,
         )
 
-        SetActions(onRestart = onRetry)
+        SetActions(onRestart = onRetry, onSkipSet = onSkipSet, onSkipExercise = onSkipExercise)
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -435,6 +441,8 @@ internal fun ProgramExecutingStepDynamicAuto(
     onSetComplete: (Int) -> Unit,
     onAbort: () -> Unit,
     onRetry: () -> Unit,
+    onSkipSet: () -> Unit,
+    onSkipExercise: () -> Unit,
     onOpenNavigation: () -> Unit = {}
 ) {
     val cs = MaterialTheme.colorScheme
@@ -544,7 +552,7 @@ internal fun ProgramExecutingStepDynamicAuto(
             onSetComplete = onSetComplete,
         )
 
-        SetActions(onRestart = onRetry)
+        SetActions(onRestart = onRetry, onSkipSet = onSkipSet, onSkipExercise = onSkipExercise)
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -557,6 +565,8 @@ internal fun ProgramExecutingStepDynamicSimple(
     onSetComplete: (Int) -> Unit,
     onAbort: () -> Unit,
     onRetry: () -> Unit,
+    onSkipSet: () -> Unit,
+    onSkipExercise: () -> Unit,
     onOpenNavigation: () -> Unit = {}
 ) {
     val cs = MaterialTheme.colorScheme
@@ -607,7 +617,7 @@ internal fun ProgramExecutingStepDynamicSimple(
             onClick = { onSetComplete(repsCount) },
         )
 
-        SetActions(onRestart = onRetry)
+        SetActions(onRestart = onRetry, onSkipSet = onSkipSet, onSkipExercise = onSkipExercise)
         NextExerciseText(session = session, currentSetIndex = currentSetIndex)
     }
 }

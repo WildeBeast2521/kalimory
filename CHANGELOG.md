@@ -11,6 +11,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- Skip set under the main button of a running set, in a workout and in a program, and Skip exercise in a program, move on without recording a value; a skipped set is saved as skipped, has no rest of its own, and the next set shows the start countdown ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - A Restart set button under the main button of every running set, in a workout and in a program, starts the set again; it was in the single workout's menu only ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - A weekly review, opened from Today, shows the days you trained and your sets by movement (push, pull, legs, core and more) beside a mark at 10 sets a week, for this week and every week before it ([#248](https://github.com/WildeBeast2521/kalimory/pull/248))
 - The weekly review lists the week's new personal bests: each exercise whose best set beat every earlier one, with the day it came and the best before it ([#253](https://github.com/WildeBeast2521/kalimory/pull/253))
@@ -40,6 +41,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- A set in a program that was skipped and later done is no longer both done and skipped, and Skip on a rest between sets no longer starts a countdown ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The vibration that confirms a finished set also plays after the last set and when there is no rest, not only before a rest ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The start countdown runs only before the first set, after a retry and after a jump, not again after every rest, so the "go" cue no longer plays twice between sets ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The unselected options in a choice row, such as Theme, can be told apart from the card behind them in the dark theme ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
