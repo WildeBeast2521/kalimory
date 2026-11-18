@@ -345,6 +345,8 @@ fun SingleExecutingStepDynamicSimple(
         WorkoutPrimaryButton(
             text = pluralStringResource(R.plurals.complete_reps, reps, reps),
             onClick = {
+                // No timer announces this set, so pressing Complete is where the finish is heard.
+                soundPlayer.playSetComplete()
                 if (isFlashEnabled) {
                     scope.launch { flashController.flashSetComplete() }
                 }

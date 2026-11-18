@@ -986,6 +986,7 @@ fun ProgramExecutionScreen(
                                 } else if (!isDynamicCountSoundEnabled) {
                                 // Dynamic種目 + レップ数数え上げOFF: シンプルカウンター
                                 ProgramExecutingStepDynamicSimple(
+                                    soundPlayer = soundPlayer,
                                     session = step.session,
                                     currentSetIndex = step.currentSetIndex,
                                     onSetComplete = completeSet,
@@ -1042,6 +1043,7 @@ fun ProgramExecutionScreen(
                                 } else if (!isDynamicCountSoundEnabled) {
                                     // Dynamic種目 + レップ数数え上げOFF: シンプルカウンター
                                     ProgramExecutingStepDynamicSimple(
+                                        soundPlayer = soundPlayer,
                                         session = step.session,
                                         currentSetIndex = step.currentSetIndex,
                                         onSetComplete = completeSet,

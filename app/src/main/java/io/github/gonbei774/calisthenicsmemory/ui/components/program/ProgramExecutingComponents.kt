@@ -562,6 +562,8 @@ internal fun ProgramExecutingStepDynamicAuto(
 internal fun ProgramExecutingStepDynamicSimple(
     session: ProgramExecutionSession,
     currentSetIndex: Int,
+    // Plays the finish cue on Complete: no timer announces a counted set. Null in previews and tests.
+    soundPlayer: SoundPlayer? = null,
     onSetComplete: (Int) -> Unit,
     onAbort: () -> Unit,
     onRetry: () -> Unit,
@@ -614,7 +616,10 @@ internal fun ProgramExecutingStepDynamicSimple(
         // 完了ボタン
         WorkoutPrimaryButton(
             text = pluralStringResource(R.plurals.complete_reps, repsCount, repsCount),
-            onClick = { onSetComplete(repsCount) },
+            onClick = {
+                soundPlayer?.playSetComplete()
+                onSetComplete(repsCount)
+            },
         )
 
         SetActions(onRestart = onRetry, onSkipSet = onSkipSet, onSkipExercise = onSkipExercise)

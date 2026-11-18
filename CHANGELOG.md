@@ -43,6 +43,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- Pressing Complete on a counted set, which has no timer to announce it, plays the finish sound ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - A set in a program that was skipped and later done is no longer both done and skipped, and Skip on a rest between sets no longer starts a countdown ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The vibration that confirms a finished set also plays after the last set and when there is no rest, not only before a rest ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The start countdown runs only before the first set, after a retry and after a jump, not again after every rest, so the "go" cue no longer plays twice between sets ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
