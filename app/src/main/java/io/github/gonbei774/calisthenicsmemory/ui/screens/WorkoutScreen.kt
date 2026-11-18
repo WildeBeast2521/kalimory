@@ -439,12 +439,8 @@ fun WorkoutScreen(
                         if (nextIndex >= updatedSession.sets.size) {
                             WorkoutStep.Confirmation(updatedSession)
                         } else if (updatedSession.intervalDuration <= 0) {
-                            // インターバル0秒ならスキップ
-                            if (updatedSession.startInterval > 0) {
-                                WorkoutStep.StartInterval(updatedSession, nextIndex)
-                            } else {
-                                WorkoutStep.Executing(updatedSession, nextIndex)
-                            }
+                            // No rest: straight to the next set. The countdown is for the first set and a retry.
+                            WorkoutStep.Executing(updatedSession, nextIndex)
                         } else {
                             WorkoutStep.Interval(updatedSession, nextIndex)
                         }
@@ -617,21 +613,12 @@ fun WorkoutScreen(
                         flashController = flashController,
                         isFlashEnabled = isFlashEnabled,
                         isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
+                        // The rest already ended with its own cue, so the next set starts at once.
                         onIntervalComplete = {
-                            // インターバル完了後、準備（StartInterval）を挟む
-                            currentStep = if (step.session.startInterval > 0) {
-                                WorkoutStep.StartInterval(step.session, step.currentSetIndex)
-                            } else {
-                                WorkoutStep.Executing(step.session, step.currentSetIndex)
-                            }
+                            currentStep = WorkoutStep.Executing(step.session, step.currentSetIndex)
                         },
                         onSkip = {
-                            // スキップ時も準備を挟む
-                            currentStep = if (step.session.startInterval > 0) {
-                                WorkoutStep.StartInterval(step.session, step.currentSetIndex)
-                            } else {
-                                WorkoutStep.Executing(step.session, step.currentSetIndex)
-                            }
+                            currentStep = WorkoutStep.Executing(step.session, step.currentSetIndex)
                         },
                         onUpdateInterval = { newInterval ->
                             step.session.intervalDuration = newInterval
@@ -670,8 +657,6 @@ fun WorkoutScreen(
                             currentStep = when {
                                 updatedSession.intervalDuration > 0 ->
                                     WorkoutStep.Interval(updatedSession, nextIndex)
-                                updatedSession.startInterval > 0 ->
-                                    WorkoutStep.StartInterval(updatedSession, nextIndex)
                                 else ->
                                     WorkoutStep.Executing(updatedSession, nextIndex)
                             }

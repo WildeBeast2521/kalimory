@@ -31,6 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.AfterSet
+import io.github.gonbei774.calisthenicsmemory.data.afterSet
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.Program
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
@@ -908,6 +910,24 @@ fun ProgramExecutionScreen(
                         val (_, currentExercise) = step.session.exercises[currentSet.exerciseIndex]
 
                         // やり直し処理（準備カウントダウンに戻る or 内部リセット）
+                        // Every timer mode ends a set the same way: record it, then follow afterSet().
+                        val completeSet: (Int) -> Unit = { actualValue ->
+                            val sets = step.session.sets
+                            sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
+                                actualValue = actualValue,
+                                isCompleted = true,
+                                completedAtWallMillis = System.currentTimeMillis()
+                            )
+                            val after = afterSet(sets, step.currentSetIndex, isRedoMode, startCountdownSeconds)
+                            isRedoMode = after.redoMode
+                            currentStep = when (after.kind) {
+                                AfterSet.Kind.REST -> ProgramExecutionStep.Interval(step.session, after.index)
+                                AfterSet.Kind.COUNTDOWN -> ProgramExecutionStep.StartInterval(step.session, after.index)
+                                AfterSet.Kind.RUN -> ProgramExecutionStep.Executing(step.session, after.index)
+                                AfterSet.Kind.RESULT -> ProgramExecutionStep.Result(step.session)
+                            }
+                        }
+
                         val handleRetry: () -> Unit = {
                             if (startCountdownSeconds > 0) {
                                 currentStep = ProgramExecutionStep.StartInterval(step.session, step.currentSetIndex)
@@ -931,48 +951,7 @@ fun ProgramExecutionScreen(
                                         isIntervalSoundEnabled = isIsometricIntervalSoundEnabled,
                                         intervalSeconds = isometricIntervalSeconds,
                                         isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
-                                        onSetComplete = { actualValue ->
-                                            val sets = step.session.sets
-                                            sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
-                                                actualValue = actualValue,
-                                                isCompleted = true,
-                                                completedAtWallMillis = System.currentTimeMillis()
-                                            )
-                                            val completedSet = sets[step.currentSetIndex]
-                                            val nextIndex = step.currentSetIndex + 1
-
-                                            if (nextIndex < sets.size) {
-                                                if (completedSet.intervalSeconds > 0 || completedSet.loopRestAfterSeconds > 0) {
-                                                    currentStep = ProgramExecutionStep.Interval(step.session, step.currentSetIndex)
-                                                } else if (isRedoMode) {
-                                                    // Redoモード: 次の未完了セットを探す
-                                                    var nextIncompleteIndex = -1
-                                                    for (i in nextIndex until sets.size) {
-                                                        if (!sets[i].isCompleted) {
-                                                            nextIncompleteIndex = i
-                                                            break
-                                                        }
-                                                    }
-                                                    isRedoMode = false
-                                                    if (nextIncompleteIndex >= 0) {
-                                                        if (startCountdownSeconds > 0) {
-                                                            currentStep = ProgramExecutionStep.StartInterval(step.session, nextIncompleteIndex)
-                                                        } else {
-                                                            currentStep = ProgramExecutionStep.Executing(step.session, nextIncompleteIndex)
-                                                        }
-                                                    } else {
-                                                        currentStep = ProgramExecutionStep.Result(step.session)
-                                                    }
-                                                } else if (startCountdownSeconds > 0) {
-                                                    currentStep = ProgramExecutionStep.StartInterval(step.session, nextIndex)
-                                                } else {
-                                                    currentStep = ProgramExecutionStep.Executing(step.session, nextIndex)
-                                                }
-                                            } else {
-                                                if (isRedoMode) isRedoMode = false
-                                                currentStep = ProgramExecutionStep.Result(step.session)
-                                            }
-                                        },
+                                        onSetComplete = completeSet,
                                         onAbort = {
                                             currentStep = ProgramExecutionStep.Result(step.session)
                                         },
@@ -984,47 +963,7 @@ fun ProgramExecutionScreen(
                                 ProgramExecutingStepDynamicSimple(
                                     session = step.session,
                                     currentSetIndex = step.currentSetIndex,
-                                    onSetComplete = { actualValue ->
-                                        val sets = step.session.sets
-                                        sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
-                                            actualValue = actualValue,
-                                            isCompleted = true,
-                                            completedAtWallMillis = System.currentTimeMillis()
-                                        )
-                                        val completedSet = sets[step.currentSetIndex]
-
-                                        val nextIndex = step.currentSetIndex + 1
-                                        if (nextIndex < sets.size) {
-                                            if (completedSet.intervalSeconds > 0 || completedSet.loopRestAfterSeconds > 0) {
-                                                currentStep = ProgramExecutionStep.Interval(step.session, step.currentSetIndex)
-                                            } else if (isRedoMode) {
-                                                var nextIncompleteIndex = -1
-                                                for (i in nextIndex until sets.size) {
-                                                    if (!sets[i].isCompleted) {
-                                                        nextIncompleteIndex = i
-                                                        break
-                                                    }
-                                                }
-                                                isRedoMode = false
-                                                if (nextIncompleteIndex >= 0) {
-                                                    if (startCountdownSeconds > 0) {
-                                                        currentStep = ProgramExecutionStep.StartInterval(step.session, nextIncompleteIndex)
-                                                    } else {
-                                                        currentStep = ProgramExecutionStep.Executing(step.session, nextIncompleteIndex)
-                                                    }
-                                                } else {
-                                                    currentStep = ProgramExecutionStep.Result(step.session)
-                                                }
-                                            } else if (startCountdownSeconds > 0) {
-                                                currentStep = ProgramExecutionStep.StartInterval(step.session, nextIndex)
-                                            } else {
-                                                currentStep = ProgramExecutionStep.Executing(step.session, nextIndex)
-                                            }
-                                        } else {
-                                            if (isRedoMode) isRedoMode = false
-                                            currentStep = ProgramExecutionStep.Result(step.session)
-                                        }
-                                    },
+                                    onSetComplete = completeSet,
                                     onAbort = {
                                         currentStep = ProgramExecutionStep.Result(step.session)
                                     },
@@ -1040,47 +979,7 @@ fun ProgramExecutionScreen(
                                     isFlashEnabled = isFlashEnabled,
                                     isCountSoundEnabled = isDynamicCountSoundEnabled,
                                     isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
-                                    onSetComplete = { actualValue ->
-                                        val sets = step.session.sets
-                                        sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
-                                            actualValue = actualValue,
-                                            isCompleted = true,
-                                            completedAtWallMillis = System.currentTimeMillis()
-                                        )
-                                        val completedSet = sets[step.currentSetIndex]
-
-                                        val nextIndex = step.currentSetIndex + 1
-                                        if (nextIndex < sets.size) {
-                                            if (completedSet.intervalSeconds > 0 || completedSet.loopRestAfterSeconds > 0) {
-                                                currentStep = ProgramExecutionStep.Interval(step.session, step.currentSetIndex)
-                                            } else if (isRedoMode) {
-                                                var nextIncompleteIndex = -1
-                                                for (i in nextIndex until sets.size) {
-                                                    if (!sets[i].isCompleted) {
-                                                        nextIncompleteIndex = i
-                                                        break
-                                                    }
-                                                }
-                                                isRedoMode = false
-                                                if (nextIncompleteIndex >= 0) {
-                                                    if (startCountdownSeconds > 0) {
-                                                        currentStep = ProgramExecutionStep.StartInterval(step.session, nextIncompleteIndex)
-                                                    } else {
-                                                        currentStep = ProgramExecutionStep.Executing(step.session, nextIncompleteIndex)
-                                                    }
-                                                } else {
-                                                    currentStep = ProgramExecutionStep.Result(step.session)
-                                                }
-                                            } else if (startCountdownSeconds > 0) {
-                                                currentStep = ProgramExecutionStep.StartInterval(step.session, nextIndex)
-                                            } else {
-                                                currentStep = ProgramExecutionStep.Executing(step.session, nextIndex)
-                                            }
-                                        } else {
-                                            if (isRedoMode) isRedoMode = false
-                                            currentStep = ProgramExecutionStep.Result(step.session)
-                                        }
-                                    },
+                                    onSetComplete = completeSet,
                                     onAbort = {
                                         currentStep = ProgramExecutionStep.Result(step.session)
                                     },
@@ -1101,49 +1000,7 @@ fun ProgramExecutionScreen(
                                         isIntervalSoundEnabled = isIsometricIntervalSoundEnabled,
                                         intervalSeconds = isometricIntervalSeconds,
                                         isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
-                                        onSetComplete = { actualValue ->
-                                            val sets = step.session.sets
-                                            sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
-                                                actualValue = actualValue,
-                                                isCompleted = true,
-                                                completedAtWallMillis = System.currentTimeMillis()
-                                            )
-                                            val completedSet = sets[step.currentSetIndex]
-                                            val nextIndex = step.currentSetIndex + 1
-
-                                            // 次のセットへ
-                                            if (nextIndex < sets.size) {
-                                                if (completedSet.intervalSeconds > 0 || completedSet.loopRestAfterSeconds > 0) {
-                                                    currentStep = ProgramExecutionStep.Interval(step.session, step.currentSetIndex)
-                                                } else if (isRedoMode) {
-                                                    // Redoモード: 次の未完了セットを探す
-                                                    var nextIncompleteIndex = -1
-                                                    for (i in nextIndex until sets.size) {
-                                                        if (!sets[i].isCompleted) {
-                                                            nextIncompleteIndex = i
-                                                            break
-                                                        }
-                                                    }
-                                                    isRedoMode = false
-                                                    if (nextIncompleteIndex >= 0) {
-                                                        if (startCountdownSeconds > 0) {
-                                                            currentStep = ProgramExecutionStep.StartInterval(step.session, nextIncompleteIndex)
-                                                        } else {
-                                                            currentStep = ProgramExecutionStep.Executing(step.session, nextIncompleteIndex)
-                                                        }
-                                                    } else {
-                                                        currentStep = ProgramExecutionStep.Result(step.session)
-                                                    }
-                                                } else if (startCountdownSeconds > 0) {
-                                                    currentStep = ProgramExecutionStep.StartInterval(step.session, nextIndex)
-                                                } else {
-                                                    currentStep = ProgramExecutionStep.Executing(step.session, nextIndex)
-                                                }
-                                            } else {
-                                                if (isRedoMode) isRedoMode = false
-                                                currentStep = ProgramExecutionStep.Result(step.session)
-                                            }
-                                        },
+                                        onSetComplete = completeSet,
                                         onAbort = {
                                             currentStep = ProgramExecutionStep.Result(step.session)
                                         },
@@ -1155,49 +1012,7 @@ fun ProgramExecutionScreen(
                                     ProgramExecutingStepDynamicSimple(
                                         session = step.session,
                                         currentSetIndex = step.currentSetIndex,
-                                        onSetComplete = { actualValue ->
-                                            val sets = step.session.sets
-                                            sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
-                                                actualValue = actualValue,
-                                                isCompleted = true,
-                                                completedAtWallMillis = System.currentTimeMillis()
-                                            )
-                                            val completedSet = sets[step.currentSetIndex]
-                                            val nextIndex = step.currentSetIndex + 1
-
-                                            // 次のセットへ
-                                            if (nextIndex < sets.size) {
-                                                if (completedSet.intervalSeconds > 0 || completedSet.loopRestAfterSeconds > 0) {
-                                                    currentStep = ProgramExecutionStep.Interval(step.session, step.currentSetIndex)
-                                                } else if (isRedoMode) {
-                                                    // Redoモード: 次の未完了セットを探す
-                                                    var nextIncompleteIndex = -1
-                                                    for (i in nextIndex until sets.size) {
-                                                        if (!sets[i].isCompleted) {
-                                                            nextIncompleteIndex = i
-                                                            break
-                                                        }
-                                                    }
-                                                    isRedoMode = false
-                                                    if (nextIncompleteIndex >= 0) {
-                                                        if (startCountdownSeconds > 0) {
-                                                            currentStep = ProgramExecutionStep.StartInterval(step.session, nextIncompleteIndex)
-                                                        } else {
-                                                            currentStep = ProgramExecutionStep.Executing(step.session, nextIncompleteIndex)
-                                                        }
-                                                    } else {
-                                                        currentStep = ProgramExecutionStep.Result(step.session)
-                                                    }
-                                                } else if (startCountdownSeconds > 0) {
-                                                    currentStep = ProgramExecutionStep.StartInterval(step.session, nextIndex)
-                                                } else {
-                                                    currentStep = ProgramExecutionStep.Executing(step.session, nextIndex)
-                                                }
-                                            } else {
-                                                if (isRedoMode) isRedoMode = false
-                                                currentStep = ProgramExecutionStep.Result(step.session)
-                                            }
-                                        },
+                                        onSetComplete = completeSet,
                                         onAbort = {
                                             currentStep = ProgramExecutionStep.Result(step.session)
                                         },
@@ -1213,49 +1028,7 @@ fun ProgramExecutionScreen(
                                         isFlashEnabled = isFlashEnabled,
                                         isCountSoundEnabled = isDynamicCountSoundEnabled,
                                         isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
-                                        onSetComplete = { actualValue ->
-                                            val sets = step.session.sets
-                                            sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
-                                                actualValue = actualValue,
-                                                isCompleted = true,
-                                                completedAtWallMillis = System.currentTimeMillis()
-                                            )
-                                            val completedSet = sets[step.currentSetIndex]
-                                            val nextIndex = step.currentSetIndex + 1
-
-                                            // 次のセットへ
-                                            if (nextIndex < sets.size) {
-                                                if (completedSet.intervalSeconds > 0 || completedSet.loopRestAfterSeconds > 0) {
-                                                    currentStep = ProgramExecutionStep.Interval(step.session, step.currentSetIndex)
-                                                } else if (isRedoMode) {
-                                                    // Redoモード: 次の未完了セットを探す
-                                                    var nextIncompleteIndex = -1
-                                                    for (i in nextIndex until sets.size) {
-                                                        if (!sets[i].isCompleted) {
-                                                            nextIncompleteIndex = i
-                                                            break
-                                                        }
-                                                    }
-                                                    isRedoMode = false
-                                                    if (nextIncompleteIndex >= 0) {
-                                                        if (startCountdownSeconds > 0) {
-                                                            currentStep = ProgramExecutionStep.StartInterval(step.session, nextIncompleteIndex)
-                                                        } else {
-                                                            currentStep = ProgramExecutionStep.Executing(step.session, nextIncompleteIndex)
-                                                        }
-                                                    } else {
-                                                        currentStep = ProgramExecutionStep.Result(step.session)
-                                                    }
-                                                } else if (startCountdownSeconds > 0) {
-                                                    currentStep = ProgramExecutionStep.StartInterval(step.session, nextIndex)
-                                                } else {
-                                                    currentStep = ProgramExecutionStep.Executing(step.session, nextIndex)
-                                                }
-                                            } else {
-                                                if (isRedoMode) isRedoMode = false
-                                                currentStep = ProgramExecutionStep.Result(step.session)
-                                            }
-                                        },
+                                        onSetComplete = completeSet,
                                         onAbort = {
                                             currentStep = ProgramExecutionStep.Result(step.session)
                                         },
@@ -1298,32 +1071,13 @@ fun ProgramExecutionScreen(
                             isNavigationOpen = showNavigationSheet || showExitConfirmDialog,
                             nextSetIndexOverride = nextSetIndexForDisplay,
                             onComplete = {
-                                if (isRedoMode) {
-                                    // Redoモード: 次の未完了セットを探す
-                                    val nextIncompleteIndex = findNextIncompleteSetIndex()
-                                    isRedoMode = false // Redoモード終了
-                                    if (nextIncompleteIndex >= 0) {
-                                        if (startCountdownSeconds > 0) {
-                                            currentStep = ProgramExecutionStep.StartInterval(step.session, nextIncompleteIndex)
-                                        } else {
-                                            currentStep = ProgramExecutionStep.Executing(step.session, nextIncompleteIndex)
-                                        }
-                                    } else {
-                                        // 未完了セットなし → Result画面へ
-                                        currentStep = ProgramExecutionStep.Result(step.session)
-                                    }
-                                } else {
-                                    // 通常モード: 順番に進む
-                                    val nextIndex = step.currentSetIndex + 1
-                                    if (nextIndex < step.session.sets.size) {
-                                        if (startCountdownSeconds > 0) {
-                                            currentStep = ProgramExecutionStep.StartInterval(step.session, nextIndex)
-                                        } else {
-                                            currentStep = ProgramExecutionStep.Executing(step.session, nextIndex)
-                                        }
-                                    } else {
-                                        currentStep = ProgramExecutionStep.Result(step.session)
-                                    }
+                                val after = afterSet(step.session.sets, step.currentSetIndex, isRedoMode, startCountdownSeconds, restDone = true)
+                                isRedoMode = after.redoMode
+                                currentStep = when (after.kind) {
+                                    AfterSet.Kind.REST -> ProgramExecutionStep.Interval(step.session, after.index)
+                                    AfterSet.Kind.COUNTDOWN -> ProgramExecutionStep.StartInterval(step.session, after.index)
+                                    AfterSet.Kind.RUN -> ProgramExecutionStep.Executing(step.session, after.index)
+                                    AfterSet.Kind.RESULT -> ProgramExecutionStep.Result(step.session)
                                 }
                             },
                             onSkip = {

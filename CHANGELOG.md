@@ -39,6 +39,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- The start countdown runs only before the first set, after a retry and after a jump, not again after every rest, so the "go" cue no longer plays twice between sets ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The unselected options in a choice row, such as Theme, can be told apart from the card behind them in the dark theme ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - At large text sizes, the interval editor's timer settings and the stepper rows in Log a past workout no longer clip their units or split words: the label moves above the stepper ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - At large text sizes, the Programs, Intervals and To Do lists keep names readable: the Start and other buttons move under the text instead of squeezing a name into a few letters per line ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))

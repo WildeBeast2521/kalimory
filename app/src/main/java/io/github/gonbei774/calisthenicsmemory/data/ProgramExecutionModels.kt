@@ -60,3 +60,34 @@ sealed class ProgramExecutionStep {
     data class Interval(val session: ProgramExecutionSession, val currentSetIndex: Int) : ProgramExecutionStep()
     data class Result(val session: ProgramExecutionSession) : ProgramExecutionStep()
 }
+/** What follows a finished set; [index] is the set to go to, or the finished set itself for a rest. */
+data class AfterSet(val kind: Kind, val index: Int, val redoMode: Boolean) {
+    enum class Kind { REST, COUNTDOWN, RUN, RESULT }
+}
+
+/**
+ * Where a program goes after the set at [index] is done, the same for every timer mode and for the end of
+ * a rest ([restDone]). A set with a rest after it goes to the rest first. The next set then starts at
+ * once: the start countdown belongs before the first set and after a jump or retry, not between sets.
+ * Finishing a set that was redone moves on to the next unfinished set, which is a jump, so the countdown
+ * shows when [startCountdownSeconds] is above zero.
+ */
+fun afterSet(
+    sets: List<ProgramWorkoutSet>,
+    index: Int,
+    redoMode: Boolean,
+    startCountdownSeconds: Int,
+    restDone: Boolean = false,
+): AfterSet {
+    val next = index + 1
+    if (next >= sets.size) return AfterSet(AfterSet.Kind.RESULT, index, redoMode = false)
+    val done = sets[index]
+    if (!restDone && (done.intervalSeconds > 0 || done.loopRestAfterSeconds > 0)) {
+        return AfterSet(AfterSet.Kind.REST, index, redoMode)
+    }
+    if (!redoMode) return AfterSet(AfterSet.Kind.RUN, next, redoMode = false)
+    val target = (next until sets.size).firstOrNull { !sets[it].isCompleted }
+        ?: return AfterSet(AfterSet.Kind.RESULT, index, redoMode = false)
+    val kind = if (startCountdownSeconds > 0) AfterSet.Kind.COUNTDOWN else AfterSet.Kind.RUN
+    return AfterSet(kind, target, redoMode = false)
+}
