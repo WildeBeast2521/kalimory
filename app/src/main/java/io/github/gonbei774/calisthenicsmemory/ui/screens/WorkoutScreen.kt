@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberSetDoneHaptic
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePickRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchRow
@@ -445,7 +446,9 @@ fun WorkoutScreen(
                             WorkoutStep.Interval(updatedSession, nextIndex)
                         }
                     }
+                    val setDoneHaptic = rememberSetDoneHaptic()
                     val onSetComplete: (WorkoutSession) -> Unit = { updatedSession ->
+                        setDoneHaptic()
                         updatedSession.sets.getOrNull(step.currentSetIndex)?.completedAtWallMillis = System.currentTimeMillis()
                         val nextIndex = step.currentSetIndex + 1
                         currentStep = nextStepAfterSet(updatedSession, nextIndex)

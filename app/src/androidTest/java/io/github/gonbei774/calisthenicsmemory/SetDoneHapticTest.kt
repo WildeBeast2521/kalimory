@@ -8,14 +8,14 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
-import io.github.gonbei774.calisthenicsmemory.ui.components.workout.SetDoneBadge
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberSetDoneHaptic
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/** A finished set confirms with one haptic, unless the user turned it off in Settings. */
+/** A finished set confirms with one haptic, unless the user turned it off in Settings; the last set too. */
 @RunWith(AndroidJUnit4::class)
 class SetDoneHapticTest {
     @get:Rule
@@ -30,14 +30,16 @@ class SetDoneHapticTest {
         }
     }
 
-    private fun showBadge(): RecordingHaptics {
+    // Finishing a set calls this where the set is recorded; no rest screen has to follow.
+    private fun finishSet(): RecordingHaptics {
         val haptics = RecordingHaptics()
+        lateinit var onSetDone: () -> Unit
         rule.setContent {
             CompositionLocalProvider(LocalHapticFeedback provides haptics) {
-                SetDoneBadge(label = "Set 1 done")
+                onSetDone = rememberSetDoneHaptic()
             }
         }
-        rule.waitForIdle()
+        rule.runOnIdle { onSetDone() }
         return haptics
     }
 
@@ -47,12 +49,12 @@ class SetDoneHapticTest {
     @Test
     fun vibratesOnceByDefault() {
         prefs.setSetDoneVibrationEnabled(true)
-        assertEquals(listOf(HapticFeedbackType.Confirm), showBadge().performed)
+        assertEquals(listOf(HapticFeedbackType.Confirm), finishSet().performed)
     }
 
     @Test
     fun staysStillWhenTurnedOff() {
         prefs.setSetDoneVibrationEnabled(false)
-        assertEquals(emptyList<HapticFeedbackType>(), showBadge().performed)
+        assertEquals(emptyList<HapticFeedbackType>(), finishSet().performed)
     }
 }

@@ -472,20 +472,31 @@ fun WorkoutPrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier =
 }
 
 /**
+ * One short vibration that confirms a finished set, unless the user turned it off in Settings. Call it
+ * where the set is recorded, so it does not depend on a rest screen following.
+ */
+@Composable
+fun rememberSetDoneHaptic(): () -> Unit {
+    val haptics = LocalHapticFeedback.current
+    val context = LocalContext.current
+    return remember(haptics, context) {
+        {
+            if (WorkoutPreferences(context).isSetDoneVibrationEnabled()) {
+                haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+            }
+        }
+    }
+}
+
+/**
  * The expressive moment (ADR 0004): after a completed set, a badge springs in at the start of
- * the rest, its tick draws itself, and a short vibration confirms the set unless the user
- * turned that off. Animations follow the system "remove animations" setting.
+ * the rest and its tick draws itself. Animations follow the system "remove animations" setting.
  */
 @Composable
 fun SetDoneBadge(label: String, modifier: Modifier = Modifier) {
     val scale = remember { Animatable(0.4f) }
     val tick = remember { Animatable(0f) }
-    val haptics = LocalHapticFeedback.current
-    val context = LocalContext.current
     LaunchedEffect(Unit) {
-        if (WorkoutPreferences(context).isSetDoneVibrationEnabled()) {
-            haptics.performHapticFeedback(HapticFeedbackType.Confirm)
-        }
         scale.animateTo(1f, spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessMediumLow))
     }
     LaunchedEffect(Unit) {

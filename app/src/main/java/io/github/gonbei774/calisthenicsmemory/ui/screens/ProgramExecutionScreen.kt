@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberSetDoneHaptic
 import io.github.gonbei774.calisthenicsmemory.workout.WorkoutProgressBus
 import androidx.compose.material3.LoadingIndicator
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -911,7 +912,9 @@ fun ProgramExecutionScreen(
 
                         // やり直し処理（準備カウントダウンに戻る or 内部リセット）
                         // Every timer mode ends a set the same way: record it, then follow afterSet().
+                        val setDoneHaptic = rememberSetDoneHaptic()
                         val completeSet: (Int) -> Unit = { actualValue ->
+                            setDoneHaptic()
                             val sets = step.session.sets
                             sets[step.currentSetIndex] = sets[step.currentSetIndex].copy(
                                 actualValue = actualValue,
