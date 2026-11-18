@@ -1274,7 +1274,7 @@ private fun ExercisesTabContent(
     onToggle: (Long) -> Unit
 ) {
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
-    val expandedGroups by viewModel.expandedGroups.collectAsState()
+    val collapsedGroups by viewModel.collapsedPickerGroups.collectAsState()
 
     var searchQuery by remember { mutableStateOf("") }
 
@@ -1353,9 +1353,9 @@ private fun ExercisesTabContent(
                                 groupName = group.groupName,
                                 exercises = availableInGroup,
                                 selectedExercises = selectedIds,
-                                isExpanded = (group.groupName ?: "ungrouped") in expandedGroups,
+                                isExpanded = (group.groupName ?: "ungrouped") !in collapsedGroups,
                                 onExpandToggle = {
-                                    viewModel.toggleGroupExpansion(group.groupName ?: "ungrouped")
+                                    viewModel.togglePickerGroup(group.groupName ?: "ungrouped")
                                 },
                                 onExerciseToggle = onToggle,
                                 onGroupToggle = { ids ->

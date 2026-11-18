@@ -651,7 +651,7 @@ private fun AddExerciseToIntervalDialog(
     onAdd: (List<Exercise>) -> Unit
 ) {
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
-    val expandedGroups by viewModel.expandedGroups.collectAsState()
+    val collapsedGroups by viewModel.collapsedPickerGroups.collectAsState()
 
     var selectedExercises by remember { mutableStateOf(listOf<Long>()) }
     var searchQuery by remember { mutableStateOf("") }
@@ -742,9 +742,9 @@ private fun AddExerciseToIntervalDialog(
                                         groupName = group.groupName,
                                         exercises = group.exercises,
                                         selectedExercises = selectedExercises,
-                                        isExpanded = (group.groupName ?: "ungrouped") in expandedGroups,
+                                        isExpanded = (group.groupName ?: "ungrouped") !in collapsedGroups,
                                         onExpandToggle = {
-                                            viewModel.toggleGroupExpansion(group.groupName ?: "ungrouped")
+                                            viewModel.togglePickerGroup(group.groupName ?: "ungrouped")
                                         },
                                         onExerciseToggle = { exerciseId ->
                                             selectedExercises = if (exerciseId in selectedExercises) {

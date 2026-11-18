@@ -299,7 +299,7 @@ fun ExerciseSelectionScreen(
     // ViewModelを取得
     val viewModel: TrainingViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
-    val expandedGroups by viewModel.expandedGroups.collectAsState()
+    val collapsedGroups by viewModel.collapsedPickerGroups.collectAsState()
 
     // Search state
     var searchQuery by remember { mutableStateOf("") }
@@ -425,14 +425,10 @@ fun ExerciseSelectionScreen(
                             val group = hierarchicalData[index]
                             HierarchicalExerciseGroup(
                                 group = group,
-                                isExpanded = if (group.groupName != null) {
-                                    group.groupName in expandedGroups
-                                } else {
-                                    "ungrouped" in expandedGroups
-                                },
+                                isExpanded = (group.groupName ?: "ungrouped") !in collapsedGroups,
                                 onExpandToggle = {
                                     val key = group.groupName ?: "ungrouped"
-                                    viewModel.toggleGroupExpansion(key)
+                                    viewModel.togglePickerGroup(key)
                                 },
                                 onExerciseSelected = onExerciseSelected
                             )

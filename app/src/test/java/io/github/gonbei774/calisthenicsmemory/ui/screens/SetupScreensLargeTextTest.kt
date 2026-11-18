@@ -58,14 +58,14 @@ class SetupScreensLargeTextTest {
 
     // The top bar's collapsed title ("New interval") is shortened beside the Save button at this size: that
     // is the top bar's own problem (one shared bar, with room for two lines, is planned), not the rows.
-    @Test fun `new interval`() = audit(ignore = "\"New interval\"") { IntervalEditScreen(it, null, {}, {}) }
+    @Test fun `new interval`() = audit { IntervalEditScreen(it, null, {}, {}) }
 
     @Test fun `log a past workout entry`() = audit { RecordScreen(it, {}, initialExerciseId = 1L) }
 
     @Test fun `settings`() = audit { SettingsScreenNew(it, {}, {}, {}, {}, {}, {}) }
 
     // Same top-bar limit as above: the collapsed title is shortened beside the back button at this size.
-    @Test fun `backup`() = audit(ignore = "\"Complete backup (JSON)\"") { BackupScreen(it, {}) }
+    @Test fun `backup`() = audit { BackupScreen(it, {}) }
 
     @Test fun `csv files`() = audit { CsvDataManagementScreen(it, {}) }
 

@@ -749,7 +749,7 @@ fun ExerciseSelectionStep(
 ) {
     val exercises by viewModel.exercises.collectAsState()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
-    val expandedGroups by viewModel.expandedGroups.collectAsState()
+    val collapsedGroups by viewModel.collapsedPickerGroups.collectAsState()
     val lastDone by viewModel.lastDone.collectAsState()
 
     // Search state
@@ -833,14 +833,10 @@ fun ExerciseSelectionStep(
                         WorkoutHierarchicalGroup(
                             group = group,
                             lastDone = lastDone.exercises,
-                            isExpanded = if (group.groupName != null) {
-                                group.groupName in expandedGroups
-                            } else {
-                                "ungrouped" in expandedGroups
-                            },
+                            isExpanded = (group.groupName ?: "ungrouped") !in collapsedGroups,
                             onExpandToggle = {
                                 val key = group.groupName ?: "ungrouped"
-                                viewModel.toggleGroupExpansion(key)
+                                viewModel.togglePickerGroup(key)
                             },
                             onExerciseSelected = onExerciseSelected
                         )

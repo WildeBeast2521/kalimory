@@ -479,6 +479,16 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     private val _expandedGroups = MutableStateFlow<Set<String>>(emptySet())
     val expandedGroups: StateFlow<Set<String>> = _expandedGroups.asStateFlow()
 
+    // The exercise pickers (Workout, Log a past workout, intervals) open every group and remember only
+    // the ones closed, so the Library's open groups do not decide what a picker shows.
+    private val _collapsedPickerGroups = MutableStateFlow<Set<String>>(emptySet())
+    val collapsedPickerGroups: StateFlow<Set<String>> = _collapsedPickerGroups.asStateFlow()
+
+    fun togglePickerGroup(groupName: String) {
+        _collapsedPickerGroups.value =
+            if (groupName in _collapsedPickerGroups.value) _collapsedPickerGroups.value - groupName else _collapsedPickerGroups.value + groupName
+    }
+
     fun toggleGroupExpansion(groupName: String) {
         _expandedGroups.value = if (groupName in _expandedGroups.value) {
             _expandedGroups.value - groupName

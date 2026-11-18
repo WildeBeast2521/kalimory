@@ -40,7 +40,7 @@ fun CalmTopBar(
 ) {
     MediumFlexibleTopAppBar(
         title = {
-            Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.semantics { heading() })
+            Text(title, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.semantics { heading() })
         },
         modifier = modifier,
         navigationIcon = {

@@ -46,7 +46,7 @@ fun AddExerciseToProgramDialog(
     onAdd: (List<Exercise>) -> Unit
 ) {
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
-    val expandedGroups by viewModel.expandedGroups.collectAsState()
+    val collapsedGroups by viewModel.collapsedPickerGroups.collectAsState()
 
     var selectedExercises by remember { mutableStateOf(listOf<Long>()) }
     var searchQuery by remember { mutableStateOf("") }
@@ -135,9 +135,9 @@ fun AddExerciseToProgramDialog(
                                         groupName = group.groupName,
                                         exercises = group.exercises,
                                         selectedExercises = selectedExercises,
-                                        isExpanded = (group.groupName ?: "ungrouped") in expandedGroups,
+                                        isExpanded = (group.groupName ?: "ungrouped") !in collapsedGroups,
                                         onExpandToggle = {
-                                            viewModel.toggleGroupExpansion(group.groupName ?: "ungrouped")
+                                            viewModel.togglePickerGroup(group.groupName ?: "ungrouped")
                                         },
                                         onExerciseToggle = { exerciseId ->
                                             selectedExercises = if (exerciseId in selectedExercises) {
