@@ -32,8 +32,8 @@ class SetupScreensLargeTextTest {
     @get:Rule
     val rules: TestRule = RuleChain.outerRule(MainScreenFixture.state(AppTheme.LIGHT)).around(compose)
 
-    private fun audit(ignore: String? = null, content: @Composable (TrainingViewModel) -> Unit) {
-        RuntimeEnvironment.setFontScale(2f)
+    private fun audit(ignore: String? = null, scale: Float = 2f, content: @Composable (TrainingViewModel) -> Unit) {
+        RuntimeEnvironment.setFontScale(scale)
         try {
             val vm = TrainingViewModel(ApplicationProvider.getApplicationContext<Application>())
             compose.setContent { CalisthenicsMemoryTheme { content(vm) } }
@@ -70,4 +70,11 @@ class SetupScreensLargeTextTest {
     @Test fun `csv files`() = audit { CsvDataManagementScreen(it, {}) }
 
     @Test fun `share`() = audit { ShareHubScreen(it, {}, {}) }
+
+    // Text did not fit here at normal size either, once the step buttons grew to a 48 dp touch target.
+    @Test fun `log a past workout entry at normal size`() = audit(scale = 1f) { RecordScreen(it, {}, initialExerciseId = 1L) }
+
+    @Test fun `program setup at normal size`() = audit(scale = 1f) { ProgramExecutionScreen(it, 1L, onNavigateBack = {}, onComplete = {}) }
+
+    @Test fun `new interval at normal size`() = audit(scale = 1f) { IntervalEditScreen(it, null, {}, {}) }
 }
