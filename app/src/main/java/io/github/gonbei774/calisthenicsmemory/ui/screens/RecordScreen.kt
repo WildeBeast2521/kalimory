@@ -488,7 +488,7 @@ fun HierarchicalExerciseGroup(
                         )
                         Text(
                             text = pluralStringResource(R.plurals.exercise_count, group.exercises.size, group.exercises.size),
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -901,7 +901,7 @@ fun WorkoutInputScreen(
                                     unilateral = exercise.laterality == "Unilateral",
                                     display = true,
                                 ),
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold
                             )
@@ -948,7 +948,7 @@ fun WorkoutInputScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = stringResource(R.string.apply_exercise_settings),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -989,7 +989,7 @@ fun WorkoutInputScreen(
                             ) {
                                 Text(
                                     text = stringResource(if (exercise.type == "Dynamic") R.string.reps_label else R.string.time_label),
-                                    fontSize = 12.sp,
+                                    style = MaterialTheme.typography.bodySmall,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -1336,7 +1336,7 @@ fun WorkoutInputScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.record_done_count, enteredCount, numberOfSets),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimary
                         )
@@ -1674,7 +1674,7 @@ private fun SetCardHeader(
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             text = stringResource(R.string.set_number_format, index + 1),
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
             color = if (status == SetStatus.PENDING) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface
         )
@@ -1750,7 +1750,7 @@ private fun InlineStepperRow(
     val labelText: @Composable (Modifier) -> Unit = { modifier ->
         Text(
             text = label,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = if (isLargeFontScale()) Int.MAX_VALUE else 1,
             modifier = modifier
@@ -1791,7 +1791,7 @@ private fun InlineStepperRow(
         if (previousText != null) {
             Text(
                 text = previousText,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.End,
                 maxLines = 1,

@@ -811,7 +811,7 @@ fun FilterBottomSheetContent(
                                 }
                             },
                             color = MaterialTheme.colorScheme.surfaceContainerLow,
-                            shape = RoundedCornerShape(8.dp)
+                            shape = MaterialTheme.shapes.extraSmall
                         ) {
                             Row(
                                 modifier = Modifier
@@ -830,13 +830,13 @@ fun FilterBottomSheetContent(
                                             null -> stringResource(R.string.no_group_display)
                                             else -> group.groupName
                                         },
-                                        fontSize = 16.sp,
+                                        style = MaterialTheme.typography.bodyLarge,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
                                         text = pluralStringResource(R.plurals.exercise_count, group.exercises.size, group.exercises.size),
-                                        fontSize = 14.sp,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
@@ -902,7 +902,7 @@ fun FilterExerciseItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = exercise.name,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                 )
@@ -953,7 +953,7 @@ fun FilterTextItem(
         ) {
             Text(
                 text = text,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
             )
@@ -1061,7 +1061,7 @@ fun ChallengeView(
                                 null -> stringResource(R.string.no_group_display)
                                 else -> group.groupName
                             },
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
@@ -1163,7 +1163,7 @@ fun ChallengeExerciseCard(
                 if (exercise.sortOrder > 0) {
                     Text(
                         text = stringResource(R.string.level_format, exercise.sortOrder),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.secondary
                     )
@@ -1243,7 +1243,7 @@ fun ChallengeExerciseCard(
                     if (lastRecordDate != null) {
                         Text(
                             text = stringResource(R.string.last_record_short, lastRecordDate),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -1252,7 +1252,7 @@ fun ChallengeExerciseCard(
                 // 課題なしの場合
                 Text(
                     text = stringResource(R.string.no_challenge_set),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }

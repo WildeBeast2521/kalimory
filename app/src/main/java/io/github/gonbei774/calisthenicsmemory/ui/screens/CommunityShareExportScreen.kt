@@ -320,7 +320,7 @@ fun CommunityShareExportScreen(
                         Text(
                             text = stringResource(R.string.share_preview_programs, selectedPrograms.size),
                             fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         selectedPrograms.forEach { program ->
@@ -335,7 +335,7 @@ fun CommunityShareExportScreen(
                         Text(
                             text = stringResource(R.string.share_preview_intervals, selectedIntervals.size),
                             fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         selectedIntervals.forEach { interval ->
@@ -423,7 +423,7 @@ private fun ProgramsExportTab(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = MaterialTheme.shapes.extraSmall
                 ) {
                     Row(
                         modifier = Modifier
@@ -443,7 +443,7 @@ private fun ProgramsExportTab(
                         Column(modifier = Modifier.padding(start = 4.dp)) {
                             Text(
                                 text = program.name,
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -454,7 +454,7 @@ private fun ProgramsExportTab(
                             val subtitle = exercisesText + loopsText
                             Text(
                                 text = subtitle,
-                                fontSize = 11.sp,
+                                style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 2.dp)
                             )
@@ -495,7 +495,7 @@ private fun IntervalsExportTab(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = MaterialTheme.shapes.extraSmall
                 ) {
                     Row(
                         modifier = Modifier
@@ -515,14 +515,14 @@ private fun IntervalsExportTab(
                         Column(modifier = Modifier.padding(start = 4.dp)) {
                             Text(
                                 text = interval.name,
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             val exCount = exerciseCounts[interval.id] ?: 0
                             Text(
                                 text = intervalSummary(interval, exCount),
-                                fontSize = 11.sp,
+                                style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 2.dp)
                             )
@@ -586,7 +586,7 @@ private fun ExercisesExportTab(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = MaterialTheme.shapes.extraSmall
                     ) {
                         Row(
                             modifier = Modifier
@@ -608,14 +608,14 @@ private fun ExercisesExportTab(
                             Column(modifier = Modifier.padding(start = 4.dp)) {
                                 Text(
                                     text = exercise.name,
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = if (isIncluded) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface
                                 )
                                 if (isIncluded) {
                                     Text(
                                         text = stringResource(R.string.share_exercise_auto_included),
-                                        fontSize = 11.sp,
+                                        style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 2.dp)
                                     )
@@ -631,7 +631,7 @@ private fun ExercisesExportTab(
                                         if (exercise.weightTrackingEnabled) {
                                             Text(
                                                 text = stringResource(R.string.legend_weight),
-                                                fontSize = 11.sp,
+                                                style = MaterialTheme.typography.labelSmall,
                                                 fontWeight = FontWeight.Bold,
                                                 color = MaterialTheme.colorScheme.primary
                                             )
@@ -639,7 +639,7 @@ private fun ExercisesExportTab(
                                         if (exercise.distanceTrackingEnabled) {
                                             Text(
                                                 text = stringResource(R.string.legend_distance),
-                                                fontSize = 11.sp,
+                                                style = MaterialTheme.typography.labelSmall,
                                                 fontWeight = FontWeight.Bold,
                                                 color = MaterialTheme.colorScheme.secondary
                                             )
@@ -647,7 +647,7 @@ private fun ExercisesExportTab(
                                         if (exercise.assistanceTrackingEnabled) {
                                             Text(
                                                 text = stringResource(R.string.legend_assistance),
-                                                fontSize = 11.sp,
+                                                style = MaterialTheme.typography.labelSmall,
                                                 fontWeight = FontWeight.Bold,
                                                 color = Pink600
                                             )
@@ -663,7 +663,7 @@ private fun ExercisesExportTab(
                                                 dynamic = exercise.type == "Dynamic",
                                                 unilateral = exercise.laterality == "Unilateral",
                                             ),
-                                            fontSize = 11.sp,
+                                            style = MaterialTheme.typography.labelSmall,
                                             fontWeight = FontWeight.Bold,
                                             color = MaterialTheme.colorScheme.primary,
                                             modifier = Modifier.padding(top = 2.dp)

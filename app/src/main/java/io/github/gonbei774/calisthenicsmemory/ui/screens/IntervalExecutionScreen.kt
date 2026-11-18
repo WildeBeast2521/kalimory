@@ -764,7 +764,7 @@ private fun IntervalConfirmContent(
             item {
                 Text(
                     text = stringResource(R.string.interval_exercises),
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                     color = cs.onSurface,
                     modifier = Modifier.padding(top = 4.dp)
@@ -784,7 +784,7 @@ private fun IntervalConfirmContent(
                     ) {
                         Text(
                             text = "${index + 1}",
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = cs.tertiary,
                             modifier = Modifier.width(28.dp),
@@ -799,7 +799,7 @@ private fun IntervalConfirmContent(
                             if (!exercise.description.isNullOrBlank()) {
                                 Text(
                                     text = exercise.description,
-                                    fontSize = 12.sp,
+                                    style = MaterialTheme.typography.bodySmall,
                                     color = cs.onSurfaceVariant,
                                     modifier = Modifier.padding(top = 2.dp)
                                 )
@@ -835,12 +835,12 @@ private fun ConfirmSettingRow(
     ) {
         Text(
             text = label,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
             color = cs.onSurfaceVariant
         )
         Text(
             text = value,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = if (isBold) FontWeight.Bold else FontWeight.Normal,
             color = cs.onSurface
         )
@@ -903,7 +903,7 @@ private fun IntervalPrepareContent(
                     )
                     Text(
                         text = firstExercise.name,
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = cs.onSurface,
                         modifier = Modifier.padding(top = 4.dp)
@@ -1008,13 +1008,13 @@ private fun IntervalTimerContent(
                 ) {
                     Text(
                         text = "${nextPreview.label}",
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         color = phaseColor
                     )
                     Text(
                         text = nextPreview.exerciseName,
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = cs.onSurface,
                         modifier = Modifier.padding(top = 4.dp)
@@ -1032,7 +1032,7 @@ private fun IntervalTimerContent(
         } else if (nextEx != null) {
             Text(
                 text = "${stringResource(R.string.interval_next)}: ${nextEx.name}",
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 color = cs.onSurfaceVariant
             )
         }
@@ -1183,7 +1183,7 @@ private fun IntervalCompleteContent(
                             )
                             Text(
                                 text = stringResource(R.string.interval_partial_note),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = cs.onSurfaceVariant
                             )
                         }
@@ -1212,7 +1212,7 @@ private fun IntervalCompleteContent(
             item {
                 Text(
                     text = stringResource(R.string.interval_exercises_done),
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                     color = cs.onSurface,
                     modifier = Modifier
@@ -1239,14 +1239,14 @@ private fun IntervalCompleteContent(
                 ) {
                     Text(
                         text = exercise.name,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = if (isComplete) cs.onSurface
                         else cs.onSurfaceVariant,
                         modifier = Modifier.weight(1f)
                     )
                     Text(
                         text = "$doneRounds/${program.rounds}",
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         color = if (isComplete) cs.tertiary
                         else cs.onSurfaceVariant
@@ -1274,7 +1274,7 @@ private fun IntervalCompleteContent(
                         unfocusedLabelColor = cs.onSurfaceVariant,
                         cursorColor = cs.tertiary
                     ),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = MaterialTheme.shapes.small
                 )
             }
 
@@ -1290,7 +1290,7 @@ private fun IntervalCompleteContent(
                 ) {
                     Text(
                         text = stringResource(R.string.interval_save_and_finish),
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = contentColorFor(statusColor)
                     )

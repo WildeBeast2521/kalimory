@@ -97,7 +97,7 @@ fun IntervalListScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.no_results),
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -212,13 +212,13 @@ private fun IntervalProgramListItem(
                     info = {
                         Text(
                             text = program.name,
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = intervalSummary(program, exerciseCount),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(top = 2.dp)
                         )

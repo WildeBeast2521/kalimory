@@ -37,7 +37,7 @@ fun NextExerciseText(
 
     Text(
         text = "${stringResource(R.string.interval_next)}: $displayName",
-        fontSize = 14.sp,
+        style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.padding(top = 16.dp)
     )

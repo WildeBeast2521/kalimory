@@ -312,7 +312,7 @@ fun ProgramEditScreen(
                             }
                             Text(
                                 text = stringResource(R.string.program_estimated_time, estimatedMinutes),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
@@ -332,7 +332,7 @@ fun ProgramEditScreen(
                                 text = stringResource(R.string.program_exercises_required),
                                 modifier = Modifier.padding(16.dp),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 14.sp
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }

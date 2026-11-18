@@ -312,7 +312,7 @@ fun IntervalEditScreen(
                                 text = stringResource(R.string.interval_exercises_required),
                                 modifier = Modifier.padding(16.dp),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 14.sp
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }
@@ -379,13 +379,13 @@ fun IntervalEditScreen(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.5f)
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = MaterialTheme.shapes.extraSmall
                     ) {
                         Text(
                             text = stringResource(R.string.interval_no_record_note),
                             modifier = Modifier.padding(12.dp),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
                 }
@@ -617,7 +617,7 @@ private fun IntervalExerciseItem(
             // Number
             Text(
                 text = "$index.",
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
@@ -626,13 +626,13 @@ private fun IntervalExerciseItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = exercise.name,
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 if (!exercise.description.isNullOrBlank()) {
                     Text(
                         text = exercise.description,
-                        fontSize = 11.sp,
+                        style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 2.dp)
                     )
@@ -795,7 +795,7 @@ private fun IntervalSelectExerciseGroup(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.extraSmall
     ) {
         Column {
             // Group header
@@ -825,13 +825,13 @@ private fun IntervalSelectExerciseGroup(
                         )
                         Text(
                             text = groupName ?: stringResource(R.string.no_group),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = "(${exercises.size})",
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -867,7 +867,7 @@ private fun IntervalSelectExerciseGroup(
                             Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
                                 Text(
                                     text = exercise.name,
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )

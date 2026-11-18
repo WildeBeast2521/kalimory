@@ -142,7 +142,7 @@ fun GraphView(
                 )
                 Text(
                     text = stringResource(R.string.add_exercises_in_settings),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = cs.onSurfaceVariant
                 )
             }
@@ -166,7 +166,7 @@ fun GraphView(
                 )
                 Text(
                     text = stringResource(R.string.select_from_top),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = cs.onSurfaceVariant
                 )
             }
@@ -784,12 +784,12 @@ fun LineChart(
                         ) {
                             Text(
                                 text = stringResource(R.string.no_data),
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = cs.onSurfaceVariant
                             )
                             Text(
                                 text = stringResource(R.string.record_training_for_exercise),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = cs.onSurfaceVariant
                             )
                         }
@@ -822,7 +822,7 @@ fun LineChart(
                     )
                     Text(
                         text = " ${stringResource(R.string.legend_reps)}",
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = cs.onSurfaceVariant
                     )
 
@@ -836,7 +836,7 @@ fun LineChart(
                     )
                     Text(
                         text = " ${stringResource(if (isDistanceInverted) R.string.legend_distance_inverted else R.string.legend_distance)}",
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = cs.onSurfaceVariant
                     )
                 }
@@ -1228,12 +1228,12 @@ fun VolumeChart(
                         ) {
                             Text(
                                 text = stringResource(R.string.no_data),
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = cs.onSurfaceVariant
                             )
                             Text(
                                 text = stringResource(R.string.record_weight_for_graph),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = cs.onSurfaceVariant
                             )
                         }
@@ -1265,7 +1265,7 @@ fun VolumeChart(
                         )
                         Text(
                             text = " ${stringResource(R.string.right_short)}",
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = cs.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.width(16.dp))
@@ -1276,7 +1276,7 @@ fun VolumeChart(
                         )
                         Text(
                             text = " ${stringResource(R.string.left_short)}",
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = cs.onSurfaceVariant
                         )
                     } else {
@@ -1288,7 +1288,7 @@ fun VolumeChart(
                         )
                         Text(
                             text = " $volumeLabel",
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = cs.onSurfaceVariant
                         )
                     }
@@ -1549,12 +1549,12 @@ fun AssistanceChart(
                         ) {
                             Text(
                                 text = stringResource(R.string.no_data),
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = cs.onSurfaceVariant
                             )
                             Text(
                                 text = stringResource(R.string.record_assistance_for_graph),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = cs.onSurfaceVariant
                             )
                         }
@@ -1585,7 +1585,7 @@ fun AssistanceChart(
                     )
                     Text(
                         text = " $assistanceLabel",
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = cs.onSurfaceVariant
                     )
                 }
@@ -1800,12 +1800,12 @@ fun WeightChart(
                         ) {
                             Text(
                                 text = stringResource(R.string.no_data),
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = cs.onSurfaceVariant
                             )
                             Text(
                                 text = stringResource(R.string.record_weight_for_graph),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = cs.onSurfaceVariant
                             )
                         }
@@ -1836,7 +1836,7 @@ fun WeightChart(
                     )
                     Text(
                         text = " $weightLabel",
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = cs.onSurfaceVariant
                     )
                 }
@@ -2136,7 +2136,7 @@ fun StatisticsSummary(
             if (statistics.totalSets == 0) {
                 Text(
                     text = stringResource(R.string.no_data),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = cs.onSurfaceVariant
                 )
             } else {
@@ -2237,12 +2237,12 @@ fun StatItem(
     ) {
         Text(
             text = label,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
             color = cs.onSurfaceVariant
         )
         Text(
             text = value,
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
             color = valueColor ?: cs.onSurfaceVariant
         )
@@ -2266,7 +2266,7 @@ fun StatItemDual(
     ) {
         Text(
             text = label,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
             color = cs.onSurfaceVariant
         )
 
@@ -2276,18 +2276,18 @@ fun StatItemDual(
         ) {
             Text(
                 text = valueRight,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
                 color = cs.primary
             )
             Text(
                 text = "|",
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 color = cs.outlineVariant
             )
             Text(
                 text = valueLeft,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
                 color = cs.primary
             )

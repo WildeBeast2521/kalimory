@@ -104,7 +104,7 @@ fun ProgramListScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.no_results),
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -223,7 +223,7 @@ private fun ProgramListItem(
                     info = {
                         Text(
                             text = program.name,
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -276,7 +276,7 @@ private fun ProgramListItem(
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = stringResource(R.string.nav_resume),
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
                         }

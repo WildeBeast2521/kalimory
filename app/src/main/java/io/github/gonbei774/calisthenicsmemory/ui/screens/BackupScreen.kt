@@ -347,13 +347,13 @@ fun BackupScreen(
                         ) {
                             Text(
                                 text = stringResource(R.string.file_name),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(bottom = 6.dp)
                             )
                             Text(
                                 text = importFileName ?: "unknown.json",
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Medium
                             )
@@ -376,7 +376,7 @@ fun BackupScreen(
                         ) {
                             Text(
                                 text = stringResource(R.string.data_contents),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )
@@ -386,12 +386,12 @@ fun BackupScreen(
                             ) {
                                 Text(
                                     text = stringResource(R.string.groups),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = countText(R.plurals.count_items, importGroupCount),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -402,12 +402,12 @@ fun BackupScreen(
                             ) {
                                 Text(
                                     text = stringResource(R.string.exercises),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = countText(R.plurals.count_items, importExerciseCount),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -418,12 +418,12 @@ fun BackupScreen(
                             ) {
                                 Text(
                                     text = stringResource(R.string.sets_label),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = countText(R.plurals.set_count, importRecordCount),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -435,12 +435,12 @@ fun BackupScreen(
                                 ) {
                                     Text(
                                         text = stringResource(label),
-                                        fontSize = 16.sp,
+                                        style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
                                         text = countText(R.plurals.count_items, count),
-                                        fontSize = 16.sp,
+                                        style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurface,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -515,17 +515,17 @@ fun BackupScreen(
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(
                         text = stringResource(R.string.existing_data_will_be_deleted),
-                        fontSize = 16.sp
+                        style = MaterialTheme.typography.bodyLarge
                     )
                     Text(
                         text = stringResource(R.string.cannot_undo),
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.error
                     )
                     when {
-                        restoreBackupVerified -> Text(stringResource(R.string.import_backup_verified), fontSize = 16.sp)
-                        hasUserData == true -> Text(stringResource(R.string.import_backup_required), fontSize = 16.sp)
+                        restoreBackupVerified -> Text(stringResource(R.string.import_backup_verified), style = MaterialTheme.typography.bodyLarge)
+                        hasUserData == true -> Text(stringResource(R.string.import_backup_required), style = MaterialTheme.typography.bodyLarge)
                     }
                     // The backup offer lives here, so an import asks twice (preview, then this)
                     // rather than three times.

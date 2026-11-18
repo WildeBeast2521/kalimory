@@ -416,7 +416,7 @@ private fun ActiveTaskContent(
                                 ) {
                                     Text(
                                         text = stringResource(R.string.todo_mode_record),
-                                        fontSize = 16.sp,
+                                        style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
@@ -430,7 +430,7 @@ private fun ActiveTaskContent(
                                 ) {
                                     Text(
                                         text = stringResource(R.string.todo_mode_workout),
-                                        fontSize = 16.sp,
+                                        style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
@@ -643,7 +643,7 @@ private fun GroupTaskCard(
                 Column(modifier = Modifier.weight(1f).combinedClickable(onClick = { isExpanded = !isExpanded }, onLongClick = onLongClick)) {
                     Text(
                         text = group.name,
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -654,13 +654,13 @@ private fun GroupTaskCard(
                     ) {
                         Text(
                             text = stringResource(R.string.todo_tab_groups),
-                            fontSize = 11.sp,
+                            style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.secondary
                         )
                         Text(
                             text = "$completedCount/$totalCount",
-                            fontSize = 11.sp,
+                            style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = if (completedCount == totalCount && totalCount > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -678,7 +678,7 @@ private fun GroupTaskCard(
                         if (hasAnyEstimable) {
                             Text(
                                 text = stringResource(R.string.program_estimated_time, ProgramTimeEstimator.formatMinutes(groupTotalSeconds)),
-                                fontSize = 11.sp,
+                                style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.secondary
                             )
@@ -722,7 +722,7 @@ private fun GroupTaskCard(
                         ) {
                             Text(
                                 text = exercise.name,
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = if (isCompleted) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier
                                     .weight(1f)
@@ -732,7 +732,7 @@ private fun GroupTaskCard(
                             if (memberEstSeconds != null) {
                                 Text(
                                     text = stringResource(R.string.program_estimated_time, ProgramTimeEstimator.formatMinutes(memberEstSeconds)),
-                                    fontSize = 11.sp,
+                                    style = MaterialTheme.typography.labelSmall,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.secondary,
                                     modifier = Modifier
@@ -778,7 +778,7 @@ private fun GroupTaskCard(
                                         ) {
                                             Text(
                                                 text = stringResource(R.string.todo_mode_record),
-                                                fontSize = 16.sp,
+                                                style = MaterialTheme.typography.bodyLarge,
                                                 color = MaterialTheme.colorScheme.onPrimary
                                             )
                                         }
@@ -792,7 +792,7 @@ private fun GroupTaskCard(
                                         ) {
                                             Text(
                                                 text = stringResource(R.string.todo_mode_workout),
-                                                fontSize = 16.sp,
+                                                style = MaterialTheme.typography.bodyLarge,
                                                 color = MaterialTheme.colorScheme.onPrimary
                                             )
                                         }
@@ -859,7 +859,7 @@ private fun ExerciseTaskCard(
             info = {
                 Text(
                     text = exercise.name,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -874,7 +874,7 @@ private fun ExerciseTaskCard(
                     if (estSeconds != null) {
                         Text(
                             text = stringResource(R.string.program_estimated_time, ProgramTimeEstimator.formatMinutes(estSeconds)),
-                            fontSize = 11.sp,
+                            style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.secondary
                         )
@@ -932,7 +932,7 @@ private fun UnavailableTaskCard(
             dragHandle?.invoke()
             Text(
                 text = stringResource(R.string.todo_missing_item),
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -983,7 +983,7 @@ private fun ProgramTaskCard(
             info = {
                 Text(
                     text = program.name,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -1001,7 +1001,7 @@ private fun ProgramTaskCard(
                     if (estimatedSeconds != null && estimatedSeconds > 0) {
                         Text(
                             text = stringResource(R.string.program_estimated_time, ProgramTimeEstimator.formatMinutes(estimatedSeconds)),
-                            fontSize = 11.sp,
+                            style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.secondary
                         )
@@ -1065,13 +1065,13 @@ private fun IntervalTaskCard(
             info = {
                 Text(
                     text = intervalProgram.name,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = intervalSummary(intervalProgram, exerciseCount),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 2.dp)
                 )
@@ -1419,7 +1419,7 @@ private fun GroupsTabContent(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = MaterialTheme.shapes.extraSmall
                 ) {
                     Column {
                         Row(
@@ -1443,13 +1443,13 @@ private fun GroupsTabContent(
                             Column(modifier = Modifier.weight(1f).padding(start = 4.dp)) {
                                 Text(
                                     text = group.name,
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = pluralStringResource(R.plurals.exercise_count, groupExercises.size, groupExercises.size),
-                                    fontSize = 11.sp,
+                                    style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(top = 2.dp)
                                 )
@@ -1471,7 +1471,7 @@ private fun GroupsTabContent(
                                 groupExercises.forEach { exercise ->
                                     Text(
                                         text = exercise.name,
-                                        fontSize = 12.sp,
+                                        style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(vertical = 2.dp)
                                     )
@@ -1516,7 +1516,7 @@ private fun ProgramsTabContent(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = MaterialTheme.shapes.extraSmall
                 ) {
                     Row(
                         modifier = Modifier
@@ -1535,7 +1535,7 @@ private fun ProgramsTabContent(
                         )
                         Text(
                             text = program.name,
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(start = 4.dp)
@@ -1579,7 +1579,7 @@ private fun IntervalsTabContent(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = MaterialTheme.shapes.extraSmall
                 ) {
                     Row(
                         modifier = Modifier
@@ -1599,13 +1599,13 @@ private fun IntervalsTabContent(
                         Column(modifier = Modifier.padding(start = 4.dp)) {
                             Text(
                                 text = program.name,
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = intervalSummary(program, exerciseCounts[program.id] ?: 0),
-                                fontSize = 11.sp,
+                                style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 2.dp)
                             )
@@ -1632,7 +1632,7 @@ fun AddExerciseGroup(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.extraSmall
     ) {
         Column {
             // Group header
@@ -1663,13 +1663,13 @@ fun AddExerciseGroup(
                         )
                         Text(
                             text = groupName ?: stringResource(R.string.no_group),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = "(${exercises.size})",
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -1713,7 +1713,7 @@ fun AddExerciseGroup(
                             Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
                                 Text(
                                     text = exercise.name,
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
@@ -1818,7 +1818,7 @@ private fun RepeatDaysDialog(
                         Box(contentAlignment = Alignment.Center) {
                             Text(
                                 text = dayName,
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                             )

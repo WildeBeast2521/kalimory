@@ -235,7 +235,7 @@ fun SetCompleteButton(
         Text(
             text = stringResource(R.string.set_complete_button, setNumber),
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

@@ -102,7 +102,7 @@ fun LoopBlock(
                         // Rounds badge
                         Text(
                             text = pluralStringResource(R.plurals.loop_round_count, loop.rounds, loop.rounds),
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
@@ -116,7 +116,7 @@ fun LoopBlock(
                         if (loop.restBetweenRounds > 0) {
                             Text(
                                 text = stringResource(R.string.loop_rest_format, loop.restBetweenRounds),
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier
                                     .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(4.dp))
@@ -126,7 +126,7 @@ fun LoopBlock(
                         // Exercise count
                         Text(
                             text = "(${exercises.size})",
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -142,7 +142,7 @@ fun LoopBlock(
                         ) {
                             Text(
                                 text = stringResource(R.string.edit),
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -176,12 +176,12 @@ fun LoopBlock(
                                 .fillMaxWidth()
                                 .background(
                                     color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                                    shape = RoundedCornerShape(8.dp)
+                                    shape = MaterialTheme.shapes.extraSmall
                                 )
                                 .border(
                                     width = 1.dp,
                                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
-                                    shape = RoundedCornerShape(8.dp)
+                                    shape = MaterialTheme.shapes.extraSmall
                                 )
                                 .padding(16.dp),
                             contentAlignment = Alignment.Center
@@ -189,7 +189,7 @@ fun LoopBlock(
                             Text(
                                 text = stringResource(R.string.loop_empty),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 14.sp
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     } else {
@@ -232,7 +232,7 @@ fun LoopBlock(
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.add_exercise_to_loop),
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
                 }
@@ -337,12 +337,12 @@ private fun LoopExerciseItemWithDrag(
                 .border(
                     width = 2.dp,
                     color = MaterialTheme.colorScheme.primary,
-                    shape = RoundedCornerShape(8.dp)
+                    shape = MaterialTheme.shapes.extraSmall
                 ),
             colors = CardDefaults.cardColors(
                 containerColor = if (isDragging) MaterialTheme.colorScheme.outline.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerHigh
             ),
-            shape = RoundedCornerShape(8.dp),
+            shape = MaterialTheme.shapes.extraSmall,
             elevation = CardDefaults.cardElevation(defaultElevation = elevation)
         ) {
             Row(
@@ -366,7 +366,7 @@ private fun LoopExerciseItemWithDrag(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = exercise.name,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -376,7 +376,7 @@ private fun LoopExerciseItemWithDrag(
                     ) {
                         Text(
                             text = countText(R.plurals.set_count, programExercise.sets),
-                            fontSize = 11.sp,
+                            style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.secondary
                         )
                         Text(
@@ -385,12 +385,12 @@ private fun LoopExerciseItemWithDrag(
                                 programExercise.targetValue,
                                 stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
                             ),
-                            fontSize = 11.sp,
+                            style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary
                         )
                         Text(
                             text = stringResource(R.string.program_interval_format, programExercise.intervalSeconds),
-                            fontSize = 11.sp,
+                            style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }

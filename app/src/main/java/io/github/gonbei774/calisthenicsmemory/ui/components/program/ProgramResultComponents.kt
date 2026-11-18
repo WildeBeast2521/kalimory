@@ -111,7 +111,7 @@ internal fun ProgramResultStep(
                         item(key = "exercise-$exerciseIndex-round-$roundNumber-header") {
                             Text(
                                 text = stringResource(R.string.loop_round_current, roundNumber, totalRounds),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.secondary,
                                 modifier = Modifier.padding(top = 4.dp, start = 8.dp)
                             )
@@ -165,7 +165,7 @@ internal fun ProgramResultStep(
             ) {
                 Text(
                     text = stringResource(R.string.program_result_zero_warning),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.padding(12.dp)
                 )
@@ -211,7 +211,7 @@ internal fun ProgramUnilateralSetItem(
         colors = CardDefaults.cardColors(
             containerColor = if (rightSet?.isSkipped == true && leftSet?.isSkipped == true) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.extraSmall
     ) {
         Column(
             modifier = Modifier
@@ -220,7 +220,7 @@ internal fun ProgramUnilateralSetItem(
         ) {
             Text(
                 text = stringResource(R.string.set_label, setNumber),
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -228,7 +228,7 @@ internal fun ProgramUnilateralSetItem(
             if (rightSet?.isSkipped == true && leftSet?.isSkipped == true) {
                 Text(
                     text = stringResource(R.string.skipped_label),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 4.dp)
                 )
@@ -244,7 +244,7 @@ internal fun ProgramUnilateralSetItem(
                 // 右側
                 Text(
                     text = stringResource(R.string.right_colon),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.width(30.dp)
                 )
@@ -259,7 +259,7 @@ internal fun ProgramUnilateralSetItem(
                     label = {
                         Text(
                             stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     },
                     modifier = Modifier.weight(1f),
@@ -272,7 +272,7 @@ internal fun ProgramUnilateralSetItem(
                 // 左側
                 Text(
                     text = stringResource(R.string.left_colon),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.width(30.dp)
                 )
@@ -287,7 +287,7 @@ internal fun ProgramUnilateralSetItem(
                     label = {
                         Text(
                             stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     },
                     modifier = Modifier.weight(1f),
@@ -346,7 +346,7 @@ internal fun ProgramBilateralSetItem(
         colors = CardDefaults.cardColors(
             containerColor = if (set.isSkipped) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.extraSmall
     ) {
         Column(
             modifier = Modifier
@@ -361,14 +361,14 @@ internal fun ProgramBilateralSetItem(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(R.string.set_label, set.setNumber),
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     if (set.isSkipped) {
                         Text(
                             text = stringResource(R.string.skipped_label),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -385,7 +385,7 @@ internal fun ProgramBilateralSetItem(
                     label = {
                         Text(
                             stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     },
                     modifier = Modifier.width(100.dp),
@@ -460,7 +460,7 @@ private fun ProgramResultTrackingInputs(
                     onDistanceChange(parseResultDistanceCmValue(normalized))
                 }
             },
-            label = { Text(stringResource(R.string.distance_input_label), fontSize = 12.sp) },
+            label = { Text(stringResource(R.string.distance_input_label), style = MaterialTheme.typography.bodySmall) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -487,7 +487,7 @@ private fun ProgramResultTrackingInputs(
                     onWeightChange(parseResultWeightGValue(normalized))
                 }
             },
-            label = { Text(stringResource(R.string.weight_input_label), fontSize = 12.sp) },
+            label = { Text(stringResource(R.string.weight_input_label), style = MaterialTheme.typography.bodySmall) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -514,7 +514,7 @@ private fun ProgramResultTrackingInputs(
                     onAssistanceChange(parseResultWeightGValue(normalized))
                 }
             },
-            label = { Text(stringResource(R.string.assistance_input_label), fontSize = 12.sp) },
+            label = { Text(stringResource(R.string.assistance_input_label), style = MaterialTheme.typography.bodySmall) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),

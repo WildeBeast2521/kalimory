@@ -92,12 +92,12 @@ fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Uni
                 DatabaseStartupState.CorruptionReported -> stringResource(R.string.db_unavailable_corruption_reported)
                 DatabaseStartupState.Ready -> ""
             },
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = stringResource(R.string.db_unavailable_export_hint),
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -110,7 +110,7 @@ fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Uni
         ) {
             Text(stringResource(R.string.db_export_files))
         }
-        exportResult?.let { Text(text = it, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface) }
+        exportResult?.let { Text(text = it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface) }
         // A recovery file exported earlier, or from another install, can replace these files.
         RecoveryRestoreButton()
         if (state == DatabaseStartupState.CorruptionReported) {
@@ -121,7 +121,7 @@ fun DatabaseUnavailableScreen(state: DatabaseStartupState, onContinue: () -> Uni
         if (state is DatabaseStartupState.OpenFailed) {
             Text(
                 text = stringResource(R.string.db_error_details, state.details),
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }

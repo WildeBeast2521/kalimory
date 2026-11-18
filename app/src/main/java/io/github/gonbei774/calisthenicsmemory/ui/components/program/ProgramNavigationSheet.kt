@@ -221,7 +221,7 @@ private fun NavigationProgressSection(
     ) {
         Text(
             text = stringResource(R.string.nav_overall_progress),
-            fontSize = 12.sp,
+            style = MaterialTheme.typography.bodySmall,
             color = cs.outline,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -668,7 +668,7 @@ private fun NavigationRoundSetRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = exercise?.name ?: "",
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Medium,
                 color = when (setStatus) {
                     SetStatus.COMPLETED -> cs.onSurface
@@ -876,7 +876,7 @@ private fun NavigationExerciseHeader(
         ) {
             Text(
                 text = displayNumber.toString(),
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 color = cs.onTertiary
             )
@@ -1027,7 +1027,7 @@ private fun NavigationBilateralSetRow(
             ) {
                 Text(
                     text = stringResource(R.string.set_format, set.setNumber, totalSets),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Medium,
                     color = when (setStatus) {
                         SetStatus.COMPLETED -> cs.onSurface
@@ -1173,7 +1173,7 @@ private fun NavigationUnilateralSetRow(
             ) {
                 Text(
                     text = stringResource(R.string.set_format, setNumber, totalSets),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Medium,
                     color = when (setStatus) {
                         SetStatus.COMPLETED -> cs.onSurface
@@ -1280,7 +1280,7 @@ private fun SetStatusIcon(
                 SetStatus.SKIPPED -> {
                     Text(
                         text = "−",
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         color = cs.onSurfaceVariant
                     )
@@ -1422,14 +1422,14 @@ private fun TrackingPill(
     ) {
         Text(
             text = prefix,
-            fontSize = 11.sp,
+            style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             color = accentColor
         )
         Spacer(modifier = Modifier.width(3.dp))
         Text(text = valueText, fontSize = 13.sp, color = cs.onSurface)
         Spacer(modifier = Modifier.width(3.dp))
-        Text(text = unit, fontSize = 11.sp, color = cs.outline)
+        Text(text = unit, style = MaterialTheme.typography.labelSmall, color = cs.outline)
         if (onClick != null) {
             Spacer(modifier = Modifier.width(4.dp))
             Icon(AppIcons.Edit, contentDescription = null, modifier = Modifier.size(11.dp), tint = if (isEditing) cs.primary else cs.outline)
@@ -1463,7 +1463,7 @@ private fun ValuePill(
     ) {
         Text(text = valueText, fontSize = 13.sp, color = valueColor)
         Spacer(modifier = Modifier.width(4.dp))
-        Text(text = unit, fontSize = 11.sp, color = cs.outline)
+        Text(text = unit, style = MaterialTheme.typography.labelSmall, color = cs.outline)
         if (onClick != null) {
             Spacer(modifier = Modifier.width(6.dp))
             Icon(AppIcons.Edit, contentDescription = null, modifier = Modifier.size(11.dp), tint = if (isEditing) cs.primary else cs.outline)
@@ -1585,7 +1585,7 @@ private fun UnilateralSidePill(
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = sideLabel,
-            fontSize = 11.sp,
+            style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             color = cs.outline
         )
@@ -1621,7 +1621,7 @@ private fun SetActionButton(
             ) {
                 Text(
                     text = stringResource(R.string.nav_redo),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.SemiBold,
                     color = cs.primary
                 )
@@ -1636,7 +1636,7 @@ private fun SetActionButton(
             ) {
                 Text(
                     text = stringResource(R.string.nav_jump),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.SemiBold,
                     color = cs.onSurfaceVariant
                 )
@@ -2013,7 +2013,7 @@ private fun InlineValueEditorCore(
                 Spacer(modifier = Modifier.width(3.dp))
                 Text(
                     text = unit,
-                    fontSize = 11.sp,
+                    style = MaterialTheme.typography.labelSmall,
                     color = cs.outline,
                     modifier = Modifier.padding(bottom = 2.dp)
                 )
@@ -2147,7 +2147,7 @@ private fun InlineTrackingEditorCore(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = unit,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.SemiBold,
                     color = accentColor,
                     modifier = Modifier.padding(bottom = 2.dp)

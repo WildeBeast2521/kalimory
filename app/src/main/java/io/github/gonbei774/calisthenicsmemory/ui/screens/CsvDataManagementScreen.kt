@@ -357,13 +357,13 @@ fun CsvDataManagementScreen(
                             Column {
                                 Text(
                                     text = stringResource(R.string.csv_export_groups),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.csv_export_groups_description),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
@@ -395,13 +395,13 @@ fun CsvDataManagementScreen(
                             Column {
                                 Text(
                                     text = stringResource(R.string.csv_export_exercises),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.csv_export_exercises_description),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
@@ -433,13 +433,13 @@ fun CsvDataManagementScreen(
                             Column {
                                 Text(
                                     text = stringResource(R.string.csv_export_records),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.csv_export_records_description),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
@@ -471,13 +471,13 @@ fun CsvDataManagementScreen(
                             Column {
                                 Text(
                                     text = stringResource(R.string.csv_export_record_template),
-                                    fontSize = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
                                     text = stringResource(R.string.csv_export_record_template_description),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
@@ -519,7 +519,7 @@ fun CsvDataManagementScreen(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = MaterialTheme.shapes.extraSmall
                     ) {
                         Column(
                             modifier = Modifier
@@ -533,12 +533,12 @@ fun CsvDataManagementScreen(
                             ) {
                                 Text(
                                     text = stringResource(R.string.csv_file),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = csvFileName ?: "unknown.csv",
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Medium
                                 )
@@ -550,12 +550,12 @@ fun CsvDataManagementScreen(
                             ) {
                                 Text(
                                     text = stringResource(R.string.csv_type),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = getCsvTypeLocalizedString(csvImportType),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -567,12 +567,12 @@ fun CsvDataManagementScreen(
                             ) {
                                 Text(
                                     text = stringResource(R.string.csv_items),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
                                     text = "$csvImportDataCount",
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -641,7 +641,7 @@ fun CsvDataManagementScreen(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = MaterialTheme.shapes.extraSmall
                     ) {
                         Column(
                             modifier = Modifier
@@ -653,10 +653,10 @@ fun CsvDataManagementScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(text = stringResource(R.string.csv_import_success_label), fontSize = 14.sp, color = MaterialTheme.colorScheme.primary)
+                                Text(text = stringResource(R.string.csv_import_success_label), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
                                 Text(
                                     text = "${report.successCount}",
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -665,10 +665,10 @@ fun CsvDataManagementScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(text = stringResource(R.string.csv_import_skipped_label), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(text = stringResource(R.string.csv_import_skipped_label), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 Text(
                                     text = "${report.skippedCount}",
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -677,10 +677,10 @@ fun CsvDataManagementScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(text = stringResource(R.string.csv_import_error_label), fontSize = 14.sp, color = MaterialTheme.colorScheme.error)
+                                Text(text = stringResource(R.string.csv_import_error_label), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
                                 Text(
                                     text = "${report.errorCount}",
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -695,7 +695,7 @@ fun CsvDataManagementScreen(
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                             ),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = MaterialTheme.shapes.extraSmall,
                             onClick = { showSkippedItems = !showSkippedItems }
                         ) {
                             Column(
@@ -710,7 +710,7 @@ fun CsvDataManagementScreen(
                                 ) {
                                     Text(
                                         text = stringResource(R.string.csv_import_skipped_items, report.skippedCount),
-                                        fontSize = 14.sp,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Medium
                                     )
@@ -738,7 +738,7 @@ fun CsvDataManagementScreen(
                                         if (report.skippedItems.size > 10) {
                                             Text(
                                                 text = (report.skippedItems.size - 10).let { countText(R.plurals.csv_import_more_items, it) },
-                                                fontSize = 12.sp,
+                                                style = MaterialTheme.typography.bodySmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
                                         }
@@ -755,7 +755,7 @@ fun CsvDataManagementScreen(
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.1f)
                             ),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = MaterialTheme.shapes.extraSmall,
                             onClick = { showErrors = !showErrors }
                         ) {
                             Column(
@@ -770,7 +770,7 @@ fun CsvDataManagementScreen(
                                 ) {
                                     Text(
                                         text = stringResource(R.string.csv_import_errors, report.errorCount),
-                                        fontSize = 14.sp,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.error,
                                         fontWeight = FontWeight.Medium
                                     )
@@ -798,7 +798,7 @@ fun CsvDataManagementScreen(
                                         if (report.errors.size > 10) {
                                             Text(
                                                 text = (report.errors.size - 10).let { countText(R.plurals.csv_import_more_items, it) },
-                                                fontSize = 12.sp,
+                                                style = MaterialTheme.typography.bodySmall,
                                                 color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
                                             )
                                         }
@@ -866,7 +866,7 @@ fun CsvDataManagementScreen(
                         Text(
                             text = stringResource(R.string.backup_and_continue),
                             fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
 
@@ -902,7 +902,7 @@ fun CsvDataManagementScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.skip_and_continue),
-                            fontSize = 16.sp
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
                 }
