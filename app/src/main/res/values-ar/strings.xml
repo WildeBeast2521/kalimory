@@ -385,7 +385,6 @@
     <string name="workout_title">تمرين</string>
     <string name="no_exercises_yet_workout">لا توجد تمارين بعد</string>
     <string name="no_group_workout">بلا مجموعة</string>
-    <string name="one_sided_workout">جانب واحد</string>
     <string name="target_sets_label">المجموعات المستهدفة</string>
     <string name="target_reps_label">التكرارات المستهدفة</string>
     <string name="target_duration_label">المدة المستهدفة (ث)</string>

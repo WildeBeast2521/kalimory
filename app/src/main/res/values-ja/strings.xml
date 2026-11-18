@@ -151,7 +151,6 @@
     <string name="workout_title">ワークアウト</string>
     <string name="no_exercises_yet_workout">種目がまだありません</string>
     <string name="no_group_workout">グループなし</string>
-    <string name="one_sided_workout">片側</string>
     <string name="target_sets_label">目標セット数</string>
     <string name="target_reps_label">目標回数</string>
     <string name="target_duration_label">目標秒数</string>

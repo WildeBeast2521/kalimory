@@ -137,7 +137,6 @@
     <string name="workout_title">Training</string>
     <string name="no_exercises_yet_workout">Noch keine Übungen</string>
     <string name="no_group_workout">Keine Gruppe</string>
-    <string name="one_sided_workout">Einseitig</string>
     <string name="target_sets_label">Zielsätze</string>
     <string name="target_reps_label">Zielwiederholungen</string>
     <string name="target_duration_label">Zieldauer (Sek.)</string>

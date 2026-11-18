@@ -139,7 +139,6 @@
     <string name="workout_title">Entrenamiento</string>
     <string name="no_exercises_yet_workout">No hay ejercicios aún</string>
     <string name="no_group_workout">Sin Grupo</string>
-    <string name="one_sided_workout">Un lado</string>
     <string name="target_sets_label">Series Meta</string>
     <string name="target_reps_label">Repeticiones Meta</string>
     <string name="target_duration_label">Duración Meta (seg)</string>

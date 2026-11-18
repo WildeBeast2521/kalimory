@@ -23,6 +23,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- The line under an exercise's name (group, difficulty, reps or time, one-sided) looks the same on every screen: one text size and the same colours, where it was drawn at 10, 11 or 12 sp with different colours depending on the screen ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - Empty lists (exercises, programs, intervals, To Do) show their message near the top of the screen, in one style, instead of floating in the middle of an empty page ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - Backup, CSV files and Share show their two actions in one card with the same rows as Settings, and the Backup warning uses the theme's error colours so it reads well in the dark theme ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - Settings is organised into six groups (Language, Appearance, Week and suggestions, Workouts, Your data, About), each a card of rows with one column of icons and no repeated description lines; the start countdown and rest between sets are set with a stepper under their switch instead of in a dialog ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))

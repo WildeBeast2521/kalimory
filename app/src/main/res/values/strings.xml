@@ -156,7 +156,6 @@
     <string name="workout_title">Workout</string>
     <string name="no_exercises_yet_workout">No exercises yet</string>
     <string name="no_group_workout">No group</string>
-    <string name="one_sided_workout">One-sided</string>
     <string name="target_sets_label">Target sets</string>
     <string name="target_reps_label">Target reps</string>
     <string name="target_duration_label">Target duration (sec)</string>

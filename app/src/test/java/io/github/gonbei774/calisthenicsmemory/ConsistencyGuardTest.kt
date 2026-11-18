@@ -41,6 +41,12 @@ class ConsistencyGuardTest {
         assertTrue("Call DialogSystemBars() in: $offenders", offenders.isEmpty())
     }
 
+    @Test fun `an exercise's badges come from ExerciseBadges`() {
+        // The level text beside an exercise was built by hand in a dozen places, in three sizes.
+        val offenders = uses(Regex("""R\.string\.level_format"""), except = setOf("ExerciseBadges.kt", "ViewScreen.kt"))
+        assertTrue("Use ExerciseBadges instead: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `every swipe to delete draws the shared background`() {
         val swipes = uses(Regex("""SwipeToDismissBox\("""))
         val shared = uses(Regex("""backgroundContent = \{ SwipeToDeleteBackground\("""))

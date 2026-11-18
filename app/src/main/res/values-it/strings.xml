@@ -139,7 +139,6 @@
     <string name="workout_title">Allenamento</string>
     <string name="no_exercises_yet_workout">Nessun esercizio ancora</string>
     <string name="no_group_workout">Nessun Gruppo</string>
-    <string name="one_sided_workout">Un lato</string>
     <string name="target_sets_label">Serie Obiettivo</string>
     <string name="target_reps_label">Ripetizioni Obiettivo</string>
     <string name="target_duration_label">Durata Obiettivo (sec)</string>

@@ -375,7 +375,6 @@
     <string name="workout_title">Тренировка</string>
     <string name="no_exercises_yet_workout">Упражнений пока нет</string>
     <string name="no_group_workout">Без группы</string>
-    <string name="one_sided_workout">Односторонне</string>
     <string name="target_sets_label">Подходов в цели</string>
     <string name="target_reps_label">Повторений в цели</string>
     <string name="target_duration_label">Целевое время (сек)</string>

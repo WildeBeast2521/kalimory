@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
@@ -821,33 +822,7 @@ private fun IntervalExerciseSelectItem(
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                     modifier = Modifier.padding(top = 2.dp)
                 ) {
-                    // The group, in search results only (#278).
-                    if (showGroup) exercise.group?.let { GroupBadge(it) }
-                    if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
-                    }
-                    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                        Text(
-                            text = stringResource(R.string.level_format, exercise.sortOrder),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                    Text(
-                        text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    if (exercise.laterality == "Unilateral") {
-                        Text(
-                            text = stringResource(R.string.one_sided),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
+                    ExerciseBadges(exercise, showGroup = true)
                     if (exercise.weightTrackingEnabled) {
                         Text(
                             text = stringResource(R.string.legend_weight),
@@ -986,31 +961,7 @@ private fun IntervalSelectExerciseGroup(
                                     verticalArrangement = Arrangement.spacedBy(2.dp),
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
-                                    if (exercise.isFavorite) {
-                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
-                                    }
-                                    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                                        Text(
-                                            text = stringResource(R.string.level_format, exercise.sortOrder),
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.secondary
-                                        )
-                                    }
-                                    Text(
-                                        text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                    if (exercise.laterality == "Unilateral") {
-                                        Text(
-                                            text = stringResource(R.string.one_sided),
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
-                                    }
+                                    ExerciseBadges(exercise)
                                     if (exercise.weightTrackingEnabled) {
                                         Text(
                                             text = stringResource(R.string.legend_weight),

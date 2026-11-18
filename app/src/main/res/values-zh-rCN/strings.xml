@@ -139,7 +139,6 @@
     <string name="workout_title">训练</string>
     <string name="no_exercises_yet_workout">还没有动作</string>
     <string name="no_group_workout">无分组</string>
-    <string name="one_sided_workout">单侧</string>
     <string name="target_sets_label">目标组数</string>
     <string name="target_reps_label">目标次数</string>
     <string name="target_duration_label">目标时长（秒）</string>

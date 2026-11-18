@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.util.TextLimits
 import androidx.compose.runtime.mutableIntStateOf
@@ -622,38 +623,7 @@ fun ExerciseItemCompactContent(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier.padding(top = 4.dp)
             ) {
-                // お気に入り
-                if (exercise.isFavorite) {
-                    Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
-                }
-
-                // レベル（課題設定がある場合のみ）
-                if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                    Text(
-                        text = stringResource(R.string.level_format, exercise.sortOrder),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-                }
-
-                // タイプ（回数制/時間制）
-                Text(
-                    text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
-                // Unilateral
-                if (exercise.laterality == "Unilateral") {
-                    Text(
-                        text = stringResource(R.string.one_sided),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
+                ExerciseBadges(exercise)
 
                 // 有効化している記録オプション（荷重/距離/アシスト）
                 if (exercise.weightTrackingEnabled) {
