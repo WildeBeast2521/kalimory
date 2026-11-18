@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
@@ -109,7 +110,7 @@ fun AddExerciseToProgramDialog(
                                     key = { index -> searchResults[index].id }
                                 ) { index ->
                                     val exercise = searchResults[index]
-                                    ProgramExerciseSelectItem(
+                                    ExerciseCheckRow(
                                         exercise = exercise,
                                         isSelected = exercise.id in selectedExercises,
                                         onToggle = { exerciseId ->
@@ -173,90 +174,6 @@ fun AddExerciseToProgramDialog(
             }
         }
     )
-}
-
-@Composable
-private fun ProgramExerciseSelectItem(
-    exercise: Exercise,
-    isSelected: Boolean,
-    onToggle: (Long) -> Unit,
-    showGroup: Boolean = false,
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(8.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .toggleable(value = isSelected, role = Role.Checkbox, onValueChange = { _ -> onToggle(exercise.id) })
-                .padding(horizontal = 8.dp, vertical = 4.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            Checkbox(
-                checked = isSelected,
-                onCheckedChange = null,
-                colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colorScheme.primary,
-                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            )
-            Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
-                Text(
-                    text = exercise.name,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                    modifier = Modifier.padding(top = 2.dp)
-                ) {
-                    ExerciseBadges(exercise, showGroup = true)
-                    if (exercise.weightTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_weight),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    if (exercise.distanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_distance),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                    if (exercise.assistanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_assistance),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Pink600
-                        )
-                    }
-                }
-                if (exercise.targetSets != null && exercise.targetValue != null) {
-                    Text(
-                        text = targetText(
-                            exercise.targetSets!!,
-                            exercise.targetValue!!,
-                            dynamic = exercise.type == "Dynamic",
-                            unilateral = exercise.laterality == "Unilateral",
-                        ),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(top = 2.dp)
-                    )
-                }
-            }
-        }
-    }
 }
 
 @Composable

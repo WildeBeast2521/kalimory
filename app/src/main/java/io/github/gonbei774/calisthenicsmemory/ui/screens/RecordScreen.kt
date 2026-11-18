@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePickRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
@@ -409,7 +410,7 @@ fun ExerciseSelectionScreen(
                                 key = { index -> searchResults[index].id }
                             ) { index ->
                                 val exercise = searchResults[index]
-                                ExerciseSelectionItem(
+                                ExercisePickRow(
                                     exercise = exercise,
                                     onClick = { onExerciseSelected(exercise) },
                                     showGroup = true,
@@ -510,108 +511,13 @@ fun HierarchicalExerciseGroup(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     group.exercises.forEach { exercise ->
-                        ExerciseSelectionItem(
+                        ExercisePickRow(
                             exercise = exercise,
                             onClick = { onExerciseSelected(exercise) }
                         )
                     }
                 }
             }
-        }
-    }
-}
-
-// 記録画面用の種目選択アイテム
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun ExerciseSelectionItem(
-    exercise: Exercise,
-    onClick: () -> Unit,
-    showGroup: Boolean = false,
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(8.dp),
-        onClick = onClick
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = exercise.name,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier.padding(top = 4.dp)
-                ) {
-                    ExerciseBadges(exercise, showGroup = true)
-
-                    // 有効化している記録オプション（荷重/距離/アシスト）
-                    if (exercise.weightTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_weight),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    if (exercise.distanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_distance),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                    if (exercise.assistanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_assistance),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Pink600
-                        )
-                    }
-                }
-
-                // 課題バッジ
-                if (exercise.targetSets != null && exercise.targetValue != null) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.padding(top = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = targetText(
-                                exercise.targetSets!!,
-                                exercise.targetValue!!,
-                                dynamic = exercise.type == "Dynamic",
-                                unilateral = exercise.laterality == "Unilateral",
-                            ),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            }
-
-            Icon(
-                AppIcons.Back,
-                contentDescription = stringResource(R.string.select),
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.rotate(180f)
-            )
         }
     }
 }
