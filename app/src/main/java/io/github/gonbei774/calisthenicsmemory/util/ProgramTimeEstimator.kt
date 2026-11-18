@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.util
 
+import io.github.gonbei774.calisthenicsmemory.data.isOtherSide
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalProgram
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
@@ -60,13 +61,16 @@ object ProgramTimeEstimator {
         return estimateSeconds(ProgramSetPlanner.plan(pairs, loops, previous, prefill), pairs, startCountdownSeconds)
     }
 
-    /** Work, the rest after every set but the last, and a countdown before each set. */
+    /**
+     * Work, the rest after every set but the last (none between the two sides of a one-sided set), and the
+     * start countdown before the first set and at each switch of sides.
+     */
     fun estimateSeconds(
         sets: List<ProgramWorkoutSet>,
         exercises: List<Pair<ProgramExercise, Exercise>>,
         startCountdownSeconds: Int,
     ): Int = computeFromFlatSets(sets) { set -> exercises.getOrNull(set.exerciseIndex)?.second } +
-        startCountdownSeconds * sets.size
+        startCountdownSeconds * countdownCount(sets)
 
     /**
      * The start countdown a program run adds before each set, as the user set it. Every screen
@@ -85,7 +89,8 @@ object ProgramTimeEstimator {
         val sides = if (exercise.laterality == "Unilateral") 2 else 1
         val work = workSecondsFor(exercise, targetValue)
         val totalUnits = sets * sides
-        return totalUnits * work + (totalUnits - 1).coerceAtLeast(0) * rest
+        // One rest between sets; the two sides of a set have none between them.
+        return totalUnits * work + (sets - 1).coerceAtLeast(0) * rest
     }
 
     fun estimateIntervalSeconds(interval: IntervalProgram, exerciseCount: Int): Int {
@@ -97,6 +102,10 @@ object ProgramTimeEstimator {
             (rounds - 1).coerceAtLeast(0) * interval.roundRestSeconds
     }
 
+    // Once before the first set, and once for each switch of sides.
+    private fun countdownCount(sets: List<ProgramWorkoutSet>): Int =
+        if (sets.isEmpty()) 0 else 1 + sets.zipWithNext().count { (a, b) -> isOtherSide(a, b) }
+
     private fun computeFromFlatSets(
         sets: List<ProgramWorkoutSet>,
         exerciseLookup: (ProgramWorkoutSet) -> Exercise?
@@ -107,7 +116,7 @@ object ProgramTimeEstimator {
         sets.forEachIndexed { index, set ->
             val exercise = exerciseLookup(set) ?: return@forEachIndexed
             total += workSecondsFor(exercise, set.targetValue)
-            if (index != lastIndex) {
+            if (index != lastIndex && !isOtherSide(set, sets[index + 1])) {
                 total += set.intervalSeconds + set.loopRestAfterSeconds
             }
         }

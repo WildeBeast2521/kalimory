@@ -25,6 +25,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- A one-sided set rests only after its second side: the start countdown is the pause between the sides, and a program's time estimate counts the countdown once and at each switch of sides rather than before every set ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The Add button on the new exercise or group form is never greyed out: tapping it with the name missing shows "Enter a name" under the field; the type examples in English follow one style; an empty number in the workout editor shows a dash between the buttons ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - Small text in lists, cards and dialogs uses the app's type scale, so rows with small text are a little tighter and read the same on every screen ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - The exercise lists in Workout, Log a past workout, programs, intervals and To Do open with every group expanded, and the Library's open groups no longer decide what they show; long screen titles wrap onto a second line instead of ending in "…" ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))

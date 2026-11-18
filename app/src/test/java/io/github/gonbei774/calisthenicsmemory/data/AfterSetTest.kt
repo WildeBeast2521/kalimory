@@ -79,4 +79,43 @@ class AfterSetTest {
         val sets = listOf(set(1, rest = 30), set(2, done = true), set(3, skipped = true))
         assertEquals(AfterSet(AfterSet.Kind.RESULT, 0, false), afterSet(sets, 0, false, 5))
     }
+
+    // One-sided sets: Right then Left of the same set, the rest after the second side only.
+    private fun side(n: Int, side: String, rest: Int = 0, done: Boolean = false, skipped: Boolean = false, round: Int = 1) = ProgramWorkoutSet(
+        exerciseIndex = 0, setNumber = n, side = side, targetValue = 10, intervalSeconds = rest,
+        isCompleted = done, isSkipped = skipped, roundNumber = round,
+    )
+
+    @Test fun `after the first side the countdown is the pause and no rest comes`() {
+        val sets = listOf(side(1, "Right", rest = 30), side(1, "Left", rest = 30))
+        assertEquals(AfterSet(AfterSet.Kind.COUNTDOWN, 1, false), afterSet(sets, 0, false, 5))
+        assertEquals(AfterSet(AfterSet.Kind.RUN, 1, false), afterSet(sets, 0, false, 0))
+    }
+
+    @Test fun `after the second side the rest comes`() {
+        val sets = listOf(side(1, "Right", rest = 30), side(1, "Left", rest = 30), set(2))
+        assertEquals(AfterSet(AfterSet.Kind.REST, 1, false), afterSet(sets, 1, false, 5))
+    }
+
+    @Test fun `a side redone alone is not a switch and rests as usual`() {
+        val sets = listOf(side(1, "Right", rest = 30), side(1, "Left", rest = 30, done = true), set(2))
+        assertEquals(AfterSet(AfterSet.Kind.REST, 0, true), afterSet(sets, 0, true, 5))
+    }
+
+    @Test fun `redo keeps going through the switch`() {
+        val sets = listOf(side(1, "Right", rest = 30), side(1, "Left", rest = 30), set(2, done = true))
+        assertEquals(AfterSet(AfterSet.Kind.COUNTDOWN, 1, true), afterSet(sets, 0, true, 5))
+    }
+
+    @Test fun `a skipped first side still goes to the other side`() {
+        val sets = listOf(side(1, "Right", rest = 30, skipped = true), side(1, "Left"))
+        assertEquals(AfterSet(AfterSet.Kind.COUNTDOWN, 1, false), afterSet(sets, 0, false, 5))
+    }
+
+    @Test fun `sides of different sets are not a switch`() {
+        val sets = listOf(side(1, "Left", rest = 30), side(2, "Right", rest = 30))
+        assertEquals(AfterSet(AfterSet.Kind.REST, 0, false), afterSet(sets, 0, false, 5))
+        val rounds = listOf(side(1, "Left", rest = 30, round = 1), side(1, "Right", rest = 30, round = 2))
+        assertEquals(AfterSet.Kind.REST, afterSet(rounds, 0, false, 5).kind)
+    }
 }

@@ -31,4 +31,19 @@ class SingleAfterSetTest {
     @Test fun `skipping the last set ends the workout`() {
         assertEquals(AfterSet(AfterSet.Kind.RESULT, 2, false), singleAfterSet(sets(3, skippedAt = 2), 2, 60, 5))
     }
+
+    private fun sided() = listOf(
+        WorkoutSet(setNumber = 1, side = "Right", targetValue = 10),
+        WorkoutSet(setNumber = 1, side = "Left", targetValue = 10),
+        WorkoutSet(setNumber = 2, side = "Right", targetValue = 10),
+    )
+
+    @Test fun `after the first side there is a pause, not a rest`() {
+        assertEquals(AfterSet(AfterSet.Kind.COUNTDOWN, 1, false), singleAfterSet(sided(), 0, 60, 5))
+        assertEquals(AfterSet(AfterSet.Kind.RUN, 1, false), singleAfterSet(sided(), 0, 60, 0))
+    }
+
+    @Test fun `after the second side the rest comes`() {
+        assertEquals(AfterSet(AfterSet.Kind.REST, 1, false), singleAfterSet(sided(), 1, 60, 5))
+    }
 }
