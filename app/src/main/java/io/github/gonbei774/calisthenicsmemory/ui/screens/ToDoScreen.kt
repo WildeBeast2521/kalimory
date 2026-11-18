@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.InfoActionRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import android.annotation.SuppressLint
@@ -165,19 +166,7 @@ fun ToDoScreen(
 
         if (todoTasks.isEmpty()) {
             // Empty state
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.todo_empty),
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
-            }
+            EmptyState(text = stringResource(R.string.todo_empty), modifier = Modifier.padding(paddingValues))
         } else {
             val scrollState = rememberScrollState()
             Column(

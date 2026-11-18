@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.InfoActionRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
@@ -73,19 +74,7 @@ fun ProgramListScreen(
     ) { paddingValues ->
         if (programs.isEmpty()) {
             // Empty state
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.program_empty),
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
-            }
+            EmptyState(text = stringResource(R.string.program_empty), modifier = Modifier.padding(paddingValues))
         } else {
             // Program list with swipe-to-delete
             val copySuffix = stringResource(R.string.program_copy_suffix)

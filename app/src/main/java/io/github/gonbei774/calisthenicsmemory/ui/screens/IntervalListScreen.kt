@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.InfoActionRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
@@ -67,19 +68,7 @@ fun IntervalListScreen(
         }
     ) { paddingValues ->
         if (programs.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.interval_empty),
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
-            }
+            EmptyState(text = stringResource(R.string.interval_empty), modifier = Modifier.padding(paddingValues))
         } else {
             val copySuffix = stringResource(R.string.program_copy_suffix)
             var searchQuery by remember { mutableStateOf("") }

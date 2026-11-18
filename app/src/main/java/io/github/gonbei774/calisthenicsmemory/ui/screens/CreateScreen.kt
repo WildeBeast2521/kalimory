@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.util.TextLimits
 import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.AppFab
@@ -117,18 +118,7 @@ fun CreateScreen(
         }
     ) { paddingValues ->
         if (hierarchicalData.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.no_exercises_add_with_plus),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 16.sp
-                )
-            }
+            EmptyState(text = stringResource(R.string.no_exercises_add_with_plus), modifier = Modifier.padding(paddingValues))
         } else {
             // 階層データを3つに分離
             val favoriteGroup = hierarchicalData.firstOrNull {
