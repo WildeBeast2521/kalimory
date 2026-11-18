@@ -349,11 +349,11 @@ private fun ExerciseCard(
                     }
                     if (exercise.unilateral) {
                         Text(stringResource(R.string.right_value_label), style = MaterialTheme.typography.bodyMedium)
-                        NumberStepper(value = set.value, onValueChange = { onSetChange(index, set.copy(value = it)) }, unit = unit)
+                        NumberStepper(value = set.value, onValueChange = { onSetChange(index, set.copy(value = it)) }, unit = unit, placeholder = "–")
                         Text(stringResource(R.string.left_value_label), style = MaterialTheme.typography.bodyMedium)
-                        NumberStepper(value = set.valueLeft, onValueChange = { onSetChange(index, set.copy(valueLeft = it)) }, unit = unit)
+                        NumberStepper(value = set.valueLeft, onValueChange = { onSetChange(index, set.copy(valueLeft = it)) }, unit = unit, placeholder = "–")
                     } else {
-                        NumberStepper(value = set.value, onValueChange = { onSetChange(index, set.copy(value = it)) }, unit = unit)
+                        NumberStepper(value = set.value, onValueChange = { onSetChange(index, set.copy(value = it)) }, unit = unit, placeholder = "–")
                     }
                     if (exercise.showDistance) {
                         MetricField(R.string.distance_input_label, set.distanceCm, KeyboardType.Number, signed = true) {

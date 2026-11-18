@@ -125,6 +125,7 @@
     <string name="add_exercises_in_settings">Додавайте вправи в налаштуваннях</string>
     <string name="go_to_settings">Перейти до налаштувань</string>
     <string name="select_from_top">Використовуйте «Виберіть вправу» вище</string>
+    <string name="name_required">Введіть назву</string>
     <string name="duplicate_exercise_name">Така назва вправи вже використовується</string>
     <string name="duplicate_group_name">Така назва групи вже використовується</string>
     <string name="already_in_use_format">«%1$s (%2$s)» вже використовується</string>

@@ -227,6 +227,7 @@
     <string name="delete_exercise_used_in_programs">・プログラム: %s</string>
     <string name="delete_exercise_used_in_intervals">・インターバル: %s</string>
     <string name="delete_exercise_removed_note">これらからも種目が取り除かれます。</string>
+    <string name="name_required">名前を入力してください</string>
     <string name="duplicate_exercise_name">この種目名は既に使用されています</string>
     <string name="duplicate_group_name">このグループ名は既に使用されています</string>
     <string name="bilateral_with_parenthesis">両側 (Bilateral)</string>

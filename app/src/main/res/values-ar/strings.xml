@@ -471,6 +471,7 @@
     <string name="delete_exercise_used_in_programs">• البرامج: %s</string>
     <string name="delete_exercise_used_in_intervals">• الفترات: %s</string>
     <string name="delete_exercise_removed_note">وسيُزال منها أيضًا.</string>
+    <string name="name_required">أدخل اسمًا</string>
     <string name="duplicate_exercise_name">اسم التمرين هذا مستخدم بالفعل</string>
     <string name="duplicate_group_name">اسم المجموعة هذا مستخدم بالفعل</string>
     <string name="bilateral_with_parenthesis">ثنائي الجانب</string>

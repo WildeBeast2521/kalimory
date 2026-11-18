@@ -183,6 +183,7 @@
     <!-- Additional hardcoded strings that need to be moved -->
     <string name="no_exercises_add_with_plus">No hay ejercicios aún\nAñade uno usando el botón + de abajo</string>
     <string name="delete_group_confirm_message">¿Eliminar \"%s\"?\nLos ejercicios de este grupo se moverán a \"Sin Grupo\".</string>
+    <string name="name_required">Introduce un nombre</string>
     <string name="duplicate_exercise_name">Este nombre de ejercicio ya está en uso</string>
     <string name="duplicate_group_name">Este nombre de grupo ya está en uso</string>
     <string name="bilateral_with_parenthesis">Bilateral</string>

@@ -179,6 +179,7 @@
     <!-- Additional hardcoded strings that need to be moved -->
     <string name="no_exercises_add_with_plus">Noch keine Übungen vorhanden\nFüge eine mit dem + Button unten hinzu</string>
     <string name="delete_group_confirm_message">\"%s\" löschen?\nÜbungen in dieser Gruppe werden zu \"Keine Gruppe\" verschoben.</string>
+    <string name="name_required">Namen eingeben</string>
     <string name="duplicate_exercise_name">Dieser Übungsname wird bereits verwendet</string>
     <string name="duplicate_group_name">Dieser Gruppenname wird bereits verwendet</string>
     <string name="bilateral_with_parenthesis">Beidseitig</string>

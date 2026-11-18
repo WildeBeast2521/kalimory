@@ -461,6 +461,7 @@
     <string name="delete_exercise_used_in_programs">• Программы: %s</string>
     <string name="delete_exercise_used_in_intervals">• Интервалы: %s</string>
     <string name="delete_exercise_removed_note">Оно будет удалено и оттуда.</string>
+    <string name="name_required">Введите название</string>
     <string name="duplicate_exercise_name">Упражнение с таким названием уже есть</string>
     <string name="duplicate_group_name">Группа с таким названием уже есть</string>
     <string name="bilateral_with_parenthesis">Двустороннее</string>

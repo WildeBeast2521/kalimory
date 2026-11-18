@@ -758,6 +758,8 @@ fun UnifiedAddDialog(
 
     // グループ用の状態
     var groupName by remember { mutableStateOf("") }
+    // Add stays enabled; tapping it with something missing marks the fields instead of doing nothing.
+    var triedToSave by remember { mutableStateOf(false) }
 
     val isDuplicate = remember(exerciseName, selectedType, exercises, exercise) {
         if (exerciseName.isBlank()) {
@@ -919,8 +921,8 @@ fun UnifiedAddDialog(
                                     else -> R.string.add_button
                                 }
                             ),
-                            enabled = isFormValid,
-                            onClick = onSave,
+                            enabled = true,
+                            onClick = { if (isFormValid) onSave() else triedToSave = true },
                         )
                     }
                 },
@@ -973,9 +975,10 @@ fun UnifiedAddDialog(
                                     label = { Text(stringResource(R.string.group_name)) },
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true,
-                                    isError = isGroupDuplicate,
+                                    isError = isGroupDuplicate || (triedToSave && groupName.isBlank()),
                                     supportingText = {
                                         when {
+                                            triedToSave && groupName.isBlank() -> Text(stringResource(R.string.name_required), color = MaterialTheme.colorScheme.error)
                                             isGroupDuplicate -> Text(stringResource(R.string.duplicate_group_name), color = MaterialTheme.colorScheme.error)
                                             else -> Text(stringResource(R.string.character_count, groupName.length, TextLimits.GROUP_NAME), color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
@@ -1003,9 +1006,10 @@ fun UnifiedAddDialog(
                                     label = { Text(stringResource(R.string.exercise_name)) },
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true,
-                                    isError = isDuplicate,
+                                    isError = isDuplicate || (triedToSave && exerciseName.isBlank()),
                                     supportingText = {
                                         when {
+                                            triedToSave && exerciseName.isBlank() -> Text(stringResource(R.string.name_required), color = MaterialTheme.colorScheme.error)
                                             isDuplicate -> Text(stringResource(R.string.duplicate_exercise_name), color = MaterialTheme.colorScheme.error)
                                             else -> Text(stringResource(R.string.character_count, exerciseName.length, nameLimit), color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
@@ -1089,7 +1093,14 @@ fun UnifiedAddDialog(
                                         label = { Text(stringResource(R.string.new_group_name)) },
                                         modifier = Modifier.fillMaxWidth(),
                                         singleLine = true,
-                                        supportingText = { Text(stringResource(R.string.character_count, newGroupName.length, TextLimits.GROUP_NAME), color = MaterialTheme.colorScheme.onSurfaceVariant) },
+                                        isError = triedToSave && newGroupName.isBlank(),
+                                        supportingText = {
+                                            if (triedToSave && newGroupName.isBlank()) {
+                                                Text(stringResource(R.string.name_required), color = MaterialTheme.colorScheme.error)
+                                            } else {
+                                                Text(stringResource(R.string.character_count, newGroupName.length, TextLimits.GROUP_NAME), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            }
+                                        },
                                         trailingIcon = {
                                             IconButton(onClick = {
                                                 isCreatingNewGroup = false

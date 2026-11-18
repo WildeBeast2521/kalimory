@@ -183,6 +183,7 @@
     <!-- Additional hardcoded strings that need to be moved -->
     <string name="no_exercises_add_with_plus">还没有动作\n点击下方 + 按钮添加</string>
     <string name="delete_group_confirm_message">删除「%s」？\n该分组中的动作将移至「无分组」。</string>
+    <string name="name_required">请输入名称</string>
     <string name="duplicate_exercise_name">此动作名称已在使用</string>
     <string name="duplicate_group_name">此分组名称已在使用</string>
     <string name="bilateral_with_parenthesis">双侧</string>

@@ -76,8 +76,8 @@
     <string name="isometric_type">Time</string>
     <string name="exercise_type_dynamic">Dynamic</string>
     <string name="exercise_type_isometric">Isometric</string>
-    <string name="exercise_type_dynamic_description">e.g. Push-ups, Pull-ups. Recorded by reps.</string>
-    <string name="exercise_type_isometric_description">e.g. Plank, L-sit. Recorded by hold time.</string>
+    <string name="exercise_type_dynamic_description">e.g., push-ups, pull-ups. Recorded by reps.</string>
+    <string name="exercise_type_isometric_description">e.g., plank, L-sit. Recorded by hold time.</string>
     <!-- View Screen -->
     <string name="no_records_yet">No records yet</string>
     <string name="unknown_exercise">Unknown exercise</string>
@@ -249,6 +249,7 @@
     <string name="delete_exercise_used_in_programs">• Programs: %s</string>
     <string name="delete_exercise_used_in_intervals">• Intervals: %s</string>
     <string name="delete_exercise_removed_note">It will also be removed from these.</string>
+    <string name="name_required">Enter a name</string>
     <string name="duplicate_exercise_name">This exercise name is already in use</string>
     <string name="duplicate_group_name">This group name is already in use</string>
     <string name="bilateral_with_parenthesis">Bilateral</string>
