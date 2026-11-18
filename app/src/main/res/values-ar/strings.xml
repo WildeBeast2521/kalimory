@@ -327,6 +327,8 @@
     <string name="period_one_week">أسبوع</string>
     <string name="period_one_month">شهر</string>
     <string name="period_three_months">3 أشهر</string>
+    <string name="period_one_year">سنة واحدة</string>
+    <string name="period_all">الكل</string>
     <string name="no_data">لا توجد بيانات</string>
     <string name="record_training_for_exercise">تسجيل تمرين لهذا التمرين</string>
     <string name="statistics_summary">ملخص الإحصاءات</string>
@@ -498,7 +500,6 @@
     <string name="right_short">يمين</string>
     <string name="left_short">يسار</string>
     <string name="best_record">الأفضل</string>
-    <string name="worst_record">الأدنى</string>
     <string name="csv_export_success">صُدِّر %1$s: %2$s</string>
     <string name="csv_template_exported">صُدِّر قالب CSV: %s</string>
     <string name="csv_empty">ملف CSV فارغ</string>

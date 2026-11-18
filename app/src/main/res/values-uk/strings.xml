@@ -50,6 +50,8 @@
     <string name="period_one_week">1 тиждень</string>
     <string name="period_one_month">1 місяць</string>
     <string name="period_three_months">3 місяці</string>
+    <string name="period_one_year">1 рік</string>
+    <string name="period_all">Усе</string>
     <string name="no_data">Немає даних</string>
     <string name="unit_seconds_short">с</string>
     <string name="groups">Групи</string>
@@ -305,7 +307,6 @@
     <string name="laterality">Латеральність</string>
     <string name="bilateral_with_parenthesis">Двостороння</string>
     <string name="unilateral_with_parenthesis">Одностороння</string>
-    <string name="worst_record">Найнижчий</string>
     <string name="best_record">Рекорд</string>
     <string name="program_start">Почати</string>
     <string name="start_workout">Почати</string>

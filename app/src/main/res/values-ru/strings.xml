@@ -317,6 +317,8 @@
     <string name="period_one_week">1 неделя</string>
     <string name="period_one_month">1 месяц</string>
     <string name="period_three_months">3 месяца</string>
+    <string name="period_one_year">1 год</string>
+    <string name="period_all">Все</string>
     <string name="no_data">Нет данных</string>
     <string name="record_training_for_exercise">Записать тренировку по этому упражнению</string>
     <string name="statistics_summary">Сводка</string>
@@ -488,7 +490,6 @@
     <string name="right_short">Прав.</string>
     <string name="left_short">Лев.</string>
     <string name="best_record">Лучший</string>
-    <string name="worst_record">Худший</string>
     <string name="csv_export_success">%1$s: экспортировано %2$s</string>
     <string name="csv_template_exported">Шаблон CSV экспортирован: %s</string>
     <string name="csv_empty">CSV-файл пуст</string>

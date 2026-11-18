@@ -81,6 +81,8 @@
     <string name="period_one_week">1 Semaine</string>
     <string name="period_one_month">1 Mois</string>
     <string name="period_three_months">3 Mois</string>
+    <string name="period_one_year">1 an</string>
+    <string name="period_all">Tout</string>
     <!-- Graph Screen -->
     <string name="no_data">Aucune donnée</string>
     <string name="record_training_for_exercise">Enregistrer l\'entraînement pour cet exercice</string>
@@ -214,7 +216,6 @@
     <string name="right_short">Droit</string>
     <string name="left_short">Gauche</string>
     <string name="best_record">Meilleur</string>
-    <string name="worst_record">Plus Bas</string>
     <!-- CSV Import/Export -->
     <string name="csv_export_success">%1$s exporté : %2$s</string>
     <string name="csv_template_exported">Modèle CSV exporté : %s</string>

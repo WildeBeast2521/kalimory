@@ -93,6 +93,8 @@
     <string name="period_one_week">1 week</string>
     <string name="period_one_month">1 month</string>
     <string name="period_three_months">3 months</string>
+    <string name="period_one_year">1 year</string>
+    <string name="period_all">All</string>
     <!-- Graph Screen -->
     <string name="no_data">No data</string>
     <string name="record_training_for_exercise">Record training for this exercise</string>
@@ -280,7 +282,6 @@
     <string name="right_short">Right</string>
     <string name="left_short">Left</string>
     <string name="best_record">Best</string>
-    <string name="worst_record">Lowest</string>
     <!-- CSV Import/Export -->
     <string name="csv_export_success">%1$s exported: %2$s</string>
     <string name="csv_template_exported">CSV template exported: %s</string>

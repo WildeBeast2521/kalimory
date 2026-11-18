@@ -91,6 +91,8 @@
     <string name="period_one_week">1週間</string>
     <string name="period_one_month">1ヶ月</string>
     <string name="period_three_months">3ヶ月</string>
+    <string name="period_one_year">1年</string>
+    <string name="period_all">すべて</string>
     <!-- Graph Screen -->
     <string name="no_data">データがありません</string>
     <string name="record_training_for_exercise">この種目のトレーニングを記録してください</string>
@@ -258,7 +260,6 @@
     <string name="right_short">右</string>
     <string name="left_short">左</string>
     <string name="best_record">最高記録</string>
-    <string name="worst_record">最低記録</string>
     <!-- CSV Import/Export -->
     <string name="csv_export_success">%1$sをエクスポートしました: %2$s</string>
     <string name="csv_template_exported">CSVテンプレートをエクスポートしました: %s</string>
