@@ -412,7 +412,7 @@
     <!-- Sound Settings (Program Confirm) -->
     <string name="dynamic_count_sound_label">Son de comptage</string>
     <string name="dynamic_count_sound_description">Aide au comptage des exercices dynamiques</string>
-    <string name="isometric_interval_sound_label">Notification d\'intervalle</string>
+    <string name="isometric_interval_sound_label">Son pendant les maintiens</string>
     <string name="isometric_interval_sound_description">Exercices isométriques</string>
     <!-- Auto Mode -->
     <string name="auto_mode">Mode auto</string>

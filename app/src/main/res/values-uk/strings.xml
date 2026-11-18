@@ -209,7 +209,7 @@
     <string name="import_backup_required">Спершу збережіть резервну копію поточних даних. Відновлення стане доступним, коли копію буде збережено й перевірено.</string>
     <string name="import_backup_verified">Резервну копію збережено й перевірено.</string>
     <string name="dynamic_count_sound_label">Звук відліку часу</string>
-    <string name="isometric_interval_sound_label">Сповіщення інтервалу</string>
+    <string name="isometric_interval_sound_label">Звук під час утримання</string>
     <string name="program_name_hint">напр., Ранкова зарядка</string>
     <string name="example_unilateral">напр., присідання на одній нозі, віджимання на одній руці</string>
     <string name="notification_channel_workout_description">Показує сповіщення, коли працює таймер тренування</string>

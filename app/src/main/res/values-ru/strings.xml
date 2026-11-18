@@ -660,7 +660,7 @@
     <string name="exit_workout_confirm">Выйти</string>
     <string name="dynamic_count_sound_label">Звук счёта</string>
     <string name="dynamic_count_sound_description">Помогает считать повторения</string>
-    <string name="isometric_interval_sound_label">Сигнал интервала</string>
+    <string name="isometric_interval_sound_label">Звук во время удержания</string>
     <string name="isometric_interval_sound_description">Статические упражнения</string>
     <string name="nav_program_overview">Обзор программы</string>
     <string name="nav_overall_progress">Общий прогресс</string>

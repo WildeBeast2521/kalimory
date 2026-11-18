@@ -26,6 +26,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- Settings has a Sound during holds switch beside the other workout switches; the setting was only on the workout and program start screens, where it was called Interval notification ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - The finished-set message reads "Set 2 complete" in English, German, Italian and Spanish, matching the "Complete set" button and the other languages ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - A one-sided set rests only after its second side: the start countdown is the pause between the sides, and a program's time estimate counts the countdown once and at each switch of sides rather than before every set ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The Add button on the new exercise or group form is never greyed out: tapping it with the name missing shows "Enter a name" under the field; the type examples in English follow one style; an empty number in the workout editor shows a dash between the buttons ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))

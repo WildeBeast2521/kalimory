@@ -251,6 +251,7 @@ fun SettingsScreenNew(
                 var flashNotificationEnabled by remember { mutableStateOf(workoutPrefs.isFlashNotificationEnabled()) }
                 var keepScreenOnEnabled by remember { mutableStateOf(workoutPrefs.isKeepScreenOnEnabled()) }
                 var setDoneVibrationEnabled by remember { mutableStateOf(workoutPrefs.isSetDoneVibrationEnabled()) }
+                var holdSoundEnabled by remember { mutableStateOf(workoutPrefs.isIsometricIntervalSoundEnabled()) }
 
                 SettingsGroup(stringResource(R.string.section_workout_settings)) {
                     SettingSwitchRow(
@@ -347,6 +348,15 @@ fun SettingsScreenNew(
                             workoutPrefs.setSetDoneVibrationEnabled(enabled)
                         },
                         icon = AppIcons.Vibration,
+                    )
+                    SettingSwitchRow(
+                        title = stringResource(R.string.isometric_interval_sound_label),
+                        checked = holdSoundEnabled,
+                        onCheckedChange = { enabled ->
+                            holdSoundEnabled = enabled
+                            workoutPrefs.setIsometricIntervalSoundEnabled(enabled)
+                        },
+                        icon = AppIcons.Interval,
                     )
                 }
             }

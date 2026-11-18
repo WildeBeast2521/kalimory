@@ -466,7 +466,7 @@
     <!-- Sound Settings (Program Confirm) -->
     <string name="dynamic_count_sound_label">カウント音</string>
     <string name="dynamic_count_sound_description">回数系種目のカウントを補助</string>
-    <string name="isometric_interval_sound_label">インターバル通知</string>
+    <string name="isometric_interval_sound_label">ホールド中の音</string>
     <string name="isometric_interval_sound_description">静止系の種目</string>
     <!-- Auto Mode -->
     <string name="auto_mode">自動モード</string>

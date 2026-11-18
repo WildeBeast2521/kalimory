@@ -407,7 +407,7 @@
     <!-- Sound Settings (Program Confirm) -->
     <string name="dynamic_count_sound_label">Zählton</string>
     <string name="dynamic_count_sound_description">Unterstützt das Zählen bei dynamischen Übungen</string>
-    <string name="isometric_interval_sound_label">Intervallbenachrichtigung</string>
+    <string name="isometric_interval_sound_label">Ton während des Haltens</string>
     <string name="isometric_interval_sound_description">Isometrische Übungen</string>
     <!-- Auto Mode -->
     <string name="auto_mode">Automatik</string>

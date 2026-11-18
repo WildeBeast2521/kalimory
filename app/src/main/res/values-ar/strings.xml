@@ -672,7 +672,7 @@
     <string name="exit_workout_confirm">خروج</string>
     <string name="dynamic_count_sound_label">صوت العد</string>
     <string name="dynamic_count_sound_description">يساعد على عدّ التكرارات</string>
-    <string name="isometric_interval_sound_label">تنبيه الفاصل</string>
+    <string name="isometric_interval_sound_label">صوت أثناء الثبات</string>
     <string name="isometric_interval_sound_description">التمارين الثابتة</string>
     <string name="nav_program_overview">نظرة على البرنامج</string>
     <string name="nav_overall_progress">التقدم الكلي</string>

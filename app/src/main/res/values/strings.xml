@@ -482,7 +482,7 @@
     <!-- Sound Settings (Program Confirm) -->
     <string name="dynamic_count_sound_label">Count sound</string>
     <string name="dynamic_count_sound_description">Assists counting for dynamic exercises</string>
-    <string name="isometric_interval_sound_label">Interval notification</string>
+    <string name="isometric_interval_sound_label">Sound during holds</string>
     <string name="isometric_interval_sound_description">Isometric exercises</string>
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Program overview</string>

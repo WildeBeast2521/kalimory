@@ -410,7 +410,7 @@
     <!-- Sound Settings (Program Confirm) -->
     <string name="dynamic_count_sound_label">计数音效</string>
     <string name="dynamic_count_sound_description">辅助次数类动作的计数</string>
-    <string name="isometric_interval_sound_label">间隔提醒</string>
+    <string name="isometric_interval_sound_label">静力保持时的提示音</string>
     <string name="isometric_interval_sound_description">静态类动作</string>
     <!-- Auto Mode -->
     <string name="auto_mode">自动模式</string>
