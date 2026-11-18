@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingLinkRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -186,90 +188,28 @@ fun ShareHubScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // セクション説明
             item {
                 Text(
                     text = stringResource(R.string.share_section_description),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    lineHeight = 20.sp,
-                    modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
 
-            // Community Share エクスポートボタン
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    onClick = { onNavigateToCommunityShareExport() }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Upload, contentDescription = null, modifier = Modifier.size(24.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.share_export_title),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.share_export_description),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                }
-            }
-
-            // Community Share インポートボタン
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    onClick = {
-                        if (!isLoading) {
-                            shareImportLauncher.launch(arrayOf("application/json"))
-                        }
-                    }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Download, contentDescription = null, modifier = Modifier.size(24.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.share_import_title),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.share_import_description),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
+                SettingsCard {
+                    SettingLinkRow(
+                        title = stringResource(R.string.share_export_title),
+                        description = stringResource(R.string.share_export_description),
+                        icon = AppIcons.Upload,
+                        onClick = { onNavigateToCommunityShareExport() },
+                    )
+                    SettingLinkRow(
+                        title = stringResource(R.string.share_import_title),
+                        description = stringResource(R.string.share_import_description),
+                        icon = AppIcons.Download,
+                        onClick = { if (!isLoading) shareImportLauncher.launch(arrayOf("application/json")) },
+                    )
                 }
             }
 

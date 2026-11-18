@@ -23,6 +23,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- Backup, CSV files and Share show their two actions in one card with the same rows as Settings, and the Backup warning uses the theme's error colours so it reads well in the dark theme ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - Settings is organised into six groups (Language, Appearance, Week and suggestions, Workouts, Your data, About), each a card of rows with one column of icons and no repeated description lines; the start countdown and rest between sets are set with a stepper under their switch instead of in a dialog ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - The seconds for the sound during holds are set with a stepper under the setting, instead of a small field in the same line as the switch; tapping anywhere on a switch row toggles it ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - Sets done with band or machine assistance no longer count toward a progression's move-on standard or its progress; they still show as your last session and start the step ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))

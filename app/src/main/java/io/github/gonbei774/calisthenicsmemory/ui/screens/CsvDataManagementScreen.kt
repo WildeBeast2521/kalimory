@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingLinkRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
 import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
@@ -275,94 +277,28 @@ fun CsvDataManagementScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // セクション説明
             item {
                 Text(
                     text = stringResource(R.string.section_partial_data_management_description),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    lineHeight = 20.sp,
-                    modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
 
-            // CSVエクスポートボタン
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    onClick = {
-                        if (!isLoading) {
-                            showCsvExportDialog = true
-                        }
-                    }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Upload, contentDescription = null, modifier = Modifier.size(24.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.csv_export),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.csv_export_description),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                }
-            }
-
-            // CSVインポートボタン
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    onClick = {
-                        if (!isLoading) {
-                            csvImportLauncher.launch(arrayOf("text/csv", "text/comma-separated-values"))
-                        }
-                    }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Download, contentDescription = null, modifier = Modifier.size(24.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.csv_import),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.csv_import_description),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
+                SettingsCard {
+                    SettingLinkRow(
+                        title = stringResource(R.string.csv_export),
+                        description = stringResource(R.string.csv_export_description),
+                        icon = AppIcons.Upload,
+                        onClick = { if (!isLoading) showCsvExportDialog = true },
+                    )
+                    SettingLinkRow(
+                        title = stringResource(R.string.csv_import),
+                        description = stringResource(R.string.csv_import_description),
+                        icon = AppIcons.Download,
+                        onClick = { if (!isLoading) csvImportLauncher.launch(arrayOf("text/csv", "text/comma-separated-values")) },
+                    )
                 }
             }
 

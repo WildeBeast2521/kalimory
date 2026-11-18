@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingLinkRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
 import io.github.gonbei774.calisthenicsmemory.viewmodel.setCount
 import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -209,98 +211,35 @@ fun BackupScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // セクション説明
             item {
                 Text(
                     text = stringResource(R.string.section_full_backup_description),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    lineHeight = 20.sp,
-                    modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
 
-            // エクスポートボタン
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    onClick = {
-                        if (!isLoading) {
-                            val dateTime = LocalDateTime.now()
-                            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")
-                            val fileName = "kalimory_backup_${dateTime.format(formatter)}.json"
-                            exportLauncher.launch(fileName)
-                        }
-                    }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Upload, contentDescription = null, modifier = Modifier.size(24.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.export_data),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = lastBackupAt?.let { stringResource(R.string.backup_last, formatBackupTime(it)) }
-                                    ?: stringResource(R.string.backup_never),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                }
-            }
-
-            // インポートボタン
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = MaterialTheme.shapes.large,
-                    onClick = {
-                        if (!isLoading) {
-                            importLauncher.launch(arrayOf("application/json"))
-                        }
-                    }
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = Spacing.l, vertical = Spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Download, contentDescription = null, modifier = Modifier.size(24.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.import_data),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = stringResource(R.string.restore_from_backup),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                        Icon(AppIcons.Forward, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
+                SettingsCard {
+                    SettingLinkRow(
+                        title = stringResource(R.string.export_data),
+                        description = lastBackupAt?.let { stringResource(R.string.backup_last, formatBackupTime(it)) }
+                            ?: stringResource(R.string.backup_never),
+                        icon = AppIcons.Upload,
+                        onClick = {
+                            if (!isLoading) {
+                                val dateTime = LocalDateTime.now()
+                                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")
+                                exportLauncher.launch("kalimory_backup_${dateTime.format(formatter)}.json")
+                            }
+                        },
+                    )
+                    SettingLinkRow(
+                        title = stringResource(R.string.import_data),
+                        description = stringResource(R.string.restore_from_backup),
+                        icon = AppIcons.Download,
+                        onClick = { if (!isLoading) importLauncher.launch(arrayOf("application/json")) },
+                    )
                 }
             }
 
@@ -309,7 +248,7 @@ fun BackupScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.1f)
+                        containerColor = MaterialTheme.colorScheme.errorContainer
                     ),
                     shape = MaterialTheme.shapes.large
                 ) {
@@ -319,20 +258,18 @@ fun BackupScreen(
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Icon(AppIcons.Warning, contentDescription = null, modifier = Modifier.size(20.dp))
+                        Icon(AppIcons.Warning, contentDescription = null, tint = MaterialTheme.colorScheme.onErrorContainer, modifier = Modifier.size(24.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.warning_title),
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )
                             Text(
                                 text = stringResource(R.string.import_warning),
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                lineHeight = 20.sp
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onErrorContainer
                             )
                         }
                     }

@@ -63,4 +63,11 @@ class SetupScreensLargeTextTest {
     @Test fun `log a past workout entry`() = audit { RecordScreen(it, {}, initialExerciseId = 1L) }
 
     @Test fun `settings`() = audit { SettingsScreenNew(it, {}, {}, {}, {}, {}, {}) }
+
+    // Same top-bar limit as above: the collapsed title is shortened beside the back button at this size.
+    @Test fun `backup`() = audit(ignore = "\"Complete backup (JSON)\"") { BackupScreen(it, {}) }
+
+    @Test fun `csv files`() = audit { CsvDataManagementScreen(it, {}) }
+
+    @Test fun `share`() = audit { ShareHubScreen(it, {}, {}) }
 }

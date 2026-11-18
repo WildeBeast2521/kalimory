@@ -39,6 +39,14 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
  * up whether or not a row has an icon.
  */
 
+/** One card that holds related rows, for a screen whose title already names them. */
+@Composable
+fun SettingsCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
+    Surface(modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceContainerLow) {
+        Column(Modifier.fillMaxWidth().padding(vertical = Spacing.xs), content = content)
+    }
+}
+
 /** A heading above one card that holds related rows. */
 @Composable
 fun SettingsGroup(title: String, modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
@@ -49,9 +57,7 @@ fun SettingsGroup(title: String, modifier: Modifier = Modifier, content: @Compos
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = Spacing.s).semantics { heading() },
         )
-        Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceContainerLow) {
-            Column(Modifier.fillMaxWidth().padding(vertical = Spacing.xs), content = content)
-        }
+        SettingsCard(content = content)
     }
 }
 
