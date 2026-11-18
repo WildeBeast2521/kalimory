@@ -400,6 +400,8 @@
     <string name="resume_button">Продолжить</string>
     <string name="save_and_exit_button">Сохранить и выйти</string>
     <string name="retry_set_button">Повторить подход</string>
+    <string name="skip_set_button">Пропустить подход</string>
+    <string name="skip_exercise_button">Пропустить упражнение</string>
     <string name="interval_label">Интервал</string>
     <string name="loop_round_rest">Отдых между кругами</string>
     <string name="loop_round_current">Круг %1$d/%2$d</string>

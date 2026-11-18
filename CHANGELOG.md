@@ -11,6 +11,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- A Restart set button under the main button of every running set, in a workout and in a program, starts the set again; it was in the single workout's menu only ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - A weekly review, opened from Today, shows the days you trained and your sets by movement (push, pull, legs, core and more) beside a mark at 10 sets a week, for this week and every week before it ([#248](https://github.com/WildeBeast2521/kalimory/pull/248))
 - The weekly review lists the week's new personal bests: each exercise whose best set beat every earlier one, with the day it came and the best before it ([#253](https://github.com/WildeBeast2521/kalimory/pull/253))
 - The weekly review lists the progression steps you mastered that week; tap one to open its progression ([#254](https://github.com/WildeBeast2521/kalimory/pull/254))

@@ -970,6 +970,7 @@ fun ProgramExecutionScreen(
                                     onAbort = {
                                         currentStep = ProgramExecutionStep.Result(step.session)
                                     },
+                                    onRetry = handleRetry,
                                     onOpenNavigation = { showNavigationSheet = true }
                                 )
                             } else {
@@ -1019,6 +1020,7 @@ fun ProgramExecutionScreen(
                                         onAbort = {
                                             currentStep = ProgramExecutionStep.Result(step.session)
                                         },
+                                        onRetry = handleRetry,
                                         onOpenNavigation = { showNavigationSheet = true }
                                     )
                                 } else {

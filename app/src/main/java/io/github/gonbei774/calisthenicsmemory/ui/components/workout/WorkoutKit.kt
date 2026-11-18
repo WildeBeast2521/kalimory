@@ -28,6 +28,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -402,6 +404,36 @@ fun WorkoutSkipButton(onSkip: () -> Unit) {
         Icon(AppIcons.SkipNext, contentDescription = null)
         Spacer(Modifier.size(Spacing.s))
         FitText(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+/**
+ * Quiet actions on the running set, under its main button: start it again and, where given, skip it. They
+ * are text buttons, the lowest emphasis, so the main button stays the one that finishes the set. The row
+ * wraps at large text instead of shortening a label.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun SetActions(
+    onRestart: () -> Unit,
+    modifier: Modifier = Modifier,
+    onSkipSet: (() -> Unit)? = null,
+    onSkipExercise: (() -> Unit)? = null,
+) {
+    FlowRow(
+        modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(Spacing.s, Alignment.CenterHorizontally),
+    ) {
+        SetActionButton(stringResource(R.string.retry_set_button), onRestart)
+        if (onSkipSet != null) SetActionButton(stringResource(R.string.skip_set_button), onSkipSet)
+        if (onSkipExercise != null) SetActionButton(stringResource(R.string.skip_exercise_button), onSkipExercise)
+    }
+}
+
+@Composable
+private fun SetActionButton(text: String, onClick: () -> Unit) {
+    androidx.compose.material3.TextButton(onClick = onClick, modifier = Modifier.heightIn(min = 48.dp)) {
+        Text(text, style = MaterialTheme.typography.titleSmall)
     }
 }
 

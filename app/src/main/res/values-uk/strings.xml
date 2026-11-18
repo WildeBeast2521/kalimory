@@ -300,6 +300,8 @@
     <string name="import_data_preview_message">Продовжити імпорт цих даних?</string>
     <string name="pause_button">Пауза</string>
     <string name="retry_set_button">Повторити підхід</string>
+    <string name="skip_set_button">Пропустити підхід</string>
+    <string name="skip_exercise_button">Пропустити вправу</string>
     <string name="laterality">Латеральність</string>
     <string name="bilateral_with_parenthesis">Двостороння</string>
     <string name="unilateral_with_parenthesis">Одностороння</string>
