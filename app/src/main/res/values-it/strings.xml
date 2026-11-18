@@ -616,7 +616,7 @@
     <string name="library_exercises">Esercizi e gruppi</string>
     <string name="workout_count_decrease">Uno in meno</string>
     <string name="workout_count_increase">Uno in più</string>
-    <string name="workout_set_done">Serie %1$d fatta</string>
+    <string name="workout_set_done">Serie %1$d completata</string>
     <string name="backup_last">Ultimo backup: %1$s</string>
     <string name="backup_never">Nessun backup</string>
     <string name="record_mixed_title">Quali serie registrare?</string>

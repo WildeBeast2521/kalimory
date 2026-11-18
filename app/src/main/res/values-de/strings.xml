@@ -641,7 +641,7 @@
     <string name="library_exercises">Übungen und Gruppen</string>
     <string name="workout_count_decrease">Eins weniger</string>
     <string name="workout_count_increase">Eins mehr</string>
-    <string name="workout_set_done">Satz %1$d geschafft</string>
+    <string name="workout_set_done">Satz %1$d abgeschlossen</string>
     <string name="backup_last">Letzte Sicherung: %1$s</string>
     <string name="backup_never">Noch keine Sicherung</string>
     <string name="record_mixed_title">Welche Sätze speichern?</string>

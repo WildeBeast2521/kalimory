@@ -674,7 +674,7 @@
     <string name="workout_count_decrease">One fewer</string>
     <string name="workout_count_increase">One more</string>
     <!-- The set number names the set; it is not a quantity. -->
-    <string name="workout_set_done" tools:ignore="PluralsCandidate">Set %1$d done</string>
+    <string name="workout_set_done" tools:ignore="PluralsCandidate">Set %1$d complete</string>
     <string name="backup_last">Last backup: %1$s</string>
     <string name="backup_never">No backup yet</string>
     <string name="record_mixed_title">Record which sets?</string>

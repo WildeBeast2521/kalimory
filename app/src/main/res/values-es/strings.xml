@@ -667,7 +667,7 @@
     <string name="library_exercises">Ejercicios y grupos</string>
     <string name="workout_count_decrease">Uno menos</string>
     <string name="workout_count_increase">Uno más</string>
-    <string name="workout_set_done">Serie %1$d hecha</string>
+    <string name="workout_set_done">Serie %1$d completada</string>
     <string name="backup_last">Última copia: %1$s</string>
     <string name="backup_never">Aún no hay copia de seguridad</string>
     <string name="record_mixed_title">¿Qué series registrar?</string>
