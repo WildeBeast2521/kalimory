@@ -21,8 +21,9 @@ These hold for every change. A change that breaks one is wrong, however good it 
   exercise. Do not add UI copy explaining that nothing is locked.
 - **One behaviour everywhere.** Use the shared components (`AppFab`, `StartButton`,
   `NumberStepButton`/`NumberStepper`, `SwipeToDeleteBackground`, `CalmTopBar`, `TimerDial`,
-  `RollingNumber`, `WorkoutPrimaryButton`, `FitText`) instead of a local variant. `ConsistencyGuardTest`
-  fails when a screen brings its own.
+  `RollingNumber`, `WorkoutPrimaryButton`, `FitText`, `ExerciseBadges`, `ExercisePickRow`,
+  `ExerciseCheckRow`, `EmptyState`) instead of a local variant. `ConsistencyGuardTest` fails when a
+  screen brings its own. `docs/ux.md` has the rest: text styles, colour roles, spacing and 200 % text.
 - **No private material in git.** Never commit keystores, `keystore.properties`,
   `local.properties`, tokens, databases, real backups or exports. Fixtures use made-up data.
 
@@ -40,7 +41,8 @@ app/src/test/          JVM unit tests
 app/src/androidTest/   Instrumented tests (API 29 emulator)
 baselineprofile/       Baseline Profile generator
 scripts/       Catalogue generator, schema check, icon, sound, screenshot and README tools
-docs/wiki/     User guide (the only public documentation folder)
+docs/ux.md      Interface rules: text, colour, layout, shared components
+docs/wiki/     User guide
 fastlane/      Store metadata
 ```
 

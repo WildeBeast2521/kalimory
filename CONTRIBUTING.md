@@ -57,6 +57,7 @@ app/src/test/          Unit tests
 app/src/androidTest/   Instrumented tests
 app/schemas/           Exported Room schemas
 baselineprofile/       Baseline Profile generator
+docs/ux.md              Interface rules for screens
 docs/wiki/             User guide
 scripts/               Catalogue, muscle map, sound, icon, README image and schema tools
 fastlane/              Store metadata

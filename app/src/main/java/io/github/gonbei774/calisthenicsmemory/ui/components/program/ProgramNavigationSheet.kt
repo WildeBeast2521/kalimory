@@ -500,7 +500,7 @@ private fun NavigationRoundCard(
                 // ラウンドバッジ
                 Box(
                     modifier = Modifier
-                        .background(cs.secondary, RoundedCornerShape(8.dp))
+                        .background(cs.secondary, MaterialTheme.shapes.extraSmall)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
@@ -871,7 +871,7 @@ private fun NavigationExerciseHeader(
         Box(
             modifier = Modifier
                 .size(28.dp)
-                .background(cs.tertiary, RoundedCornerShape(8.dp)),
+                .background(cs.tertiary, MaterialTheme.shapes.extraSmall),
             contentAlignment = Alignment.Center
         ) {
             Text(

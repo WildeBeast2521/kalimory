@@ -561,7 +561,7 @@ internal fun ProgramConfirmExerciseCard(
                 Box(
                     modifier = Modifier
                         .defaultMinSize(minWidth = 28.dp, minHeight = 28.dp)
-                        .background(cs.tertiary, RoundedCornerShape(8.dp))
+                        .background(cs.tertiary, MaterialTheme.shapes.extraSmall)
                         .padding(horizontal = 4.dp),
                     contentAlignment = Alignment.Center
                 ) {
@@ -585,7 +585,7 @@ internal fun ProgramConfirmExerciseCard(
                 // セット数バッジ
                 Box(
                     modifier = Modifier
-                        .background(cs.surfaceContainerHigh, RoundedCornerShape(12.dp))
+                        .background(cs.surfaceContainerHigh, MaterialTheme.shapes.small)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
@@ -599,7 +599,7 @@ internal fun ProgramConfirmExerciseCard(
                 if (loopRounds != null) {
                     Box(
                         modifier = Modifier
-                            .background(cs.secondary.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                            .background(cs.secondary.copy(alpha = 0.3f), MaterialTheme.shapes.small)
                             .padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
                         Text(
@@ -920,7 +920,7 @@ private fun ProgramConfirmLoopBlock(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(2.dp, cs.tertiary, RoundedCornerShape(12.dp)),
+            .border(2.dp, cs.tertiary, MaterialTheme.shapes.small),
         colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
         shape = MaterialTheme.shapes.large
     ) {
@@ -950,7 +950,7 @@ private fun ProgramConfirmLoopBlock(
                 // ラウンド数バッジ
                 Box(
                     modifier = Modifier
-                        .background(cs.secondary.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                        .background(cs.secondary.copy(alpha = 0.3f), MaterialTheme.shapes.small)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
@@ -965,7 +965,7 @@ private fun ProgramConfirmLoopBlock(
                 if (loop.restBetweenRounds > 0) {
                     Box(
                         modifier = Modifier
-                            .background(cs.surfaceContainerHigh, RoundedCornerShape(12.dp))
+                            .background(cs.surfaceContainerHigh, MaterialTheme.shapes.small)
                             .padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
                         Text(

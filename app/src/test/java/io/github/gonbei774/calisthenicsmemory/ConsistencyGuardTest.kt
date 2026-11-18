@@ -41,6 +41,12 @@ class ConsistencyGuardTest {
         assertTrue("Call DialogSystemBars() in: $offenders", offenders.isEmpty())
     }
 
+    @Test fun `a corner radius the theme already has comes from the theme`() {
+        // 8, 12, 16, 20 and 28 dp are the theme's shapes; the numbers drifted when each screen set its own.
+        val offenders = uses(Regex("""RoundedCornerShape\((8|12|16|20|28)\.dp\)"""), except = setOf("Shapes.kt"))
+        assertTrue("Use MaterialTheme.shapes instead: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `an exercise's badges come from ExerciseBadges`() {
         // The level text beside an exercise was built by hand in a dozen places, in three sizes.
         val offenders = uses(Regex("""R\.string\.level_format"""), except = setOf("ExerciseBadges.kt", "ViewScreen.kt"))
@@ -166,7 +172,7 @@ class ConsistencyGuardTest {
         // Proper names and feature names keep their capitals; everything else is lower case after
         // the first word, so "Add Another Set" cannot come back beside "Add another exercise".
         val proper = setOf("Today", "Train", "Progress", "Progressions", "Library", "To", "Do", "Done",
-            "JSON", "CSV", "LED", "ON", "GitHub", "Kalimory", "Android", "Programs", "Intervals", "Select", "New", "Morning")
+            "JSON", "CSV", "LED", "ON", "GitHub", "Kalimory", "Android", "Programs", "Intervals", "Select", "New", "Morning", "L-sit")
         val strings = main.resolve("res/values/strings.xml").readText()
         val offenders = Regex("""<string name="([^"]+)"[^>]*>([^<]{1,60})</string>""").findAll(strings)
             .filter { m ->
