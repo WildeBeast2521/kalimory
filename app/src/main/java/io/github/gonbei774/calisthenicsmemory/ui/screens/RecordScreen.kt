@@ -332,7 +332,6 @@ fun ExerciseSelectionScreen(
                             .navigationBarsPadding()
                             .padding(16.dp)
                             .heightIn(min = 56.dp),
-                        shape = RoundedCornerShape(12.dp)
                     ) {
                         Icon(AppIcons.Check, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
                         Text(pluralStringResource(R.plurals.record_save_exercises, staged.size, staged.size), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -918,7 +917,7 @@ fun WorkoutInputScreen(
             // 緑ボタン: 種目設定を適用
             if (exercise.targetSets != null || exercise.targetValue != null) {
                 item {
-                    Button(
+                    FilledTonalButton(
                         onClick = {
                             // セット数を反映
                             val targetSetsValue = exercise.targetSets ?: numberOfSets
@@ -943,12 +942,7 @@ fun WorkoutInputScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 48.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            disabledContainerColor = MaterialTheme.colorScheme.outline
-                        ),
                         enabled = exercise.targetSets != null || exercise.targetValue != null,
-                        shape = RoundedCornerShape(8.dp)
                     ) {
                         Icon(
                             AppIcons.Check,
@@ -1326,7 +1320,6 @@ fun WorkoutInputScreen(
                         containerColor = MaterialTheme.colorScheme.primary,
                         disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest
                     ),
-                    shape = RoundedCornerShape(12.dp)
                 ) {
                     Icon(
                         AppIcons.Check,
@@ -1365,7 +1358,6 @@ fun WorkoutInputScreen(
                     },
                     enabled = enteredCount > 0,
                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                    shape = RoundedCornerShape(12.dp)
                 ) {
                     Icon(AppIcons.Add, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
                     Text(stringResource(R.string.record_add_exercise))
@@ -1764,6 +1756,7 @@ private fun InlineStepperRow(
             text = label,
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = if (isLargeFontScale()) Int.MAX_VALUE else 1,
             modifier = modifier
         )
     }

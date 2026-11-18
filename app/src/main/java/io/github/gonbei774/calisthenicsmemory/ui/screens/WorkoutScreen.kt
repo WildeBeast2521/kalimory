@@ -1345,8 +1345,8 @@ fun SettingsStep(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // 種目設定を適用ボタン
-        Button(
+        // A helper for the fields above, so a tonal button: the one filled button on this screen is Start.
+        FilledTonalButton(
             onClick = {
                 // セット数を反映
                 if (exercise.targetSets != null) {
@@ -1372,8 +1372,6 @@ fun SettingsStep(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 48.dp),
-            colors = ButtonDefaults.buttonColors(),
-            shape = RoundedCornerShape(8.dp)
         ) {
             Icon(
                 imageVector = AppIcons.Check,

@@ -424,10 +424,9 @@ fun ProgramEditScreen(
 
                 // Add exercise button
                 item {
-                    Button(
+                    FilledTonalButton(
                         onClick = { showAddExerciseDialog = true },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(
                             AppIcons.Add,
@@ -441,15 +440,9 @@ fun ProgramEditScreen(
 
                 // Add loop button
                 item {
-                    OutlinedButton(
+                    TextButton(
                         onClick = { showAddLoopDialog = true },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.primary
-                        ),
-                        border = ButtonDefaults.outlinedButtonBorder.copy(
-                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary))
-                        )
                     ) {
                         Icon(AppIcons.Repeat, contentDescription = null, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(8.dp))

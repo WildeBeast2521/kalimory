@@ -412,7 +412,6 @@ private fun ActiveTaskContent(
                                         onNavigateToRecord(task.referenceId)
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                                    shape = RoundedCornerShape(8.dp),
                                     modifier = Modifier.fillMaxWidth().height(48.dp)
                                 ) {
                                     Text(
@@ -427,7 +426,6 @@ private fun ActiveTaskContent(
                                         onNavigateToWorkout(task.referenceId)
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                                    shape = RoundedCornerShape(8.dp),
                                     modifier = Modifier.fillMaxWidth().height(48.dp)
                                 ) {
                                     Text(
@@ -776,7 +774,6 @@ private fun GroupTaskCard(
                                                 onNavigateToRecord(exercise.id)
                                             },
                                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                                            shape = RoundedCornerShape(8.dp),
                                             modifier = Modifier.fillMaxWidth().height(48.dp)
                                         ) {
                                             Text(
@@ -791,7 +788,6 @@ private fun GroupTaskCard(
                                                 onNavigateToWorkout(exercise.id)
                                             },
                                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                                            shape = RoundedCornerShape(8.dp),
                                             modifier = Modifier.fillMaxWidth().height(48.dp)
                                         ) {
                                             Text(
@@ -892,7 +888,7 @@ private fun ExerciseTaskCard(
                             dynamic = exercise.type == "Dynamic",
                             unilateral = exercise.laterality == "Unilateral",
                         ),
-                        fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 2.dp)
                     )
                 }
@@ -998,8 +994,8 @@ private fun ProgramTaskCard(
                 ) {
                     Text(
                         text = stringResource(R.string.todo_tab_programs),
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.Bold
                     )
                     if (estimatedSeconds != null && estimatedSeconds > 0) {

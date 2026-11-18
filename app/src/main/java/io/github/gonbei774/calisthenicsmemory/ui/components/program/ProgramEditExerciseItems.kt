@@ -87,18 +87,18 @@ fun ProgramExerciseItem(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = exercise.name,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
+                    // The plan's numbers share one muted colour: they are information, not actions or states.
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.padding(top = 4.dp)
                     ) {
                         Text(
                             text = countText(R.plurals.set_count, programExercise.sets),
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.secondary
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
                             text = stringResource(
@@ -106,12 +106,12 @@ fun ProgramExerciseItem(
                                 programExercise.targetValue,
                                 stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
                             ),
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.primary
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
                             text = stringResource(R.string.program_interval_format, programExercise.intervalSeconds),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }

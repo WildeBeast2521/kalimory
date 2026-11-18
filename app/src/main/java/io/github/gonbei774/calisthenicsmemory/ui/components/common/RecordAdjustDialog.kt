@@ -142,7 +142,6 @@ fun RecordAdjustDialog(
                         onClick = { value = targetValue },
                         enabled = !isAtTarget,
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(10.dp),
                         border = BorderStroke(
                             1.5.dp,
                             if (isAtTarget) MaterialTheme.colorScheme.outlineVariant else MaterialTheme.colorScheme.primary

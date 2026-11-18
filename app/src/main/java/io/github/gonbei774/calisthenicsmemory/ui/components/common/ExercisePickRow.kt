@@ -63,7 +63,7 @@ fun ExercisePickRow(exercise: Exercise, onClick: () -> Unit, showGroup: Boolean 
                     Text(
                         text = targetText(sets, value, dynamic = exercise.type == "Dynamic", unilateral = exercise.laterality == "Unilateral"),
                         style = tag,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = Spacing.xs),
                     )
                 }

@@ -1051,7 +1051,6 @@ private fun IntervalTimerContent(
                 // Stopping ends the run early (it is saved), so it is visible but not loud.
                 OutlinedButton(
                     onClick = onStop,
-                    shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = cs.error),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -1288,7 +1287,6 @@ private fun IntervalCompleteContent(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = statusColor),
-                    shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.interval_save_and_finish),
