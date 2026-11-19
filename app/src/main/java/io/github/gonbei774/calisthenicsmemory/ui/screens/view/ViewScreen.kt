@@ -474,7 +474,6 @@ fun ViewScreen(
         val record = item.record
         AlertDialog(
             onDismissRequest = { showIntervalDeleteDialog = null },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     stringResource(R.string.delete_confirmation),

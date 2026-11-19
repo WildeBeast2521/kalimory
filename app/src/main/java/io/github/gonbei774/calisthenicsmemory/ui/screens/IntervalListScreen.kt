@@ -158,7 +158,6 @@ private fun IntervalProgramListItem(
     if (showDeleteConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirmDialog = false },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.interval_delete_program),

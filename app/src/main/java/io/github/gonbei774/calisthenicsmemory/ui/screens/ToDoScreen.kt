@@ -309,9 +309,7 @@ fun ToDoScreen(
                 TextButton(onClick = { deleteConfirmTask = null }) {
                     Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-            },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-        )
+            })
     }
 
     // Repeat days dialog
@@ -393,7 +391,6 @@ private fun ActiveTaskContent(
                 if (showModeDialog) {
                     AlertDialog(
                         onDismissRequest = { showModeDialog = false },
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                         title = {
                             Text(
                                 text = stringResource(R.string.todo_choose_mode),
@@ -755,7 +752,6 @@ private fun GroupTaskCard(
                         if (showModeDialog) {
                             AlertDialog(
                                 onDismissRequest = { showModeDialog = false },
-                                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                                 title = {
                                     Text(
                                         text = exercise.name,
@@ -1787,7 +1783,6 @@ private fun RepeatDaysDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 text = stringResource(R.string.todo_repeat_title),

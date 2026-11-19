@@ -275,7 +275,6 @@ fun IntervalExecutionScreen(
     if (showExitDialog) {
         AlertDialog(
             onDismissRequest = { showExitDialog = false },
-            containerColor = cs.surfaceContainerLow,
             title = {
                 Text(
                     stringResource(R.string.interval_exit_confirm_title),
@@ -325,7 +324,6 @@ fun IntervalExecutionScreen(
         val interval = checkpoint.interval ?: return@let
         AlertDialog(
             onDismissRequest = {},
-            containerColor = cs.surfaceContainerLow,
             title = {
                 Text(
                     stringResource(R.string.interval_resume_title),
@@ -393,7 +391,6 @@ fun IntervalExecutionScreen(
     if (showUnsavedDialog) {
         AlertDialog(
             onDismissRequest = { showUnsavedDialog = false },
-            containerColor = cs.surfaceContainerLow,
             title = {
                 Text(
                     stringResource(R.string.interval_unsaved_title),

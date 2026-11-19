@@ -306,7 +306,6 @@ fun CommunityShareExportScreen(
 
         AlertDialog(
             onDismissRequest = { if (!isExporting) showPreviewDialog = false },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.share_export_preview_title),

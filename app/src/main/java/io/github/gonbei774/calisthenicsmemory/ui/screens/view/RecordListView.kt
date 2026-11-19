@@ -566,7 +566,6 @@ fun IntervalRecordEditDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 stringResource(R.string.edit_session_info),

@@ -1351,7 +1351,6 @@ fun WorkoutInputScreen(
     if (showDiscardDialog) {
         AlertDialog(
             onDismissRequest = { showDiscardDialog = false },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.discard_changes_title),
@@ -1387,7 +1386,6 @@ fun WorkoutInputScreen(
     if (showIncompleteDialog) {
         AlertDialog(
             onDismissRequest = { showIncompleteDialog = false },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.record_mixed_title),
