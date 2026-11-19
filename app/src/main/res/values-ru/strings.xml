@@ -426,7 +426,10 @@
     <string name="left_colon">Левая:</string>
     <string name="reps_input">Повторения</string>
     <string name="seconds_input">Секунды</string>
-    <string name="level_format">Уровень %d</string>
+    <string name="level_format">Сложность %d</string>
+    <string name="difficulty_label">Сложность</string>
+    <string name="difficulty_hint">От 1 (легче всего) до 10 (труднее всего) или не задана</string>
+    <string name="difficulty_not_set">Не задана</string>
     <string name="tab_list">Список</string>
     <string name="tab_graph">График</string>
     <string name="tab_calendar">Календарь</string>
@@ -480,7 +483,6 @@
     <string name="example_30">напр. 30</string>
     <string name="no_group_display">Без группы</string>
     <string name="new_group_plus">+ Новая группа</string>
-    <string name="level_display">Уровень: %d</string>
     <string name="save_button">Сохранить</string>
     <string name="create_button">Создать</string>
     <string name="add_button">Добавить</string>

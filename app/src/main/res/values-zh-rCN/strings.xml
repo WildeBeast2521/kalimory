@@ -170,7 +170,10 @@
     <string name="reps_input">次数</string>
     <string name="seconds_input">秒</string>
     <!-- Level display -->
-    <string name="level_format">等级%d</string>
+    <string name="level_format">难度 %d</string>
+    <string name="difficulty_label">难度</string>
+    <string name="difficulty_hint">从 1（最容易）到 10（最难），或不设置</string>
+    <string name="difficulty_not_set">未设置</string>
     <!-- Additional missing strings -->
     <!-- Common Labels -->
     <string name="tab_list">列表</string>
@@ -200,7 +203,6 @@
     <string name="example_30">例如：30</string>
     <string name="no_group_display">无分组</string>
     <string name="new_group_plus">+ 新建分组</string>
-    <string name="level_display">级别：%d</string>
     <string name="save_button">保存</string>
     <string name="create_button">创建</string>
     <string name="add_button">添加</string>

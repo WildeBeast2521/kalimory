@@ -27,6 +27,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- Level is now Difficulty, its own row on the exercise form: a stepper from 1 to 10 that stays blank ("–") until you choose one, and it shows on an exercise whether or not it has a target ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Settings has a Sound during holds switch beside the other workout switches; the setting was only on the workout and program start screens, where it was called Interval notification ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - The finished-set message reads "Set 2 complete" in English, German, Italian and Spanish, matching the "Complete set" button and the other languages ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - A one-sided set rests only after its second side: the start countdown is the pause between the sides, and a program's time estimate counts the countdown once and at each switch of sides rather than before every set ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
@@ -46,6 +47,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- A new exercise with a target no longer gets a Difficulty of 5 that nobody chose ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Pressing Complete on a counted set, which has no timer to announce it, plays the finish sound ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - A set in a program that was skipped and later done is no longer both done and skipped, and Skip on a rest between sets no longer starts a countdown ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The vibration that confirms a finished set also plays after the last set and when there is no rest, not only before a rest ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))

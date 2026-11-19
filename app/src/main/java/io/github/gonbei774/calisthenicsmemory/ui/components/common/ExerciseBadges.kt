@@ -28,7 +28,7 @@ fun ExerciseBadges(exercise: Exercise, showGroup: Boolean = false) {
     if (exercise.isFavorite) {
         Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
     }
-    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
+    if (exercise.sortOrder in 1..10) {
         Text(stringResource(R.string.level_format, exercise.sortOrder), style = label, color = MaterialTheme.colorScheme.secondary)
     }
     Text(

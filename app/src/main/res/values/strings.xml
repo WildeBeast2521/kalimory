@@ -209,7 +209,10 @@
     <string name="reps_input">Reps</string>
     <string name="seconds_input">Seconds</string>
     <!-- Level display -->
-    <string name="level_format">Level %d</string>
+    <string name="level_format">Difficulty %d</string>
+    <string name="difficulty_label">Difficulty</string>
+    <string name="difficulty_hint">From 1 (easiest) to 10 (hardest), or not set</string>
+    <string name="difficulty_not_set">Not set</string>
     <!-- Additional missing strings -->
     <!-- Common Labels -->
     <string name="tab_list">List</string>
@@ -266,7 +269,6 @@
     <string name="example_30">e.g., 30</string>
     <string name="no_group_display">No group</string>
     <string name="new_group_plus">+ New group</string>
-    <string name="level_display">Level: %d</string>
     <string name="save_button">Save</string>
     <string name="create_button">Create</string>
     <string name="add_button">Add</string>

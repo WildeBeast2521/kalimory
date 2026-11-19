@@ -68,7 +68,6 @@
     <string name="workout_title">Тренування</string>
     <string name="value_label">Значення</string>
     <string name="new_group_plus">+ Нова група</string>
-    <string name="level_display">Рівень: %d</string>
     <string name="save_button">Зберегти</string>
     <string name="create_button">Створити</string>
     <string name="add_button">Додати</string>
@@ -235,7 +234,10 @@
     <string name="single_mode_description">Одна вправа за раз</string>
     <string name="no_group_workout">Без групи</string>
     <string name="no_group_display">Без групи</string>
-    <string name="level_format">Рівень %d</string>
+    <string name="level_format">Складність %d</string>
+    <string name="difficulty_label">Складність</string>
+    <string name="difficulty_hint">Від 1 (найлегше) до 10 (найважче) або не задано</string>
+    <string name="difficulty_not_set">Не задано</string>
     <string name="delete_record_warning">Видалити запис «%1$s»?\n%2$s %3$s\n%4$s</string>
     <string name="target_format_unilateral">%1$s × %2$s (на сторону)</string>
     <string name="target_format">%1$s × %2$s</string>

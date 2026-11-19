@@ -200,7 +200,10 @@
     <string name="reps_input">回数</string>
     <string name="seconds_input">秒数</string>
     <!-- Level display -->
-    <string name="level_format">Lv.%d</string>
+    <string name="level_format">難易度 %d</string>
+    <string name="difficulty_label">難易度</string>
+    <string name="difficulty_hint">1（易しい）〜10（難しい）、または未設定</string>
+    <string name="difficulty_not_set">未設定</string>
     <!-- Additional missing strings -->
     <!-- Common Labels -->
     <string name="tab_list">一覧</string>
@@ -244,7 +247,6 @@
     <string name="example_30">例: 30</string>
     <string name="no_group_display">グループなし</string>
     <string name="new_group_plus">+ 新しいグループ</string>
-    <string name="level_display">レベル: %d</string>
     <string name="save_button">保存</string>
     <string name="create_button">作成</string>
     <string name="add_button">追加</string>

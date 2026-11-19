@@ -170,7 +170,10 @@
     <string name="reps_input">Ripetizioni</string>
     <string name="seconds_input">Secondi</string>
     <!-- Level display -->
-    <string name="level_format">Liv.%d</string>
+    <string name="level_format">Difficoltà %d</string>
+    <string name="difficulty_label">Difficoltà</string>
+    <string name="difficulty_hint">Da 1 (più facile) a 10 (più difficile), oppure non impostata</string>
+    <string name="difficulty_not_set">Non impostata</string>
     <!-- Additional missing strings -->
     <!-- Common Labels -->
     <string name="tab_list">Elenco</string>
@@ -200,7 +203,6 @@
     <string name="example_30">es., 30</string>
     <string name="no_group_display">Nessun Gruppo</string>
     <string name="new_group_plus">+ Nuovo Gruppo</string>
-    <string name="level_display">Livello: %d</string>
     <string name="save_button">Salva</string>
     <string name="create_button">Crea</string>
     <string name="add_button">Aggiungi</string>

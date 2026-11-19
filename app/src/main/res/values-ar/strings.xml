@@ -436,7 +436,10 @@
     <string name="left_colon">اليسار:</string>
     <string name="reps_input">التكرارات</string>
     <string name="seconds_input">الثواني</string>
-    <string name="level_format">المستوى %d</string>
+    <string name="level_format">الصعوبة %d</string>
+    <string name="difficulty_label">الصعوبة</string>
+    <string name="difficulty_hint">من 1 (الأسهل) إلى 10 (الأصعب)، أو بدون تحديد</string>
+    <string name="difficulty_not_set">غير محدد</string>
     <string name="tab_list">القائمة</string>
     <string name="tab_graph">الرسم البياني</string>
     <string name="tab_calendar">التقويم</string>
@@ -490,7 +493,6 @@
     <string name="example_30">مثلًا 30</string>
     <string name="no_group_display">بلا مجموعة</string>
     <string name="new_group_plus">+ مجموعة جديدة</string>
-    <string name="level_display">المستوى: %d</string>
     <string name="save_button">حفظ</string>
     <string name="create_button">إنشاء</string>
     <string name="add_button">إضافة</string>

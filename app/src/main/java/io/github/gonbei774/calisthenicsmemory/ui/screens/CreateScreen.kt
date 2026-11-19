@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.semantics
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.util.TextLimits
@@ -730,7 +733,8 @@ fun UnifiedAddDialog(
     // The stored level (0 = not set) is kept unless the slider is moved: turning the target off used to
     // wipe it, and a stored 0 came back as 1, a value nobody chose.
     val storedLevel = exercise?.sortOrder ?: 0
-    var selectedLevel by remember { mutableIntStateOf(if (storedLevel in 1..10) storedLevel else 5) }
+    // 0 is "not set"; a level nobody chose is never saved.
+    var selectedLevel by remember { mutableIntStateOf(storedLevel.coerceIn(0, 10)) }
     var levelChanged by remember { mutableStateOf(false) }
     var showGroupDropdown by remember { mutableStateOf(false) }
     var newGroupName by remember { mutableStateOf("") }
@@ -848,7 +852,7 @@ fun UnifiedAddDialog(
 
                 val finalTargetSets = if (hasTarget) targetSets.toIntOrNull() else null
                 val finalTargetValue = if (hasTarget) targetValue.toIntOrNull() else null
-                val finalSortOrder = if (hasTarget) selectedLevel else 0
+                val finalSortOrder = levelToSave(levelChanged, selectedLevel, 0)
                 val finalRepDuration = repDuration.toIntOrNull()
                 val finalRestInterval = restInterval.toIntOrNull()
 
@@ -1158,6 +1162,39 @@ fun UnifiedAddDialog(
                             }
                         }
 
+                        // Difficulty: its own row, not part of the target, and "not set" until chosen.
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+                            shape = MaterialTheme.shapes.large
+                        ) {
+                            val notSet = stringResource(R.string.difficulty_not_set)
+                            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Text(
+                                    text = stringResource(R.string.difficulty_label),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                NumberStepper(
+                                    value = if (selectedLevel == 0) "" else selectedLevel.toString(),
+                                    onValueChange = { typed ->
+                                        selectedLevel = typed.toIntOrNull()?.coerceIn(0, 10) ?: 0
+                                        levelChanged = true
+                                    },
+                                    unit = "",
+                                    min = 0,
+                                    max = 10,
+                                    placeholder = "–",
+                                    modifier = Modifier.semantics { if (selectedLevel == 0) stateDescription = notSet },
+                                )
+                                Text(
+                                    text = stringResource(R.string.difficulty_hint),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+
                         // 課題設定カード
                         Card(
                             modifier = Modifier.fillMaxWidth(),
@@ -1233,21 +1270,6 @@ fun UnifiedAddDialog(
                                         )
                                     }
 
-                                    // レベル設定
-                                    Column {
-                                        Text(
-                                            text = stringResource(R.string.level_display, selectedLevel),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                        Slider(
-                                            value = selectedLevel.toFloat(),
-                                            onValueChange = { selectedLevel = it.toInt(); levelChanged = true },
-                                            valueRange = 1f..10f,
-                                            steps = 8,
-                                            modifier = Modifier.fillMaxWidth()
-                                        )
-                                    }
                                 }
                             }
                         }
