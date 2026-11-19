@@ -10,6 +10,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isHeading
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -73,6 +74,17 @@ class PrimaryNavigationTest {
         tab(PrimaryDestination.PROGRESS).performClick()
         pressBack()
         assertShowing(PrimaryDestination.TODAY)
+    }
+
+    @Test
+    fun theWeeklyReviewOpensFromProgressAndBackReturnsThere() {
+        tab(PrimaryDestination.PROGRESS).performClick()
+        rule.onNodeWithContentDescription(text(R.string.weekly_review_open)).performClick()
+        rule.waitUntil(STARTUP_TIMEOUT_MS) {
+            rule.onAllNodesWithTag(PRIMARY_NAVIGATION_BAR_TAG).fetchSemanticsNodes().isEmpty()
+        }
+        pressBack()
+        assertShowing(PrimaryDestination.PROGRESS)
     }
 
     @Test
