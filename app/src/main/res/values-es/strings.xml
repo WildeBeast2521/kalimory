@@ -96,24 +96,24 @@
     <!-- Settings Screen -->
     <string name="data_management">Tus datos</string>
     <string name="export_data">Exportar Datos</string>
-    <string name="import_data">Importar Datos</string>
+    <string name="import_data">Restaurar copia de seguridad</string>
     <string name="restore_from_backup">Restaurar desde Copia de Seguridad</string>
     <string name="warning_title">Advertencia</string>
-    <string name="import_warning">Importar eliminará todos los datos existentes.</string>
-    <string name="import_data_preview_title">Confirmar Importación</string>
+    <string name="import_warning">Al restaurar se reemplazan todos los datos actuales.</string>
+    <string name="import_data_preview_title">Restaurar copia de seguridad</string>
     <string name="file_name">Nombre del Archivo</string>
     <string name="data_contents">Contenido de Datos</string>
     <string name="groups">Grupos</string>
     <string name="exercises">Ejercicios</string>
     <string name="records">Registros</string>
-    <string name="import_data_preview_message">¿Desea proceder con la importación de estos datos?</string>
+    <string name="import_data_preview_message">¿Restaurar esta copia de seguridad?</string>
     <string name="next">Siguiente</string>
     <string name="data_overwrite_title">Sobrescritura de Datos</string>
     <string name="existing_data_will_be_deleted">Todos los datos existentes serán eliminados.</string>
     <string name="cannot_undo">Esta acción no se puede deshacer.</string>
     <string name="import_backup_required">Primero guarda una copia de seguridad de tus datos actuales. Podrás restaurar cuando esté guardada y comprobada.</string>
     <string name="import_backup_verified">Copia de seguridad guardada y comprobada.</string>
-    <string name="import_confirm">Importar</string>
+    <string name="import_confirm">Restaurar</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">\"%1$s (%2$s)\" ya está registrado</string>
     <string name="dynamic_label">Repeticiones</string>
@@ -247,8 +247,8 @@
     <string name="csv_import_skipped_items">Elementos Omitidos (%d)</string>
     <string name="csv_import_errors">Errores (%d)</string>
     <!-- Settings Screen Sections -->
-    <string name="section_full_backup">Copia de Seguridad Completa (JSON)</string>
-    <string name="section_full_backup_description">Guarda y restaura todos tus datos: ejercicios, registros, programas, intervalos y tareas.\nÚsalo al cambiar de dispositivo.</string>
+    <string name="section_full_backup">Copia de seguridad completa</string>
+    <string name="section_full_backup_description">Guarda y restaura tus ejercicios, registros, programas, intervalos y tareas en un archivo JSON. No incluye los ajustes. Útil al cambiar de dispositivo.</string>
     <string name="section_partial_data_management">Gestión Parcial de Datos (CSV)</string>
     <string name="section_partial_data_management_description">Para el intercambio de datos con otras aplicaciones y hojas de cálculo.\nExporta e importa grupos, ejercicios y registros individualmente mediante CSV.</string>
     <!-- Legacy key for compatibility -->

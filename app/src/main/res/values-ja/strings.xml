@@ -109,24 +109,24 @@
     <!-- Settings Screen -->
     <string name="data_management">データ</string>
     <string name="export_data">データをエクスポート</string>
-    <string name="import_data">データをインポート</string>
+    <string name="import_data">バックアップから復元</string>
     <string name="restore_from_backup">バックアップから復元</string>
     <string name="warning_title">注意</string>
-    <string name="import_warning">インポート時に既存データは全削除されます。</string>
-    <string name="import_data_preview_title">インポート内容の確認</string>
+    <string name="import_warning">復元すると現在のデータはすべて置き換えられます。</string>
+    <string name="import_data_preview_title">バックアップから復元</string>
     <string name="file_name">ファイル名</string>
     <string name="data_contents">データ内容</string>
     <string name="groups">グループ</string>
     <string name="exercises">種目</string>
     <string name="records">記録</string>
-    <string name="import_data_preview_message">このデータをインポートしますか？</string>
+    <string name="import_data_preview_message">このバックアップを復元しますか？</string>
     <string name="next">次へ</string>
     <string name="data_overwrite_title">データの上書き</string>
     <string name="existing_data_will_be_deleted">既存のデータは全て削除されます。</string>
     <string name="cannot_undo">インポート後は元に戻せません。</string>
     <string name="import_backup_required">まず現在のデータをバックアップしてください。保存と確認が済むと復元できます。</string>
     <string name="import_backup_verified">バックアップを保存し、確認しました。</string>
-    <string name="import_confirm">インポートする</string>
+    <string name="import_confirm">復元</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">「%1$s (%2$s)」は既に登録されています</string>
     <string name="dynamic_label">回数制</string>
@@ -292,8 +292,8 @@
     <string name="csv_import_skipped_items">スキップ項目 (%d)</string>
     <string name="csv_import_errors">エラー (%d)</string>
     <!-- Settings Screen Sections -->
-    <string name="section_full_backup">完全バックアップ (JSON)</string>
-    <string name="section_full_backup_description">すべてのデータ（種目、記録、プログラム、インターバル、ToDo）を保存・復元します。\n機種変更時にご利用ください。</string>
+    <string name="section_full_backup">完全バックアップ</string>
+    <string name="section_full_backup_description">種目・記録・プログラム・インターバル・To Doを JSON ファイルに保存・復元します。設定は含まれません。機種変更のときに使います。</string>
     <string name="section_partial_data_management">部分データ管理 (CSV)</string>
     <string name="section_partial_data_management_description">他アプリや表計算ソフトとのデータ連携に。\nグループ、種目、記録をCSVで個別にやり取りできます。</string>
     <!-- Legacy key for compatibility -->

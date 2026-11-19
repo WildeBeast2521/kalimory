@@ -114,24 +114,24 @@
     <!-- Settings Screen -->
     <string name="data_management">Your data</string>
     <string name="export_data">Export data</string>
-    <string name="import_data">Import data</string>
+    <string name="import_data">Restore backup</string>
     <string name="restore_from_backup">Restore from backup</string>
     <string name="warning_title">Warning</string>
-    <string name="import_warning">Importing will delete all existing data.</string>
-    <string name="import_data_preview_title">Confirm import</string>
+    <string name="import_warning">Restoring replaces all current data.</string>
+    <string name="import_data_preview_title">Restore backup</string>
     <string name="file_name">File name</string>
     <string name="data_contents">Data contents</string>
     <string name="groups">Groups</string>
     <string name="exercises">Exercises</string>
     <string name="records">Records</string>
-    <string name="import_data_preview_message">Do you want to proceed with importing this data?</string>
+    <string name="import_data_preview_message">Restore this backup?</string>
     <string name="next">Next</string>
     <string name="data_overwrite_title">Data overwrite</string>
     <string name="existing_data_will_be_deleted">All existing data will be deleted.</string>
     <string name="cannot_undo">This action cannot be undone.</string>
     <string name="import_backup_required">Save a backup of your current data first. You can restore once it is saved and checked.</string>
     <string name="import_backup_verified">Backup saved and checked.</string>
-    <string name="import_confirm">Import</string>
+    <string name="import_confirm">Restore</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">\"%1$s (%2$s)\" is already registered</string>
     <string name="dynamic_label">Reps</string>
@@ -314,8 +314,8 @@
     <string name="csv_import_skipped_items">Skipped items (%d)</string>
     <string name="csv_import_errors">Errors (%d)</string>
     <!-- Settings Screen Sections -->
-    <string name="section_full_backup">Complete backup (JSON)</string>
-    <string name="section_full_backup_description">Save and restore all your data: exercises, records, programs, intervals and to-dos.\nUse when changing devices.</string>
+    <string name="section_full_backup">Full backup</string>
+    <string name="section_full_backup_description">Save and restore your exercises, records, programs, intervals and to-dos as a JSON file. Settings are not included. Use when changing devices.</string>
     <string name="section_partial_data_management">CSV files</string>
     <string name="section_partial_data_management_description">For data exchange with other apps and spreadsheets.\nExport and import groups, exercises, and records individually via CSV.</string>
     <!-- Legacy key for compatibility -->

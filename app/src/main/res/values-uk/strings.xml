@@ -163,7 +163,7 @@
     <string name="tab_calendar">Календар</string>
     <string name="no_exercises_in_period">Жодних вправ не виконано за %s</string>
     <string name="export_data">Експортувати дані</string>
-    <string name="import_data">Імпортувати дані</string>
+    <string name="import_data">Відновити з копії</string>
     <string name="unknown_short">Невідомо</string>
     <string name="csv_import_success">Успішно імпортовано %s</string>
     <string name="import_action">Імпортувати</string>
@@ -181,7 +181,7 @@
     <string name="csv_import_skipped_label">Пропущено</string>
     <string name="csv_import_skipped_items">Пропущені елементи (%d)</string>
     <string name="open_source_licenses">Ліцензії з відкритим кодом</string>
-    <string name="section_full_backup">Повна резервна копія (JSON)</string>
+    <string name="section_full_backup">Повна резервна копія</string>
     <string name="start_countdown_setting">Почати відлік</string>
     <string name="start_countdown">Почати відлік</string>
     <string name="app_source_code">Вихідний код</string>
@@ -277,7 +277,7 @@
     <string name="record_workout">Записати</string>
     <string name="complete_with_time">Завершити (%d\u00A0с)</string>
     <string name="statistics_summary">Статистика</string>
-    <string name="import_data_preview_title">Підтвердження імпорту</string>
+    <string name="import_data_preview_title">Відновити з копії</string>
     <string name="data_management">Ваші дані</string>
     <string name="section_partial_data_management">Вибіркове керування даними (CSV)</string>
     <string name="csv_export_record_template">Шаблон запису</string>
@@ -294,13 +294,13 @@
     <string name="track_weight_description">Записувати додаткову вагу (кг) для кожного заняття</string>
     <string name="data_overwrite_title">Перезапис даних</string>
     <string name="existing_data_will_be_deleted">Усі існуючі дані буде видалено.</string>
-    <string name="import_confirm">Імпортувати</string>
+    <string name="import_confirm">Відновити</string>
     <string name="nav_save_overwrite_message">Одночасно можна зберегти лише одне тренування. Попереднє збережене тренування буде перезаписано.</string>
     <string name="nav_save_overwrite_title">Перезаписати збережене тренування?</string>
     <string name="apply_exercise_settings">Застосувати налаштування вправи</string>
     <string name="section_app_info">Про додаток</string>
     <string name="delete_session">Видалити заняття</string>
-    <string name="import_data_preview_message">Продовжити імпорт цих даних?</string>
+    <string name="import_data_preview_message">Відновити цю резервну копію?</string>
     <string name="pause_button">Пауза</string>
     <string name="retry_set_button">Повторити підхід</string>
     <string name="skip_set_button">Пропустити підхід</string>
@@ -318,7 +318,7 @@
     <string name="nav_redo">Повторити</string>
     <string name="app_description">Додаток для запису тренувань із власною вагою</string>
     <string name="weekly_change">Зміна за тиждень</string>
-    <string name="section_full_backup_description">Збереження та відновлення всіх даних: вправ, записів, програм, інтервалів і завдань.\nВикористовуйте під час зміни пристрою.</string>
+    <string name="section_full_backup_description">Зберігає й відновлює вправи, записи, програми, інтервали та завдання у файлі JSON. Налаштування не входять. Для переходу на інший пристрій.</string>
     <string name="section_partial_data_management_description">Для обміну даними з іншими програмами та електронними таблицями.\nЕкспортуйте та імпортуйте групи, вправи та записи окремо через CSV.</string>
     <string name="edit_session_info">Редагувати інформацію про заняття</string>
     <string name="legend_distance_inverted">Відстань (обернена)</string>
@@ -358,7 +358,7 @@
     <string name="warning_title">Попередження</string>
     <string name="csv_import_description">Імпорт груп, вправ або записів (автоматично виявлених)</string>
     <string name="auto_fill_target_label">Автозаповнення цільових значень</string>
-    <string name="import_warning">Імпортування призведе до видалення всіх існуючих даних.</string>
+    <string name="import_warning">Відновлення замінить усі поточні дані.</string>
     <string name="edit_set_value">Змінити кількість підходів</string>
     <string name="target_sets_label">Мета (підходів)</string>
     <string name="target_reps_label">Мета (разів)</string>

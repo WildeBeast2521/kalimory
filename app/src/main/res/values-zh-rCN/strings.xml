@@ -96,24 +96,24 @@
     <!-- Settings Screen -->
     <string name="data_management">你的数据</string>
     <string name="export_data">导出数据</string>
-    <string name="import_data">导入数据</string>
+    <string name="import_data">恢复备份</string>
     <string name="restore_from_backup">从备份恢复</string>
     <string name="warning_title">警告</string>
-    <string name="import_warning">导入将删除所有现有数据。</string>
-    <string name="import_data_preview_title">确认导入</string>
+    <string name="import_warning">恢复会替换所有当前数据。</string>
+    <string name="import_data_preview_title">恢复备份</string>
     <string name="file_name">文件名</string>
     <string name="data_contents">数据内容</string>
     <string name="groups">分组</string>
     <string name="exercises">动作</string>
     <string name="records">记录</string>
-    <string name="import_data_preview_message">您是否要继续导入这些数据？</string>
+    <string name="import_data_preview_message">要恢复此备份吗？</string>
     <string name="next">下一步</string>
     <string name="data_overwrite_title">数据覆盖</string>
     <string name="existing_data_will_be_deleted">所有现有数据将被删除。</string>
     <string name="cannot_undo">此操作无法撤销。</string>
     <string name="import_backup_required">请先备份当前数据。备份保存并校验后即可恢复。</string>
     <string name="import_backup_verified">备份已保存并校验。</string>
-    <string name="import_confirm">导入</string>
+    <string name="import_confirm">恢复</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">「%1$s（%2$s）」已注册</string>
     <string name="dynamic_label">次数</string>
@@ -247,8 +247,8 @@
     <string name="csv_import_skipped_items">已跳过项目（%d）</string>
     <string name="csv_import_errors">错误（%d）</string>
     <!-- Settings Screen Sections -->
-    <string name="section_full_backup">完整备份（JSON）</string>
-    <string name="section_full_backup_description">保存和恢复所有数据：动作、记录、计划、间歇和待办。\n更换设备时使用。</string>
+    <string name="section_full_backup">完整备份</string>
+    <string name="section_full_backup_description">将动作、记录、计划、间歇训练和待办保存到 JSON 文件并可恢复。不包含设置。适合更换设备时使用。</string>
     <string name="section_partial_data_management">部分数据管理（CSV）</string>
     <string name="section_partial_data_management_description">用于与其他应用和电子表格交换数据。\n通过CSV单独导出和导入分组、动作和记录。</string>
     <!-- Legacy key for compatibility -->

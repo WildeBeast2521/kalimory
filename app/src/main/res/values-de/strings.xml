@@ -94,24 +94,24 @@
     <!-- Settings Screen -->
     <string name="data_management">Deine Daten</string>
     <string name="export_data">Daten exportieren</string>
-    <string name="import_data">Daten importieren</string>
+    <string name="import_data">Sicherung wiederherstellen</string>
     <string name="restore_from_backup">Aus Sicherung wiederherstellen</string>
     <string name="warning_title">Warnung</string>
-    <string name="import_warning">Beim Importieren werden alle vorhandenen Daten gelöscht.</string>
-    <string name="import_data_preview_title">Import bestätigen</string>
+    <string name="import_warning">Beim Wiederherstellen werden alle aktuellen Daten ersetzt.</string>
+    <string name="import_data_preview_title">Sicherung wiederherstellen</string>
     <string name="file_name">Dateiname</string>
     <string name="data_contents">Dateninhalt</string>
     <string name="groups">Gruppen</string>
     <string name="exercises">Übungen</string>
     <string name="records">Aufzeichnungen</string>
-    <string name="import_data_preview_message">Möchtest du mit dem Import dieser Daten fortfahren?</string>
+    <string name="import_data_preview_message">Diese Sicherung wiederherstellen?</string>
     <string name="next">Weiter</string>
     <string name="data_overwrite_title">Daten überschreiben</string>
     <string name="existing_data_will_be_deleted">Alle vorhandenen Daten werden gelöscht.</string>
     <string name="cannot_undo">Diese Aktion kann nicht rückgängig gemacht werden.</string>
     <string name="import_backup_required">Sichere zuerst deine aktuellen Daten. Du kannst wiederherstellen, sobald die Sicherung gespeichert und geprüft ist.</string>
     <string name="import_backup_verified">Sicherung gespeichert und geprüft.</string>
-    <string name="import_confirm">Importieren</string>
+    <string name="import_confirm">Wiederherstellen</string>
     <!-- ViewModel Messages -->
     <string name="already_registered_format">\"%1$s (%2$s)\" ist bereits registriert</string>
     <string name="dynamic_label">Wiederholungen</string>
@@ -243,8 +243,8 @@
     <string name="csv_import_skipped_items">Übersprungene Elemente (%d)</string>
     <string name="csv_import_errors">Fehler (%d)</string>
     <!-- Settings Screen Sections -->
-    <string name="section_full_backup">Vollständige Sicherung (JSON)</string>
-    <string name="section_full_backup_description">Alle Daten sichern und wiederherstellen: Übungen, Einträge, Programme, Intervalle und To-dos.\nZum Gerätewechsel verwenden.</string>
+    <string name="section_full_backup">Vollständige Sicherung</string>
+    <string name="section_full_backup_description">Übungen, Einträge, Programme, Intervalle und To-dos als JSON-Datei sichern und wiederherstellen. Einstellungen sind nicht enthalten. Für einen Gerätewechsel.</string>
     <string name="section_partial_data_management">Teilweise Datenverwaltung (CSV)</string>
     <string name="section_partial_data_management_description">Für den Datenaustausch mit anderen Apps und Tabellenkalkulationen.\nGruppen, Übungen und Aufzeichnungen einzeln per CSV austauschen.</string>
     <!-- Legacy key for compatibility -->
