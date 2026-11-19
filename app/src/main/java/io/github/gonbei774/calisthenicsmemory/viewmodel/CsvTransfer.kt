@@ -58,7 +58,7 @@ class CsvTransfer(
             val currentExercises = exerciseDao.getAllExercises().first()
 
             val csvBuilder = StringBuilder()
-            csvBuilder.appendLine("name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description")
+            csvBuilder.appendLine("name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId")
 
             currentExercises.forEach { exercise ->
                 csvBuilder.appendLine(
@@ -77,7 +77,8 @@ class CsvTransfer(
                         exercise.distanceTrackingEnabled.toString(),
                         exercise.weightTrackingEnabled.toString(),
                         exercise.assistanceTrackingEnabled.toString(),
-                        exercise.description ?: ""
+                        exercise.description ?: "",
+                        exercise.catalogId ?: ""
                     )
                 )
             }
@@ -218,6 +219,7 @@ class CsvTransfer(
         var groupsCreatedCount = 0
         val skippedItems = mutableListOf<String>()
         val errors = mutableListOf<String>()
+        val catalogIdsSeen = mutableSetOf<String>()
 
         try {
             val records = parseCsvRecords(csvString)
@@ -256,6 +258,7 @@ class CsvTransfer(
                     val weightTrackingEnabledStr = columns.getOrNull(12)?.trim() ?: ""
                     val assistanceTrackingEnabledStr = columns.getOrNull(13)?.trim() ?: ""
                     val descriptionStr = columns.getOrNull(14)?.trim() ?: ""
+                    val catalogIdStr = columns.getOrNull(15)?.trim() ?: ""
 
                     // 必須フィールドチェック
                     if (name.isEmpty() || type.isEmpty() || laterality.isEmpty()) {
@@ -273,6 +276,13 @@ class CsvTransfer(
 
                     if (laterality !in listOf("Bilateral", "Unilateral")) {
                         errors.add("Line ${index + 2}: Invalid laterality \"$laterality\" (must be Bilateral or Unilateral)")
+                        errorCount++
+                        return@forEachIndexed
+                    }
+
+                    // The catalogue link, when the file has one: a malformed id is refused before anything is created.
+                    if (catalogIdStr.isNotEmpty() && (catalogIdStr.length > MAX_CATALOG_ID_LENGTH || !CATALOG_ID_PATTERN.matches(catalogIdStr))) {
+                        errors.add("Line ${index + 2}: Invalid catalogId \"$catalogIdStr\"")
                         errorCount++
                         return@forEachIndexed
                     }
@@ -310,16 +320,26 @@ class CsvTransfer(
                             skippedCount++
                             return@forEachIndexed
                         }
-                        // 完全一致の場合もスキップ
-                        skippedItems.add("\"$name, $type\" (already exists)")
+                        // 完全一致の場合もスキップ。The existing exercise's catalogue link is never changed.
+                        val linkNote = if (catalogIdStr.isNotEmpty() && catalogIdStr != existing.catalogId) "; catalogue link not changed" else ""
+                        skippedItems.add("\"$name, $type\" (already exists$linkNote)")
                         skippedCount++
                         return@forEachIndexed
+                    }
+
+                    // A catalogue step can be linked to one exercise only: one that is already linked here, or
+                    // repeated in this file, comes in without its link and says so.
+                    val catalogId = catalogIdStr.ifEmpty { null }?.takeIf { id ->
+                        val taken = exerciseDao.getExerciseByCatalogId(id) != null || !catalogIdsSeen.add(id)
+                        if (taken) skippedItems.add("\"$name, $type\" (added without its catalogue link: that step is already linked)")
+                        !taken
                     }
 
                     val exercise = Exercise(
                         name = name,
                         type = type,
                         group = group,
+                        catalogId = catalogId,
                         sortOrder = sortOrder,
                         displayOrder = displayOrder,
                         laterality = laterality,

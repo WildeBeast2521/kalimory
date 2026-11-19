@@ -134,6 +134,76 @@ class CsvImportTest {
     }
 
     @Test
+    fun importExercises_catalogId_linked() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,push.wall
+        """.trimIndent()
+        val report = importExercisesCsv(csv)
+        assertEquals(1, report.successCount)
+        assertEquals("push.wall", exerciseDao.getExerciseByNameAndType("Wall push-up", "Dynamic")?.catalogId)
+    }
+
+    @Test
+    fun importExercises_catalogIdAlreadyLinked_addedWithoutLink() = runBlocking {
+        val first = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,push.wall
+        """.trimIndent()
+        importExercisesCsv(first)
+        val second = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            My wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,push.wall
+        """.trimIndent()
+        val report = importExercisesCsv(second)
+        assertEquals(1, report.successCount)
+        assertEquals(0, report.skippedCount)
+        assertEquals(1, report.skippedItems.size)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("My wall push-up", "Dynamic")?.catalogId)
+        assertEquals("push.wall", exerciseDao.getExerciseByNameAndType("Wall push-up", "Dynamic")?.catalogId)
+    }
+
+    @Test
+    fun importExercises_malformedCatalogId_error() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,Not A Step
+        """.trimIndent()
+        val report = importExercisesCsv(csv)
+        assertEquals(0, report.successCount)
+        assertEquals(1, report.errorCount)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("Wall push-up", "Dynamic"))
+    }
+
+    @Test
+    fun importExercises_existingExerciseLinkNotChanged() = runBlocking {
+        val first = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,push.wall
+        """.trimIndent()
+        importExercisesCsv(first)
+        val again = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,push.incline
+        """.trimIndent()
+        val report = importExercisesCsv(again)
+        assertEquals(0, report.successCount)
+        assertEquals(1, report.skippedCount)
+        assertEquals("push.wall", exerciseDao.getExerciseByNameAndType("Wall push-up", "Dynamic")?.catalogId)
+    }
+
+    @Test
+    fun importExercises_oldFileWithoutCatalogId_readsAsBefore() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite
+            Plain squat,Dynamic,,0,Bilateral,3,15,false
+        """.trimIndent()
+        val report = importExercisesCsv(csv)
+        assertEquals(1, report.successCount)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("Plain squat", "Dynamic")?.catalogId)
+    }
+
+    @Test
     fun importExercises_invalidType_error() = runBlocking {
         groupDao.insertGroup(ExerciseGroup(name = "Step 1 Pushups"))
 

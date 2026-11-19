@@ -111,8 +111,8 @@ private const val MAX_DESCRIPTION_LENGTH = 60
 private const val MAX_NUMERIC_VALUE = 999
 private val VALID_EXERCISE_TYPES = setOf("Dynamic", "Isometric")
 private val VALID_LATERALITY = setOf("Bilateral", "Unilateral")
-private const val MAX_CATALOG_ID_LENGTH = 64
-private val CATALOG_ID_PATTERN = Regex("^[a-z0-9_]+\\.[a-z0-9_]+$")
+internal const val MAX_CATALOG_ID_LENGTH = 64
+internal val CATALOG_ID_PATTERN = Regex("^[a-z0-9_]+\\.[a-z0-9_]+$")
 
 fun validateCommunityShareContent(data: CommunityShareData): List<String> {
     val errors = mutableListOf<String>()

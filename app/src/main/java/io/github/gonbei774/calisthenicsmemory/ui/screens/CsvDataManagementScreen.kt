@@ -689,7 +689,7 @@ fun CsvDataManagementScreen(
                     }
 
                     // スキップ項目の詳細（折りたたみ可能）
-                    if (report.skippedCount > 0) {
+                    if (report.skippedItems.isNotEmpty()) {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(

@@ -11,6 +11,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- The exercises CSV carries each exercise's catalogue link in a new last column, so a catalogue exercise stays linked after an export and import; old files without the column import as before, and older app versions ignore the column ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - Editing an exercise that came from the catalogue shows where it came from and its main muscles ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - The exercise catalogue has filter chips for movement (Push, Pull, Legs, Core, Conditioning, Mobility) and main muscle: choose one or more to list the matching steps, alone or together with a search ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - The weekly review can also be opened from Progress, and going back returns to Progress; the body map's view and period choices use the same connected buttons as the rest of the app ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
