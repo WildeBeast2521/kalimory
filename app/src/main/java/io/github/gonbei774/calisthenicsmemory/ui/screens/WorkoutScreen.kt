@@ -135,6 +135,24 @@ data class WorkoutSet(
 )
 
 /**
+ * Ending a workout early: the sets from [from] on that were never reached (not done, not skipped on purpose,
+ * no value) are left out of the record instead of being saved as skipped. If that would leave the workout with
+ * no sets at all, the first of them stays, as a skipped set.
+ */
+internal fun dropUnreached(session: WorkoutSession, from: Int) {
+    val sets = session.sets
+    val unreached = (from.coerceAtLeast(0)..sets.lastIndex).filter { sets[it].let { s -> !s.isCompleted && !s.isSkipped && s.actualValue == 0 } }
+    if (unreached.isEmpty()) return
+    if (unreached.size == sets.size) {
+        sets[unreached.first()].isSkipped = true
+        unreached.drop(1).asReversed().forEach { sets.removeAt(it) }
+    } else {
+        unreached.asReversed().forEach { sets.removeAt(it) }
+    }
+    session.totalSets = sets.size
+}
+
+/**
  * Where a single workout goes after the set at [index] is done or skipped: the result after the last set,
  * otherwise a rest of [restSeconds] when the set was finished, otherwise the next set. A skipped set has no
  * rest, and neither has the first side of a one-sided set: both go to the next set with the start countdown
@@ -446,11 +464,8 @@ fun WorkoutScreen(
                             onDismiss = { showNavigationSheet = false },
                             onAbort = {
                                 showNavigationSheet = false
-                                // 未実施の現在セット以降をスキップ扱いにして確認画面へ
-                                for (i in step.currentSetIndex until step.session.sets.size) {
-                                    step.session.sets[i].isSkipped = true
-                                    step.session.sets[i].actualValue = 0
-                                }
+                                // The set about to start was never reached, nor were the ones after it.
+                                dropUnreached(step.session, step.currentSetIndex)
                                 currentStep = WorkoutStep.Confirmation(step.session)
                             }
                         )
@@ -489,10 +504,8 @@ fun WorkoutScreen(
                         updatedSession.sets.getOrNull(step.currentSetIndex)
                             ?.takeIf { it.actualValue > 0 && it.completedAtWallMillis == null }
                             ?.completedAtWallMillis = System.currentTimeMillis()
-                        for (i in step.currentSetIndex + 1 until updatedSession.sets.size) {
-                            updatedSession.sets[i].isSkipped = true
-                            updatedSession.sets[i].actualValue = 0
-                        }
+                        // The set in progress stays (saved as skipped without a value); the ones after it were never reached.
+                        dropUnreached(updatedSession, step.currentSetIndex + 1)
                         currentStep = WorkoutStep.Confirmation(updatedSession)
                     }
                     val onRetry: () -> Unit = {
@@ -661,11 +674,8 @@ fun WorkoutScreen(
                             onDismiss = { showNavigationSheet = false },
                             onAbort = {
                                 showNavigationSheet = false
-                                // 未実施の次セット以降をスキップ扱いにして確認画面へ
-                                for (i in step.currentSetIndex until step.session.sets.size) {
-                                    step.session.sets[i].isSkipped = true
-                                    step.session.sets[i].actualValue = 0
-                                }
+                                // The next set was never reached, nor were the ones after it.
+                                dropUnreached(step.session, step.currentSetIndex)
                                 currentStep = WorkoutStep.Confirmation(step.session)
                             }
                         )
