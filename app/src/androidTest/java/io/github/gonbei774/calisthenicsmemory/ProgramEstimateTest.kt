@@ -103,7 +103,7 @@ class ProgramEstimateTest {
 
         // The row's summary reads "1 exercise · ~N min" once the estimate has loaded; the row
         // merges its texts, so the program's own node carries its estimate.
-        val estimate = Regex("~\\d+ min")
+        val estimate = Regex("About \\d+ min")
         fun rowEstimate(): String? = rule.onAllNodesWithText(programName, substring = true).fetchSemanticsNodes()
             .firstNotNullOfOrNull { node -> estimate.find(node.config.getOrNull(SemanticsProperties.Text).orEmpty().joinToString())?.value }
         rule.waitUntil(TIMEOUT_MS) { rowEstimate() != null }
@@ -118,7 +118,7 @@ class ProgramEstimateTest {
             .first()
 
         // 5 x 30 reps x 3 s + 4 x 60 s rest = 690 s: ~12 min, not the plan's ~2 min.
-        assertEquals("~12 min", startEstimate)
+        assertEquals("About 12 min", startEstimate)
         assertEquals(startEstimate, listEstimate)
     }
 

@@ -43,7 +43,7 @@
     <!-- Record Screen -->
     <string name="training_record">训练记录</string>
     <string name="select_exercise">选择动作</string>
-    <string name="select_exercise_please">请选择动作</string>
+    <string name="select_exercise_please">请选择一个动作</string>
     <string name="select_from_top">从上方「选择动作」选择</string>
     <string name="no_records_for_exercise">此动作暂无记录</string>
     <string name="target_display">目标：%1$s × %2$s</string>
@@ -370,14 +370,14 @@
     <string name="program_exercises">动作</string>
     <string name="add_exercise_to_program">添加动作</string>
     <string name="program_target_format">%1$d%2$s</string>
-    <string name="program_interval_format">休息%d秒</string>
+    <string name="program_interval_format">休息 %d 秒</string>
     <string name="delete_program">删除计划</string>
     <string name="delete_program_warning">删除\"%s\"？</string>
     <string name="duplicate_program">复制</string>
     <string name="program_duplicated">计划已复制</string>
     <string name="program_copy_suffix">（副本）</string>
     <string name="discard_changes_title">放弃更改？</string>
-    <string name="discard_changes_message">您有未保存的更改。确定要放弃吗？</string>
+    <string name="discard_changes_message">你的更改将丢失。</string>
     <string name="discard">放弃</string>
     <string name="program_exercises_required">请至少添加一个动作</string>
     <string name="target_value_label">目标</string>
@@ -418,7 +418,7 @@
     <string name="auto_mode_disabled_hint">需要开启次数计时</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">自动填入目标值</string>
-    <string name="program_estimated_time">约%d分钟</string>
+    <string name="program_estimated_time">约 %d 分钟</string>
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">计划概览</string>
     <string name="nav_overall_progress">整体进度</string>
@@ -765,7 +765,7 @@
     <string name="add_extra_set_button">再加一组</string>
     <string name="add_extra_set_confirm">添加</string>
     <string name="add_extra_set_title">添加一组</string>
-    <string name="challenge_best">最佳</string>
+    <string name="challenge_best">最佳训练</string>
     <string name="challenge_target_label">目标</string>
     <string name="delete_exercise_confirm_title">删除“%s”？</string>
     <string name="delete_exercise_in_use">此动作正在使用中：</string>
@@ -822,7 +822,7 @@
         <item quantity="other">%d 回合</item>
     </plurals>
     <string name="crash_report_title">Kalimory 意外关闭</string>
-    <string name="crash_report_message">你可以分享错误报告，帮助修复这个问题。报告包含错误详情、应用版本和手机型号，发送前你可以先查看内容。</string>
+    <string name="crash_report_message">你可以分享错误报告，帮助修复这个问题。报告包含错误详情、应用版本和手机型号，发送前你可以先查看内容。 点击外部可保留以后再看。</string>
     <string name="crash_report_share">分享报告</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">

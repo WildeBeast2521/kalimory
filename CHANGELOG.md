@@ -27,6 +27,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- Smaller wording fixes: Overall progress in sentence case, "Rest 60 s", Best workout, "Choose an exercise", a plainer unsaved-changes message, a program's length reads "About 12 min", and the crash report says how to keep it for later ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - The JSON backup is called Full backup and says that settings are not included; importing a backup file is Restore backup, with a warning that restoring replaces all current data ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - The exercise form uses plainer words: What to add, Sides (Both sides, One side at a time), Reps and Hold for the exercise type, and clearer help for seconds per rep and distance ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - With no exercises yet, Log a past workout and the Progress graph say so and offer an Open Library button, instead of pointing to Settings ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))

@@ -331,7 +331,7 @@
     <string name="sets_label_short">Подходы:</string>
     <string name="interval_short">Отдых:</string>
     <string name="no_challenge_set">Цель не задана</string>
-    <string name="challenge_best">Лучший</string>
+    <string name="challenge_best">Лучшая тренировка</string>
     <string name="challenge_target_label">Цель</string>
     <string name="no_exercises_available">Нет доступных упражнений</string>
     <string name="no_exercises_in_period">Нет упражнений за период: %s</string>
@@ -633,7 +633,7 @@
     <string name="program_duplicated">Программа скопирована</string>
     <string name="program_copy_suffix">(копия)</string>
     <string name="discard_changes_title">Отменить изменения?</string>
-    <string name="discard_changes_message">Есть несохранённые изменения. Отменить их?</string>
+    <string name="discard_changes_message">Изменения будут потеряны.</string>
     <string name="discard">Отменить</string>
     <string name="program_exercises_required">Добавьте хотя бы одно упражнение</string>
     <string name="program_validation_incomplete_sets_or_value">У некоторых упражнений не заданы подходы или цель</string>
@@ -650,7 +650,7 @@
     <string name="program_use_challenge_desc">Использует цель каждого упражнения (если её нет — цель программы)</string>
     <string name="program_use_previous_desc">Значения прошлой тренировки (иначе — из программы)</string>
     <string name="auto_fill_target_label">Автозаполнение целей</string>
-    <string name="program_estimated_time">~%d мин</string>
+    <string name="program_estimated_time">Около %d мин</string>
     <string name="complete_with_time">Готово (%d с)</string>
     <string name="previous_value_format">Прошлый: %s</string>
     <string name="stat_previous_label">Прошлый</string>
@@ -782,7 +782,7 @@
         <item quantity="other">%d кругов</item>
     </plurals>
     <string name="crash_report_title">Приложение Kalimory неожиданно закрылось</string>
-    <string name="crash_report_message">Отчётом об ошибке можно поделиться, чтобы её исправили. В нём есть сведения об ошибке, версия приложения и модель телефона, и перед отправкой его можно прочитать.</string>
+    <string name="crash_report_message">Отчётом об ошибке можно поделиться, чтобы её исправили. В нём есть сведения об ошибке, версия приложения и модель телефона, и перед отправкой его можно прочитать. Нажмите за пределами окна, чтобы сохранить его на потом.</string>
     <string name="crash_report_share">Поделиться отчётом</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">

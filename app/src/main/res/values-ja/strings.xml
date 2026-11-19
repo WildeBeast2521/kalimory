@@ -43,7 +43,7 @@
     <!-- Record Screen -->
     <string name="training_record">トレーニング記録</string>
     <string name="select_exercise">種目を選択</string>
-    <string name="select_exercise_please">種目を選択してください</string>
+    <string name="select_exercise_please">種目を選んでください</string>
     <string name="select_from_top">上部の「種目を選択」から種目を選んでください</string>
     <string name="no_records_for_exercise">この種目の記録はありません</string>
     <string name="target_display">目標: %1$s × %2$s</string>
@@ -102,7 +102,7 @@
     <string name="unit_seconds">秒</string>
     <!-- Challenge Screen -->
     <string name="no_challenge_set">課題未設定</string>
-    <string name="challenge_best">ベスト</string>
+    <string name="challenge_best">ベストのワークアウト</string>
     <string name="challenge_target_label">目標</string>
     <string name="no_exercises_available">種目がありません</string>
     <string name="no_exercises_in_period">%sに取り組んだ種目がありません</string>
@@ -422,14 +422,14 @@
     <string name="program_exercises">種目</string>
     <string name="add_exercise_to_program">種目を追加</string>
     <string name="program_target_format">%1$d%2$s</string>
-    <string name="program_interval_format">休憩 %d秒</string>
+    <string name="program_interval_format">レスト %d秒</string>
     <string name="delete_program">プログラムを削除</string>
     <string name="delete_program_warning">「%s」を削除しますか？</string>
     <string name="duplicate_program">複製</string>
     <string name="program_duplicated">プログラムを複製しました</string>
     <string name="program_copy_suffix">（コピー）</string>
     <string name="discard_changes_title">変更を破棄しますか？</string>
-    <string name="discard_changes_message">保存されていない変更があります。破棄してもよろしいですか？</string>
+    <string name="discard_changes_message">変更内容は失われます。</string>
     <string name="discard">破棄</string>
     <string name="program_exercises_required">種目を1つ以上追加してください</string>
     <string name="program_validation_incomplete_sets_or_value">セット数または目標値が未設定の種目があります</string>
@@ -828,7 +828,7 @@
         <item quantity="other">%d ラウンド</item>
     </plurals>
     <string name="crash_report_title">Kalimory が予期せず終了しました</string>
-    <string name="crash_report_message">エラーのレポートを共有すると、問題の修正に役立ちます。レポートにはエラーの詳細、アプリのバージョン、端末の機種が含まれ、送信前に内容を確認できます。</string>
+    <string name="crash_report_message">エラーのレポートを共有すると、問題の修正に役立ちます。レポートにはエラーの詳細、アプリのバージョン、端末の機種が含まれ、送信前に内容を確認できます。 外側をタップすると後で見られるよう残ります。</string>
     <string name="crash_report_share">レポートを共有</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">

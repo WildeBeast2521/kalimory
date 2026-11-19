@@ -284,7 +284,7 @@
     <string name="character_count">%1$d/%2$d</string>
     <string name="training_record">تسجيل تمرين سابق</string>
     <string name="select_exercise">اختر تمرينًا</string>
-    <string name="select_exercise_please">يُرجى اختيار تمرين</string>
+    <string name="select_exercise_please">اختر تمرينًا</string>
     <string name="select_from_top">اختر من «اختر تمرينًا» في الأعلى</string>
     <string name="no_records_for_exercise">لا توجد سجلات لهذا التمرين</string>
     <string name="target_display">الهدف: %1$s × %2$s</string>
@@ -341,7 +341,7 @@
     <string name="sets_label_short">المجموعات:</string>
     <string name="interval_short">الراحة:</string>
     <string name="no_challenge_set">لم يُحدَّد هدف</string>
-    <string name="challenge_best">الأفضل</string>
+    <string name="challenge_best">أفضل تمرين</string>
     <string name="challenge_target_label">الهدف</string>
     <string name="no_exercises_available">لا توجد تمارين متاحة</string>
     <string name="no_exercises_in_period">لا تمارين خلال %s</string>
@@ -645,7 +645,7 @@
     <string name="program_duplicated">نُسخ البرنامج</string>
     <string name="program_copy_suffix">(نسخة)</string>
     <string name="discard_changes_title">تجاهل التغييرات؟</string>
-    <string name="discard_changes_message">لديك تغييرات غير محفوظة. هل تريد تجاهلها؟</string>
+    <string name="discard_changes_message">ستفقد تغييراتك.</string>
     <string name="discard">تجاهل</string>
     <string name="program_exercises_required">أضف تمرينًا واحدًا على الأقل</string>
     <string name="program_validation_incomplete_sets_or_value">بعض التمارين ينقصها عدد المجموعات أو القيمة المستهدفة</string>
@@ -662,7 +662,7 @@
     <string name="program_use_challenge_desc">يستخدم هدف كل تمرين (أو هدف البرنامج إن لم يوجد)</string>
     <string name="program_use_previous_desc">يستخدم قيم تمرينك السابق (أو قيم البرنامج إن لم يوجد سجل)</string>
     <string name="auto_fill_target_label">ملء القيم المستهدفة تلقائيًا</string>
-    <string name="program_estimated_time">~%d د</string>
+    <string name="program_estimated_time">حوالي %d دقيقة</string>
     <string name="complete_with_time">تم (%d ث)</string>
     <string name="previous_value_format">السابق: %s</string>
     <string name="stat_previous_label">السابق</string>
@@ -796,7 +796,7 @@
         <item quantity="other">%d جولة</item>
     </plurals>
     <string name="crash_report_title">أُغلق Kalimory بشكل غير متوقع</string>
-    <string name="crash_report_message">يمكنك مشاركة تقرير عن الخطأ لإصلاحه. يتضمن التقرير تفاصيل الخطأ وإصدار التطبيق وطراز هاتفك، ويمكنك قراءته قبل إرساله.</string>
+    <string name="crash_report_message">يمكنك مشاركة تقرير عن الخطأ لإصلاحه. يتضمن التقرير تفاصيل الخطأ وإصدار التطبيق وطراز هاتفك، ويمكنك قراءته قبل إرساله. اضغط خارج المربع للاحتفاظ به لاحقًا.</string>
     <string name="crash_report_share">مشاركة التقرير</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">

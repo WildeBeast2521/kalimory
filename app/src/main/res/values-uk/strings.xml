@@ -99,7 +99,7 @@
     <string name="program_use_program">Програма</string>
     <string name="program_use_challenge">Вправа</string>
     <string name="program_use_previous">Попередня</string>
-    <string name="program_estimated_time">~%d хв</string>
+    <string name="program_estimated_time">Близько %d хв</string>
     <string name="dynamic_count_sound_description">Рахує повторення у вашому темпі зі звуком на кожне. Вимк.: рахунок кнопками − і +</string>
     <string name="isometric_interval_sound_description">Короткий сигнал кожні кілька секунд під час утримання</string>
     <string name="program_copy_suffix">(копія)</string>
@@ -110,7 +110,7 @@
     <string name="backup_failed">Не вдалося створити резервну копію</string>
     <string name="select_exercise">Виберіть вправу</string>
     <string name="select_exercise_filter">Виберіть вправу</string>
-    <string name="select_exercise_please">Будь ласка, виберіть вправу</string>
+    <string name="select_exercise_please">Виберіть вправу</string>
     <string name="comment_label">Коментар</string>
     <string name="exercise_already_exists">Вправа вже існує</string>
     <string name="group_already_exists">Група з такою назвою вже існує</string>
@@ -129,7 +129,7 @@
     <string name="duplicate_group_name">Така назва групи вже використовується</string>
     <string name="already_in_use_format">«%1$s (%2$s)» вже використовується</string>
     <string name="program_target_format">%1$d %2$s</string>
-    <string name="program_interval_format">Відпочинок %d\u00A0с</string>
+    <string name="program_interval_format">Відпочинок %d с</string>
     <string name="tab_list">Список</string>
     <string name="tab_graph">Графік</string>
     <string name="backup_and_continue">Створити копію і продовжити</string>
@@ -200,7 +200,7 @@
     <string name="discard">Відхилити</string>
     <string name="nav_discard">Відхилити</string>
     <string name="discard_changes_title">Відхилити зміни?</string>
-    <string name="discard_changes_message">У вас є незбережені зміни. Відхилити їх?</string>
+    <string name="discard_changes_message">Зміни буде втрачено.</string>
     <string name="next">Далі</string>
     <string name="cannot_undo">Цю дію неможливо скасувати.</string>
     <string name="import_backup_required">Спершу збережіть резервну копію поточних даних. Відновлення стане доступним, коли копію буде збережено й перевірено.</string>
@@ -535,7 +535,7 @@
     <string name="legend_weight">Вага</string>
     <string name="save_and_exit_button">Зберегти і вийти</string>
     <string name="record_set_to_target">Встановити цільове значення (%1$d %2$s)</string>
-    <string name="challenge_best">Рекорд</string>
+    <string name="challenge_best">Найкраще тренування</string>
     <string name="challenge_target_label">Мета</string>
     <string name="workout_label_weight">Вага</string>
     <string name="workout_section_target">Мета</string>
@@ -785,7 +785,7 @@
         <item quantity="other">%d раундів</item>
     </plurals>
     <string name="crash_report_title">Застосунок Kalimory неочікувано закрився</string>
-    <string name="crash_report_message">Звітом про помилку можна поділитися, щоб її виправили. Він містить відомості про помилку, версію застосунку та модель телефона, і перед надсиланням його можна прочитати.</string>
+    <string name="crash_report_message">Звітом про помилку можна поділитися, щоб її виправили. Він містить відомості про помилку, версію застосунку та модель телефона, і перед надсиланням його можна прочитати. Торкніться поза вікном, щоб зберегти його на потім.</string>
     <string name="crash_report_share">Поділитися звітом</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">

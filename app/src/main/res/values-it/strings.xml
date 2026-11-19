@@ -43,7 +43,7 @@
     <!-- Record Screen -->
     <string name="training_record">Registrazione Allenamento</string>
     <string name="select_exercise">Seleziona Esercizio</string>
-    <string name="select_exercise_please">Seleziona un esercizio</string>
+    <string name="select_exercise_please">Scegli un esercizio</string>
     <string name="select_from_top">Scegli da \"Seleziona Esercizio\" sopra</string>
     <string name="no_records_for_exercise">Nessuna registrazione per questo esercizio</string>
     <string name="target_display">Obiettivo: %1$s × %2$s</string>
@@ -372,14 +372,14 @@
     <string name="program_exercises">Esercizi</string>
     <string name="add_exercise_to_program">Aggiungi esercizio</string>
     <string name="program_target_format">%1$d %2$s</string>
-    <string name="program_interval_format">Riposo %ds</string>
+    <string name="program_interval_format">Riposo %d s</string>
     <string name="delete_program">Elimina programma</string>
     <string name="delete_program_warning">Eliminare \"%s\"?</string>
     <string name="duplicate_program">Duplica</string>
     <string name="program_duplicated">Programma duplicato</string>
     <string name="program_copy_suffix">(Copia)</string>
     <string name="discard_changes_title">Annullare le modifiche?</string>
-    <string name="discard_changes_message">Hai modifiche non salvate. Sei sicuro di volerle annullare?</string>
+    <string name="discard_changes_message">Le modifiche andranno perse.</string>
     <string name="discard">Annulla</string>
     <string name="program_exercises_required">Aggiungi almeno un esercizio</string>
     <string name="target_value_label">Obiettivo</string>
@@ -420,7 +420,7 @@
     <string name="auto_mode_disabled_hint">Richiede il timer delle rip</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">Compila auto valori obiettivo</string>
-    <string name="program_estimated_time">~%d min</string>
+    <string name="program_estimated_time">Circa %d min</string>
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Panoramica programma</string>
     <string name="nav_overall_progress">Progresso generale</string>
@@ -777,7 +777,7 @@
     <string name="add_extra_set_button">Aggiungi un\'altra serie</string>
     <string name="add_extra_set_confirm">Aggiungi</string>
     <string name="add_extra_set_title">Aggiungi serie</string>
-    <string name="challenge_best">Migliore</string>
+    <string name="challenge_best">Miglior allenamento</string>
     <string name="challenge_target_label">Obiettivo</string>
     <string name="delete_exercise_confirm_title">Eliminare \"%s\"?</string>
     <string name="delete_exercise_in_use">Questo esercizio è in uso:</string>
@@ -836,7 +836,7 @@
         <item quantity="other">%d round</item>
     </plurals>
     <string name="crash_report_title">Kalimory si è chiuso in modo imprevisto</string>
-    <string name="crash_report_message">Puoi condividere un rapporto sull\'errore perché venga corretto. Contiene i dettagli dell\'errore, la versione dell\'app e il modello del tuo telefono, e puoi leggerlo prima di inviarlo.</string>
+    <string name="crash_report_message">Puoi condividere un rapporto sull\'errore perché venga corretto. Contiene i dettagli dell\'errore, la versione dell\'app e il modello del tuo telefono, e puoi leggerlo prima di inviarlo. Tocca fuori per conservarlo per dopo.</string>
     <string name="crash_report_share">Condividi rapporto</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">

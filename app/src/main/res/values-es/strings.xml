@@ -43,7 +43,7 @@
     <!-- Record Screen -->
     <string name="training_record">Registro de Entrenamiento</string>
     <string name="select_exercise">Seleccionar Ejercicio</string>
-    <string name="select_exercise_please">Por favor selecciona un ejercicio</string>
+    <string name="select_exercise_please">Elige un ejercicio</string>
     <string name="select_from_top">Elige desde \"Seleccionar Ejercicio\" arriba</string>
     <string name="no_records_for_exercise">No hay registros para este ejercicio</string>
     <string name="target_display">Meta: %1$s × %2$s</string>
@@ -372,14 +372,14 @@
     <string name="program_exercises">Ejercicios</string>
     <string name="add_exercise_to_program">Añadir ejercicio</string>
     <string name="program_target_format">%1$d %2$s</string>
-    <string name="program_interval_format">Descanso %ds</string>
+    <string name="program_interval_format">Descanso %d s</string>
     <string name="delete_program">Eliminar programa</string>
     <string name="delete_program_warning">¿Eliminar \"%s\"?</string>
     <string name="duplicate_program">Duplicar</string>
     <string name="program_duplicated">Programa duplicado</string>
     <string name="program_copy_suffix">(Copia)</string>
     <string name="discard_changes_title">¿Descartar cambios?</string>
-    <string name="discard_changes_message">Tienes cambios sin guardar. ¿Seguro que quieres descartarlos?</string>
+    <string name="discard_changes_message">Se perderán tus cambios.</string>
     <string name="discard">Descartar</string>
     <string name="program_exercises_required">Añade al menos un ejercicio</string>
     <string name="target_value_label">Objetivo</string>
@@ -420,7 +420,7 @@
     <string name="auto_mode_disabled_hint">Requiere el temporizador de reps</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">Autocompletar valores objetivo</string>
-    <string name="program_estimated_time">~%d min</string>
+    <string name="program_estimated_time">Unos %d min</string>
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Resumen del programa</string>
     <string name="nav_overall_progress">Progreso general</string>
@@ -587,7 +587,7 @@
     <string name="save_and_exit_button">Guardar y salir</string>
     <string name="legend_weight">Peso</string>
     <string name="record_set_to_target">Establecer como objetivo (%1$d %2$s)</string>
-    <string name="challenge_best">Mejor</string>
+    <string name="challenge_best">Mejor entrenamiento</string>
     <string name="challenge_target_label">Objetivo</string>
     <string name="workout_section_target">Objetivo</string>
     <string name="workout_section_timer">Temporizador</string>
@@ -831,7 +831,7 @@
         <item quantity="other">%d rondas</item>
     </plurals>
     <string name="crash_report_title">Kalimory se cerró de forma inesperada</string>
-    <string name="crash_report_message">Puedes compartir un informe del error para que se pueda corregir. Contiene los detalles del error, la versión de la app y el modelo de tu teléfono, y puedes leerlo antes de enviarlo.</string>
+    <string name="crash_report_message">Puedes compartir un informe del error para que se pueda corregir. Contiene los detalles del error, la versión de la app y el modelo de tu teléfono, y puedes leerlo antes de enviarlo. Toca fuera para guardarlo para más tarde.</string>
     <string name="crash_report_share">Compartir informe</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">

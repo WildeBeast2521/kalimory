@@ -43,7 +43,7 @@
     <!-- Record Screen -->
     <string name="training_record">Trainingsaufzeichnung</string>
     <string name="select_exercise">Übung auswählen</string>
-    <string name="select_exercise_please">Bitte wähle eine Übung aus</string>
+    <string name="select_exercise_please">Übung auswählen</string>
     <string name="select_from_top">Wähle oben aus unter „Übung auswählen“</string>
     <string name="no_records_for_exercise">Keine Aufzeichnungen für diese Übung</string>
     <string name="target_display">Ziel: %1$s × %2$s</string>
@@ -367,14 +367,14 @@
     <string name="program_exercises">Übungen</string>
     <string name="add_exercise_to_program">Übung hinzufügen</string>
     <string name="program_target_format">%1$d %2$s</string>
-    <string name="program_interval_format">Pause %ds</string>
+    <string name="program_interval_format">Pause %d s</string>
     <string name="delete_program">Programm löschen</string>
     <string name="delete_program_warning">\"%s\" löschen?</string>
     <string name="duplicate_program">Duplizieren</string>
     <string name="program_duplicated">Programm dupliziert</string>
     <string name="program_copy_suffix">(Kopie)</string>
     <string name="discard_changes_title">Änderungen verwerfen?</string>
-    <string name="discard_changes_message">Du hast nicht gespeicherte Änderungen. Möchtest du diese wirklich verwerfen?</string>
+    <string name="discard_changes_message">Deine Änderungen gehen verloren.</string>
     <string name="discard">Verwerfen</string>
     <string name="program_exercises_required">Mindestens eine Übung hinzufügen</string>
     <string name="target_value_label">Ziel</string>
@@ -415,7 +415,7 @@
     <string name="auto_mode_disabled_hint">Benötigt den Wiederholungs-Timer</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">Zielwerte automatisch ausfüllen</string>
-    <string name="program_estimated_time">~%d Min.</string>
+    <string name="program_estimated_time">Etwa %d Min.</string>
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Programmübersicht</string>
     <string name="nav_overall_progress">Gesamtfortschritt</string>
@@ -551,7 +551,7 @@
     <string name="add_exercise_to_group">Neue Übung zu Gruppe hinzufügen</string>
     <string name="previous_value_label">Vorher</string>
     <string name="set_uncheck_desc">Satz als nicht beendet markieren</string>
-    <string name="challenge_best">Beste</string>
+    <string name="challenge_best">Bestes Training</string>
     <string name="challenge_target_label">Ziel</string>
     <string name="workout_label_start_countdown">Countdown starten</string>
     <string name="workout_label_interval">Interval setzen</string>
@@ -823,7 +823,7 @@
         <item quantity="other">%d Runden</item>
     </plurals>
     <string name="crash_report_title">Kalimory wurde unerwartet beendet</string>
-    <string name="crash_report_message">Du kannst einen Bericht über den Fehler teilen, damit er behoben werden kann. Er enthält die Fehlerdetails, die App-Version und dein Handymodell, und du kannst ihn vor dem Senden lesen.</string>
+    <string name="crash_report_message">Du kannst einen Bericht über den Fehler teilen, damit er behoben werden kann. Er enthält die Fehlerdetails, die App-Version und dein Handymodell, und du kannst ihn vor dem Senden lesen. Tippe daneben, um ihn für später zu behalten.</string>
     <string name="crash_report_share">Bericht teilen</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">

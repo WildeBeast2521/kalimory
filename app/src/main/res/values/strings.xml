@@ -45,7 +45,7 @@
     <!-- Record Screen -->
     <string name="training_record">Log a past workout</string>
     <string name="select_exercise">Select exercise</string>
-    <string name="select_exercise_please">Please select an exercise</string>
+    <string name="select_exercise_please">Choose an exercise</string>
     <string name="select_from_top">Choose from \"Select exercise\" above</string>
     <string name="no_records_for_exercise">No records for this exercise</string>
     <string name="target_display">Target: %1$s × %2$s</string>
@@ -107,7 +107,7 @@
     <string name="interval_short">Rest:</string>
     <!-- Challenge Screen -->
     <string name="no_challenge_set">No challenge set</string>
-    <string name="challenge_best">Best</string>
+    <string name="challenge_best">Best workout</string>
     <string name="challenge_target_label">Target</string>
     <string name="no_exercises_available">No exercises available</string>
     <string name="no_exercises_in_period">No exercises worked on in %s</string>
@@ -441,14 +441,14 @@
     <string name="program_exercises">Exercises</string>
     <string name="add_exercise_to_program">Add exercise</string>
     <string name="program_target_format">%1$d %2$s</string>
-    <string name="program_interval_format">Rest %ds</string>
+    <string name="program_interval_format">Rest %d s</string>
     <string name="delete_program">Delete program</string>
     <string name="delete_program_warning">Delete \"%s\"?</string>
     <string name="duplicate_program">Duplicate</string>
     <string name="program_duplicated">Program duplicated</string>
     <string name="program_copy_suffix">(Copy)</string>
     <string name="discard_changes_title">Discard changes?</string>
-    <string name="discard_changes_message">You have unsaved changes. Are you sure you want to discard them?</string>
+    <string name="discard_changes_message">Your changes will be lost.</string>
     <string name="discard">Discard</string>
     <string name="program_exercises_required">Add at least one exercise</string>
     <string name="program_validation_incomplete_sets_or_value">Some exercises are missing sets or target value</string>
@@ -466,7 +466,7 @@
     <string name="program_use_challenge_desc">Uses each exercise\'s own target (the program\'s when it has none)</string>
     <string name="program_use_previous_desc">Uses your previous workout values (program values if no record)</string>
     <string name="auto_fill_target_label">Auto-fill target values</string>
-    <string name="program_estimated_time">~%d min</string>
+    <string name="program_estimated_time">About %d min</string>
     <!-- Isometric Manual Mode -->
     <string name="complete_with_time">Complete (%ds)</string>
     <string name="previous_value_format">Previous: %s</string>
@@ -488,7 +488,7 @@
     <string name="isometric_interval_sound_description">A short beep every few seconds while you hold</string>
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Program overview</string>
-    <string name="nav_overall_progress">Overall Progress</string>
+    <string name="nav_overall_progress">Overall progress</string>
     <string name="nav_current">Current</string>
     <string name="nav_redo">Redo</string>
     <string name="nav_jump">Jump</string>
@@ -832,7 +832,7 @@
         <item quantity="other">%d rounds</item>
     </plurals>
     <string name="crash_report_title">Kalimory closed unexpectedly</string>
-    <string name="crash_report_message">You can share a report of the error so it can be fixed. It contains the error details, the app version and your phone model, and you can read it before sending it.</string>
+    <string name="crash_report_message">You can share a report of the error so it can be fixed. It contains the error details, the app version and your phone model, and you can read it before sending it. Tap outside to keep it for later.</string>
     <string name="crash_report_share">Share report</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">

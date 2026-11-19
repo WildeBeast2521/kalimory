@@ -43,7 +43,7 @@
     <!-- Record Screen -->
     <string name="training_record">Enregistrement d\'Entraînement</string>
     <string name="select_exercise">Sélectionner un Exercice</string>
-    <string name="select_exercise_please">Veuillez sélectionner un exercice</string>
+    <string name="select_exercise_please">Choisissez un exercice</string>
     <string name="select_from_top">Choisissez depuis \"Sélectionner un Exercice\" ci-dessus</string>
     <string name="no_records_for_exercise">Aucun enregistrement pour cet exercice</string>
     <string name="target_display">Objectif : %1$s × %2$s</string>
@@ -372,14 +372,14 @@
     <string name="program_exercises">Exercices</string>
     <string name="add_exercise_to_program">Ajouter un exercice</string>
     <string name="program_target_format">%1$d %2$s</string>
-    <string name="program_interval_format">Repos %ds</string>
+    <string name="program_interval_format">Repos %d s</string>
     <string name="delete_program">Supprimer le programme</string>
     <string name="delete_program_warning">Supprimer \"%s\" ?</string>
     <string name="duplicate_program">Dupliquer</string>
     <string name="program_duplicated">Programme dupliqué</string>
     <string name="program_copy_suffix">(Copie)</string>
     <string name="discard_changes_title">Abandonner les modifications ?</string>
-    <string name="discard_changes_message">Vous avez des modifications non enregistrées. Voulez-vous vraiment les abandonner ?</string>
+    <string name="discard_changes_message">Vos modifications seront perdues.</string>
     <string name="discard">Abandonner</string>
     <string name="program_exercises_required">Ajoutez au moins un exercice</string>
     <string name="target_value_label">Objectif</string>
@@ -420,7 +420,7 @@
     <string name="auto_mode_disabled_hint">Nécessite le minuteur de rép.</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">Remplir auto les valeurs cibles</string>
-    <string name="program_estimated_time">~%d min</string>
+    <string name="program_estimated_time">Environ %d min</string>
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Aperçu du programme</string>
     <string name="nav_overall_progress">Progression globale</string>
@@ -774,7 +774,7 @@
     <string name="add_extra_set_button">Ajouter une série</string>
     <string name="add_extra_set_confirm">Ajouter</string>
     <string name="add_extra_set_title">Ajouter une série</string>
-    <string name="challenge_best">Meilleur</string>
+    <string name="challenge_best">Meilleure séance</string>
     <string name="challenge_target_label">Objectif</string>
     <string name="delete_exercise_confirm_title">Supprimer « %s » ?</string>
     <string name="delete_exercise_in_use">Cet exercice est utilisé :</string>
@@ -831,7 +831,7 @@
         <item quantity="other">%d tours</item>
     </plurals>
     <string name="crash_report_title">Kalimory s\'est fermé de façon inattendue</string>
-    <string name="crash_report_message">Vous pouvez partager un rapport sur l\'erreur pour qu\'elle soit corrigée. Il contient les détails de l\'erreur, la version de l\'application et le modèle de votre téléphone, et vous pouvez le lire avant de l\'envoyer.</string>
+    <string name="crash_report_message">Vous pouvez partager un rapport sur l\'erreur pour qu\'elle soit corrigée. Il contient les détails de l\'erreur, la version de l\'application et le modèle de votre téléphone, et vous pouvez le lire avant de l\'envoyer. Touchez à l’extérieur pour le garder pour plus tard.</string>
     <string name="crash_report_share">Partager le rapport</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
