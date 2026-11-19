@@ -35,8 +35,10 @@ warm-up marks and effort ratings) is refused by that older version rather than s
 2. **Never invent a value.** Import and migration use what the file or the old data contains. A missing number
    stays missing; it is not turned into a default that looks like the person's.
 3. **Validate before touching data.** A file is checked as a whole before anything is written. An invalid file is
-   refused with a message that says what is wrong, and the existing data is left as it was. Messages are
-   resources, in every language the app ships.
+   refused with a message that says what is wrong, and the existing data is left as it was. The summary
+   messages are resources, in every language the app ships. The per-line reasons in a CSV or shared-file
+   import ("Line 4: Invalid date ...") are still English text; new ones should be resources, and moving the
+   existing ones is open work.
 4. **Restore needs a verified backup first**, unless the database is empty. The Import button is enabled only
    after a backup of the current data has been written, read back byte for byte, and parsed as a valid backup
    (`BackupFileIo.writeAndVerify`). Do not bypass it.
