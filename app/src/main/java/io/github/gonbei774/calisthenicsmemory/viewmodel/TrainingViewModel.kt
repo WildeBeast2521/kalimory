@@ -326,20 +326,6 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun toggleFavorite(exerciseId: Long) {
-        viewModelScope.launch {
-            try {
-                val exercise = exercises.value.find { it.id == exerciseId }
-                exercise?.let {
-                    val updated = it.copy(isFavorite = !it.isFavorite)
-                    exerciseDao.updateExercise(updated)
-                }
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
     // Training Record operations (legacy rows; new training is written as v2 sessions)
     fun updateRecord(record: TrainingRecord) {
         viewModelScope.launch {
@@ -633,28 +619,15 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun addTodoTask(exerciseId: Long) = addTodo(TodoTask.TYPE_EXERCISE, listOf(exerciseId))
     fun addTodoTasks(exerciseIds: List<Long>) = addTodo(TodoTask.TYPE_EXERCISE, exerciseIds)
-    fun addTodoTaskProgram(programId: Long) = addTodo(TodoTask.TYPE_PROGRAM, listOf(programId))
     fun addTodoTaskPrograms(programIds: List<Long>) = addTodo(TodoTask.TYPE_PROGRAM, programIds)
     fun addTodoTaskGroups(groupIds: List<Long>) = addTodo(TodoTask.TYPE_GROUP, groupIds)
-    fun addTodoTaskInterval(intervalProgramId: Long) = addTodo(TodoTask.TYPE_INTERVAL, listOf(intervalProgramId))
     fun addTodoTaskIntervals(intervalProgramIds: List<Long>) = addTodo(TodoTask.TYPE_INTERVAL, intervalProgramIds)
 
     fun deleteTodoTask(taskId: Long) {
         viewModelScope.launch {
             try {
                 todoTaskDao.deleteById(taskId)
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
-    fun deleteTodoTaskByReference(type: String, referenceId: Long) {
-        viewModelScope.launch {
-            try {
-                todoTaskDao.deleteByReference(type, referenceId)
             } catch (e: Exception) {
                 _snackbarMessage.value = UiMessage.ErrorOccurred
             }
@@ -701,10 +674,6 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             }
         }
     }
-
-    /** Saves sets entered by hand as one v2 session, then completes the to-do it came from, in that order. */
-    fun recordManualWorkout(workout: ManualWorkout, completeTodo: Boolean) =
-        recordManualWorkouts(listOf(workout), completeTodoFor = workout.exerciseId.takeIf { completeTodo })
 
     /**
      * Saves one or more exercises entered by hand as one v2 session, then completes the to-do
@@ -793,17 +762,6 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             initialValue = emptyList()
         )
 
-    fun createProgram(name: String) {
-        viewModelScope.launch {
-            try {
-                val program = Program(name = name)
-                programDao.insert(program)
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
     private val programActions = ProgramActions(database)
 
     fun deleteProgram(programId: Long) {
@@ -856,35 +814,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     // ProgramExercise 操作
     // ========================================
 
-    fun getProgramExercisesFlow(programId: Long) = programExerciseDao.getExercisesForProgram(programId)
-
     suspend fun getProgramExercisesSync(programId: Long): List<ProgramExercise> {
         return programExerciseDao.getExercisesForProgramSync(programId)
-    }
-
-    fun addProgramExercise(
-        programId: Long,
-        exerciseId: Long,
-        sets: Int = 1,
-        targetValue: Int,
-        intervalSeconds: Int = 60
-    ) {
-        viewModelScope.launch {
-            try {
-                val sortOrder = programExerciseDao.getNextSortOrder(programId)
-                val programExercise = ProgramExercise(
-                    programId = programId,
-                    exerciseId = exerciseId,
-                    sortOrder = sortOrder,
-                    sets = sets,
-                    targetValue = targetValue,
-                    intervalSeconds = intervalSeconds
-                )
-                programExerciseDao.insert(programExercise)
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
     }
 
     suspend fun reorderProgramExercises(exerciseIds: List<Long>) {
@@ -907,48 +838,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     // ProgramLoop 操作
     // ========================================
 
-    fun getProgramLoopsFlow(programId: Long) = programLoopDao.getLoopsForProgram(programId)
-
     suspend fun getProgramLoopsSync(programId: Long): List<ProgramLoop> {
         return programLoopDao.getLoopsForProgramSync(programId)
-    }
-
-    suspend fun getProgramLoopById(loopId: Long): ProgramLoop? {
-        return programLoopDao.getLoopById(loopId)
-    }
-
-    suspend fun addProgramExerciseToLoop(
-        programId: Long,
-        exerciseId: Long,
-        loopId: Long,
-        sets: Int = 1,
-        targetValue: Int,
-        intervalSeconds: Int = 60
-    ): Long? {
-        return try {
-            val sortOrder = programExerciseDao.getNextSortOrder(programId)
-            val programExercise = ProgramExercise(
-                programId = programId,
-                exerciseId = exerciseId,
-                sortOrder = sortOrder,
-                sets = sets,
-                targetValue = targetValue,
-                intervalSeconds = intervalSeconds,
-                loopId = loopId
-            )
-            programExerciseDao.insert(programExercise)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-            null
-        }
-    }
-
-    suspend fun moveExerciseToLoop(programExercise: ProgramExercise, loopId: Long?) {
-        try {
-            programExerciseDao.update(programExercise.copy(loopId = loopId))
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-        }
     }
 
     // ========================================
@@ -992,19 +883,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     // IntervalProgramExercise 操作
     // ========================================
 
-    fun getIntervalProgramExercisesFlow(programId: Long) =
-        intervalProgramExerciseDao.getExercisesForProgram(programId)
-
     suspend fun getIntervalProgramExercisesSync(programId: Long): List<IntervalProgramExercise> {
         return intervalProgramExerciseDao.getExercisesForProgramSync(programId)
-    }
-
-    suspend fun reorderIntervalProgramExercises(exerciseIds: List<Long>) {
-        try {
-            intervalProgramExerciseDao.reorderExercises(exerciseIds)
-        } catch (e: Exception) {
-            _snackbarMessage.value = UiMessage.ErrorOccurred
-        }
     }
 
     // ========================================
