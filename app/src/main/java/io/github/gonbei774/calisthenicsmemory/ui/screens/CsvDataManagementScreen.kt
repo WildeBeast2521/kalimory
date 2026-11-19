@@ -729,7 +729,7 @@ fun CsvDataManagementScreen(
                                     ) {
                                         report.skippedItems.take(10).forEach { item ->
                                             Text(
-                                                text = "\u2022 $item",
+                                                text = "\u2022 ${item.text(context)}",
                                                 fontSize = 12.sp,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 lineHeight = 16.sp
@@ -789,7 +789,7 @@ fun CsvDataManagementScreen(
                                     ) {
                                         report.errors.take(10).forEach { error ->
                                             Text(
-                                                text = "\u2022 $error",
+                                                text = "\u2022 ${error.text(context)}",
                                                 fontSize = 12.sp,
                                                 color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
                                                 lineHeight = 16.sp

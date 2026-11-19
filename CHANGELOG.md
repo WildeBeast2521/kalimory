@@ -72,6 +72,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- The reasons CSV and Share imports give for a line they cannot read or an item they skip, and the Share export and import messages, are shown in the app's language instead of English ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - Screen readers get what they were missing: each graph says its date range, latest and highest value, a catalogue step badge says "Step 3", the interval editor's drag handle says what it does, and a history entry's exercise name is a full-size target that says it filters ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - Ending a timed set with Complete below its target plays the finish sound too, as reaching the target does ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Renaming a group to a name another group already has says so, instead of a general error ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))

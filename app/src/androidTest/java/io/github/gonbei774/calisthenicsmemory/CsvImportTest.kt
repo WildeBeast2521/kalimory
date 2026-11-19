@@ -85,7 +85,7 @@ class CsvImportTest {
         assertEquals(1, report.skippedCount)
         assertEquals(0, report.errorCount)
         assertEquals(1, report.skippedItems.size)
-        assertTrue(report.skippedItems[0].contains("Step 1 Pushups"))
+        assertTrue(report.skippedItems[0].args.toString().contains("Step 1 Pushups"))
     }
 
     @Test
@@ -320,7 +320,7 @@ class CsvImportTest {
         assertEquals(0, report.successCount)
         assertEquals(0, report.skippedCount)
         assertEquals(1, report.errorCount)
-        assertTrue(report.errors[0].contains("type"))
+        assertEquals(R.string.csv_issue_type, report.errors[0].res)
     }
 
     @Test
@@ -337,7 +337,7 @@ class CsvImportTest {
         assertEquals(0, report.successCount)
         assertEquals(0, report.skippedCount)
         assertEquals(1, report.errorCount)
-        assertTrue(report.errors[0].contains("laterality"))
+        assertEquals(R.string.csv_issue_laterality, report.errors[0].res)
     }
 
     @Test
@@ -400,7 +400,7 @@ class CsvImportTest {
         assertEquals(0, report.successCount)
         assertEquals(1, report.skippedCount)
         assertEquals(0, report.errorCount)
-        assertTrue(report.skippedItems[0].contains("laterality"))
+        assertEquals(R.string.csv_skip_mismatch, report.skippedItems[0].res)
     }
 
     // The app's own import, on the in-memory database.

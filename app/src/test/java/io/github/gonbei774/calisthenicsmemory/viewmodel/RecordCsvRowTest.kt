@@ -1,11 +1,12 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
+import io.github.gonbei774.calisthenicsmemory.R
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class RecordCsvRowTest {
     private fun row(vararg columns: String) = parseRecordCsvRow(columns.toList())
-    private fun error(vararg columns: String) = row(*columns).exceptionOrNull()?.message
+    private fun error(vararg columns: String) = (row(*columns).exceptionOrNull() as? ImportIssueException)?.issue
 
     @Test fun `a full row reads every column`() {
         assertEquals(
@@ -26,27 +27,27 @@ class RecordCsvRowTest {
     }
 
     @Test fun `other negative numbers are still refused`() {
-        assertEquals("Negative value", error("A", "Dynamic", "2026-10-08", "07:30", "1", "-5", "", ""))
-        assertEquals("Negative value", error("A", "Dynamic", "2026-10-08", "07:30", "1", "5", "", "", "", "-1000", ""))
+        assertEquals(ImportIssue(R.string.csv_issue_negative), error("A", "Dynamic", "2026-10-08", "07:30", "1", "-5", "", ""))
+        assertEquals(ImportIssue(R.string.csv_issue_negative), error("A", "Dynamic", "2026-10-08", "07:30", "1", "5", "", "", "", "-1000", ""))
     }
 
     @Test fun `dates and times must be in the form the app writes`() {
-        assertEquals("Invalid date (expected YYYY-MM-DD): 2026-2-30", error("A", "Dynamic", "2026-2-30", "07:30", "1", "5", "", ""))
-        assertEquals("Invalid date (expected YYYY-MM-DD): 2026-02-30", error("A", "Dynamic", "2026-02-30", "07:30", "1", "5", "", ""))
-        assertEquals("Invalid time (expected HH:MM): 7:30", error("A", "Dynamic", "2026-10-08", "7:30", "1", "5", "", ""))
-        assertEquals("Invalid time (expected HH:MM): 07:30:00", error("A", "Dynamic", "2026-10-08", "07:30:00", "1", "5", "", ""))
+        assertEquals(ImportIssue(R.string.csv_issue_date, listOf("2026-2-30")), error("A", "Dynamic", "2026-2-30", "07:30", "1", "5", "", ""))
+        assertEquals(ImportIssue(R.string.csv_issue_date, listOf("2026-02-30")), error("A", "Dynamic", "2026-02-30", "07:30", "1", "5", "", ""))
+        assertEquals(ImportIssue(R.string.csv_issue_time, listOf("7:30")), error("A", "Dynamic", "2026-10-08", "7:30", "1", "5", "", ""))
+        assertEquals(ImportIssue(R.string.csv_issue_time, listOf("07:30:00")), error("A", "Dynamic", "2026-10-08", "07:30:00", "1", "5", "", ""))
     }
 
     @Test fun `numbers must be whole and not negative, optional ones included`() {
-        assertEquals("Invalid number format", error("A", "Dynamic", "2026-10-08", "07:30", "1", "five", "", ""))
-        assertEquals("Invalid number format", error("A", "Dynamic", "2026-10-08", "07:30", "1", "5", "", "", "1.5km"))
-        assertEquals("Negative value", error("A", "Dynamic", "2026-10-08", "07:30", "1", "-5", "", ""))
-        assertEquals("Negative value", error("A", "Dynamic", "2026-10-08", "07:30", "1", "5", "-1", ""))
+        assertEquals(ImportIssue(R.string.csv_issue_number), error("A", "Dynamic", "2026-10-08", "07:30", "1", "five", "", ""))
+        assertEquals(ImportIssue(R.string.csv_issue_number), error("A", "Dynamic", "2026-10-08", "07:30", "1", "5", "", "", "1.5km"))
+        assertEquals(ImportIssue(R.string.csv_issue_negative), error("A", "Dynamic", "2026-10-08", "07:30", "1", "-5", "", ""))
+        assertEquals(ImportIssue(R.string.csv_issue_negative), error("A", "Dynamic", "2026-10-08", "07:30", "1", "5", "-1", ""))
     }
 
     @Test fun `short or incomplete rows are refused`() {
-        assertEquals("Invalid format (not enough columns)", error("A", "Dynamic", "2026-10-08"))
-        assertEquals("Missing required fields", error("A", "", "2026-10-08", "07:30", "1", "5", "", ""))
+        assertEquals(ImportIssue(R.string.csv_issue_record_columns), error("A", "Dynamic", "2026-10-08"))
+        assertEquals(ImportIssue(R.string.csv_issue_record_required), error("A", "", "2026-10-08", "07:30", "1", "5", "", ""))
     }
 
     @Test fun `warm-up and effort read when present`() {
@@ -66,8 +67,8 @@ class RecordCsvRowTest {
     }
 
     @Test fun `a bad warm-up or effort value is refused, not read as empty`() {
-        assertEquals("Invalid warmUp (expected true or false): yes", error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "yes"))
-        assertEquals("Invalid effortLeft (expected 0 to 4): 5", error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "false", "5"))
-        assertEquals("Invalid effortLeft (expected 0 to 4): x", error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "", "x"))
+        assertEquals(ImportIssue(R.string.csv_issue_warmup, listOf("yes")), error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "yes"))
+        assertEquals(ImportIssue(R.string.csv_issue_effort, listOf("5", 4)), error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "false", "5"))
+        assertEquals(ImportIssue(R.string.csv_issue_effort, listOf("x", 4)), error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "", "x"))
     }
 }

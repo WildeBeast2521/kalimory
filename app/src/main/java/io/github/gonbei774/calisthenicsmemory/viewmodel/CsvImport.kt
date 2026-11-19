@@ -24,7 +24,7 @@ data class CsvImportReport(
     val successCount: Int,
     val skippedCount: Int,
     val errorCount: Int,
-    val skippedItems: List<String>,
-    val errors: List<String>,
+    val skippedItems: List<ImportIssue>,
+    val errors: List<ImportIssue>,
     val groupsCreatedCount: Int = 0  // 種目インポート時に自動作成されたグループ数
 )

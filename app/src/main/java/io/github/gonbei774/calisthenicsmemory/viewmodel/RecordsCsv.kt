@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
+import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.v2.Effort
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
@@ -72,8 +73,8 @@ private val CSV_TIME = DateTimeFormatter.ofPattern("HH:mm").withResolverStyle(Re
  * rather than an empty value, so nothing typed is silently dropped.
  */
 internal fun parseRecordCsvRow(columns: List<String>): Result<RecordCsvRow> {
-    fun invalid(reason: String) = Result.failure<RecordCsvRow>(IllegalArgumentException(reason))
-    if (columns.size < 8) return invalid("Invalid format (not enough columns)")
+    fun invalid(res: Int, vararg args: Any) = Result.failure<RecordCsvRow>(ImportIssueException(ImportIssue(res, args.toList())))
+    if (columns.size < 8) return invalid(R.string.csv_issue_record_columns)
     val field = { index: Int -> columns.getOrNull(index)?.trim().orEmpty() }
     val name = field(0)
     val type = field(1)
@@ -82,24 +83,24 @@ internal fun parseRecordCsvRow(columns: List<String>): Result<RecordCsvRow> {
     val setNumber = field(4)
     val valueRight = field(5)
     if (name.isEmpty() || type.isEmpty() || date.isEmpty() || time.isEmpty() || setNumber.isEmpty() || valueRight.isEmpty()) {
-        return invalid("Missing required fields")
+        return invalid(R.string.csv_issue_record_required)
     }
-    if (runCatching { LocalDate.parse(date, CSV_DATE) }.isFailure) return invalid("Invalid date (expected YYYY-MM-DD): $date")
-    if (runCatching { LocalTime.parse(time, CSV_TIME) }.isFailure) return invalid("Invalid time (expected HH:MM): $time")
+    if (runCatching { LocalDate.parse(date, CSV_DATE) }.isFailure) return invalid(R.string.csv_issue_date, date)
+    if (runCatching { LocalTime.parse(time, CSV_TIME) }.isFailure) return invalid(R.string.csv_issue_time, time)
     val optional = listOf(6, 8, 9, 10).associateWith { field(it) }
     val numbers = (listOf(setNumber, valueRight) + optional.values.filter { it.isNotEmpty() }).map { it.toIntOrNull() }
-    if (numbers.any { it == null }) return invalid("Invalid number format")
+    if (numbers.any { it == null }) return invalid(R.string.csv_issue_number)
     // Every number but the distance must be 0 or more; a distance may be negative, as every distance
     // input in the app allows, so a file the app wrote always reads back.
     val mustBePositive = listOf(setNumber, valueRight) + listOf(6, 9, 10).map { optional.getValue(it) }.filter { it.isNotEmpty() }
-    if (mustBePositive.any { it.toInt() < 0 }) return invalid("Negative value")
+    if (mustBePositive.any { it.toInt() < 0 }) return invalid(R.string.csv_issue_negative)
     fun number(index: Int) = optional.getValue(index).takeIf { it.isNotEmpty() }?.toInt()
     // Warm-up and effort (optional): a value that does not read is an error, never quietly an empty cell.
     val warmUpText = field(11)
-    val warmUp = if (warmUpText.isEmpty()) false else warmUpText.toBooleanStrictOrNull() ?: return invalid("Invalid warmUp (expected true or false): $warmUpText")
+    val warmUp = if (warmUpText.isEmpty()) false else warmUpText.toBooleanStrictOrNull() ?: return invalid(R.string.csv_issue_warmup, warmUpText)
     val effortText = field(12)
     val effortLeft = if (effortText.isEmpty()) null else effortText.toIntOrNull()?.takeIf { it in 0..Effort.MAX_EFFORT_LEFT }
-        ?: return invalid("Invalid effortLeft (expected 0 to ${Effort.MAX_EFFORT_LEFT}): $effortText")
+        ?: return invalid(R.string.csv_issue_effort, effortText, Effort.MAX_EFFORT_LEFT)
     return Result.success(
         RecordCsvRow(
             exerciseName = name,

@@ -132,7 +132,7 @@ sealed class UiMessage {
     ) : UiMessage()
 
     /** コミュニティシェア インポートエラー */
-    data class CommunityShareImportError(val errorMessage: String) : UiMessage()
+    data class CommunityShareImportError(val issue: io.github.gonbei774.calisthenicsmemory.viewmodel.ImportIssue) : UiMessage()
 
     /** ファイルサイズ超過 */
     data class FileTooLarge(val sizeMb: Int, val limitMb: Int) : UiMessage()

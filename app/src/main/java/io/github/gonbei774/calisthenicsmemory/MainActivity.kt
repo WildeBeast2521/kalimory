@@ -275,14 +275,15 @@ fun UiMessage.toMessageString(): String {
         is UiMessage.CopiedToClipboard -> stringResource(R.string.copied_to_clipboard)
         is UiMessage.ProgramDuplicated -> stringResource(R.string.program_duplicated)
         is UiMessage.CommunityShareExportComplete ->
-            "Export complete: $exerciseCount exercises, $programCount programs, $intervalProgramCount interval programs"
+            stringResource(R.string.share_export_complete, exerciseCount, programCount, intervalProgramCount)
         is UiMessage.CommunityShareImportComplete -> {
             val r = report
-            "Import complete: ${r.exercisesAdded} added, ${r.exercisesSkipped} skipped, ${r.programsAdded} programs, ${r.intervalProgramsAdded} intervals"
+            stringResource(R.string.share_import_complete, r.exercisesAdded, r.exercisesSkipped, r.programsAdded, r.intervalProgramsAdded)
         }
-        is UiMessage.CommunityShareImportError -> "Import error: $errorMessage"
-        is UiMessage.FileTooLarge -> "File too large: ${sizeMb}MB (limit: ${limitMb}MB)"
-        is UiMessage.WrongFileType -> "Wrong file type: $detected (expected: $expected)"
+        is UiMessage.CommunityShareImportError ->
+            stringResource(R.string.share_import_error, issue.text(androidx.compose.ui.platform.LocalContext.current))
+        is UiMessage.FileTooLarge -> stringResource(R.string.file_too_large, sizeMb, limitMb)
+        is UiMessage.WrongFileType -> stringResource(R.string.wrong_file_type, detected, expected)
         is UiMessage.CatalogueAdded -> stringResource(R.string.catalogue_added, name)
         is UiMessage.CatalogueLinked -> stringResource(R.string.catalogue_linked, name)
         is UiMessage.CatalogueNameTaken -> stringResource(R.string.catalogue_name_taken, name)
