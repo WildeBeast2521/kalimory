@@ -1,6 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingLinkRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -251,18 +253,20 @@ internal fun EditorContent(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedButton(onClick = { pickDate = true }, modifier = Modifier.fillMaxWidth()) {
-                    Text(stringResource(R.string.date_format, formatDate(state.date, LocalConfiguration.current.locales[0])))
-                }
-                OutlinedButton(onClick = { pickTime = true }, modifier = Modifier.fillMaxWidth()) {
-                    Text(stringResource(R.string.time_format, state.time.format(TIME)))
-                }
+            SettingsCard {
+                SettingLinkRow(
+                    title = stringResource(R.string.date_format, formatDate(state.date, LocalConfiguration.current.locales[0])),
+                    onClick = { pickDate = true },
+                )
+                SettingLinkRow(
+                    title = stringResource(R.string.time_format, state.time.format(TIME)),
+                    onClick = { pickTime = true },
+                )
                 OutlinedTextField(
                     value = state.comment,
                     onValueChange = { onChange(state.copy(comment = it)) },
                     label = { Text(stringResource(R.string.comment)) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                     maxLines = 3,
                 )
             }

@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.data.defaultPlan
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePicker
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -277,12 +278,13 @@ fun ProgramEditScreen(
                 ) {
                     // Program Name
                     item {
-                        OutlinedTextField(
+                        SettingsCard {
+OutlinedTextField(
                             value = name,
                         onValueChange = { name = it },
                         label = { Text(stringResource(R.string.program_name)) },
                         placeholder = { Text(stringResource(R.string.program_name_hint)) },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
                             focusedLabelColor = MaterialTheme.colorScheme.primary,
@@ -294,6 +296,7 @@ fun ProgramEditScreen(
                         ),
                         singleLine = true
                     )
+}
                 }
 
                 // Exercises Section

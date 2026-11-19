@@ -2,6 +2,8 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsGroup
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePicker
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
@@ -219,11 +221,12 @@ fun IntervalEditScreen(
             ) {
                 // Program Name
                 item {
-                    OutlinedTextField(
+                    SettingsCard {
+OutlinedTextField(
                         value = name,
                         onValueChange = { name = it },
                         label = { Text(stringResource(R.string.interval_program_name)) },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
                             focusedLabelColor = MaterialTheme.colorScheme.primary,
@@ -235,31 +238,19 @@ fun IntervalEditScreen(
                         ),
                         singleLine = true
                     )
+}
                 }
 
-                // Timer Settings Section
+                // Timer settings: one card of rows (rest between exercises only with two or more)
                 item {
-                    Text(
-                        text = stringResource(R.string.interval_timer_settings),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-
-                // Work Time
-                item {
+                    SettingsGroup(title = stringResource(R.string.interval_timer_settings)) {
                     TimerSettingRow(
                         label = stringResource(R.string.interval_work_seconds),
                         value = workSeconds,
                         onValueChange = { workSeconds = it.filter { c -> c.isDigit() } },
                         suffix = stringResource(R.string.interval_seconds_suffix)
                     )
-                }
-
-                // Rest Time (only shown when 2+ exercises; irrelevant for single-exercise programs)
-                if (programExercises.size > 1) {
-                    item {
+                    if (programExercises.size > 1) {
                         TimerSettingRow(
                             label = stringResource(R.string.interval_rest_seconds),
                             value = restSeconds,
@@ -267,10 +258,6 @@ fun IntervalEditScreen(
                             suffix = stringResource(R.string.interval_seconds_suffix)
                         )
                     }
-                }
-
-                // Rounds
-                item {
                     TimerSettingRow(
                         label = stringResource(R.string.interval_rounds),
                         value = rounds,
@@ -279,16 +266,13 @@ fun IntervalEditScreen(
                         step = 1,
                         min = 1
                     )
-                }
-
-                // Round Rest
-                item {
                     TimerSettingRow(
                         label = stringResource(R.string.interval_round_rest_seconds),
                         value = roundRestSeconds,
                         onValueChange = { roundRestSeconds = it.filter { c -> c.isDigit() } },
                         suffix = stringResource(R.string.interval_seconds_suffix)
                     )
+                    }
                 }
 
                 // Exercises Section
@@ -572,12 +556,12 @@ private fun TimerSettingRow(
     }
     // At large text the label goes above the stepper, so neither is squeezed or clipped.
     if (large) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
             labelText(Modifier.fillMaxWidth())
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) { stepper() }
         }
     } else {
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             labelText(Modifier.weight(1f))
             stepper()
         }
