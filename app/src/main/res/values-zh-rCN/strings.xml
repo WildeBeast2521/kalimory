@@ -28,12 +28,12 @@
     <!-- Will be replaced with "Reps" or "Seconds" -->
     <string name="target_format">%1$s × %2$s</string>
     <string name="target_format_unilateral">%1$s × %2$s（每侧）</string>
-    <string name="laterality">单双侧</string>
+    <string name="laterality">左右侧</string>
     <string name="one_sided">单侧</string>
     <string name="group_optional">分组（可选）</string>
     <string name="new_group_name">新分组名称</string>
     <string name="no_group">无分组</string>
-    <string name="create_type">创建类型</string>
+    <string name="create_type">添加内容</string>
     <string name="exercise">动作</string>
     <string name="group_name">分组名称</string>
     <string name="rename_group">重命名分组</string>
@@ -61,8 +61,8 @@
     <string name="time_label">时间</string>
     <string name="dynamic_type">次数</string>
     <string name="isometric_type">时间</string>
-    <string name="exercise_type_dynamic">动态</string>
-    <string name="exercise_type_isometric">静态</string>
+    <string name="exercise_type_dynamic">次数</string>
+    <string name="exercise_type_isometric">静力保持</string>
     <!-- View Screen -->
     <string name="no_records_yet">还没有记录</string>
     <string name="unknown_exercise">未知动作</string>
@@ -190,7 +190,7 @@
     <string name="duplicate_exercise_name">此动作名称已在使用</string>
     <string name="duplicate_group_name">此分组名称已在使用</string>
     <string name="bilateral_with_parenthesis">双侧</string>
-    <string name="unilateral_with_parenthesis">单侧</string>
+    <string name="unilateral_with_parenthesis">每次一侧</string>
     <string name="example_bilateral">例如：俯卧撑、深蹲</string>
     <string name="example_unilateral">例如：手枪深蹲、单手俯卧撑</string>
     <string name="per_side_parenthesis">（每侧）</string>
@@ -282,14 +282,14 @@
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">计时器设置（可选）</string>
     <string name="timer_settings_description">为此动作配置计时器。留空则使用默认设置。</string>
-    <string name="rep_duration_seconds">单次时长（秒）</string>
+    <string name="rep_duration_seconds">每次秒数（计数节奏）</string>
     <string name="rest_interval_seconds">组间间歇（秒）</string>
     <string name="example_5_seconds">例如：5</string>
     <string name="example_240_seconds">例如：240</string>
     <!-- Distance/Weight Tracking Settings -->
     <string name="tracking_settings_optional">追踪设置（可选）</string>
     <string name="track_distance">追踪距离</string>
-    <string name="track_distance_description">记录每次训练的距离（厘米）</string>
+    <string name="track_distance_description">记录每组的距离（厘米）</string>
     <string name="track_weight">追踪重量</string>
     <string name="track_weight_description">记录每次训练的额外重量（公斤）</string>
     <string name="track_assistance">追踪辅助</string>

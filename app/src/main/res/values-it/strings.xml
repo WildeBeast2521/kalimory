@@ -28,12 +28,12 @@
     <!-- Will be replaced with "Reps" or "Seconds" -->
     <string name="target_format">%1$s × %2$s</string>
     <string name="target_format_unilateral">%1$s × %2$s (per lato)</string>
-    <string name="laterality">Lateralità</string>
+    <string name="laterality">Lati</string>
     <string name="one_sided">Un lato</string>
     <string name="group_optional">Gruppo (Opzionale)</string>
     <string name="new_group_name">Nome Nuovo Gruppo</string>
     <string name="no_group">Nessun Gruppo</string>
-    <string name="create_type">Tipo di Creazione</string>
+    <string name="create_type">Cosa aggiungere</string>
     <string name="exercise">Esercizio</string>
     <string name="group_name">Nome Gruppo</string>
     <string name="rename_group">Rinomina Gruppo</string>
@@ -61,8 +61,8 @@
     <string name="time_label">Tempo</string>
     <string name="dynamic_type">Ripetizioni</string>
     <string name="isometric_type">Tempo</string>
-    <string name="exercise_type_dynamic">Dinamico</string>
-    <string name="exercise_type_isometric">Isometrico</string>
+    <string name="exercise_type_dynamic">Ripetizioni</string>
+    <string name="exercise_type_isometric">Tenuta</string>
     <!-- View Screen -->
     <string name="no_records_yet">Nessuna registrazione ancora</string>
     <string name="unknown_exercise">Esercizio Sconosciuto</string>
@@ -189,8 +189,8 @@
     <string name="name_required">Inserisci un nome</string>
     <string name="duplicate_exercise_name">Questo nome di esercizio è già in uso</string>
     <string name="duplicate_group_name">Questo nome di gruppo è già in uso</string>
-    <string name="bilateral_with_parenthesis">Bilaterale</string>
-    <string name="unilateral_with_parenthesis">Unilaterale</string>
+    <string name="bilateral_with_parenthesis">Entrambi i lati</string>
+    <string name="unilateral_with_parenthesis">Un lato alla volta</string>
     <string name="example_bilateral">es., Piegamenti, Squat</string>
     <string name="example_unilateral">es., Pistol Squat, Piegamenti ad un braccio</string>
     <string name="per_side_parenthesis">(per lato)</string>
@@ -282,14 +282,14 @@
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Impostazioni Timer (Opzionale)</string>
     <string name="timer_settings_description">Configura i timer per questo esercizio. Lascia vuoto per usare le impostazioni predefinite.</string>
-    <string name="rep_duration_seconds">Durata Ripetizione (secondi)</string>
+    <string name="rep_duration_seconds">Secondi per rip (ritmo del conteggio)</string>
     <string name="rest_interval_seconds">Intervallo di Riposo (secondi)</string>
     <string name="example_5_seconds">es. 5</string>
     <string name="example_240_seconds">es. 240</string>
     <!-- Distance/Weight Tracking Settings -->
     <string name="tracking_settings_optional">Impostazioni di Tracciamento (Opzionale)</string>
     <string name="track_distance">Traccia Distanza</string>
-    <string name="track_distance_description">Registra la distanza (cm) per ogni sessione</string>
+    <string name="track_distance_description">Registra la distanza (cm) di ogni serie</string>
     <string name="track_weight">Traccia Peso</string>
     <string name="track_weight_description">Registra il peso aggiunto (kg) per ogni sessione</string>
     <string name="track_assistance">Traccia Assistenza</string>

@@ -28,12 +28,12 @@
     <!-- Will be replaced with "Reps" or "Seconds" -->
     <string name="target_format">%1$s × %2$s</string>
     <string name="target_format_unilateral">%1$s × %2$s (par côté)</string>
-    <string name="laterality">Latéralité</string>
+    <string name="laterality">Côtés</string>
     <string name="one_sided">Un côté</string>
     <string name="group_optional">Groupe (Facultatif)</string>
     <string name="new_group_name">Nom du Nouveau Groupe</string>
     <string name="no_group">Aucun Groupe</string>
-    <string name="create_type">Type de Création</string>
+    <string name="create_type">Quoi ajouter</string>
     <string name="exercise">Exercice</string>
     <string name="group_name">Nom du Groupe</string>
     <string name="rename_group">Renommer le Groupe</string>
@@ -61,8 +61,8 @@
     <string name="time_label">Temps</string>
     <string name="dynamic_type">Répétitions</string>
     <string name="isometric_type">Temps</string>
-    <string name="exercise_type_dynamic">Dynamique</string>
-    <string name="exercise_type_isometric">Isométrique</string>
+    <string name="exercise_type_dynamic">Répétitions</string>
+    <string name="exercise_type_isometric">Maintien</string>
     <!-- View Screen -->
     <string name="no_records_yet">Aucun enregistrement pour le moment</string>
     <string name="unknown_exercise">Exercice Inconnu</string>
@@ -189,8 +189,8 @@
     <string name="name_required">Saisissez un nom</string>
     <string name="duplicate_exercise_name">Ce nom d\'exercice est déjà utilisé</string>
     <string name="duplicate_group_name">Ce nom de groupe est déjà utilisé</string>
-    <string name="bilateral_with_parenthesis">Bilatéral</string>
-    <string name="unilateral_with_parenthesis">Unilatéral</string>
+    <string name="bilateral_with_parenthesis">Les deux côtés</string>
+    <string name="unilateral_with_parenthesis">Un côté à la fois</string>
     <string name="example_bilateral">ex. Pompes, Squats</string>
     <string name="example_unilateral">ex. Pistol Squats, Pompes à Un Bras</string>
     <string name="per_side_parenthesis">(par côté)</string>
@@ -282,14 +282,14 @@
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Paramètres du Minuteur (Optionnel)</string>
     <string name="timer_settings_description">Configurer les minuteurs pour cet exercice. Laisser vide pour utiliser les paramètres par défaut.</string>
-    <string name="rep_duration_seconds">Durée par Répétition (secondes)</string>
+    <string name="rep_duration_seconds">Secondes par rép. (rythme du comptage)</string>
     <string name="rest_interval_seconds">Intervalle de Repos (secondes)</string>
     <string name="example_5_seconds">ex. 5</string>
     <string name="example_240_seconds">ex. 240</string>
     <!-- Distance/Weight Tracking Settings -->
     <string name="tracking_settings_optional">Paramètres de Suivi (Optionnel)</string>
     <string name="track_distance">Suivre la Distance</string>
-    <string name="track_distance_description">Enregistrer la distance (cm) pour chaque séance</string>
+    <string name="track_distance_description">Enregistrer la distance (cm) de chaque série</string>
     <string name="track_weight">Suivre le Poids</string>
     <string name="track_weight_description">Enregistrer le poids ajouté (kg) pour chaque séance</string>
     <string name="track_assistance">Suivre l\'Assistance</string>
