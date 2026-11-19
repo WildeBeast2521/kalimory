@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue
 
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
@@ -52,6 +53,22 @@ class CatalogueSearchFlowTest {
 
         // The sheet closes and the result now shows the step is in the library.
         waitFor(result and hasContentDescription("In your library"))
+    }
+
+    @Test fun `a movement chip lists the steps of that movement instead of the chains`() {
+        val library = hasText("Library") and hasAnyAncestor(hasTestTag(PRIMARY_NAVIGATION_BAR_TAG))
+        waitFor(library)
+        compose.onNode(library).performClick()
+        waitFor(hasText("Exercise catalogue") and hasClickAction())
+        compose.onNode(hasText("Exercise catalogue") and hasClickAction()).performClick()
+        waitFor(hasText("Legs") and hasClickAction())
+
+        compose.onNode(hasText("Legs") and hasClickAction()).performClick()
+        // Steps appear with their chain and place; tapping the chip again returns to the chains.
+        waitFor(hasText("Step 1 of", substring = true))
+        compose.onNode(hasText("Legs") and hasClickAction()).performClick()
+        compose.waitForIdle()
+        compose.onAllNodes(hasText("Step 1 of", substring = true)).assertCountEquals(0)
     }
 
     private fun waitFor(matcher: SemanticsMatcher) {
