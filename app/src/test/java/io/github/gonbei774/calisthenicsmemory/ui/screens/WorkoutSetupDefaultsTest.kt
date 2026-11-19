@@ -54,6 +54,6 @@ class WorkoutSetupDefaultsTest {
                 SettingsStep(exercise = Exercise(id = 98, name = "Plank", type = "Isometric"), viewModel = vm, onStartWorkout = {})
             }
         }
-        compose.onNode(androidx.compose.ui.test.hasText("Auto mode") and androidx.compose.ui.test.isToggleable()).assertIsOn()
+        compose.onNode(androidx.compose.ui.test.hasText("Finish sets automatically") and androidx.compose.ui.test.isToggleable()).assertIsOn()
     }
 }

@@ -276,13 +276,13 @@
     <string name="backup_saved_successfully">备份已保存到下载文件夹</string>
     <string name="backup_failed">备份失败</string>
     <!-- Auto-fill Settings -->
-    <string name="settings_prefill_previous">预填上次记录</string>
-    <string name="settings_prefill_previous_description">在记录和训练画面自动填充上次的值</string>
+    <string name="settings_prefill_previous">从上次训练开始</string>
+    <string name="settings_prefill_previous_description">新的训练和记录将以上次的组数和数值开始</string>
     <!-- Workout Settings -->
     <string name="section_workout_settings">训练</string>
     <string name="start_countdown_setting">开始倒计时</string>
-    <string name="set_interval_setting">组间间歇</string>
-    <string name="set_interval_note">注意：如果已配置，动作的特定设置优先。</string>
+    <string name="set_interval_setting">默认组间休息</string>
+    <string name="set_interval_note">当动作没有自己的休息时间时使用。</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">计时器设置（可选）</string>
     <string name="timer_settings_description">为此动作配置计时器。留空则使用默认设置。</string>
@@ -327,8 +327,8 @@
     <string name="app_source_code">源代码</string>
     <string name="report_issue_github">在GitHub上报告问题</string>
     <!-- Flash Notification -->
-    <string name="flash_notification_setting">LED闪光通知</string>
-    <string name="flash_notification_description">训练时LED与声音同步闪烁</string>
+    <string name="flash_notification_setting">随提示音闪光</string>
+    <string name="flash_notification_description">训练中每次播放提示音时手电筒闪烁</string>
     <string name="keep_screen_on_setting">保持屏幕常亮</string>
     <string name="keep_screen_on_description">训练时保持屏幕常亮以显示倒计时</string>
     <string name="set_done_vibration_setting">完成一组时振动</string>
@@ -405,20 +405,20 @@
     <string name="new_program">新建方案</string>
     <string name="single_mode_description">一次一个动作</string>
     <string name="start_countdown">开始倒计时</string>
-    <string name="timer_mode_on_description">达成目标时自动完成</string>
-    <string name="timer_mode_off_description">通过完成按钮手动完成</string>
+    <string name="timer_mode_on_description">达到目标时该组自动结束</string>
+    <string name="timer_mode_off_description">每组手动结束</string>
     <string name="record_weight_for_graph">记录此动作的重量</string>
     <string name="complete_with_time">完成 (%d秒)</string>
     <string name="previous_value_format">上次：%s</string>
     <string name="program_result_zero_warning">值为0的组会记为跳过，不会显示在历史中。</string>
     <!-- Sound Settings (Program Confirm) -->
-    <string name="dynamic_count_sound_label">计数音效</string>
-    <string name="dynamic_count_sound_description">辅助次数类动作的计数</string>
+    <string name="dynamic_count_sound_label">次数计时</string>
+    <string name="dynamic_count_sound_description">按你的节奏计数，每次一声。关闭：用 − 和 + 计数</string>
     <string name="isometric_interval_sound_label">静力保持时的提示音</string>
-    <string name="isometric_interval_sound_description">静态类动作</string>
+    <string name="isometric_interval_sound_description">保持期间每隔几秒响一声短音</string>
     <!-- Auto Mode -->
-    <string name="auto_mode">自动模式</string>
-    <string name="auto_mode_disabled_hint">需要开启计数音效</string>
+    <string name="auto_mode">自动结束每组</string>
+    <string name="auto_mode_disabled_hint">需要开启次数计时</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">自动填入目标值</string>
     <string name="program_estimated_time">约%d分钟</string>
@@ -783,7 +783,7 @@
     <string name="nav_step_increment">增加</string>
     <string name="nav_uncheck_set">将该组标记为未完成</string>
     <string name="previous_value_label">上次</string>
-    <string name="program_use_challenge_desc">使用每个动作的目标设置（未设置时使用计划中的值）</string>
+    <string name="program_use_challenge_desc">使用每个动作自己的目标（没有时用计划的）</string>
     <string name="program_use_previous_desc">使用上次训练的数值（没有记录时使用计划中的值）</string>
     <string name="program_use_program_desc">使用计划中设定的组数和目标值</string>
     <string name="program_validation_incomplete_sets_or_value">部分动作缺少组数或目标值</string>

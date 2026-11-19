@@ -320,13 +320,13 @@
     <string name="backup_saved_successfully">バックアップをDownloadsフォルダに保存しました</string>
     <string name="backup_failed">バックアップに失敗しました</string>
     <!-- Auto-fill Settings -->
-    <string name="settings_prefill_previous">前回の記録をプリフィル</string>
-    <string name="settings_prefill_previous_description">記録・ワークアウト画面で前回の値を自動入力</string>
+    <string name="settings_prefill_previous">前回のセッションから始める</string>
+    <string name="settings_prefill_previous_description">新しいワークアウトと記録は、前回のセット数と値から始まります</string>
     <!-- Workout Settings -->
     <string name="section_workout_settings">ワークアウト</string>
     <string name="start_countdown_setting">開始カウントダウン</string>
-    <string name="set_interval_setting">セット間インターバル</string>
-    <string name="set_interval_note">※種目ごとの設定がある場合はそちらが優先されます。</string>
+    <string name="set_interval_setting">セット間のデフォルトのレスト</string>
+    <string name="set_interval_note">種目に独自のレストがない場合に使います。</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">タイマー設定（任意）</string>
     <string name="timer_settings_description">この種目のタイマーを設定します。空欄の場合はデフォルト設定を使用します。</string>
@@ -372,8 +372,8 @@
     <string name="app_source_code">ソースコード</string>
     <string name="report_issue_github">GitHubで問題を報告する</string>
     <!-- Flash Notification -->
-    <string name="flash_notification_setting">LEDフラッシュ通知</string>
-    <string name="flash_notification_description">ワークアウト中の音声に合わせてLEDを点滅させる</string>
+    <string name="flash_notification_setting">音に合わせてライト点滅</string>
+    <string name="flash_notification_description">ワークアウト中に音が鳴るたびにライトが点滅します</string>
     <string name="keep_screen_on_setting">画面を常にオン</string>
     <string name="keep_screen_on_description">ワークアウト中にカウントダウンを表示するため画面を点灯したままにする</string>
     <string name="set_done_vibration_setting">セット完了時に振動</string>
@@ -418,8 +418,8 @@
     <string name="edit_program">プログラムを編集</string>
     <string name="program_name">プログラム名</string>
     <string name="program_name_hint">例: 朝のルーティン</string>
-    <string name="timer_mode_on_description">目標達成で自動完了</string>
-    <string name="timer_mode_off_description">完了ボタンで手動完了</string>
+    <string name="timer_mode_on_description">目標に達するとセットが終わります</string>
+    <string name="timer_mode_off_description">各セットを自分で終える</string>
     <string name="start_countdown">開始カウントダウン</string>
     <string name="program_exercises">種目</string>
     <string name="add_exercise_to_program">種目を追加</string>
@@ -446,7 +446,7 @@
     <string name="program_use_challenge">種目値</string>
     <string name="program_use_previous">前回値</string>
     <string name="program_use_program_desc">プログラムで設定したセット数・目標値を使います</string>
-    <string name="program_use_challenge_desc">種目の課題設定を使います（未設定の種目はプログラム値）</string>
+    <string name="program_use_challenge_desc">各種目の目標を使用（なければプログラムの値）</string>
     <string name="program_use_previous_desc">前回の記録値を使います（記録がない種目はプログラム値）</string>
     <!-- Isometric Manual Mode -->
     <string name="complete_with_time">完了（%d秒で記録）</string>
@@ -468,13 +468,13 @@
     <string name="record_confirm_title">記録しますか？</string>
     <string name="record_set_to_target">目標値にセット（%1$d%2$s）</string>
     <!-- Sound Settings (Program Confirm) -->
-    <string name="dynamic_count_sound_label">カウント音</string>
-    <string name="dynamic_count_sound_description">回数系種目のカウントを補助</string>
+    <string name="dynamic_count_sound_label">回数タイマー</string>
+    <string name="dynamic_count_sound_description">設定したペースで回数を数え、毎回音を鳴らします。オフ：−と+で数えます</string>
     <string name="isometric_interval_sound_label">ホールド中の音</string>
-    <string name="isometric_interval_sound_description">静止系の種目</string>
+    <string name="isometric_interval_sound_description">ホールド中、数秒ごとに短い音が鳴ります</string>
     <!-- Auto Mode -->
-    <string name="auto_mode">自動モード</string>
-    <string name="auto_mode_disabled_hint">カウント音がONの場合のみ使用可</string>
+    <string name="auto_mode">セットを自動で終える</string>
+    <string name="auto_mode_disabled_hint">回数タイマーが必要です</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">目標値を自動入力</string>
     <string name="program_estimated_time">約%d分</string>

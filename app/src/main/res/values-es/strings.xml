@@ -276,13 +276,13 @@
     <string name="backup_saved_successfully">Copia de seguridad guardada en la carpeta Descargas</string>
     <string name="backup_failed">Error al guardar la copia de seguridad</string>
     <!-- Auto-fill Settings -->
-    <string name="settings_prefill_previous">Pre-llenar registro anterior</string>
-    <string name="settings_prefill_previous_description">Auto-llenar valores de la última sesión en las pantallas de Registro y Entrenamiento</string>
+    <string name="settings_prefill_previous">Empezar desde la última sesión</string>
+    <string name="settings_prefill_previous_description">Los nuevos entrenamientos y registros empiezan con las series y valores de la última vez</string>
     <!-- Workout Settings -->
     <string name="section_workout_settings">Entrenamiento</string>
     <string name="start_countdown_setting">Cuenta Regresiva Inicial</string>
-    <string name="set_interval_setting">Intervalo entre Series</string>
-    <string name="set_interval_note">Nota: La configuración específica del ejercicio tiene prioridad si está configurada.</string>
+    <string name="set_interval_setting">Descanso predeterminado entre series</string>
+    <string name="set_interval_note">Se usa cuando un ejercicio no tiene descanso propio.</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Configuración del Temporizador (Opcional)</string>
     <string name="timer_settings_description">Configurar temporizadores para este ejercicio. Dejar en blanco para usar la configuración predeterminada.</string>
@@ -327,11 +327,11 @@
     <string name="app_source_code">Código Fuente</string>
     <string name="report_issue_github">Reportar problema en GitHub</string>
     <!-- Flash Notification -->
-    <string name="flash_notification_setting">Notificación con Flash LED</string>
-    <string name="flash_notification_description">Hacer parpadear el LED sincronizado con los sonidos durante el entrenamiento</string>
+    <string name="flash_notification_setting">Destello con los sonidos</string>
+    <string name="flash_notification_description">La linterna parpadea cada vez que suena el entrenamiento</string>
     <string name="keep_screen_on_setting">Mantener pantalla encendida</string>
     <string name="keep_screen_on_description">Mantener la pantalla encendida durante el entrenamiento para ver la cuenta regresiva</string>
-    <string name="set_done_vibration_setting">Vibrar al terminar una serie</string>
+    <string name="set_done_vibration_setting">Vibrar al completar una serie</string>
     <string name="set_done_vibration_description">Una breve vibración confirma cada serie terminada</string>
     <string name="countdown_vibration_setting">Vibrar con los pitidos de la cuenta atrás</string>
     <string name="countdown_vibration_description">Cada uno de los tres últimos pitidos y la señal de inicio también vibran. Sigue el ajuste de vibración táctil del teléfono.</string>
@@ -407,20 +407,20 @@
     <string name="new_program">Nuevo programa</string>
     <string name="single_mode_description">Un ejercicio a la vez</string>
     <string name="start_countdown">Cuenta regresiva inicial</string>
-    <string name="timer_mode_on_description">Completar automáticamente al alcanzar la meta</string>
-    <string name="timer_mode_off_description">Completar manualmente con el botón Finalizar</string>
+    <string name="timer_mode_on_description">La serie termina al alcanzar el objetivo</string>
+    <string name="timer_mode_off_description">Termina cada serie tú mismo</string>
     <string name="record_weight_for_graph">Registrar peso para este ejercicio</string>
     <string name="complete_with_time">Completar (%ds)</string>
     <string name="previous_value_format">Anterior: %s</string>
     <string name="program_result_zero_warning">Las series en 0 se guardan como omitidas y no aparecen en tu historial.</string>
     <!-- Sound Settings (Program Confirm) -->
-    <string name="dynamic_count_sound_label">Sonido de conteo</string>
-    <string name="dynamic_count_sound_description">Asiste el conteo en ejercicios dinámicos</string>
+    <string name="dynamic_count_sound_label">Temporizador de reps</string>
+    <string name="dynamic_count_sound_description">Cuenta las reps a tu ritmo, con un sonido en cada una. Desactivado: cuenta con − y +</string>
     <string name="isometric_interval_sound_label">Sonido durante el mantenimiento</string>
-    <string name="isometric_interval_sound_description">Ejercicios isométricos</string>
+    <string name="isometric_interval_sound_description">Un pitido breve cada pocos segundos mientras mantienes</string>
     <!-- Auto Mode -->
-    <string name="auto_mode">Modo automático</string>
-    <string name="auto_mode_disabled_hint">Requiere sonido de conteo activado</string>
+    <string name="auto_mode">Terminar series automáticamente</string>
+    <string name="auto_mode_disabled_hint">Requiere el temporizador de reps</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">Autocompletar valores objetivo</string>
     <string name="program_estimated_time">~%d min</string>
@@ -603,7 +603,7 @@
     <string name="unit_cm">cm</string>
     <string name="unit_kg">kg</string>
     <string name="program_use_program_desc">Hace uso de los conjuntos y los valores previstos en el programa</string>
-    <string name="program_use_challenge_desc">Aplica la configuración de cada ejercicio (si no se define, usa la del programa)</string>
+    <string name="program_use_challenge_desc">Usa el objetivo de cada ejercicio (o el del programa si no tiene)</string>
     <string name="program_use_previous_desc">Aplica los valores de tu última sesión (si no hay historial, usa los del programa)</string>
     <string name="import_anomalies_notice">Elementos que no coinciden con el formato de la app: %1$d. Se importarán sin cambios.</string>
     <string name="db_unavailable_title">No se pudieron abrir tus datos de entrenamiento</string>

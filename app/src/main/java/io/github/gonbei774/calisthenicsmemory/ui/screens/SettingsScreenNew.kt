@@ -362,6 +362,7 @@ fun SettingsScreenNew(
                     )
                     SettingSwitchRow(
                         title = stringResource(R.string.isometric_interval_sound_label),
+                        description = stringResource(R.string.isometric_interval_sound_description),
                         checked = holdSoundEnabled,
                         onCheckedChange = { enabled ->
                             holdSoundEnabled = enabled

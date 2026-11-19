@@ -172,7 +172,7 @@ class ConsistencyGuardTest {
         // Proper names and feature names keep their capitals; everything else is lower case after
         // the first word, so "Add Another Set" cannot come back beside "Add another exercise".
         val proper = setOf("Today", "Train", "Progress", "Progressions", "Library", "To", "Do", "Done",
-            "JSON", "CSV", "LED", "ON", "GitHub", "Kalimory", "Android", "Programs", "Intervals", "Select", "New", "Morning", "L-sit")
+            "JSON", "CSV", "LED", "ON", "GitHub", "Kalimory", "Android", "Programs", "Intervals", "Select", "New", "Morning", "L-sit", "Complete")
         val strings = main.resolve("res/values/strings.xml").readText()
         val offenders = Regex("""<string name="([^"]+)"[^>]*>([^<]{1,60})</string>""").findAll(strings)
             .filter { m ->

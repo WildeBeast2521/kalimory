@@ -276,13 +276,13 @@
     <string name="backup_saved_successfully">Backup salvato nella cartella Download</string>
     <string name="backup_failed">Backup fallito</string>
     <!-- Auto-fill Settings -->
-    <string name="settings_prefill_previous">Pre-compila record precedente</string>
-    <string name="settings_prefill_previous_description">Compila automaticamente i valori dell\'ultima sessione nelle schermate Registra e Allenamento</string>
+    <string name="settings_prefill_previous">Parti dall’ultima sessione</string>
+    <string name="settings_prefill_previous_description">I nuovi allenamenti e registrazioni partono da serie e valori dell’ultima volta</string>
     <!-- Workout Settings -->
     <string name="section_workout_settings">Allenamento</string>
     <string name="start_countdown_setting">Conto alla Rovescia Inizio</string>
-    <string name="set_interval_setting">Intervallo Serie</string>
-    <string name="set_interval_note">Nota: Le impostazioni specifiche dell\'esercizio hanno la priorità se configurate.</string>
+    <string name="set_interval_setting">Riposo predefinito tra le serie</string>
+    <string name="set_interval_note">Usato quando un esercizio non ha un riposo proprio.</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Impostazioni Timer (Opzionale)</string>
     <string name="timer_settings_description">Configura i timer per questo esercizio. Lascia vuoto per usare le impostazioni predefinite.</string>
@@ -327,11 +327,11 @@
     <string name="app_source_code">Codice Sorgente</string>
     <string name="report_issue_github">Segnala problema su GitHub</string>
     <!-- Flash Notification -->
-    <string name="flash_notification_setting">Notifica Flash LED</string>
-    <string name="flash_notification_description">Lampeggiare il LED sincronizzato con i suoni durante l\'allenamento</string>
+    <string name="flash_notification_setting">Flash con i suoni</string>
+    <string name="flash_notification_description">La torcia lampeggia a ogni suono dell’allenamento</string>
     <string name="keep_screen_on_setting">Mantieni schermo acceso</string>
     <string name="keep_screen_on_description">Mantieni lo schermo acceso durante l\'allenamento per visualizzare il conto alla rovescia</string>
-    <string name="set_done_vibration_setting">Vibra alla fine di una serie</string>
+    <string name="set_done_vibration_setting">Vibra quando una serie è completata</string>
     <string name="set_done_vibration_description">Una breve vibrazione conferma ogni serie completata</string>
     <string name="countdown_vibration_setting">Vibra con i segnali del conto alla rovescia</string>
     <string name="countdown_vibration_description">Ognuno degli ultimi tre segnali e il via vibrano. Segue l\'impostazione di vibrazione al tocco del telefono.</string>
@@ -407,20 +407,20 @@
     <string name="new_program">Nuovo programma</string>
     <string name="single_mode_description">Un esercizio alla volta</string>
     <string name="start_countdown">Conto alla rovescia iniziale</string>
-    <string name="timer_mode_on_description">Completamento automatico al raggiungimento dell\'obiettivo</string>
-    <string name="timer_mode_off_description">Completamento manuale con il pulsante Completa</string>
+    <string name="timer_mode_on_description">La serie termina quando raggiungi l’obiettivo</string>
+    <string name="timer_mode_off_description">Termina tu ogni serie</string>
     <string name="record_weight_for_graph">Registra peso per questo esercizio</string>
     <string name="complete_with_time">Completa (%ds)</string>
     <string name="previous_value_format">Precedente: %s</string>
     <string name="program_result_zero_warning">Le serie a 0 vengono salvate come saltate e non compaiono nella cronologia.</string>
     <!-- Sound Settings (Program Confirm) -->
-    <string name="dynamic_count_sound_label">Suono conteggio</string>
-    <string name="dynamic_count_sound_description">Assiste il conteggio degli esercizi dinamici</string>
+    <string name="dynamic_count_sound_label">Timer delle rip</string>
+    <string name="dynamic_count_sound_description">Conta le rip al tuo ritmo, con un suono per ognuna. Disattivato: conta con − e +</string>
     <string name="isometric_interval_sound_label">Suono durante le tenute</string>
-    <string name="isometric_interval_sound_description">Esercizi isometrici</string>
+    <string name="isometric_interval_sound_description">Un breve segnale ogni pochi secondi durante la tenuta</string>
     <!-- Auto Mode -->
-    <string name="auto_mode">Modalità auto</string>
-    <string name="auto_mode_disabled_hint">Richiede suono conteggio attivo</string>
+    <string name="auto_mode">Termina le serie automaticamente</string>
+    <string name="auto_mode_disabled_hint">Richiede il timer delle rip</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">Compila auto valori obiettivo</string>
     <string name="program_estimated_time">~%d min</string>
@@ -795,7 +795,7 @@
     <string name="nav_step_increment">Aumenta</string>
     <string name="nav_uncheck_set">Segna la serie come non completata</string>
     <string name="previous_value_label">Ultimo</string>
-    <string name="program_use_challenge_desc">Usa l\'obiettivo di ogni esercizio (altrimenti i valori del programma)</string>
+    <string name="program_use_challenge_desc">Usa l’obiettivo di ogni esercizio (quello del programma se manca)</string>
     <string name="program_use_previous_desc">Usa i valori del tuo ultimo allenamento (altrimenti quelli del programma)</string>
     <string name="program_use_program_desc">Usa le serie e gli obiettivi definiti nel programma</string>
     <string name="program_validation_incomplete_sets_or_value">Ad alcuni esercizi mancano serie o obiettivo</string>

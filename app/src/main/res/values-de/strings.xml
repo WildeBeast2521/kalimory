@@ -272,13 +272,13 @@
     <string name="backup_saved_successfully">Backup im Downloads-Ordner gespeichert</string>
     <string name="backup_failed">Backup fehlgeschlagen</string>
     <!-- Auto-fill Settings -->
-    <string name="settings_prefill_previous">Vorherigen Eintrag vorausfüllen</string>
-    <string name="settings_prefill_previous_description">Werte der letzten Einheit automatisch in Aufnahme- und Traninigsfeldern ausfüllen</string>
+    <string name="settings_prefill_previous">Mit der letzten Einheit beginnen</string>
+    <string name="settings_prefill_previous_description">Neue Trainings und Einträge beginnen mit den Sätzen und Werten vom letzten Mal</string>
     <!-- Workout Settings -->
     <string name="section_workout_settings">Training</string>
     <string name="start_countdown_setting">Start-Countdown</string>
-    <string name="set_interval_setting">Satzpause</string>
-    <string name="set_interval_note">Hinweis: Übungsspezifische Einstellungen haben Vorrang, falls konfiguriert.</string>
+    <string name="set_interval_setting">Standardpause zwischen Sätzen</string>
+    <string name="set_interval_note">Gilt, wenn eine Übung keine eigene Pause hat.</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Timer-Einstellungen (optional)</string>
     <string name="timer_settings_description">Timer für diese Übung konfigurieren. Leer lassen für Standardeinstellungen.</string>
@@ -323,11 +323,11 @@
     <string name="app_source_code">Quellcode</string>
     <string name="report_issue_github">Problem auf GitHub melden</string>
     <!-- Flash Notification -->
-    <string name="flash_notification_setting">LED-Blitz-Benachrichtigung</string>
-    <string name="flash_notification_description">LED synchron mit Tönen während des Trainings blinken lassen</string>
+    <string name="flash_notification_setting">Blitz bei Tönen</string>
+    <string name="flash_notification_description">Die Taschenlampe blinkt bei jedem Ton im Training</string>
     <string name="keep_screen_on_setting">Bildschirm anlassen</string>
     <string name="keep_screen_on_description">Bildschirm während des Trainings anlassen, um den Countdown anzuzeigen</string>
-    <string name="set_done_vibration_setting">Vibrieren nach jedem Satz</string>
+    <string name="set_done_vibration_setting">Vibrieren, wenn ein Satz abgeschlossen ist</string>
     <string name="set_done_vibration_description">Eine kurze Vibration bestätigt jeden beendeten Satz</string>
     <string name="countdown_vibration_setting">Vibration bei Countdown-Signaltönen</string>
     <string name="countdown_vibration_description">Jeder der letzten drei Signaltöne und das Startsignal vibrieren ebenfalls. Folgt der Touch-Vibrationseinstellung deines Telefons.</string>
@@ -402,20 +402,20 @@
     <string name="new_program">Neues Programm</string>
     <string name="single_mode_description">Eine Übung nach der anderen</string>
     <string name="start_countdown">Start-Countdown</string>
-    <string name="timer_mode_on_description">Automatisch abschließen bei Zielerreichung</string>
-    <string name="timer_mode_off_description">Manuell mit der Fertig-Taste abschließen</string>
+    <string name="timer_mode_on_description">Ein Satz endet, sobald du das Ziel erreichst</string>
+    <string name="timer_mode_off_description">Jeden Satz selbst beenden</string>
     <string name="record_weight_for_graph">Gewicht für diese Übung aufzeichnen</string>
     <string name="complete_with_time">Fertig (%ds)</string>
     <string name="previous_value_format">Vorherig: %s</string>
     <string name="program_result_zero_warning">Sätze mit 0 werden als übersprungen gespeichert und nicht im Verlauf angezeigt.</string>
     <!-- Sound Settings (Program Confirm) -->
-    <string name="dynamic_count_sound_label">Zählton</string>
-    <string name="dynamic_count_sound_description">Unterstützt das Zählen bei dynamischen Übungen</string>
+    <string name="dynamic_count_sound_label">Wiederholungs-Timer</string>
+    <string name="dynamic_count_sound_description">Zählt Wdh. in deinem Tempo, mit einem Ton für jede. Aus: mit − und + zählen</string>
     <string name="isometric_interval_sound_label">Ton während des Haltens</string>
-    <string name="isometric_interval_sound_description">Isometrische Übungen</string>
+    <string name="isometric_interval_sound_description">Ein kurzer Ton alle paar Sekunden, während du hältst</string>
     <!-- Auto Mode -->
-    <string name="auto_mode">Automatik</string>
-    <string name="auto_mode_disabled_hint">Nur bei aktiviertem Zählton verfügbar</string>
+    <string name="auto_mode">Sätze automatisch beenden</string>
+    <string name="auto_mode_disabled_hint">Benötigt den Wiederholungs-Timer</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">Zielwerte automatisch ausfüllen</string>
     <string name="program_estimated_time">~%d Min.</string>
@@ -803,7 +803,7 @@
     <string name="nav_step_decrement">Verringern</string>
     <string name="nav_step_increment">Erhöhen</string>
     <string name="nav_uncheck_set">Satz als nicht erledigt markieren</string>
-    <string name="program_use_challenge_desc">Nutzt die Zielvorgaben jeder Übung (sonst die Werte des Programms)</string>
+    <string name="program_use_challenge_desc">Nutzt das eigene Ziel jeder Übung (sonst das des Programms)</string>
     <string name="program_use_previous_desc">Nutzt die Werte deines letzten Trainings (sonst die Werte des Programms)</string>
     <string name="program_use_program_desc">Nutzt die im Programm festgelegten Sätze und Zielwerte</string>
     <string name="program_validation_incomplete_sets_or_value">Bei einigen Übungen fehlen Sätze oder Zielwert</string>

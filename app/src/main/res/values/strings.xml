@@ -351,18 +351,18 @@
     <string name="backup_saved_successfully">Backup saved</string>
     <string name="backup_failed">Backup failed</string>
     <!-- Auto-fill Settings -->
-    <string name="settings_prefill_previous">Pre-fill previous record</string>
-    <string name="settings_prefill_previous_description">Auto-fill values from the last session in Record and Workout screens</string>
+    <string name="settings_prefill_previous">Start from last session</string>
+    <string name="settings_prefill_previous_description">New workouts and logs start with the sets and values you did last time</string>
     <!-- Workout Settings -->
     <string name="section_workout_settings">Workouts</string>
     <string name="start_countdown_setting">Start countdown</string>
-    <string name="set_interval_setting">Rest between sets</string>
-    <string name="set_interval_note">Note: Exercise-specific settings take priority if configured.</string>
-    <string name="flash_notification_setting">LED flash notification</string>
-    <string name="flash_notification_description">Flash LED in sync with sounds during workout</string>
+    <string name="set_interval_setting">Default rest between sets</string>
+    <string name="set_interval_note">Used when an exercise has no rest time of its own.</string>
+    <string name="flash_notification_setting">Flash with sounds</string>
+    <string name="flash_notification_description">The torch blinks whenever the workout plays a sound</string>
     <string name="keep_screen_on_setting">Keep screen on</string>
     <string name="keep_screen_on_description">Keep screen on during workout to view countdown</string>
-    <string name="set_done_vibration_setting">Vibrate when a set is done</string>
+    <string name="set_done_vibration_setting">Vibrate when a set is complete</string>
     <string name="set_done_vibration_description">A short vibration confirms each finished set</string>
     <string name="countdown_vibration_setting">Vibrate with countdown beeps</string>
     <string name="countdown_vibration_description">Each of the last three beeps, and the go cue, also vibrates. Follows your phone\'s touch vibration setting.</string>
@@ -435,10 +435,10 @@
     <string name="edit_program">Edit program</string>
     <string name="program_name">Program name</string>
     <string name="program_name_hint">e.g., Morning routine</string>
-    <string name="auto_mode">Auto mode</string>
-    <string name="auto_mode_disabled_hint">Requires count sound to be ON</string>
-    <string name="timer_mode_on_description">Auto-complete when goal is reached</string>
-    <string name="timer_mode_off_description">Manually complete with the Done button</string>
+    <string name="auto_mode">Finish sets automatically</string>
+    <string name="auto_mode_disabled_hint">Needs the rep timer</string>
+    <string name="timer_mode_on_description">A set ends when you reach the target</string>
+    <string name="timer_mode_off_description">Tap Complete to end each set</string>
     <string name="start_countdown">Start countdown</string>
     <string name="program_exercises">Exercises</string>
     <string name="add_exercise_to_program">Add exercise</string>
@@ -465,7 +465,7 @@
     <string name="program_use_challenge">Exercise</string>
     <string name="program_use_previous">Previous</string>
     <string name="program_use_program_desc">Uses the sets and target values defined in the program</string>
-    <string name="program_use_challenge_desc">Uses each exercise\'s challenge settings (program values if not set)</string>
+    <string name="program_use_challenge_desc">Uses each exercise\'s own target (the program\'s when it has none)</string>
     <string name="program_use_previous_desc">Uses your previous workout values (program values if no record)</string>
     <string name="auto_fill_target_label">Auto-fill target values</string>
     <string name="program_estimated_time">~%d min</string>
@@ -484,10 +484,10 @@
     <string name="exit_workout_confirm">Exit</string>
     <!-- Discard Result Confirmation -->
     <!-- Sound Settings (Program Confirm) -->
-    <string name="dynamic_count_sound_label">Count sound</string>
-    <string name="dynamic_count_sound_description">Assists counting for dynamic exercises</string>
+    <string name="dynamic_count_sound_label">Rep timer</string>
+    <string name="dynamic_count_sound_description">Counts reps at your pace, with a sound for each. Off: count with − and +</string>
     <string name="isometric_interval_sound_label">Sound during holds</string>
-    <string name="isometric_interval_sound_description">Isometric exercises</string>
+    <string name="isometric_interval_sound_description">A short beep every few seconds while you hold</string>
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Program overview</string>
     <string name="nav_overall_progress">Overall Progress</string>

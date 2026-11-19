@@ -276,13 +276,13 @@
     <string name="backup_saved_successfully">Sauvegarde enregistrée dans le dossier Téléchargements</string>
     <string name="backup_failed">Échec de la sauvegarde</string>
     <!-- Auto-fill Settings -->
-    <string name="settings_prefill_previous">Pré-remplir l\'enregistrement précédent</string>
-    <string name="settings_prefill_previous_description">Remplir automatiquement les valeurs de la dernière séance dans les écrans Enregistrement et Entraînement</string>
+    <string name="settings_prefill_previous">Partir de la dernière séance</string>
+    <string name="settings_prefill_previous_description">Les nouveaux entraînements et saisies reprennent les séries et valeurs de la dernière fois</string>
     <!-- Workout Settings -->
     <string name="section_workout_settings">Entraînement</string>
     <string name="start_countdown_setting">Compte à Rebours de Départ</string>
-    <string name="set_interval_setting">Intervalle entre Séries</string>
-    <string name="set_interval_note">Remarque : Les paramètres spécifiques à l\'exercice ont la priorité s\'ils sont configurés.</string>
+    <string name="set_interval_setting">Repos par défaut entre les séries</string>
+    <string name="set_interval_note">Utilisé quand un exercice n’a pas son propre temps de repos.</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Paramètres du Minuteur (Optionnel)</string>
     <string name="timer_settings_description">Configurer les minuteurs pour cet exercice. Laisser vide pour utiliser les paramètres par défaut.</string>
@@ -327,11 +327,11 @@
     <string name="app_source_code">Code Source</string>
     <string name="report_issue_github">Signaler un problème sur GitHub</string>
     <!-- Flash Notification -->
-    <string name="flash_notification_setting">Notification par Flash LED</string>
-    <string name="flash_notification_description">Faire clignoter le LED en synchronisation avec les sons pendant l\'entraînement</string>
+    <string name="flash_notification_setting">Flash avec les sons</string>
+    <string name="flash_notification_description">La lampe torche clignote à chaque son de l’entraînement</string>
     <string name="keep_screen_on_setting">Garder l\'écran allumé</string>
     <string name="keep_screen_on_description">Garder l\'écran allumé pendant l\'entraînement pour voir le compte à rebours</string>
-    <string name="set_done_vibration_setting">Vibrer à la fin d\'une série</string>
+    <string name="set_done_vibration_setting">Vibrer quand une série est terminée</string>
     <string name="set_done_vibration_description">Une courte vibration confirme chaque série terminée</string>
     <string name="countdown_vibration_setting">Vibrer avec les bips du compte à rebours</string>
     <string name="countdown_vibration_description">Chacun des trois derniers bips et le signal de départ vibrent aussi. Suit le réglage de vibration tactile du téléphone.</string>
@@ -407,20 +407,20 @@
     <string name="new_program">Nouveau programme</string>
     <string name="single_mode_description">Un exercice à la fois</string>
     <string name="start_countdown">Compte à rebours de départ</string>
-    <string name="timer_mode_on_description">Complétion automatique à l\'atteinte de l\'objectif</string>
-    <string name="timer_mode_off_description">Complétion manuelle avec le bouton Terminer</string>
+    <string name="timer_mode_on_description">Une série se termine quand vous atteignez l’objectif</string>
+    <string name="timer_mode_off_description">Terminez chaque série vous-même</string>
     <string name="record_weight_for_graph">Enregistrer le poids pour cet exercice</string>
     <string name="complete_with_time">Terminer (%ds)</string>
     <string name="previous_value_format">Précédent : %s</string>
     <string name="program_result_zero_warning">Les séries à 0 sont enregistrées comme passées et n\'apparaissent pas dans l\'historique.</string>
     <!-- Sound Settings (Program Confirm) -->
-    <string name="dynamic_count_sound_label">Son de comptage</string>
-    <string name="dynamic_count_sound_description">Aide au comptage des exercices dynamiques</string>
+    <string name="dynamic_count_sound_label">Minuteur de rép.</string>
+    <string name="dynamic_count_sound_description">Compte les rép. à votre rythme, avec un son à chacune. Désactivé : comptez avec − et +</string>
     <string name="isometric_interval_sound_label">Son pendant les maintiens</string>
-    <string name="isometric_interval_sound_description">Exercices isométriques</string>
+    <string name="isometric_interval_sound_description">Un bip court toutes les quelques secondes pendant le maintien</string>
     <!-- Auto Mode -->
-    <string name="auto_mode">Mode auto</string>
-    <string name="auto_mode_disabled_hint">Nécessite le son de comptage activé</string>
+    <string name="auto_mode">Terminer les séries automatiquement</string>
+    <string name="auto_mode_disabled_hint">Nécessite le minuteur de rép.</string>
     <!-- Program Settings -->
     <string name="auto_fill_target_label">Remplir auto les valeurs cibles</string>
     <string name="program_estimated_time">~%d min</string>
@@ -790,7 +790,7 @@
     <string name="nav_step_increment">Augmenter</string>
     <string name="nav_uncheck_set">Marquer la série comme non faite</string>
     <string name="previous_value_label">Dernier</string>
-    <string name="program_use_challenge_desc">Utilise l\'objectif de chaque exercice (sinon les valeurs du programme)</string>
+    <string name="program_use_challenge_desc">Utilise l’objectif propre à chaque exercice (celui du programme s’il n’en a pas)</string>
     <string name="program_use_previous_desc">Utilise les valeurs de votre dernière séance (sinon celles du programme)</string>
     <string name="program_use_program_desc">Utilise les séries et objectifs définis dans le programme</string>
     <string name="program_validation_incomplete_sets_or_value">Il manque des séries ou un objectif à certains exercices</string>
