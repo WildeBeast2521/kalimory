@@ -196,6 +196,47 @@ class CsvImportTest {
     }
 
     @Test
+    fun importRecords_warmUpAndEffortAreKeptAndExported() = runBlocking {
+        seedExercises()
+        val csv = listOf(
+            recordsHeader + ",warmUp,effortLeft",
+            "Push-up,Dynamic,2026-03-09,07:30,1,12,,,,,,true,4",
+            "Push-up,Dynamic,2026-03-09,07:30,2,10,,,,,,false,2",
+        ).joinToString("\n")
+        val report = transfer().importRecordsFromCsv(csv)
+
+        assertEquals(2, report.successCount)
+        val shown = history().sortedBy { it.setNumber }
+        assertEquals(listOf(true, false), shown.map { it.warmUp })
+        assertEquals(listOf(4, 2), shown.map { it.effortLeft })
+        val exported = transfer().exportRecords()
+        assertTrue(exported.contains(",true,4"))
+        assertTrue(exported.contains(",false,2"))
+    }
+
+    @Test
+    fun importRecords_marksOnASetBesideExistingSetsAreRefusedNotStripped() = runBlocking {
+        seedExercises()
+        transfer().importRecordsFromCsv(listOf(recordsHeader, "Push-up,Dynamic,2026-03-09,07:30,1,10,,,,,").joinToString("\n"))
+        val report = transfer().importRecordsFromCsv(
+            listOf(recordsHeader + ",warmUp,effortLeft", "Push-up,Dynamic,2026-03-09,07:30,2,9,,,,,,true,").joinToString("\n")
+        )
+        assertEquals(0, report.successCount)
+        assertEquals(1, report.errorCount)
+        assertEquals(1, history().size)
+    }
+
+    @Test
+    fun importRecords_badMarkValueIsALineError() = runBlocking {
+        seedExercises()
+        val report = transfer().importRecordsFromCsv(
+            listOf(recordsHeader + ",warmUp,effortLeft", "Push-up,Dynamic,2026-03-09,07:30,1,10,,,,,,maybe,").joinToString("\n")
+        )
+        assertEquals(1, report.errorCount)
+        assertEquals(0, history().size)
+    }
+
+    @Test
     fun importExercises_catalogId_linked() = runBlocking {
         val csv = """
             name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId

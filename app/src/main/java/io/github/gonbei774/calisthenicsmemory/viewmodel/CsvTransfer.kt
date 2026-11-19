@@ -103,8 +103,8 @@ class CsvTransfer(
 
             val csvBuilder = StringBuilder()
 
-            // ヘッダー (v12: 11列)
-            csvBuilder.appendLine("exerciseName,exerciseType,date,time,setNumber,valueRight,valueLeft,comment,distanceCm,weightG,assistanceG")
+            // Header: 13 columns, the last two (warmUp, effortLeft) optional on import
+            csvBuilder.appendLine(RECORDS_CSV_HEADER)
 
             // 入力例（コメント - 英語のみ）
             csvBuilder.appendLine("# Example: Multiple sets with same date/time (one session)")
@@ -118,11 +118,13 @@ class CsvTransfer(
             csvBuilder.appendLine("# Weighted Push-up,Dynamic,2025-11-09,10:00,1,10,,With vest,,10000,")
             csvBuilder.appendLine("# With assistance (g) - band assisted")
             csvBuilder.appendLine("# Pull-up,Dynamic,2025-11-09,11:00,1,5,,With band,,,22000")
+            csvBuilder.appendLine("# Warm-up mark (warmUp true) and effort (effortLeft 0-4, reps in reserve)")
+            csvBuilder.appendLine("# Wall Push-up,Dynamic,2025-11-09,09:55,1,12,,Warm-up,,,,true,4")
             csvBuilder.appendLine("#")
 
             // 種目リスト（空欄テンプレート）
             currentExercises.forEach { exercise ->
-                csvBuilder.appendLine(csvRow(exercise.name, exercise.type) + ",,,,,,,,,")
+                csvBuilder.appendLine(csvRow(exercise.name, exercise.type) + ",,,,,,,,,,,")
             }
 
             onMessage(UiMessage.CsvTemplateExported(currentExercises.size))
@@ -422,6 +424,7 @@ class CsvTransfer(
                     line = line, exercise = exercise, date = row.date, time = row.time, setNumber = row.setNumber,
                     valueRight = row.valueRight, valueLeft = row.valueLeft, comment = row.comment,
                     distanceCm = row.distanceCm, weightG = row.weightG, assistanceG = row.assistanceG,
+                    warmUp = row.warmUp, effortLeft = row.effortLeft,
                 )
             }
 

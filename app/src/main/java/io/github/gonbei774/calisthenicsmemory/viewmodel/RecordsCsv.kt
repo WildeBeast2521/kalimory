@@ -1,15 +1,16 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
+import io.github.gonbei774.calisthenicsmemory.data.v2.Effort
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.ResolverStyle
 
-/** The records CSV header (format v12, 11 columns). */
+/** The records CSV header (13 columns; warmUp and effortLeft are optional on import, so older files still read). */
 internal const val RECORDS_CSV_HEADER =
-    "exerciseName,exerciseType,date,time,setNumber,valueRight,valueLeft,comment,distanceCm,weightG,assistanceG"
+    "exerciseName,exerciseType,date,time,setNumber,valueRight,valueLeft,comment,distanceCm,weightG,assistanceG,warmUp,effortLeft"
 
 /**
  * Every set in [records], legacy or v2, as the records CSV: sorted by date, time and set number,
@@ -36,6 +37,8 @@ internal fun recordsCsv(records: List<HistorySet>, exercises: List<Exercise>): S
                     record.distanceCm?.toString() ?: "",
                     record.weightG?.toString() ?: "",
                     record.assistanceG?.toString() ?: "",
+                    record.warmUp.toString(),
+                    record.effortLeft?.toString() ?: "",
                 )
             )
         }
@@ -55,6 +58,8 @@ internal data class RecordCsvRow(
     val distanceCm: Int?,
     val weightG: Int?,
     val assistanceG: Int?,
+    val warmUp: Boolean = false,
+    val effortLeft: Int? = null,
 )
 
 private val CSV_DATE = DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(ResolverStyle.STRICT)
@@ -89,6 +94,12 @@ internal fun parseRecordCsvRow(columns: List<String>): Result<RecordCsvRow> {
     val mustBePositive = listOf(setNumber, valueRight) + listOf(6, 9, 10).map { optional.getValue(it) }.filter { it.isNotEmpty() }
     if (mustBePositive.any { it.toInt() < 0 }) return invalid("Negative value")
     fun number(index: Int) = optional.getValue(index).takeIf { it.isNotEmpty() }?.toInt()
+    // Warm-up and effort (optional): a value that does not read is an error, never quietly an empty cell.
+    val warmUpText = field(11)
+    val warmUp = if (warmUpText.isEmpty()) false else warmUpText.toBooleanStrictOrNull() ?: return invalid("Invalid warmUp (expected true or false): $warmUpText")
+    val effortText = field(12)
+    val effortLeft = if (effortText.isEmpty()) null else effortText.toIntOrNull()?.takeIf { it in 0..Effort.MAX_EFFORT_LEFT }
+        ?: return invalid("Invalid effortLeft (expected 0 to ${Effort.MAX_EFFORT_LEFT}): $effortText")
     return Result.success(
         RecordCsvRow(
             exerciseName = name,
@@ -102,6 +113,8 @@ internal fun parseRecordCsvRow(columns: List<String>): Result<RecordCsvRow> {
             distanceCm = number(8),
             weightG = number(9),
             assistanceG = number(10),
+            warmUp = warmUp,
+            effortLeft = effortLeft,
         )
     )
 }

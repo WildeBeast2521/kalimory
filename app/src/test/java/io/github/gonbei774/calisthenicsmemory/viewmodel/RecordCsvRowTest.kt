@@ -48,4 +48,26 @@ class RecordCsvRowTest {
         assertEquals("Invalid format (not enough columns)", error("A", "Dynamic", "2026-10-08"))
         assertEquals("Missing required fields", error("A", "", "2026-10-08", "07:30", "1", "5", "", ""))
     }
+
+    @Test fun `warm-up and effort read when present`() {
+        val r = row("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "true", "3").getOrThrow()
+        assertEquals(true, r.warmUp)
+        assertEquals(3, r.effortLeft)
+    }
+
+    @Test fun `an old eleven-column row has no marks`() {
+        val r = row("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "").getOrThrow()
+        assertEquals(false, r.warmUp)
+        assertEquals(null, r.effortLeft)
+        // Empty cells mean the same as missing ones.
+        val empty = row("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "", "").getOrThrow()
+        assertEquals(false, empty.warmUp)
+        assertEquals(null, empty.effortLeft)
+    }
+
+    @Test fun `a bad warm-up or effort value is refused, not read as empty`() {
+        assertEquals("Invalid warmUp (expected true or false): yes", error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "yes"))
+        assertEquals("Invalid effortLeft (expected 0 to 4): 5", error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "false", "5"))
+        assertEquals("Invalid effortLeft (expected 0 to 4): x", error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "", "x"))
+    }
 }
