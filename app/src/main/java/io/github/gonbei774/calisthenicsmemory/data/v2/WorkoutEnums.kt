@@ -20,6 +20,7 @@ enum class WorkoutSourceType(override val code: String) : StableCode {
     AD_HOC("AD_HOC"),
     PROGRAM_TEMPLATE("PROGRAM_TEMPLATE"),
     INTERVAL_TEMPLATE("INTERVAL_TEMPLATE"),
+    /** Workouts made from older-format records: converted, or imported from the records CSV. */
     LEGACY_IMPORT("LEGACY_IMPORT"),
     /** Entered by hand after the fact, with a user-chosen date and time. */
     MANUAL("MANUAL"),

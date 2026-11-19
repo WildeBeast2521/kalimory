@@ -134,6 +134,68 @@ class CsvImportTest {
     }
 
     @Test
+    fun importRecords_writesWorkoutsInTheCurrentModelAndNoOlderRecords() = runBlocking {
+        seedExercises()
+        val csv = listOf(
+            recordsHeader,
+            "Push-up,Dynamic,2026-03-09,07:30,1,10,,morning,,,",
+            "Push-up,Dynamic,2026-03-09,07:30,2,9,,morning,,,",
+            "Lunge,Dynamic,2026-03-09,07:30,1,8,6,morning,,,",
+        ).joinToString("\n")
+
+        val report = transfer().importRecordsFromCsv(csv)
+
+        assertEquals(3, report.successCount)
+        assertEquals(0, report.errorCount)
+        assertEquals(0, database.trainingRecordDao().countByExercise(exerciseDao.getExerciseByNameAndType("Push-up", "Dynamic")!!.id))
+        val sessions = database.backupDao().snapshot().workoutSessions
+        assertEquals(1, sessions.size)
+        assertEquals("morning", sessions.single().comment)
+    }
+
+    @Test
+    fun importRecords_historyShowsEachImportedSetOnce() = runBlocking {
+        seedExercises()
+        val csv = listOf(
+            recordsHeader,
+            "Push-up,Dynamic,2026-03-09,07:30,1,10,,,,,",
+            "Lunge,Dynamic,2026-03-09,07:30,1,8,6,,,,",
+        ).joinToString("\n")
+        transfer().importRecordsFromCsv(csv)
+
+        val shown = history()
+        assertEquals(2, shown.size)
+        assertEquals(listOf(8 to 6), shown.filter { it.valueLeft != null }.map { it.valueRight to it.valueLeft!! })
+    }
+
+    @Test
+    fun importRecords_theSameFileTwiceAddsNothing() = runBlocking {
+        seedExercises()
+        val csv = listOf(
+            recordsHeader,
+            "Push-up,Dynamic,2026-03-09,07:30,1,10,,,,,",
+            "Push-up,Dynamic,2026-03-09,07:30,2,9,,,,,",
+        ).joinToString("\n")
+        transfer().importRecordsFromCsv(csv)
+        val second = transfer().importRecordsFromCsv(csv)
+
+        assertEquals(0, second.successCount)
+        assertEquals(2, second.skippedCount)
+        assertEquals(2, history().size)
+    }
+
+    @Test
+    fun importRecords_anExportedFileImportedBackAddsNothing() = runBlocking {
+        seedExercises()
+        transfer().importRecordsFromCsv(listOf(recordsHeader, "Push-up,Dynamic,2026-03-09,07:30,1,10,,,,,", "Push-up,Dynamic,2026-03-09,07:30,2,9,,,,,").joinToString("\n"))
+        val exported = transfer().exportRecords()
+        val report = transfer().importRecordsFromCsv(exported)
+
+        assertEquals(0, report.successCount)
+        assertEquals(2, history().size)
+    }
+
+    @Test
     fun importExercises_catalogId_linked() = runBlocking {
         val csv = """
             name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
@@ -303,6 +365,15 @@ class CsvImportTest {
     // The app's own import, on the in-memory database.
     private val messages = mutableListOf<UiMessage>()
     private fun transfer() = CsvTransfer(database) { messages += it }
+
+    private val recordsHeader = "exerciseName,exerciseType,date,time,setNumber,valueRight,valueLeft,comment,distanceCm,weightG,assistanceG"
+
+    private suspend fun seedExercises() {
+        exerciseDao.insertExercise(io.github.gonbei774.calisthenicsmemory.data.Exercise(name = "Push-up", type = "Dynamic", laterality = "Bilateral"))
+        exerciseDao.insertExercise(io.github.gonbei774.calisthenicsmemory.data.Exercise(name = "Lunge", type = "Dynamic", laterality = "Unilateral"))
+    }
+
+    private suspend fun history() = io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory.read(database, java.time.ZoneId.systemDefault())
 
     private suspend fun importGroupsCsv(csvString: String): CsvImportReport = transfer().importGroups(csvString)
 

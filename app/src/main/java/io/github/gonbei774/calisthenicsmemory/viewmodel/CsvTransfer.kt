@@ -4,6 +4,7 @@ import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.CsvWorkoutImport
 import io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import kotlinx.coroutines.Dispatchers
@@ -378,14 +379,16 @@ class CsvTransfer(
     }
 
     /**
-     * CSVから記録をインポート（マージモード）
+     * Imports records from a CSV file, adding to what is there and skipping what is already there. Rows become
+     * workouts in the current history model (see [CsvWorkoutImport]), all in one transaction: if writing fails,
+     * nothing is added.
      */
     suspend fun importRecordsFromCsv(csvString: String): CsvImportReport = withContext(Dispatchers.IO) {
-        var successCount = 0
-        var skippedCount = 0
         var errorCount = 0
         val skippedItems = mutableListOf<String>()
         val errors = mutableListOf<String>()
+        var added = 0
+        var skipped = 0
 
         try {
             val csvRecords = parseCsvRecords(csvString)
@@ -395,66 +398,48 @@ class CsvTransfer(
                 return@withContext CsvImportReport(CsvType.RECORDS, 0, 0, 1, emptyList(), listOf("CSV file is empty"))
             }
 
-            // ヘッダー行をスキップ
-            val dataRecords = csvRecords.drop(1)
-
             // Sets already in history, legacy or v2, so an exported v2 set is not imported again as a duplicate.
-            val existingSets = CompatibilityHistory.read(database, ZoneId.systemDefault())
-                .map { listOf(it.exerciseId, it.date, it.time, it.setNumber) }
-                .toHashSet()
+            val zone = ZoneId.systemDefault()
+            val history = CompatibilityHistory.read(database, zone)
+            val existingKeys = history.map { listOf<Any>(it.exerciseId, it.date, it.time, it.setNumber) }.toHashSet()
+            val existingMinutes = history.map { listOf<Any>(it.exerciseId, it.date, it.time) }.toHashSet()
 
-            dataRecords.forEachIndexed { index, columns ->
-                try {
-                    val row = parseRecordCsvRow(columns).getOrElse {
-                        errors.add("Line ${index + 2}: ${it.message}")
-                        errorCount++
-                        return@forEachIndexed
-                    }
-
-                    // 種目を検索
-                    val exercise = exerciseDao.getExerciseByNameAndType(row.exerciseName, row.exerciseType)
-
-                    if (exercise == null) {
-                        errors.add("Line ${index + 2}: Exercise not found: ${row.exerciseName} (${row.exerciseType})")
-                        errorCount++
-                        return@forEachIndexed
-                    }
-
-                    // 重複チェック: history, and rows already imported from this file.
-                    val key = listOf(exercise.id, row.date, row.time, row.setNumber)
-                    if (key in existingSets) {
-                        skippedItems.add("\"${row.exerciseName} (${row.exerciseType})\" - ${row.date} ${row.time} Set ${row.setNumber} (already exists)")
-                        skippedCount++
-                        return@forEachIndexed
-                    }
-
-                    val record = TrainingRecord(
-                        exerciseId = exercise.id,
-                        valueRight = row.valueRight,
-                        valueLeft = row.valueLeft,
-                        setNumber = row.setNumber,
-                        date = row.date,
-                        time = row.time,
-                        comment = row.comment,
-                        distanceCm = row.distanceCm,
-                        weightG = row.weightG,
-                        assistanceG = row.assistanceG
-                    )
-
-                    recordDao.insertRecord(record)
-                    existingSets.add(key)
-                    successCount++
-
-                } catch (e: Exception) {
-                    errors.add("Line ${index + 2}: ${e.message}")
+            val rows = mutableListOf<CsvWorkoutImport.Row>()
+            csvRecords.drop(1).forEachIndexed { index, columns ->
+                val line = index + 2
+                val row = parseRecordCsvRow(columns).getOrElse {
+                    errors.add("Line $line: ${it.message}")
                     errorCount++
+                    return@forEachIndexed
                 }
+                val exercise = exerciseDao.getExerciseByNameAndType(row.exerciseName, row.exerciseType)
+                if (exercise == null) {
+                    errors.add("Line $line: Exercise not found: ${row.exerciseName} (${row.exerciseType})")
+                    errorCount++
+                    return@forEachIndexed
+                }
+                rows += CsvWorkoutImport.Row(
+                    line = line, exercise = exercise, date = row.date, time = row.time, setNumber = row.setNumber,
+                    valueRight = row.valueRight, valueLeft = row.valueLeft, comment = row.comment,
+                    distanceCm = row.distanceCm, weightG = row.weightG, assistanceG = row.assistanceG,
+                )
             }
 
+            val plan = CsvWorkoutImport.plan(rows, database.backupDao().groups(), existingKeys, existingMinutes, zone, System.currentTimeMillis())
+            plan.skipped.forEach {
+                skippedItems.add("\"${it.exercise.name} (${it.exercise.type})\" - ${it.date} ${it.time} Set ${it.setNumber} (already exists)")
+            }
+            skipped = plan.skipped.size
+            plan.refused.forEach {
+                errors.add("Line ${it.line}: Not added: this workout is in the older record format, which cannot hold warm-up marks or effort")
+                errorCount++
+            }
+            CsvWorkoutImport.write(database, plan)
+            added = plan.added
         } catch (e: Exception) {
             onMessage(UiMessage.ImportError(e.message ?: ""))
         }
 
-        return@withContext CsvImportReport(CsvType.RECORDS, successCount, skippedCount, errorCount, skippedItems, errors)
+        return@withContext CsvImportReport(CsvType.RECORDS, added, skipped, errorCount, skippedItems, errors)
     }
 }

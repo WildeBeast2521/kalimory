@@ -125,8 +125,13 @@ class HistoryReadersViewModelTest {
         assertEquals(1, report.successCount)
         assertEquals(1, report.skippedCount)
         assertEquals(2, report.errorCount)
-        // The seeded record plus the one imported row.
-        assertEquals(2, database.trainingRecordDao().countByExercise(exerciseId))
+        // The import writes a workout in the current model, not an older-format record: the seeded legacy
+        // record stays alone there, and History shows the imported set once.
+        assertEquals(1, database.trainingRecordDao().countByExercise(exerciseId))
+        val imported = io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
+            .read(database, java.time.ZoneId.systemDefault())
+            .filter { it.exerciseId == exerciseId && it.date == "2020-01-02" && it.time == "07:30" }
+        assertEquals(listOf(12), imported.map { it.valueRight })
     }
 
     @Test
