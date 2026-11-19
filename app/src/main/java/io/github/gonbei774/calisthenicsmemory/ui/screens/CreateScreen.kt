@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.semantics
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepper
@@ -1019,6 +1021,23 @@ fun UnifiedAddDialog(
                                         }
                                     }
                                 )
+
+                                // Where the exercise came from, and which muscles it works, when it was added from the catalogue.
+                                exercise?.catalogId?.let { id -> Catalogue.step(id) }?.let { step ->
+                                    Column {
+                                        Text(
+                                            text = stringResource(R.string.editor_from_catalogue, stringResource(step.name)),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        )
+                                        val muscleNames = step.primaryMuscles.map { muscleLabel(it) }
+                                        Text(
+                                            text = muscleNames.joinToString(", "),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        )
+                                    }
+                                }
 
                                 // タイプ選択
                                 Column {

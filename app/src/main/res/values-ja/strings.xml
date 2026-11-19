@@ -757,6 +757,7 @@
     <string name="settings_welcome_guide">ウェルカムガイド</string>
     <!-- The exercise catalogue screens. -->
     <string name="library_catalogue">種目カタログ</string>
+    <string name="editor_from_catalogue">カタログから: %1$s</string>
     <string name="catalogue_in_library_count">ライブラリに %1$d 件</string>
     <string name="catalogue_add">自分の種目に追加</string>
     <string name="catalogue_in_library">ライブラリにあります</string>

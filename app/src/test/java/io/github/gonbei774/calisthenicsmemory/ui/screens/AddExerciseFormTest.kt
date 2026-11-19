@@ -31,10 +31,10 @@ class AddExerciseFormTest {
 
     private var dismissed = 0
 
-    private fun open() {
+    private fun open(exercise: io.github.gonbei774.calisthenicsmemory.data.Exercise? = null) {
         val vm = TrainingViewModel(ApplicationProvider.getApplicationContext<Application>())
         compose.setContent {
-            CalisthenicsMemoryTheme { UnifiedAddDialog(exercise = null, viewModel = vm, onDismiss = { dismissed++ }) }
+            CalisthenicsMemoryTheme { UnifiedAddDialog(exercise = exercise, viewModel = vm, onDismiss = { dismissed++ }) }
         }
     }
 
@@ -55,5 +55,16 @@ class AddExerciseFormTest {
         open()
         compose.onNodeWithText("Difficulty").assertExists()
         compose.onNodeWithText("–").assertExists()
+    }
+
+    @Test fun `an exercise from the catalogue says so and names its muscles`() {
+        val step = io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue.chains.first().steps.first()
+        open(io.github.gonbei774.calisthenicsmemory.data.Exercise(id = 5, name = "Wall push-up", type = "Dynamic", catalogId = step.id))
+        compose.onNode(androidx.compose.ui.test.hasText("From the catalogue:", substring = true)).assertExists()
+    }
+
+    @Test fun `an exercise of your own does not mention the catalogue`() {
+        open(io.github.gonbei774.calisthenicsmemory.data.Exercise(id = 6, name = "My move", type = "Dynamic"))
+        compose.onNode(androidx.compose.ui.test.hasText("From the catalogue:", substring = true)).assertDoesNotExist()
     }
 }

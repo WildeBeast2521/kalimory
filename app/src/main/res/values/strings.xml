@@ -758,6 +758,7 @@
     <string name="settings_welcome_guide">Welcome guide</string>
     <!-- The exercise catalogue screens. -->
     <string name="library_catalogue">Exercise catalogue</string>
+    <string name="editor_from_catalogue">From the catalogue: %1$s</string>
     <string name="catalogue_in_library_count">%1$d in your library</string>
     <string name="catalogue_add">Add to my exercises</string>
     <string name="catalogue_in_library">In your library</string>

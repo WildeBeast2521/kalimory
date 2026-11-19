@@ -222,6 +222,7 @@
     <string name="settings_welcome_guide">Приветственный гид</string>
     <!-- The exercise catalogue screens. -->
     <string name="library_catalogue">Каталог упражнений</string>
+    <string name="editor_from_catalogue">Из каталога: %1$s</string>
     <string name="catalogue_in_library_count">%1$d в вашей библиотеке</string>
     <string name="catalogue_add">Добавить в мои упражнения</string>
     <string name="catalogue_in_library">В вашей библиотеке</string>

@@ -694,6 +694,7 @@
     <string name="settings_welcome_guide">欢迎指南</string>
     <!-- The exercise catalogue screens. -->
     <string name="library_catalogue">动作目录</string>
+    <string name="editor_from_catalogue">来自目录：%1$s</string>
     <string name="catalogue_in_library_count">库中有 %1$d 个</string>
     <string name="catalogue_add">添加到我的动作</string>
     <string name="catalogue_in_library">已在库中</string>

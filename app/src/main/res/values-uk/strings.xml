@@ -705,6 +705,7 @@
     <string name="settings_welcome_guide">Вітальний посібник</string>
     <!-- The exercise catalogue screens. -->
     <string name="library_catalogue">Каталог вправ</string>
+    <string name="editor_from_catalogue">З каталогу: %1$s</string>
     <string name="catalogue_in_library_count">%1$d у вашій бібліотеці</string>
     <string name="catalogue_add">Додати до моїх вправ</string>
     <string name="catalogue_in_library">У вашій бібліотеці</string>
