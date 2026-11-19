@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.train
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,9 +29,8 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.navigation.PrimaryDestination
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.HeroCard
-import io.github.gonbei774.calisthenicsmemory.ui.screens.today.RowGroup
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.Section
-import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.TodayRow
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
