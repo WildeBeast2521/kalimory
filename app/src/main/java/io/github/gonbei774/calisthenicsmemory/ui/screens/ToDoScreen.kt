@@ -411,7 +411,7 @@ private fun ActiveTaskContent(
                                         onNavigateToRecord(task.referenceId)
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                                    modifier = Modifier.fillMaxWidth().height(48.dp)
+                                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.todo_mode_record),
@@ -425,7 +425,7 @@ private fun ActiveTaskContent(
                                         onNavigateToWorkout(task.referenceId)
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                                    modifier = Modifier.fillMaxWidth().height(48.dp)
+                                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.todo_mode_workout),
@@ -772,7 +772,7 @@ private fun GroupTaskCard(
                                                 onNavigateToRecord(exercise.id)
                                             },
                                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                                            modifier = Modifier.fillMaxWidth().height(48.dp)
+                                            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                         ) {
                                             Text(
                                                 text = stringResource(R.string.todo_mode_record),
@@ -786,7 +786,7 @@ private fun GroupTaskCard(
                                                 onNavigateToWorkout(exercise.id)
                                             },
                                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                                            modifier = Modifier.fillMaxWidth().height(48.dp)
+                                            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                         ) {
                                             Text(
                                                 text = stringResource(R.string.todo_mode_workout),

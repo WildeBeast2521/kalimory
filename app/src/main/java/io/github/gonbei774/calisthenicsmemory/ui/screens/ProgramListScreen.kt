@@ -260,7 +260,7 @@ private fun ProgramListItem(
                             onClick = onResume,
                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                            modifier = Modifier.height(36.dp)
+                            modifier = Modifier.heightIn(min = 36.dp)
                         ) {
                             Icon(
                                 AppIcons.Play,

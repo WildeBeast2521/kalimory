@@ -858,7 +858,7 @@ fun CsvDataManagementScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .heightIn(min = 56.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary
                         )
@@ -895,7 +895,7 @@ fun CsvDataManagementScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .heightIn(min = 56.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = MaterialTheme.colorScheme.onSurface
                         )
