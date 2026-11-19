@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.LabelledNumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
@@ -360,64 +361,29 @@ fun ExerciseSettingsDialog(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
-                OutlinedTextField(
+                LabelledNumberStepper(
+                    label = stringResource(R.string.sets_label),
                     value = sets,
-                    onValueChange = { sets = it.filter { c -> c.isDigit() } },
-                    label = { Text(stringResource(R.string.sets_label)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        focusedLabelColor = MaterialTheme.colorScheme.primary,
-                        cursorColor = MaterialTheme.colorScheme.primary,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                    ),
-                    singleLine = true
+                    onValueChange = { sets = it },
+                    range = 1..99,
+                    unit = "",
                 )
 
-                OutlinedTextField(
+                LabelledNumberStepper(
+                    label = stringResource(R.string.target_value_label),
                     value = targetValue,
-                    onValueChange = { targetValue = it.filter { c -> c.isDigit() } },
-                    label = {
-                        Text(
-                            stringResource(R.string.target_value_label) + " (" + stringResource(
-                                if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds
-                            ) + ")"
-                        )
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        focusedLabelColor = MaterialTheme.colorScheme.primary,
-                        cursorColor = MaterialTheme.colorScheme.primary,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                    ),
-                    singleLine = true
+                    onValueChange = { targetValue = it },
+                    range = 1..999,
+                    unit = stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds),
                 )
 
-                OutlinedTextField(
+                LabelledNumberStepper(
+                    label = stringResource(R.string.interval_seconds_label),
                     value = intervalSeconds,
-                    onValueChange = { intervalSeconds = it.filter { c -> c.isDigit() } },
-                    label = { Text(stringResource(R.string.interval_seconds_label)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        focusedLabelColor = MaterialTheme.colorScheme.primary,
-                        cursorColor = MaterialTheme.colorScheme.primary,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                    ),
-                    singleLine = true
+                    onValueChange = { intervalSeconds = it },
+                    range = 0..600,
+                    unit = stringResource(R.string.unit_seconds),
+                    step = 5,
                 )
 
                 // Loop selection dropdown (only for standalone exercises)
@@ -542,40 +508,21 @@ fun LoopSettingsDialog(
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                OutlinedTextField(
+                LabelledNumberStepper(
+                    label = stringResource(R.string.loop_rounds),
                     value = rounds,
-                    onValueChange = { rounds = it.filter { c -> c.isDigit() } },
-                    label = { Text(stringResource(R.string.loop_rounds)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        focusedLabelColor = MaterialTheme.colorScheme.primary,
-                        cursorColor = MaterialTheme.colorScheme.primary,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                    ),
-                    singleLine = true
+                    onValueChange = { rounds = it },
+                    range = 1..99,
+                    unit = "",
                 )
 
-                OutlinedTextField(
+                LabelledNumberStepper(
+                    label = stringResource(R.string.loop_rest_between_rounds),
                     value = restBetweenRounds,
-                    onValueChange = { restBetweenRounds = it.filter { c -> c.isDigit() } },
-                    label = { Text(stringResource(R.string.loop_rest_between_rounds)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        focusedLabelColor = MaterialTheme.colorScheme.primary,
-                        cursorColor = MaterialTheme.colorScheme.primary,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                    ),
-                    singleLine = true
+                    onValueChange = { restBetweenRounds = it },
+                    range = 0..600,
+                    unit = stringResource(R.string.unit_seconds),
+                    step = 5,
                 )
 
                 // Delete button (only for existing loops)

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.LabelledNumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
@@ -1236,7 +1237,7 @@ fun UnifiedAddDialog(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                                     ) {
-                                        OptionalNumberStepper(
+                                        LabelledNumberStepper(
                                             label = stringResource(R.string.sets_count),
                                             value = targetSets,
                                             onValueChange = { targetSets = it },
@@ -1245,7 +1246,7 @@ fun UnifiedAddDialog(
                                             modifier = Modifier.weight(1f),
                                         )
 
-                                        OptionalNumberStepper(
+                                        LabelledNumberStepper(
                                             label = stringResource(if (selectedType == "Dynamic") R.string.reps_label else R.string.time_label),
                                             value = targetValue,
                                             onValueChange = { targetValue = it },
@@ -1302,7 +1303,7 @@ fun UnifiedAddDialog(
 
                                 // 1レップ時間（Dynamic種目のみ）
                                 if (selectedType == "Dynamic") {
-                                    OptionalNumberStepper(
+                                    LabelledNumberStepper(
                                         label = stringResource(R.string.rep_duration_seconds),
                                         value = repDuration,
                                         onValueChange = { repDuration = it },
@@ -1312,7 +1313,7 @@ fun UnifiedAddDialog(
                                 }
 
                                 // セット間インターバル
-                                OptionalNumberStepper(
+                                LabelledNumberStepper(
                                     label = stringResource(R.string.rest_interval_seconds),
                                     value = restInterval,
                                     onValueChange = { restInterval = it },
@@ -1450,35 +1451,3 @@ internal fun levelToSave(changed: Boolean, selected: Int, stored: Int): Int = if
 
 /** A target with only one of its two numbers, which can't be saved. Both empty means no target. */
 internal fun isTargetHalfFilled(hasTarget: Boolean, sets: String, value: String): Boolean = hasTarget && sets.isEmpty() != value.isEmpty()
-
-/**
- * A number that may be left blank, as a labelled stepper: blank shows a dash, stepping down from the lowest
- * value in [range] clears it, and stepping up from blank starts at the lowest value. Typing still works.
- */
-@Composable
-private fun OptionalNumberStepper(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-    range: IntRange,
-    unit: String,
-    modifier: Modifier = Modifier,
-    step: Int = 1,
-) {
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(text = label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        NumberStepper(
-            value = value,
-            onValueChange = { typed ->
-                val n = typed.toIntOrNull()
-                onValueChange(if (n == null || n < range.first) "" else n.coerceAtMost(range.last).toString())
-            },
-            unit = unit,
-            step = step,
-            // One step below the range is "blank", so stepping up from blank lands on the lowest value.
-            min = range.first - step,
-            max = range.last,
-            placeholder = "–",
-        )
-    }
-}
