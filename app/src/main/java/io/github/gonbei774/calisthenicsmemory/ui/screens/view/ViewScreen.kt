@@ -122,6 +122,7 @@ fun ViewScreen(
     onOpenChain: (String) -> Unit = {},
     onOpenCatalogue: () -> Unit = {},
     onOpenBodyMap: () -> Unit = {},
+    onOpenLibrary: () -> Unit = {},
 ) {
     val firstDay = firstDayOfWeek()
     val exercises by viewModel.exercises.collectAsState()
@@ -413,7 +414,8 @@ fun ViewScreen(
                                 exercises = exercises,
                                 records = records,
                                 selectedExerciseFilter = graphExercise,
-                                selectedPeriod = selectedPeriod
+                                selectedPeriod = selectedPeriod,
+                                onOpenLibrary = onOpenLibrary,
                             )
                         }
                     }

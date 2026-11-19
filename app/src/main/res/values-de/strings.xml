@@ -42,9 +42,6 @@
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">Trainingsaufzeichnung</string>
-    <string name="no_exercises_registered">Keine Übungen registriert</string>
-    <string name="add_exercises_in_settings">Füge Übungen in den Einstellungen hinzu</string>
-    <string name="go_to_settings">Zu den Einstellungen</string>
     <string name="select_exercise">Übung auswählen</string>
     <string name="select_exercise_please">Bitte wähle eine Übung aus</string>
     <string name="select_from_top">Wähle oben aus unter „Übung auswählen“</string>
@@ -1006,4 +1003,6 @@
     <string name="climb_legend_met">Standard erreicht</string>
     <string name="climb_step">Stufe %d</string>
     <string name="enter_a_number">Zahl eingeben</string>
+    <string name="add_exercises_in_library">Füge Übungen in der Bibliothek hinzu</string>
+    <string name="open_library">Bibliothek öffnen</string>
 </resources>

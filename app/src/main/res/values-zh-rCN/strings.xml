@@ -42,9 +42,6 @@
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">训练记录</string>
-    <string name="no_exercises_registered">还没有注册动作</string>
-    <string name="add_exercises_in_settings">在设置中添加动作</string>
-    <string name="go_to_settings">前往设置</string>
     <string name="select_exercise">选择动作</string>
     <string name="select_exercise_please">请选择动作</string>
     <string name="select_from_top">从上方「选择动作」选择</string>
@@ -982,4 +979,6 @@
     <string name="climb_legend_met">达到标准</string>
     <string name="climb_step">第 %d 步</string>
     <string name="enter_a_number">请输入数字</string>
+    <string name="add_exercises_in_library">在资料库中添加动作</string>
+    <string name="open_library">打开资料库</string>
 </resources>

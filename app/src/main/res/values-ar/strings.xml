@@ -283,9 +283,6 @@
     <string name="delete_confirmation">تأكيد الحذف</string>
     <string name="character_count">%1$d/%2$d</string>
     <string name="training_record">تسجيل تمرين سابق</string>
-    <string name="no_exercises_registered">لا توجد تمارين بعد</string>
-    <string name="add_exercises_in_settings">أضف تمارين من المكتبة</string>
-    <string name="go_to_settings">الانتقال إلى الإعدادات</string>
     <string name="select_exercise">اختر تمرينًا</string>
     <string name="select_exercise_please">يُرجى اختيار تمرين</string>
     <string name="select_from_top">اختر من «اختر تمرينًا» في الأعلى</string>
@@ -1071,4 +1068,6 @@
     <string name="climb_legend_met">تحقيق المعيار</string>
     <string name="climb_step">الخطوة %d</string>
     <string name="enter_a_number">أدخل رقمًا</string>
+    <string name="add_exercises_in_library">أضف تمارين من المكتبة</string>
+    <string name="open_library">افتح المكتبة</string>
 </resources>

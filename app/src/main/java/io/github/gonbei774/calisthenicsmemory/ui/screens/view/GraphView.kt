@@ -26,6 +26,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -120,7 +121,8 @@ fun GraphView(
     exercises: List<Exercise>,
     records: List<HistorySet>,
     selectedExerciseFilter: Exercise?,
-    selectedPeriod: Period?
+    selectedPeriod: Period?,
+    onOpenLibrary: () -> Unit = {},
 ) {
     val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
@@ -128,26 +130,11 @@ fun GraphView(
     var isDistanceInverted by remember { mutableStateOf(false) }
 
     if (exercises.isEmpty()) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.no_exercises_registered),
-                    fontSize = 18.sp,
-                    color = cs.onSurfaceVariant
-                )
-                Text(
-                    text = stringResource(R.string.add_exercises_in_settings),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = cs.onSurfaceVariant
-                )
-            }
-        }
+        EmptyState(
+            text = stringResource(R.string.add_exercises_in_library),
+            actionLabel = stringResource(R.string.open_library),
+            onAction = onOpenLibrary,
+        )
         return
     }
 

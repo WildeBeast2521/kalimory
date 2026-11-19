@@ -123,8 +123,6 @@
     <string name="program_name">Назва програми</string>
     <string name="program_exercises">Вправи</string>
     <string name="add_exercise_to_program">Додати вправу</string>
-    <string name="add_exercises_in_settings">Додавайте вправи в налаштуваннях</string>
-    <string name="go_to_settings">Перейти до налаштувань</string>
     <string name="select_from_top">Використовуйте «Виберіть вправу» вище</string>
     <string name="name_required">Введіть назву</string>
     <string name="duplicate_exercise_name">Така назва вправи вже використовується</string>
@@ -156,7 +154,6 @@
     <string name="no_exercises_available">Немає доступних вправ</string>
     <string name="file_name">Назва файлу</string>
     <string name="clear">Очистити</string>
-    <string name="no_exercises_registered">Немає зареєстрованих вправ</string>
     <string name="already_registered_format">«%1$s (%2$s)» вже зареєстровано</string>
     <string name="error_occurred">Виникла помилка</string>
     <string name="csv_import_errors">Помилки (%d)</string>
@@ -1014,4 +1011,6 @@
     <string name="climb_legend_met">Норматив виконано</string>
     <string name="climb_step">Крок %d</string>
     <string name="enter_a_number">Введіть число</string>
+    <string name="add_exercises_in_library">Додайте вправи в Бібліотеці</string>
+    <string name="open_library">Відкрити Бібліотеку</string>
 </resources>

@@ -36,9 +36,6 @@
     <string name="delete_confirmation">Подтверждение удаления</string>
     <string name="character_count">%1$d/%2$d</string>
     <string name="training_record">Журнал тренировок</string>
-    <string name="no_exercises_registered">Упражнения не добавлены</string>
-    <string name="add_exercises_in_settings">Добавьте упражнения в настройках</string>
-    <string name="go_to_settings">Перейти в настройки</string>
     <string name="select_exercise">Выбрать упражнение</string>
     <string name="select_exercise_please">Выберите упражнение</string>
     <string name="select_from_top">Используйте «Выберите упражнение» выше</string>
@@ -1011,4 +1008,6 @@
     <string name="climb_legend_met">Норматив выполнен</string>
     <string name="climb_step">Шаг %d</string>
     <string name="enter_a_number">Введите число</string>
+    <string name="add_exercises_in_library">Добавьте упражнения в Библиотеке</string>
+    <string name="open_library">Открыть Библиотеку</string>
 </resources>
