@@ -331,6 +331,8 @@
     <string name="keep_screen_on_description">训练时保持屏幕常亮以显示倒计时</string>
     <string name="set_done_vibration_setting">完成一组时振动</string>
     <string name="set_done_vibration_description">每完成一组都会短暂振动确认</string>
+    <string name="countdown_vibration_setting">倒计时提示音同时振动</string>
+    <string name="countdown_vibration_description">最后三声提示音和开始提示音也会振动。遵循手机的触摸振动设置。</string>
     <!-- To Do Screen -->
     <string name="todo_title">待办事项</string>
     <string name="todo_empty">点击 + 添加动作</string>

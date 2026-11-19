@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberCountdownHaptics
 import io.github.gonbei774.calisthenicsmemory.workout.restDialProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RestToolbar
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.SetDoneBadge
@@ -58,6 +59,7 @@ internal fun ProgramStartIntervalStep(
     onComplete: () -> Unit,
     onSkip: () -> Unit
 ) {
+    val cues = rememberCountdownHaptics()
     val cs = MaterialTheme.colorScheme
     val currentSet = session.sets[currentSetIndex]
     val (_, exercise) = session.exercises[currentSet.exerciseIndex]
@@ -76,6 +78,7 @@ internal fun ProgramStartIntervalStep(
             lastShown = shown
             if (shown in 1..3) {
                 soundPlayer.playCountdown()
+                cues.tick()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -84,6 +87,7 @@ internal fun ProgramStartIntervalStep(
         if (shown <= 0) {
             finished = true
             soundPlayer.playStartCue()
+            cues.go()
             if (isFlashEnabled) {
                 launch { flashController.flashComplete() }
             }
@@ -146,6 +150,7 @@ internal fun ProgramIntervalStep(
     onSkip: () -> Unit,
     showEffort: Boolean = false,
 ) {
+    val cues = rememberCountdownHaptics()
     val cs = MaterialTheme.colorScheme
     val currentSet = session.sets[currentSetIndex]
     // 次のセット：オーバーライドがあればそれを使用、なければ+1
@@ -174,6 +179,7 @@ internal fun ProgramIntervalStep(
             lastShown = shown
             if (shown in 1..3) {
                 soundPlayer.playCountdown()
+                cues.tick()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -183,6 +189,7 @@ internal fun ProgramIntervalStep(
         if (shown <= 0 && !sw.isPaused) {
             finished = true
             soundPlayer.playStartCue()
+            cues.go()
             if (isFlashEnabled) {
                 launch { flashController.flashComplete() }
             }

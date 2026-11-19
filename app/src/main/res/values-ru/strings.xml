@@ -152,6 +152,8 @@
     <string name="graph_latest_exercise">Последнее: %1$s</string>
     <string name="set_done_vibration_setting">Вибрация после подхода</string>
     <string name="set_done_vibration_description">Короткая вибрация подтверждает каждый завершённый подход</string>
+    <string name="countdown_vibration_setting">Вибрация с сигналами отсчёта</string>
+    <string name="countdown_vibration_description">Каждый из последних трёх сигналов и сигнал старта тоже сопровождаются вибрацией. Зависит от настройки вибрации при касании на телефоне.</string>
     <!-- Workout summary -->
     <string name="workout_summary_title">Тренировка завершена</string>
     <string name="summary_sets">Подходы</string>

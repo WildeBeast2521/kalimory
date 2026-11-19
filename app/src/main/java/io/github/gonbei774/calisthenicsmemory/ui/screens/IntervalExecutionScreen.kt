@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberCountdownHaptics
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.ReportWorkoutProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.countdownProgress
 import io.github.gonbei774.calisthenicsmemory.workout.WorkoutPhase
@@ -124,6 +125,7 @@ fun IntervalExecutionScreen(
     onNavigateBack: () -> Unit,
     onComplete: () -> Unit
 ) {
+    val cues = rememberCountdownHaptics()
     val cs = MaterialTheme.colorScheme
     val context = LocalContext.current
     val view = LocalView.current
@@ -442,6 +444,7 @@ fun IntervalExecutionScreen(
                     soundPlayer.playSetComplete()
                 } else {
                     soundPlayer.playStartCue()
+                    cues.go()
                     if (isFlashEnabled) launch { flashController.flashComplete() }
                 }
             }
@@ -461,6 +464,7 @@ fun IntervalExecutionScreen(
                 state.timer is StepTimer.Running
             ) {
                 soundPlayer.playCountdown()
+                cues.tick()
                 if (isFlashEnabled) launch { flashController.flashShort() }
             }
             lastStepIndex = state.stepIndex

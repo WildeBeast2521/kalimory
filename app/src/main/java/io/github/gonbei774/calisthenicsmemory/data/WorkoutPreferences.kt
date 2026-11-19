@@ -121,6 +121,15 @@ class WorkoutPreferences(context: Context) {
         prefs.edit { putBoolean(KEY_SET_DONE_VIBRATION_ENABLED, enabled) }
     }
 
+    /** A short vibration with each countdown beep and the go cue (default: off). Touch feedback still applies. */
+    fun isCountdownVibrationEnabled(): Boolean {
+        return prefs.getBoolean(KEY_COUNTDOWN_VIBRATION_ENABLED, false)
+    }
+
+    fun setCountdownVibrationEnabled(enabled: Boolean) {
+        prefs.edit { putBoolean(KEY_COUNTDOWN_VIBRATION_ENABLED, enabled) }
+    }
+
     /**
      * 前回記録のプリフィルの有効/無効を取得
      * 記録画面とワークアウト画面の両方に適用される
@@ -225,6 +234,7 @@ class WorkoutPreferences(context: Context) {
         private const val KEY_FLASH_NOTIFICATION_ENABLED = "flash_notification_enabled"
         private const val KEY_KEEP_SCREEN_ON_ENABLED = "keep_screen_on_enabled"
         private const val KEY_SET_DONE_VIBRATION_ENABLED = "set_done_vibration_enabled"
+        private const val KEY_COUNTDOWN_VIBRATION_ENABLED = "countdown_vibration_enabled"
         private const val KEY_PREFILL_PREVIOUS_RECORD = "prefill_previous_record"
         private const val KEY_WARM_UP_MARKING = "warmup_sets_enabled"
         private const val KEY_EFFORT_RATING = "effort_rating_enabled"

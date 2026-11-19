@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberCountdownHaptics
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberSetDoneHaptic
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePickRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
@@ -1679,6 +1680,7 @@ fun StartIntervalStep(
     onIntervalComplete: () -> Unit,
     onSkip: () -> Unit
 ) {
+    val cues = rememberCountdownHaptics()
     var isPaused by remember { mutableStateOf(false) }
     val totalMillis = session.startInterval * 1_000L
 
@@ -1692,6 +1694,7 @@ fun StartIntervalStep(
             lastShown = shown
             if (shown in 1..3) {
                 soundPlayer.playCountdown()
+                cues.tick()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -1700,6 +1703,7 @@ fun StartIntervalStep(
         if (shown <= 0) {
             finished = true
             soundPlayer.playStartCue()
+            cues.go()
             if (isFlashEnabled) {
                 launch { flashController.flashComplete() }
             }
@@ -1771,6 +1775,7 @@ fun IntervalStep(
     onUpdateInterval: (Int) -> Unit,
     showEffort: Boolean = false,
 ) {
+    val cues = rememberCountdownHaptics()
     var isRunning by remember { mutableStateOf(true) }
 
     // 残り時間はモノトニッククロックから計算。±10秒は extraMillis で調整する
@@ -1784,6 +1789,7 @@ fun IntervalStep(
             lastShown = shown
             if (shown in 1..3) {
                 soundPlayer.playCountdown()
+                cues.tick()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -1793,6 +1799,7 @@ fun IntervalStep(
         if (shown <= 0 && !sw.isPaused) {
             finished = true
             soundPlayer.playStartCue()
+            cues.go()
             if (isFlashEnabled) {
                 launch { flashController.flashComplete() }
             }

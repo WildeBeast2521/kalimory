@@ -11,6 +11,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- A Vibrate with countdown beeps switch in Settings, off by default, makes each of the last three beeps of the start and rest countdowns, and the go cue, vibrate too; it follows the phone's touch vibration setting ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - The Progress period buttons have 1 year and All, and the graph opens on 1 month unless a period was chosen; the Lowest figure is gone from the graph statistics ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Skip set under the main button of a running set, in a workout and in a program, and Skip exercise in a program, move on without recording a value; a skipped set is saved as skipped, has no rest of its own, and the next set shows the start countdown ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - A Restart set button under the main button of every running set, in a workout and in a program, starts the set again; it was in the single workout's menu only ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))

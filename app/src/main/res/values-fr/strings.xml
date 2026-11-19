@@ -331,6 +331,8 @@
     <string name="keep_screen_on_description">Garder l\'écran allumé pendant l\'entraînement pour voir le compte à rebours</string>
     <string name="set_done_vibration_setting">Vibrer à la fin d\'une série</string>
     <string name="set_done_vibration_description">Une courte vibration confirme chaque série terminée</string>
+    <string name="countdown_vibration_setting">Vibrer avec les bips du compte à rebours</string>
+    <string name="countdown_vibration_description">Chacun des trois derniers bips et le signal de départ vibrent aussi. Suit le réglage de vibration tactile du téléphone.</string>
     <!-- To Do Screen -->
     <string name="todo_title">À faire</string>
     <string name="todo_empty">Appuyez sur + pour ajouter des exercices</string>

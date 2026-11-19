@@ -331,6 +331,8 @@
     <string name="keep_screen_on_description">Mantener la pantalla encendida durante el entrenamiento para ver la cuenta regresiva</string>
     <string name="set_done_vibration_setting">Vibrar al terminar una serie</string>
     <string name="set_done_vibration_description">Una breve vibración confirma cada serie terminada</string>
+    <string name="countdown_vibration_setting">Vibrar con los pitidos de la cuenta atrás</string>
+    <string name="countdown_vibration_description">Cada uno de los tres últimos pitidos y la señal de inicio también vibran. Sigue el ajuste de vibración táctil del teléfono.</string>
     <!-- To Do Screen -->
     <string name="todo_title">Pendientes</string>
     <string name="todo_empty">Toca + para añadir ejercicios</string>

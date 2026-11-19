@@ -362,6 +362,8 @@
     <string name="keep_screen_on_description">Keep screen on during workout to view countdown</string>
     <string name="set_done_vibration_setting">Vibrate when a set is done</string>
     <string name="set_done_vibration_description">A short vibration confirms each finished set</string>
+    <string name="countdown_vibration_setting">Vibrate with countdown beeps</string>
+    <string name="countdown_vibration_description">Each of the last three beeps, and the go cue, also vibrates. Follows your phone\'s touch vibration setting.</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Timer settings (optional)</string>
     <string name="timer_settings_description">Configure timers for this exercise. Leave blank to use default settings.</string>

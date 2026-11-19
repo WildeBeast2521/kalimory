@@ -87,6 +87,8 @@
     <string name="graph_latest_exercise">الأحدث: %1$s</string>
     <string name="set_done_vibration_setting">الاهتزاز عند إنهاء مجموعة</string>
     <string name="set_done_vibration_description">اهتزاز قصير يؤكد كل مجموعة منتهية</string>
+    <string name="countdown_vibration_setting">اهتزاز مع أصوات العد التنازلي</string>
+    <string name="countdown_vibration_description">كل صوت من الأصوات الثلاثة الأخيرة وإشارة البدء يهتز أيضًا. يتبع إعداد اهتزاز اللمس في هاتفك.</string>
     <!-- Workout summary -->
     <string name="workout_summary_title">اكتمل التمرين</string>
     <string name="summary_sets">المجموعات</string>

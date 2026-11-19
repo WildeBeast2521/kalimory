@@ -376,6 +376,8 @@
     <string name="keep_screen_on_description">ワークアウト中にカウントダウンを表示するため画面を点灯したままにする</string>
     <string name="set_done_vibration_setting">セット完了時に振動</string>
     <string name="set_done_vibration_description">セットを終えるたびに短く振動してお知らせします</string>
+    <string name="countdown_vibration_setting">カウントダウン音と一緒に振動</string>
+    <string name="countdown_vibration_description">最後の3回の音とスタート音でも振動します。スマートフォンのタッチ操作時のバイブ設定に従います。</string>
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
     <string name="todo_empty">右下の + で種目を追加</string>
