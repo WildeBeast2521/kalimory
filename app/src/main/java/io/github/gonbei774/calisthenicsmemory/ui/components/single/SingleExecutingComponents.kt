@@ -139,6 +139,7 @@ fun SingleExecutingStepDynamicManual(
 
         // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
         CompleteSetButton(
+            soundPlayer = soundPlayer,
             text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
             recordValue = recordValue,
             unit = stringResource(R.string.unit_reps),
@@ -264,6 +265,7 @@ fun SingleExecutingStepDynamicAuto(
 
         // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
         CompleteSetButton(
+            soundPlayer = soundPlayer,
             text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
             recordValue = recordValue,
             unit = stringResource(R.string.unit_reps),
@@ -464,6 +466,7 @@ fun SingleExecutingStepIsometricManual(
 
         // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
         CompleteSetButton(
+            soundPlayer = soundPlayer,
             text = stringResource(R.string.complete_with_time, recordValue),
             recordValue = recordValue,
             unit = stringResource(R.string.unit_seconds_short),
@@ -585,6 +588,7 @@ fun SingleExecutingStepIsometricAuto(
 
         // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
         CompleteSetButton(
+            soundPlayer = soundPlayer,
             text = stringResource(R.string.complete_with_time, recordValue),
             recordValue = recordValue,
             unit = stringResource(R.string.unit_seconds_short),
@@ -607,6 +611,7 @@ fun SingleExecutingStepIsometricAuto(
  */
 @Composable
 private fun CompleteSetButton(
+    soundPlayer: SoundPlayer,
     text: String,
     recordValue: Int,
     unit: String,
@@ -641,6 +646,8 @@ private fun CompleteSetButton(
                 currentSet.distanceCm = distanceCm
                 currentSet.assistanceG = assistanceG
                 currentSet.isCompleted = true
+                // Reaching the target already played the finish sound; ending below it is heard here.
+                if (recordValue < currentSet.targetValue) soundPlayer.playSetComplete()
                 showConfirm = false
                 onSetComplete(session)
             },

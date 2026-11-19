@@ -51,6 +51,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- Ending a timed set with Complete below its target plays the finish sound too, as reaching the target does ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Renaming a group to a name another group already has says so, instead of a general error ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - A new exercise with a target no longer gets a Difficulty of 5 that nobody chose ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Pressing Complete on a counted set, which has no timer to announce it, plays the finish sound ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
