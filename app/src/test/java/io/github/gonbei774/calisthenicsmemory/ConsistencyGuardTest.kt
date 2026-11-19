@@ -47,6 +47,11 @@ class ConsistencyGuardTest {
         assertTrue("Use MaterialTheme.shapes instead: $offenders", offenders.isEmpty())
     }
 
+    @Test fun `an on-off setting is a SwitchRow, not a switch built by hand`() {
+        val offenders = uses(Regex("""(?<![A-Za-z])Switch\("""), except = setOf("SwitchRow.kt", "SettingRows.kt"))
+        assertTrue("Use SwitchRow or SettingSwitchRow instead: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `an exercise's badges come from ExerciseBadges`() {
         // The level text beside an exercise was built by hand in a dozen places, in three sizes.
         val offenders = uses(Regex("""R\.string\.level_format"""), except = setOf("ExerciseBadges.kt", "ViewScreen.kt"))

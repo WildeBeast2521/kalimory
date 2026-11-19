@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingSwitchRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
 import io.github.gonbei774.calisthenicsmemory.ui.screens.review.label
 import io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily
 import androidx.compose.material3.FilterChip
@@ -320,25 +322,13 @@ private fun ChainRow(chain: CatalogueChain, inLibrary: Int, onClick: () -> Unit)
 
 @Composable
 private fun FollowRow(followed: Boolean, onChange: (Boolean) -> Unit) {
-    Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceContainerLow) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .toggleable(value = followed, role = Role.Switch, onValueChange = onChange)
-                .padding(horizontal = Spacing.l, vertical = Spacing.m),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.catalogue_follow), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
-                Text(
-                    stringResource(R.string.catalogue_follow_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            Spacer(Modifier.width(Spacing.l))
-            Switch(checked = followed, onCheckedChange = null)
-        }
+    SettingsCard {
+        SettingSwitchRow(
+            title = stringResource(R.string.catalogue_follow),
+            description = stringResource(R.string.catalogue_follow_description),
+            checked = followed,
+            onCheckedChange = onChange,
+        )
     }
 }
 

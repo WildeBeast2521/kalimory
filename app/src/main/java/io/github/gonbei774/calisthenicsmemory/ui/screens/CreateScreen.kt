@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import androidx.compose.ui.semantics.stateDescription
@@ -1224,22 +1225,11 @@ fun UnifiedAddDialog(
                                 modifier = Modifier.padding(16.dp),
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.set_challenge),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Switch(
-                                        checked = hasTarget,
-                                        onCheckedChange = { hasTarget = it }
-                                    )
-                                }
+                                SwitchRow(
+                                    title = stringResource(R.string.set_challenge),
+                                    checked = hasTarget,
+                                    onCheckedChange = { hasTarget = it },
+                                )
 
                                 if (hasTarget) {
                                     Row(
@@ -1374,76 +1364,28 @@ fun UnifiedAddDialog(
                                 )
 
                                 // 距離トラッキング
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
-                                        Text(
-                                            text = stringResource(R.string.track_distance),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                        Text(
-                                            text = stringResource(R.string.track_distance_description),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
-                                    Switch(
-                                        checked = distanceTrackingEnabled,
-                                        onCheckedChange = { distanceTrackingEnabled = it }
-                                    )
-                                }
+                                SwitchRow(
+                                    title = stringResource(R.string.track_distance),
+                                    description = stringResource(R.string.track_distance_description),
+                                    checked = distanceTrackingEnabled,
+                                    onCheckedChange = { distanceTrackingEnabled = it },
+                                )
 
                                 // 荷重トラッキング
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
-                                        Text(
-                                            text = stringResource(R.string.track_weight),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                        Text(
-                                            text = stringResource(R.string.track_weight_description),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
-                                    Switch(
-                                        checked = weightTrackingEnabled,
-                                        onCheckedChange = { weightTrackingEnabled = it }
-                                    )
-                                }
+                                SwitchRow(
+                                    title = stringResource(R.string.track_weight),
+                                    description = stringResource(R.string.track_weight_description),
+                                    checked = weightTrackingEnabled,
+                                    onCheckedChange = { weightTrackingEnabled = it },
+                                )
 
                                 // アシストトラッキング
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
-                                        Text(
-                                            text = stringResource(R.string.track_assistance),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                        Text(
-                                            text = stringResource(R.string.track_assistance_description),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
-                                    Switch(
-                                        checked = assistanceTrackingEnabled,
-                                        onCheckedChange = { assistanceTrackingEnabled = it }
-                                    )
-                                }
+                                SwitchRow(
+                                    title = stringResource(R.string.track_assistance),
+                                    description = stringResource(R.string.track_assistance_description),
+                                    checked = assistanceTrackingEnabled,
+                                    onCheckedChange = { assistanceTrackingEnabled = it },
+                                )
                             }
                         }
                         // 説明文カード

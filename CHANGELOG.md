@@ -30,6 +30,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- The on-off settings in the exercise form and the catalogue's Follow row work like the ones in Settings: the whole row toggles, and a screen reader reads one control with its state ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - A calendar day is shaded by how many sets it holds (1-3, 4-9, 10-19, 20 or more), with interval work counted as sets, instead of by reps weighted by difficulty, and the total sets figure includes interval work ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - Smaller wording fixes: Overall progress in sentence case, "Rest 60 s", Best workout, "Choose an exercise", a plainer unsaved-changes message, a program's length reads "About 12 min", and the crash report says how to keep it for later ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - The JSON backup is called Full backup and says that settings are not included; importing a backup file is Restore backup, with a warning that restoring replaces all current data ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
