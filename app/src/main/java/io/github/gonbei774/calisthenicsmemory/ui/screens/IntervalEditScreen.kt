@@ -607,7 +607,7 @@ private fun IntervalExerciseItem(
             // Drag handle
             Icon(
                 AppIcons.DragHandle,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.todo_drag_to_reorder),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .size(24.dp)

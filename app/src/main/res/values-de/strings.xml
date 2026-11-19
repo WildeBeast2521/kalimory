@@ -1005,4 +1005,7 @@
     <string name="enter_a_number">Zahl eingeben</string>
     <string name="add_exercises_in_library">Füge Übungen in der Bibliothek hinzu</string>
     <string name="open_library">Bibliothek öffnen</string>
+    <string name="catalogue_step_number">Stufe %d</string>
+    <string name="show_only_this_exercise">Nur diese Übung zeigen</string>
+    <string name="chart_summary">Diagramm von %1$s bis %2$s. Zuletzt %3$s, höchster Wert %4$s.</string>
 </resources>

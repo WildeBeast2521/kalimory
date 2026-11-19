@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import java.util.Locale
 import androidx.compose.ui.platform.LocalConfiguration
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
@@ -72,6 +74,13 @@ data class WeightDataPoint(
     val date: String,
     val maxWeightKg: Float          // その日の最大重量（kg）
 )
+
+/** What a screen reader says for a chart: its date range, the latest value and the highest (empty for no data). */
+@Composable
+private fun chartSummary(dates: List<String>, values: List<Float>): String {
+    if (dates.isEmpty() || values.isEmpty()) return ""
+    return stringResource(R.string.chart_summary, dates.first(), dates.last(), values.last().roundToInt(), values.max().roundToInt())
+}
 
 enum class Period(val days: Int, val displayNameResId: Int) {
     OneWeek(7, R.string.period_one_week),
@@ -853,8 +862,10 @@ fun SimpleLineChart(
     // 単位文字列を取得（@Composable関数内でのみ取得可能）
     val unit = unitSuffix(stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds))
 
+    val summary = chartSummary(data.map { it.date }, data.map { it.value })
     Canvas(
         modifier = Modifier
+            .clearAndSetSemantics { contentDescription = summary }
             .fillMaxSize()
             .padding(16.dp)
     ) {
@@ -1298,8 +1309,10 @@ fun SimpleVolumeChart(
     val cs = MaterialTheme.colorScheme
     val isUnilateral = data.any { it.volumeLeft != null }
 
+    val summary = chartSummary(data.map { it.date }, data.map { it.volumeRight })
     Canvas(
         modifier = Modifier
+            .clearAndSetSemantics { contentDescription = summary }
             .fillMaxSize()
             .padding(16.dp)
     ) {
@@ -1593,8 +1606,10 @@ fun SimpleAssistanceChart(
     val numberLocale = LocalConfiguration.current.locales[0]
     val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
+    val summary = chartSummary(data.map { it.date }, data.map { it.assistanceKg })
     Canvas(
         modifier = Modifier
+            .clearAndSetSemantics { contentDescription = summary }
             .fillMaxSize()
             .padding(16.dp)
     ) {
@@ -1844,8 +1859,10 @@ fun SimpleWeightChart(
     val numberLocale = LocalConfiguration.current.locales[0]
     val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
+    val summary = chartSummary(data.map { it.date }, data.map { it.maxWeightKg })
     Canvas(
         modifier = Modifier
+            .clearAndSetSemantics { contentDescription = summary }
             .fillMaxSize()
             .padding(16.dp)
     ) {

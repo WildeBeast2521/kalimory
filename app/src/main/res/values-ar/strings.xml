@@ -1070,4 +1070,7 @@
     <string name="enter_a_number">أدخل رقمًا</string>
     <string name="add_exercises_in_library">أضف تمارين من المكتبة</string>
     <string name="open_library">افتح المكتبة</string>
+    <string name="catalogue_step_number">الخطوة %d</string>
+    <string name="show_only_this_exercise">اعرض هذا التمرين فقط</string>
+    <string name="chart_summary">رسم بياني من %1$s إلى %2$s. الأحدث %3$s، والأعلى %4$s.</string>
 </resources>

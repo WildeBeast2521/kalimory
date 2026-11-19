@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue
 
+import androidx.compose.ui.semantics.contentDescription
 import io.github.gonbei774.calisthenicsmemory.data.progression.Climb
 import io.github.gonbei774.calisthenicsmemory.util.rememberToday
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
@@ -302,8 +303,9 @@ private fun FollowRow(followed: Boolean, onChange: (Boolean) -> Unit) {
 
 @Composable
 private fun LevelBadge(level: Int) {
+    val step = stringResource(R.string.catalogue_step_number, level)
     Box(
-        Modifier.size(40.dp).clip(MaterialTheme.shapes.medium).background(MaterialTheme.colorScheme.secondaryContainer),
+        Modifier.semantics { contentDescription = step }.size(40.dp).clip(MaterialTheme.shapes.medium).background(MaterialTheme.colorScheme.secondaryContainer),
         contentAlignment = Alignment.Center,
     ) {
         Text("$level", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)

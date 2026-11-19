@@ -987,4 +987,7 @@
     <string name="enter_a_number">数値を入力してください</string>
     <string name="add_exercises_in_library">ライブラリで種目を追加してください</string>
     <string name="open_library">ライブラリを開く</string>
+    <string name="catalogue_step_number">ステップ %d</string>
+    <string name="show_only_this_exercise">この種目だけ表示</string>
+    <string name="chart_summary">%1$s〜%2$sのグラフ。最新 %3$s、最高 %4$s。</string>
 </resources>

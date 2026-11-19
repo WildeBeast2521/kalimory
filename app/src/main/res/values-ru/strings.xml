@@ -1010,4 +1010,7 @@
     <string name="enter_a_number">Введите число</string>
     <string name="add_exercises_in_library">Добавьте упражнения в Библиотеке</string>
     <string name="open_library">Открыть Библиотеку</string>
+    <string name="catalogue_step_number">Шаг %d</string>
+    <string name="show_only_this_exercise">Показать только это упражнение</string>
+    <string name="chart_summary">График с %1$s по %2$s. Последнее %3$s, максимум %4$s.</string>
 </resources>

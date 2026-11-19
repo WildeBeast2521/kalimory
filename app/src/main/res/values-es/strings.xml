@@ -1036,4 +1036,7 @@
     <string name="enter_a_number">Introduce un número</string>
     <string name="add_exercises_in_library">Añade ejercicios en Biblioteca</string>
     <string name="open_library">Abrir Biblioteca</string>
+    <string name="catalogue_step_number">Paso %d</string>
+    <string name="show_only_this_exercise">Mostrar solo este ejercicio</string>
+    <string name="chart_summary">Gráfico del %1$s al %2$s. Último %3$s, máximo %4$s.</string>
 </resources>

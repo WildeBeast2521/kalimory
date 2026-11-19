@@ -1015,4 +1015,7 @@
     <string name="enter_a_number">Enter a number</string>
     <string name="add_exercises_in_library">Add exercises in Library</string>
     <string name="open_library">Open Library</string>
+    <string name="catalogue_step_number">Step %d</string>
+    <string name="show_only_this_exercise">Show only this exercise</string>
+    <string name="chart_summary">Chart from %1$s to %2$s. Latest %3$s, highest %4$s.</string>
 </resources>

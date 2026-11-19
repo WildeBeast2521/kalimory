@@ -981,4 +981,7 @@
     <string name="enter_a_number">请输入数字</string>
     <string name="add_exercises_in_library">在资料库中添加动作</string>
     <string name="open_library">打开资料库</string>
+    <string name="catalogue_step_number">第 %d 步</string>
+    <string name="show_only_this_exercise">只显示此动作</string>
+    <string name="chart_summary">%1$s 至 %2$s 的图表。最新 %3$s，最高 %4$s。</string>
 </resources>
