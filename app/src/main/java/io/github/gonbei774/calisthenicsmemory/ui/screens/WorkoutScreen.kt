@@ -134,6 +134,18 @@ data class WorkoutSet(
     var effortLeft: Int? = null,
 )
 
+/** The single-workout twin of [raiseLaterTargets] for programs: later sets of the same side aim for at least what was just done. */
+internal fun raiseLaterTargets(sets: MutableList<WorkoutSet>, index: Int) {
+    val done = sets[index]
+    if (!done.isCompleted || done.isWarmUp || done.actualValue <= 0) return
+    for (i in index + 1..sets.lastIndex) {
+        val later = sets[i]
+        if (!later.isCompleted && !later.isSkipped && later.side == done.side && later.targetValue < done.actualValue) {
+            sets[i] = later.copy(targetValue = done.actualValue)
+        }
+    }
+}
+
 /**
  * Ending a workout early: the sets from [from] on that were never reached (not done, not skipped on purpose,
  * no value) are left out of the record instead of being saved as skipped. If that would leave the workout with
@@ -487,6 +499,7 @@ fun WorkoutScreen(
                     val onSetComplete: (WorkoutSession) -> Unit = { updatedSession ->
                         setDoneHaptic()
                         updatedSession.sets.getOrNull(step.currentSetIndex)?.completedAtWallMillis = System.currentTimeMillis()
+                        if (step.currentSetIndex in updatedSession.sets.indices) raiseLaterTargets(updatedSession.sets, step.currentSetIndex)
                         currentStep = followSet(updatedSession, singleAfterSet(updatedSession.sets, step.currentSetIndex, updatedSession.intervalDuration, updatedSession.startInterval))
                     }
                     // Skipping records no value, no vibration and no rest; the next set gets the countdown.
