@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowAction
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowMenu
+import androidx.compose.foundation.clickable
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.InfoActionRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
@@ -142,7 +145,6 @@ private fun IntervalProgramListItem(
     onDuplicate: () -> Unit
 ) {
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
-    var showContextMenu by remember { mutableStateOf(false) }
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
             if (value == SwipeToDismissBoxValue.EndToStart) {
@@ -199,10 +201,7 @@ private fun IntervalProgramListItem(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .combinedClickable(
-                        onClick = { },
-                        onLongClick = { showContextMenu = true }
-                    ),
+                    .clickable(onClick = onEdit),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                 shape = MaterialTheme.shapes.large
             ) {
@@ -235,17 +234,13 @@ private fun IntervalProgramListItem(
                     },
                     actions = {
 
-                    // Edit button
-                    IconButton(
-                        onClick = onEdit,
-                        modifier = Modifier.size(40.dp)
-                    ) {
-                        Icon(
-                            AppIcons.Edit,
-                            contentDescription = stringResource(R.string.edit_interval_program),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    RowMenu(
+                        listOf(
+                            RowAction(stringResource(R.string.edit_interval_program), AppIcons.Edit, onEdit),
+                            RowAction(stringResource(R.string.interval_duplicate), AppIcons.Add, onDuplicate),
+                            RowAction(stringResource(R.string.interval_delete_program), AppIcons.Delete, { showDeleteConfirmDialog = true }, destructive = true),
                         )
-                    }
+                    )
 
                     // Execute button
                     StartButton(onClick = onExecute)
@@ -253,52 +248,6 @@ private fun IntervalProgramListItem(
                 )
             }
 
-            // Context menu (long press)
-            DropdownMenu(
-                expanded = showContextMenu,
-                onDismissRequest = { showContextMenu = false },
-                offset = DpOffset(16.dp, 0.dp),
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-            ) {
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            stringResource(R.string.interval_duplicate),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    },
-                    onClick = {
-                        showContextMenu = false
-                        onDuplicate()
-                    },
-                    leadingIcon = {
-                        Icon(
-                            AppIcons.Add,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                )
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            stringResource(R.string.interval_delete_program),
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    },
-                    onClick = {
-                        showContextMenu = false
-                        showDeleteConfirmDialog = true
-                    },
-                    leadingIcon = {
-                        Icon(
-                            AppIcons.Delete,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.error
-                        )
-                    }
-                )
-            }
         }
     }
 }

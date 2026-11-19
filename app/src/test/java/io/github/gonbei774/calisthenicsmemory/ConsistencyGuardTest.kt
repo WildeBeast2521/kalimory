@@ -73,6 +73,12 @@ class ConsistencyGuardTest {
         }
     }
 
+    @Test fun `a long press does not hide a menu`() {
+        // A row's other actions sit behind its menu button; a long press is for dragging.
+        val offenders = uses(Regex("""onLongClick\s*=\s*\{\s*(show|open)\w*Menu"""))
+        assertTrue("Put the action in RowMenu instead: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `an on-off setting is a SwitchRow, not a switch built by hand`() {
         val offenders = uses(Regex("""(?<![A-Za-z])Switch\("""), except = setOf("SwitchRow.kt", "SettingRows.kt"))
         assertTrue("Use SwitchRow or SettingSwitchRow instead: $offenders", offenders.isEmpty())

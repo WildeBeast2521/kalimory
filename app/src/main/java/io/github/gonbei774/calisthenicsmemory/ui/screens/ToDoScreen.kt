@@ -2,6 +2,8 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowAction
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowMenu
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
@@ -1839,28 +1841,10 @@ private fun RepeatDaysDialog(
 /** A task's actions, visible on every card (long-press and swipe stay as shortcuts). */
 @Composable
 private fun TaskMenu(onRepeat: () -> Unit, onDelete: () -> Unit) {
-    Box {
-        var open by remember { mutableStateOf(false) }
-        IconButton(onClick = { open = true }) {
-            Icon(AppIcons.More, contentDescription = stringResource(R.string.menu), tint = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.todo_repeat_title)) },
-                leadingIcon = { Icon(AppIcons.Repeat, contentDescription = null) },
-                onClick = {
-                    open = false
-                    onRepeat()
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) },
-                leadingIcon = { Icon(AppIcons.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
-                onClick = {
-                    open = false
-                    onDelete()
-                },
-            )
-        }
-    }
+    RowMenu(
+        listOf(
+            RowAction(stringResource(R.string.todo_repeat_title), AppIcons.Repeat, onRepeat),
+            RowAction(stringResource(R.string.delete), AppIcons.Delete, onDelete, destructive = true),
+        )
+    )
 }
