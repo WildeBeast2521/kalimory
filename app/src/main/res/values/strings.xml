@@ -80,9 +80,7 @@
     <string name="no_records_yet">No records yet</string>
     <string name="unknown_exercise">Unknown exercise</string>
     <string name="edit_session_info">Edit session info</string>
-    <string name="delete_session">Delete session</string>
     <string name="delete_record_warning">Delete \"%1$s\" record?\n%2$s %3$s\n%4$s</string>
-    <string name="edit_set_value">Edit set value</string>
     <string name="right_value_label">Right value</string>
     <string name="left_value_label">Left value</string>
     <string name="show_all">Show all</string>
@@ -227,7 +225,6 @@
     <string name="clear">Clear</string>
     <string name="no_results">No results found</string>
     <string name="search_includes">Includes %1$s</string>
-    <string name="value_label">Value</string>
     <string name="graph_type_average">Average</string>
     <string name="graph_type_max">Max</string>
     <string name="graph_type_total">Total</string>

@@ -65,9 +65,7 @@
     <string name="no_records_yet">Noch keine Aufzeichnungen</string>
     <string name="unknown_exercise">Unbekannte Übung</string>
     <string name="edit_session_info">Sitzungsinfo bearbeiten</string>
-    <string name="delete_session">Sitzung löschen</string>
     <string name="delete_record_warning">\"%1$s\" Aufzeichnung löschen?\n%2$s %3$s\n%4$s</string>
-    <string name="edit_set_value">Satzwert bearbeiten</string>
     <string name="right_value_label">Rechter Wert</string>
     <string name="left_value_label">Linker Wert</string>
     <string name="show_all">Alle anzeigen</string>
@@ -175,7 +173,6 @@
     <string name="tab_calendar">Kalender</string>
     <string name="search_placeholder">Suchen</string>
     <string name="clear">Löschen</string>
-    <string name="value_label">Wert</string>
     <string name="graph_type_average">Durchschnitt</string>
     <string name="graph_type_max">Maximum</string>
     <string name="graph_type_total">Gesamt</string>

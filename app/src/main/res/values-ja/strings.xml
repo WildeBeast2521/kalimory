@@ -78,9 +78,7 @@
     <string name="no_records_yet">記録がまだありません</string>
     <string name="unknown_exercise">不明な種目</string>
     <string name="edit_session_info">セッション情報を編集</string>
-    <string name="delete_session">セッションを削除</string>
     <string name="delete_record_warning">「%1$s」の記録を削除しますか？\n%2$s %3$s\n%4$s</string>
-    <string name="edit_set_value">セット値の編集</string>
     <string name="right_value_label">右の値</string>
     <string name="left_value_label">左の値</string>
     <string name="show_all">全て表示</string>
@@ -218,7 +216,6 @@
     <string name="no_results">結果が見つかりません</string>
     <string name="search_includes">%1$s を含む</string>
     <string name="clear">クリア</string>
-    <string name="value_label">値</string>
     <string name="graph_type_average">平均</string>
     <string name="graph_type_max">最大</string>
     <string name="graph_type_total">合計</string>

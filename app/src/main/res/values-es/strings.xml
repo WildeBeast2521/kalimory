@@ -67,9 +67,7 @@
     <string name="no_records_yet">No hay registros aún</string>
     <string name="unknown_exercise">Ejercicio Desconocido</string>
     <string name="edit_session_info">Editar Info de Sesión</string>
-    <string name="delete_session">Eliminar Sesión</string>
     <string name="delete_record_warning">¿Eliminar registro de \"%1$s\"?\n%2$s %3$s\n%4$s</string>
-    <string name="edit_set_value">Editar Valor de Serie</string>
     <string name="right_value_label">Valor Derecho</string>
     <string name="left_value_label">Valor Izquierdo</string>
     <string name="show_all">Mostrar Todo</string>
@@ -179,7 +177,6 @@
     <string name="no_results">No se encontraron resultados</string>
     <string name="search_includes">Incluye %1$s</string>
     <string name="clear">Limpiar</string>
-    <string name="value_label">Valor</string>
     <string name="graph_type_average">Promedio</string>
     <string name="graph_type_max">Máximo</string>
     <string name="graph_type_total">Total</string>

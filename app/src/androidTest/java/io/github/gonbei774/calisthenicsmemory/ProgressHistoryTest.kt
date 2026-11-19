@@ -1,5 +1,11 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import androidx.compose.ui.test.swipeUp
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.onLast
+import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
@@ -118,6 +124,37 @@ class ProgressHistoryTest {
         rule.onNodeWithText("$today 20:00").assertExists()
         // Both sessions can be edited and deleted.
         rule.onAllNodesWithContentDescription(context.getString(R.string.menu)).assertCountEquals(2)
+    }
+
+    @Test
+    fun tappingASetOpensItsWorkoutInTheEditor() {
+        scenario = ActivityScenario.launch(MainActivity::class.java)
+        val progress = context.getString(PrimaryDestination.PROGRESS.label)
+        rule.waitUntil(STARTUP_TIMEOUT_MS) {
+            rule.onAllNodesWithText(progress).fetchSemanticsNodes().isNotEmpty()
+        }
+        rule.onNode(hasText(progress) and hasAnyAncestor(hasTestTag(PRIMARY_NAVIGATION_BAR_TAG))).performClick()
+        rule.onNodeWithText(context.getString(R.string.tab_list)).performClick()
+        rule.waitUntil(STARTUP_TIMEOUT_MS) {
+            rule.onAllNodesWithText(exerciseName).fetchSemanticsNodes().size == 2
+        }
+
+        // A set of the newest workout (the v2 one) opens the whole workout in the editor; back returns to the list.
+        // The legacy workout's editor is covered by WorkoutEditorTest.
+        rule.onAllNodesWithText(context.getString(R.string.set_number, 1))[0].performClick()
+        rule.waitUntil(STARTUP_TIMEOUT_MS) {
+            rule.onAllNodesWithText(context.getString(R.string.workout_edit_title)).fetchSemanticsNodes().isNotEmpty()
+        }
+        pressBack()
+        rule.waitUntil(STARTUP_TIMEOUT_MS) {
+            rule.onAllNodesWithText(context.getString(R.string.workout_edit_title)).fetchSemanticsNodes().isEmpty()
+        }
+    }
+
+    private fun pressBack() {
+        rule.waitForIdle()
+        scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+        rule.waitForIdle()
     }
 
     @Test

@@ -67,9 +67,7 @@
     <string name="no_records_yet">Nessuna registrazione ancora</string>
     <string name="unknown_exercise">Esercizio Sconosciuto</string>
     <string name="edit_session_info">Modifica Info Sessione</string>
-    <string name="delete_session">Elimina Sessione</string>
     <string name="delete_record_warning">Eliminare la registrazione \"%1$s\"?\n%2$s %3$s\n%4$s</string>
-    <string name="edit_set_value">Modifica Valore Serie</string>
     <string name="right_value_label">Valore Destra</string>
     <string name="left_value_label">Valore Sinistra</string>
     <string name="show_all">Mostra Tutto</string>
@@ -179,7 +177,6 @@
     <string name="no_results">Nessun risultato trovato</string>
     <string name="search_includes">Include %1$s</string>
     <string name="clear">Cancella</string>
-    <string name="value_label">Valore</string>
     <string name="graph_type_average">Media</string>
     <string name="graph_type_max">Massimo</string>
     <string name="graph_type_total">Totale</string>

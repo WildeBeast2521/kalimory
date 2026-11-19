@@ -66,7 +66,6 @@
     <string name="export_error">Помилка експорту: %s</string>
     <string name="import_error">Помилка імпорту: %s</string>
     <string name="workout_title">Тренування</string>
-    <string name="value_label">Значення</string>
     <string name="new_group_plus">+ Нова група</string>
     <string name="save_button">Зберегти</string>
     <string name="create_button">Створити</string>
@@ -299,7 +298,6 @@
     <string name="nav_save_overwrite_title">Перезаписати збережене тренування?</string>
     <string name="apply_exercise_settings">Застосувати налаштування вправи</string>
     <string name="section_app_info">Про додаток</string>
-    <string name="delete_session">Видалити заняття</string>
     <string name="import_data_preview_message">Відновити цю резервну копію?</string>
     <string name="pause_button">Пауза</string>
     <string name="retry_set_button">Повторити підхід</string>
@@ -359,7 +357,6 @@
     <string name="csv_import_description">Імпорт груп, вправ або записів (автоматично виявлених)</string>
     <string name="auto_fill_target_label">Автозаповнення цільових значень</string>
     <string name="import_warning">Відновлення замінить усі поточні дані.</string>
-    <string name="edit_set_value">Змінити кількість підходів</string>
     <string name="target_sets_label">Мета (підходів)</string>
     <string name="target_reps_label">Мета (разів)</string>
     <string name="todo_choose_mode">Виберіть режим</string>

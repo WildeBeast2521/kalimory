@@ -62,7 +62,6 @@
     <string name="no_records_yet">Нет записей</string>
     <string name="unknown_exercise">Неизвестное упражнение</string>
     <string name="edit_session_info">Редактировать тренировку</string>
-    <string name="delete_session">Удалить тренировку</string>
     <string name="delete_record_warning">Удалить запись \"%1$s\"?\n%2$s %3$s\n%4$s</string>
     <string name="import_anomalies_notice">Элементы, не соответствующие формату приложения: %1$d. Они будут импортированы без изменений.</string>
     <string name="db_unavailable_title">Не удалось открыть данные тренировок</string>
@@ -310,7 +309,6 @@
     <string name="set_status_check_desc">Отметка о выполнении подхода</string>
     <string name="set_uncheck_desc">Отметить подход как невыполненный</string>
     <string name="record_done_count">%1$d/%2$d</string>
-    <string name="edit_set_value">Изменить значение подхода</string>
     <string name="right_value_label">Правая сторона</string>
     <string name="left_value_label">Левая сторона</string>
     <string name="show_all">Показать все</string>
@@ -443,7 +441,6 @@
     <string name="clear">Очистить</string>
     <string name="no_results">Ничего не найдено</string>
     <string name="search_includes">Включает %1$s</string>
-    <string name="value_label">Значение</string>
     <string name="graph_type_average">Среднее</string>
     <string name="graph_type_max">Максимум</string>
     <string name="graph_type_total">Сумма</string>

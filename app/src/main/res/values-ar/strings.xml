@@ -318,9 +318,7 @@
     <string name="no_records_yet">لا توجد سجلات بعد</string>
     <string name="unknown_exercise">تمرين غير معروف</string>
     <string name="edit_session_info">تعديل معلومات الجلسة</string>
-    <string name="delete_session">حذف الجلسة</string>
     <string name="delete_record_warning">حذف سجل «%1$s»؟\n%2$s %3$s\n%4$s</string>
-    <string name="edit_set_value">تعديل قيمة المجموعة</string>
     <string name="right_value_label">قيمة اليمين</string>
     <string name="left_value_label">قيمة اليسار</string>
     <string name="show_all">عرض الكل</string>
@@ -453,7 +451,6 @@
     <string name="clear">مسح</string>
     <string name="no_results">لا توجد نتائج</string>
     <string name="search_includes">يتضمن %1$s</string>
-    <string name="value_label">القيمة</string>
     <string name="graph_type_average">المتوسط</string>
     <string name="graph_type_max">الأقصى</string>
     <string name="graph_type_total">الإجمالي</string>

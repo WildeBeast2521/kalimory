@@ -67,9 +67,7 @@
     <string name="no_records_yet">还没有记录</string>
     <string name="unknown_exercise">未知动作</string>
     <string name="edit_session_info">编辑训练信息</string>
-    <string name="delete_session">删除训练</string>
     <string name="delete_record_warning">删除「%1$s」记录？\n%2$s %3$s\n%4$s</string>
-    <string name="edit_set_value">编辑组数值</string>
     <string name="right_value_label">右侧数值</string>
     <string name="left_value_label">左侧数值</string>
     <string name="show_all">显示全部</string>
@@ -179,7 +177,6 @@
     <string name="no_results">未找到结果</string>
     <string name="search_includes">包含 %1$s</string>
     <string name="clear">清除</string>
-    <string name="value_label">数值</string>
     <string name="graph_type_average">平均</string>
     <string name="graph_type_max">最大</string>
     <string name="graph_type_total">总计</string>
