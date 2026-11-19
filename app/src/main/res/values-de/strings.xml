@@ -1003,4 +1003,5 @@
     <string name="climb_legend_started">Stufe begonnen</string>
     <string name="climb_legend_met">Standard erreicht</string>
     <string name="climb_step">Stufe %d</string>
+    <string name="enter_a_number">Zahl eingeben</string>
 </resources>

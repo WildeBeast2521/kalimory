@@ -1039,4 +1039,5 @@
     <string name="climb_legend_started">Passo iniziato</string>
     <string name="climb_legend_met">Standard raggiunto</string>
     <string name="climb_step">Passo %d</string>
+    <string name="enter_a_number">Inserisci un numero</string>
 </resources>

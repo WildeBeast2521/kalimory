@@ -11,6 +11,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.workout.restDialProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
+import io.github.gonbei774.calisthenicsmemory.data.defaultPlan
 import io.github.gonbei774.calisthenicsmemory.data.AfterSet
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
@@ -1210,11 +1211,11 @@ fun SettingsStep(
     val context = LocalContext.current
     val workoutPrefs = remember { WorkoutPreferences(context) }
 
-    // Start ready to go: the exercise's own targets, or the defaults Start already falls back to
-    // (3 sets × 10, 5 s per rep), so Start is never disabled without a visible reason.
-    // A suggestion from Today (ADR 0005, decision 4) comes first; the user can still change it.
-    var sets by remember { mutableStateOf((suggestedTarget?.sets ?: exercise.targetSets ?: 3).toString()) }
-    var targetValue by remember { mutableStateOf((suggestedTarget?.value ?: exercise.targetValue ?: 10).toString()) }
+    // The exercise's own target, else one set, with the reps of the last session once it has loaded and
+    // nothing at all when there is none: no number is invented. A suggestion from Today (ADR 0005,
+    // decision 4) comes first; the user can still change it. Start stays enabled and says what is missing.
+    var sets by remember { mutableStateOf((suggestedTarget?.sets ?: exercise.targetSets ?: 1).toString()) }
+    var targetValue by remember { mutableStateOf((suggestedTarget?.value ?: exercise.targetValue)?.toString() ?: "") }
     var repDuration by remember {
         mutableStateOf(
             if (exercise.type == "Dynamic") {
@@ -1296,6 +1297,10 @@ fun SettingsStep(
                     assistanceInput = (it / 1000.0).toString()
                 }
             }
+        }
+        // No target of its own and none suggested: start from what was done last time, if anything.
+        if (suggestedTarget == null && exercise.targetValue == null && targetValue.isEmpty()) {
+            defaultPlan(exercise.targetSets, exercise.targetValue, prevSession).value?.let { targetValue = it.toString() }
         }
     }
 
@@ -1559,14 +1564,27 @@ fun SettingsStep(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val isValid = sets.isNotEmpty() && targetValue.isNotEmpty() &&
+        val isValid = (sets.toIntOrNull() ?: 0) >= 1 && (targetValue.toIntOrNull() ?: 0) >= 1 &&
                 (exercise.type != "Dynamic" || !isDynamicCountSoundEnabled || repDuration.toIntOrNull()?.let { it >= 1 } == true)
+        var triedToStart by remember { mutableStateOf(false) }
+        if (triedToStart && !isValid) {
+            Text(
+                text = stringResource(R.string.enter_a_number),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(bottom = Spacing.s),
+            )
+        }
 
         WorkoutPrimaryButton(
             text = stringResource(R.string.start_workout),
             onClick = {
-                val totalSets = sets.toIntOrNull() ?: 3
-                val target = targetValue.toIntOrNull() ?: 10
+                if (!isValid) {
+                    triedToStart = true
+                    return@WorkoutPrimaryButton
+                }
+                val totalSets = sets.toIntOrNull() ?: 1
+                val target = targetValue.toIntOrNull() ?: 1
                 val repDur = if (exercise.type == "Dynamic") repDuration.toIntOrNull() ?: 5 else null
                 // An empty field is the switch being off (Settings), so no countdown and no rest.
                 val start = startInterval.toIntOrNull() ?: 0
@@ -1633,7 +1651,6 @@ fun SettingsStep(
                 onStartWorkout(session)
             },
             icon = AppIcons.Play,
-            enabled = isValid,
         )
     }
 }

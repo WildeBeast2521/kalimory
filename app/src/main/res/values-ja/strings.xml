@@ -985,4 +985,5 @@
     <string name="climb_legend_started">ステップ開始</string>
     <string name="climb_legend_met">基準を達成</string>
     <string name="climb_step">ステップ%d</string>
+    <string name="enter_a_number">数値を入力してください</string>
 </resources>

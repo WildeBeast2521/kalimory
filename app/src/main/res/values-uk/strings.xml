@@ -1011,4 +1011,5 @@
     <string name="climb_legend_started">Крок розпочато</string>
     <string name="climb_legend_met">Норматив виконано</string>
     <string name="climb_step">Крок %d</string>
+    <string name="enter_a_number">Введіть число</string>
 </resources>
