@@ -155,7 +155,6 @@
     <string name="retry_set_button">重试组</string>
     <string name="skip_set_button">跳过本组</string>
     <string name="skip_exercise_button">跳过此动作</string>
-    <string name="interval_label">间隔</string>
     <string name="next_set_format">下一组：第%1$d/%2$d组</string>
     <string name="next_set_format_with_side">下一组：第%1$d/%2$d组 - %3$s</string>
     <string name="minus_10sec">-10秒</string>
@@ -403,7 +402,8 @@
     <string name="sets_label_short">组数:</string>
     <string name="unit_seconds_short">秒</string>
     <string name="new_program">新建方案</string>
-    <string name="single_mode_description">一次一个动作</string>
+    <string name="single_mode_description">选择一个动作并开始</string>
+    <string name="start_one_exercise">单个动作</string>
     <string name="start_countdown">开始倒计时</string>
     <string name="timer_mode_on_description">达到目标时该组自动结束</string>
     <string name="timer_mode_off_description">每组手动结束</string>
@@ -467,8 +467,9 @@
 
     <!-- Interval Mode -->
     <string name="interval_no_record_note">此模式不记录次数或保持时间</string>
-    <string name="interval_list_title">间歇</string>
-    <string name="interval_empty">暂无间歇程序\n点击 + 创建一个</string>
+    <string name="interval_list_title">间歇训练</string>
+    <string name="interval_kind">间歇</string>
+    <string name="interval_empty">还没有间歇训练</string>
     <string name="new_interval_program">新建间歇训练</string>
     <string name="edit_interval_program">编辑间歇训练</string>
     <string name="interval_program_name">程序名称</string>
@@ -539,7 +540,7 @@
     <string name="share_preview_total_with_auto">%1$s%2$s</string>
     <string name="share_preview_groups">分组：%1$d</string>
     <string name="share_no_programs">无训练计划</string>
-    <string name="share_no_intervals">无间歇训练计划</string>
+    <string name="share_no_intervals">还没有间歇训练</string>
     <string name="share_no_exercises">无动作</string>
     <string name="share_exercise_auto_included">从训练计划/间歇训练自动包含</string>
     <string name="share_ungrouped">无分组</string>
@@ -610,7 +611,7 @@
     <string name="first_day_of_week_automatic">自动（%1$s）</string>
     <string name="first_day_of_week_auto">自动</string>
     <string name="train_no_programs">暂无计划</string>
-    <string name="train_no_intervals">暂无间歇训练</string>
+    <string name="train_no_intervals">还没有间歇训练</string>
     <string name="train_log_title">记录过去的训练</string>
     <string name="train_log_detail">输入已完成的组</string>
     <string name="train_see_all">查看全部</string>

@@ -153,7 +153,6 @@
     <string name="retry_set_button">Satz wiederholen</string>
     <string name="skip_set_button">Satz überspringen</string>
     <string name="skip_exercise_button">Übung überspringen</string>
-    <string name="interval_label">Pause</string>
     <string name="next_set_format">Nächster: Satz %1$d/%2$d</string>
     <string name="next_set_format_with_side">Nächster: Satz %1$d/%2$d - %3$s</string>
     <string name="minus_10sec">-10 Sek.</string>
@@ -400,7 +399,8 @@
     <string name="sets_label_short">Sätze:</string>
     <string name="unit_seconds_short">s</string>
     <string name="new_program">Neues Programm</string>
-    <string name="single_mode_description">Eine Übung nach der anderen</string>
+    <string name="single_mode_description">Übung wählen und loslegen</string>
+    <string name="start_one_exercise">Eine Übung</string>
     <string name="start_countdown">Start-Countdown</string>
     <string name="timer_mode_on_description">Ein Satz endet, sobald du das Ziel erreichst</string>
     <string name="timer_mode_off_description">Jeden Satz selbst beenden</string>
@@ -464,8 +464,9 @@
     <string name="description_optional">Beschreibung (optional)</string>
     <!-- Interval Mode -->
     <string name="interval_no_record_note">In diesem Modus werden Wiederholungen und Haltezeiten nicht aufgezeichnet</string>
-    <string name="interval_list_title">Intervall</string>
-    <string name="interval_empty">Noch keine Intervallprogramme\nTippe auf + um eines zu erstellen</string>
+    <string name="interval_list_title">Intervalle</string>
+    <string name="interval_kind">Intervall</string>
+    <string name="interval_empty">Noch keine Intervalle</string>
     <string name="new_interval_program">Neues Intervall</string>
     <string name="edit_interval_program">Intervall bearbeiten</string>
     <string name="interval_program_name">Programmname</string>
@@ -535,7 +536,7 @@
     <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">Gruppen: %1$d</string>
     <string name="share_no_programs">Keine Programme</string>
-    <string name="share_no_intervals">Keine Intervallprogramme</string>
+    <string name="share_no_intervals">Noch keine Intervalle</string>
     <string name="share_no_exercises">Keine Übungen</string>
     <string name="share_exercise_auto_included">Automatisch aus Programm/Intervall einbezogen</string>
     <string name="share_ungrouped">Ohne Gruppe</string>
@@ -638,7 +639,7 @@
     <string name="first_day_of_week_automatic">Automatisch (%1$s)</string>
     <string name="first_day_of_week_auto">Auto</string>
     <string name="train_no_programs">Noch keine Programme</string>
-    <string name="train_no_intervals">Noch keine Intervall-Routinen</string>
+    <string name="train_no_intervals">Noch keine Intervalle</string>
     <string name="train_log_title">Vergangenes Training eintragen</string>
     <string name="train_log_detail">Bereits absolvierte Sätze eingeben</string>
     <string name="train_see_all">Alle anzeigen</string>

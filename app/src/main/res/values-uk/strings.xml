@@ -131,7 +131,6 @@
     <string name="duplicate_group_name">Така назва групи вже використовується</string>
     <string name="already_in_use_format">«%1$s (%2$s)» вже використовується</string>
     <string name="program_target_format">%1$d %2$s</string>
-    <string name="interval_label">Інтервал</string>
     <string name="program_interval_format">Відпочинок %d\u00A0с</string>
     <string name="tab_list">Список</string>
     <string name="tab_graph">Графік</string>
@@ -231,7 +230,8 @@
     <string name="graph_type_total">Разом</string>
     <string name="nav_overall_progress">Загальний прогрес</string>
     <string name="auto_mode_disabled_hint">Потрібен таймер повторень</string>
-    <string name="single_mode_description">Одна вправа за раз</string>
+    <string name="single_mode_description">Виберіть вправу й почніть</string>
+    <string name="start_one_exercise">Одна вправа</string>
     <string name="no_group_workout">Без групи</string>
     <string name="no_group_display">Без групи</string>
     <string name="level_format">Складність %d</string>
@@ -413,8 +413,9 @@
     <string name="theme_system">Як у системі</string>
     <!-- Exercise Description -->
     <string name="description_optional">Опис (необов’язково)</string>
-    <string name="interval_list_title">Інтервал</string>
-    <string name="interval_empty">Програм для ВІІТ тренувань ще немає.\nДодайте першу за допомогою кнопки +</string>
+    <string name="interval_list_title">Інтервали</string>
+    <string name="interval_kind">Інтервал</string>
+    <string name="interval_empty">Інтервалів поки немає</string>
     <string name="interval_summary_format">%1$d с/%2$d с · %3$d раундів</string>
     <string name="new_interval_program">Новий інтервал</string>
     <string name="edit_interval_program">Редагувати інтервал</string>
@@ -485,7 +486,7 @@
     <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">Групи: %1$d</string>
     <string name="share_no_programs">Немає програм</string>
-    <string name="share_no_intervals">Немає інтервальних програм</string>
+    <string name="share_no_intervals">Інтервалів поки немає</string>
     <string name="share_no_exercises">Немає вправ</string>
     <string name="share_exercise_auto_included">Автоматично додано з програми/інтервалу</string>
     <string name="share_ungrouped">Без групи</string>
@@ -612,7 +613,7 @@
     <string name="first_day_of_week_automatic">Автоматично (%1$s)</string>
     <string name="first_day_of_week_auto">Авто</string>
     <string name="train_no_programs">Програм поки немає</string>
-    <string name="train_no_intervals">Інтервальних тренувань поки немає</string>
+    <string name="train_no_intervals">Інтервалів поки немає</string>
     <string name="train_log_title">Записати минуле тренування</string>
     <string name="train_log_detail">Ввести вже виконані підходи</string>
     <string name="train_see_all">Показати все</string>

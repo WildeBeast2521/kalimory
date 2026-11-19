@@ -147,7 +147,7 @@ class UnifiedWorkoutFlowTest {
     /** Train, then Workout, then the seeded exercise, then Start. Quick start skips any mode choice. */
     private fun startSingleWorkout() {
         launchAndOpenTrain()
-        rule.onNodeWithText(text(R.string.home_workout)).performClick()
+        rule.onNodeWithText(text(R.string.start_one_exercise)).performClick()
         waitForText(exerciseName)
         rule.onNodeWithText(exerciseName).performClick()
         // Sets and targets start blank; this fills them from the exercise (2 sets of 3 reps).

@@ -182,7 +182,6 @@
     <string name="retry_set_button">やり直し</string>
     <string name="skip_set_button">セットをスキップ</string>
     <string name="skip_exercise_button">種目をスキップ</string>
-    <string name="interval_label">インターバル</string>
     <string name="next_set_format">次: セット %1$d/%2$d</string>
     <string name="next_set_format_with_side">次: セット %1$d/%2$d - %3$s</string>
     <string name="minus_10sec">-10秒</string>
@@ -412,7 +411,8 @@
         <item quantity="other">%1$d / %2$d回</item>
     </plurals>
     <!-- Program Mode -->
-    <string name="single_mode_description">1種目ずつ実行</string>
+    <string name="single_mode_description">種目を選んで開始</string>
+    <string name="start_one_exercise">1種目</string>
     <string name="program_list_title">プログラム</string>
     <string name="program_empty">プログラムがありません\n+ をタップして作成</string>
     <string name="new_program">新規プログラム</string>
@@ -526,7 +526,8 @@
 
     <!-- Interval Mode -->
     <string name="interval_list_title">インターバル</string>
-    <string name="interval_empty">インターバルプログラムがありません\n+ をタップして作成</string>
+    <string name="interval_kind">インターバル</string>
+    <string name="interval_empty">インターバルはまだありません</string>
     <string name="interval_summary_format">%1$d秒/%2$d秒 · %3$d周</string>
     <string name="new_interval_program">新規インターバル</string>
     <string name="edit_interval_program">インターバルを編集</string>
@@ -600,7 +601,7 @@
     <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">グループ: %1$d</string>
     <string name="share_no_programs">プログラムなし</string>
-    <string name="share_no_intervals">インターバルプログラムなし</string>
+    <string name="share_no_intervals">インターバルはまだありません</string>
     <string name="share_no_exercises">種目なし</string>
     <string name="share_exercise_auto_included">プログラム/インターバルから自動追加</string>
     <string name="share_ungrouped">グループなし</string>

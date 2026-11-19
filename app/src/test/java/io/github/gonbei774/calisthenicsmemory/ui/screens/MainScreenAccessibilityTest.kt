@@ -45,7 +45,7 @@ class MainScreenAccessibilityTest {
     @Test fun train() {
         open("Train")
         audit("Train", waitFor = MainScreenFixture.PROGRAM)
-        assertHeadings("Train", "Programs", "Interval")
+        assertHeadings("Train", "Programs", "Intervals")
     }
 
     @Test fun progress() {

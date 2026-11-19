@@ -58,7 +58,7 @@
     <string name="first_day_of_week_automatic">تلقائي (%1$s)</string>
     <string name="first_day_of_week_auto">تلقائي</string>
     <string name="train_no_programs">لا توجد برامج بعد</string>
-    <string name="train_no_intervals">لا توجد روتينات فواصل بعد</string>
+    <string name="train_no_intervals">لا توجد فترات بعد</string>
     <string name="train_log_title">سجّل تمرينًا سابقًا</string>
     <string name="train_log_detail">أدخل مجموعات أنجزتها بالفعل</string>
     <string name="train_see_all">عرض الكل</string>
@@ -417,7 +417,6 @@
     <string name="retry_set_button">إعادة المجموعة</string>
     <string name="skip_set_button">تخطي المجموعة</string>
     <string name="skip_exercise_button">تخطي التمرين</string>
-    <string name="interval_label">الفترات</string>
     <string name="loop_round_rest">الراحة بين الجولات</string>
     <string name="loop_round_current">الجولة %1$d/%2$d</string>
     <string name="round_badge">ج%1$d</string>
@@ -626,7 +625,8 @@
         <item quantity="many">%1$d / %2$d تكرارًا</item>
         <item quantity="other">%1$d / %2$d تكرار</item>
     </plurals>
-    <string name="single_mode_description">تمرين واحد في كل مرة</string>
+    <string name="single_mode_description">اختر تمرينًا وابدأ</string>
+    <string name="start_one_exercise">تمرين واحد</string>
     <string name="program_list_title">البرامج</string>
     <string name="program_empty">لا توجد برامج بعد\nاضغط + لإنشاء برنامج</string>
     <string name="new_program">برنامج جديد</string>
@@ -710,7 +710,8 @@
     <string name="loop_number_format">الحلقة %d</string>
     <string name="description_optional">الوصف (اختياري)</string>
     <string name="interval_list_title">الفترات</string>
-    <string name="interval_empty">لا توجد تمارين فترات بعد\nاضغط + لإنشاء واحد</string>
+    <string name="interval_kind">فترة</string>
+    <string name="interval_empty">لا توجد فترات بعد</string>
     <string name="interval_summary_format">%1$d ث/%2$d ث · %3$d جولات</string>
     <string name="interval_program_name">الاسم</string>
     <string name="interval_timer_settings">إعدادات المؤقت</string>
@@ -777,7 +778,7 @@
     <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">المجموعات: %1$d</string>
     <string name="share_no_programs">لا توجد برامج</string>
-    <string name="share_no_intervals">لا توجد فترات</string>
+    <string name="share_no_intervals">لا توجد فترات بعد</string>
     <string name="share_no_exercises">لا توجد تمارين</string>
     <string name="share_exercise_auto_included">مضمّن تلقائيًا من برنامج أو فترات</string>
     <string name="share_ungrouped">بلا مجموعة</string>

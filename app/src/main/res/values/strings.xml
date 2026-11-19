@@ -187,7 +187,6 @@
     <string name="retry_set_button">Restart set</string>
     <string name="skip_set_button">Skip set</string>
     <string name="skip_exercise_button">Skip exercise</string>
-    <string name="interval_label">Interval</string>
     <string name="loop_round_rest">Round rest</string>
     <string name="loop_round_current">Round %1$d/%2$d</string>
     <!-- A loop set's round on its small badge in the program overview: the language's own letter for "round". -->
@@ -429,7 +428,8 @@
         <item quantity="other">%1$d / %2$d reps</item>
     </plurals>
     <!-- Program Mode -->
-    <string name="single_mode_description">One exercise at a time</string>
+    <string name="single_mode_description">Pick an exercise and start</string>
+    <string name="start_one_exercise">One exercise</string>
     <string name="program_list_title">Programs</string>
     <string name="program_empty">No programs yet\nTap + to create one</string>
     <string name="new_program">New program</string>
@@ -525,8 +525,9 @@
     <string name="description_optional">Description (optional)</string>
 
     <!-- Interval Mode -->
-    <string name="interval_list_title">Interval</string>
-    <string name="interval_empty">No interval programs yet\nTap + to create one</string>
+    <string name="interval_list_title">Intervals</string>
+    <string name="interval_kind">Interval</string>
+    <string name="interval_empty">No intervals yet</string>
     <string name="interval_summary_format" tools:ignore="PluralsCandidate">%1$ds/%2$ds · %3$d rounds</string>
     <string name="new_interval_program">New interval</string>
     <string name="edit_interval_program">Edit interval</string>
@@ -600,7 +601,7 @@
     <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">Groups: %1$d</string>
     <string name="share_no_programs">No programs</string>
-    <string name="share_no_intervals">No interval programs</string>
+    <string name="share_no_intervals">No intervals yet</string>
     <string name="share_no_exercises">No exercises</string>
     <string name="share_exercise_auto_included">Auto-included from program/interval</string>
     <string name="share_ungrouped">Ungrouped</string>
@@ -670,7 +671,7 @@
     <string name="first_day_of_week_automatic">Automatic (%1$s)</string>
     <string name="first_day_of_week_auto">Auto</string>
     <string name="train_no_programs">No programs yet</string>
-    <string name="train_no_intervals">No interval routines yet</string>
+    <string name="train_no_intervals">No intervals yet</string>
     <string name="train_log_title">Already trained</string>
     <string name="train_log_detail">Enter sets you already did</string>
     <string name="train_see_all">See all</string>

@@ -155,7 +155,6 @@
     <string name="retry_set_button">Reiniciar serie</string>
     <string name="skip_set_button">Saltar serie</string>
     <string name="skip_exercise_button">Saltar ejercicio</string>
-    <string name="interval_label">Intervalo</string>
     <string name="next_set_format">Siguiente: Serie %1$d/%2$d</string>
     <string name="next_set_format_with_side">Siguiente: Serie %1$d/%2$d - %3$s</string>
     <string name="minus_10sec">-10 seg</string>
@@ -405,7 +404,8 @@
     <string name="sets_label_short">Series:</string>
     <string name="unit_seconds_short">s</string>
     <string name="new_program">Nuevo programa</string>
-    <string name="single_mode_description">Un ejercicio a la vez</string>
+    <string name="single_mode_description">Elige un ejercicio y empieza</string>
+    <string name="start_one_exercise">Un ejercicio</string>
     <string name="start_countdown">Cuenta regresiva inicial</string>
     <string name="timer_mode_on_description">La serie termina al alcanzar el objetivo</string>
     <string name="timer_mode_off_description">Termina cada serie tú mismo</string>
@@ -466,8 +466,9 @@
     <string name="theme_dark">Oscuro</string>
     <!-- Interval Mode -->
     <string name="interval_no_record_note">Este modo no registra repeticiones ni tiempo de mantenimiento</string>
-    <string name="interval_list_title">Intervalo</string>
-    <string name="interval_empty">Aún no hay programas de intervalo\nToca + para crear uno</string>
+    <string name="interval_list_title">Intervalos</string>
+    <string name="interval_kind">Intervalo</string>
+    <string name="interval_empty">Aún no hay intervalos</string>
     <string name="new_interval_program">Nuevo intervalo</string>
     <string name="edit_interval_program">Editar intervalo</string>
     <string name="interval_program_name">Nombre del programa</string>
@@ -537,7 +538,7 @@
     <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">Grupos: %1$d</string>
     <string name="share_no_programs">Sin programas</string>
-    <string name="share_no_intervals">Sin programas de intervalos</string>
+    <string name="share_no_intervals">Aún no hay intervalos</string>
     <string name="share_no_exercises">Sin ejercicios</string>
     <string name="share_exercise_auto_included">Incluido automáticamente desde programa/intervalo</string>
     <string name="share_ungrouped">Sin grupo</string>
@@ -664,7 +665,7 @@
     <string name="first_day_of_week_automatic">Automático (%1$s)</string>
     <string name="first_day_of_week_auto">Auto</string>
     <string name="train_no_programs">Aún no hay programas</string>
-    <string name="train_no_intervals">Aún no hay rutinas de intervalos</string>
+    <string name="train_no_intervals">Aún no hay intervalos</string>
     <string name="train_log_title">Registrar un entrenamiento pasado</string>
     <string name="train_log_detail">Introduce series que ya hiciste</string>
     <string name="train_see_all">Ver todo</string>

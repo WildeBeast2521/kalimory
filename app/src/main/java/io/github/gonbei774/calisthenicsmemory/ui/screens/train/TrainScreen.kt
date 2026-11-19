@@ -78,7 +78,7 @@ fun TrainScreen(
 
         HeroCard(
             label = stringResource(R.string.train_quick_label),
-            title = stringResource(R.string.home_workout),
+            title = stringResource(R.string.start_one_exercise),
             detail = stringResource(R.string.single_mode_description),
             action = stringResource(R.string.today_start),
             icon = AppIcons.Workout,
