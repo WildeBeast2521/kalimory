@@ -27,6 +27,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- One word for one thing: a finished set says "Complete" (it said DONE), exercises and tasks marked finished say Complete too, the exclamation marks are gone from "Round complete" and "sets recorded", and "Next:" in programs reads the same way in every language ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - Workout and Settings text says what things do: Auto mode is "Finish sets automatically" (a set ends when you reach the target), Count sound is "Rep timer", the hold sound has a description and sits in Settings with it, and the other workout settings are reworded ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - When you beat the target on a set, the sets still to do for that exercise (and that side) aim for at least that, in a workout and in a program; targets are only ever raised ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Ending a workout early no longer records the sets you never reached as skipped: they are left out, and only sets you skipped yourself are saved as skipped ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))

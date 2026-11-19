@@ -333,7 +333,6 @@
     <string name="current_language">Поточна: %s</string>
     <string name="nav_current">Поточна</string>
     <string name="nav_program_overview">Огляд програми</string>
-    <string name="nav_done">Готово</string>
     <string name="nav_finish">Завершити</string>
     <string name="graph_type_max">Максимум</string>
     <string name="max_daily_volume">Макс. обсяг на день</string>
@@ -435,7 +434,7 @@
     <string name="interval_get_ready">Приготуйтеся</string>
     <string name="interval_round_format">Раунд %1$d / %2$d</string>
     <string name="interval_exercise_format">Вправа %1$d / %2$d</string>
-    <string name="interval_round_complete_format">Раунд %d завершено!</string>
+    <string name="interval_round_complete_format">Раунд %d завершено</string>
     <string name="interval_stop">Стоп</string>
     <string name="interval_complete_title">Завершено</string>
     <string name="interval_partial_format">%1$s + %2$s</string>
@@ -452,6 +451,7 @@
     <string name="interval_work_label">Тренування</string>
     <string name="interval_rest_label">Відпочинок</string>
     <string name="interval_next">Наступний</string>
+    <string name="next_exercise_format">Далі: %1$s</string>
     <string name="interval_next_round">Наступний раунд</string>
     <string name="interval_ended_title">Завершено</string>
     <string name="interval_comment_label">Коментар</string>
@@ -517,8 +517,9 @@
     <string name="stats_total_intervals">Усього інтервалів</string>
     <string name="record_done_count">%1$d/%2$d</string>
     <string name="set_complete_button">Завершити підхід %1$d</string>
-    <string name="set_done_label">ГОТОВО</string>
-    <string name="set_now_badge">ЗАРАЗ</string>
+    <string name="set_done_label">Виконано</string>
+    <string name="status_complete">Виконано</string>
+    <string name="set_now_badge">Зараз</string>
     <string name="set_uncheck_desc">Позначити підхід як незавершений</string>
     <string name="previous_value_label">Попереднє</string>
     <string name="set_status_check_desc">Стан завершення підходу</string>
@@ -790,10 +791,10 @@
     <string name="crash_report_share">Поділитися звітом</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="one">Записано %d підхід!</item>
-        <item quantity="few">Записано %d підходи!</item>
-        <item quantity="many">Записано %d підходів!</item>
-        <item quantity="other">Записано %d підходів!</item>
+        <item quantity="one">Записано %d підхід</item>
+        <item quantity="few">Записано %d підходи</item>
+        <item quantity="many">Записано %d підходів</item>
+        <item quantity="other">Записано %d підходів</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="one">%d елемент</item>

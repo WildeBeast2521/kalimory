@@ -427,7 +427,6 @@
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Aperçu du programme</string>
     <string name="nav_overall_progress">Progression globale</string>
-    <string name="nav_done">Fait</string>
     <string name="nav_current">Actuel</string>
     <string name="nav_redo">Refaire</string>
     <string name="nav_jump">Aller à</string>
@@ -494,8 +493,9 @@
     <string name="interval_round_rest_label">Repos entre les tours</string>
     <string name="interval_exercise_format">Exercice %1$d / %2$d</string>
     <string name="interval_round_format">Tour %1$d / %2$d</string>
-    <string name="interval_round_complete_format">Tour %d terminé !</string>
+    <string name="interval_round_complete_format">Tour %d terminé</string>
     <string name="interval_next">Suivant</string>
+    <string name="next_exercise_format">Suivant : %1$s</string>
     <string name="interval_next_round">Tour suivant</string>
     <string name="interval_stop">Arrêter</string>
     <string name="interval_complete_title">Terminé</string>
@@ -800,8 +800,9 @@
     <string name="rep_pace_format">Rythme : %d s / rép.</string>
     <string name="save_and_exit_button">Enregistrer et quitter</string>
     <string name="set_complete_button">Terminer la série %1$d</string>
-    <string name="set_done_label">FAIT</string>
-    <string name="set_now_badge">EN COURS</string>
+    <string name="set_done_label">Terminée</string>
+    <string name="status_complete">Terminé</string>
+    <string name="set_now_badge">Maintenant</string>
     <string name="set_status_check_desc">État de la série</string>
     <string name="set_uncheck_desc">Marquer la série comme non faite</string>
     <string name="stat_previous_label">Précédent</string>
@@ -836,9 +837,9 @@
     <string name="crash_report_share">Partager le rapport</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="one">%d série enregistrée !</item>
-        <item quantity="many">%d de séries enregistrées !</item>
-        <item quantity="other">%d séries enregistrées !</item>
+        <item quantity="one">%d série enregistrée</item>
+        <item quantity="many">%d de séries enregistrées</item>
+        <item quantity="other">%d séries enregistrées</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="one">%d élément</item>

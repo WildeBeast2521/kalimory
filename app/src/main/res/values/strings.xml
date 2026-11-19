@@ -63,8 +63,9 @@
     <string name="time_format">Time: %s</string>
     <string name="record_button">Record</string>
     <!-- Set indicator (current / done / pending) -->
-    <string name="set_now_badge">NOW</string>
-    <string name="set_done_label">DONE</string>
+    <string name="set_now_badge">Now</string>
+    <string name="set_done_label">Complete</string>
+    <string name="status_complete">Complete</string>
     <string name="set_complete_button">Complete set %1$d</string>
     <string name="previous_value_label">Last</string>
     <string name="set_status_check_desc">Set completion status</string>
@@ -182,7 +183,7 @@
     <string name="side_left">Left</string>
     <string name="pause_button">Pause</string>
     <string name="resume_button">Resume</string>
-    <string name="save_and_exit_button">Save &amp; exit</string>
+    <string name="save_and_exit_button">Save and exit</string>
     <string name="retry_set_button">Restart set</string>
     <string name="skip_set_button">Skip set</string>
     <string name="skip_exercise_button">Skip exercise</string>
@@ -491,7 +492,6 @@
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Program overview</string>
     <string name="nav_overall_progress">Overall Progress</string>
-    <string name="nav_done">Done</string>
     <string name="nav_current">Current</string>
     <string name="nav_redo">Redo</string>
     <string name="nav_jump">Jump</string>
@@ -555,8 +555,9 @@
     <string name="interval_round_format">Round %1$d / %2$d</string>
     <string name="interval_exercise_format">Exercise %1$d / %2$d</string>
     <string name="interval_next">Next</string>
+    <string name="next_exercise_format">Next: %1$s</string>
     <string name="interval_next_round">Next round</string>
-    <string name="interval_round_complete_format" tools:ignore="PluralsCandidate">Round %d complete!</string>
+    <string name="interval_round_complete_format" tools:ignore="PluralsCandidate">Round %d complete</string>
     <string name="interval_stop">Stop</string>
     <string name="interval_complete_title">Complete</string>
     <string name="interval_ended_title">Ended</string>
@@ -837,8 +838,8 @@
     <string name="crash_report_share">Share report</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="one">%d set recorded!</item>
-        <item quantity="other">%d sets recorded!</item>
+        <item quantity="one">%d set recorded</item>
+        <item quantity="other">%d sets recorded</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="one">%d item</item>

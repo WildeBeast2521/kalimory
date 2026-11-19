@@ -422,7 +422,6 @@
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Programmübersicht</string>
     <string name="nav_overall_progress">Gesamtfortschritt</string>
-    <string name="nav_done">Fertig</string>
     <string name="nav_current">Aktuell</string>
     <string name="nav_redo">Wiederholen</string>
     <string name="nav_jump">Springen</string>
@@ -492,8 +491,9 @@
     <string name="interval_round_rest_label">Rundenpause</string>
     <string name="interval_exercise_format">Übung %1$d / %2$d</string>
     <string name="interval_round_format">Runde %1$d / %2$d</string>
-    <string name="interval_round_complete_format">Runde %d abgeschlossen!</string>
+    <string name="interval_round_complete_format">Runde %d abgeschlossen</string>
     <string name="interval_next">Nächste</string>
+    <string name="next_exercise_format">Nächste: %1$s</string>
     <string name="interval_next_round">Nächste Runde</string>
     <string name="interval_stop">Stopp</string>
     <string name="interval_complete_title">Abgeschlossen</string>
@@ -576,8 +576,9 @@
     <string name="legend_weight">Gewicht</string>
     <string name="delete_exercise_confirm_title">\"%s\" löschen?</string>
     <string name="delete_exercise_record_count">Einträge löschen: %d</string>
-    <string name="set_now_badge">JETZT</string>
-    <string name="set_done_label">FERTIG</string>
+    <string name="set_now_badge">Jetzt</string>
+    <string name="set_done_label">Abgeschlossen</string>
+    <string name="status_complete">Abgeschlossen</string>
     <string name="set_complete_button">Satz %1$d abschließen</string>
     <string name="import_anomalies_notice">Einträge, die nicht dem Format der App entsprechen: %1$d. Sie werden unverändert importiert.</string>
     <string name="db_unavailable_title">Deine Trainingsdaten konnten nicht geöffnet werden</string>
@@ -828,8 +829,8 @@
     <string name="crash_report_share">Bericht teilen</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="one">%d Satz aufgezeichnet!</item>
-        <item quantity="other">%d Sätze aufgezeichnet!</item>
+        <item quantity="one">%d Satz aufgezeichnet</item>
+        <item quantity="other">%d Sätze aufgezeichnet</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="one">%d Element</item>

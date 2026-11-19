@@ -304,8 +304,9 @@
     <string name="theme_system">Как в системе</string>
     <string name="theme_system_short">Системная</string>
     <string name="add_exercise_to_group">Добавить упражнение в группу</string>
-    <string name="set_now_badge">СЕЙЧАС</string>
-    <string name="set_done_label">ГОТОВО</string>
+    <string name="set_now_badge">Сейчас</string>
+    <string name="set_done_label">Выполнен</string>
+    <string name="status_complete">Выполнено</string>
     <string name="set_complete_button">Завершить подход %1$d</string>
     <string name="previous_value_label">Прошлый</string>
     <string name="set_status_check_desc">Отметка о выполнении подхода</string>
@@ -668,7 +669,6 @@
     <string name="isometric_interval_sound_description">Короткий сигнал каждые несколько секунд во время удержания</string>
     <string name="nav_program_overview">Обзор программы</string>
     <string name="nav_overall_progress">Общий прогресс</string>
-    <string name="nav_done">Готово</string>
     <string name="nav_current">Текущий</string>
     <string name="nav_redo">Повторить</string>
     <string name="nav_jump">Перейти</string>
@@ -722,8 +722,9 @@
     <string name="interval_round_format">Круг %1$d / %2$d</string>
     <string name="interval_exercise_format">Упражнение %1$d / %2$d</string>
     <string name="interval_next">Далее</string>
+    <string name="next_exercise_format">Далее: %1$s</string>
     <string name="interval_next_round">Следующий круг</string>
-    <string name="interval_round_complete_format">Круг %d завершён!</string>
+    <string name="interval_round_complete_format">Круг %d завершён</string>
     <string name="interval_stop">Стоп</string>
     <string name="interval_complete_title">Готово</string>
     <string name="interval_ended_title">Завершено</string>
@@ -787,10 +788,10 @@
     <string name="crash_report_share">Поделиться отчётом</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="one">Записан %d подход!</item>
-        <item quantity="few">Записано %d подхода!</item>
-        <item quantity="many">Записано %d подходов!</item>
-        <item quantity="other">Записано %d подходов!</item>
+        <item quantity="one">Записан %d подход</item>
+        <item quantity="few">Записано %d подхода</item>
+        <item quantity="many">Записано %d подходов</item>
+        <item quantity="other">Записано %d подходов</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="one">%d шт.</item>

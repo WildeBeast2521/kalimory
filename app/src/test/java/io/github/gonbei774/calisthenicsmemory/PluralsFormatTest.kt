@@ -51,10 +51,10 @@ class PluralsFormatTest {
         assertEquals("5 подходов", sets("ru", 5))
         assertEquals("21 подход", sets("ru", 21))
         fun recorded(tag: String, n: Int) = context(tag).resources.getQuantityString(R.plurals.sets_recorded, n, n)
-        assertEquals("1 set recorded!", recorded("en", 1))
-        assertEquals("2 sets recorded!", recorded("en", 2))
-        assertEquals("سُجّلت مجموعتان!", recorded("ar", 2))
-        assertEquals("Записано 5 подходов!", recorded("ru", 5))
+        assertEquals("1 set recorded", recorded("en", 1))
+        assertEquals("2 sets recorded", recorded("en", 2))
+        assertEquals("سُجّلت مجموعتان", recorded("ar", 2))
+        assertEquals("Записано 5 подходов", recorded("ru", 5))
     }
 
     @Test fun `a target reads with the right forms for its sets and repetitions`() {

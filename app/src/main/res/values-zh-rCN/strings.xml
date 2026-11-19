@@ -425,7 +425,6 @@
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">计划概览</string>
     <string name="nav_overall_progress">整体进度</string>
-    <string name="nav_done">完成</string>
     <string name="nav_current">当前</string>
     <string name="nav_redo">重做</string>
     <string name="nav_jump">跳转</string>
@@ -495,8 +494,9 @@
     <string name="interval_round_rest_label">轮间休息</string>
     <string name="interval_exercise_format">动作 %1$d / %2$d</string>
     <string name="interval_round_format">第 %1$d / %2$d 轮</string>
-    <string name="interval_round_complete_format">第%d轮完成！</string>
+    <string name="interval_round_complete_format">第%d轮完成</string>
     <string name="interval_next">下一个</string>
+    <string name="next_exercise_format">下一个：%1$s</string>
     <string name="interval_next_round">下一轮</string>
     <string name="interval_stop">停止</string>
     <string name="interval_complete_title">已完成</string>
@@ -794,7 +794,8 @@
     <string name="save_and_exit_button">保存并退出</string>
     <string name="set_complete_button">完成第 %1$d 组</string>
     <string name="set_done_label">已完成</string>
-    <string name="set_now_badge">当前</string>
+    <string name="status_complete">已完成</string>
+    <string name="set_now_badge">当前 (lower-case where a locale has capitals)</string>
     <string name="set_status_check_desc">该组的完成状态</string>
     <string name="set_uncheck_desc">将该组标记为未完成</string>
     <string name="stat_previous_label">上次</string>
@@ -827,7 +828,7 @@
     <string name="crash_report_share">分享报告</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="other">已记录%d组！</item>
+        <item quantity="other">已记录%d组</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="other">%d项</item>

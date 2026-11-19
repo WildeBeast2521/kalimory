@@ -427,7 +427,6 @@
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Panoramica programma</string>
     <string name="nav_overall_progress">Progresso generale</string>
-    <string name="nav_done">Fatto</string>
     <string name="nav_current">Attuale</string>
     <string name="nav_redo">Ripeti</string>
     <string name="nav_jump">Vai a</string>
@@ -497,8 +496,9 @@
     <string name="interval_round_rest_label">Riposo tra i round</string>
     <string name="interval_exercise_format">Esercizio %1$d / %2$d</string>
     <string name="interval_round_format">Round %1$d / %2$d</string>
-    <string name="interval_round_complete_format">Round %d completato!</string>
+    <string name="interval_round_complete_format">Round %d completato</string>
     <string name="interval_next">Prossimo</string>
+    <string name="next_exercise_format">Prossimo: %1$s</string>
     <string name="interval_next_round">Prossimo round</string>
     <string name="interval_stop">Ferma</string>
     <string name="interval_complete_title">Completato</string>
@@ -805,8 +805,9 @@
     <string name="rep_pace_format">Ritmo: %d s / rip.</string>
     <string name="save_and_exit_button">Salva ed esci</string>
     <string name="set_complete_button">Completa serie %1$d</string>
-    <string name="set_done_label">FATTO</string>
-    <string name="set_now_badge">ORA</string>
+    <string name="set_done_label">Completata</string>
+    <string name="status_complete">Completato</string>
+    <string name="set_now_badge">Ora</string>
     <string name="set_status_check_desc">Stato di completamento della serie</string>
     <string name="set_uncheck_desc">Segna la serie come non completata</string>
     <string name="stat_previous_label">Precedente</string>
@@ -841,9 +842,9 @@
     <string name="crash_report_share">Condividi rapporto</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="one">%d serie registrata!</item>
-        <item quantity="many">%d di serie registrate!</item>
-        <item quantity="other">%d serie registrate!</item>
+        <item quantity="one">%d serie registrata</item>
+        <item quantity="many">%d di serie registrate</item>
+        <item quantity="other">%d serie registrate</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="one">%d elemento</item>

@@ -61,8 +61,9 @@
     <string name="time_format">時刻: %s</string>
     <string name="record_button">記録する</string>
     <!-- セットインジケーター（実行中 / 完了 / 未着手） -->
-    <string name="set_now_badge">NOW</string>
+    <string name="set_now_badge">実施中</string>
     <string name="set_done_label">完了</string>
+    <string name="status_complete">完了</string>
     <string name="set_complete_button">セット %1$d を完了</string>
     <string name="previous_value_label">前回</string>
     <string name="set_status_check_desc">セットの完了状態</string>
@@ -481,7 +482,6 @@
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">プログラム概要</string>
     <string name="nav_overall_progress">全体の進捗</string>
-    <string name="nav_done">完了</string>
     <string name="nav_current">現在</string>
     <string name="nav_redo">やり直し</string>
     <string name="nav_jump">ジャンプ</string>
@@ -555,8 +555,9 @@
     <string name="interval_round_format">周回 %1$d / %2$d</string>
     <string name="interval_exercise_format">種目 %1$d / %2$d</string>
     <string name="interval_next">次</string>
+    <string name="next_exercise_format">次: %1$s</string>
     <string name="interval_next_round">次のラウンド</string>
-    <string name="interval_round_complete_format">%d周目完了！</string>
+    <string name="interval_round_complete_format">%d周目完了</string>
     <string name="interval_stop">終了</string>
     <string name="interval_complete_title">完了</string>
     <string name="interval_ended_title">終了</string>
@@ -833,7 +834,7 @@
     <string name="crash_report_share">レポートを共有</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="other">%dセット記録しました!</item>
+        <item quantity="other">%dセット記録しました</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="other">%d個</item>

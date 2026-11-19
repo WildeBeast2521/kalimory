@@ -743,7 +743,7 @@ private fun GroupTaskCard(
                             if (isCompleted) {
                                 Icon(
                                     AppIcons.Check,
-                                    contentDescription = stringResource(R.string.nav_done),
+                                    contentDescription = stringResource(R.string.status_complete),
                                     modifier = Modifier.size(18.dp),
                                     tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
                                 )
