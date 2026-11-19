@@ -27,6 +27,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- In a single workout, holds follow the Auto mode setting like counted sets do, instead of always needing a tap on Complete ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - An exercise with no target is added to a workout or program as one set, with the reps of your last session when there is one and blank otherwise, instead of 3 sets of 10 or 0; Start and the program editor ask for a number instead of starting an empty workout ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Level is now Difficulty, its own row on the exercise form: a stepper from 1 to 10 that stays blank ("–") until you choose one, and it shows on an exercise whether or not it has a target ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Settings has a Sound during holds switch beside the other workout switches; the setting was only on the workout and program start screens, where it was called Interval notification ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))

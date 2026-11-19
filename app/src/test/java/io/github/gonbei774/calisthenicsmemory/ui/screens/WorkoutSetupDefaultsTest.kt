@@ -1,7 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import android.app.Application
-import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -43,5 +43,17 @@ class WorkoutSetupDefaultsTest {
         compose.onNodeWithText("Start").performScrollTo().performClick()
         compose.onNodeWithText("Enter a number").assertExists()
         assertEquals(0, started)
+    }
+
+    @Test fun `a hold follows the Auto mode setting`() {
+        val context = ApplicationProvider.getApplicationContext<Application>()
+        io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences(context).setAutoMode(true)
+        val vm = TrainingViewModel(context)
+        compose.setContent {
+            CalisthenicsMemoryTheme {
+                SettingsStep(exercise = Exercise(id = 98, name = "Plank", type = "Isometric"), viewModel = vm, onStartWorkout = {})
+            }
+        }
+        compose.onNode(androidx.compose.ui.test.hasText("Auto mode") and androidx.compose.ui.test.isToggleable()).assertIsOn()
     }
 }

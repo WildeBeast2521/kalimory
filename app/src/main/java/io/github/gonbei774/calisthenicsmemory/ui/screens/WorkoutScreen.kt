@@ -1252,13 +1252,8 @@ fun SettingsStep(
     var weightInput by remember { mutableStateOf("") }
     var assistanceInput by remember { mutableStateOf("") }
 
-    // 実行設定（WorkoutPreferencesと連動）
-    // Isometricはデフォルトでタイマーオフ（手動完了）、Dynamicはオン（既存ユーザー体験維持）
-    var isAutoMode by remember {
-        mutableStateOf(
-            if (exercise.type == "Isometric") false else workoutPrefs.isAutoMode()
-        )
-    }
+    // Auto mode follows the setting for reps and holds alike, as it does in a program.
+    var isAutoMode by remember { mutableStateOf(workoutPrefs.isAutoMode()) }
     var isDynamicCountSoundEnabled by remember { mutableStateOf(workoutPrefs.isDynamicCountSoundEnabled()) }
     var isIsometricIntervalSoundEnabled by remember { mutableStateOf(workoutPrefs.isIsometricIntervalSoundEnabled()) }
     var isometricIntervalSeconds by remember { mutableIntStateOf(workoutPrefs.getIsometricIntervalSeconds()) }
