@@ -473,9 +473,6 @@
     <string name="example_bilateral">напр. отжимания, приседания</string>
     <string name="example_unilateral">напр. пистолетик, отжимания на одной руке</string>
     <string name="per_side_parenthesis">(на сторону)</string>
-    <string name="example_3">напр. 3</string>
-    <string name="example_10">напр. 10</string>
-    <string name="example_30">напр. 30</string>
     <string name="no_group_display">Без группы</string>
     <string name="new_group_plus">+ Новая группа</string>
     <string name="save_button">Сохранить</string>
@@ -555,8 +552,6 @@
     <string name="timer_settings_description">Таймеры для этого упражнения. Оставьте пустым — будут общие настройки.</string>
     <string name="rep_duration_seconds">Секунд на повт. (темп счёта)</string>
     <string name="rest_interval_seconds">Отдых между подходами (с)</string>
-    <string name="example_5_seconds">напр. 5</string>
-    <string name="example_240_seconds">напр. 240</string>
     <string name="tracking_settings_optional">Учёт (необязательно)</string>
     <string name="track_distance">Учитывать дистанцию</string>
     <string name="track_distance_description">Записывать расстояние (см) для каждого подхода</string>

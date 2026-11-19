@@ -191,9 +191,6 @@
     <string name="example_bilateral">ex. Pompes, Squats</string>
     <string name="example_unilateral">ex. Pistol Squats, Pompes à Un Bras</string>
     <string name="per_side_parenthesis">(par côté)</string>
-    <string name="example_3">ex. 3</string>
-    <string name="example_10">ex. 10</string>
-    <string name="example_30">ex. 30</string>
     <string name="no_group_display">Aucun Groupe</string>
     <string name="new_group_plus">+ Nouveau Groupe</string>
     <string name="save_button">Enregistrer</string>
@@ -281,8 +278,6 @@
     <string name="timer_settings_description">Configurer les minuteurs pour cet exercice. Laisser vide pour utiliser les paramètres par défaut.</string>
     <string name="rep_duration_seconds">Secondes par rép. (rythme du comptage)</string>
     <string name="rest_interval_seconds">Intervalle de Repos (secondes)</string>
-    <string name="example_5_seconds">ex. 5</string>
-    <string name="example_240_seconds">ex. 240</string>
     <!-- Distance/Weight Tracking Settings -->
     <string name="tracking_settings_optional">Paramètres de Suivi (Optionnel)</string>
     <string name="track_distance">Suivre la Distance</string>

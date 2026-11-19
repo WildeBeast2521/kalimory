@@ -236,9 +236,6 @@
     <string name="example_bilateral">例: プッシュアップ、スクワット</string>
     <string name="example_unilateral">例: ピストルスクワット、片手プッシュアップ</string>
     <string name="per_side_parenthesis">(片方あたり)</string>
-    <string name="example_3">例: 3</string>
-    <string name="example_10">例: 10</string>
-    <string name="example_30">例: 30</string>
     <string name="no_group_display">グループなし</string>
     <string name="new_group_plus">+ 新しいグループ</string>
     <string name="save_button">保存</string>
@@ -326,8 +323,6 @@
     <string name="timer_settings_description">この種目のタイマーを設定します。空欄の場合はデフォルト設定を使用します。</string>
     <string name="rep_duration_seconds">1回あたりの秒数（カウントのペース）</string>
     <string name="rest_interval_seconds">セット間インターバル（秒）</string>
-    <string name="example_5_seconds">例: 5</string>
-    <string name="example_240_seconds">例: 240</string>
     <!-- Distance/Weight Tracking Settings -->
     <string name="tracking_settings_optional">記録オプション（任意）</string>
     <string name="track_distance">距離を記録</string>

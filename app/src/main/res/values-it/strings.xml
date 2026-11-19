@@ -191,9 +191,6 @@
     <string name="example_bilateral">es., Piegamenti, Squat</string>
     <string name="example_unilateral">es., Pistol Squat, Piegamenti ad un braccio</string>
     <string name="per_side_parenthesis">(per lato)</string>
-    <string name="example_3">es., 3</string>
-    <string name="example_10">es., 10</string>
-    <string name="example_30">es., 30</string>
     <string name="no_group_display">Nessun Gruppo</string>
     <string name="new_group_plus">+ Nuovo Gruppo</string>
     <string name="save_button">Salva</string>
@@ -281,8 +278,6 @@
     <string name="timer_settings_description">Configura i timer per questo esercizio. Lascia vuoto per usare le impostazioni predefinite.</string>
     <string name="rep_duration_seconds">Secondi per rip (ritmo del conteggio)</string>
     <string name="rest_interval_seconds">Intervallo di Riposo (secondi)</string>
-    <string name="example_5_seconds">es. 5</string>
-    <string name="example_240_seconds">es. 240</string>
     <!-- Distance/Weight Tracking Settings -->
     <string name="tracking_settings_optional">Impostazioni di Tracciamento (Opzionale)</string>
     <string name="track_distance">Traccia Distanza</string>

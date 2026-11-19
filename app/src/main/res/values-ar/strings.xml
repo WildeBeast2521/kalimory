@@ -483,9 +483,6 @@
     <string name="example_bilateral">مثل الضغط والقرفصاء</string>
     <string name="example_unilateral">مثل القرفصاء على رجل واحدة والضغط بذراع واحدة</string>
     <string name="per_side_parenthesis">(لكل جانب)</string>
-    <string name="example_3">مثلًا 3</string>
-    <string name="example_10">مثلًا 10</string>
-    <string name="example_30">مثلًا 30</string>
     <string name="no_group_display">بلا مجموعة</string>
     <string name="new_group_plus">+ مجموعة جديدة</string>
     <string name="save_button">حفظ</string>
@@ -565,8 +562,6 @@
     <string name="timer_settings_description">اضبط المؤقتات لهذا التمرين. اتركها فارغة لاستخدام الإعدادات العامة.</string>
     <string name="rep_duration_seconds">ثوانٍ لكل تكرار (سرعة العدّ)</string>
     <string name="rest_interval_seconds">الراحة بين المجموعات (ث)</string>
-    <string name="example_5_seconds">مثلًا 5</string>
-    <string name="example_240_seconds">مثلًا 240</string>
     <string name="tracking_settings_optional">إعدادات التتبع (اختيارية)</string>
     <string name="track_distance">تتبّع المسافة</string>
     <string name="track_distance_description">تسجيل المسافة (سم) لكل مجموعة</string>

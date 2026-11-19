@@ -191,9 +191,6 @@
     <string name="example_bilateral">例如：俯卧撑、深蹲</string>
     <string name="example_unilateral">例如：手枪深蹲、单手俯卧撑</string>
     <string name="per_side_parenthesis">（每侧）</string>
-    <string name="example_3">例如：3</string>
-    <string name="example_10">例如：10</string>
-    <string name="example_30">例如：30</string>
     <string name="no_group_display">无分组</string>
     <string name="new_group_plus">+ 新建分组</string>
     <string name="save_button">保存</string>
@@ -281,8 +278,6 @@
     <string name="timer_settings_description">为此动作配置计时器。留空则使用默认设置。</string>
     <string name="rep_duration_seconds">每次秒数（计数节奏）</string>
     <string name="rest_interval_seconds">组间间歇（秒）</string>
-    <string name="example_5_seconds">例如：5</string>
-    <string name="example_240_seconds">例如：240</string>
     <!-- Distance/Weight Tracking Settings -->
     <string name="tracking_settings_optional">追踪设置（可选）</string>
     <string name="track_distance">追踪距离</string>

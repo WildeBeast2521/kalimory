@@ -71,9 +71,6 @@
     <string name="create_button">Створити</string>
     <string name="add_button">Додати</string>
     <string name="example_bilateral">напр., віджимання, присідання</string>
-    <string name="example_3">напр., 3</string>
-    <string name="example_10">напр., 10</string>
-    <string name="example_30">напр., 30</string>
     <string name="no_exercises_add_with_plus">Вправ ще немає.\nДодайте першу за допомогою кнопки + нижче</string>
     <string name="create_group_title">Створити нову групу</string>
     <string name="add_exercise_title">Додати нову вправу</string>
@@ -85,8 +82,6 @@
     <string name="csv_import_completed">Імпорт завершено</string>
     <string name="section_language">Мова</string>
     <string name="language_setting">Мова</string>
-    <string name="example_5_seconds">напр., 5</string>
-    <string name="example_240_seconds">напр., 240</string>
     <string name="distance_input_label">Відстань (см)</string>
     <string name="weight_input_label">Вага (кг)</string>
     <string name="distance_display_format">%d см</string>

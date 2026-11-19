@@ -258,9 +258,6 @@
     <string name="example_bilateral">e.g., push-ups, squats</string>
     <string name="example_unilateral">e.g., pistol squats, one-arm push-ups</string>
     <string name="per_side_parenthesis">(per side)</string>
-    <string name="example_3">e.g., 3</string>
-    <string name="example_10">e.g., 10</string>
-    <string name="example_30">e.g., 30</string>
     <string name="no_group_display">No group</string>
     <string name="new_group_plus">+ New group</string>
     <string name="save_button">Save</string>
@@ -365,8 +362,6 @@
     <string name="timer_settings_description">Configure timers for this exercise. Leave blank to use default settings.</string>
     <string name="rep_duration_seconds">Seconds per rep (sets the counting pace)</string>
     <string name="rest_interval_seconds">Rest between sets (seconds)</string>
-    <string name="example_5_seconds">e.g., 5</string>
-    <string name="example_240_seconds">e.g., 240</string>
     <!-- Tracking Settings (v1.9) -->
     <string name="tracking_settings_optional">Tracking settings (optional)</string>
     <string name="track_distance">Track distance</string>
