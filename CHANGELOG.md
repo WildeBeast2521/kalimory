@@ -32,6 +32,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- Adding exercises to a program, an interval routine or a saved workout uses one full-screen picker with search, open groups and an Add button that shows how many are chosen ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - The program editor's exercise and loop settings use steppers for sets, reps or time, rest, rounds and rest between rounds, like the rest of the app ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - Sets, reps or time, seconds per rep and rest on the exercise form are steppers like the numbers elsewhere in the app: blank shows a dash, stepping down from the lowest value clears it, and typing still works ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - On the Programs, Intervals and To Do lists a row's other actions are behind a ⋮ button instead of a hidden long press, and tapping an interval opens its editor like tapping a program does ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))

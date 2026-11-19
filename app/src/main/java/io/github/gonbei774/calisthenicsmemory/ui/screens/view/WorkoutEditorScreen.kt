@@ -183,13 +183,16 @@ fun WorkoutEditorScreen(ref: WorkoutRef, viewModel: TrainingViewModel, onClose: 
         }
 
         if (pickExercise) {
-            ExercisePicker(
+            io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePicker(
+                viewModel = viewModel,
                 exercises = exercises,
-                onPick = { exercise ->
-                    state = state?.let { WorkoutEditorModel.withExercise(it, exercise) }
+                title = stringResource(R.string.select_exercise),
+                onDismiss = { pickExercise = false },
+                onAdd = { picked ->
+                    // Each chosen exercise joins the workout, in the order they were chosen.
+                    state = picked.fold(state) { draft, exercise -> draft?.let { WorkoutEditorModel.withExercise(it, exercise) } }
                     pickExercise = false
                 },
-                onDismiss = { pickExercise = false },
             )
         }
         message?.let { text ->
@@ -404,42 +407,6 @@ private fun MetricField(label: Int, value: String, keyboard: KeyboardType, signe
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = keyboard),
-    )
-}
-
-@Composable
-private fun ExercisePicker(exercises: List<Exercise>, onPick: (Exercise) -> Unit, onDismiss: () -> Unit) {
-    var query by remember { mutableStateOf("") }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.select_exercise)) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                CalmSearchField(query = query, onQueryChange = { query = it }, placeholder = stringResource(R.string.search_exercise))
-                // The shared search (#278): names and group names, best match first, the group shown.
-                val searching = query.isNotBlank()
-                val shown = remember(exercises, query) {
-                    if (searching) SearchUtils.searchExercises(exercises, query) else exercises.sortedBy { it.name }
-                }
-                if (searching && shown.isEmpty()) {
-                    Text(stringResource(R.string.no_results), color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(vertical = 12.dp))
-                }
-                LazyColumn(modifier = Modifier.heightIn(max = 360.dp)) {
-                    items(shown, key = { it.id }) { exercise ->
-                        Row(
-                            modifier = Modifier.fillMaxWidth().clickable { onPick(exercise) }.padding(vertical = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            Text(exercise.name, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f, fill = false))
-                            if (searching) exercise.group?.let { GroupBadge(it) }
-                        }
-                    }
-                }
-            }
-        },
-        confirmButton = {},
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
     )
 }
 

@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import io.github.gonbei774.calisthenicsmemory.data.defaultPlan
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePicker
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -48,7 +49,6 @@ import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import kotlinx.coroutines.launch
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
-import io.github.gonbei774.calisthenicsmemory.ui.components.program.AddExerciseToProgramDialog
 import io.github.gonbei774.calisthenicsmemory.ui.components.program.ExerciseSettingsDialog
 import io.github.gonbei774.calisthenicsmemory.ui.components.program.LoopBlock
 import io.github.gonbei774.calisthenicsmemory.ui.components.program.LoopSettingsDialog
@@ -478,9 +478,10 @@ fun ProgramEditScreen(
 
     // Add Exercise Dialog
     if (showAddExerciseDialog) {
-        AddExerciseToProgramDialog(
+        ExercisePicker(
             viewModel = viewModel,
             exercises = exercises,
+            title = stringResource(R.string.add_exercise_to_program),
             onDismiss = { showAddExerciseDialog = false },
             onAdd = { selectedExercisesList ->
                 val defaultInterval = if (workoutPreferences.isSetIntervalEnabled())
@@ -663,9 +664,10 @@ fun ProgramEditScreen(
 
     // Add Exercise to Loop Dialog
     showAddExerciseToLoopDialog?.let { targetLoop ->
-        AddExerciseToProgramDialog(
+        ExercisePicker(
             viewModel = viewModel,
             exercises = exercises,
+            title = stringResource(R.string.add_exercise_to_program),
             onDismiss = { showAddExerciseToLoopDialog = null },
             onAdd = { selectedExercisesList ->
                 val defaultInterval = if (workoutPreferences.isSetIntervalEnabled())

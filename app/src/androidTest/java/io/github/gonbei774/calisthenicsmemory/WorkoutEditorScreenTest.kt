@@ -145,7 +145,9 @@ class WorkoutEditorScreenTest {
         openEditor()
         rule.onNodeWithContentDescription(context.getString(R.string.workout_edit_remove_exercise, exerciseName)).performClick()
         rule.onNodeWithText(text(R.string.workout_edit_add_exercise)).performClick()
+        // The shared picker: tick the exercise, then Add (1).
         rule.onNodeWithText(otherName).performClick()
+        rule.onNodeWithText(text(R.string.add) + " (1)").performClick()
         rule.onNode(hasTestTag(WORKOUT_EDITOR_LIST_TAG)).performScrollToNode(hasText(otherName))
         val fields = rule.onAllNodes(hasSetTextAction() and hasAnyAncestor(isDialog()))
         fields[fields.fetchSemanticsNodes().size - 1].performTextInput("45")
