@@ -25,6 +25,14 @@ Open an issue first for:
 
 Keep each pull request to one change, and use [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:` and so on). If you used an AI coding assistant, say so in the description.
 
+## What to say in the pull request
+
+Describe the problem, the fix and the tests. Say which checks you ran and what they reported (the full check
+below, plus the changelog and schema checks when they apply), and what you did not run. Name anything a
+reviewer cannot see from the diff: a screenshot that changed and why, a translation that is machine-assisted
+and needs a native reader, or a visible change in behaviour. If a check fails for a reason that is not yours,
+say so rather than skipping it.
+
 ## Building and the local check
 
 Requires JDK 17 or later and the Android SDK. Instrumented tests run on an emulator; the project uses an API 29 image.
