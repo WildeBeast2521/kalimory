@@ -75,6 +75,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- The Restart set, Skip set and Skip exercise buttons no longer touch each other or the main button, and the vibration asks the phone as an alarm-type cue so a touch-feedback or media setting cannot silence it ([#293](https://github.com/WildeBeast2521/kalimory/pull/293))
 - The vibrations when a set is done and with the last countdown beeps use the phone's vibrator, so they work whatever the touch-feedback setting is. This adds the `VIBRATE` permission, which Android grants at install ([#293](https://github.com/WildeBeast2521/kalimory/pull/293))
 - The reasons CSV and Share imports give for a line they cannot read or an item they skip, and the Share export and import messages, are shown in the app's language instead of English ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - Screen readers get what they were missing: each graph says its date range, latest and highest value, a catalogue step badge says "Step 3", the interval editor's drag handle says what it does, and a history entry's exercise name is a full-size target that says it filters ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))

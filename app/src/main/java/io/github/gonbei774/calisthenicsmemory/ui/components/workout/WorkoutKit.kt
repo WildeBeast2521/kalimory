@@ -2,6 +2,9 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.workout
 
+import android.os.VibrationAttributes
+import android.os.Build
+import android.media.AudioAttributes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.staticCompositionLocalOf
 import android.os.Vibrator
@@ -199,7 +202,8 @@ fun TimerDial(
     paused: Boolean,
     onToggle: () -> Unit,
     modifier: Modifier = Modifier,
-    size: Dp = 264.dp,
+    // Smaller at large text, where the buttons under the dial need the room.
+    size: Dp = if (isLargeFontScale()) 208.dp else 264.dp,
 ) {
     val track = MaterialTheme.colorScheme.surfaceContainerHighest
     // In the dark theme a running dial glows faintly in its own colour, so the screen feels lit.
@@ -424,8 +428,10 @@ fun SetActions(
     onSkipExercise: (() -> Unit)? = null,
 ) {
     FlowRow(
-        modifier.fillMaxWidth(),
+        // The gap above keeps the helpers off the main button; the vertical gap keeps wrapped rows apart.
+        modifier.fillMaxWidth().padding(top = Spacing.s),
         horizontalArrangement = Arrangement.spacedBy(Spacing.s, Alignment.CenterHorizontally),
+        verticalArrangement = Arrangement.spacedBy(Spacing.s),
     ) {
         SetActionButton(stringResource(R.string.retry_set_button), onRestart)
         if (onSkipSet != null) SetActionButton(stringResource(R.string.skip_set_button), onSkipSet)
@@ -523,10 +529,19 @@ interface Buzzer {
 internal class VibratorBuzzer(context: Context) : Buzzer {
     private val vibrator: Vibrator? = (context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator)?.takeIf { it.hasVibrator() }
 
+    @Suppress("DEPRECATION") // the AudioAttributes overload is the one that works before Android 13
     private fun pulse(millis: Long) {
         val v = vibrator ?: return
         try {
-            v.vibrate(VibrationEffect.createOneShot(millis, VibrationEffect.DEFAULT_AMPLITUDE))
+            val amplitude = if (v.hasAmplitudeControl()) 255 else VibrationEffect.DEFAULT_AMPLITUDE
+            val effect = VibrationEffect.createOneShot(millis, amplitude)
+            // Alarm usage: a timer cue should be felt even when the phone's touch-feedback or media
+            // vibration settings are off, as a clock alarm is.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                v.vibrate(effect, VibrationAttributes.createForUsage(VibrationAttributes.USAGE_ALARM))
+            } else {
+                v.vibrate(effect, AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build())
+            }
         } catch (_: RuntimeException) {
             // A phone that refuses the pulse just stays still; the sound and the screen still tell the person.
         }
@@ -536,8 +551,8 @@ internal class VibratorBuzzer(context: Context) : Buzzer {
     override fun confirm() = pulse(CONFIRM_MILLIS)
 
     private companion object {
-        const val TICK_MILLIS = 45L
-        const val CONFIRM_MILLIS = 160L
+        const val TICK_MILLIS = 60L
+        const val CONFIRM_MILLIS = 220L
     }
 }
 
