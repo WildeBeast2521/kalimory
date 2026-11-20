@@ -147,18 +147,11 @@ fun SessionCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    // 種目名をクリッカブルに
                     Text(
                         text = exercise?.name ?: stringResource(R.string.unknown_exercise),
-                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = if (exercise != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier
-                            .heightIn(min = 48.dp)
-                            .wrapContentHeight(Alignment.CenterVertically)
-                            .clickable(enabled = exercise != null, onClickLabel = stringResource(R.string.show_only_this_exercise)) {
-                                exercise?.let { onExerciseClick(it) }
-                            }
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Text(
                         text = displayDateTime(session.date, session.time),
@@ -180,6 +173,15 @@ fun SessionCard(
                         expanded = menuExpanded,
                         onDismissRequest = { menuExpanded = false }
                     ) {
+                        if (exercise != null) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.show_only_this_exercise)) },
+                                onClick = {
+                                    menuExpanded = false
+                                    onExerciseClick(exercise)
+                                }
+                            )
+                        }
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.edit)) },
                             onClick = {

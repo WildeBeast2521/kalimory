@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowMenu
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
@@ -1133,47 +1134,34 @@ private fun AddItemsDialog(
                 .background(MaterialTheme.colorScheme.surfaceContainerLow)
                 .systemBarsPadding()
         ) {
-            // Top bar
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextButton(onClick = onDismiss) {
-                    Text(text = stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-                Text(
-                    text = stringResource(R.string.todo_add_items),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                )
-                TextButton(
-                    onClick = {
-                        if (selectedExercises.isNotEmpty()) {
-                            viewModel.addTodoTasks(selectedExercises.toList())
-                        }
-                        if (selectedGroups.isNotEmpty()) {
-                            viewModel.addTodoTaskGroups(selectedGroups.toList())
-                        }
-                        if (selectedPrograms.isNotEmpty()) {
-                            viewModel.addTodoTaskPrograms(selectedPrograms.toList())
-                        }
-                        if (selectedIntervals.isNotEmpty()) {
-                            viewModel.addTodoTaskIntervals(selectedIntervals.toList())
-                        }
-                        onDismiss()
-                    },
-                    enabled = hasSelection
-                ) {
-                    Text(
+            CalmTopBar(
+                title = stringResource(R.string.todo_add_items),
+                onBack = onDismiss,
+                scrollBehavior = null,
+                backIcon = AppIcons.Close,
+                backDescription = stringResource(R.string.cancel),
+                actions = {
+                    TopBarAction(
                         text = stringResource(R.string.add),
-                        color = if (hasSelection) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                        enabled = hasSelection,
+                        onClick = {
+                            if (selectedExercises.isNotEmpty()) {
+                                viewModel.addTodoTasks(selectedExercises.toList())
+                            }
+                            if (selectedGroups.isNotEmpty()) {
+                                viewModel.addTodoTaskGroups(selectedGroups.toList())
+                            }
+                            if (selectedPrograms.isNotEmpty()) {
+                                viewModel.addTodoTaskPrograms(selectedPrograms.toList())
+                            }
+                            if (selectedIntervals.isNotEmpty()) {
+                                viewModel.addTodoTaskIntervals(selectedIntervals.toList())
+                            }
+                            onDismiss()
+                        },
                     )
-                }
-            }
+                },
+            )
 
             // Tabs
             BoxWithConstraints {
