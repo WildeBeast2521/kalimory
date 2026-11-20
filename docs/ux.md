@@ -74,6 +74,7 @@ Use these instead of a local version.
 | Nothing here yet | `EmptyState` |
 | Text and the buttons that act on it | `InfoActionRow` |
 | Swipe to delete | `SwipeToDeleteBackground` |
+| Delete or discard something | `DestructiveButton` |
 | Group name on a row | `GroupBadge` |
 
 ## Empty screens

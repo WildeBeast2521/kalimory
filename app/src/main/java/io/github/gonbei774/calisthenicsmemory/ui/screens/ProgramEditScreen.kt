@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.DestructiveButton
 import io.github.gonbei774.calisthenicsmemory.data.defaultPlan
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
@@ -458,20 +459,12 @@ OutlinedTextField(
                 if (programId != null) {
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
-                        OutlinedButton(
+                        DestructiveButton(
+                            text = stringResource(R.string.delete_program),
                             onClick = { showDeleteConfirmDialog = true },
                             modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = MaterialTheme.colorScheme.error
-                            ),
-                            border = ButtonDefaults.outlinedButtonBorder.copy(
-                                brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.error, MaterialTheme.colorScheme.error))
-                            )
-                        ) {
-                            Icon(AppIcons.Delete, contentDescription = null)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(stringResource(R.string.delete_program))
-                        }
+                            icon = AppIcons.Delete,
+                        )
                     }
                 }
                 }

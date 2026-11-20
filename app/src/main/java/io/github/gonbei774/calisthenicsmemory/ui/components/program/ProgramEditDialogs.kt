@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.DestructiveButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.LabelledNumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
@@ -251,20 +252,12 @@ fun LoopSettingsDialog(
 
                 // Delete button (only for existing loops)
                 if (onDelete != null) {
-                    OutlinedButton(
+                    DestructiveButton(
+                        text = stringResource(R.string.delete),
                         onClick = onDelete,
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.error
-                        ),
-                        border = ButtonDefaults.outlinedButtonBorder.copy(
-                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.error, MaterialTheme.colorScheme.error))
-                        )
-                    ) {
-                        Icon(AppIcons.Delete, contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(stringResource(R.string.delete))
-                    }
+                        icon = AppIcons.Delete,
+                    )
                 }
             }
         },

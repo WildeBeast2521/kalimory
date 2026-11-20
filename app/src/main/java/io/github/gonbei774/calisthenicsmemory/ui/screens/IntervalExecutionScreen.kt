@@ -1049,10 +1049,9 @@ private fun IntervalTimerContent(
         ) {
             // Stop
             if (onStop != null) {
-                // Stopping ends the run early (it is saved), so it is visible but not loud.
+                // Stopping ends the run early and it is saved, so this is a quiet button, not a destructive one.
                 OutlinedButton(
                     onClick = onStop,
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = cs.error),
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 48.dp)

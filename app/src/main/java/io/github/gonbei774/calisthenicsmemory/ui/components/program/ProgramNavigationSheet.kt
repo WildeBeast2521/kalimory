@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.DestructiveButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.DialogSystemBars
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.ui.res.pluralStringResource
@@ -1700,32 +1701,17 @@ private fun NavigationSheetFooter(
                 onClick = onSaveAndExit,
                 modifier = Modifier
                     .weight(1f)
-                    .heightIn(min = 44.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, cs.tertiary)
+                    .heightIn(min = 48.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.nav_save_and_exit),
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = cs.tertiary
-                )
+                Text(text = stringResource(R.string.nav_save_and_exit))
             }
 
             // Discard
-            OutlinedButton(
+            DestructiveButton(
+                text = stringResource(R.string.nav_discard),
                 onClick = onDiscard,
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(min = 44.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
-            ) {
-                Text(
-                    text = stringResource(R.string.nav_discard),
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = cs.onSurfaceVariant
-                )
-            }
+                modifier = Modifier.weight(1f),
+            )
         }
     }
 }
