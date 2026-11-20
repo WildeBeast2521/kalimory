@@ -1323,8 +1323,8 @@ private fun SetValueText(
 
     val (valueText, valueColor) = when (status) {
         SetStatus.COMPLETED -> "${set.actualValue}" to cs.primary
-        SetStatus.CURRENT -> "${set.actualValue}/${set.targetValue}" to cs.onSurfaceVariant
-        SetStatus.PENDING -> "${set.targetValue}" to cs.outline
+        SetStatus.CURRENT -> (if (set.targetValue > 0) "${set.actualValue}/${set.targetValue}" else "${set.actualValue}") to cs.onSurfaceVariant
+        SetStatus.PENDING -> (if (set.targetValue > 0) "${set.targetValue}" else "") to cs.outline
         SetStatus.SKIPPED -> "" to cs.outline
     }
     FlowRow(

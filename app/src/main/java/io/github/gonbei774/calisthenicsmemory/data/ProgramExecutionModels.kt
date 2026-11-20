@@ -77,12 +77,15 @@ fun isOtherSide(a: ProgramWorkoutSet, b: ProgramWorkoutSet): Boolean =
  * After the set at [index] was done: the sets still to do for the same exercise and side aim for at least what
  * was just done. It only raises, never lowers, and a skipped set or a warm-up changes nothing.
  */
+/** True when [value] has reached [target]. A set with no target (0) never reaches it. */
+fun reached(value: Int, target: Int): Boolean = target > 0 && value >= target
+
 fun MutableList<ProgramWorkoutSet>.raiseLaterTargets(index: Int) {
     val done = this[index]
     if (!done.isCompleted || done.isWarmUp || done.actualValue <= 0) return
     for (i in index + 1..lastIndex) {
         val later = this[i]
-        if (later.isPending && later.exerciseIndex == done.exerciseIndex && later.side == done.side && later.targetValue < done.actualValue) {
+        if (later.isPending && later.exerciseIndex == done.exerciseIndex && later.side == done.side && later.targetValue > 0 && later.targetValue < done.actualValue) {
             this[i] = later.copy(targetValue = done.actualValue)
         }
     }

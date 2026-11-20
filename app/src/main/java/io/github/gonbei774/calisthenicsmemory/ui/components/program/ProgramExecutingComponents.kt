@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.reached
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
 import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
@@ -83,7 +84,7 @@ internal fun ProgramExecutingStepDynamicManual(
     val stopwatch = rememberStepStopwatch(paused = effectivelyPaused) { sw ->
         val count = sw.elapsedSeconds / repDuration
         if (count > announcedCount) {
-            val reachedTarget = announcedCount < currentSet.targetValue && count >= currentSet.targetValue
+            val reachedTarget = announcedCount < currentSet.targetValue && reached(count, currentSet.targetValue)
             announcedCount = count
             if (reachedTarget) {
                 // 目標達成の音（1回だけ）
@@ -110,7 +111,7 @@ internal fun ProgramExecutingStepDynamicManual(
     val repTimeElapsed = elapsedTime % repDuration
 
     // タイマー完了フラグ
-    val isTimerComplete = currentCount >= currentSet.targetValue
+    val isTimerComplete = reached(currentCount, currentSet.targetValue)
 
 
     val notificationDetail = programSetDetail(session, currentSetIndex)
@@ -222,7 +223,7 @@ internal fun ProgramExecutingStepIsometricManual(
         }
         announcedSecond = second
         // 目標時間達成時に終了アラーム（1回だけ）
-        if (second >= currentSet.targetValue && !hasPlayedCompletionBeep) {
+        if (reached(second, currentSet.targetValue) && !hasPlayedCompletionBeep) {
             hasPlayedCompletionBeep = true
             if (isFlashEnabled) {
                 launch { flashController.flashSetComplete() }
@@ -252,7 +253,7 @@ internal fun ProgramExecutingStepIsometricManual(
 
 
     val notificationDetail = programSetDetail(session, currentSetIndex)
-    val holdReached = stopwatch.elapsedMillis >= currentSet.targetValue * 1_000L
+    val holdReached = currentSet.targetValue > 0 && stopwatch.elapsedMillis >= currentSet.targetValue * 1_000L
     ReportWorkoutProgress(currentSetIndex, effectivelyPaused, holdReached) { now ->
         holdProgress(now, exercise.name, notificationDetail, currentSet.targetValue, stopwatch.elapsedMillis, effectivelyPaused, session.setsDone(), session.sets.size)
     }
@@ -695,7 +696,7 @@ private fun ProgramCompleteSetButton(
             previousAssistanceG = currentSet.previousAssistanceG,
             onConfirm = { adjusted, weightG, distanceCm, assistanceG ->
                 // Reaching the target already played the finish sound; ending below it is heard here.
-                if (recordValue < currentSet.targetValue) soundPlayer.playSetComplete()
+                if (!reached(recordValue, currentSet.targetValue)) soundPlayer.playSetComplete()
                 currentSet.weightG = weightG
                 currentSet.distanceCm = distanceCm
                 currentSet.assistanceG = assistanceG

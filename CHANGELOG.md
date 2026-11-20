@@ -11,6 +11,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- A program entry can be left without a target: the workout runs it as a manual set where you count or time freely and tap Complete, and Save only needs sets. Older app versions show such an entry as 0 reps ([#293](https://github.com/WildeBeast2521/kalimory/pull/293))
 - The records CSV carries warm-up marks and effort ratings in two new last columns (warmUp, effortLeft), so they survive an export and import; a value that does not read is a line error, and old files without the columns import as before. Older app versions read the new file but ignore the two columns, so a warm-up comes in as an ordinary set there ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - The exercises CSV carries each exercise's catalogue link in a new last column, so a catalogue exercise stays linked after an export and import; old files without the column import as before, and older app versions ignore the column ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - Editing an exercise that came from the catalogue shows where it came from and its main muscles ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
