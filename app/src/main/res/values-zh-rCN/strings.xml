@@ -38,7 +38,6 @@
     <string name="group_name">分组名称</string>
     <string name="rename_group">重命名分组</string>
     <string name="delete_group">删除分组</string>
-    <string name="delete_confirmation">删除确认</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">训练记录</string>
@@ -88,7 +87,6 @@
     <string name="unit_reps">次</string>
     <string name="unit_seconds">秒</string>
     <!-- Challenge Screen -->
-    <string name="no_challenge_set">未设定挑战</string>
     <string name="no_exercises_available">没有可用动作</string>
     <string name="no_exercises_in_period">%s内未进行训练</string>
     <!-- Settings Screen -->
@@ -1024,4 +1022,8 @@
     <string name="share_import_error">无法导入：%1$s</string>
     <string name="file_too_large">文件太大：%1$d MB（上限 %2$d MB）</string>
     <string name="wrong_file_type">文件类型不对：是 %1$s，而不是 %2$s</string>
+    <string name="delete_group_title">删除此分组？</string>
+    <string name="delete_exercise_title">删除此动作？</string>
+    <string name="delete_workout_title">删除此训练？</string>
+    <string name="delete_task_title">删除此任务？</string>
 </resources>

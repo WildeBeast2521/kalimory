@@ -40,7 +40,6 @@
     <string name="add_exercise_to_group">Add new exercise to group</string>
     <string name="rename_group">Rename group</string>
     <string name="delete_group">Delete group</string>
-    <string name="delete_confirmation">Delete confirmation</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">Log a past workout</string>
@@ -104,7 +103,6 @@
     <string name="sets_label_short">Sets:</string>
     <string name="interval_short">Rest:</string>
     <!-- Challenge Screen -->
-    <string name="no_challenge_set">No challenge set</string>
     <string name="challenge_best">Best workout</string>
     <string name="challenge_target_label">Target</string>
     <string name="no_exercises_available">No exercises available</string>
@@ -1058,4 +1056,8 @@
     <string name="share_import_error">Could not import: %1$s</string>
     <string name="file_too_large">The file is too large: %1$d MB (the limit is %2$d MB)</string>
     <string name="wrong_file_type">This is the wrong kind of file: %1$s, not %2$s</string>
+    <string name="delete_group_title">Delete this group?</string>
+    <string name="delete_exercise_title">Delete this exercise?</string>
+    <string name="delete_workout_title">Delete this workout?</string>
+    <string name="delete_task_title">Delete this task?</string>
 </resources>

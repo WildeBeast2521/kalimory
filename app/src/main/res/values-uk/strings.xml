@@ -32,7 +32,6 @@
     <string name="group_name">Назва групи</string>
     <string name="rename_group">Перейменувати групу</string>
     <string name="delete_group">Видалити групу</string>
-    <string name="delete_confirmation">Підтвердження видалення</string>
     <string name="delete_group_confirm_message">Видалити «%s»?\nВправи з цієї групи будуть переміщені до «Без групи».</string>
     <string name="delete_program_warning">Видалити «%s»?</string>
     <string name="exercise_deleted">Вправу видалено</string>
@@ -153,7 +152,6 @@
     <string name="csv_import_errors">Помилки (%d)</string>
     <string name="csv_import_partial">Імпортовано %1$s, %2$s</string>
     <string name="csv_import_error_label">Помилки</string>
-    <string name="no_challenge_set">Немає встановлених викликів</string>
     <string name="tab_calendar">Календар</string>
     <string name="no_exercises_in_period">Жодних вправ не виконано за %s</string>
     <string name="export_data">Експортувати дані</string>
@@ -1056,4 +1054,8 @@
     <string name="share_import_error">Не вдалося імпортувати: %1$s</string>
     <string name="file_too_large">Файл завеликий: %1$d МБ (ліміт %2$d МБ)</string>
     <string name="wrong_file_type">Неправильний тип файлу: %1$s замість %2$s</string>
+    <string name="delete_group_title">Видалити цю групу?</string>
+    <string name="delete_exercise_title">Видалити цю вправу?</string>
+    <string name="delete_workout_title">Видалити це тренування?</string>
+    <string name="delete_task_title">Видалити це завдання?</string>
 </resources>

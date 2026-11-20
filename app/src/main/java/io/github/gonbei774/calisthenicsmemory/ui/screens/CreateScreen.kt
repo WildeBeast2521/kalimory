@@ -337,7 +337,7 @@ fun CreateScreen(
     showGroupDeleteDialog?.let { groupName ->
         AlertDialog(
             onDismissRequest = { showGroupDeleteDialog = null },
-            title = { Text(stringResource(R.string.delete_confirmation)) },
+            title = { Text(stringResource(R.string.delete_group_title)) },
             text = { Text(stringResource(R.string.delete_group_confirm_message, groupName)) },
             confirmButton = {
                 TextButton(
@@ -371,7 +371,7 @@ fun CreateScreen(
         }
         AlertDialog(
             onDismissRequest = dismiss,
-            title = { Text(stringResource(R.string.delete_confirmation)) },
+            title = { Text(stringResource(R.string.delete_exercise_title)) },
             text = {
                 Column {
                     Text(stringResource(R.string.delete_exercise_confirm_title, exercise.name))

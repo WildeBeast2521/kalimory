@@ -281,7 +281,6 @@
     <string name="add_exercise_to_group">إضافة تمرين جديد إلى المجموعة</string>
     <string name="rename_group">إعادة تسمية المجموعة</string>
     <string name="delete_group">حذف المجموعة</string>
-    <string name="delete_confirmation">تأكيد الحذف</string>
     <string name="character_count">%1$d/%2$d</string>
     <string name="training_record">تسجيل تمرين سابق</string>
     <string name="select_exercise">اختر تمرينًا</string>
@@ -339,7 +338,6 @@
     <string name="unit_seconds_short">ث</string>
     <string name="sets_label_short">المجموعات:</string>
     <string name="interval_short">الراحة:</string>
-    <string name="no_challenge_set">لم يُحدَّد هدف</string>
     <string name="challenge_best">أفضل تمرين</string>
     <string name="challenge_target_label">الهدف</string>
     <string name="no_exercises_available">لا توجد تمارين متاحة</string>
@@ -1113,4 +1111,8 @@
     <string name="share_import_error">تعذر الاستيراد: %1$s</string>
     <string name="file_too_large">الملف كبير جدًا: %1$d ميغابايت (الحد %2$d ميغابايت)</string>
     <string name="wrong_file_type">نوع الملف غير صحيح: %1$s وليس %2$s</string>
+    <string name="delete_group_title">حذف هذه المجموعة؟</string>
+    <string name="delete_exercise_title">حذف هذا التمرين؟</string>
+    <string name="delete_workout_title">حذف هذا التمرين الرياضي؟</string>
+    <string name="delete_task_title">حذف هذه المهمة؟</string>
 </resources>

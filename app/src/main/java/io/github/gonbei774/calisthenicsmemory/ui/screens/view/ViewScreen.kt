@@ -464,7 +464,7 @@ fun ViewScreen(
             onDismissRequest = { showIntervalDeleteDialog = null },
             title = {
                 Text(
-                    stringResource(R.string.delete_confirmation),
+                    stringResource(R.string.delete_workout_title),
                     color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
@@ -524,7 +524,7 @@ fun ViewScreen(
         val exercise = exercises.find { it.id == session.exerciseId }
         AlertDialog(
             onDismissRequest = { showDeleteDialog = null },
-            title = { Text(stringResource(R.string.delete_confirmation)) },
+            title = { Text(stringResource(R.string.delete_workout_title)) },
             text = {
                 Text(stringResource(
                     R.string.delete_record_warning,
@@ -845,7 +845,8 @@ fun ChallengeView(
 
     // フィルターを適用（種目 + 期間）
     val filteredExercises = remember(exercises, records, selectedExerciseFilter, selectedPeriod) {
-        var filtered = exercises
+        // Only exercises that have a target belong in this list.
+        var filtered = exercises.filter { it.targetSets != null && it.targetValue != null }
 
         // 種目フィルター
         if (selectedExerciseFilter != null) {
@@ -1101,13 +1102,6 @@ fun ChallengeExerciseCard(
                         )
                     }
                 }
-            } else {
-                // 課題なしの場合
-                Text(
-                    text = stringResource(R.string.no_challenge_set),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
             }
         }
     }

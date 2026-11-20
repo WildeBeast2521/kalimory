@@ -297,7 +297,7 @@ fun ToDoScreen(
         } ?: "?"
         AlertDialog(
             onDismissRequest = { deleteConfirmTask = null },
-            title = { Text(stringResource(R.string.delete_confirmation), color = MaterialTheme.colorScheme.onSurface) },
+            title = { Text(stringResource(R.string.delete_task_title), color = MaterialTheme.colorScheme.onSurface) },
             text = { Text(stringResource(R.string.todo_delete_confirm_message, taskName), color = MaterialTheme.colorScheme.onSurface) },
             confirmButton = {
                 TextButton(onClick = {

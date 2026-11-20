@@ -38,7 +38,6 @@
     <string name="group_name">Nom du Groupe</string>
     <string name="rename_group">Renommer le Groupe</string>
     <string name="delete_group">Supprimer le Groupe</string>
-    <string name="delete_confirmation">Confirmation de Suppression</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">Enregistrement d\'Entraînement</string>
@@ -88,7 +87,6 @@
     <string name="unit_reps">rép.</string>
     <string name="unit_seconds">sec.</string>
     <!-- Challenge Screen -->
-    <string name="no_challenge_set">Aucun Défi Défini</string>
     <string name="no_exercises_available">Aucun exercice disponible</string>
     <string name="no_exercises_in_period">Aucun exercice effectué dans %s</string>
     <!-- Settings Screen -->
@@ -1079,4 +1077,8 @@
     <string name="share_import_error">Import impossible : %1$s</string>
     <string name="file_too_large">Le fichier est trop volumineux : %1$d Mo (limite : %2$d Mo)</string>
     <string name="wrong_file_type">Mauvais type de fichier : %1$s au lieu de %2$s</string>
+    <string name="delete_group_title">Supprimer ce groupe ?</string>
+    <string name="delete_exercise_title">Supprimer cet exercice ?</string>
+    <string name="delete_workout_title">Supprimer cette séance ?</string>
+    <string name="delete_task_title">Supprimer cette tâche ?</string>
 </resources>

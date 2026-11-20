@@ -33,7 +33,6 @@
     <string name="group_name">Название группы</string>
     <string name="rename_group">Переименовать группу</string>
     <string name="delete_group">Удалить группу</string>
-    <string name="delete_confirmation">Подтверждение удаления</string>
     <string name="character_count">%1$d/%2$d</string>
     <string name="training_record">Журнал тренировок</string>
     <string name="select_exercise">Выбрать упражнение</string>
@@ -329,7 +328,6 @@
     <string name="unit_seconds_short">с</string>
     <string name="sets_label_short">Подходы:</string>
     <string name="interval_short">Отдых:</string>
-    <string name="no_challenge_set">Цель не задана</string>
     <string name="challenge_best">Лучшая тренировка</string>
     <string name="challenge_target_label">Цель</string>
     <string name="no_exercises_available">Нет доступных упражнений</string>
@@ -1053,4 +1051,8 @@
     <string name="share_import_error">Не удалось импортировать: %1$s</string>
     <string name="file_too_large">Файл слишком большой: %1$d МБ (предел %2$d МБ)</string>
     <string name="wrong_file_type">Неверный тип файла: %1$s вместо %2$s</string>
+    <string name="delete_group_title">Удалить эту группу?</string>
+    <string name="delete_exercise_title">Удалить это упражнение?</string>
+    <string name="delete_workout_title">Удалить эту тренировку?</string>
+    <string name="delete_task_title">Удалить эту задачу?</string>
 </resources>

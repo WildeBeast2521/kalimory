@@ -87,6 +87,16 @@ Use `NumberStepper`: buttons that step, a number that can also be typed, and the
 Steppers use the same button size and value width everywhere, so neighbouring ones line up. An empty
 value shows a dash, not a gap.
 
+## Lists and gestures
+
+Tapping a row opens it (its editor, or its details). A row's other actions, such as duplicate, share or
+delete, sit behind the ⋮ button at its end (`RowMenu`), so every action can be found and none depends on a
+gesture. A long press does not open a menu; where a list can be reordered, a long press on the drag
+handle moves the row. Swipe-to-delete uses `SwipeToDeleteBackground`. `ConsistencyGuardTest` fails when a long press opens a menu again.
+
+Titles of delete dialogs say what is deleted ("Delete this exercise?"), and the dialog's text says what
+else goes with it.
+
 ## Forms
 
 A form's save button stays enabled. When something is missing, tapping it marks the field and says

@@ -38,7 +38,6 @@
     <string name="add_exercise_to_group">グループに新しい種目を追加</string>
     <string name="rename_group">グループ名を編集</string>
     <string name="delete_group">グループを削除</string>
-    <string name="delete_confirmation">削除の確認</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">トレーニング記録</string>
@@ -99,7 +98,6 @@
     <string name="unit_reps">回</string>
     <string name="unit_seconds">秒</string>
     <!-- Challenge Screen -->
-    <string name="no_challenge_set">課題未設定</string>
     <string name="challenge_best">ベストのワークアウト</string>
     <string name="challenge_target_label">目標</string>
     <string name="no_exercises_available">種目がありません</string>
@@ -1030,4 +1028,8 @@
     <string name="share_import_error">インポートできませんでした: %1$s</string>
     <string name="file_too_large">ファイルが大きすぎます: %1$d MB（上限 %2$d MB）</string>
     <string name="wrong_file_type">ファイルの種類が違います: %1$s（%2$s が必要）</string>
+    <string name="delete_group_title">このグループを削除しますか？</string>
+    <string name="delete_exercise_title">この種目を削除しますか？</string>
+    <string name="delete_workout_title">このワークアウトを削除しますか？</string>
+    <string name="delete_task_title">このタスクを削除しますか？</string>
 </resources>

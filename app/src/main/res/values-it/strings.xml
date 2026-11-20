@@ -38,7 +38,6 @@
     <string name="group_name">Nome Gruppo</string>
     <string name="rename_group">Rinomina Gruppo</string>
     <string name="delete_group">Elimina Gruppo</string>
-    <string name="delete_confirmation">Conferma Eliminazione</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">Registrazione Allenamento</string>
@@ -88,7 +87,6 @@
     <string name="unit_reps">rip</string>
     <string name="unit_seconds">sec</string>
     <!-- Challenge Screen -->
-    <string name="no_challenge_set">Nessun Obiettivo Impostato</string>
     <string name="no_exercises_available">Nessun esercizio disponibile</string>
     <string name="no_exercises_in_period">Nessun esercizio praticato in %s</string>
     <!-- Settings Screen -->
@@ -1084,4 +1082,8 @@
     <string name="share_import_error">Impossibile importare: %1$s</string>
     <string name="file_too_large">Il file è troppo grande: %1$d MB (il limite è %2$d MB)</string>
     <string name="wrong_file_type">Tipo di file sbagliato: %1$s invece di %2$s</string>
+    <string name="delete_group_title">Eliminare questo gruppo?</string>
+    <string name="delete_exercise_title">Eliminare questo esercizio?</string>
+    <string name="delete_workout_title">Eliminare questo allenamento?</string>
+    <string name="delete_task_title">Eliminare questa attività?</string>
 </resources>
