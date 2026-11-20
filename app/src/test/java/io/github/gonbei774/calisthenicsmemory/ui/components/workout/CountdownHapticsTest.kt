@@ -1,17 +1,14 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.workout
 
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /** A vibration goes with each countdown beep and the go cue, only when the person turned it on. */
 class CountdownHapticsTest {
-    private class Recording : HapticFeedback {
-        val performed = mutableListOf<HapticFeedbackType>()
-        override fun performHapticFeedback(hapticFeedbackType: HapticFeedbackType) {
-            performed += hapticFeedbackType
-        }
+    private class Recording : Buzzer {
+        val performed = mutableListOf<String>()
+        override fun tick() { performed += "tick" }
+        override fun confirm() { performed += "confirm" }
     }
 
     @Test fun `each beep ticks and the go cue confirms when on`() {
@@ -19,7 +16,7 @@ class CountdownHapticsTest {
         val cues = CountdownHaptics({ true }, haptics)
         repeat(3) { cues.tick() }
         cues.go()
-        assertEquals(List(3) { HapticFeedbackType.ContextClick } + HapticFeedbackType.Confirm, haptics.performed)
+        assertEquals(List(3) { "tick" } + "confirm", haptics.performed)
     }
 
     @Test fun `nothing vibrates when it is off`() {
@@ -27,7 +24,7 @@ class CountdownHapticsTest {
         val cues = CountdownHaptics({ false }, haptics)
         cues.tick()
         cues.go()
-        assertEquals(emptyList<HapticFeedbackType>(), haptics.performed)
+        assertEquals(emptyList<String>(), haptics.performed)
     }
 
     @Test fun `the switch is read each time, so changing it in Settings takes effect at once`() {

@@ -2,6 +2,10 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.workout
 
+import androidx.compose.runtime.staticCompositionLocalOf
+import android.os.Vibrator
+import android.os.VibrationEffect
+import android.content.Context
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.FitText
 import androidx.compose.animation.core.LinearEasing
@@ -68,10 +72,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -504,43 +505,82 @@ fun WorkoutPrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier =
     }
 }
 
+/** The two vibrations the workout uses: a short tick, and a longer pulse that confirms something. */
+interface Buzzer {
+    fun tick()
+    fun confirm()
+}
+
+/**
+ * Vibrates the phone's vibrator directly. The touch-feedback haptics the view offers follow the phone's
+ * "vibrate on touch" setting and are barely felt, so they did nothing on many phones.
+ */
+internal class VibratorBuzzer(context: Context) : Buzzer {
+    private val vibrator: Vibrator? = (context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator)?.takeIf { it.hasVibrator() }
+
+    private fun pulse(millis: Long) {
+        val v = vibrator ?: return
+        try {
+            v.vibrate(VibrationEffect.createOneShot(millis, VibrationEffect.DEFAULT_AMPLITUDE))
+        } catch (_: RuntimeException) {
+            // A phone that refuses the pulse just stays still; the sound and the screen still tell the person.
+        }
+    }
+
+    override fun tick() = pulse(TICK_MILLIS)
+    override fun confirm() = pulse(CONFIRM_MILLIS)
+
+    private companion object {
+        const val TICK_MILLIS = 45L
+        const val CONFIRM_MILLIS = 160L
+    }
+}
+
+/** Tests put their own [Buzzer] here; the app uses the phone's vibrator. */
+val LocalBuzzer = staticCompositionLocalOf<Buzzer?> { null }
+
+@Composable
+fun rememberBuzzer(): Buzzer {
+    val override = LocalBuzzer.current
+    val context = LocalContext.current
+    return override ?: remember(context) { VibratorBuzzer(context.applicationContext) }
+}
+
 /**
  * One short vibration that confirms a finished set, unless the user turned it off in Settings. Call it
  * where the set is recorded, so it does not depend on a rest screen following.
  */
 @Composable
 fun rememberSetDoneHaptic(): () -> Unit {
-    val haptics = LocalHapticFeedback.current
+    val buzzer = rememberBuzzer()
     val context = LocalContext.current
-    return remember(haptics, context) {
+    return remember(buzzer, context) {
         {
-            if (WorkoutPreferences(context).isSetDoneVibrationEnabled()) {
-                haptics.performHapticFeedback(HapticFeedbackType.Confirm)
-            }
+            if (WorkoutPreferences(context).isSetDoneVibrationEnabled()) buzzer.confirm()
         }
     }
 }
 
 /** The vibrations that go with the countdown sounds: a tick for each beep and a longer one for the go cue. */
-class CountdownHaptics internal constructor(private val enabled: () -> Boolean, private val haptics: HapticFeedback) {
+class CountdownHaptics internal constructor(private val enabled: () -> Boolean, private val buzzer: Buzzer) {
     fun tick() {
-        if (enabled()) haptics.performHapticFeedback(HapticFeedbackType.ContextClick)
+        if (enabled()) buzzer.tick()
     }
 
     fun go() {
-        if (enabled()) haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+        if (enabled()) buzzer.confirm()
     }
 }
 
 /**
  * Call [CountdownHaptics.tick] beside each countdown beep and [CountdownHaptics.go] beside the go cue. They
- * do nothing unless the person turned this on in Settings, and the phone's touch feedback setting applies.
+ * do nothing unless the person turned this on in Settings.
  */
 @Composable
 fun rememberCountdownHaptics(): CountdownHaptics {
-    val haptics = LocalHapticFeedback.current
+    val buzzer = rememberBuzzer()
     val context = LocalContext.current
-    return remember(haptics, context) { CountdownHaptics({ WorkoutPreferences(context).isCountdownVibrationEnabled() }, haptics) }
+    return remember(buzzer, context) { CountdownHaptics({ WorkoutPreferences(context).isCountdownVibrationEnabled() }, buzzer) }
 }
 
 /**
