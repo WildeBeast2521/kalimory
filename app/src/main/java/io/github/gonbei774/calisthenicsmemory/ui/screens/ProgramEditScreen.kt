@@ -177,7 +177,7 @@ fun ProgramEditScreen(
         }
     }
 
-    val hasIncompleteExercises = programExercises.any { it.sets == 0 || it.targetValue == 0 }
+    val hasIncompleteExercises = programExercises.any { it.sets == 0 }
     val isValid = name.isNotBlank() && programExercises.isNotEmpty() && !hasIncompleteExercises
 
     val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -259,7 +259,7 @@ fun ProgramEditScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = stringResource(R.string.program_validation_incomplete_sets_or_value),
+                                text = stringResource(R.string.program_validation_missing_sets),
                                 color = MaterialTheme.colorScheme.onError,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Medium

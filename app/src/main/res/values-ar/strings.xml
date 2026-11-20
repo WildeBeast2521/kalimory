@@ -639,7 +639,7 @@
     <string name="discard_changes_message">ستفقد تغييراتك.</string>
     <string name="discard">تجاهل</string>
     <string name="program_exercises_required">أضف تمرينًا واحدًا على الأقل</string>
-    <string name="program_validation_incomplete_sets_or_value">بعض التمارين ينقصها عدد المجموعات أو القيمة المستهدفة</string>
+    <string name="program_validation_missing_sets">بعض التمارين بلا مجموعات</string>
     <string name="exercise_settings">إعدادات التمرين</string>
     <string name="sets_label">المجموعات</string>
     <string name="target_value_label">الهدف</string>

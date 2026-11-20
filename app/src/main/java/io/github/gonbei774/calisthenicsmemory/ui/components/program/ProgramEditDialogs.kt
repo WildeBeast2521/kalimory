@@ -182,7 +182,8 @@ fun ExerciseSettingsDialog(
         },
         confirmButton = {
             val setsValue = sets.toIntOrNull()
-            val targetValueValue = targetValue.toIntOrNull()
+            // An empty target is saved as 0, which means no target.
+            val targetValueValue = if (targetValue.isEmpty()) 0 else targetValue.toIntOrNull()
             val isValid = setsValue != null && targetValueValue != null
             TextButton(
                 onClick = {

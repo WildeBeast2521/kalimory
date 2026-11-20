@@ -40,6 +40,7 @@ data class ProgramExercise(
     val exerciseId: Long,
     val sortOrder: Int,
     val sets: Int = 1,
+    /** Reps or seconds per set; 0 means the entry has no target (the person counts or times freely). */
     val targetValue: Int,
     val intervalSeconds: Int = 60,
     val loopId: Long? = null

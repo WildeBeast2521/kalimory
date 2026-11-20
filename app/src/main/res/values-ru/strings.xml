@@ -627,7 +627,7 @@
     <string name="discard_changes_message">Изменения будут потеряны.</string>
     <string name="discard">Отменить</string>
     <string name="program_exercises_required">Добавьте хотя бы одно упражнение</string>
-    <string name="program_validation_incomplete_sets_or_value">У некоторых упражнений не заданы подходы или цель</string>
+    <string name="program_validation_missing_sets">У некоторых упражнений нет подходов</string>
     <string name="exercise_settings">Настройки упражнения</string>
     <string name="sets_label">Подходы</string>
     <string name="target_value_label">Цель</string>

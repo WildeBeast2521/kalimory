@@ -490,7 +490,7 @@
     <string name="add_extra_set_confirm">Додати</string>
     <string name="add_extra_set_title">Додати підхід</string>
     <string name="add_extra_set_button">Додати ще один підхід</string>
-    <string name="program_validation_incomplete_sets_or_value">У деяких вправ не вказано кількість підходів або цільове значення</string>
+    <string name="program_validation_missing_sets">У деяких вправ немає підходів</string>
     <string name="nav_step_decrement">Зменшити</string>
     <string name="nav_step_increment">Збільшити</string>
     <string name="nav_check_set">Позначити як завершений</string>

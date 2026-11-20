@@ -441,7 +441,7 @@
     <string name="discard_changes_message">Your changes will be lost.</string>
     <string name="discard">Discard</string>
     <string name="program_exercises_required">Add at least one exercise</string>
-    <string name="program_validation_incomplete_sets_or_value">Some exercises are missing sets or target value</string>
+    <string name="program_validation_missing_sets">Some exercises have no sets</string>
     <string name="exercise_settings">Exercise settings</string>
     <string name="sets_label">Sets</string>
     <string name="target_value_label">Target</string>

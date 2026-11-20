@@ -787,7 +787,7 @@
     <string name="program_use_challenge_desc">Usa l’obiettivo di ogni esercizio (quello del programma se manca)</string>
     <string name="program_use_previous_desc">Usa i valori del tuo ultimo allenamento (altrimenti quelli del programma)</string>
     <string name="program_use_program_desc">Usa le serie e gli obiettivi definiti nel programma</string>
-    <string name="program_validation_incomplete_sets_or_value">Ad alcuni esercizi mancano serie o obiettivo</string>
+    <string name="program_validation_missing_sets">Alcuni esercizi non hanno serie</string>
     <string name="record_confirm_title">Salvare questa registrazione?</string>
     <string name="record_done_count">%1$d/%2$d</string>
     <string name="record_set_to_target">Imposta sull\'obiettivo (%1$d %2$s)</string>

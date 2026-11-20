@@ -542,7 +542,7 @@
     <string name="add_extra_set_button">Añadir otra serie</string>
     <string name="add_extra_set_title">Añadir conjunto</string>
     <string name="add_extra_set_confirm">Añadir</string>
-    <string name="program_validation_incomplete_sets_or_value">A algunos ejercicios les faltan series o el valor objetivo</string>
+    <string name="program_validation_missing_sets">Algunos ejercicios no tienen series</string>
     <string name="nav_step_decrement">Disminuir</string>
     <string name="nav_step_increment">Aumentar</string>
     <string name="nav_check_set">Marcar como completado</string>

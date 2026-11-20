@@ -422,7 +422,7 @@
     <string name="discard_changes_message">変更内容は失われます。</string>
     <string name="discard">破棄</string>
     <string name="program_exercises_required">種目を1つ以上追加してください</string>
-    <string name="program_validation_incomplete_sets_or_value">セット数または目標値が未設定の種目があります</string>
+    <string name="program_validation_missing_sets">セットがない種目があります</string>
     <string name="exercise_settings">種目設定</string>
     <string name="sets_label">セット数</string>
     <string name="target_value_label">目標</string>

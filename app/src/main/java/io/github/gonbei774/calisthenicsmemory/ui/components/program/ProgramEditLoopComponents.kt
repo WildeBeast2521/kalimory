@@ -379,15 +379,17 @@ private fun LoopExerciseItemWithDrag(
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.secondary
                         )
-                        Text(
-                            text = stringResource(
-                                R.string.program_target_format,
-                                programExercise.targetValue,
-                                stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
-                            ),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        if (programExercise.targetValue > 0) {
+                            Text(
+                                text = stringResource(
+                                    R.string.program_target_format,
+                                    programExercise.targetValue,
+                                    stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                                ),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
                         Text(
                             text = stringResource(R.string.program_interval_format, programExercise.intervalSeconds),
                             style = MaterialTheme.typography.labelSmall,
