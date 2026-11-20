@@ -472,9 +472,6 @@ fun BackupScreen(
                         showDataPreview = false
                         showImportWarning = true
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
                 ) {
                     Text(
                         text = stringResource(R.string.next),
@@ -570,9 +567,6 @@ fun BackupScreen(
                         }
                     },
                     enabled = restoreAllowed(hasUserData, restoreBackupVerified, busy = isLoading),
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    )
                 ) {
                     Text(
                         text = stringResource(R.string.import_confirm),

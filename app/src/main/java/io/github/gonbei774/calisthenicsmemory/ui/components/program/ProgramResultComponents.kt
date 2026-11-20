@@ -178,7 +178,6 @@ internal fun ProgramResultStep(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 56.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Text(
                 text = stringResource(R.string.record_workout),

@@ -576,7 +576,7 @@ OutlinedTextField(
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirmDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -652,7 +652,7 @@ OutlinedTextField(
             },
             dismissButton = {
                 TextButton(onClick = { showDiscardConfirmDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )

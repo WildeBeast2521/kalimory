@@ -491,7 +491,7 @@ fun ViewScreen(
             },
             dismissButton = {
                 TextButton(onClick = { showIntervalDeleteDialog = null }) {
-                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -548,9 +548,6 @@ fun ViewScreen(
                         }
                         showDeleteDialog = null
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    )
                 ) {
                     Text(stringResource(R.string.delete))
                 }

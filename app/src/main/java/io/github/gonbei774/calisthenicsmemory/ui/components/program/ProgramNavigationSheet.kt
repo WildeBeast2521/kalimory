@@ -1669,7 +1669,6 @@ private fun NavigationSheetFooter(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 48.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
         ) {
             Text(
                 text = stringResource(R.string.nav_finish),

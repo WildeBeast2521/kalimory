@@ -1238,9 +1238,6 @@ fun WorkoutInputScreen(
                 OutlinedButton(
                     onClick = { onShowDatePicker(true) },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    )
                 ) {
                     Text(stringResource(R.string.date_format, selectedDate.format(dateFormatter)))
                 }
@@ -1251,9 +1248,6 @@ fun WorkoutInputScreen(
                 OutlinedButton(
                     onClick = { onShowTimePicker(true) },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    )
                 ) {
                     Text(stringResource(R.string.time_format, selectedTime.format(timeFormatter)))
                 }
@@ -1296,10 +1290,6 @@ fun WorkoutInputScreen(
                         .fillMaxWidth()
                         .heightIn(min = 56.dp),
                     enabled = enteredCount > 0,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                    ),
                 ) {
                     Icon(
                         AppIcons.Check,

@@ -310,7 +310,7 @@ fun ToDoScreen(
             },
             dismissButton = {
                 TextButton(onClick = { deleteConfirmTask = null }) {
-                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.cancel))
                 }
             })
     }
@@ -435,10 +435,7 @@ private fun ActiveTaskContent(
                         confirmButton = {},
                         dismissButton = {
                             TextButton(onClick = { showModeDialog = false }) {
-                                Text(
-                                    text = stringResource(R.string.cancel),
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
+                                Text(stringResource(R.string.cancel))
                             }
                         }
                     )
@@ -792,10 +789,7 @@ private fun GroupTaskCard(
                                 confirmButton = {},
                                 dismissButton = {
                                     TextButton(onClick = { showModeDialog = false }) {
-                                        Text(
-                                            text = stringResource(R.string.cancel),
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
+                                        Text(stringResource(R.string.cancel))
                                     }
                                 }
                             )

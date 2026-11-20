@@ -587,9 +587,6 @@ fun CsvDataManagementScreen(
                         showCsvImportPreview = false
                         showBackupConfirmation = true
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
                 ) {
                     Text(
                         text = stringResource(R.string.import_action),
@@ -815,9 +812,6 @@ fun CsvDataManagementScreen(
                         showImportResult = false
                         importReport = null
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
                 ) {
                     Text(stringResource(R.string.ok))
                 }
@@ -859,9 +853,6 @@ fun CsvDataManagementScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 56.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
                     ) {
                         Text(
                             text = stringResource(R.string.backup_and_continue),
@@ -896,9 +887,6 @@ fun CsvDataManagementScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 56.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onSurface
-                        )
                     ) {
                         Text(
                             text = stringResource(R.string.skip_and_continue),

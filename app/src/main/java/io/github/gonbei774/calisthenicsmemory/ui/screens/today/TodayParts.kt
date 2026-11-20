@@ -277,7 +277,6 @@ internal fun HeroCard(
             Button(
                 onClick = onClick,
                 shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(),
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             ) {
                 // The play icon every Start button in the app carries.

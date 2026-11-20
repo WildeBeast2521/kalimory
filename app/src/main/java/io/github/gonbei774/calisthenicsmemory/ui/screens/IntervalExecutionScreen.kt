@@ -1286,7 +1286,6 @@ private fun IntervalCompleteContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 48.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = statusColor),
                 ) {
                     Text(
                         text = stringResource(R.string.interval_save_and_finish),

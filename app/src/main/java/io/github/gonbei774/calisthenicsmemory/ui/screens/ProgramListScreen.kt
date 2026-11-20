@@ -196,7 +196,7 @@ private fun ProgramListItem(
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirmDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -258,7 +258,6 @@ private fun ProgramListItem(
                     if (hasSavedState) {
                         Button(
                             onClick = onResume,
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                             modifier = Modifier.heightIn(min = 36.dp)
                         ) {

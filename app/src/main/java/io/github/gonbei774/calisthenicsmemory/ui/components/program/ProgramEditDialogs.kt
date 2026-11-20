@@ -204,7 +204,7 @@ fun ExerciseSettingsDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.cancel))
             }
         }
     )
@@ -278,7 +278,7 @@ fun LoopSettingsDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.cancel))
             }
         }
     )

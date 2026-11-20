@@ -2099,7 +2099,6 @@ fun ConfirmationStep(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 56.dp),
-            colors = ButtonDefaults.buttonColors()
         ) {
             Text(stringResource(R.string.record_workout), fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
@@ -2307,7 +2306,7 @@ fun AddExtraSetDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.cancel))
             }
         })
 }

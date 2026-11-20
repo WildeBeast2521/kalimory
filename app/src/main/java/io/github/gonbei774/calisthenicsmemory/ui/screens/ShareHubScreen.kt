@@ -430,9 +430,6 @@ fun ShareHubScreen(
                         shareImportPreviewReport = null
                         showBackupConfirmation = true
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
                 ) {
                     Text(
                         text = stringResource(R.string.import_action),
@@ -626,9 +623,6 @@ fun ShareHubScreen(
                         showShareImportResult = false
                         shareImportReport = null
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
                 ) {
                     Text(stringResource(R.string.ok))
                 }
@@ -670,9 +664,6 @@ fun ShareHubScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 56.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
                     ) {
                         Text(
                             text = stringResource(R.string.backup_and_continue),
@@ -705,9 +696,6 @@ fun ShareHubScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 56.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onSurface
-                        )
                     ) {
                         Text(
                             text = stringResource(R.string.skip_and_continue),
