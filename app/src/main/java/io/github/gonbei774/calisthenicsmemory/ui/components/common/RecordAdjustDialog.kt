@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -138,18 +139,10 @@ fun RecordAdjustDialog(
                     Spacer(modifier = Modifier.height(16.dp))
                     val isAtTarget = value == targetValue
                     val accent = if (isAtTarget) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f) else MaterialTheme.colorScheme.primary
-                    OutlinedButton(
+                    FilledTonalButton(
                         onClick = { value = targetValue },
                         enabled = !isAtTarget,
                         modifier = Modifier.fillMaxWidth(),
-                        border = BorderStroke(
-                            1.5.dp,
-                            if (isAtTarget) MaterialTheme.colorScheme.outlineVariant else MaterialTheme.colorScheme.primary
-                        ),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.primary,
-                            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                        )
                     ) {
                         // ターゲット（同心円）アイコン
                         Canvas(modifier = Modifier.size(16.dp)) {

@@ -343,10 +343,9 @@ OutlinedTextField(
 
                 // Add exercise button
                 item {
-                    Button(
+                    FilledTonalButton(
                         onClick = { showAddExerciseDialog = true },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(
                             AppIcons.Add,

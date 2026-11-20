@@ -1614,33 +1614,19 @@ private fun SetActionButton(
     val cs = MaterialTheme.colorScheme
     when (setStatus) {
         SetStatus.COMPLETED -> {
-            OutlinedButton(
+            FilledTonalButton(
                 onClick = { onRedoSet(setIndex) },
-                modifier = Modifier.heightIn(min = 32.dp),
-                contentPadding = PaddingValues(horizontal = 12.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, cs.primary)
+                modifier = Modifier.heightIn(min = 48.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.nav_redo),
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = cs.primary
-                )
+                Text(text = stringResource(R.string.nav_redo))
             }
         }
         SetStatus.PENDING, SetStatus.SKIPPED -> {
-            OutlinedButton(
+            FilledTonalButton(
                 onClick = { onJumpToSet(setIndex) },
-                modifier = Modifier.heightIn(min = 32.dp),
-                contentPadding = PaddingValues(horizontal = 12.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
+                modifier = Modifier.heightIn(min = 48.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.nav_jump),
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = cs.onSurfaceVariant
-                )
+                Text(text = stringResource(R.string.nav_jump))
             }
         }
         // The set in progress needs no action: it is already where the workout is.

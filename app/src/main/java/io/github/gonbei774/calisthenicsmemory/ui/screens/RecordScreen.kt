@@ -1206,7 +1206,7 @@ fun WorkoutInputScreen(
             // セット追加ボタン
             if (numberOfSets < 10) {
                 item {
-                    Button(
+                    FilledTonalButton(
                         onClick = {
                             // ローカル状態にも最後の値をコピーしてから親に通知
                             setValuesRight = setValuesRight + (setValuesRight.lastOrNull() ?: "")
@@ -1221,7 +1221,6 @@ fun WorkoutInputScreen(
                             onAddSet()
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(
                             AppIcons.Add,
@@ -1331,7 +1330,7 @@ fun WorkoutInputScreen(
 
             // Log several exercises as one workout: set this one aside and pick the next.
             item {
-                OutlinedButton(
+                FilledTonalButton(
                     onClick = {
                         addingExercise = true
                         doRecord(false)

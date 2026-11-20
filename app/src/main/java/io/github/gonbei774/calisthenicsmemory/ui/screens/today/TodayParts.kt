@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -296,7 +297,7 @@ internal fun Section(title: String, onOpenAll: (() -> Unit)?, actionLabel: Strin
         Row(Modifier.heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
             SectionHeading(title, Modifier.weight(1f))
             if (onOpenAll != null) {
-                TextButton(onClick = onOpenAll) { Text(actionLabel ?: stringResource(R.string.train_see_all)) }
+                FilledTonalButton(onClick = onOpenAll) { Text(actionLabel ?: stringResource(R.string.train_see_all)) }
             }
         }
         content()

@@ -405,32 +405,28 @@ private fun ActiveTaskContent(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                Button(
+                                FilledTonalButton(
                                     onClick = {
                                         showModeDialog = false
                                         onNavigateToRecord(task.referenceId)
                                     },
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.todo_mode_record),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onPrimary
+                                        style = MaterialTheme.typography.bodyLarge
                                     )
                                 }
-                                Button(
+                                FilledTonalButton(
                                     onClick = {
                                         showModeDialog = false
                                         onNavigateToWorkout(task.referenceId)
                                     },
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.todo_mode_workout),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onPrimary
+                                        style = MaterialTheme.typography.bodyLarge
                                     )
                                 }
                             }
@@ -766,32 +762,28 @@ private fun GroupTaskCard(
                                         modifier = Modifier.fillMaxWidth(),
                                         verticalArrangement = Arrangement.spacedBy(8.dp)
                                     ) {
-                                        Button(
+                                        FilledTonalButton(
                                             onClick = {
                                                 showModeDialog = false
                                                 onNavigateToRecord(exercise.id)
                                             },
-                                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                         ) {
                                             Text(
                                                 text = stringResource(R.string.todo_mode_record),
-                                                style = MaterialTheme.typography.bodyLarge,
-                                                color = MaterialTheme.colorScheme.onPrimary
+                                                style = MaterialTheme.typography.bodyLarge
                                             )
                                         }
-                                        Button(
+                                        FilledTonalButton(
                                             onClick = {
                                                 showModeDialog = false
                                                 onNavigateToWorkout(exercise.id)
                                             },
-                                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                         ) {
                                             Text(
                                                 text = stringResource(R.string.todo_mode_workout),
-                                                style = MaterialTheme.typography.bodyLarge,
-                                                color = MaterialTheme.colorScheme.onPrimary
+                                                style = MaterialTheme.typography.bodyLarge
                                             )
                                         }
                                     }

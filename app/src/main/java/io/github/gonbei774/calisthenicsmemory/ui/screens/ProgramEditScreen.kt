@@ -445,7 +445,7 @@ OutlinedTextField(
 
                 // Add loop button
                 item {
-                    TextButton(
+                    FilledTonalButton(
                         onClick = { showAddLoopDialog = true },
                         modifier = Modifier.fillMaxWidth(),
                     ) {

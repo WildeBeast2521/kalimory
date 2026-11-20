@@ -214,15 +214,9 @@ fun LoopBlock(
                     }
 
                     // Add exercise to loop button
-                    OutlinedButton(
+                    FilledTonalButton(
                         onClick = onAddExercise,
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.primary
-                        ),
-                        border = ButtonDefaults.outlinedButtonBorder.copy(
-                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary))
-                        )
                     ) {
                         Icon(
                             AppIcons.Add,

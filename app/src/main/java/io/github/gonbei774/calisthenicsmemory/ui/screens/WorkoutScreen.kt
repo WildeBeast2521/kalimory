@@ -2104,10 +2104,9 @@ fun ConfirmationStep(
             Text(stringResource(R.string.record_workout), fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
 
-        OutlinedButton(
+        FilledTonalButton(
             onClick = { showAddSetDialog = true },
             modifier = Modifier.fillMaxWidth(),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
         ) {
             Text(stringResource(R.string.add_extra_set_button), color = MaterialTheme.colorScheme.primary)
         }

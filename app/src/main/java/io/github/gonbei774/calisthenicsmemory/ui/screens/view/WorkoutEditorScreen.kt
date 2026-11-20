@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
@@ -285,7 +286,7 @@ internal fun EditorContent(
             )
         }
         item {
-            OutlinedButton(onClick = onAddExercise, modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
+            FilledTonalButton(onClick = onAddExercise, modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
                 Icon(AppIcons.Add, contentDescription = null)
                 Text(stringResource(R.string.workout_edit_add_exercise), modifier = Modifier.padding(start = 8.dp))
             }
@@ -390,7 +391,7 @@ private fun ExerciseCard(
                     }
                 }
             }
-            TextButton(onClick = onAddSet) {
+            FilledTonalButton(onClick = onAddSet) {
                 Icon(AppIcons.Add, contentDescription = null)
                 Text(stringResource(R.string.workout_edit_add_set), modifier = Modifier.padding(start = 8.dp))
             }
