@@ -27,6 +27,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.RollingNumber
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.SetActions
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.TimerDial
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.WorkoutPrimaryButton
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
@@ -83,6 +84,14 @@ class SharedComponentScreenshotTest(private val theme: ScreenshotTheme) {
         Column {
             WorkoutPrimaryButton(text = "Done", onClick = {}, modifier = Modifier.width(280.dp))
             WorkoutPrimaryButton(text = "Done", onClick = {}, modifier = Modifier.width(280.dp), enabled = false)
+        }
+    }
+
+    @Test
+    fun runScreenButtons() = snap("RunScreenButtons") {
+        Column(modifier = Modifier.width(328.dp)) {
+            WorkoutPrimaryButton(text = "Done", onClick = {}, modifier = Modifier.fillMaxWidth())
+            SetActions(onRestart = {}, onSkipSet = {}, onSkipExercise = {})
         }
     }
 

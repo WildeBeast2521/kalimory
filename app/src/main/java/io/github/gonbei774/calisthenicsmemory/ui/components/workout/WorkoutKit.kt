@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.workout
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.staticCompositionLocalOf
 import android.os.Vibrator
 import android.os.VibrationEffect
@@ -399,10 +400,10 @@ fun WorkoutStatus(text: String, color: Color) {
     Text(text = text, style = MaterialTheme.typography.headlineMedium, color = color)
 }
 
-/** Skipping the rest of a timer: a quiet action, below the main one. */
+/** Skipping the rest of a timer. A screen that is only waiting has no main button, so this one is tonal. */
 @Composable
 fun WorkoutSkipButton(onSkip: () -> Unit) {
-    androidx.compose.material3.TextButton(onClick = onSkip, modifier = Modifier.heightIn(min = 48.dp)) {
+    androidx.compose.material3.FilledTonalButton(onClick = onSkip, modifier = Modifier.heightIn(min = 48.dp)) {
         Icon(AppIcons.SkipNext, contentDescription = null)
         Spacer(Modifier.size(Spacing.s))
         FitText(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
@@ -411,8 +412,8 @@ fun WorkoutSkipButton(onSkip: () -> Unit) {
 
 /**
  * Quiet actions on the running set, under its main button: start it again and, where given, skip it. They
- * are text buttons, the lowest emphasis, so the main button stays the one that finishes the set. The row
- * wraps at large text instead of shortening a label.
+ * are outlined buttons, below the filled one, so the main button stays the one that finishes the set. The
+ * row wraps at large text instead of shortening a label.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -434,7 +435,11 @@ fun SetActions(
 
 @Composable
 private fun SetActionButton(text: String, onClick: () -> Unit) {
-    androidx.compose.material3.TextButton(onClick = onClick, modifier = Modifier.heightIn(min = 48.dp)) {
+    androidx.compose.material3.OutlinedButton(
+        onClick = onClick,
+        modifier = Modifier.heightIn(min = 48.dp),
+        contentPadding = PaddingValues(horizontal = Spacing.m),
+    ) {
         Text(text, style = MaterialTheme.typography.titleSmall)
     }
 }
@@ -446,10 +451,10 @@ private fun SetActionButton(text: String, onClick: () -> Unit) {
 @Composable
 fun RestToolbar(onMinus: () -> Unit, onPlus: () -> Unit, onSkip: () -> Unit, modifier: Modifier = Modifier) {
     HorizontalFloatingToolbar(expanded = true, modifier = modifier) {
-        androidx.compose.material3.TextButton(onClick = onMinus, modifier = Modifier.heightIn(min = 48.dp)) {
+        androidx.compose.material3.OutlinedButton(onClick = onMinus, modifier = Modifier.heightIn(min = 48.dp), contentPadding = PaddingValues(horizontal = Spacing.m)) {
             FitText(stringResource(R.string.minus_10sec), style = MaterialTheme.typography.titleMedium)
         }
-        androidx.compose.material3.TextButton(onClick = onPlus, modifier = Modifier.heightIn(min = 48.dp)) {
+        androidx.compose.material3.OutlinedButton(onClick = onPlus, modifier = Modifier.heightIn(min = 48.dp), contentPadding = PaddingValues(horizontal = Spacing.m)) {
             FitText(stringResource(R.string.plus_10sec), style = MaterialTheme.typography.titleMedium)
         }
         androidx.compose.material3.FilledTonalButton(
