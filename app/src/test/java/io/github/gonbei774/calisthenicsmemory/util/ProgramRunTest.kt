@@ -107,4 +107,24 @@ class ProgramRunTest {
         assertEquals(listOf(SetEntryStatus.COMPLETED, SetEntryStatus.SKIPPED), sets.map { it.status })
         assertNull(sets[1].completedAtEpochMillis)
     }
+
+    @Test fun `a set without a target saves no target instead of a target of 0`() {
+        val free = ProgramExecutionSession(
+            program = Program(9, "Upper"),
+            exercises = listOf(ProgramExercise(21, 9, 1, 0, sets = 1, targetValue = 0) to pushUp, ProgramExercise(23, 9, 2, 1, sets = 1, targetValue = 0) to plank),
+            sets = mutableListOf(
+                set(0, 1, 12).copy(targetValue = 0),
+                set(1, 1, 20).copy(targetValue = 0),
+            ),
+            comment = "",
+            startedAtWallMillis = 100,
+        )
+        val rows = ProgramWorkoutWriter.rows(free.toProgramRun(emptyList(), savedAtWallMillis = 5_000))
+        val (reps, hold) = rows.exercises
+        assertNull(reps.first.targetRepetitions)
+        assertNull(reps.second.single().targetRepetitions)
+        assertNull(hold.first.targetDurationMillis)
+        assertNull(hold.second.single().targetDurationMillis)
+        assertEquals(12, reps.second.single().repetitions)
+    }
 }
