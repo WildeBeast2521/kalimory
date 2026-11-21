@@ -522,7 +522,7 @@ private fun NavigationRoundCard(
                                 .padding(horizontal = 8.dp, vertical = 4.dp)
                         ) {
                             Text(
-                                text = stringResource(R.string.nav_done),
+                                text = stringResource(R.string.status_complete),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = cs.primary
@@ -917,7 +917,7 @@ private fun NavigationExerciseHeader(
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.nav_done),
+                        text = stringResource(R.string.status_complete),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = cs.primary

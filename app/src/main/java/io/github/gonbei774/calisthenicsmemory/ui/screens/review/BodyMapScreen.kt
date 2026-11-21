@@ -45,6 +45,7 @@ import io.github.gonbei774.calisthenicsmemory.data.review.MuscleVolume
 import io.github.gonbei774.calisthenicsmemory.data.review.RecentTier
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleVolumeSummary
 import io.github.gonbei774.calisthenicsmemory.data.review.VolumeTier
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.VolumeMap
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
@@ -172,14 +173,14 @@ internal fun BodyMapContent(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ViewChips(selected: BodyMapView, onView: (BodyMapView) -> Unit) {
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-        BodyMapView.entries.forEach { view ->
-            FilterChip(selected = view == selected, onClick = { onView(view) }, label = { Text(stringResource(view.label)) })
-        }
-    }
+    ConnectedChoices(
+        options = BodyMapView.entries,
+        selected = selected,
+        onSelect = { it?.let(onView) },
+        label = { stringResource(it.label) },
+    )
 }
 
 /**
@@ -249,15 +250,15 @@ private fun NotWorked(muscles: List<Muscle>) {
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PeriodChips(selected: Period, onPeriod: (Period) -> Unit) {
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-        // The body map looks at recent weeks; a year is for the graph.
-        Period.entries.filter { it != Period.OneYear }.forEach { period ->
-            FilterChip(selected = period == selected, onClick = { onPeriod(period) }, label = { Text(stringResource(period.displayNameResId)) })
-        }
-    }
+    // The body map looks at recent weeks; a year is for the graph.
+    ConnectedChoices(
+        options = Period.entries.filter { it != Period.OneYear },
+        selected = selected,
+        onSelect = { it?.let(onPeriod) },
+        label = { stringResource(it.displayNameResId) },
+    )
 }
 
 /** What the three shades mean, and how a set is counted. */

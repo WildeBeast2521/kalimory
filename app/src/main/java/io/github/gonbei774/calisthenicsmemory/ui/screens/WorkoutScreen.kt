@@ -2310,9 +2310,7 @@ fun AddExtraSetDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-        },
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-    )
+        })
 }
 
 // Unilateral用セットアイテム（1行表示）

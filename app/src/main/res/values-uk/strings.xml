@@ -27,7 +27,7 @@
     <string name="group_optional">Група (необов’язково)</string>
     <string name="new_group_name">Назва нової групи</string>
     <string name="no_group">Без групи</string>
-    <string name="create_type">Створити тип</string>
+    <string name="create_type">Що додати</string>
     <string name="exercise">Вправа</string>
     <string name="group_name">Назва групи</string>
     <string name="rename_group">Перейменувати групу</string>
@@ -99,9 +99,9 @@
     <string name="program_use_program">Програма</string>
     <string name="program_use_challenge">Вправа</string>
     <string name="program_use_previous">Попередня</string>
-    <string name="program_estimated_time">~%d хв</string>
-    <string name="dynamic_count_sound_description">Допомагає рахувати під час динамічних вправ</string>
-    <string name="isometric_interval_sound_description">Ізометричні вправи</string>
+    <string name="program_estimated_time">Близько %d хв</string>
+    <string name="dynamic_count_sound_description">Рахує повторення у вашому темпі зі звуком на кожне. Вимк.: рахунок кнопками − і +</string>
+    <string name="isometric_interval_sound_description">Короткий сигнал кожні кілька секунд під час утримання</string>
     <string name="program_copy_suffix">(копія)</string>
     <string name="program_empty">Програм ще немає.\nДодайте першу за допомогою кнопки +</string>
     <string name="edit_exercise_title">Редагувати вправу</string>
@@ -110,7 +110,7 @@
     <string name="backup_failed">Не вдалося створити резервну копію</string>
     <string name="select_exercise">Виберіть вправу</string>
     <string name="select_exercise_filter">Виберіть вправу</string>
-    <string name="select_exercise_please">Будь ласка, виберіть вправу</string>
+    <string name="select_exercise_please">Виберіть вправу</string>
     <string name="comment_label">Коментар</string>
     <string name="exercise_already_exists">Вправа вже існує</string>
     <string name="group_already_exists">Група з такою назвою вже існує</string>
@@ -123,16 +123,13 @@
     <string name="program_name">Назва програми</string>
     <string name="program_exercises">Вправи</string>
     <string name="add_exercise_to_program">Додати вправу</string>
-    <string name="add_exercises_in_settings">Додавайте вправи в налаштуваннях</string>
-    <string name="go_to_settings">Перейти до налаштувань</string>
     <string name="select_from_top">Використовуйте «Виберіть вправу» вище</string>
     <string name="name_required">Введіть назву</string>
     <string name="duplicate_exercise_name">Така назва вправи вже використовується</string>
     <string name="duplicate_group_name">Така назва групи вже використовується</string>
     <string name="already_in_use_format">«%1$s (%2$s)» вже використовується</string>
     <string name="program_target_format">%1$d %2$s</string>
-    <string name="interval_label">Інтервал</string>
-    <string name="program_interval_format">Відпочинок %d\u00A0с</string>
+    <string name="program_interval_format">Відпочинок %d с</string>
     <string name="tab_list">Список</string>
     <string name="tab_graph">Графік</string>
     <string name="backup_and_continue">Створити копію і продовжити</string>
@@ -157,7 +154,6 @@
     <string name="no_exercises_available">Немає доступних вправ</string>
     <string name="file_name">Назва файлу</string>
     <string name="clear">Очистити</string>
-    <string name="no_exercises_registered">Немає зареєстрованих вправ</string>
     <string name="already_registered_format">«%1$s (%2$s)» вже зареєстровано</string>
     <string name="error_occurred">Виникла помилка</string>
     <string name="csv_import_errors">Помилки (%d)</string>
@@ -167,13 +163,13 @@
     <string name="tab_calendar">Календар</string>
     <string name="no_exercises_in_period">Жодних вправ не виконано за %s</string>
     <string name="export_data">Експортувати дані</string>
-    <string name="import_data">Імпортувати дані</string>
+    <string name="import_data">Відновити з копії</string>
     <string name="unknown_short">Невідомо</string>
     <string name="csv_import_success">Успішно імпортовано %s</string>
     <string name="import_action">Імпортувати</string>
     <string name="record_training_for_exercise">Запишіть тренування для цієї вправи</string>
     <string name="keep_screen_on_description">Тримати екран увімкненим під час тренування, щоб бачити відлік часу</string>
-    <string name="set_done_vibration_setting">Вібрувати після підходу</string>
+    <string name="set_done_vibration_setting">Вібрація після завершення підходу</string>
     <string name="set_done_vibration_description">Коротка вібрація підтверджує кожен завершений підхід</string>
     <string name="countdown_vibration_setting">Вібрація із сигналами відліку</string>
     <string name="countdown_vibration_description">Кожен з останніх трьох сигналів і сигнал старту також супроводжуються вібрацією. Залежить від налаштування вібрації дотику на телефоні.</string>
@@ -185,7 +181,7 @@
     <string name="csv_import_skipped_label">Пропущено</string>
     <string name="csv_import_skipped_items">Пропущені елементи (%d)</string>
     <string name="open_source_licenses">Ліцензії з відкритим кодом</string>
-    <string name="section_full_backup">Повна резервна копія (JSON)</string>
+    <string name="section_full_backup">Повна резервна копія</string>
     <string name="start_countdown_setting">Почати відлік</string>
     <string name="start_countdown">Почати відлік</string>
     <string name="app_source_code">Вихідний код</string>
@@ -197,19 +193,19 @@
     <string name="backup_before_import_title">Резервне копіювання перед імпортом</string>
     <string name="backup_saved_successfully">Резервну копію збережено в папці «Завантаження»</string>
     <string name="section_workout_settings">Тренування</string>
-    <string name="set_interval_setting">Встановити інтервал</string>
-    <string name="set_interval_note">Примітка: налаштування, встановлені для окремих вправ, матимуть пріоритет.</string>
-    <string name="flash_notification_description">Під час тренування блимати світлодіодом синхронно зі звуком</string>
-    <string name="flash_notification_setting">Світлова індикація</string>
+    <string name="set_interval_setting">Відпочинок між підходами за замовчуванням</string>
+    <string name="set_interval_note">Використовується, коли вправа не має власного часу відпочинку.</string>
+    <string name="flash_notification_description">Ліхтарик блимає з кожним звуком тренування</string>
+    <string name="flash_notification_setting">Спалах разом зі звуками</string>
     <string name="discard">Відхилити</string>
     <string name="nav_discard">Відхилити</string>
     <string name="discard_changes_title">Відхилити зміни?</string>
-    <string name="discard_changes_message">У вас є незбережені зміни. Відхилити їх?</string>
+    <string name="discard_changes_message">Зміни буде втрачено.</string>
     <string name="next">Далі</string>
     <string name="cannot_undo">Цю дію неможливо скасувати.</string>
     <string name="import_backup_required">Спершу збережіть резервну копію поточних даних. Відновлення стане доступним, коли копію буде збережено й перевірено.</string>
     <string name="import_backup_verified">Резервну копію збережено й перевірено.</string>
-    <string name="dynamic_count_sound_label">Звук відліку часу</string>
+    <string name="dynamic_count_sound_label">Таймер повторень</string>
     <string name="isometric_interval_sound_label">Звук під час утримання</string>
     <string name="program_name_hint">напр., Ранкова зарядка</string>
     <string name="example_unilateral">напр., присідання на одній нозі, віджимання на одній руці</string>
@@ -230,8 +226,9 @@
     <string name="nav_save_and_exit">Зберегти і вийти</string>
     <string name="graph_type_total">Разом</string>
     <string name="nav_overall_progress">Загальний прогрес</string>
-    <string name="auto_mode_disabled_hint">Необхідно, щоб «Звук відліку часу» було ввімкнено</string>
-    <string name="single_mode_description">Одна вправа за раз</string>
+    <string name="auto_mode_disabled_hint">Потрібен таймер повторень</string>
+    <string name="single_mode_description">Виберіть вправу й почніть</string>
+    <string name="start_one_exercise">Одна вправа</string>
     <string name="no_group_workout">Без групи</string>
     <string name="no_group_display">Без групи</string>
     <string name="level_format">Складність %d</string>
@@ -280,7 +277,7 @@
     <string name="record_workout">Записати</string>
     <string name="complete_with_time">Завершити (%d\u00A0с)</string>
     <string name="statistics_summary">Статистика</string>
-    <string name="import_data_preview_title">Підтвердження імпорту</string>
+    <string name="import_data_preview_title">Відновити з копії</string>
     <string name="data_management">Ваші дані</string>
     <string name="section_partial_data_management">Вибіркове керування даними (CSV)</string>
     <string name="csv_export_record_template">Шаблон запису</string>
@@ -293,24 +290,24 @@
     <string name="tracking_settings_optional">Налаштування відстеження (необов’язково)</string>
     <string name="track_distance">Відстежувати відстань</string>
     <string name="track_weight">Відстежувати вагу</string>
-    <string name="track_distance_description">Записувати відстань (см) для кожного заняття</string>
+    <string name="track_distance_description">Записувати відстань (см) для кожного підходу</string>
     <string name="track_weight_description">Записувати додаткову вагу (кг) для кожного заняття</string>
     <string name="data_overwrite_title">Перезапис даних</string>
     <string name="existing_data_will_be_deleted">Усі існуючі дані буде видалено.</string>
-    <string name="import_confirm">Імпортувати</string>
+    <string name="import_confirm">Відновити</string>
     <string name="nav_save_overwrite_message">Одночасно можна зберегти лише одне тренування. Попереднє збережене тренування буде перезаписано.</string>
     <string name="nav_save_overwrite_title">Перезаписати збережене тренування?</string>
     <string name="apply_exercise_settings">Застосувати налаштування вправи</string>
     <string name="section_app_info">Про додаток</string>
     <string name="delete_session">Видалити заняття</string>
-    <string name="import_data_preview_message">Продовжити імпорт цих даних?</string>
+    <string name="import_data_preview_message">Відновити цю резервну копію?</string>
     <string name="pause_button">Пауза</string>
     <string name="retry_set_button">Повторити підхід</string>
     <string name="skip_set_button">Пропустити підхід</string>
     <string name="skip_exercise_button">Пропустити вправу</string>
-    <string name="laterality">Латеральність</string>
-    <string name="bilateral_with_parenthesis">Двостороння</string>
-    <string name="unilateral_with_parenthesis">Одностороння</string>
+    <string name="laterality">Сторони</string>
+    <string name="bilateral_with_parenthesis">Обидві сторони</string>
+    <string name="unilateral_with_parenthesis">По одній стороні</string>
     <string name="best_record">Рекорд</string>
     <string name="program_start">Почати</string>
     <string name="start_workout">Почати</string>
@@ -321,7 +318,7 @@
     <string name="nav_redo">Повторити</string>
     <string name="app_description">Додаток для запису тренувань із власною вагою</string>
     <string name="weekly_change">Зміна за тиждень</string>
-    <string name="section_full_backup_description">Збереження та відновлення всіх даних: вправ, записів, програм, інтервалів і завдань.\nВикористовуйте під час зміни пристрою.</string>
+    <string name="section_full_backup_description">Зберігає й відновлює вправи, записи, програми, інтервали та завдання у файлі JSON. Налаштування не входять. Для переходу на інший пристрій.</string>
     <string name="section_partial_data_management_description">Для обміну даними з іншими програмами та електронними таблицями.\nЕкспортуйте та імпортуйте групи, вправи та записи окремо через CSV.</string>
     <string name="edit_session_info">Редагувати інформацію про заняття</string>
     <string name="legend_distance_inverted">Відстань (обернена)</string>
@@ -333,7 +330,6 @@
     <string name="current_language">Поточна: %s</string>
     <string name="nav_current">Поточна</string>
     <string name="nav_program_overview">Огляд програми</string>
-    <string name="nav_done">Готово</string>
     <string name="nav_finish">Завершити</string>
     <string name="graph_type_max">Максимум</string>
     <string name="max_daily_volume">Макс. обсяг на день</string>
@@ -362,7 +358,7 @@
     <string name="warning_title">Попередження</string>
     <string name="csv_import_description">Імпорт груп, вправ або записів (автоматично виявлених)</string>
     <string name="auto_fill_target_label">Автозаповнення цільових значень</string>
-    <string name="import_warning">Імпортування призведе до видалення всіх існуючих даних.</string>
+    <string name="import_warning">Відновлення замінить усі поточні дані.</string>
     <string name="edit_set_value">Змінити кількість підходів</string>
     <string name="target_sets_label">Мета (підходів)</string>
     <string name="target_reps_label">Мета (разів)</string>
@@ -385,18 +381,18 @@
     <string name="right_value_label">Значення для правої</string>
     <string name="left_value_label">Значення для лівої</string>
     <string name="target_duration_label">Цільова тривалість (с)</string>
-    <string name="settings_prefill_previous">Заповнювати попередній запис</string>
-    <string name="settings_prefill_previous_description">Автоматично заповнювати значення з останнього заняття на екранах «Записати» і «Тренування»</string>
-    <string name="rep_duration_seconds">Тривалість повторень (секунди)</string>
+    <string name="settings_prefill_previous">Починати з минулого тренування</string>
+    <string name="settings_prefill_previous_description">Нові тренування й записи починаються з підходів і значень минулого разу</string>
+    <string name="rep_duration_seconds">Секунд на раз (темп рахунку)</string>
     <string name="rest_interval_seconds">Тривалість відпочинку (секунди)</string>
     <string name="interval_seconds_label">Тривалість інтервалу (с)</string>
-    <string name="auto_mode">Автоматичний режим</string>
-    <string name="timer_mode_off_description">Ручне завершення кнопкою «Готово»</string>
-    <string name="timer_mode_on_description">Автоматичне завершення при досягненні мети</string>
+    <string name="auto_mode">Завершувати підходи автоматично</string>
+    <string name="timer_mode_off_description">Завершуйте кожен підхід самі</string>
+    <string name="timer_mode_on_description">Підхід завершується, коли ви досягаєте цілі</string>
     <string name="previous_value_format">Попереднє: %s</string>
     <string name="last_record_short">Останній: %s</string>
-    <string name="exercise_type_isometric">Ізометрична</string>
-    <string name="exercise_type_dynamic">Динамічна</string>
+    <string name="exercise_type_isometric">Утримання</string>
+    <string name="exercise_type_dynamic">Повторення</string>
     <string name="assistance_display_format">-%.1f кг</string>
     <string name="legend_assistance">Допомога</string>
     <string name="record_assistance_for_graph">Записувати допомогу для цієї вправи</string>
@@ -414,8 +410,9 @@
     <string name="theme_system">Як у системі</string>
     <!-- Exercise Description -->
     <string name="description_optional">Опис (необов’язково)</string>
-    <string name="interval_list_title">Інтервал</string>
-    <string name="interval_empty">Програм для ВІІТ тренувань ще немає.\nДодайте першу за допомогою кнопки +</string>
+    <string name="interval_list_title">Інтервали</string>
+    <string name="interval_kind">Інтервал</string>
+    <string name="interval_empty">Інтервалів поки немає</string>
     <string name="interval_summary_format">%1$d с/%2$d с · %3$d раундів</string>
     <string name="new_interval_program">Новий інтервал</string>
     <string name="edit_interval_program">Редагувати інтервал</string>
@@ -435,7 +432,7 @@
     <string name="interval_get_ready">Приготуйтеся</string>
     <string name="interval_round_format">Раунд %1$d / %2$d</string>
     <string name="interval_exercise_format">Вправа %1$d / %2$d</string>
-    <string name="interval_round_complete_format">Раунд %d завершено!</string>
+    <string name="interval_round_complete_format">Раунд %d завершено</string>
     <string name="interval_stop">Стоп</string>
     <string name="interval_complete_title">Завершено</string>
     <string name="interval_partial_format">%1$s + %2$s</string>
@@ -452,6 +449,7 @@
     <string name="interval_work_label">Тренування</string>
     <string name="interval_rest_label">Відпочинок</string>
     <string name="interval_next">Наступний</string>
+    <string name="next_exercise_format">Далі: %1$s</string>
     <string name="interval_next_round">Наступний раунд</string>
     <string name="interval_ended_title">Завершено</string>
     <string name="interval_comment_label">Коментар</string>
@@ -485,7 +483,7 @@
     <string name="share_preview_total_with_auto">%1$s %2$s</string>
     <string name="share_preview_groups">Групи: %1$d</string>
     <string name="share_no_programs">Немає програм</string>
-    <string name="share_no_intervals">Немає інтервальних програм</string>
+    <string name="share_no_intervals">Інтервалів поки немає</string>
     <string name="share_no_exercises">Немає вправ</string>
     <string name="share_exercise_auto_included">Автоматично додано з програми/інтервалу</string>
     <string name="share_ungrouped">Без групи</string>
@@ -517,8 +515,9 @@
     <string name="stats_total_intervals">Усього інтервалів</string>
     <string name="record_done_count">%1$d/%2$d</string>
     <string name="set_complete_button">Завершити підхід %1$d</string>
-    <string name="set_done_label">ГОТОВО</string>
-    <string name="set_now_badge">ЗАРАЗ</string>
+    <string name="set_done_label">Виконано</string>
+    <string name="status_complete">Виконано</string>
+    <string name="set_now_badge">Зараз</string>
     <string name="set_uncheck_desc">Позначити підхід як незавершений</string>
     <string name="previous_value_label">Попереднє</string>
     <string name="set_status_check_desc">Стан завершення підходу</string>
@@ -536,7 +535,7 @@
     <string name="legend_weight">Вага</string>
     <string name="save_and_exit_button">Зберегти і вийти</string>
     <string name="record_set_to_target">Встановити цільове значення (%1$d %2$s)</string>
-    <string name="challenge_best">Рекорд</string>
+    <string name="challenge_best">Найкраще тренування</string>
     <string name="challenge_target_label">Мета</string>
     <string name="workout_label_weight">Вага</string>
     <string name="workout_section_target">Мета</string>
@@ -551,7 +550,7 @@
     <string name="workout_label_assistance">Допомога</string>
     <string name="workout_section_load">Навантаження і відстань</string>
     <string name="program_use_program_desc">Використовує підходи і цільові значення, визначені в програмі</string>
-    <string name="program_use_challenge_desc">Використовує налаштування складності кожної вправи (якщо не задані, то значення з програми)</string>
+    <string name="program_use_challenge_desc">Використовує ціль кожної вправи (якщо її немає — ціль програми)</string>
     <string name="program_use_previous_desc">Використовує значення з попереднього тренування (якщо записів немає, то значення з програми)</string>
     <string name="import_anomalies_notice">Елементи, що не відповідають формату застосунку: %1$d. Їх буде імпортовано без змін.</string>
     <string name="db_unavailable_title">Не вдалося відкрити дані тренувань</string>
@@ -611,7 +610,7 @@
     <string name="first_day_of_week_automatic">Автоматично (%1$s)</string>
     <string name="first_day_of_week_auto">Авто</string>
     <string name="train_no_programs">Програм поки немає</string>
-    <string name="train_no_intervals">Інтервальних тренувань поки немає</string>
+    <string name="train_no_intervals">Інтервалів поки немає</string>
     <string name="train_log_title">Записати минуле тренування</string>
     <string name="train_log_detail">Ввести вже виконані підходи</string>
     <string name="train_see_all">Показати все</string>
@@ -706,6 +705,7 @@
     <string name="settings_welcome_guide">Вітальний посібник</string>
     <!-- The exercise catalogue screens. -->
     <string name="library_catalogue">Каталог вправ</string>
+    <string name="editor_from_catalogue">З каталогу: %1$s</string>
     <string name="catalogue_in_library_count">%1$d у вашій бібліотеці</string>
     <string name="catalogue_add">Додати до моїх вправ</string>
     <string name="catalogue_in_library">У вашій бібліотеці</string>
@@ -786,14 +786,14 @@
         <item quantity="other">%d раундів</item>
     </plurals>
     <string name="crash_report_title">Застосунок Kalimory неочікувано закрився</string>
-    <string name="crash_report_message">Звітом про помилку можна поділитися, щоб її виправили. Він містить відомості про помилку, версію застосунку та модель телефона, і перед надсиланням його можна прочитати.</string>
+    <string name="crash_report_message">Звітом про помилку можна поділитися, щоб її виправили. Він містить відомості про помилку, версію застосунку та модель телефона, і перед надсиланням його можна прочитати. Торкніться поза вікном, щоб зберегти його на потім.</string>
     <string name="crash_report_share">Поділитися звітом</string>
     <!-- Counts: one entry per plural form of each language -->
     <plurals name="sets_recorded">
-        <item quantity="one">Записано %d підхід!</item>
-        <item quantity="few">Записано %d підходи!</item>
-        <item quantity="many">Записано %d підходів!</item>
-        <item quantity="other">Записано %d підходів!</item>
+        <item quantity="one">Записано %d підхід</item>
+        <item quantity="few">Записано %d підходи</item>
+        <item quantity="many">Записано %d підходів</item>
+        <item quantity="other">Записано %d підходів</item>
     </plurals>
     <plurals name="count_items">
         <item quantity="one">%d елемент</item>
@@ -1012,4 +1012,9 @@
     <string name="climb_legend_met">Норматив виконано</string>
     <string name="climb_step">Крок %d</string>
     <string name="enter_a_number">Введіть число</string>
+    <string name="add_exercises_in_library">Додайте вправи в Бібліотеці</string>
+    <string name="open_library">Відкрити Бібліотеку</string>
+    <string name="catalogue_step_number">Крок %d</string>
+    <string name="show_only_this_exercise">Показати лише цю вправу</string>
+    <string name="chart_summary">Графік з %1$s по %2$s. Останнє %3$s, максимум %4$s.</string>
 </resources>

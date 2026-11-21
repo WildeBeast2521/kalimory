@@ -147,7 +147,7 @@ fun TodayScreen(
         return targetText(sets, value, dynamic = exercise.type == "Dynamic", unilateral = exercise.laterality == "Unilateral")
     }
     val programLabel = stringResource(R.string.today_kind_program)
-    val intervalLabel = stringResource(R.string.interval_label)
+    val intervalLabel = stringResource(R.string.interval_kind)
     val groupLabel = stringResource(R.string.group)
     val savedForLater = stringResource(R.string.today_saved_for_later)
     // How big a program is (3 exercise(s) · ~13 min); "Program" until that is known.
@@ -172,8 +172,8 @@ fun TodayScreen(
     }
     val dueItems = dueTasks.mapNotNull { task ->
         val (icon, name, kind) = when (task.type) {
-            TodoTask.TYPE_EXERCISE -> Triple(AppIcons.Done, exerciseNames[task.referenceId], exerciseDetail(task.referenceId))
-            TodoTask.TYPE_GROUP -> Triple(AppIcons.FavoriteFilled, groupNames[task.referenceId], groupLabel)
+            TodoTask.TYPE_EXERCISE -> Triple(AppIcons.Exercise, exerciseNames[task.referenceId], exerciseDetail(task.referenceId))
+            TodoTask.TYPE_GROUP -> Triple(AppIcons.Group, groupNames[task.referenceId], groupLabel)
             TodoTask.TYPE_PROGRAM -> Triple(AppIcons.Program, programNames[task.referenceId], programDetail(task.referenceId))
             TodoTask.TYPE_INTERVAL -> Triple(AppIcons.Interval, intervalNames[task.referenceId], intervalLabel)
             // Tasks whose target is gone or whose type is unknown stay visible on the To Do screen.

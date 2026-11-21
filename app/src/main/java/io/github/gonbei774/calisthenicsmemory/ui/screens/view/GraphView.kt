@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import java.util.Locale
 import androidx.compose.ui.platform.LocalConfiguration
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
@@ -26,6 +28,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -71,6 +74,13 @@ data class WeightDataPoint(
     val date: String,
     val maxWeightKg: Float          // その日の最大重量（kg）
 )
+
+/** What a screen reader says for a chart: its date range, the latest value and the highest (empty for no data). */
+@Composable
+private fun chartSummary(dates: List<String>, values: List<Float>): String {
+    if (dates.isEmpty() || values.isEmpty()) return ""
+    return stringResource(R.string.chart_summary, dates.first(), dates.last(), values.last().roundToInt(), values.max().roundToInt())
+}
 
 enum class Period(val days: Int, val displayNameResId: Int) {
     OneWeek(7, R.string.period_one_week),
@@ -120,7 +130,8 @@ fun GraphView(
     exercises: List<Exercise>,
     records: List<HistorySet>,
     selectedExerciseFilter: Exercise?,
-    selectedPeriod: Period?
+    selectedPeriod: Period?,
+    onOpenLibrary: () -> Unit = {},
 ) {
     val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
@@ -128,26 +139,11 @@ fun GraphView(
     var isDistanceInverted by remember { mutableStateOf(false) }
 
     if (exercises.isEmpty()) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.no_exercises_registered),
-                    fontSize = 18.sp,
-                    color = cs.onSurfaceVariant
-                )
-                Text(
-                    text = stringResource(R.string.add_exercises_in_settings),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = cs.onSurfaceVariant
-                )
-            }
-        }
+        EmptyState(
+            text = stringResource(R.string.add_exercises_in_library),
+            actionLabel = stringResource(R.string.open_library),
+            onAction = onOpenLibrary,
+        )
         return
     }
 
@@ -866,8 +862,10 @@ fun SimpleLineChart(
     // 単位文字列を取得（@Composable関数内でのみ取得可能）
     val unit = unitSuffix(stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds))
 
+    val summary = chartSummary(data.map { it.date }, data.map { it.value })
     Canvas(
         modifier = Modifier
+            .clearAndSetSemantics { contentDescription = summary }
             .fillMaxSize()
             .padding(16.dp)
     ) {
@@ -1311,8 +1309,10 @@ fun SimpleVolumeChart(
     val cs = MaterialTheme.colorScheme
     val isUnilateral = data.any { it.volumeLeft != null }
 
+    val summary = chartSummary(data.map { it.date }, data.map { it.volumeRight })
     Canvas(
         modifier = Modifier
+            .clearAndSetSemantics { contentDescription = summary }
             .fillMaxSize()
             .padding(16.dp)
     ) {
@@ -1606,8 +1606,10 @@ fun SimpleAssistanceChart(
     val numberLocale = LocalConfiguration.current.locales[0]
     val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
+    val summary = chartSummary(data.map { it.date }, data.map { it.assistanceKg })
     Canvas(
         modifier = Modifier
+            .clearAndSetSemantics { contentDescription = summary }
             .fillMaxSize()
             .padding(16.dp)
     ) {
@@ -1857,8 +1859,10 @@ fun SimpleWeightChart(
     val numberLocale = LocalConfiguration.current.locales[0]
     val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
+    val summary = chartSummary(data.map { it.date }, data.map { it.maxWeightKg })
     Canvas(
         modifier = Modifier
+            .clearAndSetSemantics { contentDescription = summary }
             .fillMaxSize()
             .padding(16.dp)
     ) {

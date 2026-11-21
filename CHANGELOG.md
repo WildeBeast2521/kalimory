@@ -11,6 +11,9 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- Editing an exercise that came from the catalogue shows where it came from and its main muscles ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- The exercise catalogue has filter chips for movement (Push, Pull, Legs, Core, Conditioning, Mobility) and main muscle: choose one or more to list the matching steps, alone or together with a search ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- The weekly review can also be opened from Progress, and going back returns to Progress; the body map's view and period choices use the same connected buttons as the rest of the app ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - A Vibrate with countdown beeps switch in Settings, off by default, makes each of the last three beeps of the start and rest countdowns, and the go cue, vibrate too; it follows the phone's touch vibration setting ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - The Progress period buttons have 1 year and All, and the graph opens on 1 month unless a period was chosen; the Lowest figure is gone from the graph statistics ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Skip set under the main button of a running set, in a workout and in a program, and Skip exercise in a program, move on without recording a value; a skipped set is saved as skipped, has no rest of its own, and the next set shows the start countdown ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
@@ -27,6 +30,16 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- Dialogs share one background: twenty-three of them set a lighter surface of their own, so confirmation and edit dialogs now look the same everywhere ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- The on-off settings in the exercise form and the catalogue's Follow row work like the ones in Settings: the whole row toggles, and a screen reader reads one control with its state ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- A calendar day is shaded by how many sets it holds (1-3, 4-9, 10-19, 20 or more), with interval work counted as sets, instead of by reps weighted by difficulty, and the total sets figure includes interval work ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- Smaller wording fixes: Overall progress in sentence case, "Rest 60 s", Best workout, "Choose an exercise", a plainer unsaved-changes message, a program's length reads "About 12 min", and the crash report says how to keep it for later ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- The JSON backup is called Full backup and says that settings are not included; importing a backup file is Restore backup, with a warning that restoring replaces all current data ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- The exercise form uses plainer words: What to add, Sides (Both sides, One side at a time), Reps and Hold for the exercise type, and clearer help for seconds per rep and distance ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- With no exercises yet, Log a past workout and the Progress graph say so and offer an Open Library button, instead of pointing to Settings ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- Interval lists are called Intervals everywhere and empty ones say "No intervals yet"; the Train card is "One exercise"; Today shows an exercise and a folder icon for due exercises and groups; the interval word in the Start menu is right in French and German ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- One word for one thing: a finished set says "Complete" (it said DONE), exercises and tasks marked finished say Complete too, the exclamation marks are gone from "Round complete" and "sets recorded", and "Next:" in programs reads the same way in every language ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
+- Workout and Settings text says what things do: Auto mode is "Finish sets automatically" (a set ends when you reach the target), Count sound is "Rep timer", the hold sound has a description and sits in Settings with it, and the other workout settings are reworded ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - When you beat the target on a set, the sets still to do for that exercise (and that side) aim for at least that, in a workout and in a program; targets are only ever raised ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Ending a workout early no longer records the sets you never reached as skipped: they are left out, and only sets you skipped yourself are saved as skipped ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - In a single workout, holds follow the Auto mode setting like counted sets do, instead of always needing a tap on Complete ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
@@ -51,6 +64,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- Screen readers get what they were missing: each graph says its date range, latest and highest value, a catalogue step badge says "Step 3", the interval editor's drag handle says what it does, and a history entry's exercise name is a full-size target that says it filters ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - Ending a timed set with Complete below its target plays the finish sound too, as reaching the target does ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Renaming a group to a name another group already has says so, instead of a general error ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - A new exercise with a target no longer gets a Difficulty of 5 that nobody chose ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))

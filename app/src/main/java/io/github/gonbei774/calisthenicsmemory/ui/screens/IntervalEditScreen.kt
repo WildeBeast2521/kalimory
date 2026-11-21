@@ -442,7 +442,6 @@ fun IntervalEditScreen(
     if (showDeleteConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirmDialog = false },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.interval_delete_program),
@@ -479,7 +478,6 @@ fun IntervalEditScreen(
     if (showDiscardConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showDiscardConfirmDialog = false },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.discard_changes_title),
@@ -607,7 +605,7 @@ private fun IntervalExerciseItem(
             // Drag handle
             Icon(
                 AppIcons.DragHandle,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.todo_drag_to_reorder),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .size(24.dp)
@@ -668,7 +666,6 @@ private fun AddExerciseToIntervalDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 text = stringResource(R.string.interval_add_exercise),

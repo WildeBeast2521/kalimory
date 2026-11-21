@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.data.catalogue
 
+import io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily
+import io.github.gonbei774.calisthenicsmemory.data.review.family
 import io.github.gonbei774.calisthenicsmemory.util.SearchQuery
 import io.github.gonbei774.calisthenicsmemory.util.rankedBy
 
@@ -24,6 +26,17 @@ object CatalogueSearch {
      * name, in the name and chain name, then anywhere including muscles and equipment. Ties keep [entries]'
      * order. A blank query finds nothing.
      */
+    /**
+     * Narrows [entries] to the movement [families] and the [muscles] chosen. Each group is "any of": a step in
+     * a chosen family, and a step that works at least one chosen muscle as a main one. Nothing chosen in a group
+     * means no limit from it. The order of [entries] is kept.
+     */
+    fun filter(entries: List<Entry>, muscles: Set<Muscle>, families: Set<MovementFamily>): List<Entry> =
+        entries.filter { entry ->
+            (families.isEmpty() || entry.chain.pattern.family() in families) &&
+                (muscles.isEmpty() || entry.step.primaryMuscles.any { it in muscles })
+        }
+
     fun search(entries: List<Entry>, query: String): List<Entry> {
         val q = SearchQuery(query)
         if (q.isBlank) return emptyList()

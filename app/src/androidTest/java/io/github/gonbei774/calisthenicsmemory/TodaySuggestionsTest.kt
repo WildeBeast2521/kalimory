@@ -6,6 +6,7 @@ import androidx.compose.ui.test.hasAnySibling
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasScrollAction
+import androidx.compose.ui.test.hasScrollToNodeAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
@@ -119,7 +120,8 @@ class TodaySuggestionsTest {
         scrollTo(exerciseName)
         rule.onNode(hasText(text(PrimaryDestination.LIBRARY.label)) and hasClickAction()).performClick()
         rule.onNodeWithText(text(R.string.library_catalogue)).performClick()
-        rule.onNode(hasScrollAction()).performScrollToNode(hasText(text(Catalogue.chain(step.chainId)!!.name)))
+        // The catalogue also has two sideways chip rows; only the list can scroll to a node.
+        rule.onNode(hasScrollToNodeAction()).performScrollToNode(hasText(text(Catalogue.chain(step.chainId)!!.name)))
         rule.onNodeWithText(text(Catalogue.chain(step.chainId)!!.name)).performClick()
         rule.onNodeWithText(text(R.string.catalogue_follow)).performClick()
         assertTrue(step.chainId in prefs.unfollowedChains())

@@ -320,7 +320,7 @@ private fun StepsMet(steps: List<WeekStep>, onOpenChain: (String) -> Unit) {
 }
 
 @StringRes
-private fun MovementFamily.label(): Int = when (this) {
+internal fun MovementFamily.label(): Int = when (this) {
     MovementFamily.PUSH -> R.string.weekly_review_push
     MovementFamily.PULL -> R.string.weekly_review_pull
     MovementFamily.LEGS -> R.string.weekly_review_legs

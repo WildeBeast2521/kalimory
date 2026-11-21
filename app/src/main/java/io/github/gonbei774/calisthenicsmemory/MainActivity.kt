@@ -541,6 +541,8 @@ fun CalisthenicsMemoryApp(
                                     onOpenChain = { chainId -> currentScreen = Screen.CatalogueChain(chainId, fromHome = true) },
                                     onOpenCatalogue = { currentScreen = Screen.Catalogue },
                                     onOpenBodyMap = { currentScreen = Screen.BodyMap },
+                                    onOpenWeeklyReview = { currentScreen = Screen.WeeklyReview },
+                                    onOpenLibrary = { currentScreen = Screen.Create },
                                 )
                                 PrimaryDestination.LIBRARY -> LibraryScreen(
                                     viewModel = viewModel,
@@ -630,6 +632,7 @@ fun CalisthenicsMemoryApp(
                         RecordScreen(
                             viewModel = viewModel,
                             onNavigateBack = { currentScreen = backDestination },
+                            onOpenLibrary = { currentScreen = Screen.Create },
                             initialExerciseId = recordScreen.exerciseId,
                             fromToDo = recordScreen.fromToDo
                         )

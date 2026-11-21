@@ -57,24 +57,13 @@ fun CalendarView(
 ) {
     val firstDay = firstDayOfWeek()
 
-    // 種目ID → Lv (sortOrder) マップ
-    val exerciseLevelMap = remember(exercises) {
-        exercises.associate { it.id to it.sortOrder }
-    }
-
-    // 各日の活動量スコアと記録タイプを集計
-    val dayInfoMap = remember(items, exerciseLevelMap) {
+    // Each day's sets (warm-ups left out, interval work counted) and what kinds of record it holds.
+    val dayInfoMap = remember(items) {
         items.groupBy { it.date }.mapValues { (_, dayItems) ->
-            val sessionScore = dayItems.filterIsInstance<RecordItem.Session>()
-                .sumOf { sItem ->
-                    sItem.session.records.filter { it.countsAsWork }.sumOf { r -> calcSessionScore(r, exerciseLevelMap) }
-                }
-            val intervalScore = dayItems.filterIsInstance<RecordItem.Interval>()
-                .sumOf { calcIntervalScore(it.record) }
             DayInfo(
                 hasSession = dayItems.any { it is RecordItem.Session },
                 hasInterval = dayItems.any { it is RecordItem.Interval },
-                score = sessionScore + intervalScore,
+                sets = daySets(dayItems),
                 items = dayItems
             )
         }
@@ -110,7 +99,7 @@ fun CalendarView(
         } ?: items
         val sessions = targetItems.filterIsInstance<RecordItem.Session>()
         // Warm-ups are listed but not counted (ADR 0012).
-        val totalSets = sessions.sumOf { s -> s.session.records.count { it.countsAsWork } }
+        val totalSets = daySets(targetItems)
         val exerciseCount = sessions.map { it.session.exerciseId }.distinct().size
         val intervalCount = targetItems.count { it is RecordItem.Interval }
         val totalValue = if (selectedExerciseFilter != null) {
@@ -152,7 +141,7 @@ fun CalendarView(
                             date = date,
                             isToday = isToday,
                             isSelected = isSelected,
-                            level = scoreToLevel(dayInfo?.score ?: 0.0),
+                            level = shadeLevel(dayInfo?.sets ?: 0),
                             hasInterval = dayInfo?.hasInterval == true,
                             onClick = {
                                 selectedDate = if (selectedDate == date) null else date
@@ -375,7 +364,7 @@ private fun MonthGrid(
                             isToday = isToday,
                             isSelected = isSelected,
                             isOutOfRange = isOutOfRange,
-                            level = scoreToLevel(dayInfo?.score ?: 0.0),
+                            level = shadeLevel(dayInfo?.sets ?: 0),
                             hasInterval = dayInfo?.hasInterval == true,
                             onClick = { onDateClick(date) },
                             modifier = Modifier.weight(1f)
@@ -397,7 +386,7 @@ private fun MonthGrid(
 private data class DayInfo(
     val hasSession: Boolean,
     val hasInterval: Boolean,
-    val score: Double,
+    val sets: Int,
     val items: List<RecordItem>
 )
 
@@ -784,26 +773,30 @@ private fun IntervalSummaryRow(
     }
 }
 
-private fun calcSessionScore(record: HistorySet, levelMap: Map<Long, Int>): Double {
-    val lv = (levelMap[record.exerciseId] ?: 0).coerceAtLeast(1)
-    val base = record.valueRight + (record.valueLeft ?: 0)
-    return base * Math.pow(1.3, (lv - 1).toDouble())
-}
+/** Sets done in these records: work sets of workouts (warm-ups left out) and the work intervals of interval workouts. */
+internal fun daySets(items: List<RecordItem>): Int =
+    items.sumOf { item ->
+        when (item) {
+            is RecordItem.Session -> item.session.records.count { it.countsAsWork }
+            is RecordItem.Interval -> intervalWorkSets(item.record)
+        }
+    }
 
-private fun calcIntervalScore(record: IntervalRecord): Double {
+private fun intervalWorkSets(record: IntervalRecord): Int {
     val exerciseCount = try {
         JSONArray(record.exercisesJson).length()
     } catch (e: Exception) {
         0
     }
-    return record.workSeconds.toDouble() * record.workIntervalsDone(exerciseCount)
+    return record.workIntervalsDone(exerciseCount)
 }
 
-private fun scoreToLevel(score: Double): Int = when {
-    score <= 0.0 -> 0
-    score <= 100.0 -> 1
-    score <= 300.0 -> 2
-    score <= 700.0 -> 3
+/** How much a day shows on the calendar, 0 to 4, from its number of sets: none, 1-3, 4-9, 10-19, 20 or more. */
+internal fun shadeLevel(sets: Int): Int = when {
+    sets <= 0 -> 0
+    sets <= 3 -> 1
+    sets <= 9 -> 2
+    sets <= 19 -> 3
     else -> 4
 }
 

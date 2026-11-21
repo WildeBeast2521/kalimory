@@ -122,6 +122,8 @@ fun ViewScreen(
     onOpenChain: (String) -> Unit = {},
     onOpenCatalogue: () -> Unit = {},
     onOpenBodyMap: () -> Unit = {},
+    onOpenWeeklyReview: () -> Unit = {},
+    onOpenLibrary: () -> Unit = {},
 ) {
     val firstDay = firstDayOfWeek()
     val exercises by viewModel.exercises.collectAsState()
@@ -236,6 +238,9 @@ fun ViewScreen(
                         .semantics { heading() }
                         .padding(start = Spacing.l, end = Spacing.l, top = Spacing.xl, bottom = Spacing.s)
                 )
+                IconButton(onClick = onOpenWeeklyReview, modifier = Modifier.padding(top = Spacing.xl)) {
+                    Icon(AppIcons.Chart, contentDescription = stringResource(R.string.weekly_review_open), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
                 IconButton(onClick = onOpenBodyMap, modifier = Modifier.padding(top = Spacing.xl, end = Spacing.s)) {
                     Icon(AppIcons.BodyMap, contentDescription = stringResource(R.string.body_map_open), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
@@ -413,7 +418,8 @@ fun ViewScreen(
                                 exercises = exercises,
                                 records = records,
                                 selectedExerciseFilter = graphExercise,
-                                selectedPeriod = selectedPeriod
+                                selectedPeriod = selectedPeriod,
+                                onOpenLibrary = onOpenLibrary,
                             )
                         }
                     }
@@ -468,7 +474,6 @@ fun ViewScreen(
         val record = item.record
         AlertDialog(
             onDismissRequest = { showIntervalDeleteDialog = null },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     stringResource(R.string.delete_confirmation),

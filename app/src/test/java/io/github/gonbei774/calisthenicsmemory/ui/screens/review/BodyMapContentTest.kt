@@ -4,7 +4,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -79,7 +79,7 @@ class BodyMapContentTest {
     @Test fun `the chosen period is selected and another can be chosen`() {
         val chosen = mutableListOf<Period>()
         show(onPeriod = { chosen += it })
-        compose.onNodeWithText("1 week").assertIsSelected()
+        compose.onNodeWithText("1 week").assertIsOn()
         compose.onNodeWithText("1 month").performClick()
         assertEquals(listOf(Period.OneMonth), chosen)
     }
@@ -107,7 +107,7 @@ class BodyMapContentTest {
     @Test fun `the view can be switched, and Sets is chosen at first`() {
         val chosen = mutableListOf<BodyMapView>()
         show(onView = { chosen += it })
-        compose.onNodeWithText("Sets").assertIsSelected()
+        compose.onNodeWithText("Sets").assertIsOn()
         compose.onNodeWithText("Not worked").performClick()
         assertEquals(listOf(BodyMapView.NOT_WORKED), chosen)
     }

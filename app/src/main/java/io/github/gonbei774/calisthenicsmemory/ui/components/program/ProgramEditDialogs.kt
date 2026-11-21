@@ -63,7 +63,6 @@ fun AddExerciseToProgramDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 text = stringResource(R.string.add_exercise_to_program),
@@ -343,7 +342,6 @@ fun ExerciseSettingsDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 text = stringResource(R.string.exercise_settings),
@@ -533,7 +531,6 @@ fun LoopSettingsDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 text = stringResource(R.string.loop_settings),

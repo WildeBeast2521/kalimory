@@ -47,6 +47,37 @@ class ConsistencyGuardTest {
         assertTrue("Use MaterialTheme.shapes instead: $offenders", offenders.isEmpty())
     }
 
+    @Test fun `a dialog keeps the theme's background`() {
+        // Dialogs set their own surface colour in a dozen places and no two agreed.
+        val offenders = kotlin.filter { file -> setsDialogContainerColor(file.readText()) }.map { it.name }
+        assertTrue("Leave the AlertDialog's containerColor to the theme: $offenders", offenders.isEmpty())
+    }
+
+    /** True when an AlertDialog( call has a containerColor argument of its own (not one inside its content). */
+    private fun setsDialogContainerColor(text: String): Boolean {
+        var from = 0
+        while (true) {
+            val at = Regex("""(?<![A-Za-z])AlertDialog\(""").find(text, from) ?: return false
+            var depth = 0
+            var i = at.range.last
+            while (i < text.length) {
+                when (text[i]) {
+                    '(', '{', '[' -> depth++
+                    ')', '}', ']' -> depth--
+                }
+                if (depth == 1 && text.startsWith("containerColor = ", i) && text[i - 1] in " \n") return true
+                if (depth == 0) break
+                i++
+            }
+            from = at.range.last + 1
+        }
+    }
+
+    @Test fun `an on-off setting is a SwitchRow, not a switch built by hand`() {
+        val offenders = uses(Regex("""(?<![A-Za-z])Switch\("""), except = setOf("SwitchRow.kt", "SettingRows.kt"))
+        assertTrue("Use SwitchRow or SettingSwitchRow instead: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `an exercise's badges come from ExerciseBadges`() {
         // The level text beside an exercise was built by hand in a dozen places, in three sizes.
         val offenders = uses(Regex("""R\.string\.level_format"""), except = setOf("ExerciseBadges.kt", "ViewScreen.kt"))
@@ -172,7 +203,7 @@ class ConsistencyGuardTest {
         // Proper names and feature names keep their capitals; everything else is lower case after
         // the first word, so "Add Another Set" cannot come back beside "Add another exercise".
         val proper = setOf("Today", "Train", "Progress", "Progressions", "Library", "To", "Do", "Done",
-            "JSON", "CSV", "LED", "ON", "GitHub", "Kalimory", "Android", "Programs", "Intervals", "Select", "New", "Morning", "L-sit")
+            "JSON", "CSV", "LED", "ON", "GitHub", "Kalimory", "Android", "Programs", "Intervals", "Select", "New", "Morning", "L-sit", "Complete")
         val strings = main.resolve("res/values/strings.xml").readText()
         val offenders = Regex("""<string name="([^"]+)"[^>]*>([^<]{1,60})</string>""").findAll(strings)
             .filter { m ->

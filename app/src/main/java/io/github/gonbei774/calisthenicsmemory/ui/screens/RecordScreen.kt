@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePickRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
@@ -76,6 +77,7 @@ private enum class RecordStep {
 fun RecordScreen(
     viewModel: TrainingViewModel,
     onNavigateBack: () -> Unit,
+    onOpenLibrary: () -> Unit = onNavigateBack,
     initialExerciseId: Long? = null,
     fromToDo: Boolean = false
 ) {
@@ -160,6 +162,7 @@ fun RecordScreen(
             ExerciseSelectionScreen(
                 exercises = exercises,
                 onNavigateBack = onNavigateBack,
+                onOpenLibrary = onOpenLibrary,
                 staged = staged,
                 onRecordStaged = {
                     viewModel.recordManualWorkouts(asOneWorkout(staged), completeTodoFor)
@@ -272,6 +275,7 @@ fun RecordScreen(
 fun ExerciseSelectionScreen(
     exercises: List<Exercise>,
     onNavigateBack: () -> Unit,
+    onOpenLibrary: () -> Unit,
     onExerciseSelected: (Exercise) -> Unit,
     staged: List<ManualWorkout> = emptyList(),
     onRecordStaged: () -> Unit = {},
@@ -341,31 +345,12 @@ fun ExerciseSelectionScreen(
         }
     ) { paddingValues ->
         if (exercises.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.no_exercises_registered),
-                        fontSize = 18.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Button(
-                        onClick = onNavigateBack,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary
-                        )
-                    ) {
-                        Text(stringResource(R.string.go_to_settings))
-                    }
-                }
-            }
+            EmptyState(
+                text = stringResource(R.string.no_exercises_yet_workout),
+                modifier = Modifier.padding(paddingValues),
+                actionLabel = stringResource(R.string.open_library),
+                onAction = onOpenLibrary,
+            )
         } else {
             Column(
                 modifier = Modifier
@@ -1366,7 +1351,6 @@ fun WorkoutInputScreen(
     if (showDiscardDialog) {
         AlertDialog(
             onDismissRequest = { showDiscardDialog = false },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.discard_changes_title),
@@ -1402,7 +1386,6 @@ fun WorkoutInputScreen(
     if (showIncompleteDialog) {
         AlertDialog(
             onDismissRequest = { showIncompleteDialog = false },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             title = {
                 Text(
                     text = stringResource(R.string.record_mixed_title),

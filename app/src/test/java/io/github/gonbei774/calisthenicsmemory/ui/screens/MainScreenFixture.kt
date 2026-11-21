@@ -46,7 +46,7 @@ internal object MainScreenFixture {
     val TODAY: LocalDate = LocalDate.of(2026, 3, 12)
     const val PROGRAM = "Upper body"
     // The seeded program's settled estimate; a capture taken before it settled showed "~1 min".
-    const val PROGRAM_ESTIMATE = "~12 min"
+    const val PROGRAM_ESTIMATE = "About 12 min"
     const val STARTUP_TIMEOUT_MS = 10_000L
 
     fun state(theme: AppTheme): ExternalResource = object : ExternalResource() {

@@ -1,5 +1,12 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingSwitchRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
+import io.github.gonbei774.calisthenicsmemory.ui.screens.review.label
+import io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily
+import androidx.compose.material3.FilterChip
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.ui.semantics.contentDescription
 import io.github.gonbei774.calisthenicsmemory.data.progression.Climb
 import io.github.gonbei774.calisthenicsmemory.util.rememberToday
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
@@ -87,12 +94,27 @@ fun CatalogueScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit, on
     var query by rememberSaveable { mutableStateOf("") }
     var open by remember { mutableStateOf<CatalogueSearch.Entry?>(null) }
     val entries = searchEntries()
-    val results = remember(entries, query) { CatalogueSearch.search(entries, query) }
+    var families by remember { mutableStateOf(emptySet<MovementFamily>()) }
+    var muscles by remember { mutableStateOf(emptySet<Muscle>()) }
+    val filtering = families.isNotEmpty() || muscles.isNotEmpty()
+    // A query ranks the steps; the chips narrow them. Either one alone shows steps, not the chain list.
+    val results = remember(entries, query, families, muscles) {
+        val base = if (query.isBlank()) entries else CatalogueSearch.search(entries, query)
+        CatalogueSearch.filter(base, muscles, families)
+    }
     CatalogueScaffold(stringResource(R.string.library_catalogue), onNavigateBack) {
         item {
             CalmSearchField(query = query, onQueryChange = { query = it }, placeholder = stringResource(R.string.search_exercise))
         }
-        if (query.isBlank()) {
+        item {
+            FilterChips(
+                families = families,
+                muscles = muscles,
+                onFamily = { families = if (it in families) families - it else families + it },
+                onMuscle = { muscles = if (it in muscles) muscles - it else muscles + it },
+            )
+        }
+        if (query.isBlank() && !filtering) {
             item {
                 RowGroup {
                     Catalogue.chains.forEach { chain ->
@@ -107,6 +129,28 @@ fun CatalogueScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit, on
 
     open?.let { entry ->
         StepSheet(viewModel, entry.step, entry.number, entry.chainName, inLibrary = entry.step.id in linked) { open = null }
+    }
+}
+
+/** Two scrolling rows of chips: the movement and then the main muscle. Chosen chips narrow the steps. */
+@Composable
+private fun FilterChips(
+    families: Set<MovementFamily>,
+    muscles: Set<Muscle>,
+    onFamily: (MovementFamily) -> Unit,
+    onMuscle: (Muscle) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            MovementFamily.entries.forEach { family ->
+                FilterChip(selected = family in families, onClick = { onFamily(family) }, label = { Text(stringResource(family.label())) })
+            }
+        }
+        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            Muscle.entries.forEach { muscle ->
+                FilterChip(selected = muscle in muscles, onClick = { onMuscle(muscle) }, label = { Text(muscleLabel(muscle)) })
+            }
+        }
     }
 }
 
@@ -278,32 +322,21 @@ private fun ChainRow(chain: CatalogueChain, inLibrary: Int, onClick: () -> Unit)
 
 @Composable
 private fun FollowRow(followed: Boolean, onChange: (Boolean) -> Unit) {
-    Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceContainerLow) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .toggleable(value = followed, role = Role.Switch, onValueChange = onChange)
-                .padding(horizontal = Spacing.l, vertical = Spacing.m),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.catalogue_follow), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
-                Text(
-                    stringResource(R.string.catalogue_follow_description),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            Spacer(Modifier.width(Spacing.l))
-            Switch(checked = followed, onCheckedChange = null)
-        }
+    SettingsCard {
+        SettingSwitchRow(
+            title = stringResource(R.string.catalogue_follow),
+            description = stringResource(R.string.catalogue_follow_description),
+            checked = followed,
+            onCheckedChange = onChange,
+        )
     }
 }
 
 @Composable
 private fun LevelBadge(level: Int) {
+    val step = stringResource(R.string.catalogue_step_number, level)
     Box(
-        Modifier.size(40.dp).clip(MaterialTheme.shapes.medium).background(MaterialTheme.colorScheme.secondaryContainer),
+        Modifier.semantics { contentDescription = step }.size(40.dp).clip(MaterialTheme.shapes.medium).background(MaterialTheme.colorScheme.secondaryContainer),
         contentAlignment = Alignment.Center,
     ) {
         Text("$level", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)

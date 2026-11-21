@@ -153,9 +153,12 @@ fun SessionCard(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = if (exercise != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.clickable(enabled = exercise != null) {
-                            exercise?.let { onExerciseClick(it) }
-                        }
+                        modifier = Modifier
+                            .heightIn(min = 48.dp)
+                            .wrapContentHeight(Alignment.CenterVertically)
+                            .clickable(enabled = exercise != null, onClickLabel = stringResource(R.string.show_only_this_exercise)) {
+                                exercise?.let { onExerciseClick(it) }
+                            }
                     )
                     Text(
                         text = displayDateTime(session.date, session.time),
@@ -563,7 +566,6 @@ fun IntervalRecordEditDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         title = {
             Text(
                 stringResource(R.string.edit_session_info),

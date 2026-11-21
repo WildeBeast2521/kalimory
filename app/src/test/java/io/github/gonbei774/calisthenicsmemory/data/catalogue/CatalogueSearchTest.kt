@@ -83,4 +83,41 @@ class CatalogueSearchTest {
         val l = entry(pull, 2, "L-sit", "Core")
         assertEquals(listOf("L-sit"), names("Ｌ－ｓｉｔ", listOf(l)))
     }
+
+    // Filter chips: movement family and main muscle, each "any of", the two groups together "and".
+    private val all = Catalogue.chains.flatMap { chain ->
+        chain.steps.filterNot { it.retired }.mapIndexed { i, step -> CatalogueSearch.Entry(step, chain, i + 1, step.id, chain.id, emptyList(), emptyList()) }
+    }
+
+    @Test fun `no chip chosen leaves every step`() {
+        assertEquals(all.size, CatalogueSearch.filter(all, emptySet(), emptySet()).size)
+    }
+
+    @Test fun `a family keeps only the steps of its patterns`() {
+        val legs = CatalogueSearch.filter(all, emptySet(), setOf(io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily.LEGS))
+        assertTrue(legs.isNotEmpty() && legs.size < all.size)
+        assertTrue(legs.all { it.chain.pattern in setOf(MovementPattern.SQUAT, MovementPattern.HINGE) })
+    }
+
+    @Test fun `a muscle keeps the steps that work it as a main one`() {
+        val muscle = all.first().step.primaryMuscles.first()
+        val found = CatalogueSearch.filter(all, setOf(muscle), emptySet())
+        assertTrue(found.isNotEmpty())
+        assertTrue(found.all { muscle in it.step.primaryMuscles })
+    }
+
+    @Test fun `several chips in one group widen it, a second group narrows it`() {
+        val families = setOf(io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily.PUSH, io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily.PULL)
+        val either = CatalogueSearch.filter(all, emptySet(), families)
+        val pushOnly = CatalogueSearch.filter(all, emptySet(), setOf(io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily.PUSH))
+        assertTrue(either.size > pushOnly.size)
+        val muscle = pushOnly.first().step.primaryMuscles.first()
+        val both = CatalogueSearch.filter(all, setOf(muscle), setOf(io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily.PUSH))
+        assertTrue(both.size <= pushOnly.size && both.isNotEmpty())
+    }
+
+    @Test fun `filtering keeps the order of the list`() {
+        val found = CatalogueSearch.filter(all, emptySet(), setOf(io.github.gonbei774.calisthenicsmemory.data.review.MovementFamily.PUSH))
+        assertEquals(all.filter { it in found }, found)
+    }
 }
