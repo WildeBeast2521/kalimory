@@ -609,7 +609,7 @@ fun IntervalRecordEditDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = {
+            Button(onClick = {
                 onConfirm(
                     record.copy(
                         date = editDate,
@@ -618,11 +618,11 @@ fun IntervalRecordEditDialog(
                     )
                 )
             }) {
-                Text(stringResource(R.string.save), color = MaterialTheme.colorScheme.primary)
+                Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            OutlinedButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         }
@@ -643,7 +643,7 @@ fun IntervalRecordEditDialog(
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     datePickerState.selectedDateMillis?.let { millis ->
                         val newDate = LocalDate.ofEpochDay(millis / 86400000)
                         editDate = newDate.format(dateFormatter)
@@ -654,7 +654,7 @@ fun IntervalRecordEditDialog(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) {
+                OutlinedButton(onClick = { showDatePicker = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -680,7 +680,7 @@ fun IntervalRecordEditDialog(
         AlertDialog(
             onDismissRequest = { showTimePicker = false },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     val newTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
                     editTime = newTime.format(timeFormatter)
                     showTimePicker = false
@@ -689,7 +689,7 @@ fun IntervalRecordEditDialog(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showTimePicker = false }) {
+                OutlinedButton(onClick = { showTimePicker = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             },

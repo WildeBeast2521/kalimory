@@ -727,7 +727,7 @@ fun WorkoutScreen(
             title = { Text(stringResource(R.string.interval_resume_title)) },
             text = { Text(exercise.name + "\n\n" + stringResource(R.string.program_resume_message)) },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     pendingResume = null
                     val session = checkpoint.toSession(exercise)
                     selectedExercise = exercise
@@ -743,7 +743,7 @@ fun WorkoutScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = {
+                OutlinedButton(onClick = {
                     pendingResume = null
                     clearCheckpoint()
                 }) {
@@ -760,18 +760,17 @@ fun WorkoutScreen(
             title = { Text(stringResource(R.string.exit_workout_title)) },
             text = { Text(stringResource(R.string.exit_workout_message)) },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showExitConfirmDialog = false
                         clearCheckpoint()
                         onNavigateBack()
-                    }
-                ) {
-                    Text(stringResource(R.string.exit_workout_confirm), color = MaterialTheme.colorScheme.error)
+                    }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.exit_workout_confirm))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showExitConfirmDialog = false }) {
+                OutlinedButton(onClick = { showExitConfirmDialog = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -2259,9 +2258,9 @@ fun AddExtraSetDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
-                    val target = targetValueStr.toIntOrNull() ?: return@TextButton
+                    val target = targetValueStr.toIntOrNull() ?: return@Button
                     val distanceCm = distanceStr.ifEmpty { null }?.toIntOrNull()
                     val weightG = weightStr.ifEmpty { null }?.toDoubleOrNull()?.let { (it * 1000).toInt() }
                     val assistanceG = assistanceStr.ifEmpty { null }?.toDoubleOrNull()?.let { (it * 1000).toInt() }
@@ -2301,11 +2300,11 @@ fun AddExtraSetDialog(
                 },
                 enabled = isValid
             ) {
-                Text(stringResource(R.string.add_extra_set_confirm), color = MaterialTheme.colorScheme.primary)
+                Text(stringResource(R.string.add_extra_set_confirm))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            OutlinedButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         })

@@ -564,18 +564,17 @@ OutlinedTextField(
                 )
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         programId?.let { viewModel.deleteProgram(it) }
                         showDeleteConfirmDialog = false
                         onNavigateBack()
-                    }
-                ) {
-                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
+                    }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirmDialog = false }) {
+                OutlinedButton(onClick = { showDeleteConfirmDialog = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -641,17 +640,16 @@ OutlinedTextField(
                 )
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showDiscardConfirmDialog = false
                         onNavigateBack()
-                    }
-                ) {
-                    Text(stringResource(R.string.discard), color = MaterialTheme.colorScheme.error)
+                    }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.discard))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDiscardConfirmDialog = false }) {
+                OutlinedButton(onClick = { showDiscardConfirmDialog = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             }

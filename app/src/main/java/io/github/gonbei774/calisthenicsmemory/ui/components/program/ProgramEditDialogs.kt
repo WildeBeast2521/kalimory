@@ -186,7 +186,7 @@ fun ExerciseSettingsDialog(
             // An empty target is saved as 0, which means no target.
             val targetValueValue = if (targetValue.isEmpty()) 0 else targetValue.toIntOrNull()
             val isValid = setsValue != null && targetValueValue != null
-            TextButton(
+            Button(
                 onClick = {
                     onSave(
                         programExercise.copy(
@@ -199,11 +199,11 @@ fun ExerciseSettingsDialog(
                 },
                 enabled = isValid
             ) {
-                Text(stringResource(R.string.save), color = if (isValid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            OutlinedButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         }
@@ -264,7 +264,7 @@ fun LoopSettingsDialog(
         confirmButton = {
             val roundsValue = rounds.toIntOrNull()
             val isValid = roundsValue != null && roundsValue > 0
-            TextButton(
+            Button(
                 onClick = {
                     onSave(
                         roundsValue!!,
@@ -273,11 +273,11 @@ fun LoopSettingsDialog(
                 },
                 enabled = isValid
             ) {
-                Text(stringResource(R.string.save), color = if (isValid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            OutlinedButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         }

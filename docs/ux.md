@@ -53,12 +53,14 @@ Every tappable word is a button, and each role has one look. A screen has one fi
 | Helper | Tonal (`FilledTonalButton`) | Add set, Add exercise, See all, Weekly review, Browse, Redo, Jump, Set to target |
 | Quiet | Outlined (`OutlinedButton`) | Restart set, Skip set, Skip exercise, Save and exit, Stop, -10 s and +10 s |
 | Destructive | `DestructiveButton` | Delete or discard something |
-| Dialog action | Text button, in a dialog's confirm or dismiss slot only | Cancel, OK, Delete (error colour) |
+| Dialog action | Confirm is a filled `Button` (error colour when it deletes or discards), dismiss is an `OutlinedButton` | Cancel, OK, Exit, Delete |
 | Icon action | `IconButton` with a label, or the `RowMenu` | A row's other actions |
 
 A waiting screen (get ready, rest) has no main button, so its Skip is tonal. Buttons keep the theme's
-colours and shape and a 48 dp minimum height. `ConsistencyGuardTest` fails on a text button outside a dialog
-slot, on tappable text, and on a button with colours or a border set by hand.
+colours and shape and a 48 dp minimum height, and two buttons never touch: leave a gap of at least 4 dp
+(`tapTargetProblems` fails a screen test when they do). There is no text button anywhere.
+`ConsistencyGuardTest` fails on a text button, on tappable text, on a dialog whose confirm is not a filled
+button or whose dismiss is not outlined, and on a button with colours or a border set by hand.
 
 ## Text size and touch targets
 

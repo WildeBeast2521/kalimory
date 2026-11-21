@@ -457,24 +457,27 @@ private fun SetActionButton(text: String, onClick: () -> Unit) {
 @Composable
 fun RestToolbar(onMinus: () -> Unit, onPlus: () -> Unit, onSkip: () -> Unit, modifier: Modifier = Modifier) {
     HorizontalFloatingToolbar(expanded = true, modifier = modifier) {
-        androidx.compose.material3.OutlinedButton(onClick = onMinus, modifier = Modifier.heightIn(min = 48.dp), contentPadding = PaddingValues(horizontal = Spacing.m)) {
-            FitText(stringResource(R.string.minus_10sec), style = MaterialTheme.typography.titleMedium)
-        }
-        androidx.compose.material3.OutlinedButton(onClick = onPlus, modifier = Modifier.heightIn(min = 48.dp), contentPadding = PaddingValues(horizontal = Spacing.m)) {
-            FitText(stringResource(R.string.plus_10sec), style = MaterialTheme.typography.titleMedium)
-        }
-        androidx.compose.material3.FilledTonalButton(
-            onClick = onSkip,
-            shapes = ButtonDefaults.shapes(),
-            modifier = Modifier.heightIn(min = 48.dp),
-        ) {
-            // With a large font the row has no room left for the word; the icon then says it alone.
-            if (isLargeFontScale()) {
-                Icon(AppIcons.SkipNext, contentDescription = stringResource(R.string.skip_button))
-            } else {
-                Icon(AppIcons.SkipNext, contentDescription = null)
-                Spacer(Modifier.size(Spacing.s))
-                FitText(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
+        // A gap between the three buttons, so none touches the next.
+        Row(horizontalArrangement = Arrangement.spacedBy(Spacing.xs), verticalAlignment = Alignment.CenterVertically) {
+            androidx.compose.material3.OutlinedButton(onClick = onMinus, modifier = Modifier.heightIn(min = 48.dp), contentPadding = PaddingValues(horizontal = Spacing.m)) {
+                FitText(stringResource(R.string.minus_10sec), style = MaterialTheme.typography.titleMedium)
+            }
+            androidx.compose.material3.OutlinedButton(onClick = onPlus, modifier = Modifier.heightIn(min = 48.dp), contentPadding = PaddingValues(horizontal = Spacing.m)) {
+                FitText(stringResource(R.string.plus_10sec), style = MaterialTheme.typography.titleMedium)
+            }
+            androidx.compose.material3.FilledTonalButton(
+                onClick = onSkip,
+                shapes = ButtonDefaults.shapes(),
+                modifier = Modifier.heightIn(min = 48.dp),
+            ) {
+                // With a large font the row has no room left for the word; the icon then says it alone.
+                if (isLargeFontScale()) {
+                    Icon(AppIcons.SkipNext, contentDescription = stringResource(R.string.skip_button))
+                } else {
+                    Icon(AppIcons.SkipNext, contentDescription = null)
+                    Spacer(Modifier.size(Spacing.s))
+                    FitText(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
+                }
             }
         }
     }

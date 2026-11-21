@@ -485,8 +485,9 @@ fun CsvDataManagementScreen(
                     }
                 }
             },
-            confirmButton = {
-                TextButton(onClick = { showCsvExportDialog = false }) {
+            confirmButton = {},
+            dismissButton = {
+                OutlinedButton(onClick = { showCsvExportDialog = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -582,7 +583,7 @@ fun CsvDataManagementScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showCsvImportPreview = false
                         showBackupConfirmation = true
@@ -595,7 +596,7 @@ fun CsvDataManagementScreen(
                 }
             },
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showCsvImportPreview = false
                         pendingCsvString = null
@@ -807,7 +808,7 @@ fun CsvDataManagementScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showImportResult = false
                         importReport = null
@@ -897,7 +898,7 @@ fun CsvDataManagementScreen(
             },
             confirmButton = {},
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showBackupConfirmation = false
                         pendingCsvString = null

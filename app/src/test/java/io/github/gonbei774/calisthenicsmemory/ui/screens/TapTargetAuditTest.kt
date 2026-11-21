@@ -63,4 +63,16 @@ class TapTargetAuditTest {
         compose.setContent { Text("Rest", Modifier.width(200.dp)) }
         assertEquals(emptyList<String>(), textFitProblems(compose))
     }
+
+    @Test fun `buttons that touch are reported, a gap between them passes`() {
+        compose.setContent {
+            androidx.compose.foundation.layout.Column {
+                Row { Button(onClick = {}) { Text("Restart") }; Button(onClick = {}) { Text("Skip") } }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) { Button(onClick = {}) { Text("Left") }; Button(onClick = {}) { Text("Right") } }
+            }
+        }
+        val problems = tapTargetProblems(compose, compose.density)
+        assertTrue(problems.joinToString("\n"), problems.any { "Restart" in it && "Skip" in it && "touch" in it })
+        assertTrue(problems.joinToString("\n"), problems.none { "Left" in it && "Right" in it })
+    }
 }

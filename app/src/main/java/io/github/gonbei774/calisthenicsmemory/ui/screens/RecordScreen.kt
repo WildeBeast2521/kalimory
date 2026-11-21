@@ -290,12 +290,12 @@ fun ExerciseSelectionScreen(
             title = { Text(stringResource(R.string.discard_changes_title)) },
             text = { Text(stringResource(R.string.discard_changes_message)) },
             confirmButton = {
-                TextButton(onClick = { showDiscardDialog = false; onNavigateBack() }) {
-                    Text(stringResource(R.string.discard), color = MaterialTheme.colorScheme.error)
+                Button(onClick = { showDiscardDialog = false; onNavigateBack() }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.discard))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDiscardDialog = false }) { Text(stringResource(R.string.cancel)) }
+                OutlinedButton(onClick = { showDiscardDialog = false }) { Text(stringResource(R.string.cancel)) }
             },
         )
     }
@@ -1354,17 +1354,16 @@ fun WorkoutInputScreen(
                 )
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showDiscardDialog = false
                         onNavigateBack()
-                    }
-                ) {
-                    Text(stringResource(R.string.discard), color = MaterialTheme.colorScheme.error)
+                    }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.discard))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDiscardDialog = false }) {
+                OutlinedButton(onClick = { showDiscardDialog = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -1389,17 +1388,17 @@ fun WorkoutInputScreen(
                 )
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showIncompleteDialog = false
                         doRecord(false)
                     }
                 ) {
-                    Text(stringResource(R.string.record_all_sets, enteredCount), color = MaterialTheme.colorScheme.primary)
+                    Text(stringResource(R.string.record_all_sets, enteredCount))
                 }
             },
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showIncompleteDialog = false
                         doRecord(true)
@@ -1419,7 +1418,7 @@ fun WorkoutInputScreen(
         DatePickerDialog(
             onDismissRequest = { onShowDatePicker(false) },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     datePickerState.selectedDateMillis?.let { millis ->
                         onDateSelected(LocalDate.ofEpochDay(millis / 86400000))
                     }
@@ -1429,7 +1428,7 @@ fun WorkoutInputScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { onShowDatePicker(false) }) {
+                OutlinedButton(onClick = { onShowDatePicker(false) }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -1448,7 +1447,7 @@ fun WorkoutInputScreen(
         AlertDialog(
             onDismissRequest = { onShowTimePicker(false) },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     onTimeSelected(LocalTime.of(timePickerState.hour, timePickerState.minute))
                     onShowTimePicker(false)
                 }) {
@@ -1456,7 +1455,7 @@ fun WorkoutInputScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { onShowTimePicker(false) }) {
+                OutlinedButton(onClick = { onShowTimePicker(false) }) {
                     Text(stringResource(R.string.cancel))
                 }
             },

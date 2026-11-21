@@ -39,22 +39,31 @@ class ConsistencyGuardTest {
     private fun dialogSlots(text: String): List<IntRange> =
         Regex("""\b(confirmButton|dismissButton)\s*=\s*\{""").findAll(text).map { it.range.last..closing(text, it.range.last) }.toList()
 
-    /** Positions of `TextButton(` calls that are not inside a dialog action slot. */
-    private fun textButtonsOutsideDialogs(text: String): List<Int> {
-        val slots = dialogSlots(text)
-        return Regex("""\bTextButton\(""").findAll(text).map { it.range.first }.filter { at -> slots.none { at in it } }.toList()
+    /** Positions of `TextButton(` calls: there are none, a dialog's actions are buttons too. */
+    private fun textButtons(text: String): List<Int> = Regex("""\bTextButton\(""").findAll(text).map { it.range.first }.toList()
+
+    @Test fun `the dialog slot helper finds the slots`() {
+        val text = "AlertDialog(confirmButton = { Row { Button(onClick = {}) { Text(\"OK\") } } }, dismissButton = { OutlinedButton(onClick = {}) { } })"
+        assertEquals(2, dialogSlots(text).size)
+        assertEquals(1, textButtons("Column { TextButton(onClick = {}) { Text(\"Skip\") } }").size)
     }
 
-    @Test fun `the dialog slot helper tells a slot from a loose text button`() {
-        val inSlot = "AlertDialog(confirmButton = { Row { TextButton(onClick = {}) { Text(\"OK\") } } })"
-        val loose = "Column { TextButton(onClick = {}) { Text(\"Skip\") } }"
-        assertEquals(emptyList<Int>(), textButtonsOutsideDialogs(inSlot))
-        assertEquals(1, textButtonsOutsideDialogs(loose).size)
+    @Test fun `there is no text button, a dialog's actions are buttons too`() {
+        val offenders = kotlin.filter { textButtons(it.readText()).isNotEmpty() }.map { it.name }
+        assertTrue("Use a filled, tonal or outlined button (docs/ux.md): $offenders", offenders.isEmpty())
     }
 
-    @Test fun `a text button sits only in a dialog's action slot`() {
-        val offenders = kotlin.filter { textButtonsOutsideDialogs(it.readText()).isNotEmpty() }.map { it.name }
-        assertTrue("Use a tonal or outlined button (docs/ux.md): $offenders", offenders.isEmpty())
+    @Test fun `a dialog confirms with a filled button and dismisses with an outlined one`() {
+        val offenders = kotlin.flatMap { file ->
+            val text = file.readText()
+            Regex("""\b(confirmButton|dismissButton)\s*=\s*\{""").findAll(text).mapNotNull { m ->
+                val slot = text.substring(m.range.last, closing(text, m.range.last))
+                val first = Regex("""\b(Outlined|FilledTonal|Text|Elevated|Destructive)?Button\(""").find(slot)?.value
+                val ok = if (m.groupValues[1] == "confirmButton") first == "Button(" || first == "DestructiveButton(" else first == "OutlinedButton(" || first == "DestructiveButton("
+                file.name.takeIf { first != null && !ok }
+            }.toList()
+        }.distinct()
+        assertTrue("Confirm is a Button and dismiss an OutlinedButton: $offenders", offenders.isEmpty())
     }
 
     @Test fun `text is never tapped on its own`() {

@@ -480,17 +480,17 @@ fun ViewScreen(
                 )
             },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     val sessionId = item.v2SessionId
                     if (sessionId != null) viewModel.deleteV2IntervalSession(sessionId)
                     else viewModel.deleteIntervalRecord(record.id)
                     showIntervalDeleteDialog = null
-                }) {
-                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
+                }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showIntervalDeleteDialog = null }) {
+                OutlinedButton(onClick = { showIntervalDeleteDialog = null }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -535,7 +535,7 @@ fun ViewScreen(
                 ))
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         if (session.source == HistorySource.V2) {
                             viewModel.deleteV2Sets(session.records)
@@ -553,7 +553,7 @@ fun ViewScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteDialog = null }) {
+                OutlinedButton(onClick = { showDeleteDialog = null }) {
                     Text(stringResource(R.string.cancel))
                 }
             }

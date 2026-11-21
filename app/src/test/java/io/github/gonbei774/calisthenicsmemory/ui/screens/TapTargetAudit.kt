@@ -1,6 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
@@ -16,7 +18,7 @@ import androidx.compose.ui.unit.dp
 internal fun tapTargetProblems(compose: SemanticsNodeInteractionsProvider, density: Density): List<String> {
     val minPx = with(density) { 48.dp.toPx() } - 0.5f
     val nodes = compose.onAllNodes(hasClickAction()).fetchSemanticsNodes()
-    return nodes.mapNotNull { node ->
+    return touchingButtons(nodes, density) + nodes.mapNotNull { node ->
         val config = node.config
         val label = listOfNotNull(
             config.getOrNull(SemanticsProperties.Text)?.joinToString(" ") { it.text },
@@ -58,3 +60,31 @@ internal fun effectiveTouchArea(shape: Rect, widened: Rect, others: List<Rect>):
 
 private fun Rect.contains(other: Rect) =
     left <= other.left && top <= other.top && right >= other.right && bottom >= other.bottom
+
+/**
+ * Two buttons side by side or one above the other need a gap (4 dp at least), or a press can land on the wrong
+ * one and the pair reads as one block. Buttons inside one another are not neighbours; segmented choices are
+ * not buttons (they are radio buttons and tabs), and a strip of five or more equal cells (the calendar) is flush by design.
+ */
+internal fun touchingButtons(nodes: List<SemanticsNode>, density: Density, minGapDp: Float = 4f): List<String> {
+    val gap = with(density) { minGapDp.dp.toPx() }
+    val buttons = nodes.filter { it.config.getOrNull(SemanticsProperties.Role) == Role.Button }
+        .filter { n -> n.boundsInRoot.width >= n.size.width - 1 && n.boundsInRoot.height >= n.size.height - 1 }
+    fun label(n: SemanticsNode) = n.config.getOrNull(SemanticsProperties.Text)?.joinToString(" ") { it.text }
+        ?: n.config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString(" ") ?: "?"
+    fun stripCells(r: androidx.compose.ui.geometry.Rect) = buttons.count { kotlin.math.abs(it.boundsInRoot.top - r.top) < 2f && kotlin.math.abs(it.boundsInRoot.height - r.height) < 2f }
+    val problems = mutableListOf<String>()
+    for (i in buttons.indices) for (j in i + 1 until buttons.size) {
+        val a = buttons[i].boundsInRoot; val b = buttons[j].boundsInRoot
+        if (a.contains(b) || b.contains(a)) continue
+        // A strip or grid of five or more cells in one row (the calendar's days) is flush by design.
+        if (stripCells(a) >= 5 && kotlin.math.abs(a.top - b.top) < 2f && kotlin.math.abs(a.height - b.height) < 2f) continue
+        val horizontalGap = maxOf(b.left - a.right, a.left - b.right)
+        val verticalGap = maxOf(b.top - a.bottom, a.top - b.bottom)
+        // Touching or overlapping: closer than the gap on both axes at once.
+        if (horizontalGap < gap && verticalGap < gap) {
+            problems += "\"${label(buttons[i]).take(30)}\" and \"${label(buttons[j]).take(30)}\" touch (gap ${maxOf(horizontalGap, verticalGap).toInt()} px, under 4 dp)"
+        }
+    }
+    return problems
+}

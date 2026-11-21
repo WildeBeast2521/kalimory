@@ -467,7 +467,7 @@ fun BackupScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showDataPreview = false
                         showImportWarning = true
@@ -480,7 +480,7 @@ fun BackupScreen(
                 }
             },
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showDataPreview = false
                         pendingImportData = null
@@ -540,7 +540,7 @@ fun BackupScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         pendingImportData?.let { backupData ->
                             scope.launch {
@@ -575,7 +575,7 @@ fun BackupScreen(
                 }
             },
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showImportWarning = false
                         pendingImportData = null

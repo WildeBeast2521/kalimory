@@ -6,6 +6,8 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -73,12 +75,12 @@ fun RecoveryRestoreButton(modifier: Modifier = Modifier) {
             title = { Text(stringResource(R.string.recovery_restore_title)) },
             text = { Text(stringResource(R.string.recovery_restore_message)) },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     confirming = false
                     picker.launch(arrayOf("application/zip", "application/octet-stream"))
-                }) { Text(stringResource(R.string.recovery_restore_confirm), color = MaterialTheme.colorScheme.error) }
+                }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) { Text(stringResource(R.string.recovery_restore_confirm)) }
             },
-            dismissButton = { TextButton(onClick = { confirming = false }) { Text(stringResource(R.string.cancel)) } },
+            dismissButton = { OutlinedButton(onClick = { confirming = false }) { Text(stringResource(R.string.cancel)) } },
         )
     }
 
@@ -86,12 +88,12 @@ fun RecoveryRestoreButton(modifier: Modifier = Modifier) {
         is RestoreOutcome.Refused -> AlertDialog(
             onDismissRequest = { outcome = null },
             text = { Text(result.message) },
-            confirmButton = { TextButton(onClick = { outcome = null }) { Text(stringResource(R.string.ok)) } },
+            confirmButton = { Button(onClick = { outcome = null }) { Text(stringResource(R.string.ok)) } },
         )
         is RestoreOutcome.Restart -> AlertDialog(
             onDismissRequest = {},
             text = { Text(result.message ?: stringResource(R.string.recovery_restore_done)) },
-            confirmButton = { TextButton(onClick = { restartApp(context) }) { Text(stringResource(R.string.ok)) } },
+            confirmButton = { Button(onClick = { restartApp(context) }) { Text(stringResource(R.string.ok)) } },
         )
         null -> Unit
     }

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.DestructiveButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberCountdownHaptics
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.ReportWorkoutProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.countdownProgress
@@ -289,9 +290,9 @@ fun IntervalExecutionScreen(
                 )
             },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     showExitDialog = false
-                    val current = workout ?: return@TextButton
+                    val current = workout ?: return@Button
                     // Catch up first, so a countdown that already ended counts as done.
                     val now = clock.nowMillis()
                     val caughtUp = WorkoutReducer.reduce(current, WorkoutEvent.Tick(now)).state
@@ -307,13 +308,13 @@ fun IntervalExecutionScreen(
                         completedExercisesInLastRound = completedExInLast,
                         isFullCompletion = false
                     )
-                }) {
-                    Text(stringResource(R.string.interval_stop), color = cs.error)
+                }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.interval_stop))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showExitDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = cs.onSurfaceVariant)
+                OutlinedButton(onClick = { showExitDialog = false }) {
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -340,7 +341,7 @@ fun IntervalExecutionScreen(
                 }
             },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     pendingResume = null
                     program = IntervalProgram(
                         id = interval.programId,
@@ -373,16 +374,17 @@ fun IntervalExecutionScreen(
                         phase = IntervalPhase.Running
                     }
                 }) {
-                    Text(stringResource(R.string.interval_resume_confirm), color = cs.tertiary)
+                    Text(stringResource(R.string.interval_resume_confirm))
                 }
             },
             dismissButton = {
-                TextButton(onClick = {
-                    pendingResume = null
-                    clearCheckpoint()
-                }) {
-                    Text(stringResource(R.string.interval_resume_discard), color = cs.error)
-                }
+                DestructiveButton(
+                    text = stringResource(R.string.interval_resume_discard),
+                    onClick = {
+                        pendingResume = null
+                        clearCheckpoint()
+                    },
+                )
             }
         )
     }
@@ -405,16 +407,16 @@ fun IntervalExecutionScreen(
                 )
             },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     showUnsavedDialog = false
                     onComplete()
-                }) {
-                    Text(stringResource(R.string.interval_unsaved_leave), color = cs.error)
+                }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.interval_unsaved_leave))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showUnsavedDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = cs.onSurfaceVariant)
+                OutlinedButton(onClick = { showUnsavedDialog = false }) {
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )

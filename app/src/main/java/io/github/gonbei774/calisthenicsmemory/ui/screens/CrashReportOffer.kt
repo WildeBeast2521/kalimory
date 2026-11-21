@@ -2,6 +2,8 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Button
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -46,12 +48,12 @@ fun CrashReportOffer() {
         title = { Text(stringResource(R.string.crash_report_title)) },
         text = { Text(stringResource(R.string.crash_report_message)) },
         confirmButton = {
-            TextButton(onClick = {
+            Button(onClick = {
                 shareCrashReports(context, CrashReports.shareText(pending), shareTitle)
                 finish()
             }) { Text(shareTitle) }
         },
-        dismissButton = { TextButton(onClick = { finish() }) { Text(stringResource(R.string.delete)) } },
+        dismissButton = { OutlinedButton(onClick = { finish() }) { Text(stringResource(R.string.delete)) } },
     )
 }
 

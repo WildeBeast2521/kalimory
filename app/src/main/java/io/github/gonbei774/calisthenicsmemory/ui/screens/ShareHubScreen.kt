@@ -423,7 +423,7 @@ fun ShareHubScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showShareImportPreview = false
                         shareImportPreviewData = null
@@ -438,7 +438,7 @@ fun ShareHubScreen(
                 }
             },
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showShareImportPreview = false
                         pendingShareImportJson = null
@@ -618,7 +618,7 @@ fun ShareHubScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showShareImportResult = false
                         shareImportReport = null
@@ -706,7 +706,7 @@ fun ShareHubScreen(
             },
             confirmButton = {},
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showBackupConfirmation = false
                         pendingShareImportJson = null

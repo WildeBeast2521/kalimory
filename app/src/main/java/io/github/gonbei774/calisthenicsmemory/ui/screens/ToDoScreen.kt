@@ -301,15 +301,15 @@ fun ToDoScreen(
             title = { Text(stringResource(R.string.delete_task_title), color = MaterialTheme.colorScheme.onSurface) },
             text = { Text(stringResource(R.string.todo_delete_confirm_message, taskName), color = MaterialTheme.colorScheme.onSurface) },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     viewModel.deleteTodoTask(task.id)
                     deleteConfirmTask = null
-                }) {
-                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
+                }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { deleteConfirmTask = null }) {
+                OutlinedButton(onClick = { deleteConfirmTask = null }) {
                     Text(stringResource(R.string.cancel))
                 }
             })
@@ -434,7 +434,7 @@ private fun ActiveTaskContent(
                         },
                         confirmButton = {},
                         dismissButton = {
-                            TextButton(onClick = { showModeDialog = false }) {
+                            OutlinedButton(onClick = { showModeDialog = false }) {
                                 Text(stringResource(R.string.cancel))
                             }
                         }
@@ -788,7 +788,7 @@ private fun GroupTaskCard(
                                 },
                                 confirmButton = {},
                                 dismissButton = {
-                                    TextButton(onClick = { showModeDialog = false }) {
+                                    OutlinedButton(onClick = { showModeDialog = false }) {
                                         Text(stringResource(R.string.cancel))
                                     }
                                 }
@@ -1799,15 +1799,15 @@ private fun RepeatDaysDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = {
+            Button(onClick = {
                 val result = selectedDays.sorted().joinToString(",")
                 onSave(result)
             }) {
-                Text(stringResource(R.string.todo_repeat_save), color = MaterialTheme.colorScheme.primary)
+                Text(stringResource(R.string.todo_repeat_save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+            OutlinedButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
         }
     )
 }

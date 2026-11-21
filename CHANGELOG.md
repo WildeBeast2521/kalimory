@@ -33,7 +33,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
-- Every tappable word is now a button, with one look for each role: Restart set, Skip set and Skip exercise are outlined buttons under the main one, helpers such as Add set and See all are tonal, and delete and discard share one style ([#293](https://github.com/WildeBeast2521/kalimory/pull/293))
+- Every tappable word is now a button, with one look for each role: Restart set, Skip set and Skip exercise are outlined buttons under the main one, helpers such as Add set and See all are tonal, delete and discard share one style, and dialog choices such as Cancel and Exit are buttons too, with a gap between neighbouring buttons ([#293](https://github.com/WildeBeast2521/kalimory/pull/293))
 - The Targets list in Progress shows only exercises that have a target, and delete dialogs say what is being deleted ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - Adding exercises to a program, an interval routine or a saved workout uses one full-screen picker with search, open groups and an Add button that shows how many are chosen ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - The program editor's exercise and loop settings use steppers for sets, reps or time, rest, rounds and rest between rounds, like the rest of the app ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))

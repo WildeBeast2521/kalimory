@@ -145,8 +145,9 @@ fun SettingsScreenNew(
                                 }
                             }
                         },
-                        confirmButton = {
-                            TextButton(onClick = { showLanguageDialog = false }) {
+                        confirmButton = {},
+                        dismissButton = {
+                            OutlinedButton(onClick = { showLanguageDialog = false }) {
                                 Text(stringResource(R.string.cancel))
                             }
                         }
