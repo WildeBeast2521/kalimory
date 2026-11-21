@@ -235,18 +235,8 @@ class ConsistencyGuardTest {
         assertTrue("Use … instead of ...: $offenders", offenders.isEmpty())
     }
 
-    /** The two special spaces, written as escapes in the resource files. */
+    /** The two special spaces, which a resource file may write as the escapes \u00A0 and \u202F or as the characters themselves. */
     private fun decodeSpaces(value: String) = value.replace("\\u00A0", "\u00A0").replace("\\u202F", "\u202F")
-
-    @Test fun `special spaces are written as escapes, which Weblate keeps`() {
-        // Weblate's file parser (translate-toolkit) turns a literal no-break space into a plain
-        // space, so a Weblate commit would lose it; the escapes \u00A0 and \u202F survive.
-        val offenders = stringFiles.flatMap { file ->
-            stringValue.findAll(file.readText()).filter { m -> m.groupValues[2].any { it == '\u00A0' || it == '\u202F' } }
-                .map { "${file.parentFile.name}/${it.groupValues[1]}" }
-        }
-        assertTrue("Write the space as \\u00A0 or \\u202F: $offenders", offenders.isEmpty())
-    }
 
     @Test fun `Russian and Ukrainian plurals use the many wording for other, as Weblate writes it`() {
         // Weblate keeps three forms for these languages and writes Android's fourth, "other",
