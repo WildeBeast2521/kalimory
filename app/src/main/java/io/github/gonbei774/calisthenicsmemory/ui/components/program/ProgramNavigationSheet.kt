@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.DestructiveButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.DialogSystemBars
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.ui.res.pluralStringResource
@@ -1323,8 +1324,8 @@ private fun SetValueText(
 
     val (valueText, valueColor) = when (status) {
         SetStatus.COMPLETED -> "${set.actualValue}" to cs.primary
-        SetStatus.CURRENT -> "${set.actualValue}/${set.targetValue}" to cs.onSurfaceVariant
-        SetStatus.PENDING -> "${set.targetValue}" to cs.outline
+        SetStatus.CURRENT -> (if (set.targetValue > 0) "${set.actualValue}/${set.targetValue}" else "${set.actualValue}") to cs.onSurfaceVariant
+        SetStatus.PENDING -> (if (set.targetValue > 0) "${set.targetValue}" else "") to cs.outline
         SetStatus.SKIPPED -> "" to cs.outline
     }
     FlowRow(
@@ -1613,33 +1614,19 @@ private fun SetActionButton(
     val cs = MaterialTheme.colorScheme
     when (setStatus) {
         SetStatus.COMPLETED -> {
-            OutlinedButton(
+            FilledTonalButton(
                 onClick = { onRedoSet(setIndex) },
-                modifier = Modifier.heightIn(min = 32.dp),
-                contentPadding = PaddingValues(horizontal = 12.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, cs.primary)
+                modifier = Modifier.heightIn(min = 48.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.nav_redo),
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = cs.primary
-                )
+                Text(text = stringResource(R.string.nav_redo))
             }
         }
         SetStatus.PENDING, SetStatus.SKIPPED -> {
-            OutlinedButton(
+            FilledTonalButton(
                 onClick = { onJumpToSet(setIndex) },
-                modifier = Modifier.heightIn(min = 32.dp),
-                contentPadding = PaddingValues(horizontal = 12.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
+                modifier = Modifier.heightIn(min = 48.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.nav_jump),
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = cs.onSurfaceVariant
-                )
+                Text(text = stringResource(R.string.nav_jump))
             }
         }
         // The set in progress needs no action: it is already where the workout is.
@@ -1682,7 +1669,6 @@ private fun NavigationSheetFooter(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 48.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
         ) {
             Text(
                 text = stringResource(R.string.nav_finish),
@@ -1700,32 +1686,17 @@ private fun NavigationSheetFooter(
                 onClick = onSaveAndExit,
                 modifier = Modifier
                     .weight(1f)
-                    .heightIn(min = 44.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, cs.tertiary)
+                    .heightIn(min = 48.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.nav_save_and_exit),
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = cs.tertiary
-                )
+                Text(text = stringResource(R.string.nav_save_and_exit))
             }
 
             // Discard
-            OutlinedButton(
+            DestructiveButton(
+                text = stringResource(R.string.nav_discard),
                 onClick = onDiscard,
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(min = 44.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
-            ) {
-                Text(
-                    text = stringResource(R.string.nav_discard),
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = cs.onSurfaceVariant
-                )
-            }
+                modifier = Modifier.weight(1f),
+            )
         }
     }
 }

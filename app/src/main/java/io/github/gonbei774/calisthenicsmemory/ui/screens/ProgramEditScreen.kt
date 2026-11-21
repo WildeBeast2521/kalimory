@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.DestructiveButton
 import io.github.gonbei774.calisthenicsmemory.data.defaultPlan
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
@@ -177,7 +178,7 @@ fun ProgramEditScreen(
         }
     }
 
-    val hasIncompleteExercises = programExercises.any { it.sets == 0 || it.targetValue == 0 }
+    val hasIncompleteExercises = programExercises.any { it.sets == 0 }
     val isValid = name.isNotBlank() && programExercises.isNotEmpty() && !hasIncompleteExercises
 
     val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -259,7 +260,7 @@ fun ProgramEditScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = stringResource(R.string.program_validation_incomplete_sets_or_value),
+                                text = stringResource(R.string.program_validation_missing_sets),
                                 color = MaterialTheme.colorScheme.onError,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Medium
@@ -444,7 +445,7 @@ OutlinedTextField(
 
                 // Add loop button
                 item {
-                    TextButton(
+                    FilledTonalButton(
                         onClick = { showAddLoopDialog = true },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
@@ -458,20 +459,12 @@ OutlinedTextField(
                 if (programId != null) {
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
-                        OutlinedButton(
+                        DestructiveButton(
+                            text = stringResource(R.string.delete_program),
                             onClick = { showDeleteConfirmDialog = true },
                             modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = MaterialTheme.colorScheme.error
-                            ),
-                            border = ButtonDefaults.outlinedButtonBorder.copy(
-                                brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.error, MaterialTheme.colorScheme.error))
-                            )
-                        ) {
-                            Icon(AppIcons.Delete, contentDescription = null)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(stringResource(R.string.delete_program))
-                        }
+                            icon = AppIcons.Delete,
+                        )
                     }
                 }
                 }
@@ -571,19 +564,18 @@ OutlinedTextField(
                 )
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         programId?.let { viewModel.deleteProgram(it) }
                         showDeleteConfirmDialog = false
                         onNavigateBack()
-                    }
-                ) {
-                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
+                    }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirmDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                OutlinedButton(onClick = { showDeleteConfirmDialog = false }) {
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -648,18 +640,17 @@ OutlinedTextField(
                 )
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showDiscardConfirmDialog = false
                         onNavigateBack()
-                    }
-                ) {
-                    Text(stringResource(R.string.discard), color = MaterialTheme.colorScheme.error)
+                    }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.discard))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDiscardConfirmDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                OutlinedButton(onClick = { showDiscardConfirmDialog = false }) {
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )

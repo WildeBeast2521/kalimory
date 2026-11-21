@@ -485,8 +485,9 @@ fun CsvDataManagementScreen(
                     }
                 }
             },
-            confirmButton = {
-                TextButton(onClick = { showCsvExportDialog = false }) {
+            confirmButton = {},
+            dismissButton = {
+                OutlinedButton(onClick = { showCsvExportDialog = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -582,14 +583,11 @@ fun CsvDataManagementScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showCsvImportPreview = false
                         showBackupConfirmation = true
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
                 ) {
                     Text(
                         text = stringResource(R.string.import_action),
@@ -598,7 +596,7 @@ fun CsvDataManagementScreen(
                 }
             },
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showCsvImportPreview = false
                         pendingCsvString = null
@@ -810,14 +808,11 @@ fun CsvDataManagementScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showImportResult = false
                         importReport = null
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
                 ) {
                     Text(stringResource(R.string.ok))
                 }
@@ -859,9 +854,6 @@ fun CsvDataManagementScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 56.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
                     ) {
                         Text(
                             text = stringResource(R.string.backup_and_continue),
@@ -896,9 +888,6 @@ fun CsvDataManagementScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 56.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onSurface
-                        )
                     ) {
                         Text(
                             text = stringResource(R.string.skip_and_continue),
@@ -909,7 +898,7 @@ fun CsvDataManagementScreen(
             },
             confirmButton = {},
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showBackupConfirmation = false
                         pendingCsvString = null

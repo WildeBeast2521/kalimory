@@ -2,6 +2,14 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.workout
 
+import android.os.VibrationAttributes
+import android.os.Build
+import android.media.AudioAttributes
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.staticCompositionLocalOf
+import android.os.Vibrator
+import android.os.VibrationEffect
+import android.content.Context
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.FitText
 import androidx.compose.animation.core.LinearEasing
@@ -68,10 +76,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -197,7 +202,8 @@ fun TimerDial(
     paused: Boolean,
     onToggle: () -> Unit,
     modifier: Modifier = Modifier,
-    size: Dp = 264.dp,
+    // Smaller at large text, where the buttons under the dial need the room.
+    size: Dp = if (isLargeFontScale()) 208.dp else 264.dp,
 ) {
     val track = MaterialTheme.colorScheme.surfaceContainerHighest
     // In the dark theme a running dial glows faintly in its own colour, so the screen feels lit.
@@ -398,10 +404,10 @@ fun WorkoutStatus(text: String, color: Color) {
     Text(text = text, style = MaterialTheme.typography.headlineMedium, color = color)
 }
 
-/** Skipping the rest of a timer: a quiet action, below the main one. */
+/** Skipping the rest of a timer. A screen that is only waiting has no main button, so this one is tonal. */
 @Composable
 fun WorkoutSkipButton(onSkip: () -> Unit) {
-    androidx.compose.material3.TextButton(onClick = onSkip, modifier = Modifier.heightIn(min = 48.dp)) {
+    androidx.compose.material3.FilledTonalButton(onClick = onSkip, modifier = Modifier.heightIn(min = 48.dp)) {
         Icon(AppIcons.SkipNext, contentDescription = null)
         Spacer(Modifier.size(Spacing.s))
         FitText(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
@@ -410,8 +416,8 @@ fun WorkoutSkipButton(onSkip: () -> Unit) {
 
 /**
  * Quiet actions on the running set, under its main button: start it again and, where given, skip it. They
- * are text buttons, the lowest emphasis, so the main button stays the one that finishes the set. The row
- * wraps at large text instead of shortening a label.
+ * are outlined buttons, below the filled one, so the main button stays the one that finishes the set. The
+ * row wraps at large text instead of shortening a label.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -422,8 +428,10 @@ fun SetActions(
     onSkipExercise: (() -> Unit)? = null,
 ) {
     FlowRow(
-        modifier.fillMaxWidth(),
+        // The gap above keeps the helpers off the main button; the vertical gap keeps wrapped rows apart.
+        modifier.fillMaxWidth().padding(top = Spacing.s),
         horizontalArrangement = Arrangement.spacedBy(Spacing.s, Alignment.CenterHorizontally),
+        verticalArrangement = Arrangement.spacedBy(Spacing.s),
     ) {
         SetActionButton(stringResource(R.string.retry_set_button), onRestart)
         if (onSkipSet != null) SetActionButton(stringResource(R.string.skip_set_button), onSkipSet)
@@ -433,7 +441,11 @@ fun SetActions(
 
 @Composable
 private fun SetActionButton(text: String, onClick: () -> Unit) {
-    androidx.compose.material3.TextButton(onClick = onClick, modifier = Modifier.heightIn(min = 48.dp)) {
+    androidx.compose.material3.OutlinedButton(
+        onClick = onClick,
+        modifier = Modifier.heightIn(min = 48.dp),
+        contentPadding = PaddingValues(horizontal = Spacing.m),
+    ) {
         Text(text, style = MaterialTheme.typography.titleSmall)
     }
 }
@@ -445,24 +457,27 @@ private fun SetActionButton(text: String, onClick: () -> Unit) {
 @Composable
 fun RestToolbar(onMinus: () -> Unit, onPlus: () -> Unit, onSkip: () -> Unit, modifier: Modifier = Modifier) {
     HorizontalFloatingToolbar(expanded = true, modifier = modifier) {
-        androidx.compose.material3.TextButton(onClick = onMinus, modifier = Modifier.heightIn(min = 48.dp)) {
-            FitText(stringResource(R.string.minus_10sec), style = MaterialTheme.typography.titleMedium)
-        }
-        androidx.compose.material3.TextButton(onClick = onPlus, modifier = Modifier.heightIn(min = 48.dp)) {
-            FitText(stringResource(R.string.plus_10sec), style = MaterialTheme.typography.titleMedium)
-        }
-        androidx.compose.material3.FilledTonalButton(
-            onClick = onSkip,
-            shapes = ButtonDefaults.shapes(),
-            modifier = Modifier.heightIn(min = 48.dp),
-        ) {
-            // With a large font the row has no room left for the word; the icon then says it alone.
-            if (isLargeFontScale()) {
-                Icon(AppIcons.SkipNext, contentDescription = stringResource(R.string.skip_button))
-            } else {
-                Icon(AppIcons.SkipNext, contentDescription = null)
-                Spacer(Modifier.size(Spacing.s))
-                FitText(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
+        // A gap between the three buttons, so none touches the next.
+        Row(horizontalArrangement = Arrangement.spacedBy(Spacing.xs), verticalAlignment = Alignment.CenterVertically) {
+            androidx.compose.material3.OutlinedButton(onClick = onMinus, modifier = Modifier.heightIn(min = 48.dp), contentPadding = PaddingValues(horizontal = Spacing.m)) {
+                FitText(stringResource(R.string.minus_10sec), style = MaterialTheme.typography.titleMedium)
+            }
+            androidx.compose.material3.OutlinedButton(onClick = onPlus, modifier = Modifier.heightIn(min = 48.dp), contentPadding = PaddingValues(horizontal = Spacing.m)) {
+                FitText(stringResource(R.string.plus_10sec), style = MaterialTheme.typography.titleMedium)
+            }
+            androidx.compose.material3.FilledTonalButton(
+                onClick = onSkip,
+                shapes = ButtonDefaults.shapes(),
+                modifier = Modifier.heightIn(min = 48.dp),
+            ) {
+                // With a large font the row has no room left for the word; the icon then says it alone.
+                if (isLargeFontScale()) {
+                    Icon(AppIcons.SkipNext, contentDescription = stringResource(R.string.skip_button))
+                } else {
+                    Icon(AppIcons.SkipNext, contentDescription = null)
+                    Spacer(Modifier.size(Spacing.s))
+                    FitText(stringResource(R.string.skip_button), style = MaterialTheme.typography.titleMedium)
+                }
             }
         }
     }
@@ -504,43 +519,91 @@ fun WorkoutPrimaryButton(text: String, onClick: () -> Unit, modifier: Modifier =
     }
 }
 
+/** The two vibrations the workout uses: a short tick, and a longer pulse that confirms something. */
+interface Buzzer {
+    fun tick()
+    fun confirm()
+}
+
+/**
+ * Vibrates the phone's vibrator directly. The touch-feedback haptics the view offers follow the phone's
+ * "vibrate on touch" setting and are barely felt, so they did nothing on many phones.
+ */
+internal class VibratorBuzzer(context: Context) : Buzzer {
+    private val vibrator: Vibrator? = (context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator)?.takeIf { it.hasVibrator() }
+
+    @Suppress("DEPRECATION") // the AudioAttributes overload is the one that works before Android 13
+    private fun pulse(millis: Long) {
+        val v = vibrator ?: return
+        try {
+            val amplitude = if (v.hasAmplitudeControl()) 255 else VibrationEffect.DEFAULT_AMPLITUDE
+            val effect = VibrationEffect.createOneShot(millis, amplitude)
+            // Alarm usage: a timer cue should be felt even when the phone's touch-feedback or media
+            // vibration settings are off, as a clock alarm is.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                v.vibrate(effect, VibrationAttributes.createForUsage(VibrationAttributes.USAGE_ALARM))
+            } else {
+                v.vibrate(effect, AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build())
+            }
+        } catch (_: RuntimeException) {
+            // A phone that refuses the pulse just stays still; the sound and the screen still tell the person.
+        }
+    }
+
+    override fun tick() = pulse(TICK_MILLIS)
+    override fun confirm() = pulse(CONFIRM_MILLIS)
+
+    private companion object {
+        const val TICK_MILLIS = 60L
+        const val CONFIRM_MILLIS = 220L
+    }
+}
+
+/** Tests put their own [Buzzer] here; the app uses the phone's vibrator. */
+val LocalBuzzer = staticCompositionLocalOf<Buzzer?> { null }
+
+@Composable
+fun rememberBuzzer(): Buzzer {
+    val override = LocalBuzzer.current
+    val context = LocalContext.current
+    return override ?: remember(context) { VibratorBuzzer(context.applicationContext) }
+}
+
 /**
  * One short vibration that confirms a finished set, unless the user turned it off in Settings. Call it
  * where the set is recorded, so it does not depend on a rest screen following.
  */
 @Composable
 fun rememberSetDoneHaptic(): () -> Unit {
-    val haptics = LocalHapticFeedback.current
+    val buzzer = rememberBuzzer()
     val context = LocalContext.current
-    return remember(haptics, context) {
+    return remember(buzzer, context) {
         {
-            if (WorkoutPreferences(context).isSetDoneVibrationEnabled()) {
-                haptics.performHapticFeedback(HapticFeedbackType.Confirm)
-            }
+            if (WorkoutPreferences(context).isSetDoneVibrationEnabled()) buzzer.confirm()
         }
     }
 }
 
 /** The vibrations that go with the countdown sounds: a tick for each beep and a longer one for the go cue. */
-class CountdownHaptics internal constructor(private val enabled: () -> Boolean, private val haptics: HapticFeedback) {
+class CountdownHaptics internal constructor(private val enabled: () -> Boolean, private val buzzer: Buzzer) {
     fun tick() {
-        if (enabled()) haptics.performHapticFeedback(HapticFeedbackType.ContextClick)
+        if (enabled()) buzzer.tick()
     }
 
     fun go() {
-        if (enabled()) haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+        if (enabled()) buzzer.confirm()
     }
 }
 
 /**
  * Call [CountdownHaptics.tick] beside each countdown beep and [CountdownHaptics.go] beside the go cue. They
- * do nothing unless the person turned this on in Settings, and the phone's touch feedback setting applies.
+ * do nothing unless the person turned this on in Settings.
  */
 @Composable
 fun rememberCountdownHaptics(): CountdownHaptics {
-    val haptics = LocalHapticFeedback.current
+    val buzzer = rememberBuzzer()
     val context = LocalContext.current
-    return remember(haptics, context) { CountdownHaptics({ WorkoutPreferences(context).isCountdownVibrationEnabled() }, haptics) }
+    return remember(buzzer, context) { CountdownHaptics({ WorkoutPreferences(context).isCountdownVibrationEnabled() }, buzzer) }
 }
 
 /**

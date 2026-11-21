@@ -702,7 +702,7 @@ internal fun ProgramConfirmExerciseCard(
 
                         // 回数 / 時間
                         var repsText by remember(setIndex, currentSet.targetValue) {
-                            mutableStateOf(currentSet.targetValue.toString())
+                            mutableStateOf(if (currentSet.targetValue > 0) currentSet.targetValue.toString() else "")
                         }
                         UnifiedStepperRow(
                             label = stringResource(

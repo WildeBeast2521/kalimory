@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory
 
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -18,6 +19,78 @@ class ConsistencyGuardTest {
     @Test fun `the guards can see the sources`() {
         // If neither path resolved, every guard below would pass on an empty list.
         assertTrue("Found ${kotlin.size} Kotlin files: the guards are not reading the app", kotlin.size > 100)
+    }
+
+    // ---- The button scheme (docs/ux.md): filled primary, tonal for helpers, outlined for quiet actions,
+    // DestructiveButton, and a text button only in a dialog's action slots. ----
+
+    /** Index of the bracket that closes the one opening at [open]; the text is not parsed, so brackets inside strings count. */
+    private fun closing(text: String, open: Int): Int {
+        val pair = mapOf('(' to ')', '{' to '}', '[' to ']')
+        var depth = 0
+        for (i in open until text.length) {
+            val c = text[i]
+            if (c == text[open]) depth++ else if (c == pair.getValue(text[open]) && --depth == 0) return i
+        }
+        return text.length - 1
+    }
+
+    /** The character ranges of every `confirmButton = { ... }` and `dismissButton = { ... }`, a dialog's action slots. */
+    private fun dialogSlots(text: String): List<IntRange> =
+        Regex("""\b(confirmButton|dismissButton)\s*=\s*\{""").findAll(text).map { it.range.last..closing(text, it.range.last) }.toList()
+
+    /** Positions of `TextButton(` calls: there are none, a dialog's actions are buttons too. */
+    private fun textButtons(text: String): List<Int> = Regex("""\bTextButton\(""").findAll(text).map { it.range.first }.toList()
+
+    @Test fun `the dialog slot helper finds the slots`() {
+        val text = "AlertDialog(confirmButton = { Row { Button(onClick = {}) { Text(\"OK\") } } }, dismissButton = { OutlinedButton(onClick = {}) { } })"
+        assertEquals(2, dialogSlots(text).size)
+        assertEquals(1, textButtons("Column { TextButton(onClick = {}) { Text(\"Skip\") } }").size)
+    }
+
+    @Test fun `there is no text button, a dialog's actions are buttons too`() {
+        val offenders = kotlin.filter { textButtons(it.readText()).isNotEmpty() }.map { it.name }
+        assertTrue("Use a filled, tonal or outlined button (docs/ux.md): $offenders", offenders.isEmpty())
+    }
+
+    @Test fun `a dialog confirms with a filled button and dismisses with an outlined one`() {
+        val offenders = kotlin.flatMap { file ->
+            val text = file.readText()
+            Regex("""\b(confirmButton|dismissButton)\s*=\s*\{""").findAll(text).mapNotNull { m ->
+                val slot = text.substring(m.range.last, closing(text, m.range.last))
+                val first = Regex("""\b(Outlined|FilledTonal|Text|Elevated|Destructive)?Button\(""").find(slot)?.value
+                val ok = if (m.groupValues[1] == "confirmButton") first == "Button(" || first == "DestructiveButton(" else first == "OutlinedButton(" || first == "DestructiveButton("
+                file.name.takeIf { first != null && !ok }
+            }.toList()
+        }.distinct()
+        assertTrue("Confirm is a Button and dismiss an OutlinedButton: $offenders", offenders.isEmpty())
+    }
+
+    @Test fun `text is never tapped on its own`() {
+        val offenders = kotlin.filter { file ->
+            val text = file.readText()
+            Regex("""(?<![A-Za-z])(Fit)?Text\(""").findAll(text).any { m ->
+                val args = text.substring(m.range.last, closing(text, m.range.last))
+                Regex("""\.(clickable|combinedClickable|selectable|toggleable)\(""").containsMatchIn(args)
+            } || "ClickableText(" in text || "LinkAnnotation" in text
+        }.map { it.name }
+        assertTrue("Make it a button: $offenders", offenders.isEmpty())
+    }
+
+    @Test fun `a button keeps the theme's colours and border`() {
+        // Only an error colour (a destructive confirm) may be set by hand; WorkoutPrimaryButton and DestructiveButton
+        // are the two components that own their look.
+        val owners = setOf("WorkoutKit.kt", "DestructiveButton.kt")
+        val call = Regex("""\b(Outlined|FilledTonal|Text|Elevated)?Button\(""")
+        val offenders = kotlin.filter { it.name !in owners }.flatMap { file ->
+            val text = file.readText()
+            call.findAll(text).mapNotNull { m ->
+                val args = text.substring(m.range.last, closing(text, m.range.last))
+                val set = Regex("""\b(colors|border)\s*=\s*([^\n]*(\n\s+[^\n=]*)*)""").findAll(args).map { it.value }.toList()
+                file.name.takeIf { set.any { v -> ".error" !in v } }
+            }.toList()
+        }.distinct()
+        assertTrue("Leave colours and borders to the theme: $offenders", offenders.isEmpty())
     }
 
     @Test fun `a button never has a fixed height`() {

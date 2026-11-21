@@ -423,16 +423,13 @@ fun ShareHubScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showShareImportPreview = false
                         shareImportPreviewData = null
                         shareImportPreviewReport = null
                         showBackupConfirmation = true
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
                 ) {
                     Text(
                         text = stringResource(R.string.import_action),
@@ -441,7 +438,7 @@ fun ShareHubScreen(
                 }
             },
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showShareImportPreview = false
                         pendingShareImportJson = null
@@ -621,14 +618,11 @@ fun ShareHubScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showShareImportResult = false
                         shareImportReport = null
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
                 ) {
                     Text(stringResource(R.string.ok))
                 }
@@ -670,9 +664,6 @@ fun ShareHubScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 56.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
                     ) {
                         Text(
                             text = stringResource(R.string.backup_and_continue),
@@ -705,9 +696,6 @@ fun ShareHubScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 56.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onSurface
-                        )
                     ) {
                         Text(
                             text = stringResource(R.string.skip_and_continue),
@@ -718,7 +706,7 @@ fun ShareHubScreen(
             },
             confirmButton = {},
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showBackupConfirmation = false
                         pendingShareImportJson = null

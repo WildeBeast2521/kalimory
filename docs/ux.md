@@ -37,13 +37,30 @@ style, use the style.
 ## Colour
 
 - **Primary** marks the one main action on a screen, filled, and things that are done.
-- Other actions step down: tonal, then outlined, then text. A helper that fills in fields on the
-  same screen ("Apply exercise settings", "Add exercise") is tonal or text, never filled.
 - **Tertiary** is only for what is happening now: the current set, a countdown.
 - **Error** is only for destructive actions and warnings.
 - Numbers and emphasis use `onSurface` and weight, not the primary colour. A plan's sets, reps and rest
   share one muted colour.
 - In dark themes, unselected choices must still stand apart from the card behind them.
+
+## Buttons
+
+Every tappable word is a button, and each role has one look. A screen has one filled button.
+
+| Role | Look | Used for |
+| --- | --- | --- |
+| Primary | Filled (`WorkoutPrimaryButton` on a workout, `StartButton` on a list row, `TopBarAction` in an editor) | The one main action |
+| Helper | Tonal (`FilledTonalButton`) | Add set, Add exercise, See all, Weekly review, Browse, Redo, Jump, Set to target |
+| Quiet | Outlined (`OutlinedButton`) | Restart set, Skip set, Skip exercise, Save and exit, Stop, -10 s and +10 s |
+| Destructive | `DestructiveButton` | Delete or discard something |
+| Dialog action | Confirm is a filled `Button` (error colour when it deletes or discards), dismiss is an `OutlinedButton` | Cancel, OK, Exit, Delete |
+| Icon action | `IconButton` with a label, or the `RowMenu` | A row's other actions |
+
+A waiting screen (get ready, rest) has no main button, so its Skip is tonal. Buttons keep the theme's
+colours and shape and a 48 dp minimum height, and two buttons never touch: leave a gap of at least 4 dp
+(`tapTargetProblems` fails a screen test when they do). There is no text button anywhere.
+`ConsistencyGuardTest` fails on a text button, on tappable text, on a dialog whose confirm is not a filled
+button or whose dismiss is not outlined, and on a button with colours or a border set by hand.
 
 ## Text size and touch targets
 
@@ -74,6 +91,7 @@ Use these instead of a local version.
 | Nothing here yet | `EmptyState` |
 | Text and the buttons that act on it | `InfoActionRow` |
 | Swipe to delete | `SwipeToDeleteBackground` |
+| Delete or discard something | `DestructiveButton` |
 | Group name on a row | `GroupBadge` |
 
 ## Empty screens

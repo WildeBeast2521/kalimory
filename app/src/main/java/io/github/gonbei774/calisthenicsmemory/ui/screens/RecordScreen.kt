@@ -290,12 +290,12 @@ fun ExerciseSelectionScreen(
             title = { Text(stringResource(R.string.discard_changes_title)) },
             text = { Text(stringResource(R.string.discard_changes_message)) },
             confirmButton = {
-                TextButton(onClick = { showDiscardDialog = false; onNavigateBack() }) {
-                    Text(stringResource(R.string.discard), color = MaterialTheme.colorScheme.error)
+                Button(onClick = { showDiscardDialog = false; onNavigateBack() }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.discard))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDiscardDialog = false }) { Text(stringResource(R.string.cancel)) }
+                OutlinedButton(onClick = { showDiscardDialog = false }) { Text(stringResource(R.string.cancel)) }
             },
         )
     }
@@ -1206,7 +1206,7 @@ fun WorkoutInputScreen(
             // セット追加ボタン
             if (numberOfSets < 10) {
                 item {
-                    Button(
+                    FilledTonalButton(
                         onClick = {
                             // ローカル状態にも最後の値をコピーしてから親に通知
                             setValuesRight = setValuesRight + (setValuesRight.lastOrNull() ?: "")
@@ -1221,7 +1221,6 @@ fun WorkoutInputScreen(
                             onAddSet()
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(
                             AppIcons.Add,
@@ -1239,9 +1238,6 @@ fun WorkoutInputScreen(
                 OutlinedButton(
                     onClick = { onShowDatePicker(true) },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    )
                 ) {
                     Text(stringResource(R.string.date_format, selectedDate.format(dateFormatter)))
                 }
@@ -1252,9 +1248,6 @@ fun WorkoutInputScreen(
                 OutlinedButton(
                     onClick = { onShowTimePicker(true) },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    )
                 ) {
                     Text(stringResource(R.string.time_format, selectedTime.format(timeFormatter)))
                 }
@@ -1297,10 +1290,6 @@ fun WorkoutInputScreen(
                         .fillMaxWidth()
                         .heightIn(min = 56.dp),
                     enabled = enteredCount > 0,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                    ),
                 ) {
                     Icon(
                         AppIcons.Check,
@@ -1331,7 +1320,7 @@ fun WorkoutInputScreen(
 
             // Log several exercises as one workout: set this one aside and pick the next.
             item {
-                OutlinedButton(
+                FilledTonalButton(
                     onClick = {
                         addingExercise = true
                         doRecord(false)
@@ -1365,17 +1354,16 @@ fun WorkoutInputScreen(
                 )
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showDiscardDialog = false
                         onNavigateBack()
-                    }
-                ) {
-                    Text(stringResource(R.string.discard), color = MaterialTheme.colorScheme.error)
+                    }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.discard))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDiscardDialog = false }) {
+                OutlinedButton(onClick = { showDiscardDialog = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -1400,17 +1388,17 @@ fun WorkoutInputScreen(
                 )
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showIncompleteDialog = false
                         doRecord(false)
                     }
                 ) {
-                    Text(stringResource(R.string.record_all_sets, enteredCount), color = MaterialTheme.colorScheme.primary)
+                    Text(stringResource(R.string.record_all_sets, enteredCount))
                 }
             },
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = {
                         showIncompleteDialog = false
                         doRecord(true)
@@ -1430,7 +1418,7 @@ fun WorkoutInputScreen(
         DatePickerDialog(
             onDismissRequest = { onShowDatePicker(false) },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     datePickerState.selectedDateMillis?.let { millis ->
                         onDateSelected(LocalDate.ofEpochDay(millis / 86400000))
                     }
@@ -1440,7 +1428,7 @@ fun WorkoutInputScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { onShowDatePicker(false) }) {
+                OutlinedButton(onClick = { onShowDatePicker(false) }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -1459,7 +1447,7 @@ fun WorkoutInputScreen(
         AlertDialog(
             onDismissRequest = { onShowTimePicker(false) },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     onTimeSelected(LocalTime.of(timePickerState.hour, timePickerState.minute))
                     onShowTimePicker(false)
                 }) {
@@ -1467,7 +1455,7 @@ fun WorkoutInputScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { onShowTimePicker(false) }) {
+                OutlinedButton(onClick = { onShowTimePicker(false) }) {
                     Text(stringResource(R.string.cancel))
                 }
             },

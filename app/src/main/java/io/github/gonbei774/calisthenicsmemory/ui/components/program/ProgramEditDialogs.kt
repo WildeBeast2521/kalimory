@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.DestructiveButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.LabelledNumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
@@ -182,9 +183,10 @@ fun ExerciseSettingsDialog(
         },
         confirmButton = {
             val setsValue = sets.toIntOrNull()
-            val targetValueValue = targetValue.toIntOrNull()
+            // An empty target is saved as 0, which means no target.
+            val targetValueValue = if (targetValue.isEmpty()) 0 else targetValue.toIntOrNull()
             val isValid = setsValue != null && targetValueValue != null
-            TextButton(
+            Button(
                 onClick = {
                     onSave(
                         programExercise.copy(
@@ -197,12 +199,12 @@ fun ExerciseSettingsDialog(
                 },
                 enabled = isValid
             ) {
-                Text(stringResource(R.string.save), color = if (isValid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            OutlinedButton(onClick = onDismiss) {
+                Text(stringResource(R.string.cancel))
             }
         }
     )
@@ -250,27 +252,19 @@ fun LoopSettingsDialog(
 
                 // Delete button (only for existing loops)
                 if (onDelete != null) {
-                    OutlinedButton(
+                    DestructiveButton(
+                        text = stringResource(R.string.delete),
                         onClick = onDelete,
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.error
-                        ),
-                        border = ButtonDefaults.outlinedButtonBorder.copy(
-                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.error, MaterialTheme.colorScheme.error))
-                        )
-                    ) {
-                        Icon(AppIcons.Delete, contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(stringResource(R.string.delete))
-                    }
+                        icon = AppIcons.Delete,
+                    )
                 }
             }
         },
         confirmButton = {
             val roundsValue = rounds.toIntOrNull()
             val isValid = roundsValue != null && roundsValue > 0
-            TextButton(
+            Button(
                 onClick = {
                     onSave(
                         roundsValue!!,
@@ -279,12 +273,12 @@ fun LoopSettingsDialog(
                 },
                 enabled = isValid
             ) {
-                Text(stringResource(R.string.save), color = if (isValid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            OutlinedButton(onClick = onDismiss) {
+                Text(stringResource(R.string.cancel))
             }
         }
     )

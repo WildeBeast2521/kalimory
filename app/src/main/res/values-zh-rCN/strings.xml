@@ -775,7 +775,7 @@
     <string name="program_use_challenge_desc">使用每个动作自己的目标（没有时用计划的）</string>
     <string name="program_use_previous_desc">使用上次训练的数值（没有记录时使用计划中的值）</string>
     <string name="program_use_program_desc">使用计划中设定的组数和目标值</string>
-    <string name="program_validation_incomplete_sets_or_value">部分动作缺少组数或目标值</string>
+    <string name="program_validation_missing_sets">有些动作没有组数</string>
     <string name="record_confirm_title">保存此记录？</string>
     <string name="record_done_count">%1$d/%2$d</string>
     <string name="record_set_to_target">设为目标值（%1$d %2$s）</string>

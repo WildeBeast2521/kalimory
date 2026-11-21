@@ -21,7 +21,7 @@ These hold for every change. A change that breaks one is wrong, however good it 
   exercise. Do not add UI copy explaining that nothing is locked.
 - **One behaviour everywhere.** Use the shared components (`AppFab`, `StartButton`,
   `NumberStepButton`/`NumberStepper`, `SwipeToDeleteBackground`, `CalmTopBar`, `TimerDial`,
-  `RollingNumber`, `WorkoutPrimaryButton`, `FitText`, `ExerciseBadges`, `ExercisePickRow`,
+  `RollingNumber`, `WorkoutPrimaryButton`, `DestructiveButton`, `FitText`, `ExerciseBadges`, `ExercisePickRow`,
   `ExerciseCheckRow`, `EmptyState`) instead of a local variant. `ConsistencyGuardTest` fails when a
   screen brings its own. `docs/ux.md` has the rest: text styles, colour roles, spacing and 200 % text.
 - **No private material in git.** Never commit keystores, `keystore.properties`,

@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -136,15 +137,8 @@ fun LoopBlock(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         // Edit button
-                        TextButton(
-                            onClick = onEdit,
-                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.edit),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.primary
-                            )
+                        IconButton(onClick = onEdit) {
+                            Icon(AppIcons.Edit, contentDescription = stringResource(R.string.edit), tint = MaterialTheme.colorScheme.primary)
                         }
                         // Expand/collapse icon
                         Icon(
@@ -214,15 +208,9 @@ fun LoopBlock(
                     }
 
                     // Add exercise to loop button
-                    OutlinedButton(
+                    FilledTonalButton(
                         onClick = onAddExercise,
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.primary
-                        ),
-                        border = ButtonDefaults.outlinedButtonBorder.copy(
-                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary))
-                        )
                     ) {
                         Icon(
                             AppIcons.Add,
@@ -379,15 +367,17 @@ private fun LoopExerciseItemWithDrag(
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.secondary
                         )
-                        Text(
-                            text = stringResource(
-                                R.string.program_target_format,
-                                programExercise.targetValue,
-                                stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
-                            ),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        if (programExercise.targetValue > 0) {
+                            Text(
+                                text = stringResource(
+                                    R.string.program_target_format,
+                                    programExercise.targetValue,
+                                    stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                                ),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
                         Text(
                             text = stringResource(R.string.program_interval_format, programExercise.intervalSeconds),
                             style = MaterialTheme.typography.labelSmall,

@@ -58,8 +58,8 @@ fun PreviousTargetRow(
             )
             StatColumn(
                 label = stringResource(R.string.stat_target_label),
-                value = target.toString(),
-                unit = unit,
+                value = if (target > 0) target.toString() else "—",
+                unit = if (target > 0) unit else null,
                 valueColor = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.weight(1f)
             )

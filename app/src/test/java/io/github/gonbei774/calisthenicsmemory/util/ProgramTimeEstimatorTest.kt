@@ -30,6 +30,14 @@ class ProgramTimeEstimatorTest {
         assertEquals(148 + 390 + 10, ProgramTimeEstimator.estimateSeconds(pes, listOf(loop), byId, 5))
     }
 
+    @Test fun `an entry with no target adds its rests and no work time`() {
+        val free = listOf(
+            ProgramExercise(programId = 1, exerciseId = 1, sortOrder = 0, sets = 2, targetValue = 0, intervalSeconds = 60),
+        )
+        // Two sets, a rest after the first only: 60 s, no work, and no countdown (0).
+        assertEquals(60, ProgramTimeEstimator.estimateSeconds(free, emptyList(), byId, 0))
+    }
+
     @Test fun `the start screen and the lists agree for the same planned sets`() {
         val pairs = pes.map { it to byId.getValue(it.exerciseId) }
         val planned = ProgramSetPlanner.plan(pairs, listOf(loop), emptyMap(), prefill = false)

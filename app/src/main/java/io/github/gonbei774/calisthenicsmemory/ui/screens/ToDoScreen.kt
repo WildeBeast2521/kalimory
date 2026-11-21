@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowMenu
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
@@ -300,16 +301,16 @@ fun ToDoScreen(
             title = { Text(stringResource(R.string.delete_task_title), color = MaterialTheme.colorScheme.onSurface) },
             text = { Text(stringResource(R.string.todo_delete_confirm_message, taskName), color = MaterialTheme.colorScheme.onSurface) },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     viewModel.deleteTodoTask(task.id)
                     deleteConfirmTask = null
-                }) {
-                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
+                }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { deleteConfirmTask = null }) {
-                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                OutlinedButton(onClick = { deleteConfirmTask = null }) {
+                    Text(stringResource(R.string.cancel))
                 }
             })
     }
@@ -405,43 +406,36 @@ private fun ActiveTaskContent(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                Button(
+                                FilledTonalButton(
                                     onClick = {
                                         showModeDialog = false
                                         onNavigateToRecord(task.referenceId)
                                     },
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.todo_mode_record),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onPrimary
+                                        style = MaterialTheme.typography.bodyLarge
                                     )
                                 }
-                                Button(
+                                FilledTonalButton(
                                     onClick = {
                                         showModeDialog = false
                                         onNavigateToWorkout(task.referenceId)
                                     },
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.todo_mode_workout),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onPrimary
+                                        style = MaterialTheme.typography.bodyLarge
                                     )
                                 }
                             }
                         },
                         confirmButton = {},
                         dismissButton = {
-                            TextButton(onClick = { showModeDialog = false }) {
-                                Text(
-                                    text = stringResource(R.string.cancel),
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
+                            OutlinedButton(onClick = { showModeDialog = false }) {
+                                Text(stringResource(R.string.cancel))
                             }
                         }
                     )
@@ -766,43 +760,36 @@ private fun GroupTaskCard(
                                         modifier = Modifier.fillMaxWidth(),
                                         verticalArrangement = Arrangement.spacedBy(8.dp)
                                     ) {
-                                        Button(
+                                        FilledTonalButton(
                                             onClick = {
                                                 showModeDialog = false
                                                 onNavigateToRecord(exercise.id)
                                             },
-                                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                         ) {
                                             Text(
                                                 text = stringResource(R.string.todo_mode_record),
-                                                style = MaterialTheme.typography.bodyLarge,
-                                                color = MaterialTheme.colorScheme.onPrimary
+                                                style = MaterialTheme.typography.bodyLarge
                                             )
                                         }
-                                        Button(
+                                        FilledTonalButton(
                                             onClick = {
                                                 showModeDialog = false
                                                 onNavigateToWorkout(exercise.id)
                                             },
-                                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                             modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
                                         ) {
                                             Text(
                                                 text = stringResource(R.string.todo_mode_workout),
-                                                style = MaterialTheme.typography.bodyLarge,
-                                                color = MaterialTheme.colorScheme.onPrimary
+                                                style = MaterialTheme.typography.bodyLarge
                                             )
                                         }
                                     }
                                 },
                                 confirmButton = {},
                                 dismissButton = {
-                                    TextButton(onClick = { showModeDialog = false }) {
-                                        Text(
-                                            text = stringResource(R.string.cancel),
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
+                                    OutlinedButton(onClick = { showModeDialog = false }) {
+                                        Text(stringResource(R.string.cancel))
                                     }
                                 }
                             )
@@ -1141,47 +1128,34 @@ private fun AddItemsDialog(
                 .background(MaterialTheme.colorScheme.surfaceContainerLow)
                 .systemBarsPadding()
         ) {
-            // Top bar
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextButton(onClick = onDismiss) {
-                    Text(text = stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-                Text(
-                    text = stringResource(R.string.todo_add_items),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                )
-                TextButton(
-                    onClick = {
-                        if (selectedExercises.isNotEmpty()) {
-                            viewModel.addTodoTasks(selectedExercises.toList())
-                        }
-                        if (selectedGroups.isNotEmpty()) {
-                            viewModel.addTodoTaskGroups(selectedGroups.toList())
-                        }
-                        if (selectedPrograms.isNotEmpty()) {
-                            viewModel.addTodoTaskPrograms(selectedPrograms.toList())
-                        }
-                        if (selectedIntervals.isNotEmpty()) {
-                            viewModel.addTodoTaskIntervals(selectedIntervals.toList())
-                        }
-                        onDismiss()
-                    },
-                    enabled = hasSelection
-                ) {
-                    Text(
+            CalmTopBar(
+                title = stringResource(R.string.todo_add_items),
+                onBack = onDismiss,
+                scrollBehavior = null,
+                backIcon = AppIcons.Close,
+                backDescription = stringResource(R.string.cancel),
+                actions = {
+                    TopBarAction(
                         text = stringResource(R.string.add),
-                        color = if (hasSelection) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                        enabled = hasSelection,
+                        onClick = {
+                            if (selectedExercises.isNotEmpty()) {
+                                viewModel.addTodoTasks(selectedExercises.toList())
+                            }
+                            if (selectedGroups.isNotEmpty()) {
+                                viewModel.addTodoTaskGroups(selectedGroups.toList())
+                            }
+                            if (selectedPrograms.isNotEmpty()) {
+                                viewModel.addTodoTaskPrograms(selectedPrograms.toList())
+                            }
+                            if (selectedIntervals.isNotEmpty()) {
+                                viewModel.addTodoTaskIntervals(selectedIntervals.toList())
+                            }
+                            onDismiss()
+                        },
                     )
-                }
-            }
+                },
+            )
 
             // Tabs
             BoxWithConstraints {
@@ -1825,15 +1799,15 @@ private fun RepeatDaysDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = {
+            Button(onClick = {
                 val result = selectedDays.sorted().joinToString(",")
                 onSave(result)
             }) {
-                Text(stringResource(R.string.todo_repeat_save), color = MaterialTheme.colorScheme.primary)
+                Text(stringResource(R.string.todo_repeat_save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+            OutlinedButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
         }
     )
 }

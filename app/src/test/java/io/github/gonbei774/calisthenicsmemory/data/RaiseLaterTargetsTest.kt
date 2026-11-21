@@ -31,6 +31,19 @@ class RaiseLaterTargetsTest {
         assertEquals(listOf(8, 8, 12), sets.map { it.targetValue })
     }
 
+    @Test fun `a set with no target stays without one`() {
+        val sets = mutableListOf(p(0, 1, 0, done = 14), p(0, 2, 0))
+        sets.raiseLaterTargets(0)
+        assertEquals(0, sets[1].targetValue)
+    }
+
+    @Test fun `a set with no target never counts as reached`() {
+        assertEquals(false, reached(0, 0))
+        assertEquals(false, reached(30, 0))
+        assertEquals(true, reached(10, 10))
+        assertEquals(false, reached(9, 10))
+    }
+
     @Test fun `a warm-up or a skipped set raises nothing, and done sets are untouched`() {
         val warm = mutableListOf(p(0, 1, 10, done = 20, warm = true), p(0, 2, 10))
         warm.raiseLaterTargets(0)

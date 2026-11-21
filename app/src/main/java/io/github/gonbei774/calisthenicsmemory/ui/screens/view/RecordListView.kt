@@ -147,18 +147,11 @@ fun SessionCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    // 種目名をクリッカブルに
                     Text(
                         text = exercise?.name ?: stringResource(R.string.unknown_exercise),
-                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = if (exercise != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier
-                            .heightIn(min = 48.dp)
-                            .wrapContentHeight(Alignment.CenterVertically)
-                            .clickable(enabled = exercise != null, onClickLabel = stringResource(R.string.show_only_this_exercise)) {
-                                exercise?.let { onExerciseClick(it) }
-                            }
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Text(
                         text = displayDateTime(session.date, session.time),
@@ -180,6 +173,15 @@ fun SessionCard(
                         expanded = menuExpanded,
                         onDismissRequest = { menuExpanded = false }
                     ) {
+                        if (exercise != null) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.show_only_this_exercise)) },
+                                onClick = {
+                                    menuExpanded = false
+                                    onExerciseClick(exercise)
+                                }
+                            )
+                        }
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.edit)) },
                             onClick = {
@@ -607,7 +609,7 @@ fun IntervalRecordEditDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = {
+            Button(onClick = {
                 onConfirm(
                     record.copy(
                         date = editDate,
@@ -616,12 +618,12 @@ fun IntervalRecordEditDialog(
                     )
                 )
             }) {
-                Text(stringResource(R.string.save), color = MaterialTheme.colorScheme.primary)
+                Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            OutlinedButton(onClick = onDismiss) {
+                Text(stringResource(R.string.cancel))
             }
         }
     )
@@ -641,7 +643,7 @@ fun IntervalRecordEditDialog(
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     datePickerState.selectedDateMillis?.let { millis ->
                         val newDate = LocalDate.ofEpochDay(millis / 86400000)
                         editDate = newDate.format(dateFormatter)
@@ -652,7 +654,7 @@ fun IntervalRecordEditDialog(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) {
+                OutlinedButton(onClick = { showDatePicker = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -678,7 +680,7 @@ fun IntervalRecordEditDialog(
         AlertDialog(
             onDismissRequest = { showTimePicker = false },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     val newTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
                     editTime = newTime.format(timeFormatter)
                     showTimePicker = false
@@ -687,7 +689,7 @@ fun IntervalRecordEditDialog(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showTimePicker = false }) {
+                OutlinedButton(onClick = { showTimePicker = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             },

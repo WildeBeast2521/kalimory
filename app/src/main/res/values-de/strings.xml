@@ -796,7 +796,7 @@
     <string name="program_use_challenge_desc">Nutzt das eigene Ziel jeder Übung (sonst das des Programms)</string>
     <string name="program_use_previous_desc">Nutzt die Werte deines letzten Trainings (sonst die Werte des Programms)</string>
     <string name="program_use_program_desc">Nutzt die im Programm festgelegten Sätze und Zielwerte</string>
-    <string name="program_validation_incomplete_sets_or_value">Bei einigen Übungen fehlen Sätze oder Zielwert</string>
+    <string name="program_validation_missing_sets">Manche Übungen haben keine Sätze</string>
     <string name="record_confirm_title">Diesen Eintrag speichern?</string>
     <string name="record_done_count">%1$d/%2$d</string>
     <string name="record_set_to_target">Auf Ziel setzen (%1$d %2$s)</string>

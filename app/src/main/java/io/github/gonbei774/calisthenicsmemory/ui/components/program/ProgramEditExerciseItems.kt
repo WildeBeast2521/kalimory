@@ -100,15 +100,17 @@ fun ProgramExerciseItem(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Text(
-                            text = stringResource(
-                                R.string.program_target_format,
-                                programExercise.targetValue,
-                                stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
-                            ),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        if (programExercise.targetValue > 0) {
+                            Text(
+                                text = stringResource(
+                                    R.string.program_target_format,
+                                    programExercise.targetValue,
+                                    stringResource(if (exercise.type == "Dynamic") R.string.unit_reps else R.string.unit_seconds)
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                         Text(
                             text = stringResource(R.string.program_interval_format, programExercise.intervalSeconds),
                             style = MaterialTheme.typography.bodyMedium,

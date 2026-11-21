@@ -340,18 +340,16 @@ fun CreateScreen(
             title = { Text(stringResource(R.string.delete_group_title)) },
             text = { Text(stringResource(R.string.delete_group_confirm_message, groupName)) },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         viewModel.deleteGroup(groupName)
                         showGroupDeleteDialog = null
-                    },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
-                ) {
+                    }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
                     Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showGroupDeleteDialog = null }) {
+                OutlinedButton(onClick = { showGroupDeleteDialog = null }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -407,19 +405,17 @@ fun CreateScreen(
                 }
             },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         viewModel.deleteExercise(exercise)
                         dismiss()
                     },
-                    enabled = deleteImpact != null,
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
-                ) {
+                    enabled = deleteImpact != null, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
                     Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = dismiss) {
+                OutlinedButton(onClick = dismiss) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -1431,7 +1427,7 @@ fun GroupEditDialog(
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = { onConfirm(newName) },
                 enabled = newName.isNotBlank() && newName != oldName
             ) {
@@ -1439,7 +1435,7 @@ fun GroupEditDialog(
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            OutlinedButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
         }

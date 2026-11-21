@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -254,7 +255,7 @@ fun TodayScreen(
                 Text(weekSummary, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = m)
             }
             val reviewButton: @Composable () -> Unit = {
-                TextButton(onClick = onOpenWeeklyReview) { Text(stringResource(R.string.weekly_review_open)) }
+                FilledTonalButton(onClick = onOpenWeeklyReview) { Text(stringResource(R.string.weekly_review_open)) }
             }
             // With a large font the button takes its own line, so the summary keeps its width.
             if (isLargeFontScale()) {

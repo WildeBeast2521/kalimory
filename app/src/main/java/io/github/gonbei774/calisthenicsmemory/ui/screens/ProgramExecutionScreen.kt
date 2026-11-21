@@ -337,9 +337,9 @@ fun ProgramExecutionScreen(
             title = { Text(stringResource(R.string.interval_resume_title)) },
             text = { Text(stringResource(R.string.program_resume_message)) },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     pendingResume = null
-                    val base = session ?: return@TextButton
+                    val base = session ?: return@Button
                     val resumed = base.copy(
                         sets = checkpoint.sets.toMutableList(),
                         comment = checkpoint.comment,
@@ -357,7 +357,7 @@ fun ProgramExecutionScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = {
+                OutlinedButton(onClick = {
                     pendingResume = null
                     clearCheckpoint()
                 }) {
@@ -374,18 +374,17 @@ fun ProgramExecutionScreen(
             title = { Text(stringResource(R.string.exit_workout_title)) },
             text = { Text(stringResource(R.string.exit_workout_message)) },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showExitConfirmDialog = false
                         clearCheckpoint()
                         onNavigateBack()
-                    }
-                ) {
-                    Text(stringResource(R.string.exit_workout_confirm), color = MaterialTheme.colorScheme.error)
+                    }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) {
+                    Text(stringResource(R.string.exit_workout_confirm))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showExitConfirmDialog = false }) {
+                OutlinedButton(onClick = { showExitConfirmDialog = false }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -399,7 +398,7 @@ fun ProgramExecutionScreen(
             title = { Text(stringResource(R.string.nav_save_overwrite_title)) },
             text = { Text(stringResource(R.string.nav_save_overwrite_message)) },
             confirmButton = {
-                TextButton(
+                Button(
                     onClick = {
                         showSaveOverwriteDialog = false
                         // 保存を実行
@@ -422,7 +421,7 @@ fun ProgramExecutionScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = {
+                OutlinedButton(onClick = {
                     showSaveOverwriteDialog = false
                     pendingSaveSession = null
                 }) {
@@ -963,7 +962,8 @@ fun ProgramExecutionScreen(
 
                         // key() でラップすることで、retryKey が変わったときにコンポーネントが再生成される
                         key(step.currentSetIndex, retryKey) {
-                            if (isAutoMode) {
+                            // A set with no target has nothing to count down to, so it runs as a manual set.
+                            if (isAutoMode && step.session.sets[step.currentSetIndex].targetValue > 0) {
                                 // タイマーON: 自動カウント
                                 if (currentExercise.type == "Isometric") {
                                     // Isometric種目: 新UIで自動遷移

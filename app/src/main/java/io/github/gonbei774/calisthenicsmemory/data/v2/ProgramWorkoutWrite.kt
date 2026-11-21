@@ -95,8 +95,8 @@ object ProgramWorkoutWriter {
                 lateralitySnapshot = exercise.laterality,
                 groupNameSnapshot = exercise.groupName,
                 targetSets = exercise.targetSets,
-                targetRepetitions = if (isometric) null else exercise.targetValue,
-                targetDurationMillis = if (isometric) exercise.targetValue * 1_000L else null,
+                targetRepetitions = if (isometric) null else exercise.targetValue.takeIf { it > 0 },
+                targetDurationMillis = if (isometric) exercise.targetValue.takeIf { it > 0 }?.let { it * 1_000L } else null,
             ) to exercise.sets.mapIndexed { index, set ->
                 val done = set.value > 0
                 SetEntryEntity(
@@ -111,8 +111,8 @@ object ProgramWorkoutWriter {
                     distanceCm = set.distanceCm,
                     addedWeightGrams = set.weightG,
                     assistanceGrams = set.assistanceG,
-                    targetRepetitions = if (isometric) null else set.targetValue,
-                    targetDurationMillis = if (isometric) set.targetValue * 1_000L else null,
+                    targetRepetitions = if (isometric) null else set.targetValue.takeIf { it > 0 },
+                    targetDurationMillis = if (isometric) set.targetValue.takeIf { it > 0 }?.let { it * 1_000L } else null,
                     completedAtEpochMillis = if (done) set.completedAtWallMillis else null,
                     timePrecision = if (done && set.completedAtWallMillis != null) TimePrecision.EXACT else TimePrecision.MINUTE,
                     isWarmUp = done && set.warmUp,

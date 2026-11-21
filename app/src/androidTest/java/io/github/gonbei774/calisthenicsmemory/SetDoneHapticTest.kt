@@ -1,9 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory
 
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.Buzzer
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.LocalBuzzer
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -23,11 +22,10 @@ class SetDoneHapticTest {
 
     private val prefs = WorkoutPreferences(InstrumentationRegistry.getInstrumentation().targetContext)
 
-    private class RecordingHaptics : HapticFeedback {
-        val performed = mutableListOf<HapticFeedbackType>()
-        override fun performHapticFeedback(hapticFeedbackType: HapticFeedbackType) {
-            performed += hapticFeedbackType
-        }
+    private class RecordingHaptics : Buzzer {
+        val performed = mutableListOf<String>()
+        override fun tick() { performed += "tick" }
+        override fun confirm() { performed += "confirm" }
     }
 
     // Finishing a set calls this where the set is recorded; no rest screen has to follow.
@@ -35,7 +33,7 @@ class SetDoneHapticTest {
         val haptics = RecordingHaptics()
         lateinit var onSetDone: () -> Unit
         rule.setContent {
-            CompositionLocalProvider(LocalHapticFeedback provides haptics) {
+            CompositionLocalProvider(LocalBuzzer provides haptics) {
                 onSetDone = rememberSetDoneHaptic()
             }
         }
@@ -49,12 +47,12 @@ class SetDoneHapticTest {
     @Test
     fun vibratesOnceByDefault() {
         prefs.setSetDoneVibrationEnabled(true)
-        assertEquals(listOf(HapticFeedbackType.Confirm), finishSet().performed)
+        assertEquals(listOf("confirm"), finishSet().performed)
     }
 
     @Test
     fun staysStillWhenTurnedOff() {
         prefs.setSetDoneVibrationEnabled(false)
-        assertEquals(emptyList<HapticFeedbackType>(), finishSet().performed)
+        assertEquals(emptyList<String>(), finishSet().performed)
     }
 }

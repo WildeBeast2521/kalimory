@@ -81,7 +81,7 @@ fun WelcomeGuide(onFinish: () -> Unit, onAddExercise: () -> Unit) {
             .padding(horizontal = Spacing.l, vertical = Spacing.m),
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-            if (!last) TextButton(onClick = onFinish) { Text(stringResource(R.string.guide_skip)) }
+            if (!last) OutlinedButton(onClick = onFinish) { Text(stringResource(R.string.guide_skip)) }
             else Spacer(Modifier.height(48.dp))
         }
         HorizontalPager(state = pager, modifier = Modifier.weight(1f)) { page ->

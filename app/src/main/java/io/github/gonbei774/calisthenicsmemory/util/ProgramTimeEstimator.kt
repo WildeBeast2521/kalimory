@@ -17,6 +17,7 @@ import kotlin.math.roundToInt
  *   - 各セットの作業時間
  *       Isometric: targetValue 秒
  *       Dynamic: targetValue × (exercise.repDuration ?: DEFAULT_DYNAMIC_REP_SECONDS)
+ *       An entry with no target (targetValue 0) adds no work time, only its countdowns and rests.
  *   - 各セット前の開始前カウントダウン（有効時のみ加算）
  *   - 各セット後の intervalSeconds と loopRestAfterSeconds
  *   - 最後のセット後のインターバル／ラウンド休憩は差し引く（実際には発生しないため）

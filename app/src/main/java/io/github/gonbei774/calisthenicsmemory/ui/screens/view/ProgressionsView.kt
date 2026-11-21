@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -69,7 +70,7 @@ private fun EmptyProgressions(allUnfollowed: Boolean, onOpenCatalogue: () -> Uni
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface,
             )
-            TextButton(onClick = onOpenCatalogue) {
+            FilledTonalButton(onClick = onOpenCatalogue) {
                 Text(stringResource(R.string.progressions_browse))
             }
         }

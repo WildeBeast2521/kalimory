@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
@@ -372,7 +373,6 @@ fun CommunityShareExportScreen(
                         exportLauncher.launch(fileName)
                     },
                     enabled = !isExporting,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         text = if (isExporting) stringResource(R.string.share_exporting) else stringResource(R.string.share_export_button),
@@ -381,11 +381,11 @@ fun CommunityShareExportScreen(
                 }
             },
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = { showPreviewDialog = false },
                     enabled = !isExporting
                 ) {
-                    Text(text = stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )

@@ -23,6 +23,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
@@ -201,7 +204,7 @@ fun WorkoutEditorScreen(ref: WorkoutRef, viewModel: TrainingViewModel, onClose: 
             AlertDialog(
                 onDismissRequest = { message = null },
                 text = { Text(stringResource(text)) },
-                confirmButton = { TextButton(onClick = { message = null }) { Text(stringResource(R.string.ok)) } },
+                confirmButton = { Button(onClick = { message = null }) { Text(stringResource(R.string.ok)) } },
             )
         }
         if (confirmDelete) {
@@ -210,12 +213,12 @@ fun WorkoutEditorScreen(ref: WorkoutRef, viewModel: TrainingViewModel, onClose: 
                 title = { Text(stringResource(R.string.workout_edit_delete_title)) },
                 text = { Text(stringResource(R.string.workout_edit_delete_message)) },
                 confirmButton = {
-                    TextButton(onClick = {
+                    Button(onClick = {
                         confirmDelete = false
                         state?.let(WorkoutEditorModel::toDraft)?.let(::save)
-                    }) { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) }
+                    }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)) { Text(stringResource(R.string.delete)) }
                 },
-                dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel)) } },
+                dismissButton = { OutlinedButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel)) } },
             )
         }
         if (confirmDiscard) {
@@ -224,12 +227,12 @@ fun WorkoutEditorScreen(ref: WorkoutRef, viewModel: TrainingViewModel, onClose: 
                 title = { Text(stringResource(R.string.discard_changes_title)) },
                 text = { Text(stringResource(R.string.discard_changes_message)) },
                 confirmButton = {
-                    TextButton(onClick = {
+                    Button(onClick = {
                         confirmDiscard = false
                         onClose()
                     }) { Text(stringResource(R.string.discard)) }
                 },
-                dismissButton = { TextButton(onClick = { confirmDiscard = false }) { Text(stringResource(R.string.cancel)) } },
+                dismissButton = { OutlinedButton(onClick = { confirmDiscard = false }) { Text(stringResource(R.string.cancel)) } },
             )
         }
     }
@@ -285,7 +288,7 @@ internal fun EditorContent(
             )
         }
         item {
-            OutlinedButton(onClick = onAddExercise, modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
+            FilledTonalButton(onClick = onAddExercise, modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)) {
                 Icon(AppIcons.Add, contentDescription = null)
                 Text(stringResource(R.string.workout_edit_add_exercise), modifier = Modifier.padding(start = 8.dp))
             }
@@ -297,12 +300,12 @@ internal fun EditorContent(
         DatePickerDialog(
             onDismissRequest = { pickDate = false },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     picker.selectedDateMillis?.let { onChange(state.copy(date = LocalDate.ofEpochDay(it / 86_400_000))) }
                     pickDate = false
                 }) { Text(stringResource(R.string.ok)) }
             },
-            dismissButton = { TextButton(onClick = { pickDate = false }) { Text(stringResource(R.string.cancel)) } },
+            dismissButton = { OutlinedButton(onClick = { pickDate = false }) { Text(stringResource(R.string.cancel)) } },
         ) { DatePicker(state = picker) }
     }
     if (pickTime) {
@@ -310,12 +313,12 @@ internal fun EditorContent(
         AlertDialog(
             onDismissRequest = { pickTime = false },
             confirmButton = {
-                TextButton(onClick = {
+                Button(onClick = {
                     onChange(state.copy(time = LocalTime.of(picker.hour, picker.minute)))
                     pickTime = false
                 }) { Text(stringResource(R.string.ok)) }
             },
-            dismissButton = { TextButton(onClick = { pickTime = false }) { Text(stringResource(R.string.cancel)) } },
+            dismissButton = { OutlinedButton(onClick = { pickTime = false }) { Text(stringResource(R.string.cancel)) } },
             text = { TimePicker(state = picker) },
         )
     }
@@ -390,7 +393,7 @@ private fun ExerciseCard(
                     }
                 }
             }
-            TextButton(onClick = onAddSet) {
+            FilledTonalButton(onClick = onAddSet) {
                 Icon(AppIcons.Add, contentDescription = null)
                 Text(stringResource(R.string.workout_edit_add_set), modifier = Modifier.padding(start = 8.dp))
             }
