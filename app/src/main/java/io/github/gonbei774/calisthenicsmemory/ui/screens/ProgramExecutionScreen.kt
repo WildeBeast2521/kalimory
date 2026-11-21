@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.raiseLaterTargets
 import io.github.gonbei774.calisthenicsmemory.data.skipExercise
 import io.github.gonbei774.calisthenicsmemory.data.nextPendingIndex
 import io.github.gonbei774.calisthenicsmemory.data.markSkipped
@@ -936,6 +937,7 @@ fun ProgramExecutionScreen(
                                 isSkipped = false,
                                 completedAtWallMillis = System.currentTimeMillis()
                             )
+                            sets.raiseLaterTargets(step.currentSetIndex)
                             follow(step.session, afterSet(sets, step.currentSetIndex, isRedoMode, startCountdownSeconds))
                         }
 
@@ -986,6 +988,7 @@ fun ProgramExecutionScreen(
                                 } else if (!isDynamicCountSoundEnabled) {
                                 // Dynamic種目 + レップ数数え上げOFF: シンプルカウンター
                                 ProgramExecutingStepDynamicSimple(
+                                    soundPlayer = soundPlayer,
                                     session = step.session,
                                     currentSetIndex = step.currentSetIndex,
                                     onSetComplete = completeSet,
@@ -1042,6 +1045,7 @@ fun ProgramExecutionScreen(
                                 } else if (!isDynamicCountSoundEnabled) {
                                     // Dynamic種目 + レップ数数え上げOFF: シンプルカウンター
                                     ProgramExecutingStepDynamicSimple(
+                                        soundPlayer = soundPlayer,
                                         session = step.session,
                                         currentSetIndex = step.currentSetIndex,
                                         onSetComplete = completeSet,

@@ -447,7 +447,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
 
                 _snackbarMessage.value = UiMessage.GroupRenamed
             } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
+                _snackbarMessage.value = groupRenameFailure(e)
             }
         }
     }
@@ -1106,3 +1106,7 @@ data class LastDone(
     val programs: Map<Long, LocalDate> = emptyMap(),
     val intervals: Map<Long, LocalDate> = emptyMap(),
 )
+
+/** Why a group rename failed: the name is taken by another group (nothing changed), or something else went wrong. */
+internal fun groupRenameFailure(e: Exception): UiMessage =
+    if (e is android.database.sqlite.SQLiteConstraintException) UiMessage.GroupAlreadyExists else UiMessage.ErrorOccurred

@@ -73,6 +73,21 @@ fun isOtherSide(a: ProgramWorkoutSet, b: ProgramWorkoutSet): Boolean =
     a.side != null && b.side != null && a.side != b.side &&
         a.exerciseIndex == b.exerciseIndex && a.setNumber == b.setNumber && a.roundNumber == b.roundNumber
 
+/**
+ * After the set at [index] was done: the sets still to do for the same exercise and side aim for at least what
+ * was just done. It only raises, never lowers, and a skipped set or a warm-up changes nothing.
+ */
+fun MutableList<ProgramWorkoutSet>.raiseLaterTargets(index: Int) {
+    val done = this[index]
+    if (!done.isCompleted || done.isWarmUp || done.actualValue <= 0) return
+    for (i in index + 1..lastIndex) {
+        val later = this[i]
+        if (later.isPending && later.exerciseIndex == done.exerciseIndex && later.side == done.side && later.targetValue < done.actualValue) {
+            this[i] = later.copy(targetValue = done.actualValue)
+        }
+    }
+}
+
 /** The first set after [after] that is still to do, or null when nothing is left. */
 fun nextPendingIndex(sets: List<ProgramWorkoutSet>, after: Int): Int? =
     (after + 1 until sets.size).firstOrNull { sets[it].isPending }

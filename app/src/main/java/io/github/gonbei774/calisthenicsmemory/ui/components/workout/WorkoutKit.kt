@@ -68,6 +68,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -518,6 +519,28 @@ fun rememberSetDoneHaptic(): () -> Unit {
             }
         }
     }
+}
+
+/** The vibrations that go with the countdown sounds: a tick for each beep and a longer one for the go cue. */
+class CountdownHaptics internal constructor(private val enabled: () -> Boolean, private val haptics: HapticFeedback) {
+    fun tick() {
+        if (enabled()) haptics.performHapticFeedback(HapticFeedbackType.ContextClick)
+    }
+
+    fun go() {
+        if (enabled()) haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+    }
+}
+
+/**
+ * Call [CountdownHaptics.tick] beside each countdown beep and [CountdownHaptics.go] beside the go cue. They
+ * do nothing unless the person turned this on in Settings, and the phone's touch feedback setting applies.
+ */
+@Composable
+fun rememberCountdownHaptics(): CountdownHaptics {
+    val haptics = LocalHapticFeedback.current
+    val context = LocalContext.current
+    return remember(haptics, context) { CountdownHaptics({ WorkoutPreferences(context).isCountdownVibrationEnabled() }, haptics) }
 }
 
 /**

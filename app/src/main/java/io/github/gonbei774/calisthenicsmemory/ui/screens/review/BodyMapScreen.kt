@@ -253,7 +253,8 @@ private fun NotWorked(muscles: List<Muscle>) {
 @Composable
 private fun PeriodChips(selected: Period, onPeriod: (Period) -> Unit) {
     FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-        Period.entries.forEach { period ->
+        // The body map looks at recent weeks; a year is for the graph.
+        Period.entries.filter { it != Period.OneYear }.forEach { period ->
             FilterChip(selected = period == selected, onClick = { onPeriod(period) }, label = { Text(stringResource(period.displayNameResId)) })
         }
     }

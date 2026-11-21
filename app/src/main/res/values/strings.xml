@@ -93,6 +93,8 @@
     <string name="period_one_week">1 week</string>
     <string name="period_one_month">1 month</string>
     <string name="period_three_months">3 months</string>
+    <string name="period_one_year">1 year</string>
+    <string name="period_all">All</string>
     <!-- Graph Screen -->
     <string name="no_data">No data</string>
     <string name="record_training_for_exercise">Record training for this exercise</string>
@@ -207,7 +209,10 @@
     <string name="reps_input">Reps</string>
     <string name="seconds_input">Seconds</string>
     <!-- Level display -->
-    <string name="level_format">Level %d</string>
+    <string name="level_format">Difficulty %d</string>
+    <string name="difficulty_label">Difficulty</string>
+    <string name="difficulty_hint">From 1 (easiest) to 10 (hardest), or not set</string>
+    <string name="difficulty_not_set">Not set</string>
     <!-- Additional missing strings -->
     <!-- Common Labels -->
     <string name="tab_list">List</string>
@@ -264,7 +269,6 @@
     <string name="example_30">e.g., 30</string>
     <string name="no_group_display">No group</string>
     <string name="new_group_plus">+ New group</string>
-    <string name="level_display">Level: %d</string>
     <string name="save_button">Save</string>
     <string name="create_button">Create</string>
     <string name="add_button">Add</string>
@@ -280,7 +284,6 @@
     <string name="right_short">Right</string>
     <string name="left_short">Left</string>
     <string name="best_record">Best</string>
-    <string name="worst_record">Lowest</string>
     <!-- CSV Import/Export -->
     <string name="csv_export_success">%1$s exported: %2$s</string>
     <string name="csv_template_exported">CSV template exported: %s</string>
@@ -361,6 +364,8 @@
     <string name="keep_screen_on_description">Keep screen on during workout to view countdown</string>
     <string name="set_done_vibration_setting">Vibrate when a set is done</string>
     <string name="set_done_vibration_description">A short vibration confirms each finished set</string>
+    <string name="countdown_vibration_setting">Vibrate with countdown beeps</string>
+    <string name="countdown_vibration_description">Each of the last three beeps, and the go cue, also vibrates. Follows your phone\'s touch vibration setting.</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">Timer settings (optional)</string>
     <string name="timer_settings_description">Configure timers for this exercise. Leave blank to use default settings.</string>
@@ -481,7 +486,7 @@
     <!-- Sound Settings (Program Confirm) -->
     <string name="dynamic_count_sound_label">Count sound</string>
     <string name="dynamic_count_sound_description">Assists counting for dynamic exercises</string>
-    <string name="isometric_interval_sound_label">Interval notification</string>
+    <string name="isometric_interval_sound_label">Sound during holds</string>
     <string name="isometric_interval_sound_description">Isometric exercises</string>
     <!-- Navigation Sheet (Program Execution) -->
     <string name="nav_program_overview">Program overview</string>
@@ -673,7 +678,7 @@
     <string name="workout_count_decrease">One fewer</string>
     <string name="workout_count_increase">One more</string>
     <!-- The set number names the set; it is not a quantity. -->
-    <string name="workout_set_done" tools:ignore="PluralsCandidate">Set %1$d done</string>
+    <string name="workout_set_done" tools:ignore="PluralsCandidate">Set %1$d complete</string>
     <string name="backup_last">Last backup: %1$s</string>
     <string name="backup_never">No backup yet</string>
     <string name="record_mixed_title">Record which sets?</string>
@@ -1008,4 +1013,5 @@
     <string name="climb_legend_started">Started a step</string>
     <string name="climb_legend_met">Met its standard</string>
     <string name="climb_step">Step %d</string>
+    <string name="enter_a_number">Enter a number</string>
 </resources>

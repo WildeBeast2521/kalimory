@@ -159,6 +159,7 @@ internal fun ProgramExecutingStepDynamicManual(
 
         // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
         ProgramCompleteSetButton(
+            soundPlayer = soundPlayer,
             text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
             recordValue = recordValue,
             unit = stringResource(R.string.unit_reps),
@@ -287,6 +288,7 @@ internal fun ProgramExecutingStepIsometricManual(
 
         // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
         ProgramCompleteSetButton(
+            soundPlayer = soundPlayer,
             text = stringResource(R.string.complete_with_time, recordValue),
             recordValue = recordValue,
             unit = stringResource(R.string.unit_seconds_short),
@@ -413,6 +415,7 @@ internal fun ProgramExecutingStepIsometricAuto(
 
         // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
         ProgramCompleteSetButton(
+            soundPlayer = soundPlayer,
             text = stringResource(R.string.complete_with_time, recordValue),
             recordValue = recordValue,
             unit = stringResource(R.string.unit_seconds_short),
@@ -542,6 +545,7 @@ internal fun ProgramExecutingStepDynamicAuto(
 
         // 完了ボタン: 一時停止して記録を確認する（手動・自動とも）
         ProgramCompleteSetButton(
+            soundPlayer = soundPlayer,
             text = pluralStringResource(R.plurals.complete_reps, recordValue, recordValue),
             recordValue = recordValue,
             unit = stringResource(R.string.unit_reps),
@@ -562,6 +566,8 @@ internal fun ProgramExecutingStepDynamicAuto(
 internal fun ProgramExecutingStepDynamicSimple(
     session: ProgramExecutionSession,
     currentSetIndex: Int,
+    // Plays the finish cue on Complete: no timer announces a counted set. Null in previews and tests.
+    soundPlayer: SoundPlayer? = null,
     onSetComplete: (Int) -> Unit,
     onAbort: () -> Unit,
     onRetry: () -> Unit,
@@ -614,7 +620,10 @@ internal fun ProgramExecutingStepDynamicSimple(
         // 完了ボタン
         WorkoutPrimaryButton(
             text = pluralStringResource(R.plurals.complete_reps, repsCount, repsCount),
-            onClick = { onSetComplete(repsCount) },
+            onClick = {
+                soundPlayer?.playSetComplete()
+                onSetComplete(repsCount)
+            },
         )
 
         SetActions(onRestart = onRetry, onSkipSet = onSkipSet, onSkipExercise = onSkipExercise)
@@ -652,6 +661,7 @@ internal fun ProgramSetHeader(session: ProgramExecutionSession, exerciseName: St
  */
 @Composable
 private fun ProgramCompleteSetButton(
+    soundPlayer: SoundPlayer,
     text: String,
     recordValue: Int,
     unit: String,
@@ -684,6 +694,8 @@ private fun ProgramCompleteSetButton(
             previousDistanceCm = currentSet.previousDistanceCm,
             previousAssistanceG = currentSet.previousAssistanceG,
             onConfirm = { adjusted, weightG, distanceCm, assistanceG ->
+                // Reaching the target already played the finish sound; ending below it is heard here.
+                if (recordValue < currentSet.targetValue) soundPlayer.playSetComplete()
                 currentSet.weightG = weightG
                 currentSet.distanceCm = distanceCm
                 currentSet.assistanceG = assistanceG

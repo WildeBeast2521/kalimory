@@ -87,6 +87,8 @@
     <string name="graph_latest_exercise">الأحدث: %1$s</string>
     <string name="set_done_vibration_setting">الاهتزاز عند إنهاء مجموعة</string>
     <string name="set_done_vibration_description">اهتزاز قصير يؤكد كل مجموعة منتهية</string>
+    <string name="countdown_vibration_setting">اهتزاز مع أصوات العد التنازلي</string>
+    <string name="countdown_vibration_description">كل صوت من الأصوات الثلاثة الأخيرة وإشارة البدء يهتز أيضًا. يتبع إعداد اهتزاز اللمس في هاتفك.</string>
     <!-- Workout summary -->
     <string name="workout_summary_title">اكتمل التمرين</string>
     <string name="summary_sets">المجموعات</string>
@@ -327,6 +329,8 @@
     <string name="period_one_week">أسبوع</string>
     <string name="period_one_month">شهر</string>
     <string name="period_three_months">3 أشهر</string>
+    <string name="period_one_year">سنة واحدة</string>
+    <string name="period_all">الكل</string>
     <string name="no_data">لا توجد بيانات</string>
     <string name="record_training_for_exercise">تسجيل تمرين لهذا التمرين</string>
     <string name="statistics_summary">ملخص الإحصاءات</string>
@@ -432,7 +436,10 @@
     <string name="left_colon">اليسار:</string>
     <string name="reps_input">التكرارات</string>
     <string name="seconds_input">الثواني</string>
-    <string name="level_format">المستوى %d</string>
+    <string name="level_format">الصعوبة %d</string>
+    <string name="difficulty_label">الصعوبة</string>
+    <string name="difficulty_hint">من 1 (الأسهل) إلى 10 (الأصعب)، أو بدون تحديد</string>
+    <string name="difficulty_not_set">غير محدد</string>
     <string name="tab_list">القائمة</string>
     <string name="tab_graph">الرسم البياني</string>
     <string name="tab_calendar">التقويم</string>
@@ -486,7 +493,6 @@
     <string name="example_30">مثلًا 30</string>
     <string name="no_group_display">بلا مجموعة</string>
     <string name="new_group_plus">+ مجموعة جديدة</string>
-    <string name="level_display">المستوى: %d</string>
     <string name="save_button">حفظ</string>
     <string name="create_button">إنشاء</string>
     <string name="add_button">إضافة</string>
@@ -498,7 +504,6 @@
     <string name="right_short">يمين</string>
     <string name="left_short">يسار</string>
     <string name="best_record">الأفضل</string>
-    <string name="worst_record">الأدنى</string>
     <string name="csv_export_success">صُدِّر %1$s: %2$s</string>
     <string name="csv_template_exported">صُدِّر قالب CSV: %s</string>
     <string name="csv_empty">ملف CSV فارغ</string>
@@ -671,7 +676,7 @@
     <string name="exit_workout_confirm">خروج</string>
     <string name="dynamic_count_sound_label">صوت العد</string>
     <string name="dynamic_count_sound_description">يساعد على عدّ التكرارات</string>
-    <string name="isometric_interval_sound_label">تنبيه الفاصل</string>
+    <string name="isometric_interval_sound_label">صوت أثناء الثبات</string>
     <string name="isometric_interval_sound_description">التمارين الثابتة</string>
     <string name="nav_program_overview">نظرة على البرنامج</string>
     <string name="nav_overall_progress">التقدم الكلي</string>
@@ -1063,4 +1068,5 @@
     <string name="climb_legend_started">بدء خطوة</string>
     <string name="climb_legend_met">تحقيق المعيار</string>
     <string name="climb_step">الخطوة %d</string>
+    <string name="enter_a_number">أدخل رقمًا</string>
 </resources>

@@ -37,14 +37,14 @@ class ExerciseBadgesTest {
         compose.onNodeWithText("One-sided").assertExists()
     }
 
-    @Test fun `the difficulty shows only for an exercise with a target`() {
+    @Test fun `the difficulty shows whenever one is set, with or without a target`() {
         show(base.copy(sortOrder = 4))
-        compose.onNodeWithText("Level 4").assertDoesNotExist()
+        compose.onNodeWithText("Difficulty 4").assertExists()
     }
 
-    @Test fun `with a target the difficulty shows`() {
-        show(base.copy(sortOrder = 4, targetSets = 3, targetValue = 10))
-        compose.onNodeWithText("Level 4").assertExists()
+    @Test fun `no difficulty is shown when none is set`() {
+        show(base.copy(sortOrder = 0, targetSets = 3, targetValue = 10))
+        compose.onNodeWithText("Difficulty 0").assertDoesNotExist()
     }
 
     @Test fun `the group shows only where asked`() {

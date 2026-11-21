@@ -152,6 +152,8 @@
     <string name="graph_latest_exercise">Последнее: %1$s</string>
     <string name="set_done_vibration_setting">Вибрация после подхода</string>
     <string name="set_done_vibration_description">Короткая вибрация подтверждает каждый завершённый подход</string>
+    <string name="countdown_vibration_setting">Вибрация с сигналами отсчёта</string>
+    <string name="countdown_vibration_description">Каждый из последних трёх сигналов и сигнал старта тоже сопровождаются вибрацией. Зависит от настройки вибрации при касании на телефоне.</string>
     <!-- Workout summary -->
     <string name="workout_summary_title">Тренировка завершена</string>
     <string name="summary_sets">Подходы</string>
@@ -317,6 +319,8 @@
     <string name="period_one_week">1 неделя</string>
     <string name="period_one_month">1 месяц</string>
     <string name="period_three_months">3 месяца</string>
+    <string name="period_one_year">1 год</string>
+    <string name="period_all">Все</string>
     <string name="no_data">Нет данных</string>
     <string name="record_training_for_exercise">Записать тренировку по этому упражнению</string>
     <string name="statistics_summary">Сводка</string>
@@ -422,7 +426,10 @@
     <string name="left_colon">Левая:</string>
     <string name="reps_input">Повторения</string>
     <string name="seconds_input">Секунды</string>
-    <string name="level_format">Уровень %d</string>
+    <string name="level_format">Сложность %d</string>
+    <string name="difficulty_label">Сложность</string>
+    <string name="difficulty_hint">От 1 (легче всего) до 10 (труднее всего) или не задана</string>
+    <string name="difficulty_not_set">Не задана</string>
     <string name="tab_list">Список</string>
     <string name="tab_graph">График</string>
     <string name="tab_calendar">Календарь</string>
@@ -476,7 +483,6 @@
     <string name="example_30">напр. 30</string>
     <string name="no_group_display">Без группы</string>
     <string name="new_group_plus">+ Новая группа</string>
-    <string name="level_display">Уровень: %d</string>
     <string name="save_button">Сохранить</string>
     <string name="create_button">Создать</string>
     <string name="add_button">Добавить</string>
@@ -488,7 +494,6 @@
     <string name="right_short">Прав.</string>
     <string name="left_short">Лев.</string>
     <string name="best_record">Лучший</string>
-    <string name="worst_record">Худший</string>
     <string name="csv_export_success">%1$s: экспортировано %2$s</string>
     <string name="csv_template_exported">Шаблон CSV экспортирован: %s</string>
     <string name="csv_empty">CSV-файл пуст</string>
@@ -659,7 +664,7 @@
     <string name="exit_workout_confirm">Выйти</string>
     <string name="dynamic_count_sound_label">Звук счёта</string>
     <string name="dynamic_count_sound_description">Помогает считать повторения</string>
-    <string name="isometric_interval_sound_label">Сигнал интервала</string>
+    <string name="isometric_interval_sound_label">Звук во время удержания</string>
     <string name="isometric_interval_sound_description">Статические упражнения</string>
     <string name="nav_program_overview">Обзор программы</string>
     <string name="nav_overall_progress">Общий прогресс</string>
@@ -1003,4 +1008,5 @@
     <string name="climb_legend_started">Шаг начат</string>
     <string name="climb_legend_met">Норматив выполнен</string>
     <string name="climb_step">Шаг %d</string>
+    <string name="enter_a_number">Введите число</string>
 </resources>

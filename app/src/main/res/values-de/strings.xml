@@ -79,6 +79,8 @@
     <string name="period_one_week">1 Woche</string>
     <string name="period_one_month">1 Monat</string>
     <string name="period_three_months">3 Monate</string>
+    <string name="period_one_year">1 Jahr</string>
+    <string name="period_all">Alle</string>
     <!-- Graph Screen -->
     <string name="no_data">Keine Daten</string>
     <string name="record_training_for_exercise">Training für diese Übung aufzeichnen</string>
@@ -166,7 +168,10 @@
     <string name="reps_input">Wiederholungen</string>
     <string name="seconds_input">Sekunden</string>
     <!-- Level display -->
-    <string name="level_format">Lv.%d</string>
+    <string name="level_format">Schwierigkeit %d</string>
+    <string name="difficulty_label">Schwierigkeit</string>
+    <string name="difficulty_hint">Von 1 (am leichtesten) bis 10 (am schwersten) oder nicht festgelegt</string>
+    <string name="difficulty_not_set">Nicht festgelegt</string>
     <!-- Additional missing strings -->
     <!-- Common Labels -->
     <string name="tab_list">Liste</string>
@@ -194,7 +199,6 @@
     <string name="example_30">z.B. 30</string>
     <string name="no_group_display">Keine Gruppe</string>
     <string name="new_group_plus">+ Neue Gruppe</string>
-    <string name="level_display">Stufe: %d</string>
     <string name="save_button">Speichern</string>
     <string name="create_button">Erstellen</string>
     <string name="add_button">Hinzufügen</string>
@@ -210,7 +214,6 @@
     <string name="right_short">Rechts</string>
     <string name="left_short">Links</string>
     <string name="best_record">Beste</string>
-    <string name="worst_record">Niedrigste</string>
     <!-- CSV Import/Export -->
     <string name="csv_export_success">%1$s exportiert: %2$s</string>
     <string name="csv_template_exported">CSV-Vorlage exportiert: %s</string>
@@ -326,6 +329,8 @@
     <string name="keep_screen_on_description">Bildschirm während des Trainings anlassen, um den Countdown anzuzeigen</string>
     <string name="set_done_vibration_setting">Vibrieren nach jedem Satz</string>
     <string name="set_done_vibration_description">Eine kurze Vibration bestätigt jeden beendeten Satz</string>
+    <string name="countdown_vibration_setting">Vibration bei Countdown-Signaltönen</string>
+    <string name="countdown_vibration_description">Jeder der letzten drei Signaltöne und das Startsignal vibrieren ebenfalls. Folgt der Touch-Vibrationseinstellung deines Telefons.</string>
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
     <string name="todo_empty">Tippe + um Übungen hinzuzufügen</string>
@@ -406,7 +411,7 @@
     <!-- Sound Settings (Program Confirm) -->
     <string name="dynamic_count_sound_label">Zählton</string>
     <string name="dynamic_count_sound_description">Unterstützt das Zählen bei dynamischen Übungen</string>
-    <string name="isometric_interval_sound_label">Intervallbenachrichtigung</string>
+    <string name="isometric_interval_sound_label">Ton während des Haltens</string>
     <string name="isometric_interval_sound_description">Isometrische Übungen</string>
     <!-- Auto Mode -->
     <string name="auto_mode">Automatik</string>
@@ -640,7 +645,7 @@
     <string name="library_exercises">Übungen und Gruppen</string>
     <string name="workout_count_decrease">Eins weniger</string>
     <string name="workout_count_increase">Eins mehr</string>
-    <string name="workout_set_done">Satz %1$d geschafft</string>
+    <string name="workout_set_done">Satz %1$d abgeschlossen</string>
     <string name="backup_last">Letzte Sicherung: %1$s</string>
     <string name="backup_never">Noch keine Sicherung</string>
     <string name="record_mixed_title">Welche Sätze speichern?</string>
@@ -998,4 +1003,5 @@
     <string name="climb_legend_started">Stufe begonnen</string>
     <string name="climb_legend_met">Standard erreicht</string>
     <string name="climb_step">Stufe %d</string>
+    <string name="enter_a_number">Zahl eingeben</string>
 </resources>

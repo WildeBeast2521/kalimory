@@ -75,7 +75,8 @@ data class WeightDataPoint(
 enum class Period(val days: Int, val displayNameResId: Int) {
     OneWeek(7, R.string.period_one_week),
     OneMonth(30, R.string.period_one_month),
-    ThreeMonths(90, R.string.period_three_months)
+    ThreeMonths(90, R.string.period_three_months),
+    OneYear(365, R.string.period_one_year),
 }
 
 /**
@@ -2159,16 +2160,10 @@ fun StatisticsSummary(
                         valueRight = "${statistics.max}$unit",
                         valueLeft = "${statistics.maxLeft ?: 0}$unit"
                     )
-                    StatItemDual(
-                        label = stringResource(R.string.worst_record),
-                        valueRight = "${statistics.min}$unit",
-                        valueLeft = "${statistics.minLeft ?: 0}$unit"
-                    )
                 } else {
                     // Bilateral: 従来通り
                     StatItem(stringResource(R.string.average), "${statistics.average.roundToInt()}$unit")
                     StatItem(stringResource(R.string.best_record), "${statistics.max}$unit")
-                    StatItem(stringResource(R.string.worst_record), "${statistics.min}$unit")
                 }
 
                 if (statistics.weeklyChange != 0) {

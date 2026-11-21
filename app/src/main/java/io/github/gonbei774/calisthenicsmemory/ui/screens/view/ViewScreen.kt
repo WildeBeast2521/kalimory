@@ -146,6 +146,11 @@ fun ViewScreen(
     // フィルター関連の状態
     var selectedExerciseFilter by remember { mutableStateOf<Exercise?>(null) }
     var selectedPeriod by remember { mutableStateOf<Period?>(Period.OneWeek) }
+    // The week suits the calendar; the graph starts on a month unless the person has picked a period.
+    var periodChosen by remember { mutableStateOf(false) }
+    LaunchedEffect(pagerState.currentPage) {
+        if (!periodChosen && pagerState.currentPage == 2) selectedPeriod = Period.OneMonth
+    }
     var showFilterBottomSheet by remember { mutableStateOf(false) }
 
     // 既存の状態変数
@@ -323,11 +328,13 @@ fun ViewScreen(
                     // 期間フィルター（トグル式）
                     // An Expressive connected group; tapping the selected period clears it.
                     ConnectedChoices(
-                        options = listOf(Period.OneWeek, Period.OneMonth, Period.ThreeMonths),
+                        options = listOf<Period?>(Period.OneWeek, Period.OneMonth, Period.ThreeMonths, Period.OneYear, null),
                         selected = selectedPeriod,
-                        onSelect = { selectedPeriod = it },
-                        label = { stringResource(it.displayNameResId) },
-                        allowNone = true,
+                        onSelect = {
+                            periodChosen = true
+                            selectedPeriod = it
+                        },
+                        label = { stringResource(it?.displayNameResId ?: R.string.period_all) },
                         fill = false,
                     )
                 }

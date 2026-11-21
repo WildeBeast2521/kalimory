@@ -11,6 +11,12 @@ class ExerciseEditorRulesTest {
         assertEquals(0, levelToSave(changed = false, selected = 5, stored = 0))
     }
 
+    @Test fun `a new exercise saves no level until one is chosen`() {
+        // The form used to save 5 for any new exercise with a target, a value nobody chose.
+        assertEquals(0, levelToSave(changed = false, selected = 0, stored = 0))
+        assertEquals(6, levelToSave(changed = true, selected = 6, stored = 0))
+    }
+
     @Test fun `a moved slider saves the new level`() {
         assertEquals(3, levelToSave(changed = true, selected = 3, stored = 7))
     }

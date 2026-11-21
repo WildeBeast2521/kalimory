@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberCountdownHaptics
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberSetDoneHaptic
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePickRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
@@ -10,6 +11,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.workout.restDialProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
+import io.github.gonbei774.calisthenicsmemory.data.defaultPlan
 import io.github.gonbei774.calisthenicsmemory.data.AfterSet
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
@@ -131,6 +133,36 @@ data class WorkoutSet(
     // The user's effort rating, 0..4 (ADR 0012); null when not rated.
     var effortLeft: Int? = null,
 )
+
+/** The single-workout twin of [raiseLaterTargets] for programs: later sets of the same side aim for at least what was just done. */
+internal fun raiseLaterTargets(sets: MutableList<WorkoutSet>, index: Int) {
+    val done = sets[index]
+    if (!done.isCompleted || done.isWarmUp || done.actualValue <= 0) return
+    for (i in index + 1..sets.lastIndex) {
+        val later = sets[i]
+        if (!later.isCompleted && !later.isSkipped && later.side == done.side && later.targetValue < done.actualValue) {
+            sets[i] = later.copy(targetValue = done.actualValue)
+        }
+    }
+}
+
+/**
+ * Ending a workout early: the sets from [from] on that were never reached (not done, not skipped on purpose,
+ * no value) are left out of the record instead of being saved as skipped. If that would leave the workout with
+ * no sets at all, the first of them stays, as a skipped set.
+ */
+internal fun dropUnreached(session: WorkoutSession, from: Int) {
+    val sets = session.sets
+    val unreached = (from.coerceAtLeast(0)..sets.lastIndex).filter { sets[it].let { s -> !s.isCompleted && !s.isSkipped && s.actualValue == 0 } }
+    if (unreached.isEmpty()) return
+    if (unreached.size == sets.size) {
+        sets[unreached.first()].isSkipped = true
+        unreached.drop(1).asReversed().forEach { sets.removeAt(it) }
+    } else {
+        unreached.asReversed().forEach { sets.removeAt(it) }
+    }
+    session.totalSets = sets.size
+}
 
 /**
  * Where a single workout goes after the set at [index] is done or skipped: the result after the last set,
@@ -444,11 +476,8 @@ fun WorkoutScreen(
                             onDismiss = { showNavigationSheet = false },
                             onAbort = {
                                 showNavigationSheet = false
-                                // 未実施の現在セット以降をスキップ扱いにして確認画面へ
-                                for (i in step.currentSetIndex until step.session.sets.size) {
-                                    step.session.sets[i].isSkipped = true
-                                    step.session.sets[i].actualValue = 0
-                                }
+                                // The set about to start was never reached, nor were the ones after it.
+                                dropUnreached(step.session, step.currentSetIndex)
                                 currentStep = WorkoutStep.Confirmation(step.session)
                             }
                         )
@@ -470,6 +499,7 @@ fun WorkoutScreen(
                     val onSetComplete: (WorkoutSession) -> Unit = { updatedSession ->
                         setDoneHaptic()
                         updatedSession.sets.getOrNull(step.currentSetIndex)?.completedAtWallMillis = System.currentTimeMillis()
+                        if (step.currentSetIndex in updatedSession.sets.indices) raiseLaterTargets(updatedSession.sets, step.currentSetIndex)
                         currentStep = followSet(updatedSession, singleAfterSet(updatedSession.sets, step.currentSetIndex, updatedSession.intervalDuration, updatedSession.startInterval))
                     }
                     // Skipping records no value, no vibration and no rest; the next set gets the countdown.
@@ -487,10 +517,8 @@ fun WorkoutScreen(
                         updatedSession.sets.getOrNull(step.currentSetIndex)
                             ?.takeIf { it.actualValue > 0 && it.completedAtWallMillis == null }
                             ?.completedAtWallMillis = System.currentTimeMillis()
-                        for (i in step.currentSetIndex + 1 until updatedSession.sets.size) {
-                            updatedSession.sets[i].isSkipped = true
-                            updatedSession.sets[i].actualValue = 0
-                        }
+                        // The set in progress stays (saved as skipped without a value); the ones after it were never reached.
+                        dropUnreached(updatedSession, step.currentSetIndex + 1)
                         currentStep = WorkoutStep.Confirmation(updatedSession)
                     }
                     val onRetry: () -> Unit = {
@@ -659,11 +687,8 @@ fun WorkoutScreen(
                             onDismiss = { showNavigationSheet = false },
                             onAbort = {
                                 showNavigationSheet = false
-                                // 未実施の次セット以降をスキップ扱いにして確認画面へ
-                                for (i in step.currentSetIndex until step.session.sets.size) {
-                                    step.session.sets[i].isSkipped = true
-                                    step.session.sets[i].actualValue = 0
-                                }
+                                // The next set was never reached, nor were the ones after it.
+                                dropUnreached(step.session, step.currentSetIndex)
                                 currentStep = WorkoutStep.Confirmation(step.session)
                             }
                         )
@@ -1209,11 +1234,11 @@ fun SettingsStep(
     val context = LocalContext.current
     val workoutPrefs = remember { WorkoutPreferences(context) }
 
-    // Start ready to go: the exercise's own targets, or the defaults Start already falls back to
-    // (3 sets × 10, 5 s per rep), so Start is never disabled without a visible reason.
-    // A suggestion from Today (ADR 0005, decision 4) comes first; the user can still change it.
-    var sets by remember { mutableStateOf((suggestedTarget?.sets ?: exercise.targetSets ?: 3).toString()) }
-    var targetValue by remember { mutableStateOf((suggestedTarget?.value ?: exercise.targetValue ?: 10).toString()) }
+    // The exercise's own target, else one set, with the reps of the last session once it has loaded and
+    // nothing at all when there is none: no number is invented. A suggestion from Today (ADR 0005,
+    // decision 4) comes first; the user can still change it. Start stays enabled and says what is missing.
+    var sets by remember { mutableStateOf((suggestedTarget?.sets ?: exercise.targetSets ?: 1).toString()) }
+    var targetValue by remember { mutableStateOf((suggestedTarget?.value ?: exercise.targetValue)?.toString() ?: "") }
     var repDuration by remember {
         mutableStateOf(
             if (exercise.type == "Dynamic") {
@@ -1250,13 +1275,8 @@ fun SettingsStep(
     var weightInput by remember { mutableStateOf("") }
     var assistanceInput by remember { mutableStateOf("") }
 
-    // 実行設定（WorkoutPreferencesと連動）
-    // Isometricはデフォルトでタイマーオフ（手動完了）、Dynamicはオン（既存ユーザー体験維持）
-    var isAutoMode by remember {
-        mutableStateOf(
-            if (exercise.type == "Isometric") false else workoutPrefs.isAutoMode()
-        )
-    }
+    // Auto mode follows the setting for reps and holds alike, as it does in a program.
+    var isAutoMode by remember { mutableStateOf(workoutPrefs.isAutoMode()) }
     var isDynamicCountSoundEnabled by remember { mutableStateOf(workoutPrefs.isDynamicCountSoundEnabled()) }
     var isIsometricIntervalSoundEnabled by remember { mutableStateOf(workoutPrefs.isIsometricIntervalSoundEnabled()) }
     var isometricIntervalSeconds by remember { mutableIntStateOf(workoutPrefs.getIsometricIntervalSeconds()) }
@@ -1295,6 +1315,10 @@ fun SettingsStep(
                     assistanceInput = (it / 1000.0).toString()
                 }
             }
+        }
+        // No target of its own and none suggested: start from what was done last time, if anything.
+        if (suggestedTarget == null && exercise.targetValue == null && targetValue.isEmpty()) {
+            defaultPlan(exercise.targetSets, exercise.targetValue, prevSession).value?.let { targetValue = it.toString() }
         }
     }
 
@@ -1558,14 +1582,27 @@ fun SettingsStep(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val isValid = sets.isNotEmpty() && targetValue.isNotEmpty() &&
+        val isValid = (sets.toIntOrNull() ?: 0) >= 1 && (targetValue.toIntOrNull() ?: 0) >= 1 &&
                 (exercise.type != "Dynamic" || !isDynamicCountSoundEnabled || repDuration.toIntOrNull()?.let { it >= 1 } == true)
+        var triedToStart by remember { mutableStateOf(false) }
+        if (triedToStart && !isValid) {
+            Text(
+                text = stringResource(R.string.enter_a_number),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(bottom = Spacing.s),
+            )
+        }
 
         WorkoutPrimaryButton(
             text = stringResource(R.string.start_workout),
             onClick = {
-                val totalSets = sets.toIntOrNull() ?: 3
-                val target = targetValue.toIntOrNull() ?: 10
+                if (!isValid) {
+                    triedToStart = true
+                    return@WorkoutPrimaryButton
+                }
+                val totalSets = sets.toIntOrNull() ?: 1
+                val target = targetValue.toIntOrNull() ?: 1
                 val repDur = if (exercise.type == "Dynamic") repDuration.toIntOrNull() ?: 5 else null
                 // An empty field is the switch being off (Settings), so no countdown and no rest.
                 val start = startInterval.toIntOrNull() ?: 0
@@ -1632,7 +1669,6 @@ fun SettingsStep(
                 onStartWorkout(session)
             },
             icon = AppIcons.Play,
-            enabled = isValid,
         )
     }
 }
@@ -1679,6 +1715,7 @@ fun StartIntervalStep(
     onIntervalComplete: () -> Unit,
     onSkip: () -> Unit
 ) {
+    val cues = rememberCountdownHaptics()
     var isPaused by remember { mutableStateOf(false) }
     val totalMillis = session.startInterval * 1_000L
 
@@ -1692,6 +1729,7 @@ fun StartIntervalStep(
             lastShown = shown
             if (shown in 1..3) {
                 soundPlayer.playCountdown()
+                cues.tick()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -1700,6 +1738,7 @@ fun StartIntervalStep(
         if (shown <= 0) {
             finished = true
             soundPlayer.playStartCue()
+            cues.go()
             if (isFlashEnabled) {
                 launch { flashController.flashComplete() }
             }
@@ -1771,6 +1810,7 @@ fun IntervalStep(
     onUpdateInterval: (Int) -> Unit,
     showEffort: Boolean = false,
 ) {
+    val cues = rememberCountdownHaptics()
     var isRunning by remember { mutableStateOf(true) }
 
     // 残り時間はモノトニッククロックから計算。±10秒は extraMillis で調整する
@@ -1784,6 +1824,7 @@ fun IntervalStep(
             lastShown = shown
             if (shown in 1..3) {
                 soundPlayer.playCountdown()
+                cues.tick()
                 if (isFlashEnabled) {
                     launch { flashController.flashShort() }
                 }
@@ -1793,6 +1834,7 @@ fun IntervalStep(
         if (shown <= 0 && !sw.isPaused) {
             finished = true
             soundPlayer.playStartCue()
+            cues.go()
             if (isFlashEnabled) {
                 launch { flashController.flashComplete() }
             }

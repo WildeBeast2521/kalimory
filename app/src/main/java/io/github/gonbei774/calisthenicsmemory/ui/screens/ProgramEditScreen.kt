@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.data.defaultPlan
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.TopBarAction
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
@@ -485,21 +486,23 @@ fun ProgramEditScreen(
                 val defaultInterval = if (workoutPreferences.isSetIntervalEnabled())
                     workoutPreferences.getSetInterval() else 0
                 val baseSortOrder = programExercises.size
-                val newPes = selectedExercisesList.mapIndexed { index, exercise ->
-                    ProgramExercise(
-                        id = System.currentTimeMillis() + index, // Temporary ID for new items
-                        programId = programId ?: 0L,
-                        exerciseId = exercise.id,
-                        sortOrder = baseSortOrder + index,
-                        sets = exercise.targetSets ?: 0,
-                        targetValue = exercise.targetValue ?: 0,
-                        intervalSeconds = exercise.restInterval ?: exercise.recommendedRestSeconds() ?: defaultInterval
-                    )
-                }
-                programExercises = programExercises + newPes
                 showAddExerciseDialog = false
-                // 追加後に最下部へスクロール
                 coroutineScope.launch {
+                    // One set, with the reps of the last session when the exercise has no target of its own.
+                    val newPes = selectedExercisesList.mapIndexed { index, exercise ->
+                        val plan = defaultPlan(exercise.targetSets, exercise.targetValue, viewModel.getLatestSession(exercise.id))
+                        ProgramExercise(
+                            id = System.currentTimeMillis() + index, // Temporary ID for new items
+                            programId = programId ?: 0L,
+                            exerciseId = exercise.id,
+                            sortOrder = baseSortOrder + index,
+                            sets = plan.sets,
+                            targetValue = plan.value ?: 0,
+                            intervalSeconds = exercise.restInterval ?: exercise.recommendedRestSeconds() ?: defaultInterval
+                        )
+                    }
+                    programExercises = programExercises + newPes
+                    // 追加後に最下部へスクロール
                     lazyListState.animateScrollToItem(lazyListState.layoutInfo.totalItemsCount - 1)
                 }
             }
@@ -670,20 +673,23 @@ fun ProgramEditScreen(
                 val defaultInterval = if (workoutPreferences.isSetIntervalEnabled())
                     workoutPreferences.getSetInterval() else 0
                 val baseSortOrder = programExercises.count { it.loopId == targetLoop.id }
-                val newPes = selectedExercisesList.mapIndexed { index, exercise ->
-                    ProgramExercise(
-                        id = System.currentTimeMillis() + index,
-                        programId = programId ?: 0L,
-                        exerciseId = exercise.id,
-                        sortOrder = baseSortOrder + index,
-                        sets = exercise.targetSets ?: 0,
-                        targetValue = exercise.targetValue ?: 0,
-                        intervalSeconds = exercise.restInterval ?: exercise.recommendedRestSeconds() ?: defaultInterval,
-                        loopId = targetLoop.id
-                    )
-                }
-                programExercises = programExercises + newPes
                 showAddExerciseToLoopDialog = null
+                coroutineScope.launch {
+                    val newPes = selectedExercisesList.mapIndexed { index, exercise ->
+                        val plan = defaultPlan(exercise.targetSets, exercise.targetValue, viewModel.getLatestSession(exercise.id))
+                        ProgramExercise(
+                            id = System.currentTimeMillis() + index,
+                            programId = programId ?: 0L,
+                            exerciseId = exercise.id,
+                            sortOrder = baseSortOrder + index,
+                            sets = plan.sets,
+                            targetValue = plan.value ?: 0,
+                            intervalSeconds = exercise.restInterval ?: exercise.recommendedRestSeconds() ?: defaultInterval,
+                            loopId = targetLoop.id
+                        )
+                    }
+                    programExercises = programExercises + newPes
+                }
             }
         )
     }

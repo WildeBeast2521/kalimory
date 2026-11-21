@@ -50,4 +50,10 @@ class AddExerciseFormTest {
         compose.onNodeWithText("Enter a name").assertExists()
         assertEquals(0, dismissed)
     }
+
+    @Test fun `difficulty starts as not set, with a dash and no invented number`() {
+        open()
+        compose.onNodeWithText("Difficulty").assertExists()
+        compose.onNodeWithText("–").assertExists()
+    }
 }

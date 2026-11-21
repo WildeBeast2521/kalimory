@@ -22,4 +22,9 @@ class PeriodStartTest {
         assertEquals(LocalDate.of(2026, 9, 1), Period.OneMonth.startDate(wednesday, DayOfWeek.MONDAY))
         assertEquals(LocalDate.of(2026, 7, 3), Period.ThreeMonths.startDate(wednesday, DayOfWeek.MONDAY))
     }
+
+    @Test fun `a year counts back 365 days including today`() {
+        val today = LocalDate.of(2026, 9, 30)
+        assertEquals(LocalDate.of(2025, 10, 1), Period.OneYear.startDate(today, DayOfWeek.MONDAY))
+    }
 }

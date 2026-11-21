@@ -81,6 +81,8 @@
     <string name="period_one_week">1周</string>
     <string name="period_one_month">1个月</string>
     <string name="period_three_months">3个月</string>
+    <string name="period_one_year">1年</string>
+    <string name="period_all">全部</string>
     <!-- Graph Screen -->
     <string name="no_data">无数据</string>
     <string name="record_training_for_exercise">记录此动作的训练</string>
@@ -168,7 +170,10 @@
     <string name="reps_input">次数</string>
     <string name="seconds_input">秒</string>
     <!-- Level display -->
-    <string name="level_format">等级%d</string>
+    <string name="level_format">难度 %d</string>
+    <string name="difficulty_label">难度</string>
+    <string name="difficulty_hint">从 1（最容易）到 10（最难），或不设置</string>
+    <string name="difficulty_not_set">未设置</string>
     <!-- Additional missing strings -->
     <!-- Common Labels -->
     <string name="tab_list">列表</string>
@@ -198,7 +203,6 @@
     <string name="example_30">例如：30</string>
     <string name="no_group_display">无分组</string>
     <string name="new_group_plus">+ 新建分组</string>
-    <string name="level_display">级别：%d</string>
     <string name="save_button">保存</string>
     <string name="create_button">创建</string>
     <string name="add_button">添加</string>
@@ -214,7 +218,6 @@
     <string name="right_short">右侧</string>
     <string name="left_short">左侧</string>
     <string name="best_record">最佳</string>
-    <string name="worst_record">最低</string>
     <!-- CSV Import/Export -->
     <string name="csv_export_success">已导出%1$s：%2$s</string>
     <string name="csv_template_exported">已导出CSV模板：%s</string>
@@ -330,6 +333,8 @@
     <string name="keep_screen_on_description">训练时保持屏幕常亮以显示倒计时</string>
     <string name="set_done_vibration_setting">完成一组时振动</string>
     <string name="set_done_vibration_description">每完成一组都会短暂振动确认</string>
+    <string name="countdown_vibration_setting">倒计时提示音同时振动</string>
+    <string name="countdown_vibration_description">最后三声提示音和开始提示音也会振动。遵循手机的触摸振动设置。</string>
     <!-- To Do Screen -->
     <string name="todo_title">待办事项</string>
     <string name="todo_empty">点击 + 添加动作</string>
@@ -409,7 +414,7 @@
     <!-- Sound Settings (Program Confirm) -->
     <string name="dynamic_count_sound_label">计数音效</string>
     <string name="dynamic_count_sound_description">辅助次数类动作的计数</string>
-    <string name="isometric_interval_sound_label">间隔提醒</string>
+    <string name="isometric_interval_sound_label">静力保持时的提示音</string>
     <string name="isometric_interval_sound_description">静态类动作</string>
     <!-- Auto Mode -->
     <string name="auto_mode">自动模式</string>
@@ -974,4 +979,5 @@
     <string name="climb_legend_started">开始一步</string>
     <string name="climb_legend_met">达到标准</string>
     <string name="climb_step">第 %d 步</string>
+    <string name="enter_a_number">请输入数字</string>
 </resources>

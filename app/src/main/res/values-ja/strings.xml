@@ -91,6 +91,8 @@
     <string name="period_one_week">1週間</string>
     <string name="period_one_month">1ヶ月</string>
     <string name="period_three_months">3ヶ月</string>
+    <string name="period_one_year">1年</string>
+    <string name="period_all">すべて</string>
     <!-- Graph Screen -->
     <string name="no_data">データがありません</string>
     <string name="record_training_for_exercise">この種目のトレーニングを記録してください</string>
@@ -198,7 +200,10 @@
     <string name="reps_input">回数</string>
     <string name="seconds_input">秒数</string>
     <!-- Level display -->
-    <string name="level_format">Lv.%d</string>
+    <string name="level_format">難易度 %d</string>
+    <string name="difficulty_label">難易度</string>
+    <string name="difficulty_hint">1（易しい）〜10（難しい）、または未設定</string>
+    <string name="difficulty_not_set">未設定</string>
     <!-- Additional missing strings -->
     <!-- Common Labels -->
     <string name="tab_list">一覧</string>
@@ -242,7 +247,6 @@
     <string name="example_30">例: 30</string>
     <string name="no_group_display">グループなし</string>
     <string name="new_group_plus">+ 新しいグループ</string>
-    <string name="level_display">レベル: %d</string>
     <string name="save_button">保存</string>
     <string name="create_button">作成</string>
     <string name="add_button">追加</string>
@@ -258,7 +262,6 @@
     <string name="right_short">右</string>
     <string name="left_short">左</string>
     <string name="best_record">最高記録</string>
-    <string name="worst_record">最低記録</string>
     <!-- CSV Import/Export -->
     <string name="csv_export_success">%1$sをエクスポートしました: %2$s</string>
     <string name="csv_template_exported">CSVテンプレートをエクスポートしました: %s</string>
@@ -375,6 +378,8 @@
     <string name="keep_screen_on_description">ワークアウト中にカウントダウンを表示するため画面を点灯したままにする</string>
     <string name="set_done_vibration_setting">セット完了時に振動</string>
     <string name="set_done_vibration_description">セットを終えるたびに短く振動してお知らせします</string>
+    <string name="countdown_vibration_setting">カウントダウン音と一緒に振動</string>
+    <string name="countdown_vibration_description">最後の3回の音とスタート音でも振動します。スマートフォンのタッチ操作時のバイブ設定に従います。</string>
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
     <string name="todo_empty">右下の + で種目を追加</string>
@@ -465,7 +470,7 @@
     <!-- Sound Settings (Program Confirm) -->
     <string name="dynamic_count_sound_label">カウント音</string>
     <string name="dynamic_count_sound_description">回数系種目のカウントを補助</string>
-    <string name="isometric_interval_sound_label">インターバル通知</string>
+    <string name="isometric_interval_sound_label">ホールド中の音</string>
     <string name="isometric_interval_sound_description">静止系の種目</string>
     <!-- Auto Mode -->
     <string name="auto_mode">自動モード</string>
@@ -980,4 +985,5 @@
     <string name="climb_legend_started">ステップ開始</string>
     <string name="climb_legend_met">基準を達成</string>
     <string name="climb_step">ステップ%d</string>
+    <string name="enter_a_number">数値を入力してください</string>
 </resources>
