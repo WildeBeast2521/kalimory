@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.review
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowGroup
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SectionHeading
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -50,8 +52,6 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmTopBar
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.VolumeMap
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.tierColor
-import io.github.gonbei774.calisthenicsmemory.ui.screens.today.RowGroup
-import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.screens.view.Period
 import io.github.gonbei774.calisthenicsmemory.ui.screens.view.startDate
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing

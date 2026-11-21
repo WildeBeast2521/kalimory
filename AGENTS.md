@@ -42,6 +42,7 @@ app/src/androidTest/   Instrumented tests (API 29 emulator)
 baselineprofile/       Baseline Profile generator
 scripts/       Catalogue generator, schema check, icon, sound, screenshot and README tools
 docs/ux.md      Interface rules: text, colour, layout, shared components
+docs/storage-and-backup.md  Formats, files in and out, and the rules for changing them
 docs/wiki/     User guide
 fastlane/      Store metadata
 ```
@@ -138,6 +139,8 @@ deterministic and offline. A known flaky test is named in the release log, never
 ## Changes and cleanup
 
 - Inspect before editing; keep each change small and coherent; use Conventional Commits.
+- Comments are in English. When you edit a function, translate its Japanese comments, or delete the ones the
+  code already says.
 - Remove code, resources or assets only after proving they are unused (references, lint, tests).
   Never delete migrations, schemas or recovery tooling because they look old.
 - Keep README, CHANGELOG, wiki, Fastlane metadata and this guide true to the shipped app. Public

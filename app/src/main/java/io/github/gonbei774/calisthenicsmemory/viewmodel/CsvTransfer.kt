@@ -1,9 +1,11 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
+import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
+import io.github.gonbei774.calisthenicsmemory.data.v2.CsvWorkoutImport
 import io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import kotlinx.coroutines.Dispatchers
@@ -58,7 +60,7 @@ class CsvTransfer(
             val currentExercises = exerciseDao.getAllExercises().first()
 
             val csvBuilder = StringBuilder()
-            csvBuilder.appendLine("name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description")
+            csvBuilder.appendLine("name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId")
 
             currentExercises.forEach { exercise ->
                 csvBuilder.appendLine(
@@ -77,7 +79,8 @@ class CsvTransfer(
                         exercise.distanceTrackingEnabled.toString(),
                         exercise.weightTrackingEnabled.toString(),
                         exercise.assistanceTrackingEnabled.toString(),
-                        exercise.description ?: ""
+                        exercise.description ?: "",
+                        exercise.catalogId ?: ""
                     )
                 )
             }
@@ -101,8 +104,8 @@ class CsvTransfer(
 
             val csvBuilder = StringBuilder()
 
-            // ヘッダー (v12: 11列)
-            csvBuilder.appendLine("exerciseName,exerciseType,date,time,setNumber,valueRight,valueLeft,comment,distanceCm,weightG,assistanceG")
+            // Header: 13 columns, the last two (warmUp, effortLeft) optional on import
+            csvBuilder.appendLine(RECORDS_CSV_HEADER)
 
             // 入力例（コメント - 英語のみ）
             csvBuilder.appendLine("# Example: Multiple sets with same date/time (one session)")
@@ -116,11 +119,13 @@ class CsvTransfer(
             csvBuilder.appendLine("# Weighted Push-up,Dynamic,2025-11-09,10:00,1,10,,With vest,,10000,")
             csvBuilder.appendLine("# With assistance (g) - band assisted")
             csvBuilder.appendLine("# Pull-up,Dynamic,2025-11-09,11:00,1,5,,With band,,,22000")
+            csvBuilder.appendLine("# Warm-up mark (warmUp true) and effort (effortLeft 0-4, reps in reserve)")
+            csvBuilder.appendLine("# Wall Push-up,Dynamic,2025-11-09,09:55,1,12,,Warm-up,,,,true,4")
             csvBuilder.appendLine("#")
 
             // 種目リスト（空欄テンプレート）
             currentExercises.forEach { exercise ->
-                csvBuilder.appendLine(csvRow(exercise.name, exercise.type) + ",,,,,,,,,")
+                csvBuilder.appendLine(csvRow(exercise.name, exercise.type) + ",,,,,,,,,,,")
             }
 
             onMessage(UiMessage.CsvTemplateExported(currentExercises.size))
@@ -157,8 +162,8 @@ class CsvTransfer(
         var successCount = 0
         var skippedCount = 0
         var errorCount = 0
-        val skippedItems = mutableListOf<String>()
-        val errors = mutableListOf<String>()
+        val skippedItems = mutableListOf<ImportIssue>()
+        val errors = mutableListOf<ImportIssue>()
 
         try {
             val records = parseCsvRecords(csvString)
@@ -176,7 +181,7 @@ class CsvTransfer(
                     val name = record.firstOrNull()?.trim() ?: ""
 
                     if (name.isEmpty()) {
-                        errors.add("Line ${index + 2}: Group name is empty")
+                        errors.add(ImportIssue(R.string.csv_issue_group_empty).atLine(index + 2))
                         errorCount++
                         return@forEachIndexed
                     }
@@ -184,7 +189,7 @@ class CsvTransfer(
                     // 重複チェック
                     val existing = groupDao.getGroupByName(name)
                     if (existing != null) {
-                        skippedItems.add("\"$name\" (already exists)")
+                        skippedItems.add(ImportIssue(R.string.csv_skip_exists, listOf(name)))
                         skippedCount++
                         return@forEachIndexed
                     }
@@ -194,7 +199,7 @@ class CsvTransfer(
                     successCount++
 
                 } catch (e: Exception) {
-                    errors.add("Line ${index + 2}: ${e.message}")
+                    errors.add(ImportIssue(R.string.csv_issue_text, listOf(e.message ?: "")).atLine(index + 2))
                     errorCount++
                 }
             }
@@ -216,8 +221,9 @@ class CsvTransfer(
         var skippedCount = 0
         var errorCount = 0
         var groupsCreatedCount = 0
-        val skippedItems = mutableListOf<String>()
-        val errors = mutableListOf<String>()
+        val skippedItems = mutableListOf<ImportIssue>()
+        val errors = mutableListOf<ImportIssue>()
+        val catalogIdsSeen = mutableSetOf<String>()
 
         try {
             val records = parseCsvRecords(csvString)
@@ -234,7 +240,7 @@ class CsvTransfer(
                 try {
                     // 8列（旧フォーマット）または11列（新フォーマット）を許容
                     if (columns.size < 8) {
-                        errors.add("Line ${index + 2}: Invalid format (expected at least 8 columns, got ${columns.size})")
+                        errors.add(ImportIssue(R.string.csv_issue_columns, listOf(8, columns.size)).atLine(index + 2))
                         errorCount++
                         return@forEachIndexed
                     }
@@ -256,23 +262,31 @@ class CsvTransfer(
                     val weightTrackingEnabledStr = columns.getOrNull(12)?.trim() ?: ""
                     val assistanceTrackingEnabledStr = columns.getOrNull(13)?.trim() ?: ""
                     val descriptionStr = columns.getOrNull(14)?.trim() ?: ""
+                    val catalogIdStr = columns.getOrNull(15)?.trim() ?: ""
 
                     // 必須フィールドチェック
                     if (name.isEmpty() || type.isEmpty() || laterality.isEmpty()) {
-                        errors.add("Line ${index + 2}: Missing required fields (name, type, or laterality)")
+                        errors.add(ImportIssue(R.string.csv_issue_required).atLine(index + 2))
                         errorCount++
                         return@forEachIndexed
                     }
 
                     // バリデーション
                     if (type !in listOf("Dynamic", "Isometric")) {
-                        errors.add("Line ${index + 2}: Invalid type \"$type\" (must be Dynamic or Isometric)")
+                        errors.add(ImportIssue(R.string.csv_issue_type, listOf(type)).atLine(index + 2))
                         errorCount++
                         return@forEachIndexed
                     }
 
                     if (laterality !in listOf("Bilateral", "Unilateral")) {
-                        errors.add("Line ${index + 2}: Invalid laterality \"$laterality\" (must be Bilateral or Unilateral)")
+                        errors.add(ImportIssue(R.string.csv_issue_laterality, listOf(laterality)).atLine(index + 2))
+                        errorCount++
+                        return@forEachIndexed
+                    }
+
+                    // The catalogue link, when the file has one: a malformed id is refused before anything is created.
+                    if (catalogIdStr.isNotEmpty() && (catalogIdStr.length > MAX_CATALOG_ID_LENGTH || !CATALOG_ID_PATTERN.matches(catalogIdStr))) {
+                        errors.add(ImportIssue(R.string.csv_issue_catalog_id, listOf(catalogIdStr)).atLine(index + 2))
                         errorCount++
                         return@forEachIndexed
                     }
@@ -306,20 +320,30 @@ class CsvTransfer(
                     if (existing != null) {
                         // laterality不一致の場合はスキップ
                         if (existing.laterality != laterality) {
-                            skippedItems.add("\"$name, $type\" (laterality mismatch: existing=${existing.laterality}, CSV=$laterality)")
+                            skippedItems.add(ImportIssue(R.string.csv_skip_mismatch, listOf("$name, $type", existing.laterality, laterality)))
                             skippedCount++
                             return@forEachIndexed
                         }
-                        // 完全一致の場合もスキップ
-                        skippedItems.add("\"$name, $type\" (already exists)")
+                        // 完全一致の場合もスキップ。The existing exercise's catalogue link is never changed.
+                        val linkKept = catalogIdStr.isNotEmpty() && catalogIdStr != existing.catalogId
+                        skippedItems.add(ImportIssue(if (linkKept) R.string.csv_skip_exists_link else R.string.csv_skip_exists, listOf("$name, $type")))
                         skippedCount++
                         return@forEachIndexed
+                    }
+
+                    // A catalogue step can be linked to one exercise only: one that is already linked here, or
+                    // repeated in this file, comes in without its link and says so.
+                    val catalogId = catalogIdStr.ifEmpty { null }?.takeIf { id ->
+                        val taken = exerciseDao.getExerciseByCatalogId(id) != null || !catalogIdsSeen.add(id)
+                        if (taken) skippedItems.add(ImportIssue(R.string.csv_skip_no_link, listOf("$name, $type")))
+                        !taken
                     }
 
                     val exercise = Exercise(
                         name = name,
                         type = type,
                         group = group,
+                        catalogId = catalogId,
                         sortOrder = sortOrder,
                         displayOrder = displayOrder,
                         laterality = laterality,
@@ -337,7 +361,7 @@ class CsvTransfer(
                     successCount++
 
                 } catch (e: Exception) {
-                    errors.add("Line ${index + 2}: ${e.message}")
+                    errors.add(ImportIssue(R.string.csv_issue_text, listOf(e.message ?: "")).atLine(index + 2))
                     errorCount++
                 }
             }
@@ -358,83 +382,68 @@ class CsvTransfer(
     }
 
     /**
-     * CSVから記録をインポート（マージモード）
+     * Imports records from a CSV file, adding to what is there and skipping what is already there. Rows become
+     * workouts in the current history model (see [CsvWorkoutImport]), all in one transaction: if writing fails,
+     * nothing is added.
      */
     suspend fun importRecordsFromCsv(csvString: String): CsvImportReport = withContext(Dispatchers.IO) {
-        var successCount = 0
-        var skippedCount = 0
         var errorCount = 0
-        val skippedItems = mutableListOf<String>()
-        val errors = mutableListOf<String>()
+        val skippedItems = mutableListOf<ImportIssue>()
+        val errors = mutableListOf<ImportIssue>()
+        var added = 0
+        var skipped = 0
 
         try {
             val csvRecords = parseCsvRecords(csvString)
 
             if (csvRecords.isEmpty()) {
                 onMessage(UiMessage.CsvEmpty)
-                return@withContext CsvImportReport(CsvType.RECORDS, 0, 0, 1, emptyList(), listOf("CSV file is empty"))
+                return@withContext CsvImportReport(CsvType.RECORDS, 0, 0, 1, emptyList(), listOf(ImportIssue(R.string.csv_issue_empty)))
             }
-
-            // ヘッダー行をスキップ
-            val dataRecords = csvRecords.drop(1)
 
             // Sets already in history, legacy or v2, so an exported v2 set is not imported again as a duplicate.
-            val existingSets = CompatibilityHistory.read(database, ZoneId.systemDefault())
-                .map { listOf(it.exerciseId, it.date, it.time, it.setNumber) }
-                .toHashSet()
+            val zone = ZoneId.systemDefault()
+            val history = CompatibilityHistory.read(database, zone)
+            val existingKeys = history.map { listOf<Any>(it.exerciseId, it.date, it.time, it.setNumber) }.toHashSet()
+            val existingMinutes = history.map { listOf<Any>(it.exerciseId, it.date, it.time) }.toHashSet()
 
-            dataRecords.forEachIndexed { index, columns ->
-                try {
-                    val row = parseRecordCsvRow(columns).getOrElse {
-                        errors.add("Line ${index + 2}: ${it.message}")
-                        errorCount++
-                        return@forEachIndexed
-                    }
-
-                    // 種目を検索
-                    val exercise = exerciseDao.getExerciseByNameAndType(row.exerciseName, row.exerciseType)
-
-                    if (exercise == null) {
-                        errors.add("Line ${index + 2}: Exercise not found: ${row.exerciseName} (${row.exerciseType})")
-                        errorCount++
-                        return@forEachIndexed
-                    }
-
-                    // 重複チェック: history, and rows already imported from this file.
-                    val key = listOf(exercise.id, row.date, row.time, row.setNumber)
-                    if (key in existingSets) {
-                        skippedItems.add("\"${row.exerciseName} (${row.exerciseType})\" - ${row.date} ${row.time} Set ${row.setNumber} (already exists)")
-                        skippedCount++
-                        return@forEachIndexed
-                    }
-
-                    val record = TrainingRecord(
-                        exerciseId = exercise.id,
-                        valueRight = row.valueRight,
-                        valueLeft = row.valueLeft,
-                        setNumber = row.setNumber,
-                        date = row.date,
-                        time = row.time,
-                        comment = row.comment,
-                        distanceCm = row.distanceCm,
-                        weightG = row.weightG,
-                        assistanceG = row.assistanceG
-                    )
-
-                    recordDao.insertRecord(record)
-                    existingSets.add(key)
-                    successCount++
-
-                } catch (e: Exception) {
-                    errors.add("Line ${index + 2}: ${e.message}")
+            val rows = mutableListOf<CsvWorkoutImport.Row>()
+            csvRecords.drop(1).forEachIndexed { index, columns ->
+                val line = index + 2
+                val row = parseRecordCsvRow(columns).getOrElse {
+                    errors.add(((it as? ImportIssueException)?.issue ?: ImportIssue(R.string.csv_issue_text, listOf(it.message ?: ""))).atLine(line))
                     errorCount++
+                    return@forEachIndexed
                 }
+                val exercise = exerciseDao.getExerciseByNameAndType(row.exerciseName, row.exerciseType)
+                if (exercise == null) {
+                    errors.add(ImportIssue(R.string.csv_issue_exercise_missing, listOf(row.exerciseName, row.exerciseType)).atLine(line))
+                    errorCount++
+                    return@forEachIndexed
+                }
+                rows += CsvWorkoutImport.Row(
+                    line = line, exercise = exercise, date = row.date, time = row.time, setNumber = row.setNumber,
+                    valueRight = row.valueRight, valueLeft = row.valueLeft, comment = row.comment,
+                    distanceCm = row.distanceCm, weightG = row.weightG, assistanceG = row.assistanceG,
+                    warmUp = row.warmUp, effortLeft = row.effortLeft,
+                )
             }
 
+            val plan = CsvWorkoutImport.plan(rows, database.backupDao().groups(), existingKeys, existingMinutes, zone, System.currentTimeMillis())
+            plan.skipped.forEach {
+                skippedItems.add(ImportIssue(R.string.csv_skip_record, listOf("${it.exercise.name} (${it.exercise.type})", it.date, it.time, it.setNumber)))
+            }
+            skipped = plan.skipped.size
+            plan.refused.forEach {
+                errors.add(ImportIssue(R.string.csv_issue_old_format).atLine(it.line))
+                errorCount++
+            }
+            CsvWorkoutImport.write(database, plan)
+            added = plan.added
         } catch (e: Exception) {
             onMessage(UiMessage.ImportError(e.message ?: ""))
         }
 
-        return@withContext CsvImportReport(CsvType.RECORDS, successCount, skippedCount, errorCount, skippedItems, errors)
+        return@withContext CsvImportReport(CsvType.RECORDS, added, skipped, errorCount, skippedItems, errors)
     }
 }

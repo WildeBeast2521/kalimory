@@ -602,7 +602,7 @@ fun ShareHubScreen(
                                 )
                                 report.errors.take(10).forEach { error ->
                                     Text(
-                                        text = "\u2022 $error",
+                                        text = "\u2022 ${error.text(context)}",
                                         fontSize = 12.sp,
                                         color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
                                         lineHeight = 16.sp
@@ -669,7 +669,7 @@ fun ShareHubScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .heightIn(min = 56.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary
                         )
@@ -704,7 +704,7 @@ fun ShareHubScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .heightIn(min = 56.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = MaterialTheme.colorScheme.onSurface
                         )

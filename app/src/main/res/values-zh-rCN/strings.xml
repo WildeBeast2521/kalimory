@@ -38,7 +38,6 @@
     <string name="group_name">分组名称</string>
     <string name="rename_group">重命名分组</string>
     <string name="delete_group">删除分组</string>
-    <string name="delete_confirmation">删除确认</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">训练记录</string>
@@ -67,9 +66,7 @@
     <string name="no_records_yet">还没有记录</string>
     <string name="unknown_exercise">未知动作</string>
     <string name="edit_session_info">编辑训练信息</string>
-    <string name="delete_session">删除训练</string>
     <string name="delete_record_warning">删除「%1$s」记录？\n%2$s %3$s\n%4$s</string>
-    <string name="edit_set_value">编辑组数值</string>
     <string name="right_value_label">右侧数值</string>
     <string name="left_value_label">左侧数值</string>
     <string name="show_all">显示全部</string>
@@ -90,7 +87,6 @@
     <string name="unit_reps">次</string>
     <string name="unit_seconds">秒</string>
     <!-- Challenge Screen -->
-    <string name="no_challenge_set">未设定挑战</string>
     <string name="no_exercises_available">没有可用动作</string>
     <string name="no_exercises_in_period">%s内未进行训练</string>
     <!-- Settings Screen -->
@@ -179,7 +175,6 @@
     <string name="no_results">未找到结果</string>
     <string name="search_includes">包含 %1$s</string>
     <string name="clear">清除</string>
-    <string name="value_label">数值</string>
     <string name="graph_type_average">平均</string>
     <string name="graph_type_max">最大</string>
     <string name="graph_type_total">总计</string>
@@ -194,9 +189,6 @@
     <string name="example_bilateral">例如：俯卧撑、深蹲</string>
     <string name="example_unilateral">例如：手枪深蹲、单手俯卧撑</string>
     <string name="per_side_parenthesis">（每侧）</string>
-    <string name="example_3">例如：3</string>
-    <string name="example_10">例如：10</string>
-    <string name="example_30">例如：30</string>
     <string name="no_group_display">无分组</string>
     <string name="new_group_plus">+ 新建分组</string>
     <string name="save_button">保存</string>
@@ -284,8 +276,6 @@
     <string name="timer_settings_description">为此动作配置计时器。留空则使用默认设置。</string>
     <string name="rep_duration_seconds">每次秒数（计数节奏）</string>
     <string name="rest_interval_seconds">组间间歇（秒）</string>
-    <string name="example_5_seconds">例如：5</string>
-    <string name="example_240_seconds">例如：240</string>
     <!-- Distance/Weight Tracking Settings -->
     <string name="tracking_settings_optional">追踪设置（可选）</string>
     <string name="track_distance">追踪距离</string>
@@ -545,7 +535,7 @@
     <string name="share_import_preview_new">新增（将被添加）</string>
     <string name="share_import_preview_exists">已存在（将被跳过）</string>
     <string name="share_import_preview_nothing">所有项目已存在，不会添加任何内容。</string>
-    <string name="share_import_complete">导入完成</string>
+    <string name="share_import_complete">已导入。新增动作：%1$d，跳过：%2$d。新增程序：%3$d，新增间歇：%4$d</string>
     <string name="share_import_added_reused">%1$s，%2$s</string>
     <string name="share_import_added_skipped">%1$s，%2$s</string>
     <string name="share_import_errors">错误 (%1$d)</string>
@@ -985,4 +975,55 @@
     <string name="catalogue_step_number">第 %d 步</string>
     <string name="show_only_this_exercise">只显示此动作</string>
     <string name="chart_summary">%1$s 至 %2$s 的图表。最新 %3$s，最高 %4$s。</string>
+    <string name="import_issue_text">%1$s</string>
+    <string name="csv_issue_group_empty">第 %1$d 行：分组名称为空</string>
+    <string name="csv_issue_columns">第 %1$d 行：列数不足（至少需要 %2$d，实际为 %3$d）</string>
+    <string name="csv_issue_required">第 %1$d 行：缺少名称、类型或单双侧</string>
+    <string name="csv_issue_type">第 %1$d 行：类型“%2$s”无效（必须是 Dynamic 或 Isometric）</string>
+    <string name="csv_issue_laterality">第 %1$d 行：单双侧“%2$s”无效（必须是 Bilateral 或 Unilateral）</string>
+    <string name="csv_issue_catalog_id">第 %1$d 行：catalogId“%2$s”无效</string>
+    <string name="csv_issue_text">第 %1$d 行：%2$s</string>
+    <string name="csv_issue_record_columns">第 %1$d 行：列数不足</string>
+    <string name="csv_issue_record_required">第 %1$d 行：缺少必填值</string>
+    <string name="csv_issue_date">第 %1$d 行：日期\"%2$s\"无效（应写成 2026‑10‑08 的形式）</string>
+    <string name="csv_issue_time">第 %1$d 行：时间\"%2$s\"无效（应写成 07:30 的形式）</string>
+    <string name="csv_issue_number">第 %1$d 行：有数值不是整数</string>
+    <string name="csv_issue_negative">第 %1$d 行：有数值为负</string>
+    <string name="csv_issue_warmup">第 %1$d 行：warmUp“%2$s”无效（应为 true 或 false）</string>
+    <string name="csv_issue_effort">第 %1$d 行：effortLeft“%2$s”无效（应为 0 到 %3$d）</string>
+    <string name="csv_issue_exercise_missing">第 %1$d 行：找不到动作：%2$s（%3$s）</string>
+    <string name="csv_issue_old_format">第 %1$d 行：未添加，因为此训练使用较旧的记录格式，无法保存热身标记或用力程度</string>
+    <string name="csv_issue_empty">CSV 文件为空</string>
+    <string name="csv_skip_exists">“%1$s”（已存在）</string>
+    <string name="csv_skip_exists_link">“%1$s”（已存在；目录链接不变）</string>
+    <string name="csv_skip_mismatch">“%1$s”（单双侧设置不同：现有 %2$s，文件 %3$s）</string>
+    <string name="csv_skip_no_link">“%1$s”（已添加但没有目录链接：该步骤已被链接）</string>
+    <string name="csv_skip_record">“%1$s” - %2$s %3$s，第 %4$d 组（已存在）</string>
+    <string name="share_issue_version">不支持的格式版本：%1$d</string>
+    <string name="share_issue_export_type">导出类型无效：%1$s</string>
+    <string name="share_issue_wrong_file">这是备份文件，不是分享文件</string>
+    <string name="share_issue_bad_json">该文件不是有效的分享文件</string>
+    <string name="share_issue_failed">导入失败</string>
+    <string name="share_issue_name_empty">%1$s：名称为空</string>
+    <string name="share_issue_name_long">%1$s：名称太长（最多 %2$d）</string>
+    <string name="share_issue_invalid_type">%1$s：类型“%2$s”无效</string>
+    <string name="share_issue_invalid_laterality">%1$s：单双侧“%2$s”无效</string>
+    <string name="share_issue_invalid_catalog">%1$s：catalogId“%2$s”无效</string>
+    <string name="share_issue_range">%1$s：%2$s 必须在 %3$d 到 %4$d 之间</string>
+    <string name="share_issue_dup_catalog">%1$s：catalogId“%2$s”重复</string>
+    <string name="share_issue_dup_exercise">%1$s：动作“%2$s”重复</string>
+    <string name="share_issue_dup_program">%1$s：程序名称“%2$s”重复</string>
+    <string name="share_issue_dup_interval">%1$s：间歇名称“%2$s”重复</string>
+    <string name="share_issue_dup_loop">%1$s：循环 ID %2$s 重复</string>
+    <string name="share_issue_unknown_group">%1$s：文件中没有分组“%2$s”</string>
+    <string name="share_issue_unknown_exercise">%1$s：文件中没有动作“%2$s”</string>
+    <string name="share_issue_unknown_loop">%1$s：文件中没有循环 ID %2$s</string>
+    <string name="share_export_complete">已导出。动作：%1$d，程序：%2$d，间歇：%3$d</string>
+    <string name="share_import_error">无法导入：%1$s</string>
+    <string name="file_too_large">文件太大：%1$d MB（上限 %2$d MB）</string>
+    <string name="wrong_file_type">文件类型不对：是 %1$s，而不是 %2$s</string>
+    <string name="delete_group_title">删除此分组？</string>
+    <string name="delete_exercise_title">删除此动作？</string>
+    <string name="delete_workout_title">删除此训练？</string>
+    <string name="delete_task_title">删除此任务？</string>
 </resources>

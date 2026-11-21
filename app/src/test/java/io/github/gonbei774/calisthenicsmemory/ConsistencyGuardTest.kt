@@ -20,6 +20,25 @@ class ConsistencyGuardTest {
         assertTrue("Found ${kotlin.size} Kotlin files: the guards are not reading the app", kotlin.size > 100)
     }
 
+    @Test fun `a button never has a fixed height`() {
+        // A fixed height cuts the label off at large text; a minimum height grows with it. The check reads each
+        // Button( call up to its closing bracket, so a height on something else nearby is not counted.
+        val call = Regex("""\b(Outlined|FilledTonal|Text|Elevated)?Button\(""")
+        val offenders = kotlin.flatMap { file ->
+            val text = file.readText()
+            call.findAll(text).mapNotNull { m ->
+                var depth = 0
+                var i = m.range.last
+                while (i < text.length) {
+                    if (text[i] == '(') depth++ else if (text[i] == ')' && --depth == 0) break
+                    i++
+                }
+                file.name.takeIf { Regex("""\.height\(""").containsMatchIn(text.substring(m.range.first, i)) }
+            }.toList()
+        }.distinct()
+        assertTrue("Use heightIn(min = ...) on a button: $offenders", offenders.isEmpty())
+    }
+
     @Test fun `every floating action button is the shared AppFab`() {
         val offenders = uses(Regex("""\b(Medium|Large|Small)?FloatingActionButton\("""), except = setOf("AppFab.kt"))
         assertTrue("Use AppFab instead: $offenders", offenders.isEmpty())
@@ -71,6 +90,12 @@ class ConsistencyGuardTest {
             }
             from = at.range.last + 1
         }
+    }
+
+    @Test fun `a long press does not hide a menu`() {
+        // A row's other actions sit behind its menu button; a long press is for dragging.
+        val offenders = uses(Regex("""onLongClick\s*=\s*\{\s*(show|open)\w*Menu"""))
+        assertTrue("Put the action in RowMenu instead: $offenders", offenders.isEmpty())
     }
 
     @Test fun `an on-off setting is a SwitchRow, not a switch built by hand`() {

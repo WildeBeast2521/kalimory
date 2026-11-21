@@ -85,7 +85,7 @@ class CsvImportTest {
         assertEquals(1, report.skippedCount)
         assertEquals(0, report.errorCount)
         assertEquals(1, report.skippedItems.size)
-        assertTrue(report.skippedItems[0].contains("Step 1 Pushups"))
+        assertTrue(report.skippedItems[0].args.toString().contains("Step 1 Pushups"))
     }
 
     @Test
@@ -134,6 +134,179 @@ class CsvImportTest {
     }
 
     @Test
+    fun importRecords_writesWorkoutsInTheCurrentModelAndNoOlderRecords() = runBlocking {
+        seedExercises()
+        val csv = listOf(
+            recordsHeader,
+            "Push-up,Dynamic,2026-03-09,07:30,1,10,,morning,,,",
+            "Push-up,Dynamic,2026-03-09,07:30,2,9,,morning,,,",
+            "Lunge,Dynamic,2026-03-09,07:30,1,8,6,morning,,,",
+        ).joinToString("\n")
+
+        val report = transfer().importRecordsFromCsv(csv)
+
+        assertEquals(3, report.successCount)
+        assertEquals(0, report.errorCount)
+        assertEquals(0, database.trainingRecordDao().countByExercise(exerciseDao.getExerciseByNameAndType("Push-up", "Dynamic")!!.id))
+        val sessions = database.backupDao().snapshot().workoutSessions
+        assertEquals(1, sessions.size)
+        assertEquals("morning", sessions.single().comment)
+    }
+
+    @Test
+    fun importRecords_historyShowsEachImportedSetOnce() = runBlocking {
+        seedExercises()
+        val csv = listOf(
+            recordsHeader,
+            "Push-up,Dynamic,2026-03-09,07:30,1,10,,,,,",
+            "Lunge,Dynamic,2026-03-09,07:30,1,8,6,,,,",
+        ).joinToString("\n")
+        transfer().importRecordsFromCsv(csv)
+
+        val shown = history()
+        assertEquals(2, shown.size)
+        assertEquals(listOf(8 to 6), shown.filter { it.valueLeft != null }.map { it.valueRight to it.valueLeft!! })
+    }
+
+    @Test
+    fun importRecords_theSameFileTwiceAddsNothing() = runBlocking {
+        seedExercises()
+        val csv = listOf(
+            recordsHeader,
+            "Push-up,Dynamic,2026-03-09,07:30,1,10,,,,,",
+            "Push-up,Dynamic,2026-03-09,07:30,2,9,,,,,",
+        ).joinToString("\n")
+        transfer().importRecordsFromCsv(csv)
+        val second = transfer().importRecordsFromCsv(csv)
+
+        assertEquals(0, second.successCount)
+        assertEquals(2, second.skippedCount)
+        assertEquals(2, history().size)
+    }
+
+    @Test
+    fun importRecords_anExportedFileImportedBackAddsNothing() = runBlocking {
+        seedExercises()
+        transfer().importRecordsFromCsv(listOf(recordsHeader, "Push-up,Dynamic,2026-03-09,07:30,1,10,,,,,", "Push-up,Dynamic,2026-03-09,07:30,2,9,,,,,").joinToString("\n"))
+        val exported = transfer().exportRecords()
+        val report = transfer().importRecordsFromCsv(exported)
+
+        assertEquals(0, report.successCount)
+        assertEquals(2, history().size)
+    }
+
+    @Test
+    fun importRecords_warmUpAndEffortAreKeptAndExported() = runBlocking {
+        seedExercises()
+        val csv = listOf(
+            recordsHeader + ",warmUp,effortLeft",
+            "Push-up,Dynamic,2026-03-09,07:30,1,12,,,,,,true,4",
+            "Push-up,Dynamic,2026-03-09,07:30,2,10,,,,,,false,2",
+        ).joinToString("\n")
+        val report = transfer().importRecordsFromCsv(csv)
+
+        assertEquals(2, report.successCount)
+        val shown = history().sortedBy { it.setNumber }
+        assertEquals(listOf(true, false), shown.map { it.warmUp })
+        assertEquals(listOf(4, 2), shown.map { it.effortLeft })
+        val exported = transfer().exportRecords()
+        assertTrue(exported.contains(",true,4"))
+        assertTrue(exported.contains(",false,2"))
+    }
+
+    @Test
+    fun importRecords_marksOnASetBesideExistingSetsAreRefusedNotStripped() = runBlocking {
+        seedExercises()
+        transfer().importRecordsFromCsv(listOf(recordsHeader, "Push-up,Dynamic,2026-03-09,07:30,1,10,,,,,").joinToString("\n"))
+        val report = transfer().importRecordsFromCsv(
+            listOf(recordsHeader + ",warmUp,effortLeft", "Push-up,Dynamic,2026-03-09,07:30,2,9,,,,,,true,").joinToString("\n")
+        )
+        assertEquals(0, report.successCount)
+        assertEquals(1, report.errorCount)
+        assertEquals(1, history().size)
+    }
+
+    @Test
+    fun importRecords_badMarkValueIsALineError() = runBlocking {
+        seedExercises()
+        val report = transfer().importRecordsFromCsv(
+            listOf(recordsHeader + ",warmUp,effortLeft", "Push-up,Dynamic,2026-03-09,07:30,1,10,,,,,,maybe,").joinToString("\n")
+        )
+        assertEquals(1, report.errorCount)
+        assertEquals(0, history().size)
+    }
+
+    @Test
+    fun importExercises_catalogId_linked() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,push.wall
+        """.trimIndent()
+        val report = importExercisesCsv(csv)
+        assertEquals(1, report.successCount)
+        assertEquals("push.wall", exerciseDao.getExerciseByNameAndType("Wall push-up", "Dynamic")?.catalogId)
+    }
+
+    @Test
+    fun importExercises_catalogIdAlreadyLinked_addedWithoutLink() = runBlocking {
+        val first = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,push.wall
+        """.trimIndent()
+        importExercisesCsv(first)
+        val second = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            My wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,push.wall
+        """.trimIndent()
+        val report = importExercisesCsv(second)
+        assertEquals(1, report.successCount)
+        assertEquals(0, report.skippedCount)
+        assertEquals(1, report.skippedItems.size)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("My wall push-up", "Dynamic")?.catalogId)
+        assertEquals("push.wall", exerciseDao.getExerciseByNameAndType("Wall push-up", "Dynamic")?.catalogId)
+    }
+
+    @Test
+    fun importExercises_malformedCatalogId_error() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,Not A Step
+        """.trimIndent()
+        val report = importExercisesCsv(csv)
+        assertEquals(0, report.successCount)
+        assertEquals(1, report.errorCount)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("Wall push-up", "Dynamic"))
+    }
+
+    @Test
+    fun importExercises_existingExerciseLinkNotChanged() = runBlocking {
+        val first = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,push.wall
+        """.trimIndent()
+        importExercisesCsv(first)
+        val again = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Wall push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,push.incline
+        """.trimIndent()
+        val report = importExercisesCsv(again)
+        assertEquals(0, report.successCount)
+        assertEquals(1, report.skippedCount)
+        assertEquals("push.wall", exerciseDao.getExerciseByNameAndType("Wall push-up", "Dynamic")?.catalogId)
+    }
+
+    @Test
+    fun importExercises_oldFileWithoutCatalogId_readsAsBefore() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite
+            Plain squat,Dynamic,,0,Bilateral,3,15,false
+        """.trimIndent()
+        val report = importExercisesCsv(csv)
+        assertEquals(1, report.successCount)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("Plain squat", "Dynamic")?.catalogId)
+    }
+
+    @Test
     fun importExercises_invalidType_error() = runBlocking {
         groupDao.insertGroup(ExerciseGroup(name = "Step 1 Pushups"))
 
@@ -147,7 +320,7 @@ class CsvImportTest {
         assertEquals(0, report.successCount)
         assertEquals(0, report.skippedCount)
         assertEquals(1, report.errorCount)
-        assertTrue(report.errors[0].contains("type"))
+        assertEquals(R.string.csv_issue_type, report.errors[0].res)
     }
 
     @Test
@@ -164,7 +337,7 @@ class CsvImportTest {
         assertEquals(0, report.successCount)
         assertEquals(0, report.skippedCount)
         assertEquals(1, report.errorCount)
-        assertTrue(report.errors[0].contains("laterality"))
+        assertEquals(R.string.csv_issue_laterality, report.errors[0].res)
     }
 
     @Test
@@ -227,12 +400,21 @@ class CsvImportTest {
         assertEquals(0, report.successCount)
         assertEquals(1, report.skippedCount)
         assertEquals(0, report.errorCount)
-        assertTrue(report.skippedItems[0].contains("laterality"))
+        assertEquals(R.string.csv_skip_mismatch, report.skippedItems[0].res)
     }
 
     // The app's own import, on the in-memory database.
     private val messages = mutableListOf<UiMessage>()
     private fun transfer() = CsvTransfer(database) { messages += it }
+
+    private val recordsHeader = "exerciseName,exerciseType,date,time,setNumber,valueRight,valueLeft,comment,distanceCm,weightG,assistanceG"
+
+    private suspend fun seedExercises() {
+        exerciseDao.insertExercise(io.github.gonbei774.calisthenicsmemory.data.Exercise(name = "Push-up", type = "Dynamic", laterality = "Bilateral"))
+        exerciseDao.insertExercise(io.github.gonbei774.calisthenicsmemory.data.Exercise(name = "Lunge", type = "Dynamic", laterality = "Unilateral"))
+    }
+
+    private suspend fun history() = io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory.read(database, java.time.ZoneId.systemDefault())
 
     private suspend fun importGroupsCsv(csvString: String): CsvImportReport = transfer().importGroups(csvString)
 

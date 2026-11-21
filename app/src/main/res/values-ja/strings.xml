@@ -38,7 +38,6 @@
     <string name="add_exercise_to_group">グループに新しい種目を追加</string>
     <string name="rename_group">グループ名を編集</string>
     <string name="delete_group">グループを削除</string>
-    <string name="delete_confirmation">削除の確認</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">トレーニング記録</string>
@@ -78,9 +77,7 @@
     <string name="no_records_yet">記録がまだありません</string>
     <string name="unknown_exercise">不明な種目</string>
     <string name="edit_session_info">セッション情報を編集</string>
-    <string name="delete_session">セッションを削除</string>
     <string name="delete_record_warning">「%1$s」の記録を削除しますか？\n%2$s %3$s\n%4$s</string>
-    <string name="edit_set_value">セット値の編集</string>
     <string name="right_value_label">右の値</string>
     <string name="left_value_label">左の値</string>
     <string name="show_all">全て表示</string>
@@ -101,7 +98,6 @@
     <string name="unit_reps">回</string>
     <string name="unit_seconds">秒</string>
     <!-- Challenge Screen -->
-    <string name="no_challenge_set">課題未設定</string>
     <string name="challenge_best">ベストのワークアウト</string>
     <string name="challenge_target_label">目標</string>
     <string name="no_exercises_available">種目がありません</string>
@@ -218,7 +214,6 @@
     <string name="no_results">結果が見つかりません</string>
     <string name="search_includes">%1$s を含む</string>
     <string name="clear">クリア</string>
-    <string name="value_label">値</string>
     <string name="graph_type_average">平均</string>
     <string name="graph_type_max">最大</string>
     <string name="graph_type_total">合計</string>
@@ -239,9 +234,6 @@
     <string name="example_bilateral">例: プッシュアップ、スクワット</string>
     <string name="example_unilateral">例: ピストルスクワット、片手プッシュアップ</string>
     <string name="per_side_parenthesis">(片方あたり)</string>
-    <string name="example_3">例: 3</string>
-    <string name="example_10">例: 10</string>
-    <string name="example_30">例: 30</string>
     <string name="no_group_display">グループなし</string>
     <string name="new_group_plus">+ 新しいグループ</string>
     <string name="save_button">保存</string>
@@ -329,8 +321,6 @@
     <string name="timer_settings_description">この種目のタイマーを設定します。空欄の場合はデフォルト設定を使用します。</string>
     <string name="rep_duration_seconds">1回あたりの秒数（カウントのペース）</string>
     <string name="rest_interval_seconds">セット間インターバル（秒）</string>
-    <string name="example_5_seconds">例: 5</string>
-    <string name="example_240_seconds">例: 240</string>
     <!-- Distance/Weight Tracking Settings -->
     <string name="tracking_settings_optional">記録オプション（任意）</string>
     <string name="track_distance">距離を記録</string>
@@ -606,7 +596,7 @@
     <string name="share_import_preview_new">新規（追加されます）</string>
     <string name="share_import_preview_exists">既存（スキップされます）</string>
     <string name="share_import_preview_nothing">すべてのデータが既に存在します。追加されるものはありません。</string>
-    <string name="share_import_complete">インポート完了</string>
+    <string name="share_import_complete">インポートしました。追加した種目: %1$d、スキップ: %2$d。追加したプログラム: %3$d、インターバル: %4$d</string>
     <string name="share_import_added_reused">%1$s、%2$s</string>
     <string name="share_import_added_skipped">%1$s、%2$s</string>
     <string name="share_import_errors">エラー (%1$d)</string>
@@ -991,4 +981,55 @@
     <string name="catalogue_step_number">ステップ %d</string>
     <string name="show_only_this_exercise">この種目だけ表示</string>
     <string name="chart_summary">%1$s〜%2$sのグラフ。最新 %3$s、最高 %4$s。</string>
+    <string name="import_issue_text">%1$s</string>
+    <string name="csv_issue_group_empty">%1$d行目: グループ名が空です</string>
+    <string name="csv_issue_columns">%1$d行目: 列が足りません（必要 %2$d 以上、実際 %3$d）</string>
+    <string name="csv_issue_required">%1$d行目: 名前、タイプ、または片側/両側がありません</string>
+    <string name="csv_issue_type">%1$d行目: タイプ「%2$s」が正しくありません（Dynamic または Isometric）</string>
+    <string name="csv_issue_laterality">%1$d行目: 片側/両側「%2$s」が正しくありません（Bilateral または Unilateral）</string>
+    <string name="csv_issue_catalog_id">%1$d行目: catalogId「%2$s」が正しくありません</string>
+    <string name="csv_issue_text">%1$d行目: %2$s</string>
+    <string name="csv_issue_record_columns">%1$d行目: 列が足りません</string>
+    <string name="csv_issue_record_required">%1$d行目: 必須の値がありません</string>
+    <string name="csv_issue_date">%1$d行目: 日付\"%2$s\"が正しくありません（2026‑10‑08 の形式）</string>
+    <string name="csv_issue_time">%1$d行目: 時刻\"%2$s\"が正しくありません（07:30 の形式）</string>
+    <string name="csv_issue_number">%1$d行目: 整数でない数値があります</string>
+    <string name="csv_issue_negative">%1$d行目: 負の値があります</string>
+    <string name="csv_issue_warmup">%1$d行目: warmUp「%2$s」が正しくありません（true または false）</string>
+    <string name="csv_issue_effort">%1$d行目: effortLeft「%2$s」が正しくありません（0〜%3$d）</string>
+    <string name="csv_issue_exercise_missing">%1$d行目: 種目が見つかりません: %2$s（%3$s）</string>
+    <string name="csv_issue_old_format">%1$d行目: このワークアウトは古い記録形式のため追加されませんでした。ウォームアップの印や負荷は保存できません</string>
+    <string name="csv_issue_empty">CSVファイルが空です</string>
+    <string name="csv_skip_exists">「%1$s」（すでにあります）</string>
+    <string name="csv_skip_exists_link">「%1$s」（すでにあります。カタログのリンクは変更されません）</string>
+    <string name="csv_skip_mismatch">「%1$s」（片側/両側の設定が異なります: 既存 %2$s、ファイル %3$s）</string>
+    <string name="csv_skip_no_link">「%1$s」（カタログのリンクなしで追加しました: そのステップはすでにリンクされています）</string>
+    <string name="csv_skip_record">「%1$s」- %2$s %3$s、%4$dセット目（すでにあります）</string>
+    <string name="share_issue_version">未対応の形式バージョン: %1$d</string>
+    <string name="share_issue_export_type">エクスポートの種類が正しくありません: %1$s</string>
+    <string name="share_issue_wrong_file">これはバックアップファイルで、共有ファイルではありません</string>
+    <string name="share_issue_bad_json">このファイルは有効な共有ファイルではありません</string>
+    <string name="share_issue_failed">インポートに失敗しました</string>
+    <string name="share_issue_name_empty">%1$s: 名前が空です</string>
+    <string name="share_issue_name_long">%1$s: 名前が長すぎます（最大 %2$d）</string>
+    <string name="share_issue_invalid_type">%1$s: タイプ「%2$s」が正しくありません</string>
+    <string name="share_issue_invalid_laterality">%1$s: 片側/両側「%2$s」が正しくありません</string>
+    <string name="share_issue_invalid_catalog">%1$s: catalogId「%2$s」が正しくありません</string>
+    <string name="share_issue_range">%1$s: %2$sは%3$d〜%4$dにしてください</string>
+    <string name="share_issue_dup_catalog">%1$s: catalogId「%2$s」が重複しています</string>
+    <string name="share_issue_dup_exercise">%1$s: 種目「%2$s」が重複しています</string>
+    <string name="share_issue_dup_program">%1$s: プログラム名「%2$s」が重複しています</string>
+    <string name="share_issue_dup_interval">%1$s: インターバル名「%2$s」が重複しています</string>
+    <string name="share_issue_dup_loop">%1$s: ループID %2$s が重複しています</string>
+    <string name="share_issue_unknown_group">%1$s: グループ「%2$s」がファイルにありません</string>
+    <string name="share_issue_unknown_exercise">%1$s: 種目「%2$s」がファイルにありません</string>
+    <string name="share_issue_unknown_loop">%1$s: ループID %2$s がファイルにありません</string>
+    <string name="share_export_complete">エクスポートしました。種目: %1$d、プログラム: %2$d、インターバル: %3$d</string>
+    <string name="share_import_error">インポートできませんでした: %1$s</string>
+    <string name="file_too_large">ファイルが大きすぎます: %1$d MB（上限 %2$d MB）</string>
+    <string name="wrong_file_type">ファイルの種類が違います: %1$s（%2$s が必要）</string>
+    <string name="delete_group_title">このグループを削除しますか？</string>
+    <string name="delete_exercise_title">この種目を削除しますか？</string>
+    <string name="delete_workout_title">このワークアウトを削除しますか？</string>
+    <string name="delete_task_title">このタスクを削除しますか？</string>
 </resources>

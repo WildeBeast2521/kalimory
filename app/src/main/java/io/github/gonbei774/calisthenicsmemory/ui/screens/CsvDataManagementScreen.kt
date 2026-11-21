@@ -689,7 +689,7 @@ fun CsvDataManagementScreen(
                     }
 
                     // スキップ項目の詳細（折りたたみ可能）
-                    if (report.skippedCount > 0) {
+                    if (report.skippedItems.isNotEmpty()) {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
@@ -729,7 +729,7 @@ fun CsvDataManagementScreen(
                                     ) {
                                         report.skippedItems.take(10).forEach { item ->
                                             Text(
-                                                text = "\u2022 $item",
+                                                text = "\u2022 ${item.text(context)}",
                                                 fontSize = 12.sp,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 lineHeight = 16.sp
@@ -789,7 +789,7 @@ fun CsvDataManagementScreen(
                                     ) {
                                         report.errors.take(10).forEach { error ->
                                             Text(
-                                                text = "\u2022 $error",
+                                                text = "\u2022 ${error.text(context)}",
                                                 fontSize = 12.sp,
                                                 color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
                                                 lineHeight = 16.sp
@@ -858,7 +858,7 @@ fun CsvDataManagementScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .heightIn(min = 56.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary
                         )
@@ -895,7 +895,7 @@ fun CsvDataManagementScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .heightIn(min = 56.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = MaterialTheme.colorScheme.onSurface
                         )

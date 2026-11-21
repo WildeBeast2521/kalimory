@@ -74,7 +74,7 @@ class CommunityShareTransferTest {
 
         val report = transfer(target).importCommunityShare(backup)
 
-        assertEquals(listOf("Wrong file type: backup"), report.errors)
+        assertEquals(listOf(R.string.share_issue_wrong_file), report.errors.map { it.res })
         assertEquals(UiMessage.WrongFileType(detected = "backup", expected = "share"), messages.last())
         assertTrue(target.backupDao().snapshot().exercises.isEmpty())
     }

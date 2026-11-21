@@ -38,7 +38,6 @@
     <string name="group_name">Nom du Groupe</string>
     <string name="rename_group">Renommer le Groupe</string>
     <string name="delete_group">Supprimer le Groupe</string>
-    <string name="delete_confirmation">Confirmation de Suppression</string>
     <string name="character_count">%1$d/%2$d</string>
     <!-- Record Screen -->
     <string name="training_record">Enregistrement d\'Entraînement</string>
@@ -67,9 +66,7 @@
     <string name="no_records_yet">Aucun enregistrement pour le moment</string>
     <string name="unknown_exercise">Exercice Inconnu</string>
     <string name="edit_session_info">Modifier les Infos de Séance</string>
-    <string name="delete_session">Supprimer la Séance</string>
     <string name="delete_record_warning">Supprimer l\'enregistrement de \"%1$s\" ?\n%2$s %3$s\n%4$s</string>
-    <string name="edit_set_value">Modifier la Valeur de Série</string>
     <string name="right_value_label">Valeur Droite</string>
     <string name="left_value_label">Valeur Gauche</string>
     <string name="show_all">Tout Afficher</string>
@@ -90,7 +87,6 @@
     <string name="unit_reps">rép.</string>
     <string name="unit_seconds">sec.</string>
     <!-- Challenge Screen -->
-    <string name="no_challenge_set">Aucun Défi Défini</string>
     <string name="no_exercises_available">Aucun exercice disponible</string>
     <string name="no_exercises_in_period">Aucun exercice effectué dans %s</string>
     <!-- Settings Screen -->
@@ -179,7 +175,6 @@
     <string name="no_results">Aucun résultat trouvé</string>
     <string name="search_includes">Contient %1$s</string>
     <string name="clear">Effacer</string>
-    <string name="value_label">Valeur</string>
     <string name="graph_type_average">Moyenne</string>
     <string name="graph_type_max">Maximum</string>
     <string name="graph_type_total">Total</string>
@@ -194,9 +189,6 @@
     <string name="example_bilateral">ex. Pompes, Squats</string>
     <string name="example_unilateral">ex. Pistol Squats, Pompes à Un Bras</string>
     <string name="per_side_parenthesis">(par côté)</string>
-    <string name="example_3">ex. 3</string>
-    <string name="example_10">ex. 10</string>
-    <string name="example_30">ex. 30</string>
     <string name="no_group_display">Aucun Groupe</string>
     <string name="new_group_plus">+ Nouveau Groupe</string>
     <string name="save_button">Enregistrer</string>
@@ -284,8 +276,6 @@
     <string name="timer_settings_description">Configurer les minuteurs pour cet exercice. Laisser vide pour utiliser les paramètres par défaut.</string>
     <string name="rep_duration_seconds">Secondes par rép. (rythme du comptage)</string>
     <string name="rest_interval_seconds">Intervalle de Repos (secondes)</string>
-    <string name="example_5_seconds">ex. 5</string>
-    <string name="example_240_seconds">ex. 240</string>
     <!-- Distance/Weight Tracking Settings -->
     <string name="tracking_settings_optional">Paramètres de Suivi (Optionnel)</string>
     <string name="track_distance">Suivre la Distance</string>
@@ -543,7 +533,7 @@
     <string name="share_import_preview_new">Nouveau (sera ajouté)</string>
     <string name="share_import_preview_exists">Existe déjà (sera ignoré)</string>
     <string name="share_import_preview_nothing">Tous les éléments existent déjà. Rien ne sera ajouté.</string>
-    <string name="share_import_complete">Importation terminée</string>
+    <string name="share_import_complete">Importé. Exercices ajoutés : %1$d, ignorés : %2$d. Programmes ajoutés : %3$d, intervalles ajoutés : %4$d</string>
     <string name="share_import_added_reused">%1$s, %2$s</string>
     <string name="share_import_added_skipped">%1$s, %2$s</string>
     <string name="share_import_errors">Erreurs (%1$d)</string>
@@ -1040,4 +1030,55 @@
     <string name="catalogue_step_number">Étape %d</string>
     <string name="show_only_this_exercise">Afficher seulement cet exercice</string>
     <string name="chart_summary">Graphique du %1$s au %2$s. Dernière valeur %3$s, maximum %4$s.</string>
+    <string name="import_issue_text">%1$s</string>
+    <string name="csv_issue_group_empty">Ligne %1$d : le nom du groupe est vide</string>
+    <string name="csv_issue_columns">Ligne %1$d : pas assez de colonnes (minimum attendu : %2$d, trouvé : %3$d)</string>
+    <string name="csv_issue_required">Ligne %1$d : le nom, le type ou la latéralité est manquant</string>
+    <string name="csv_issue_type">Ligne %1$d : type « %2$s » non valide (Dynamic ou Isometric attendu)</string>
+    <string name="csv_issue_laterality">Ligne %1$d : latéralité « %2$s » non valide (Bilateral ou Unilateral attendu)</string>
+    <string name="csv_issue_catalog_id">Ligne %1$d : catalogId « %2$s » non valide</string>
+    <string name="csv_issue_text">Ligne %1$d : %2$s</string>
+    <string name="csv_issue_record_columns">Ligne %1$d : pas assez de colonnes</string>
+    <string name="csv_issue_record_required">Ligne %1$d : une valeur obligatoire est manquante</string>
+    <string name="csv_issue_date">Ligne %1$d : date \"%2$s\" non valide (forme attendue : 2026‑10‑08)</string>
+    <string name="csv_issue_time">Ligne %1$d : heure \"%2$s\" non valide (forme attendue : 07:30)</string>
+    <string name="csv_issue_number">Ligne %1$d : un nombre n’est pas un entier</string>
+    <string name="csv_issue_negative">Ligne %1$d : une valeur est négative</string>
+    <string name="csv_issue_warmup">Ligne %1$d : warmUp « %2$s » non valide (true ou false attendu)</string>
+    <string name="csv_issue_effort">Ligne %1$d : effortLeft « %2$s » non valide (0 à %3$d attendu)</string>
+    <string name="csv_issue_exercise_missing">Ligne %1$d : exercice introuvable : %2$s (%3$s)</string>
+    <string name="csv_issue_old_format">Ligne %1$d : non ajouté, car cette séance est dans l’ancien format d’enregistrement, qui ne peut pas contenir de marque d’échauffement ni d’effort</string>
+    <string name="csv_issue_empty">Le fichier CSV est vide</string>
+    <string name="csv_skip_exists">« %1$s » (existe déjà)</string>
+    <string name="csv_skip_exists_link">« %1$s » (existe déjà ; le lien du catalogue n’est pas modifié)</string>
+    <string name="csv_skip_mismatch">« %1$s » (latéralité différente : existante %2$s, fichier %3$s)</string>
+    <string name="csv_skip_no_link">« %1$s » (ajouté sans son lien du catalogue : cette étape est déjà liée)</string>
+    <string name="csv_skip_record">« %1$s » - %2$s %3$s, série %4$d (existe déjà)</string>
+    <string name="share_issue_version">Version de format non prise en charge : %1$d</string>
+    <string name="share_issue_export_type">Type d’export non valide : %1$s</string>
+    <string name="share_issue_wrong_file">C’est un fichier de sauvegarde, pas un fichier de partage</string>
+    <string name="share_issue_bad_json">Le fichier n’est pas un fichier de partage valide</string>
+    <string name="share_issue_failed">L’import a échoué</string>
+    <string name="share_issue_name_empty">%1$s : le nom est vide</string>
+    <string name="share_issue_name_long">%1$s : le nom est trop long (maximum : %2$d)</string>
+    <string name="share_issue_invalid_type">%1$s : type « %2$s » non valide</string>
+    <string name="share_issue_invalid_laterality">%1$s : latéralité « %2$s » non valide</string>
+    <string name="share_issue_invalid_catalog">%1$s : catalogId « %2$s » non valide</string>
+    <string name="share_issue_range">%1$s : %2$s doit être compris entre %3$d et %4$d</string>
+    <string name="share_issue_dup_catalog">%1$s : le catalogId « %2$s » est utilisé deux fois</string>
+    <string name="share_issue_dup_exercise">%1$s : l’exercice « %2$s » apparaît deux fois</string>
+    <string name="share_issue_dup_program">%1$s : le nom de programme « %2$s » est utilisé deux fois</string>
+    <string name="share_issue_dup_interval">%1$s : le nom d’intervalle « %2$s » est utilisé deux fois</string>
+    <string name="share_issue_dup_loop">%1$s : l’identifiant de boucle %2$s est utilisé deux fois</string>
+    <string name="share_issue_unknown_group">%1$s : le groupe « %2$s » n’est pas dans le fichier</string>
+    <string name="share_issue_unknown_exercise">%1$s : l’exercice « %2$s » n’est pas dans le fichier</string>
+    <string name="share_issue_unknown_loop">%1$s : l’identifiant de boucle %2$s n’est pas dans le fichier</string>
+    <string name="share_export_complete">Exporté. Exercices : %1$d, programmes : %2$d, intervalles : %3$d</string>
+    <string name="share_import_error">Import impossible : %1$s</string>
+    <string name="file_too_large">Le fichier est trop volumineux : %1$d Mo (limite : %2$d Mo)</string>
+    <string name="wrong_file_type">Mauvais type de fichier : %1$s au lieu de %2$s</string>
+    <string name="delete_group_title">Supprimer ce groupe ?</string>
+    <string name="delete_exercise_title">Supprimer cet exercice ?</string>
+    <string name="delete_workout_title">Supprimer cette séance ?</string>
+    <string name="delete_task_title">Supprimer cette tâche ?</string>
 </resources>

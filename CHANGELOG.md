@@ -11,6 +11,8 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- The records CSV carries warm-up marks and effort ratings in two new last columns (warmUp, effortLeft), so they survive an export and import; a value that does not read is a line error, and old files without the columns import as before. Older app versions read the new file but ignore the two columns, so a warm-up comes in as an ordinary set there ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
+- The exercises CSV carries each exercise's catalogue link in a new last column, so a catalogue exercise stays linked after an export and import; old files without the column import as before, and older app versions ignore the column ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - Editing an exercise that came from the catalogue shows where it came from and its main muscles ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - The exercise catalogue has filter chips for movement (Push, Pull, Legs, Core, Conditioning, Mobility) and main muscle: choose one or more to list the matching steps, alone or together with a search ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - The weekly review can also be opened from Progress, and going back returns to Progress; the body map's view and period choices use the same connected buttons as the rest of the app ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
@@ -30,6 +32,13 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- The Targets list in Progress shows only exercises that have a target, and delete dialogs say what is being deleted ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
+- Adding exercises to a program, an interval routine or a saved workout uses one full-screen picker with search, open groups and an Add button that shows how many are chosen ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
+- The program editor's exercise and loop settings use steppers for sets, reps or time, rest, rounds and rest between rounds, like the rest of the app ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
+- Sets, reps or time, seconds per rep and rest on the exercise form are steppers like the numbers elsewhere in the app: blank shows a dash, stepping down from the lowest value clears it, and typing still works ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
+- On the Programs, Intervals and To Do lists a row's other actions are behind a ⋮ button instead of a hidden long press, and tapping an interval opens its editor like tapping a program does ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
+- Importing a records CSV makes workouts in the current history model, grouped by date, minute and comment, instead of loose old-format records; sets already in History are skipped, so importing a file twice or importing an export adds nothing, and the whole import is added or none of it ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
+- Tapping a set in History opens the whole workout in the workout editor, the same one for old and new records, instead of a separate dialog for one value ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - Dialogs share one background: twenty-three of them set a lighter surface of their own, so confirmation and edit dialogs now look the same everywhere ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - The on-off settings in the exercise form and the catalogue's Follow row work like the ones in Settings: the whole row toggles, and a screen reader reads one control with its state ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - A calendar day is shaded by how many sets it holds (1-3, 4-9, 10-19, 20 or more), with interval work counted as sets, instead of by reps weighted by difficulty, and the total sets figure includes interval work ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
@@ -64,6 +73,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- The reasons CSV and Share imports give for a line they cannot read or an item they skip, and the Share export and import messages, are shown in the app's language instead of English ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
 - Screen readers get what they were missing: each graph says its date range, latest and highest value, a catalogue step badge says "Step 3", the interval editor's drag handle says what it does, and a history entry's exercise name is a full-size target that says it filters ([#291](https://github.com/WildeBeast2521/kalimory/pull/291))
 - Ending a timed set with Complete below its target plays the finish sound too, as reaching the target does ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))
 - Renaming a group to a name another group already has says so, instead of a general error ([#290](https://github.com/WildeBeast2521/kalimory/pull/290))

@@ -157,12 +157,7 @@ fun ViewScreen(
 
     // 既存の状態変数
     var showDeleteDialog by remember { mutableStateOf<SessionInfo?>(null) }
-    var editingRecord by remember { mutableStateOf<HistorySet?>(null) }
-    var editValue by remember { mutableStateOf("") }
-    var editValueRight by remember { mutableStateOf("") }
-    var editValueLeft by remember { mutableStateOf("") }
     var editingWorkoutOf by remember { mutableStateOf<SessionInfo?>(null) }
-    var showContextMenu by remember { mutableStateOf<SessionInfo?>(null) }
     var showIntervalDeleteDialog by remember { mutableStateOf<RecordItem.Interval?>(null) }
     var showIntervalEditDialog by remember { mutableStateOf<RecordItem.Interval?>(null) }
 
@@ -374,16 +369,9 @@ fun ViewScreen(
                             onExerciseClick = { exercise ->
                                 selectedExerciseFilter = exercise
                             },
+                            // A tapped set opens the whole workout it belongs to, in the one editor.
                             onRecordClick = { record ->
-                                editingRecord = record
-                                if (record.valueLeft != null) {
-                                    // Unilateral
-                                    editValueRight = record.valueRight.toString()
-                                    editValueLeft = record.valueLeft.toString()
-                                } else {
-                                    // Bilateral
-                                    editValue = record.valueRight.toString()
-                                }
+                                editingWorkoutOf = filteredSessions.firstOrNull { card -> record in card.records }
                             },
                             onSessionLongPress = { session ->
                                 editingWorkoutOf = session
@@ -476,7 +464,7 @@ fun ViewScreen(
             onDismissRequest = { showIntervalDeleteDialog = null },
             title = {
                 Text(
-                    stringResource(R.string.delete_confirmation),
+                    stringResource(R.string.delete_workout_title),
                     color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
@@ -526,153 +514,6 @@ fun ViewScreen(
         )
     }
 
-    // Edit Record Dialog
-    editingRecord?.let { record ->
-        val isUnilateral = record.valueLeft != null
-
-        AlertDialog(
-            onDismissRequest = {
-                editingRecord = null
-                editValue = ""
-                editValueRight = ""
-                editValueLeft = ""
-            },
-            title = { Text(stringResource(R.string.edit_set_value)) },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(
-                        text = stringResource(R.string.set_number_format, record.setNumber),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    if (isUnilateral) {
-                        // Unilateral: 左右2つの入力
-                        OutlinedTextField(
-                            value = editValueRight,
-                            onValueChange = {
-                                if (it.isEmpty() || it.all { char -> char.isDigit() }) {
-                                    editValueRight = it
-                                }
-                            },
-                            label = { Text(stringResource(R.string.right_value_label)) },
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Number
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        OutlinedTextField(
-                            value = editValueLeft,
-                            onValueChange = {
-                                if (it.isEmpty() || it.all { char -> char.isDigit() }) {
-                                    editValueLeft = it
-                                }
-                            },
-                            label = { Text(stringResource(R.string.left_value_label)) },
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Number
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    } else {
-                        // Bilateral: 1つの入力
-                        OutlinedTextField(
-                            value = editValue,
-                            onValueChange = {
-                                if (it.isEmpty() || it.all { char -> char.isDigit() }) {
-                                    editValue = it
-                                }
-                            },
-                            label = { Text(stringResource(R.string.value_label)) },
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Number
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        if (isUnilateral) {
-                            // Unilateral: 左右両方更新
-                            val newValueRight = editValueRight.toIntOrNull()
-                            val newValueLeft = editValueLeft.toIntOrNull()
-
-                            if (newValueRight != null && newValueRight >= 0) {
-                                val legacy = record.toLegacyRecord()
-                                if (legacy != null) {
-                                    viewModel.updateRecord(legacy.copy(valueRight = newValueRight, valueLeft = newValueLeft))
-                                } else {
-                                    viewModel.updateV2SetValues(record, newValueRight, newValueLeft)
-                                }
-                                editingRecord = null
-                                editValueRight = ""
-                                editValueLeft = ""
-                            }
-                        } else {
-                            // Bilateral: 従来通り
-                            editValue.toIntOrNull()?.let { newValue ->
-                                if (newValue >= 0) {
-                                    val legacy = record.toLegacyRecord()
-                                    if (legacy != null) viewModel.updateRecord(legacy.copy(valueRight = newValue))
-                                    else viewModel.updateV2SetValues(record, newValue, null)
-                                    editingRecord = null
-                                    editValue = ""
-                                }
-                            }
-                        }
-                    },
-                    enabled = if (isUnilateral) {
-                        editValueRight.toIntOrNull()?.let { it >= 0 } == true
-                    } else {
-                        editValue.toIntOrNull()?.let { it >= 0 } == true
-                    }
-                ) {
-                    Text(stringResource(R.string.save))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    editingRecord = null
-                    editValue = ""
-                    editValueRight = ""
-                    editValueLeft = ""
-                }) {
-                    Text(stringResource(R.string.cancel))
-                }
-            }
-        )
-    }
-
-    // Context Menu
-    showContextMenu?.let { session ->
-        DropdownMenu(
-            expanded = true,
-            onDismissRequest = { showContextMenu = null }
-        ) {
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.edit_session_info)) },
-                onClick = {
-                    editingWorkoutOf = session
-                    showContextMenu = null
-                }
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.delete_session), color = MaterialTheme.colorScheme.error) },
-                onClick = {
-                    showDeleteDialog = session
-                    showContextMenu = null
-                }
-            )
-        }
-    }
-
     // The whole workout behind a card, in the workout editor (ADR 0009).
     editingWorkoutOf?.workoutRef()?.let { ref ->
         WorkoutEditorScreen(ref = ref, viewModel = viewModel, onClose = { editingWorkoutOf = null })
@@ -683,7 +524,7 @@ fun ViewScreen(
         val exercise = exercises.find { it.id == session.exerciseId }
         AlertDialog(
             onDismissRequest = { showDeleteDialog = null },
-            title = { Text(stringResource(R.string.delete_confirmation)) },
+            title = { Text(stringResource(R.string.delete_workout_title)) },
             text = {
                 Text(stringResource(
                     R.string.delete_record_warning,
@@ -1004,7 +845,8 @@ fun ChallengeView(
 
     // フィルターを適用（種目 + 期間）
     val filteredExercises = remember(exercises, records, selectedExerciseFilter, selectedPeriod) {
-        var filtered = exercises
+        // Only exercises that have a target belong in this list.
+        var filtered = exercises.filter { it.targetSets != null && it.targetValue != null }
 
         // 種目フィルター
         if (selectedExerciseFilter != null) {
@@ -1260,13 +1102,6 @@ fun ChallengeExerciseCard(
                         )
                     }
                 }
-            } else {
-                // 課題なしの場合
-                Text(
-                    text = stringResource(R.string.no_challenge_set),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
             }
         }
     }

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.today
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.FitText
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.layout.layout
@@ -59,17 +60,6 @@ import io.github.gonbei774.calisthenicsmemory.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.material3.TextButton
 import androidx.compose.foundation.layout.heightIn
-
-/** A heading for a section of Today. */
-@Composable
-internal fun SectionHeading(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = modifier.semantics { heading() },
-    )
-}
 
 /**
  * The week so far, one mark per day: filled where you trained, outlined where you did not,
@@ -228,14 +218,6 @@ internal fun TodayRow(icon: ImageVector, name: String, kind: String, trailing: I
         if (trailing != null) {
             Icon(trailing, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-    }
-}
-
-/** Related rows grouped on one quiet surface, as Train and Library list them. */
-@Composable
-internal fun RowGroup(content: @Composable () -> Unit) {
-    Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.surfaceContainerLow) {
-        Column(Modifier.padding(vertical = Spacing.s)) { content() }
     }
 }
 

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.catalogue
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.RowGroup
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingSwitchRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
 import io.github.gonbei774.calisthenicsmemory.ui.screens.review.label
@@ -78,7 +79,6 @@ import io.github.gonbei774.calisthenicsmemory.data.progression.StepJourney
 import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.MuscleMap
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
-import io.github.gonbei774.calisthenicsmemory.ui.screens.today.RowGroup
 import io.github.gonbei774.calisthenicsmemory.ui.screens.view.formatStoredDate
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel

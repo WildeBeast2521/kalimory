@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
+import io.github.gonbei774.calisthenicsmemory.R
 import kotlinx.serialization.Serializable
 
 // ===== コミュニティ共有用シリアライゼーションモデル =====
@@ -100,7 +101,7 @@ data class CommunityShareImportReport(
     val programsSkipped: Int = 0,
     val intervalProgramsAdded: Int = 0,
     val intervalProgramsSkipped: Int = 0,
-    val errors: List<String> = emptyList()
+    val errors: List<ImportIssue> = emptyList()
 )
 
 // ===== バリデーション =====
@@ -111,21 +112,21 @@ private const val MAX_DESCRIPTION_LENGTH = 60
 private const val MAX_NUMERIC_VALUE = 999
 private val VALID_EXERCISE_TYPES = setOf("Dynamic", "Isometric")
 private val VALID_LATERALITY = setOf("Bilateral", "Unilateral")
-private const val MAX_CATALOG_ID_LENGTH = 64
-private val CATALOG_ID_PATTERN = Regex("^[a-z0-9_]+\\.[a-z0-9_]+$")
+internal const val MAX_CATALOG_ID_LENGTH = 64
+internal val CATALOG_ID_PATTERN = Regex("^[a-z0-9_]+\\.[a-z0-9_]+$")
 
-fun validateCommunityShareContent(data: CommunityShareData): List<String> {
-    val errors = mutableListOf<String>()
+fun validateCommunityShareContent(data: CommunityShareData): List<ImportIssue> {
+    val errors = mutableListOf<ImportIssue>()
 
     // フォーマットバージョンチェック
     if (data.formatVersion > CURRENT_FORMAT_VERSION) {
-        errors.add("Unsupported format version: ${data.formatVersion}")
+        errors.add(ImportIssue(R.string.share_issue_version, listOf(data.formatVersion)))
         return errors
     }
 
     // exportType チェック
     if (data.exportType != "share") {
-        errors.add("Invalid exportType: ${data.exportType}")
+        errors.add(ImportIssue(R.string.share_issue_export_type, listOf(data.exportType)))
         return errors
     }
 
@@ -134,10 +135,10 @@ fun validateCommunityShareContent(data: CommunityShareData): List<String> {
     // グループのバリデーション
     content.groups.forEachIndexed { index, group ->
         if (group.name.isBlank()) {
-            errors.add("groups[$index]: name is empty")
+            errors.add(ImportIssue(R.string.share_issue_name_empty, listOf("groups[$index]")))
         }
         if (group.name.length > MAX_NAME_LENGTH) {
-            errors.add("groups[$index]: name exceeds $MAX_NAME_LENGTH characters")
+            errors.add(ImportIssue(R.string.share_issue_name_long, listOf("groups[$index]", MAX_NAME_LENGTH)))
         }
     }
 
@@ -146,55 +147,55 @@ fun validateCommunityShareContent(data: CommunityShareData): List<String> {
     val catalogIds = mutableSetOf<String>()
     content.exercises.forEachIndexed { index, exercise ->
         if (exercise.name.isBlank()) {
-            errors.add("exercises[$index]: name is empty")
+            errors.add(ImportIssue(R.string.share_issue_name_empty, listOf("exercises[$index]")))
         }
         if (exercise.name.length > MAX_NAME_LENGTH) {
-            errors.add("exercises[$index]: name exceeds $MAX_NAME_LENGTH characters")
+            errors.add(ImportIssue(R.string.share_issue_name_long, listOf("exercises[$index]", MAX_NAME_LENGTH)))
         }
         if (exercise.type !in VALID_EXERCISE_TYPES) {
-            errors.add("exercises[$index]: invalid type '${exercise.type}'")
+            errors.add(ImportIssue(R.string.share_issue_invalid_type, listOf("exercises[$index]", "${exercise.type}")))
         }
         if (exercise.laterality !in VALID_LATERALITY) {
-            errors.add("exercises[$index]: invalid laterality '${exercise.laterality}'")
+            errors.add(ImportIssue(R.string.share_issue_invalid_laterality, listOf("exercises[$index]", "${exercise.laterality}")))
         }
         exercise.targetSets?.let {
             if (it <= 0 || it > MAX_NUMERIC_VALUE) {
-                errors.add("exercises[$index]: targetSets out of range (1-$MAX_NUMERIC_VALUE)")
+                errors.add(ImportIssue(R.string.share_issue_range, listOf("exercises[$index]", "targetSets", 1, MAX_NUMERIC_VALUE)))
             }
         }
         exercise.targetValue?.let {
             if (it <= 0 || it > MAX_NUMERIC_VALUE) {
-                errors.add("exercises[$index]: targetValue out of range (1-$MAX_NUMERIC_VALUE)")
+                errors.add(ImportIssue(R.string.share_issue_range, listOf("exercises[$index]", "targetValue", 1, MAX_NUMERIC_VALUE)))
             }
         }
         exercise.restInterval?.let {
             if (it < 0 || it > MAX_NUMERIC_VALUE) {
-                errors.add("exercises[$index]: restInterval out of range (0-$MAX_NUMERIC_VALUE)")
+                errors.add(ImportIssue(R.string.share_issue_range, listOf("exercises[$index]", "restInterval", 0, MAX_NUMERIC_VALUE)))
             }
         }
         exercise.repDuration?.let {
             if (it <= 0 || it > MAX_NUMERIC_VALUE) {
-                errors.add("exercises[$index]: repDuration out of range (1-$MAX_NUMERIC_VALUE)")
+                errors.add(ImportIssue(R.string.share_issue_range, listOf("exercises[$index]", "repDuration", 1, MAX_NUMERIC_VALUE)))
             }
         }
         // A step id from a newer catalogue is kept; a malformed or repeated one is not.
         exercise.catalogId?.let {
             if (it.length > MAX_CATALOG_ID_LENGTH || !CATALOG_ID_PATTERN.matches(it)) {
-                errors.add("exercises[$index]: invalid catalogId '$it'")
+                errors.add(ImportIssue(R.string.share_issue_invalid_catalog, listOf("exercises[$index]", "$it")))
             } else if (!catalogIds.add(it)) {
-                errors.add("exercises[$index]: duplicate catalogId '$it'")
+                errors.add(ImportIssue(R.string.share_issue_dup_catalog, listOf("exercises[$index]", "$it")))
             }
         }
         // グループ参照チェック
         exercise.group?.let { groupName ->
             if (content.groups.none { it.name == groupName }) {
-                errors.add("exercises[$index]: references unknown group '$groupName'")
+                errors.add(ImportIssue(R.string.share_issue_unknown_group, listOf("exercises[$index]", "$groupName")))
             }
         }
         // 重複チェック（先勝ち）
         val key = "${exercise.name}|${exercise.type}"
         if (!exerciseKeys.add(key)) {
-            errors.add("exercises[$index]: duplicate exercise '${exercise.name}' (${exercise.type})")
+            errors.add(ImportIssue(R.string.share_issue_dup_exercise, listOf("exercises[$index]", "${exercise.name} (${exercise.type})")))
         }
     }
 
@@ -202,26 +203,26 @@ fun validateCommunityShareContent(data: CommunityShareData): List<String> {
     val programNames = mutableSetOf<String>()
     content.programs.forEachIndexed { pIndex, program ->
         if (program.name.isBlank()) {
-            errors.add("programs[$pIndex]: name is empty")
+            errors.add(ImportIssue(R.string.share_issue_name_empty, listOf("programs[$pIndex]")))
         }
         if (program.name.length > MAX_NAME_LENGTH) {
-            errors.add("programs[$pIndex]: name exceeds $MAX_NAME_LENGTH characters")
+            errors.add(ImportIssue(R.string.share_issue_name_long, listOf("programs[$pIndex]", MAX_NAME_LENGTH)))
         }
         if (!programNames.add(program.name)) {
-            errors.add("programs[$pIndex]: duplicate program name '${program.name}'")
+            errors.add(ImportIssue(R.string.share_issue_dup_program, listOf("programs[$pIndex]", "${program.name}")))
         }
 
         // ループのバリデーション
         val loopIds = mutableSetOf<Int>()
         program.loops.forEachIndexed { lIndex, loop ->
             if (!loopIds.add(loop.id)) {
-                errors.add("programs[$pIndex].loops[$lIndex]: duplicate loop id ${loop.id}")
+                errors.add(ImportIssue(R.string.share_issue_dup_loop, listOf("programs[$pIndex].loops[$lIndex]", "${loop.id}")))
             }
             if (loop.rounds <= 0 || loop.rounds > MAX_NUMERIC_VALUE) {
-                errors.add("programs[$pIndex].loops[$lIndex]: rounds out of range (1-$MAX_NUMERIC_VALUE)")
+                errors.add(ImportIssue(R.string.share_issue_range, listOf("programs[$pIndex].loops[$lIndex]", "rounds", 1, MAX_NUMERIC_VALUE)))
             }
             if (loop.restBetweenRounds < 0 || loop.restBetweenRounds > MAX_NUMERIC_VALUE) {
-                errors.add("programs[$pIndex].loops[$lIndex]: restBetweenRounds out of range (0-$MAX_NUMERIC_VALUE)")
+                errors.add(ImportIssue(R.string.share_issue_range, listOf("programs[$pIndex].loops[$lIndex]", "restBetweenRounds", 0, MAX_NUMERIC_VALUE)))
             }
         }
 
@@ -229,20 +230,20 @@ fun validateCommunityShareContent(data: CommunityShareData): List<String> {
         program.exercises.forEachIndexed { eIndex, pe ->
             val key = "${pe.exerciseName}|${pe.exerciseType}"
             if (key !in exerciseKeys) {
-                errors.add("programs[$pIndex].exercises[$eIndex]: references unknown exercise '${pe.exerciseName}' (${pe.exerciseType})")
+                errors.add(ImportIssue(R.string.share_issue_unknown_exercise, listOf("programs[$pIndex].exercises[$eIndex]", "${pe.exerciseName} (${pe.exerciseType})")))
             }
             if (pe.sets <= 0 || pe.sets > MAX_NUMERIC_VALUE) {
-                errors.add("programs[$pIndex].exercises[$eIndex]: sets out of range (1-$MAX_NUMERIC_VALUE)")
+                errors.add(ImportIssue(R.string.share_issue_range, listOf("programs[$pIndex].exercises[$eIndex]", "sets", 1, MAX_NUMERIC_VALUE)))
             }
             if (pe.targetValue < 0 || pe.targetValue > MAX_NUMERIC_VALUE) {
-                errors.add("programs[$pIndex].exercises[$eIndex]: targetValue out of range (0-$MAX_NUMERIC_VALUE)")
+                errors.add(ImportIssue(R.string.share_issue_range, listOf("programs[$pIndex].exercises[$eIndex]", "targetValue", 0, MAX_NUMERIC_VALUE)))
             }
             if (pe.intervalSeconds < 0 || pe.intervalSeconds > MAX_NUMERIC_VALUE) {
-                errors.add("programs[$pIndex].exercises[$eIndex]: intervalSeconds out of range (0-$MAX_NUMERIC_VALUE)")
+                errors.add(ImportIssue(R.string.share_issue_range, listOf("programs[$pIndex].exercises[$eIndex]", "intervalSeconds", 0, MAX_NUMERIC_VALUE)))
             }
             pe.loopId?.let { lid ->
                 if (lid !in loopIds) {
-                    errors.add("programs[$pIndex].exercises[$eIndex]: references unknown loopId $lid")
+                    errors.add(ImportIssue(R.string.share_issue_unknown_loop, listOf("programs[$pIndex].exercises[$eIndex]", "$lid")))
                 }
             }
         }
@@ -252,32 +253,32 @@ fun validateCommunityShareContent(data: CommunityShareData): List<String> {
     val intervalNames = mutableSetOf<String>()
     content.intervalPrograms.forEachIndexed { iIndex, interval ->
         if (interval.name.isBlank()) {
-            errors.add("intervalPrograms[$iIndex]: name is empty")
+            errors.add(ImportIssue(R.string.share_issue_name_empty, listOf("intervalPrograms[$iIndex]")))
         }
         if (interval.name.length > MAX_NAME_LENGTH) {
-            errors.add("intervalPrograms[$iIndex]: name exceeds $MAX_NAME_LENGTH characters")
+            errors.add(ImportIssue(R.string.share_issue_name_long, listOf("intervalPrograms[$iIndex]", MAX_NAME_LENGTH)))
         }
         if (!intervalNames.add(interval.name)) {
-            errors.add("intervalPrograms[$iIndex]: duplicate interval program name '${interval.name}'")
+            errors.add(ImportIssue(R.string.share_issue_dup_interval, listOf("intervalPrograms[$iIndex]", "${interval.name}")))
         }
         if (interval.workSeconds <= 0 || interval.workSeconds > MAX_NUMERIC_VALUE) {
-            errors.add("intervalPrograms[$iIndex]: workSeconds out of range (1-$MAX_NUMERIC_VALUE)")
+            errors.add(ImportIssue(R.string.share_issue_range, listOf("intervalPrograms[$iIndex]", "workSeconds", 1, MAX_NUMERIC_VALUE)))
         }
         if (interval.restSeconds < 0 || interval.restSeconds > MAX_NUMERIC_VALUE) {
-            errors.add("intervalPrograms[$iIndex]: restSeconds out of range (0-$MAX_NUMERIC_VALUE)")
+            errors.add(ImportIssue(R.string.share_issue_range, listOf("intervalPrograms[$iIndex]", "restSeconds", 0, MAX_NUMERIC_VALUE)))
         }
         if (interval.rounds <= 0 || interval.rounds > MAX_NUMERIC_VALUE) {
-            errors.add("intervalPrograms[$iIndex]: rounds out of range (1-$MAX_NUMERIC_VALUE)")
+            errors.add(ImportIssue(R.string.share_issue_range, listOf("intervalPrograms[$iIndex]", "rounds", 1, MAX_NUMERIC_VALUE)))
         }
         if (interval.roundRestSeconds < 0 || interval.roundRestSeconds > MAX_NUMERIC_VALUE) {
-            errors.add("intervalPrograms[$iIndex]: roundRestSeconds out of range (0-$MAX_NUMERIC_VALUE)")
+            errors.add(ImportIssue(R.string.share_issue_range, listOf("intervalPrograms[$iIndex]", "roundRestSeconds", 0, MAX_NUMERIC_VALUE)))
         }
 
         // インターバル内種目のバリデーション
         interval.exercises.forEachIndexed { eIndex, ie ->
             val key = "${ie.exerciseName}|${ie.exerciseType}"
             if (key !in exerciseKeys) {
-                errors.add("intervalPrograms[$iIndex].exercises[$eIndex]: references unknown exercise '${ie.exerciseName}' (${ie.exerciseType})")
+                errors.add(ImportIssue(R.string.share_issue_unknown_exercise, listOf("intervalPrograms[$iIndex].exercises[$eIndex]", "${ie.exerciseName} (${ie.exerciseType})")))
             }
         }
     }

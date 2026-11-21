@@ -1615,7 +1615,7 @@ private fun SetActionButton(
         SetStatus.COMPLETED -> {
             OutlinedButton(
                 onClick = { onRedoSet(setIndex) },
-                modifier = Modifier.height(32.dp),
+                modifier = Modifier.heightIn(min = 32.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 border = androidx.compose.foundation.BorderStroke(1.dp, cs.primary)
             ) {
@@ -1630,7 +1630,7 @@ private fun SetActionButton(
         SetStatus.PENDING, SetStatus.SKIPPED -> {
             OutlinedButton(
                 onClick = { onJumpToSet(setIndex) },
-                modifier = Modifier.height(32.dp),
+                modifier = Modifier.heightIn(min = 32.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
             ) {
@@ -1681,7 +1681,7 @@ private fun NavigationSheetFooter(
             onClick = onFinish,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
+                .heightIn(min = 48.dp),
             colors = ButtonDefaults.buttonColors(containerColor = cs.primary),
         ) {
             Text(
@@ -1700,7 +1700,7 @@ private fun NavigationSheetFooter(
                 onClick = onSaveAndExit,
                 modifier = Modifier
                     .weight(1f)
-                    .height(44.dp),
+                    .heightIn(min = 44.dp),
                 border = androidx.compose.foundation.BorderStroke(1.dp, cs.tertiary)
             ) {
                 Text(
@@ -1716,7 +1716,7 @@ private fun NavigationSheetFooter(
                 onClick = onDiscard,
                 modifier = Modifier
                     .weight(1f)
-                    .height(44.dp),
+                    .heightIn(min = 44.dp),
                 border = androidx.compose.foundation.BorderStroke(1.dp, cs.outline)
             ) {
                 Text(

@@ -1286,7 +1286,7 @@ private fun IntervalCompleteContent(
                     onClick = { onSave(comment) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
+                        .heightIn(min = 48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = statusColor),
                 ) {
                     Text(

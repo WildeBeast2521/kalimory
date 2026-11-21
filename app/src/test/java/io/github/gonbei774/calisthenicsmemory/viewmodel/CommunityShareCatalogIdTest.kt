@@ -1,9 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
+import io.github.gonbei774.calisthenicsmemory.R
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /** Community share carries the catalogue link (ADR 0007, decision 6). */
@@ -15,19 +15,19 @@ class CommunityShareCatalogIdTest {
         val errors = validateCommunityShareContent(
             share(ShareExercise("Chin-up", "Dynamic", catalogId = "pull.chin"), ShareExercise("Planche", "Isometric", catalogId = "planche.full"))
         )
-        assertEquals(emptyList<String>(), errors)
+        assertEquals(emptyList<ImportIssue>(), errors)
     }
 
     @Test fun `a malformed step id is rejected`() {
         val errors = validateCommunityShareContent(share(ShareExercise("Chin-up", "Dynamic", catalogId = "Pull Chin")))
-        assertTrue(errors.toString(), errors.single().contains("invalid catalogId"))
+        assertEquals(R.string.share_issue_invalid_catalog, errors.single().res)
     }
 
     @Test fun `two exercises linked to one step are rejected`() {
         val errors = validateCommunityShareContent(
             share(ShareExercise("Chin-up", "Dynamic", catalogId = "pull.chin"), ShareExercise("Chin-ups", "Dynamic", catalogId = "pull.chin"))
         )
-        assertTrue(errors.toString(), errors.single().contains("duplicate catalogId"))
+        assertEquals(R.string.share_issue_dup_catalog, errors.single().res)
     }
 
     @Test fun `a file from before the link reads with no link`() {

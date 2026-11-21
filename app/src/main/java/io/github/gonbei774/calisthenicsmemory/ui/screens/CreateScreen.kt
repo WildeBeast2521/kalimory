@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.LabelledNumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
@@ -336,7 +337,7 @@ fun CreateScreen(
     showGroupDeleteDialog?.let { groupName ->
         AlertDialog(
             onDismissRequest = { showGroupDeleteDialog = null },
-            title = { Text(stringResource(R.string.delete_confirmation)) },
+            title = { Text(stringResource(R.string.delete_group_title)) },
             text = { Text(stringResource(R.string.delete_group_confirm_message, groupName)) },
             confirmButton = {
                 TextButton(
@@ -370,7 +371,7 @@ fun CreateScreen(
         }
         AlertDialog(
             onDismissRequest = dismiss,
-            title = { Text(stringResource(R.string.delete_confirmation)) },
+            title = { Text(stringResource(R.string.delete_exercise_title)) },
             text = {
                 Column {
                     Text(stringResource(R.string.delete_exercise_confirm_title, exercise.name))
@@ -1236,38 +1237,30 @@ fun UnifiedAddDialog(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                                     ) {
-                                        OutlinedTextField(
+                                        LabelledNumberStepper(
+                                            label = stringResource(R.string.sets_count),
                                             value = targetSets,
-                                            onValueChange = {
-                                                if (it.isEmpty() || (it.all { char -> char.isDigit() } && it.toIntOrNull()?.let { num -> num in 1..20 } == true)) {
-                                                    targetSets = it
-                                                }
-                                            },
-                                            label = { Text(stringResource(R.string.sets_count)) },
-                                            placeholder = { Text(stringResource(R.string.example_3)) },
-                                            isError = targetHalfFilled && targetSets.isEmpty(),
+                                            onValueChange = { targetSets = it },
+                                            range = 1..20,
+                                            unit = "",
                                             modifier = Modifier.weight(1f),
-                                            singleLine = true,
-                                            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                                                keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
-                                            )
                                         )
 
-                                        OutlinedTextField(
+                                        LabelledNumberStepper(
+                                            label = stringResource(if (selectedType == "Dynamic") R.string.reps_label else R.string.time_label),
                                             value = targetValue,
-                                            onValueChange = {
-                                                if (it.isEmpty() || (it.all { char -> char.isDigit() } && it.toIntOrNull()?.let { num -> num >= 1 } == true)) {
-                                                    targetValue = it
-                                                }
-                                            },
-                                            label = { Text(stringResource(if (selectedType == "Dynamic") R.string.reps_label else R.string.time_label)) },
-                                            placeholder = { Text(stringResource(if (selectedType == "Dynamic") R.string.example_10 else R.string.example_30)) },
-                                            isError = targetHalfFilled && targetValue.isEmpty(),
+                                            onValueChange = { targetValue = it },
+                                            range = 1..999,
+                                            unit = "",
                                             modifier = Modifier.weight(1f),
-                                            singleLine = true,
-                                            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                                                keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
-                                            )
+                                        )
+                                    }
+
+                                    if (targetHalfFilled) {
+                                        Text(
+                                            text = stringResource(R.string.enter_a_number),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.error
                                         )
                                     }
 
@@ -1310,38 +1303,23 @@ fun UnifiedAddDialog(
 
                                 // 1レップ時間（Dynamic種目のみ）
                                 if (selectedType == "Dynamic") {
-                                    OutlinedTextField(
+                                    LabelledNumberStepper(
+                                        label = stringResource(R.string.rep_duration_seconds),
                                         value = repDuration,
-                                        onValueChange = {
-                                            if (it.isEmpty() || (it.all { char -> char.isDigit() } && it.toIntOrNull()?.let { num -> num in 1..60 } == true)) {
-                                                repDuration = it
-                                            }
-                                        },
-                                        label = { Text(stringResource(R.string.rep_duration_seconds)) },
-                                        placeholder = { Text(stringResource(R.string.example_5_seconds)) },
-                                        modifier = Modifier.fillMaxWidth(),
-                                        singleLine = true,
-                                        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                                            keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
-                                        )
+                                        onValueChange = { repDuration = it },
+                                        range = 1..60,
+                                        unit = stringResource(R.string.unit_seconds),
                                     )
                                 }
 
                                 // セット間インターバル
-                                OutlinedTextField(
+                                LabelledNumberStepper(
+                                    label = stringResource(R.string.rest_interval_seconds),
                                     value = restInterval,
-                                    onValueChange = {
-                                        if (it.isEmpty() || (it.all { char -> char.isDigit() } && it.toIntOrNull()?.let { num -> num in 0..600 } == true)) {
-                                            restInterval = it
-                                        }
-                                    },
-                                    label = { Text(stringResource(R.string.rest_interval_seconds)) },
-                                    placeholder = { Text(stringResource(R.string.example_240_seconds)) },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    singleLine = true,
-                                    keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                                        keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
-                                    )
+                                    onValueChange = { restInterval = it },
+                                    range = 0..600,
+                                    unit = stringResource(R.string.unit_seconds),
+                                    step = 5,
                                 )
                             }
                         }

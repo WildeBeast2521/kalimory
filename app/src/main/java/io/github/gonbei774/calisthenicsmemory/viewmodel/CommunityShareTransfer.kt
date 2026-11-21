@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
+import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.ui.UiMessage
 import kotlinx.coroutines.Dispatchers
@@ -263,7 +264,7 @@ class CommunityShareTransfer(
             if (detectJsonFileType(jsonString) == "backup") {
                 onMessage(UiMessage.WrongFileType(detected = "backup", expected = "share"))
                 return@withContext CommunityShareImportReport(
-                    errors = listOf("Wrong file type: backup")
+                    errors = listOf(ImportIssue(R.string.share_issue_wrong_file))
                 )
             }
 
@@ -283,11 +284,11 @@ class CommunityShareTransfer(
 
             report
         } catch (e: kotlinx.serialization.SerializationException) {
-            onMessage(UiMessage.CommunityShareImportError(e.message ?: "Invalid JSON format"))
-            CommunityShareImportReport(errors = listOf(e.message ?: "Invalid JSON format"))
+            onMessage(UiMessage.CommunityShareImportError(ImportIssue(R.string.share_issue_bad_json)))
+            CommunityShareImportReport(errors = listOf(ImportIssue(R.string.share_issue_bad_json)))
         } catch (e: Exception) {
-            onMessage(UiMessage.CommunityShareImportError(e.message ?: "Import failed"))
-            CommunityShareImportReport(errors = listOf(e.message ?: "Import failed"))
+            onMessage(UiMessage.CommunityShareImportError(e.message?.let { ImportIssue.literal(it) } ?: ImportIssue(R.string.share_issue_failed)))
+            CommunityShareImportReport(errors = listOf(e.message?.let { ImportIssue.literal(it) } ?: ImportIssue(R.string.share_issue_failed)))
         }
     }
 }

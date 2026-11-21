@@ -2,6 +2,9 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsGroup
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePicker
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
@@ -218,11 +221,12 @@ fun IntervalEditScreen(
             ) {
                 // Program Name
                 item {
-                    OutlinedTextField(
+                    SettingsCard {
+OutlinedTextField(
                         value = name,
                         onValueChange = { name = it },
                         label = { Text(stringResource(R.string.interval_program_name)) },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.primary,
                             focusedLabelColor = MaterialTheme.colorScheme.primary,
@@ -234,31 +238,19 @@ fun IntervalEditScreen(
                         ),
                         singleLine = true
                     )
+}
                 }
 
-                // Timer Settings Section
+                // Timer settings: one card of rows (rest between exercises only with two or more)
                 item {
-                    Text(
-                        text = stringResource(R.string.interval_timer_settings),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-
-                // Work Time
-                item {
+                    SettingsGroup(title = stringResource(R.string.interval_timer_settings)) {
                     TimerSettingRow(
                         label = stringResource(R.string.interval_work_seconds),
                         value = workSeconds,
                         onValueChange = { workSeconds = it.filter { c -> c.isDigit() } },
                         suffix = stringResource(R.string.interval_seconds_suffix)
                     )
-                }
-
-                // Rest Time (only shown when 2+ exercises; irrelevant for single-exercise programs)
-                if (programExercises.size > 1) {
-                    item {
+                    if (programExercises.size > 1) {
                         TimerSettingRow(
                             label = stringResource(R.string.interval_rest_seconds),
                             value = restSeconds,
@@ -266,10 +258,6 @@ fun IntervalEditScreen(
                             suffix = stringResource(R.string.interval_seconds_suffix)
                         )
                     }
-                }
-
-                // Rounds
-                item {
                     TimerSettingRow(
                         label = stringResource(R.string.interval_rounds),
                         value = rounds,
@@ -278,16 +266,13 @@ fun IntervalEditScreen(
                         step = 1,
                         min = 1
                     )
-                }
-
-                // Round Rest
-                item {
                     TimerSettingRow(
                         label = stringResource(R.string.interval_round_rest_seconds),
                         value = roundRestSeconds,
                         onValueChange = { roundRestSeconds = it.filter { c -> c.isDigit() } },
                         suffix = stringResource(R.string.interval_seconds_suffix)
                     )
+                    }
                 }
 
                 // Exercises Section
@@ -416,9 +401,10 @@ fun IntervalEditScreen(
 
     // Add Exercise Dialog (batch selection with checkboxes)
     if (showAddExerciseDialog) {
-        AddExerciseToIntervalDialog(
+        ExercisePicker(
             viewModel = viewModel,
             exercises = exercises,
+            title = stringResource(R.string.interval_add_exercise),
             onDismiss = { showAddExerciseDialog = false },
             onAdd = { selectedExercisesList ->
                 val newEntries = selectedExercisesList.mapIndexed { index, exercise ->
@@ -570,12 +556,12 @@ private fun TimerSettingRow(
     }
     // At large text the label goes above the stepper, so neither is squeezed or clipped.
     if (large) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
             labelText(Modifier.fillMaxWidth())
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) { stepper() }
         }
     } else {
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             labelText(Modifier.weight(1f))
             stepper()
         }
@@ -634,289 +620,6 @@ private fun IntervalExerciseItem(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 2.dp)
                     )
-                }
-            }
-        }
-    }
-}
-
-// Batch exercise selection dialog for interval mode (checkboxes + badges like ToDo)
-@Composable
-private fun AddExerciseToIntervalDialog(
-    viewModel: TrainingViewModel,
-    exercises: List<Exercise>,
-    onDismiss: () -> Unit,
-    onAdd: (List<Exercise>) -> Unit
-) {
-    val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
-    val collapsedGroups by viewModel.collapsedPickerGroups.collectAsState()
-
-    var selectedExercises by remember { mutableStateOf(listOf<Long>()) }
-    var searchQuery by remember { mutableStateOf("") }
-    val searchResults = remember(exercises, searchQuery) {
-        SearchUtils.searchExercises(exercises, searchQuery)
-    }
-    val listState = rememberLazyListState()
-
-    LaunchedEffect(searchQuery, searchResults) {
-        if (searchQuery.isNotBlank() && searchResults.isNotEmpty()) {
-            listState.scrollToItem(0)
-        }
-    }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Text(
-                text = stringResource(R.string.interval_add_exercise),
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold
-            )
-        },
-        text = {
-            if (exercises.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.no_exercises_available),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            } else {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.7f)
-                ) {
-                    // Search field
-                    CalmSearchField(
-                        query = searchQuery,
-                        onQueryChange = { searchQuery = it },
-                        placeholder = stringResource(R.string.search_placeholder),
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                    )
-
-                    // Exercise list
-                    LazyColumn(
-                        state = listState,
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        if (searchQuery.isNotBlank()) {
-                            if (searchResults.isEmpty()) {
-                                item {
-                                    Text(
-                                        text = stringResource(R.string.no_results),
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        modifier = Modifier.padding(16.dp)
-                                    )
-                                }
-                            } else {
-                                items(
-                                    count = searchResults.size,
-                                    key = { index -> searchResults[index].id }
-                                ) { index ->
-                                    val exercise = searchResults[index]
-                                    ExerciseCheckRow(
-                                        exercise = exercise,
-                                        isSelected = exercise.id in selectedExercises,
-                                        onToggle = { exerciseId ->
-                                            selectedExercises = if (exerciseId in selectedExercises) {
-                                                selectedExercises - exerciseId
-                                            } else {
-                                                selectedExercises + exerciseId
-                                            }
-                                        },
-                                        showGroup = true,
-                                    )
-                                }
-                            }
-                        } else {
-                            items(
-                                count = hierarchicalData.size,
-                                key = { index -> hierarchicalData[index].groupName ?: "ungrouped" }
-                            ) { index ->
-                                val group = hierarchicalData[index]
-                                if (group.exercises.isNotEmpty()) {
-                                    IntervalSelectExerciseGroup(
-                                        groupName = group.groupName,
-                                        exercises = group.exercises,
-                                        selectedExercises = selectedExercises,
-                                        isExpanded = (group.groupName ?: "ungrouped") !in collapsedGroups,
-                                        onExpandToggle = {
-                                            viewModel.togglePickerGroup(group.groupName ?: "ungrouped")
-                                        },
-                                        onExerciseToggle = { exerciseId ->
-                                            selectedExercises = if (exerciseId in selectedExercises) {
-                                                selectedExercises - exerciseId
-                                            } else {
-                                                selectedExercises + exerciseId
-                                            }
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    val selected = selectedExercises.mapNotNull { id -> exercises.find { it.id == id } }
-                    onAdd(selected)
-                },
-                enabled = selectedExercises.isNotEmpty()
-            ) {
-                Text(
-                    text = stringResource(R.string.add),
-                    color = if (selectedExercises.isNotEmpty()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-        }
-    )
-}
-
-@Composable
-private fun IntervalSelectExerciseGroup(
-    groupName: String?,
-    exercises: List<Exercise>,
-    selectedExercises: List<Long>,
-    isExpanded: Boolean,
-    onExpandToggle: () -> Unit,
-    onExerciseToggle: (Long) -> Unit
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = MaterialTheme.shapes.extraSmall
-    ) {
-        Column {
-            // Group header
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Transparent,
-                onClick = onExpandToggle
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = if (isExpanded)
-                                AppIcons.ExpandMore
-                            else
-                                AppIcons.Forward,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                        Text(
-                            text = groupName ?: stringResource(R.string.no_group),
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Text(
-                            text = "(${exercises.size})",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
-
-            // Exercise list with animation
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = expandVertically(),
-                exit = shrinkVertically()
-            ) {
-                Column(
-                    modifier = Modifier.padding(start = 8.dp, end = 16.dp, bottom = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    exercises.forEach { exercise ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .toggleable(value = exercise.id in selectedExercises, role = Role.Checkbox, onValueChange = { _ -> onExerciseToggle(exercise.id) })
-                                .padding(vertical = 4.dp),
-                            verticalAlignment = Alignment.Top
-                        ) {
-                            Checkbox(
-                                checked = exercise.id in selectedExercises,
-                                onCheckedChange = null,
-                                colors = CheckboxDefaults.colors(
-                                    checkedColor = MaterialTheme.colorScheme.primary,
-                                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            )
-                            Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
-                                Text(
-                                    text = exercise.name,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                // Badges row
-                                FlowRow(
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                                    modifier = Modifier.padding(top = 2.dp)
-                                ) {
-                                    ExerciseBadges(exercise)
-                                    if (exercise.weightTrackingEnabled) {
-                                        Text(
-                                            text = stringResource(R.string.legend_weight),
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
-                                    }
-                                    if (exercise.distanceTrackingEnabled) {
-                                        Text(
-                                            text = stringResource(R.string.legend_distance),
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.secondary
-                                        )
-                                    }
-                                    if (exercise.assistanceTrackingEnabled) {
-                                        Text(
-                                            text = stringResource(R.string.legend_assistance),
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Pink600
-                                        )
-                                    }
-                                }
-                                if (exercise.targetSets != null && exercise.targetValue != null) {
-                                    Text(
-                                        text = targetText(
-                                            exercise.targetSets!!,
-                                            exercise.targetValue!!,
-                                            dynamic = exercise.type == "Dynamic",
-                                            unilateral = exercise.laterality == "Unilateral",
-                                        ),
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.padding(top = 2.dp)
-                                    )
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }

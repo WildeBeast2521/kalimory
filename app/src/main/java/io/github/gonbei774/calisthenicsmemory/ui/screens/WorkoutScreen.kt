@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberCountdownHaptics
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberSetDoneHaptic
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePickRow
@@ -7,7 +8,6 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchValueRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
-import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.workout.restDialProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton

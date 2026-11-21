@@ -340,6 +340,7 @@ class WorkoutEditorTest {
                 exercise.name, exercise.type, set.date, set.time, set.setNumber.toString(), set.valueRight.toString(),
                 set.valueLeft?.toString().orEmpty(), set.comment, set.distanceCm?.toString().orEmpty(),
                 set.weightG?.toString().orEmpty(), set.assistanceG?.toString().orEmpty(),
+                set.warmUp.toString(), set.effortLeft?.toString().orEmpty(),
             )
         }
         assertEquals(expected, rows.drop(1))

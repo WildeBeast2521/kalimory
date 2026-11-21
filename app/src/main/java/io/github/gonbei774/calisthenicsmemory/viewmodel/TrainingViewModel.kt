@@ -326,18 +326,6 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    // Training Record operations (legacy rows; new training is written as v2 sessions)
-    fun updateRecord(record: TrainingRecord) {
-        viewModelScope.launch {
-            try {
-                recordDao.updateRecord(record)
-                _snackbarMessage.value = UiMessage.RecordUpdated
-            } catch (e: Exception) {
-                _snackbarMessage.value = UiMessage.ErrorOccurred
-            }
-        }
-    }
-
     fun deleteSession(exerciseId: Long, date: String, time: String) {
         viewModelScope.launch {
             try {
