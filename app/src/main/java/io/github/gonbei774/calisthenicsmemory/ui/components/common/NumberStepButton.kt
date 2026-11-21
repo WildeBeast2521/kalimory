@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.common
 
+import io.github.gonbei774.calisthenicsmemory.R
+import androidx.compose.ui.res.stringResource
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -37,7 +40,8 @@ import kotlinx.coroutines.launch
  * The app's one − / + button beside a number: a tonal circle with an icon, the look of the large
  * buttons on the workout counter. Holding it keeps stepping while [onStep] returns true, so long
  * runs need no tapping. Every stepper in the app uses it, at [size] 40dp unless it sits beside a
- * big number.
+ * big number. The circle may be smaller than 48dp but its touch target never is, and a button given no
+ * [contentDescription] reads "One more" or "One fewer" to TalkBack instead of just "Button".
  */
 @Composable
 fun NumberStepButton(
@@ -50,15 +54,17 @@ fun NumberStepButton(
     val scope = rememberCoroutineScope()
     val currentOnStep by rememberUpdatedState(onStep)
     val cs = MaterialTheme.colorScheme
+    val label = contentDescription ?: stringResource(if (increment) R.string.workout_count_increase else R.string.workout_count_decrease)
     val container = if (enabled) cs.secondaryContainer else cs.onSurface.copy(alpha = 0.12f)
     val content = if (enabled) cs.onSecondaryContainer else cs.onSurface.copy(alpha = 0.38f)
     Box(
         modifier = Modifier
+            .minimumInteractiveComponentSize()
             .size(size)
             .background(container, CircleShape)
             .semantics {
                 role = Role.Button
-                if (contentDescription != null) this.contentDescription = contentDescription
+                this.contentDescription = label
                 if (!enabled) disabled()
                 onClick { currentOnStep(); true }
             }

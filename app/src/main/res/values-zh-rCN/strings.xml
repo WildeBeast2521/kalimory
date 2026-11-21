@@ -55,6 +55,7 @@
     <string name="left">左侧</string>
     <string name="right_value_short">右：%1$d%2$s</string>
     <string name="left_value_short">左：%1$d%2$s</string>
+    <string name="side_values_short">右%1$d 左%2$d</string>
     <string name="set_number_format">第%d组</string>
     <string name="date_format">日期：%s</string>
     <string name="time_format">时间：%s</string>

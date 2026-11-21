@@ -322,7 +322,12 @@ fun TodayScreen(
         if (doneToday.isNotEmpty()) Section(stringResource(R.string.today_done_title), onOpenHistory, stringResource(R.string.today_see_progress)) {
             // Long-press copies a plain-text summary, as the old dashboard card did.
             val clipboard = LocalClipboardManager.current
-            val summary = remember(doneToday, exercises) { formatRecordsForClipboard(doneToday.flatMap { it.second }, exercises) }
+            val resources = androidx.compose.ui.platform.LocalResources.current
+            val summary = remember(doneToday, exercises, resources) {
+                formatRecordsForClipboard(doneToday.flatMap { it.second }, exercises) { right, left ->
+                    resources.getString(R.string.side_values_short, right, left)
+                }
+            }
             Surface(
                 shape = MaterialTheme.shapes.large,
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -348,7 +353,7 @@ fun TodayScreen(
                     Text(totals.joinToString(", "), style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)
                     doneToday.forEach { (exerciseId, sets) ->
                         val name = exerciseNames[exerciseId] ?: return@forEach
-                        val values = sets.map { set -> set.valueLeft?.let { "R${set.valueRight} L$it" } ?: set.valueRight.toString() }
+                        val values = sets.map { set -> set.valueLeft?.let { stringResource(R.string.side_values_short, set.valueRight, it) } ?: set.valueRight.toString() }
                         DoneRow(name, values)
                     }
                 }

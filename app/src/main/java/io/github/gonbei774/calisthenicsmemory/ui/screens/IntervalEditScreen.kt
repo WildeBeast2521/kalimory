@@ -2,6 +2,7 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
@@ -525,19 +526,19 @@ private fun TimerSettingRow(
         onValueChange(next.toString())
         return next > min || delta > 0
     }
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
+    val large = isLargeFontScale()
+    val labelText: @Composable (Modifier) -> Unit = { modifier ->
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.weight(1f)
+            modifier = modifier
         )
+    }
+    val stepper: @Composable () -> Unit = {
         NumberStepButton(increment = false, contentDescription = null, enabled = (value.toIntOrNull() ?: min) > min) { stepped(-step) }
         Row(
-            modifier = Modifier.width(112.dp),
+            modifier = Modifier.widthIn(min = 112.dp),
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -545,8 +546,8 @@ private fun TimerSettingRow(
                 value = value,
                 onValueChange = onValueChange,
                 // A fixed width that fits four digits: an intrinsic width let the text scroll inside
-                // the field and hid it until scrolled.
-                modifier = Modifier.width(52.dp),
+                // the field and hid it until scrolled. Wider at large text, where four digits are wider.
+                modifier = Modifier.width(if (large) 96.dp else 52.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
                 textStyle = MaterialTheme.typography.titleLarge.copy(
@@ -566,6 +567,18 @@ private fun TimerSettingRow(
             )
         }
         NumberStepButton(increment = true, contentDescription = null) { stepped(step) }
+    }
+    // At large text the label goes above the stepper, so neither is squeezed or clipped.
+    if (large) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            labelText(Modifier.fillMaxWidth())
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) { stepper() }
+        }
+    } else {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            labelText(Modifier.weight(1f))
+            stepper()
+        }
     }
 }
 

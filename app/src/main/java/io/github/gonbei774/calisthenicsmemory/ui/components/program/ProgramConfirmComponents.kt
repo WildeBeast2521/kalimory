@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchValueRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
@@ -392,7 +395,6 @@ internal fun SettingsSection(
         label = "chevron"
     )
     // ローカル状態（間隔秒数入力用）
-    var intervalText by remember(isometricIntervalSeconds) { mutableStateOf(isometricIntervalSeconds.toString()) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -439,38 +441,12 @@ internal fun SettingsSection(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     // タイマーモード
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = stringResource(R.string.auto_mode),
-                        fontSize = 14.sp,
-                        color = cs.onSurface
-                    )
-                    Text(
-                        text = if (isAutoMode) {
-                            stringResource(R.string.timer_mode_on_description)
-                        } else {
-                            stringResource(R.string.timer_mode_off_description)
-                        },
-                        fontSize = 11.sp,
-                        color = cs.onSurfaceVariant
-                    )
-                }
-                Switch(
-                    checked = isAutoMode,
-                    onCheckedChange = onAutoModeChange,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = cs.onPrimary,
-                        checkedTrackColor = cs.tertiary,
-                        uncheckedThumbColor = cs.onPrimary,
-                        uncheckedTrackColor = cs.outline
-                    )
-                )
-            }
+            SwitchRow(
+                title = stringResource(R.string.auto_mode),
+                description = stringResource(if (isAutoMode) R.string.timer_mode_on_description else R.string.timer_mode_off_description),
+                checked = isAutoMode,
+                onCheckedChange = onAutoModeChange,
+            )
 
             // 開始カウントダウン
             Row(
@@ -511,125 +487,23 @@ internal fun SettingsSection(
             }
 
             // 数え上げ音（ダイナミック種目）
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = stringResource(R.string.dynamic_count_sound_label),
-                        fontSize = 14.sp,
-                        color = cs.onSurface
-                    )
-                    Text(
-                        text = stringResource(R.string.dynamic_count_sound_description),
-                        fontSize = 11.sp,
-                        color = cs.onSurfaceVariant
-                    )
-                }
-                Switch(
-                    checked = isDynamicCountSoundEnabled,
-                    onCheckedChange = onDynamicCountSoundChange,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = cs.onPrimary,
-                        checkedTrackColor = cs.tertiary,
-                        uncheckedThumbColor = cs.onPrimary,
-                        uncheckedTrackColor = cs.outline
-                    )
-                )
-            }
+            SwitchRow(
+                title = stringResource(R.string.dynamic_count_sound_label),
+                description = stringResource(R.string.dynamic_count_sound_description),
+                checked = isDynamicCountSoundEnabled,
+                onCheckedChange = onDynamicCountSoundChange,
+            )
 
             // 間隔通知（アイソメトリック種目）
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.isometric_interval_sound_label),
-                        fontSize = 14.sp,
-                        color = cs.onSurface
-                    )
-                    Text(
-                        text = stringResource(R.string.isometric_interval_sound_description),
-                        fontSize = 11.sp,
-                        color = cs.onSurfaceVariant
-                    )
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .width(40.dp)
-                            .height(28.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        BasicTextField(
-                            value = intervalText,
-                            onValueChange = { newValue ->
-                                if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
-                                    intervalText = newValue
-                                    newValue.toIntOrNull()?.let { onIsometricIntervalSecondsChange(it) }
-                                }
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            textStyle = androidx.compose.ui.text.TextStyle(
-                                fontSize = 14.sp,
-                                textAlign = TextAlign.Center,
-                                color = cs.onSurface
-                            ),
-                            decorationBox = { innerTextField ->
-                                Column {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .weight(1f),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        innerTextField()
-                                    }
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(1.dp)
-                                            .padding(horizontal = 2.dp)
-                                            .then(Modifier.drawBehind {
-                                                drawLine(
-                                                    color = cs.onSurfaceVariant,
-                                                    start = androidx.compose.ui.geometry.Offset(0f, 0f),
-                                                    end = androidx.compose.ui.geometry.Offset(size.width, 0f),
-                                                    strokeWidth = 1.dp.toPx()
-                                                )
-                                            })
-                                    )
-                                }
-                            }
-                        )
-                    }
-                    Text(
-                        text = stringResource(R.string.unit_seconds_short),
-                        fontSize = 12.sp,
-                        color = cs.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Switch(
-                        checked = isIsometricIntervalSoundEnabled,
-                        onCheckedChange = onIsometricIntervalSoundChange,
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = cs.onPrimary,
-                            checkedTrackColor = cs.tertiary,
-                            uncheckedThumbColor = cs.onPrimary,
-                            uncheckedTrackColor = cs.outline
-                        )
-                    )
-                }
-            }
+            SwitchValueRow(
+                title = stringResource(R.string.isometric_interval_sound_label),
+                description = stringResource(R.string.isometric_interval_sound_description),
+                checked = isIsometricIntervalSoundEnabled,
+                onCheckedChange = onIsometricIntervalSoundChange,
+                value = isometricIntervalSeconds,
+                onValueChange = onIsometricIntervalSecondsChange,
+                unit = stringResource(R.string.unit_seconds_short),
+            )
                 }
             }
         }
@@ -686,8 +560,9 @@ internal fun ProgramConfirmExerciseCard(
                 // 番号バッジ
                 Box(
                     modifier = Modifier
-                        .size(28.dp)
-                        .background(cs.tertiary, RoundedCornerShape(8.dp)),
+                        .defaultMinSize(minWidth = 28.dp, minHeight = 28.dp)
+                        .background(cs.tertiary, RoundedCornerShape(8.dp))
+                        .padding(horizontal = 4.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -818,9 +693,8 @@ internal fun ProgramConfirmExerciseCard(
                             if (index == 0) {
                                 Text(
                                     text = stringResource(R.string.program_use_previous),
-                                    fontSize = 11.sp,
+                                    style = MaterialTheme.typography.labelMedium,
                                     color = cs.outline,
-                                    modifier = Modifier.width(60.dp),
                                     textAlign = TextAlign.End
                                 )
                             }
@@ -952,26 +826,25 @@ internal fun ProgramConfirmExerciseCard(
                         }
                     }
 
-                    // 休憩時間
-                    Row(
+                    // 休憩時間: wraps at large text instead of clipping its last item.
+                    @OptIn(ExperimentalLayoutApi::class)
+                    FlowRow(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 12.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
+                        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        itemVerticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(AppIcons.Timer, contentDescription = null, modifier = Modifier.size(14.dp), tint = cs.outline)
-                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = stringResource(R.string.interval_short),
                             fontSize = 12.sp,
                             color = cs.outline
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
                         Box(
                             modifier = Modifier
-                                .width(48.dp)
-                                .height(28.dp)
+                                .defaultMinSize(minWidth = 48.dp, minHeight = 28.dp)
                                 .background(cs.surfaceContainerHigh, RoundedCornerShape(6.dp)),
                             contentAlignment = Alignment.Center
                         ) {
@@ -1001,7 +874,6 @@ internal fun ProgramConfirmExerciseCard(
                                 }
                             )
                         }
-                        Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.unit_seconds_short),
                             fontSize = 12.sp,
@@ -1198,6 +1070,10 @@ private fun OrangeCircleStepButton(
     NumberStepButton(increment = label == "+", contentDescription = null, enabled = enabled) { onStep(); enabled }
 }
 
+/**
+ * A label, a − value + stepper and, at the end, last time's value. The label takes whatever width is
+ * left and may wrap; at large text it moves above the stepper, so nothing is squeezed or cut off.
+ */
 @Composable
 private fun UnifiedStepperRow(
     label: String,
@@ -1210,54 +1086,53 @@ private fun UnifiedStepperRow(
     minusEnabled: Boolean = true
 ) {
     val cs = MaterialTheme.colorScheme
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = label,
-            fontSize = 13.sp,
-            color = cs.onSurfaceVariant,
-            modifier = Modifier.width(96.dp)
+    val labelText: @Composable (Modifier) -> Unit = { modifier ->
+        Text(text = label, style = MaterialTheme.typography.bodyMedium, color = cs.onSurfaceVariant, modifier = modifier)
+    }
+    val stepper: @Composable () -> Unit = {
+        OrangeCircleStepButton(label = "−", enabled = minusEnabled, onStep = onMinus)
+        BasicTextField(
+            value = valueText,
+            onValueChange = onValueTextChange,
+            // A fixed width: an unweighted text field would take all the room the label needs.
+            modifier = Modifier.width(if (isLargeFontScale()) 96.dp else 56.dp),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            textStyle = MaterialTheme.typography.titleLarge.copy(
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                color = cs.onSurface
+            )
         )
-        Row(
-            modifier = Modifier.weight(1f),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OrangeCircleStepButton(
-                label = "−",
-                enabled = minusEnabled,
-                onStep = onMinus
-            )
-            Spacer(modifier = Modifier.width(14.dp))
-            BasicTextField(
-                value = valueText,
-                onValueChange = onValueTextChange,
-                modifier = Modifier.width(60.dp),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-                textStyle = androidx.compose.ui.text.TextStyle(
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    color = cs.onSurface
-                )
-            )
-            Spacer(modifier = Modifier.width(14.dp))
-            OrangeCircleStepButton(
-                label = "+",
-                onStep = onPlus
-            )
-        }
+        OrangeCircleStepButton(label = "+", onStep = onPlus)
+    }
+    val previous: @Composable () -> Unit = {
         Text(
             text = previousText,
-            fontSize = 13.sp,
+            style = MaterialTheme.typography.bodyMedium,
             color = cs.outline,
             textAlign = TextAlign.End,
-            modifier = Modifier.width(60.dp)
+            modifier = Modifier.widthIn(min = 32.dp)
         )
+    }
+    if (isLargeFontScale()) {
+        Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+            labelText(Modifier.fillMaxWidth())
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                stepper()
+                Spacer(Modifier.weight(1f))
+                previous()
+            }
+        }
+    } else {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            labelText(Modifier.weight(1f))
+            stepper()
+            previous()
+        }
     }
 }

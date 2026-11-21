@@ -23,12 +23,20 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- The seconds for the sound during holds are set with a stepper under the setting, instead of a small field in the same line as the switch; tapping anywhere on a switch row toggles it ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - Sets done with band or machine assistance no longer count toward a progression's move-on standard or its progress; they still show as your last session and start the step ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Search in Exercises and groups, Progress and every exercise picker also finds a group by its name, ignores accents and Arabic short vowels, and matches every word you type in any order; each result in a picker shows its group, and the best match comes first ([#282](https://github.com/WildeBeast2521/kalimory/pull/282))
 - Searching Programs and Intervals also finds them by the exercises they hold, and says which ones ("Includes Dips") when the name itself did not match ([#283](https://github.com/WildeBeast2521/kalimory/pull/283))
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- At large text sizes, the interval editor's timer settings and the stepper rows in Log a past workout no longer clip their units or split words: the label moves above the stepper ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
+- At large text sizes, the Programs, Intervals and To Do lists keep names readable: the Start and other buttons move under the text instead of squeezing a name into a few letters per line ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
+- The workout and program setup screens fit at large text sizes: switches stay on their cards, buttons show their full text, the program setup's steppers are no longer squeezed, and the numbers in the small boxes are no longer clipped ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
+- Progress graphs: holds no longer show a volume chart or volume statistics (seconds times kilograms meant nothing), "Weekly change" compares the last 7 days with the 7 before whatever period is chosen, and a one-sided exercise is charted as right and left even when a day's first set has no left value ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
+- The − and + step buttons are named for TalkBack ("One fewer", "One more") and have a full-size touch target even where the circle is drawn small, as in the program setup ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
+- The calendar's month title follows your language's own order and script, and one-sided sets on Today and in the copied summary use your language's letters for right and left instead of English R and L ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
+- The program overview's status bar icons are readable in the light theme ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - Targets on the Progressions tab are judged over all your history by the same rule as the progression cards, instead of a hidden one-week filter and a formula where one big set could clear a target of several sets; the day strip shows the last month ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - A negative distance, which the app lets you enter, no longer stops a records CSV from importing, and backups no longer report it as a problem ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - The Favorite card in Exercises and groups no longer offers Rename and Delete, which did nothing while reporting success ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))

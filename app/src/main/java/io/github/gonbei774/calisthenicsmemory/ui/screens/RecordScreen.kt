@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
@@ -328,7 +329,7 @@ fun ExerciseSelectionScreen(
                             .fillMaxWidth()
                             .navigationBarsPadding()
                             .padding(16.dp)
-                            .height(56.dp),
+                            .heightIn(min = 56.dp),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Icon(AppIcons.Check, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
@@ -1067,7 +1068,7 @@ fun WorkoutInputScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(48.dp),
+                            .heightIn(min = 48.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary,
                             disabledContainerColor = MaterialTheme.colorScheme.outline
@@ -1445,7 +1446,7 @@ fun WorkoutInputScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .heightIn(min = 56.dp),
                     enabled = enteredCount > 0,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -1489,7 +1490,7 @@ fun WorkoutInputScreen(
                         addingExercise = false
                     },
                     enabled = enteredCount > 0,
-                    modifier = Modifier.fillMaxWidth().height(48.dp),
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Icon(AppIcons.Add, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
@@ -1884,17 +1885,15 @@ private fun InlineStepperRow(
     onIncrement: () -> Boolean,
     previousText: String? = null
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+    val labelText: @Composable (Modifier) -> Unit = { modifier ->
         Text(
             text = label,
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f)
+            modifier = modifier
         )
+    }
+    val controls: @Composable () -> Unit = {
         RepeatableStepButton(
             label = "−",
             size = 36.dp,
@@ -1906,7 +1905,7 @@ private fun InlineStepperRow(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
-                .width(72.dp)
+                .width(56.dp)
                 .padding(horizontal = 4.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
@@ -1933,8 +1932,28 @@ private fun InlineStepperRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.End,
                 maxLines = 1,
-                modifier = Modifier.widthIn(min = 56.dp)
+                modifier = Modifier.widthIn(min = 44.dp)
             )
+        }
+    }
+    // At large text the label goes above the controls, so neither is squeezed ("Re/ps") or clipped.
+    if (isLargeFontScale()) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            labelText(Modifier.fillMaxWidth())
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+            ) { controls() }
+        }
+    } else {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            labelText(Modifier.weight(1f))
+            controls()
         }
     }
 }

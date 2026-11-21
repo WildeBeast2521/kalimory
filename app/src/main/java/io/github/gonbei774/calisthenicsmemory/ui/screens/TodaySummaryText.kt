@@ -18,7 +18,9 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
  */
 fun formatRecordsForClipboard(
     records: List<HistorySet>,
-    exercises: List<Exercise>
+    exercises: List<Exercise>,
+    // How a one-sided set reads, right then left; the screen passes the language's own letters.
+    sideValues: (right: Int, left: Int) -> String = { right, left -> "R$right L$left" },
 ): String {
     if (records.none { it.countsAsWork }) return ""
 
@@ -41,7 +43,7 @@ fun formatRecordsForClipboard(
             // Unilateral exercise - format: R6 L5/R5 L4
             exercise.laterality == "Unilateral" -> {
                 val pairs = sortedRecords.map { record ->
-                    "R${record.valueRight}" + (record.valueLeft?.let { " L$it" } ?: "")
+                    record.valueLeft?.let { sideValues(record.valueRight, it) } ?: "R${record.valueRight}"
                 }
                 pairs.joinToString("/")
             }

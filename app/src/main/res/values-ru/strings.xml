@@ -49,6 +49,7 @@
     <string name="left">Левый</string>
     <string name="right_value_short">П: %1$d %2$s</string>
     <string name="left_value_short">Л: %1$d %2$s</string>
+    <string name="side_values_short">П%1$d Л%2$d</string>
     <string name="set_number_format">Подход %d</string>
     <string name="date_format">Дата: %s</string>
     <string name="time_format">Время: %s</string>

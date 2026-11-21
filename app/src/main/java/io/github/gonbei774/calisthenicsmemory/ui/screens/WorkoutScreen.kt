@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchValueRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.screens.today.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
@@ -577,7 +579,7 @@ fun WorkoutScreen(
                                         showNavigationSheet = false
                                         onRetry()
                                     },
-                                    modifier = Modifier.fillMaxWidth().height(48.dp),
+                                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
                                 ) {
                                     Text(
                                         text = stringResource(R.string.retry_set_button),
@@ -593,7 +595,7 @@ fun WorkoutScreen(
                                         }
                                         onAbort(step.session)
                                     },
-                                    modifier = Modifier.fillMaxWidth().height(48.dp),
+                                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
                                 ) {
                                     Text(
                                         text = stringResource(R.string.save_and_exit_button),
@@ -1397,7 +1399,7 @@ fun SettingsStep(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
+                .heightIn(min = 48.dp),
             colors = ButtonDefaults.buttonColors(),
             shape = RoundedCornerShape(8.dp)
         ) {
@@ -1675,7 +1677,7 @@ private fun TimerAbortSheet(
         ) {
             Button(
                 onClick = onAbort,
-                modifier = Modifier.fillMaxWidth().height(48.dp),
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
             ) {
                 Text(
                     text = stringResource(R.string.save_and_exit_button),
@@ -2075,7 +2077,7 @@ fun ConfirmationStep(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .heightIn(min = 56.dp),
             colors = ButtonDefaults.buttonColors()
         ) {
             Text(stringResource(R.string.record_workout), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -2759,9 +2761,6 @@ fun SingleWorkoutSettingsSection(
     onIsometricIntervalSoundChange: (Boolean) -> Unit,
     onIsometricIntervalSecondsChange: (Int) -> Unit
 ) {
-    // ローカル状態（間隔秒数入力用）
-    var intervalText by remember(isometricIntervalSeconds) { mutableStateOf(isometricIntervalSeconds.toString()) }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -2772,195 +2771,46 @@ fun SingleWorkoutSettingsSection(
     ) {
         if (isDynamicExercise) {
             // ダイナミック種目: 数え上げ音を先に表示
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = stringResource(R.string.dynamic_count_sound_label),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = stringResource(R.string.dynamic_count_sound_description),
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                Switch(
-                    checked = isDynamicCountSoundEnabled,
-                    onCheckedChange = onDynamicCountSoundChange,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                        checkedTrackColor = MaterialTheme.colorScheme.primary,
-                        uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                        uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                    )
-                )
-            }
+            SwitchRow(
+                title = stringResource(R.string.dynamic_count_sound_label),
+                description = stringResource(R.string.dynamic_count_sound_description),
+                checked = isDynamicCountSoundEnabled,
+                onCheckedChange = onDynamicCountSoundChange,
+            )
 
             // タイマーモード（Count Sound OFFの時は無効化）
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = stringResource(R.string.auto_mode),
-                        fontSize = 14.sp,
-                        color = if (isDynamicCountSoundEnabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                    )
-                    Text(
-                        text = if (isDynamicCountSoundEnabled) {
-                            if (isAutoMode) {
-                                stringResource(R.string.timer_mode_on_description)
-                            } else {
-                                stringResource(R.string.timer_mode_off_description)
-                            }
-                        } else {
-                            stringResource(R.string.auto_mode_disabled_hint)
-                        },
-                        fontSize = 11.sp,
-                        color = if (isDynamicCountSoundEnabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                    )
-                }
-                Switch(
-                    checked = isAutoMode && isDynamicCountSoundEnabled,
-                    onCheckedChange = onAutoModeChange,
-                    enabled = isDynamicCountSoundEnabled,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                        checkedTrackColor = MaterialTheme.colorScheme.primary,
-                        uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                        uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                        disabledCheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledCheckedTrackColor = MaterialTheme.colorScheme.outlineVariant,
-                        disabledUncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledUncheckedTrackColor = MaterialTheme.colorScheme.outlineVariant
-                    )
-                )
-            }
+            SwitchRow(
+                title = stringResource(R.string.auto_mode),
+                description = stringResource(
+                    when {
+                        !isDynamicCountSoundEnabled -> R.string.auto_mode_disabled_hint
+                        isAutoMode -> R.string.timer_mode_on_description
+                        else -> R.string.timer_mode_off_description
+                    }
+                ),
+                checked = isAutoMode && isDynamicCountSoundEnabled,
+                onCheckedChange = onAutoModeChange,
+                enabled = isDynamicCountSoundEnabled,
+            )
         } else {
             // アイソメトリック種目: タイマーモード
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = stringResource(R.string.auto_mode),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = if (isAutoMode) {
-                            stringResource(R.string.timer_mode_on_description)
-                        } else {
-                            stringResource(R.string.timer_mode_off_description)
-                        },
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                Switch(
-                    checked = isAutoMode,
-                    onCheckedChange = onAutoModeChange,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                        checkedTrackColor = MaterialTheme.colorScheme.primary,
-                        uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                        uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                    )
-                )
-            }
+            SwitchRow(
+                title = stringResource(R.string.auto_mode),
+                description = stringResource(if (isAutoMode) R.string.timer_mode_on_description else R.string.timer_mode_off_description),
+                checked = isAutoMode,
+                onCheckedChange = onAutoModeChange,
+            )
 
             // アイソメトリック種目: 間隔通知音（秒数入力付き）
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.isometric_interval_sound_label),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = stringResource(R.string.isometric_interval_sound_description),
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .width(40.dp)
-                            .height(28.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        BasicTextField(
-                            value = intervalText,
-                            onValueChange = { newValue ->
-                                if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
-                                    intervalText = newValue
-                                    newValue.toIntOrNull()?.let { onIsometricIntervalSecondsChange(it) }
-                                }
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            textStyle = androidx.compose.ui.text.TextStyle(
-                                fontSize = 14.sp,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colorScheme.onSurface
-                            ),
-                            decorationBox = { innerTextField ->
-                                Column {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .weight(1f),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        innerTextField()
-                                    }
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(1.dp)
-                                            .padding(horizontal = 2.dp)
-                                            .background(MaterialTheme.colorScheme.onSurfaceVariant)
-                                    )
-                                }
-                            }
-                        )
-                    }
-                    Text(
-                        text = stringResource(R.string.unit_seconds_short),
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Switch(
-                        checked = isIsometricIntervalSoundEnabled,
-                        onCheckedChange = onIsometricIntervalSoundChange,
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                            checkedTrackColor = MaterialTheme.colorScheme.primary,
-                            uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                        )
-                    )
-                }
-            }
+            SwitchValueRow(
+                title = stringResource(R.string.isometric_interval_sound_label),
+                description = stringResource(R.string.isometric_interval_sound_description),
+                checked = isIsometricIntervalSoundEnabled,
+                onCheckedChange = onIsometricIntervalSoundChange,
+                value = isometricIntervalSeconds,
+                onValueChange = onIsometricIntervalSecondsChange,
+                unit = stringResource(R.string.unit_seconds_short),
+            )
         }
     }
 }

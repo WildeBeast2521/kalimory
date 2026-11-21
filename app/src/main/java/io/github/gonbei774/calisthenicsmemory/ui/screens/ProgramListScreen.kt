@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.InfoActionRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.StartButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.AppFab
@@ -228,15 +229,9 @@ private fun ProgramListItem(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                 shape = MaterialTheme.shapes.large
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    // Program info
-                    Column(modifier = Modifier.weight(1f)) {
+                InfoActionRow(
+                    modifier = Modifier.padding(12.dp),
+                    info = {
                         Text(
                             text = program.name,
                             fontSize = 16.sp,
@@ -261,7 +256,8 @@ private fun ProgramListItem(
                         if (lastDone != null) {
                             Text(lastDone, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
-                    }
+                    },
+                    actions = {
 
                     // Edit button
                     IconButton(
@@ -301,6 +297,7 @@ private fun ProgramListItem(
                     // Execute button
                     StartButton(onClick = onExecute)
                 }
+                )
             }
 
             // Context menu (long press)

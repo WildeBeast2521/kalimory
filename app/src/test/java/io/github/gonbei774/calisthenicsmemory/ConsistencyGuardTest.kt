@@ -15,6 +15,11 @@ class ConsistencyGuardTest {
     private fun uses(pattern: Regex, except: Set<String> = emptySet()) =
         kotlin.filter { it.name !in except && pattern.containsMatchIn(it.readText()) }.map { it.name }
 
+    @Test fun `the guards can see the sources`() {
+        // If neither path resolved, every guard below would pass on an empty list.
+        assertTrue("Found ${kotlin.size} Kotlin files: the guards are not reading the app", kotlin.size > 100)
+    }
+
     @Test fun `every floating action button is the shared AppFab`() {
         val offenders = uses(Regex("""\b(Medium|Large|Small)?FloatingActionButton\("""), except = setOf("AppFab.kt"))
         assertTrue("Use AppFab instead: $offenders", offenders.isEmpty())
@@ -26,6 +31,14 @@ class ConsistencyGuardTest {
         assertTrue("Use screenBottomInsets/keyboardInsets/keyboardVisible from KeyboardInsets.kt: $offenders", offenders.isEmpty())
         val activity = Regex("""<activity\s[^>]*android:name="\.MainActivity"[^>]*>""").find(main.resolve("AndroidManifest.xml").readText())?.value
         assertTrue("MainActivity must resize for the keyboard", activity?.contains("""android:windowSoftInputMode="adjustResize"""") == true)
+    }
+
+    @Test fun `a full-screen dialog drawn edge to edge sets its bar icons`() {
+        // Such a dialog is its own window: without DialogSystemBars its status bar icons come out white on light.
+        val offenders = kotlin.filter { it.name != "DialogSystemBars.kt" }
+            .filter { Regex("""decorFitsSystemWindows\s*=\s*false""").containsMatchIn(it.readText()) && !it.readText().contains("DialogSystemBars()") }
+            .map { it.name }
+        assertTrue("Call DialogSystemBars() in: $offenders", offenders.isEmpty())
     }
 
     @Test fun `every swipe to delete draws the shared background`() {

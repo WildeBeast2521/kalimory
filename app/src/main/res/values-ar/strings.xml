@@ -294,6 +294,7 @@
     <string name="left">اليسار</string>
     <string name="right_value_short">ي: %1$d %2$s</string>
     <string name="left_value_short">س: %1$d %2$s</string>
+    <string name="side_values_short">ي%1$d س%2$d</string>
     <string name="set_number_format">المجموعة %d</string>
     <string name="date_format">التاريخ: %s</string>
     <string name="time_format">الوقت: %s</string>
