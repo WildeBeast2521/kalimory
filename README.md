@@ -121,7 +121,7 @@ Every exercise in the catalogue belongs to a chain of steps, each harder than th
 <table>
   <tr>
     <td width="50%" valign="top"><img src=".github/readme/icon-wifi_off.svg" width="40" align="left" alt="">&nbsp;<b>No internet permission</b><br>&nbsp;The app cannot send anything anywhere. No account, no ads, no analytics and no crash reporting.</td>
-    <td width="50%" valign="top"><img src=".github/readme/icon-lock.svg" width="40" align="left" alt="">&nbsp;<b>Only what workouts need</b><br>&nbsp;<code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_SPECIAL_USE</code> and <code>WAKE_LOCK</code> keep timers running with the screen off; <code>FLASHLIGHT</code> can flash at the end of a rest; <code>POST_NOTIFICATIONS</code> shows the running timer, and is asked for only when your first workout opens.</td>
+    <td width="50%" valign="top"><img src=".github/readme/icon-lock.svg" width="40" align="left" alt="">&nbsp;<b>Only what workouts need</b><br>&nbsp;<code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_SPECIAL_USE</code> and <code>WAKE_LOCK</code> keep timers running with the screen off; <code>FLASHLIGHT</code> can flash at the end of a rest; <code>VIBRATE</code> gives a short vibration with the last countdown beeps and when a set is done; <code>POST_NOTIFICATIONS</code> shows the running timer, and is asked for only when your first workout opens.</td>
   </tr>
 </table>
 
