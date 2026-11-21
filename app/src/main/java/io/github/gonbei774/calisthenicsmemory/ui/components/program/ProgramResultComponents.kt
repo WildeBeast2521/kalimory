@@ -19,6 +19,7 @@ import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
 import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
 import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.MetricStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SetMarks
 import androidx.compose.ui.platform.LocalContext
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
@@ -235,19 +236,12 @@ internal fun ProgramUnilateralSetItem(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row(
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                // 右側
-                Text(
-                    text = stringResource(R.string.right_colon),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.width(30.dp)
-                )
-                OutlinedTextField(
+                MetricStepper(
+                    label = stringResource(R.string.right_colon) + " " + stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
                     value = rightValue,
                     onValueChange = { newValue ->
                         if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
@@ -255,27 +249,12 @@ internal fun ProgramUnilateralSetItem(
                             newValue.toIntOrNull()?.let { rightSet?.actualValue = it }
                         }
                     },
-                    label = {
-                        Text(
-                            stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    },
-                    modifier = Modifier.weight(1f),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardType = KeyboardType.Number,
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
-
-                // 左側
-                Text(
-                    text = stringResource(R.string.left_colon),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.width(30.dp)
-                )
-                OutlinedTextField(
+                MetricStepper(
+                    label = stringResource(R.string.left_colon) + " " + stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
                     value = leftValue,
                     onValueChange = { newValue ->
                         if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
@@ -283,15 +262,8 @@ internal fun ProgramUnilateralSetItem(
                             newValue.toIntOrNull()?.let { leftSet?.actualValue = it }
                         }
                     },
-                    label = {
-                        Text(
-                            stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    },
-                    modifier = Modifier.weight(1f),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardType = KeyboardType.Number,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
 
@@ -352,12 +324,8 @@ internal fun ProgramBilateralSetItem(
                 .fillMaxWidth()
                 .padding(12.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = stringResource(R.string.set_label, set.setNumber),
                         style = MaterialTheme.typography.bodyLarge,
@@ -373,7 +341,9 @@ internal fun ProgramBilateralSetItem(
                     }
                 }
 
-                OutlinedTextField(
+                Spacer(modifier = Modifier.height(4.dp))
+                MetricStepper(
+                    label = stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
                     value = value,
                     onValueChange = { newValue ->
                         if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
@@ -381,15 +351,8 @@ internal fun ProgramBilateralSetItem(
                             newValue.toIntOrNull()?.let { set.actualValue = it }
                         }
                     },
-                    label = {
-                        Text(
-                            stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    },
-                    modifier = Modifier.width(100.dp),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardType = KeyboardType.Number,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
 
@@ -448,7 +411,8 @@ private fun ProgramResultTrackingInputs(
     Spacer(modifier = Modifier.height(8.dp))
 
     if (exercise.distanceTrackingEnabled) {
-        OutlinedTextField(
+        MetricStepper(
+            label = stringResource(R.string.distance_input_label),
             value = distanceStr,
             onValueChange = { value ->
                 val normalized = value
@@ -459,21 +423,15 @@ private fun ProgramResultTrackingInputs(
                     onDistanceChange(parseResultDistanceCmValue(normalized))
                 }
             },
-            label = { Text(stringResource(R.string.distance_input_label), style = MaterialTheme.typography.bodySmall) },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.secondary,
-                focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                cursorColor = MaterialTheme.colorScheme.secondary
-            )
+            keyboardType = KeyboardType.Number,
+                    modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(4.dp))
     }
 
     if (exercise.weightTrackingEnabled) {
-        OutlinedTextField(
+        MetricStepper(
+            label = stringResource(R.string.weight_input_label),
             value = weightStr,
             onValueChange = { value ->
                 val normalized = value
@@ -486,21 +444,16 @@ private fun ProgramResultTrackingInputs(
                     onWeightChange(parseResultWeightGValue(normalized))
                 }
             },
-            label = { Text(stringResource(R.string.weight_input_label), style = MaterialTheme.typography.bodySmall) },
+            keyboardType = KeyboardType.Decimal,
+            decimals = true,
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                cursorColor = MaterialTheme.colorScheme.primary
-            )
         )
         Spacer(modifier = Modifier.height(4.dp))
     }
 
     if (exercise.assistanceTrackingEnabled) {
-        OutlinedTextField(
+        MetricStepper(
+            label = stringResource(R.string.assistance_input_label),
             value = assistanceStr,
             onValueChange = { value ->
                 val normalized = value
@@ -513,15 +466,9 @@ private fun ProgramResultTrackingInputs(
                     onAssistanceChange(parseResultWeightGValue(normalized))
                 }
             },
-            label = { Text(stringResource(R.string.assistance_input_label), style = MaterialTheme.typography.bodySmall) },
+            keyboardType = KeyboardType.Decimal,
+            decimals = true,
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                cursorColor = MaterialTheme.colorScheme.primary
-            )
         )
     }
 }

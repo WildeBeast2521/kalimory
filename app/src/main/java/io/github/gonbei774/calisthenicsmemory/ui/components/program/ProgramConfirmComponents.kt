@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Job
@@ -531,10 +532,10 @@ internal fun ProgramConfirmExerciseCard(
     val cs = MaterialTheme.colorScheme
     // 現在のセット数とインターバルを取得
     val currentSetCount = sets.maxOfOrNull { it.setNumber } ?: programExercise.sets
-    val currentInterval = sets.firstOrNull()?.intervalSeconds ?: programExercise.intervalSeconds
-
-    // ローカル状態（UIの編集用）
-    var intervalText by remember(exerciseIndex, currentInterval) { mutableStateOf(currentInterval.toString()) }
+    val sessionInterval = sets.firstOrNull()?.intervalSeconds ?: programExercise.intervalSeconds
+    // The session changes in place, so this card is not redrawn by a change to it: the stepper keeps the
+    // value it shows itself, and passes each change on.
+    var currentInterval by remember(exerciseIndex, sessionInterval) { mutableIntStateOf(sessionInterval) }
 
     // シェブロン回転アニメーション（状態は親から渡される）
     val chevronRotation by animateFloatAsState(
@@ -629,37 +630,24 @@ internal fun ProgramConfirmExerciseCard(
                 Column(
                     modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                 ) {
-                    // セット数変更（ステッパー）
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier.padding(bottom = 12.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.sets_label_short),
-                            fontSize = 13.sp,
-                            color = cs.onSurfaceVariant
-                        )
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            NumberStepButton(increment = false, contentDescription = null, enabled = currentSetCount > 1, size = 32.dp) {
-                                if (currentSetCount > 1) onUpdateSetCount(currentSetCount - 1)
-                                false
-                            }
-                            Text(
-                                text = currentSetCount.toString(),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = cs.onSurface,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.width(28.dp)
-                            )
-                            NumberStepButton(increment = true, contentDescription = null, size = 32.dp) {
-                                onUpdateSetCount(currentSetCount + 1)
-                                false
-                            }
-                        }
-                    }
+                    // Sets, then the rest between them: the same stepper line for both.
+                    StepperLine(
+                        label = stringResource(R.string.sets_label_short),
+                        value = currentSetCount.toString(),
+                        canDecrement = currentSetCount > 1,
+                        onMinus = { if (currentSetCount > 1) onUpdateSetCount(currentSetCount - 1); false },
+                        onPlus = { onUpdateSetCount(currentSetCount + 1); false },
+                        modifier = Modifier.padding(bottom = 12.dp),
+                    )
+                    StepperLine(
+                        label = stringResource(R.string.interval_short),
+                        value = "$currentInterval ${stringResource(R.string.unit_seconds_short)}",
+                        canDecrement = currentInterval > 0,
+                        onMinus = { val next = (currentInterval - REST_STEP_SECONDS).coerceAtLeast(0); currentInterval = next; onUpdateInterval(next); next > 0 },
+                        onPlus = { currentInterval += REST_STEP_SECONDS; onUpdateInterval(currentInterval); true },
+                        modifier = Modifier.padding(bottom = 12.dp),
+                        valueWidth = 56.dp,
+                    )
 
                     // セットごとの値（統一行レイアウト）
                     sets.forEachIndexed { index, set ->
@@ -824,61 +812,6 @@ internal fun ProgramConfirmExerciseCard(
                                 minusEnabled = (currentSet.assistanceG ?: 0) > 0
                             )
                         }
-                    }
-
-                    // 休憩時間: wraps at large text instead of clipping its last item.
-                    @OptIn(ExperimentalLayoutApi::class)
-                    FlowRow(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        itemVerticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(AppIcons.Timer, contentDescription = null, modifier = Modifier.size(14.dp), tint = cs.outline)
-                        Text(
-                            text = stringResource(R.string.interval_short),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = cs.outline
-                        )
-                        Box(
-                            modifier = Modifier
-                                .defaultMinSize(minWidth = 48.dp, minHeight = 28.dp)
-                                .background(cs.surfaceContainerHigh, RoundedCornerShape(6.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            BasicTextField(
-                                value = intervalText,
-                                onValueChange = { newValue ->
-                                    if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
-                                        intervalText = newValue
-                                        newValue.toIntOrNull()?.let { onUpdateInterval(it) }
-                                    }
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                singleLine = true,
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                textStyle = androidx.compose.ui.text.TextStyle(
-                                    fontSize = 13.sp,
-                                    textAlign = TextAlign.Center,
-                                    color = cs.onSurface
-                                ),
-                                decorationBox = { innerTextField ->
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        innerTextField()
-                                    }
-                                }
-                            )
-                        }
-                        Text(
-                            text = stringResource(R.string.unit_seconds_short),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = cs.outline
-                        )
                     }
                 }
             }
@@ -1059,6 +992,47 @@ private fun parseProgramWeightGValue(input: String): Int? {
     if (trimmed.isEmpty() || trimmed == ".") return null
     val kg = trimmed.toDoubleOrNull() ?: return null
     return (kg * 1000).toInt()
+}
+
+private const val REST_STEP_SECONDS = 5
+
+/**
+ * One labelled stepper line: the label, then "− value +". At large text the stepper wraps below the label as a
+ * whole, so the label and the value never break into separate words.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun StepperLine(
+    label: String,
+    value: String,
+    canDecrement: Boolean,
+    onMinus: () -> Boolean,
+    onPlus: () -> Boolean,
+    modifier: Modifier = Modifier,
+    valueWidth: Dp = 28.dp,
+) {
+    val cs = MaterialTheme.colorScheme
+    FlowRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        itemVerticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(text = label, fontSize = 13.sp, color = cs.onSurfaceVariant)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            NumberStepButton(increment = false, contentDescription = null, enabled = canDecrement, size = 32.dp, onStep = onMinus)
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium,
+                color = cs.onSurface,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                softWrap = false,
+                modifier = Modifier.width(valueWidth),
+            )
+            NumberStepButton(increment = true, contentDescription = null, size = 32.dp, onStep = onPlus)
+        }
+    }
 }
 
 @Composable

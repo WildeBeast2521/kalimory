@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.MetricStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberCountdownHaptics
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberSetDoneHaptic
@@ -2164,30 +2165,22 @@ fun AddExtraSetDialog(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                OutlinedTextField(
+                MetricStepper(
+                    label = stringResource(
+                                if (exercise.type == "Dynamic") R.string.target_reps_label
+                                else R.string.target_duration_label
+                            ),
                     value = targetValueStr,
                     onValueChange = {
                         if (it.isEmpty() || it.all { c -> c.isDigit() }) targetValueStr = it
                     },
-                    label = {
-                        Text(
-                            stringResource(
-                                if (exercise.type == "Dynamic") R.string.target_reps_label
-                                else R.string.target_duration_label
-                            )
-                        )
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        focusedLabelColor = MaterialTheme.colorScheme.primary
-                    )
+                    keyboardType = KeyboardType.Number,
+                                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 if (exercise.distanceTrackingEnabled) {
-                    OutlinedTextField(
+                    MetricStepper(
+                        label = stringResource(R.string.distance_input_label),
                         value = distanceStr,
                         onValueChange = { value ->
                             val normalized = value
@@ -2197,20 +2190,14 @@ fun AddExtraSetDialog(
                                 distanceStr = normalized
                             }
                         },
-                        label = { Text(stringResource(R.string.distance_input_label)) },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            focusedLabelColor = MaterialTheme.colorScheme.primary,
-                            cursorColor = MaterialTheme.colorScheme.primary
-                        )
+                        keyboardType = KeyboardType.Number,
+                                            modifier = Modifier.fillMaxWidth(),
                     )
                 }
 
                 if (exercise.weightTrackingEnabled) {
-                    OutlinedTextField(
+                    MetricStepper(
+                        label = stringResource(R.string.weight_input_label),
                         value = weightStr,
                         onValueChange = { value ->
                             val normalized = value
@@ -2221,19 +2208,15 @@ fun AddExtraSetDialog(
                                 normalized.matches(Regex("^\\d*\\.?\\d?\$"))
                             if (isValidDecimal) weightStr = normalized
                         },
-                        label = { Text(stringResource(R.string.weight_input_label)) },
+                        keyboardType = KeyboardType.Decimal,
+                        decimals = true,
                         modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            focusedLabelColor = MaterialTheme.colorScheme.primary
-                        )
                     )
                 }
 
                 if (exercise.assistanceTrackingEnabled) {
-                    OutlinedTextField(
+                    MetricStepper(
+                        label = stringResource(R.string.assistance_input_label),
                         value = assistanceStr,
                         onValueChange = { value ->
                             val normalized = value
@@ -2244,15 +2227,9 @@ fun AddExtraSetDialog(
                                 normalized.matches(Regex("^\\d*\\.?\\d?\$"))
                             if (isValidDecimal) assistanceStr = normalized
                         },
-                        label = { Text(stringResource(R.string.assistance_input_label)) },
+                        keyboardType = KeyboardType.Decimal,
+                        decimals = true,
                         modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            focusedLabelColor = MaterialTheme.colorScheme.primary,
-                            cursorColor = MaterialTheme.colorScheme.primary
-                        )
                     )
                 }
             }
@@ -2605,7 +2582,8 @@ private fun WorkoutSetTrackingFields(
     Spacer(modifier = Modifier.height(8.dp))
 
     if (exercise.distanceTrackingEnabled) {
-        OutlinedTextField(
+        MetricStepper(
+            label = stringResource(R.string.distance_input_label),
             value = distanceStr,
             onValueChange = { value ->
                 val normalized = value
@@ -2615,21 +2593,15 @@ private fun WorkoutSetTrackingFields(
                     onDistanceStrChange(normalized)
                 }
             },
-            label = { Text(stringResource(R.string.distance_input_label), style = MaterialTheme.typography.bodySmall) },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                cursorColor = MaterialTheme.colorScheme.primary
-            )
+            keyboardType = KeyboardType.Number,
+                    modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(4.dp))
     }
 
     if (exercise.weightTrackingEnabled) {
-        OutlinedTextField(
+        MetricStepper(
+            label = stringResource(R.string.weight_input_label),
             value = weightStr,
             onValueChange = { value ->
                 val normalized = value
@@ -2641,21 +2613,16 @@ private fun WorkoutSetTrackingFields(
                     onWeightStrChange(normalized)
                 }
             },
-            label = { Text(stringResource(R.string.weight_input_label), style = MaterialTheme.typography.bodySmall) },
+            keyboardType = KeyboardType.Decimal,
+            decimals = true,
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                cursorColor = MaterialTheme.colorScheme.primary
-            )
         )
         Spacer(modifier = Modifier.height(4.dp))
     }
 
     if (exercise.assistanceTrackingEnabled) {
-        OutlinedTextField(
+        MetricStepper(
+            label = stringResource(R.string.assistance_input_label),
             value = assistanceStr,
             onValueChange = { value ->
                 val normalized = value
@@ -2667,15 +2634,9 @@ private fun WorkoutSetTrackingFields(
                     onAssistanceStrChange(normalized)
                 }
             },
-            label = { Text(stringResource(R.string.assistance_input_label), style = MaterialTheme.typography.bodySmall) },
+            keyboardType = KeyboardType.Decimal,
+            decimals = true,
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                cursorColor = MaterialTheme.colorScheme.primary
-            )
         )
     }
 }

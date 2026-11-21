@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.MetricStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingLinkRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SettingsCard
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
@@ -404,16 +405,18 @@ private fun ExerciseCard(
 /** A distance (whole centimetres, may be negative) or a load (kilograms with up to three decimals). */
 @Composable
 private fun MetricField(label: Int, value: String, keyboard: KeyboardType, signed: Boolean = false, onValueChange: (String) -> Unit) {
-    OutlinedTextField(
+    MetricStepper(
+        label = stringResource(label),
         value = value,
         onValueChange = { text ->
             val allowed = if (signed) Regex("""-?\d*""") else Regex("""\d*([.,]\d{0,3})?""")
             if (text.matches(allowed)) onValueChange(text)
         },
-        label = { Text(stringResource(label)) },
-        modifier = Modifier.fillMaxWidth(),
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboard),
+        keyboardType = keyboard,
+        decimals = !signed,
+        // A distance may go below zero; a load may not.
+        min = if (signed) null else 0.0,
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
     )
 }
 

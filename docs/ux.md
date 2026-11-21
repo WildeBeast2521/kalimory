@@ -104,6 +104,9 @@ title. Do not centre it in an otherwise empty screen, and do not say "tap + to c
 Use `NumberStepper`: buttons that step, a number that can also be typed, and the unit beside it.
 Steppers use the same button size and value width everywhere, so neighbouring ones line up. An empty
 value shows a dash, not a gap.
+A measurement with a unit or decimals (weight, distance, seconds, rest) uses `MetricStepper`, the same
+buttons with a label above; a one-line setting inside a card uses a labelled stepper line. A bare text box
+is not used for a number.
 
 ## Lists and gestures
 
