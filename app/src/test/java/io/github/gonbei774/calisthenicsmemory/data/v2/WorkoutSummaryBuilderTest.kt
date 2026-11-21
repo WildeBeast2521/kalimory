@@ -144,6 +144,22 @@ class WorkoutSummaryBuilderTest {
         assertTrue(onlyWeightedBefore.personalBests.isEmpty())
     }
 
+    @Test fun `a weighted set no longer hides a best among the plain sets`() {
+        val summary = WorkoutSummaryBuilder.build(
+            WorkoutSessionGraph(session(), listOf(exercise(1, "Pull-up") to listOf(set(1, reps = 20, weight = 5_000), set(2, reps = 16)))),
+            history = listOf(history(1, "2026-09-27", "07:30", 15)),
+        )
+        assertEquals(listOf(PersonalBest("Pull-up", ExerciseKind.DYNAMIC, 16, 15)), summary.personalBests)
+    }
+
+    @Test fun `a typed 0 kg is no weight`() {
+        val summary = WorkoutSummaryBuilder.build(
+            WorkoutSessionGraph(session(), listOf(exercise(1, "Pull-up") to listOf(set(1, reps = 16, weight = 0)))),
+            history = listOf(history(1, "2026-09-27", "07:30", 15, weight = 0)),
+        )
+        assertEquals(listOf(PersonalBest("Pull-up", ExerciseKind.DYNAMIC, 16, 15)), summary.personalBests)
+    }
+
     @Test fun `no duration without an exact start`() {
         val summary = WorkoutSummaryBuilder.build(
             WorkoutSessionGraph(session(precision = TimePrecision.MINUTE), emptyList()),

@@ -129,4 +129,17 @@ class ProgressionsTest {
         val mixed = warmUps + set(1, "2026-09-01", 6)
         assertEquals(listOf(6), Progressions.chains(exercises, mixed).single().lastSession!!.values)
     }
+
+    @Test fun `assisted sets show and start a step but never meet its standard`() {
+        val exercises = listOf(exercise(1, negative.id, targetSets = 1, targetValue = 5))
+        val banded = listOf(set(1, "2026-09-01", 9).copy(assistanceG = 20_000))
+        val result = Progressions.chains(exercises, banded).single()
+        assertEquals(listOf(9), result.lastSession!!.values)
+        assertFalse(result.mastered)
+        assertEquals(0, result.percent)
+        assertEquals("2026-09-01", Progressions.journey(pull, exercises, banded).single().firstOn)
+        assertNull(Progressions.journey(pull, exercises, banded).single().metOn)
+        // A 0 kg assistance is none, and an unassisted set the same day still counts.
+        assertTrue(Progressions.chains(exercises, banded + set(1, "2026-09-01", 6).copy(assistanceG = 0)).single().mastered)
+    }
 }

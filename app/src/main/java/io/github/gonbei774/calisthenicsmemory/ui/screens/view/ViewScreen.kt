@@ -48,6 +48,7 @@ import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySource
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.data.progression.ChainProgress
 import io.github.gonbei774.calisthenicsmemory.data.progression.Progressions
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
 import io.github.gonbei774.calisthenicsmemory.util.SearchUtils
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 
@@ -419,8 +420,10 @@ fun ViewScreen(
                             onOpenChain = onOpenChain,
                             onOpenCatalogue = onOpenCatalogue,
                             allUnfollowed = allUnfollowed,
-                            selectedExerciseFilter = selectedExerciseFilter,
-                            selectedPeriod = selectedPeriod,
+                            // This tab hides the exercise and period chips, so it applies neither:
+                            // targets are judged over all history, as the chain cards are.
+                            selectedExerciseFilter = null,
+                            selectedPeriod = null,
                             onExerciseClick = { exercise ->
                                 selectedExerciseFilter = exercise
                             }
@@ -1154,8 +1157,9 @@ fun ChallengeExerciseCard(
 
     // 日単位のクリア状況（ヒートストリップ用）
     val clearData = if (hasChallenge) {
-        remember(exercise, records, selectedPeriod) {
-            calculateClearDays(exercise, records, selectedPeriod, firstDay = firstDay)
+        // The last month, a set window now that this tab applies no period filter.
+        remember(exercise, records) {
+            calculateClearDays(exercise, records, Period.OneMonth, firstDay = firstDay)
         }
     } else null
 
@@ -1357,39 +1361,6 @@ data class ClearDayData(
     val totalDays: Int
 )
 
-// 1セッションの達成率を計算（calculateChallengeStatus と同じロジック）
-private fun sessionAchievementRate(
-    exercise: Exercise,
-    sessionRecords: List<HistorySet>,
-    targetSets: Int,
-    targetTotal: Int
-): Int {
-    if (targetTotal <= 0) return 0
-    return if (exercise.laterality == "Unilateral") {
-        val topRight = sessionRecords
-            .map { it.valueRight }
-            .sortedDescending()
-            .take(targetSets)
-            .sum()
-        val topLeft = sessionRecords
-            .mapNotNull { it.valueLeft }
-            .sortedDescending()
-            .take(targetSets)
-            .sum()
-        val rateRight = (topRight * 100) / targetTotal
-        val rateLeft = (topLeft * 100) / targetTotal
-        (rateRight + rateLeft) / 2
-    } else {
-        val topValues = sessionRecords
-            .map { it.valueRight }
-            .sortedDescending()
-            .take(targetSets)
-            .sum()
-        (topValues * 100) / targetTotal
-    }
-}
-
-// 期間内の日単位クリア状況を計算
 fun calculateClearDays(
     exercise: Exercise,
     records: List<HistorySet>,
@@ -1405,7 +1376,8 @@ fun calculateClearDays(
         val days = period?.days ?: 0
         return ClearDayData(List(days) { DayClearState.Rest }, 0, days)
     }
-    val targetTotal = targetSets * targetValue
+    val standard = Standard(targetSets, targetValue)
+    val unilateral = exercise.laterality == "Unilateral"
 
     // 開始日：期間指定があればその起点、なければ最初の記録日
     val startDate = if (period != null) {
@@ -1429,14 +1401,9 @@ fun calculateClearDays(
         if (dayRecords.isNullOrEmpty()) {
             states.add(DayClearState.Rest)
         } else {
-            val bestRate = dayRecords
-                .groupBy { it.time }  // 同一時刻＝1セッション
-                .map { (_, sessionRecords) ->
-                    // A day of warm-ups only is a day trained, but they never reach the target (ADR 0012).
-                    sessionAchievementRate(exercise, sessionRecords.filter { it.countsAsWork }, targetSets, targetTotal)
-                }
-                .maxOrNull() ?: 0
-            if (bestRate >= 100) {
+            // A day clears the target when one of its sessions meets it, by the chain cards' rule. A day of
+            // warm-ups only is a day trained, but warm-ups never reach the target (ADR 0012).
+            if (Progressions.sessions(dayRecords, unilateral).any { Progressions.meets(it, standard) }) {
                 states.add(DayClearState.Clear)
                 clearCount++
             } else {
@@ -1523,64 +1490,26 @@ fun calculateChallengeStatus(
     }
 
     // セッションごとにグループ化
-    val targetTotal = targetSets * targetValue
-
-    val sessions = exerciseRecords
-        .groupBy { "${it.date}-${it.time}" }
-        .map { (dateTime, sessionRecords) ->
-            val rate = if (exercise.laterality == "Unilateral") {
-                // Unilateral: 右・左それぞれの上位N個を計算
-                val topRight = sessionRecords
-                    .map { it.valueRight }
-                    .sortedDescending()
-                    .take(targetSets)
-                    .sum()
-                val topLeft = sessionRecords
-                    .mapNotNull { it.valueLeft }
-                    .sortedDescending()
-                    .take(targetSets)
-                    .sum()
-
-                // 右・左それぞれの達成率を計算して平均
-                val rateRight = (topRight * 100) / targetTotal
-                val rateLeft = (topLeft * 100) / targetTotal
-                (rateRight + rateLeft) / 2
-            } else {
-                // Bilateral: 右側の上位N個の合計
-                val topValues = sessionRecords
-                    .map { it.valueRight }
-                    .sortedDescending()
-                    .take(targetSets)
-                    .sum()
-                (topValues * 100) / targetTotal
-            }
-
-            Pair(dateTime, rate)
-        }
-        .sortedBy { it.first }  // 古い順にソート
-
-    // 優先順位1: クリア条件を満たすセッション（達成率≥100%）
-    val clearSessions = sessions.filter { (_, rate) ->
-        rate >= 100
+    // The chain cards' rule (Progressions): the best sets, each counted up to the target, the weaker
+    // side of a one-sided set, warm-ups and assisted sets left out. The old rule summed sets uncapped
+    // and averaged the sides, so one set of 30 "cleared" 3 x 10.
+    val standard = Standard(targetSets, targetValue)
+    val sessions = Progressions.sessions(exerciseRecords, exercise.laterality == "Unilateral")
+    if (sessions.isEmpty()) {
+        return ChallengeStatus(level = exercise.sortOrder, status = ChallengeResult.NoRecord, achievementRate = 0, lastAchievedDate = null)
     }
 
-    if (clearSessions.isNotEmpty()) {
-        // 最も良いクリアセッションを採用
-        val (dateTime, rate) = clearSessions.maxBy { it.second }
-        val parts = dateTime.split("-")
-        val achievedDate = if (parts.size >= 3) "${parts[0]}-${parts[1]}-${parts[2]}" else null
-
+    val lastMet = sessions.lastOrNull { Progressions.meets(it, standard) }
+    if (lastMet != null) {
         return ChallengeStatus(
             level = exercise.sortOrder,
             status = ChallengeResult.Perfect,
-            achievementRate = rate,
-            lastAchievedDate = achievedDate
+            achievementRate = 100,
+            lastAchievedDate = lastMet.date
         )
     }
 
-    // 優先順位2: 未達成だが最善を尽くしているセッション
-    val bestSession = sessions.maxByOrNull { it.second }!!
-    val (_, bestRate) = bestSession
+    val bestRate = sessions.maxOf { Progressions.percentOf(it, standard) }
 
     val status = when {
         bestRate >= 75 -> ChallengeResult.Good

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.viewmodel.setCount
 import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
@@ -88,7 +89,7 @@ fun BackupScreen(
                         }
                         markBackedUp()
                         val summary = result.value.summary
-                        viewModel.showSnackbar(UiMessage.ExportComplete(summary.groups, summary.exercises, summary.records))
+                        viewModel.showSnackbar(UiMessage.ExportComplete(summary.groups, summary.exercises, summary.sets))
                     }
                     is BackupResult.Failure -> viewModel.showSnackbar(UiMessage.ExportError(result.message))
                 }
@@ -174,7 +175,7 @@ fun BackupScreen(
                         importFileName = fileName
                         importGroupCount = backupData.groups.size
                         importExerciseCount = backupData.exercises.size
-                        importRecordCount = backupData.records.size
+                        importRecordCount = backupData.setCount()
                         importOtherCounts = listOf(
                             R.string.program_list_title to backupData.programs.size,
                             R.string.interval_list_title to backupData.intervalPrograms.size,
@@ -479,12 +480,12 @@ fun BackupScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = stringResource(R.string.records),
+                                    text = stringResource(R.string.sets_label),
                                     fontSize = 16.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
-                                    text = countText(R.plurals.count_records, importRecordCount),
+                                    text = countText(R.plurals.set_count, importRecordCount),
                                     fontSize = 16.sp,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
@@ -614,7 +615,7 @@ fun BackupScreen(
                                     when (val result = viewModel.importData(backupData)) {
                                         is BackupResult.Success -> {
                                             val summary = result.value
-                                            viewModel.showSnackbar(UiMessage.ImportComplete(summary.groups, summary.exercises, summary.records))
+                                            viewModel.showSnackbar(UiMessage.ImportComplete(summary.groups, summary.exercises, summary.sets))
                                             showImportWarning = false
                                             pendingImportData = null
                                         }

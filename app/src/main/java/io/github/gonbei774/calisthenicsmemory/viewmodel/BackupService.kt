@@ -47,6 +47,8 @@ data class BackupSummary(
     val todoTasks: Int,
     val workoutSessions: Int = 0,
     val setEntries: Int = 0,
+    /** Sets the user did, in both stores ([BackupData.setCount]); what the app reports. */
+    val sets: Int = records,
 )
 
 /**
@@ -60,7 +62,10 @@ enum class BackupAnomalyKind {
     TODO_UNKNOWN_TYPE,
     TODO_INVALID_REPEAT_DAYS,
     PROGRAM_EXERCISE_FOREIGN_LOOP,
-    /** A v2 set entry has a negative metric or target, or a session a negative interval setting; the app never writes one. */
+    /**
+     * A v2 set entry has a negative metric (other than distance, which may be negative) or target, or a
+     * session a negative interval setting; the app never writes one.
+     */
     V2_NEGATIVE_VALUE,
     /**
      * A v2 set entry names a legacy training record the backup does not contain. The
@@ -247,7 +252,8 @@ class BackupService(
         }
         data.setEntries.forEach {
             val values = listOfNotNull(
-                it.repetitions?.toLong(), it.durationMillis, it.distanceCm?.toLong(), it.addedWeightGrams?.toLong(),
+                // Distance is left out: it may be negative, as every distance input in the app allows.
+                it.repetitions?.toLong(), it.durationMillis, it.addedWeightGrams?.toLong(),
                 it.assistanceGrams?.toLong(), it.targetRepetitions?.toLong(), it.targetDurationMillis,
             )
             if (values.any { v -> v < 0 }) {
@@ -355,5 +361,16 @@ private fun BackupData.toSnapshot() = BackupSnapshot(
 private fun BackupData.summary() = BackupSummary(
     groups.size, exercises.size, records.size, programs.size, programExercises.size,
     programLoops.size, intervalPrograms.size, intervalProgramExercises.size,
-    intervalRecords.size, todoTasks.size, workoutSessions.size, setEntries.size
+    intervalRecords.size, todoTasks.size, workoutSessions.size, setEntries.size, setCount()
 )
+
+/**
+ * The sets a backup holds, as the user counts them: rows of the original record table, plus completed
+ * sets of Kalimory's workouts. A one-sided set is stored as one row per side but is one set; a row
+ * copied from an original record is already counted there.
+ */
+internal fun BackupData.setCount(): Int =
+    records.size + setEntries
+        .filter { it.status == "COMPLETED" && it.legacyTrainingRecordId == null }
+        .distinctBy { Triple(it.sessionExerciseId, it.setNumber, it.roundNumber) }
+        .size

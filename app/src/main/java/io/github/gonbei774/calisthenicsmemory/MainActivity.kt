@@ -251,13 +251,13 @@ fun UiMessage.toMessageString(): String {
             R.string.export_complete,
             countText(R.plurals.group_count, groupCount),
             countText(R.plurals.exercise_count, exerciseCount),
-            countText(R.plurals.count_records, recordCount),
+            countText(R.plurals.set_count, setCount),
         )
         is UiMessage.ImportComplete -> stringResource(
             R.string.import_complete,
             countText(R.plurals.group_count, groupCount),
             countText(R.plurals.exercise_count, exerciseCount),
-            countText(R.plurals.count_records, recordCount),
+            countText(R.plurals.set_count, setCount),
         )
         is UiMessage.ExportError -> stringResource(R.string.export_error, errorMessage)
         is UiMessage.ImportError -> stringResource(R.string.import_error, errorMessage)

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
+import io.github.gonbei774.calisthenicsmemory.util.TextLimits
 import androidx.room.withTransaction
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
@@ -70,7 +71,7 @@ class CommunityShareImporter(private val database: AppDatabase) {
                         distanceTrackingEnabled = shareExercise.distanceTrackingEnabled,
                         weightTrackingEnabled = shareExercise.weightTrackingEnabled,
                         assistanceTrackingEnabled = shareExercise.assistanceTrackingEnabled,
-                        description = shareExercise.description?.take(120),
+                        description = shareExercise.description?.take(TextLimits.DESCRIPTION),
                         // Linked only when no exercise here holds that step yet; existing ones are left as they are.
                         catalogId = shareExercise.catalogId?.takeIf { database.exerciseDao().getExerciseByCatalogId(it) == null }
                     )

@@ -21,6 +21,15 @@ class RecordCsvRowTest {
         )
     }
 
+    @Test fun `a negative distance reads back, as the app saves one`() {
+        assertEquals(-40, row("Sled", "Dynamic", "2026-10-08", "07:30", "1", "8", "", "", "-40", "", "").getOrThrow().distanceCm)
+    }
+
+    @Test fun `other negative numbers are still refused`() {
+        assertEquals("Negative value", error("A", "Dynamic", "2026-10-08", "07:30", "1", "-5", "", ""))
+        assertEquals("Negative value", error("A", "Dynamic", "2026-10-08", "07:30", "1", "5", "", "", "", "-1000", ""))
+    }
+
     @Test fun `dates and times must be in the form the app writes`() {
         assertEquals("Invalid date (expected YYYY-MM-DD): 2026-2-30", error("A", "Dynamic", "2026-2-30", "07:30", "1", "5", "", ""))
         assertEquals("Invalid date (expected YYYY-MM-DD): 2026-02-30", error("A", "Dynamic", "2026-02-30", "07:30", "1", "5", "", ""))

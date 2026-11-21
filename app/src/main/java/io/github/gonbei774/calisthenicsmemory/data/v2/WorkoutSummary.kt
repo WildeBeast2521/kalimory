@@ -85,7 +85,7 @@ object WorkoutSummaryBuilder {
                 lastTimeTotal = lastTimeTotal(previous),
             )
             results += result
-            personalBest(exercise, completed.filterNot { it.isWarmUp }, sets.filterNot { it.warmUp }, previous)?.let { bests += it }
+            personalBest(exercise, completed.filterNot { it.isWarmUp }, previous)?.let { bests += it }
         }
 
         val ended = session.endedAtEpochMillis
@@ -120,20 +120,19 @@ object WorkoutSummaryBuilder {
             ?.sumOf { it.valueRight + (it.valueLeft ?: 0) }
 
     /**
-     * A best is the highest single-side value in one set. Sets with added weight, assistance or
-     * distance are left out on both sides of the comparison, as their counts mean something else.
-     * There is no best the first time an exercise is done.
+     * A best is the highest single-side value in one plain set ([isPlain]): sets with added weight,
+     * assistance or distance are left out on both sides of the comparison, as their counts mean
+     * something else, but they no longer hide the exercise's plain sets. There is no best the first
+     * time an exercise is done plainly.
      */
     private fun personalBest(
         exercise: SessionExerciseEntity,
         completed: List<SetEntryEntity>,
-        sets: List<SetResult>,
         previous: List<HistorySet>,
     ): PersonalBest? {
-        if (completed.any { it.addedWeightGrams != null || it.assistanceGrams != null || it.distanceCm != null }) return null
-        val comparable = previous.filter { it.weightG == null && it.assistanceG == null && it.distanceCm == null }
+        val comparable = previous.filter { it.isPlain }
         if (comparable.isEmpty()) return null
-        val now = sets.maxOfOrNull { maxOf(it.right, it.left ?: 0) } ?: return null
+        val now = completed.filter { it.isPlain }.maxOfOrNull { value(it, exercise.exerciseKindSnapshot) } ?: return null
         val before = comparable.maxOf { maxOf(it.valueRight, it.valueLeft ?: 0) }
         return if (now > before) PersonalBest(exercise.exerciseNameSnapshot, exercise.exerciseKindSnapshot, now, before) else null
     }

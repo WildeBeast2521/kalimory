@@ -84,7 +84,10 @@ internal fun parseRecordCsvRow(columns: List<String>): Result<RecordCsvRow> {
     val optional = listOf(6, 8, 9, 10).associateWith { field(it) }
     val numbers = (listOf(setNumber, valueRight) + optional.values.filter { it.isNotEmpty() }).map { it.toIntOrNull() }
     if (numbers.any { it == null }) return invalid("Invalid number format")
-    if (numbers.any { it!! < 0 }) return invalid("Negative value")
+    // Every number but the distance must be 0 or more; a distance may be negative, as every distance
+    // input in the app allows, so a file the app wrote always reads back.
+    val mustBePositive = listOf(setNumber, valueRight) + listOf(6, 9, 10).map { optional.getValue(it) }.filter { it.isNotEmpty() }
+    if (mustBePositive.any { it.toInt() < 0 }) return invalid("Negative value")
     fun number(index: Int) = optional.getValue(index).takeIf { it.isNotEmpty() }?.toInt()
     return Result.success(
         RecordCsvRow(

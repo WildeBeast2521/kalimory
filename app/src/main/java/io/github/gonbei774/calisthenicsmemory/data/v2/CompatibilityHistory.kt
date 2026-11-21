@@ -165,3 +165,14 @@ object CompatibilityHistory {
         return database.workoutSessionDao().hasV2OnlySetStartedBetween(exerciseId, start, end)
     }
 }
+
+/**
+ * A set done with the body alone: no added weight, assistance or distance. A typed 0 counts as none.
+ * Bests compare plain sets only, as a loaded or assisted count means something else.
+ */
+val HistorySet.isPlain: Boolean
+    get() = (weightG ?: 0) == 0 && (assistanceG ?: 0) == 0 && (distanceCm ?: 0) == 0
+
+/** [HistorySet.isPlain] for a stored set. */
+val SetEntryEntity.isPlain: Boolean
+    get() = (addedWeightGrams ?: 0) == 0 && (assistanceGrams ?: 0) == 0 && (distanceCm ?: 0) == 0

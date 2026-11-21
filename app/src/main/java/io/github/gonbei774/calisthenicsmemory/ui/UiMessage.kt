@@ -66,14 +66,14 @@ sealed class UiMessage {
     data class ExportComplete(
         val groupCount: Int,
         val exerciseCount: Int,
-        val recordCount: Int
+        val setCount: Int
     ) : UiMessage()
 
     /** インポート完了 */
     data class ImportComplete(
         val groupCount: Int,
         val exerciseCount: Int,
-        val recordCount: Int
+        val setCount: Int
     ) : UiMessage()
 
     /** エクスポートエラー */

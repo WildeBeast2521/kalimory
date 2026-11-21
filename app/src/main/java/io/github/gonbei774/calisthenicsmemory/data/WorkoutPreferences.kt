@@ -25,6 +25,9 @@ class WorkoutPreferences(context: Context) {
      * 開始カウントダウンの秒数を保存
      * @param seconds 保存する秒数
      */
+    /** The countdown before a set, honouring the switch: 0 (no countdown) when it is off. */
+    fun effectiveStartCountdown(): Int = if (isStartCountdownEnabled()) getStartCountdown() else 0
+
     fun setStartCountdown(seconds: Int) {
         prefs.edit { putInt(KEY_START_COUNTDOWN, seconds) }
     }

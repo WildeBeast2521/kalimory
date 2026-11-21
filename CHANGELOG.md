@@ -23,11 +23,21 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- Sets done with band or machine assistance no longer count toward a progression's move-on standard or its progress; they still show as your last session and start the step ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Search in Exercises and groups, Progress and every exercise picker also finds a group by its name, ignores accents and Arabic short vowels, and matches every word you type in any order; each result in a picker shows its group, and the best match comes first ([#282](https://github.com/WildeBeast2521/kalimory/pull/282))
 - Searching Programs and Intervals also finds them by the exercises they hold, and says which ones ("Includes Dips") when the name itself did not match ([#283](https://github.com/WildeBeast2521/kalimory/pull/283))
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- Targets on the Progressions tab are judged over all your history by the same rule as the progression cards, instead of a hidden one-week filter and a formula where one big set could clear a target of several sets; the day strip shows the last month ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
+- A negative distance, which the app lets you enter, no longer stops a records CSV from importing, and backups no longer report it as a problem ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
+- The Favorite card in Exercises and groups no longer offers Rename and Delete, which did nothing while reporting success ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
+- An exercise's target can no longer be saved with only its sets or only its reps filled in; the missing one is marked ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
+- Exercises you sometimes do with weight still get new personal bests for their sets without it, and a weight of 0 kg counts as no weight ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
+- Editing an exercise keeps its level: turning its target off no longer erases the level, and an exercise without a level no longer gets level 1 when saved ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
+- Turning off Start countdown or Rest between sets in Settings now works: workouts no longer count down 5 seconds or rest 4 minutes anyway, and programs no longer count down before each set ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
+- Restoring a backup shows how many sets it holds, counting workouts saved in Kalimory, where it showed only records from older versions, often 0, right before replacing your data; the export and restore messages count the same way ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
+- Exercises and groups with long names, such as catalogue steps in German or Russian, can be edited and saved again; names may now be up to 60 characters, groups 50 and descriptions 200 ([#286](https://github.com/WildeBeast2521/kalimory/pull/286))
 - Searching in Exercises and groups no longer offers to drag exercises into a new order, which saved the wrong order for the group, or shows a group menu that did nothing ([#279](https://github.com/WildeBeast2521/kalimory/pull/279))
 - Typing in a field near the bottom of a screen, such as an exercise's description, keeps the field just above the keyboard instead of moving it to the top with empty space below it, and top bars stay on screen while you type ([#281](https://github.com/WildeBeast2521/kalimory/pull/281))
 

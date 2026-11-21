@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.util.TextLimits
 import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.AppFab
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
@@ -509,7 +510,8 @@ fun ExpandableGroupCard(
                         )
                     }
 
-                    if (group.groupName != null && showGroupMenu) {
+                    // Favourites are a view of other groups: renaming or deleting them did nothing but report success.
+                    if (group.groupName != null && group.groupName != TrainingViewModel.FAVORITE_GROUP_KEY && showGroupMenu) {
                         Box {
                             IconButton(
                                 onClick = onGroupMenuClick,
@@ -765,7 +767,11 @@ fun UnifiedAddDialog(
     var selectedType by remember { mutableStateOf(exercise?.type ?: "Dynamic") }
     var selectedLaterality by remember { mutableStateOf(exercise?.laterality ?: "Bilateral") }
     var selectedGroup by remember { mutableStateOf(exercise?.group ?: presetGroup) }
-    var selectedLevel by remember { mutableIntStateOf(exercise?.sortOrder?.coerceIn(1, 10) ?: 5) }
+    // The stored level (0 = not set) is kept unless the slider is moved: turning the target off used to
+    // wipe it, and a stored 0 came back as 1, a value nobody chose.
+    val storedLevel = exercise?.sortOrder ?: 0
+    var selectedLevel by remember { mutableIntStateOf(if (storedLevel in 1..10) storedLevel else 5) }
+    var levelChanged by remember { mutableStateOf(false) }
     var showGroupDropdown by remember { mutableStateOf(false) }
     var newGroupName by remember { mutableStateOf("") }
     var isCreatingNewGroup by remember { mutableStateOf(false) }
@@ -813,12 +819,17 @@ fun UnifiedAddDialog(
         }
     }
 
-    val isExerciseNameValid = exerciseName.isNotBlank() && exerciseName.length <= 30 && !isDuplicate
-    val isGroupNameValid = groupName.isNotBlank() && groupName.length <= 20 && !isGroupDuplicate
+    // Stored text is never blocked: a name longer than the limit can still be edited and saved (TextLimits).
+    val nameLimit = TextLimits.allowed(TextLimits.EXERCISE_NAME, exercise?.name)
+    val descriptionLimit = TextLimits.allowed(TextLimits.DESCRIPTION, exercise?.description)
+    val isExerciseNameValid = exerciseName.isNotBlank() && exerciseName.length <= nameLimit && !isDuplicate
+    val isGroupNameValid = groupName.isNotBlank() && groupName.length <= TextLimits.GROUP_NAME && !isGroupDuplicate
 
+    // A target needs both sets and reps (or seconds); half of one used to be saved silently.
+    val targetHalfFilled = isTargetHalfFilled(hasTarget, targetSets, targetValue)
     val isFormValid = when {
         creationType == "group" && exercise == null -> isGroupNameValid
-        else -> isExerciseNameValid && (!isCreatingNewGroup || newGroupName.isNotBlank())
+        else -> isExerciseNameValid && (!isCreatingNewGroup || newGroupName.isNotBlank()) && !targetHalfFilled
     }
 
     // 保存処理
@@ -840,7 +851,7 @@ fun UnifiedAddDialog(
 
                 val finalTargetSets = if (hasTarget) targetSets.toIntOrNull() else null
                 val finalTargetValue = if (hasTarget) targetValue.toIntOrNull() else null
-                val finalSortOrder = if (hasTarget) selectedLevel else 0
+                val finalSortOrder = levelToSave(levelChanged, selectedLevel, storedLevel)
                 val finalRepDuration = repDuration.toIntOrNull()
                 val finalRestInterval = restInterval.toIntOrNull()
 
@@ -998,7 +1009,7 @@ fun UnifiedAddDialog(
                             Column(modifier = Modifier.padding(16.dp)) {
                                 OutlinedTextField(
                                     value = groupName,
-                                    onValueChange = { if (it.length <= 20) groupName = it },
+                                    onValueChange = { if (it.length <= TextLimits.GROUP_NAME) groupName = it },
                                     label = { Text(stringResource(R.string.group_name)) },
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true,
@@ -1006,7 +1017,7 @@ fun UnifiedAddDialog(
                                     supportingText = {
                                         when {
                                             isGroupDuplicate -> Text(stringResource(R.string.duplicate_group_name), color = MaterialTheme.colorScheme.error)
-                                            else -> Text(stringResource(R.string.character_count, groupName.length, 20), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            else -> Text(stringResource(R.string.character_count, groupName.length, TextLimits.GROUP_NAME), color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
                                     }
                                 )
@@ -1028,7 +1039,7 @@ fun UnifiedAddDialog(
                             ) {
                                 OutlinedTextField(
                                     value = exerciseName,
-                                    onValueChange = { if (it.length <= 30) exerciseName = it },
+                                    onValueChange = { if (it.length <= nameLimit) exerciseName = it },
                                     label = { Text(stringResource(R.string.exercise_name)) },
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true,
@@ -1036,7 +1047,7 @@ fun UnifiedAddDialog(
                                     supportingText = {
                                         when {
                                             isDuplicate -> Text(stringResource(R.string.duplicate_exercise_name), color = MaterialTheme.colorScheme.error)
-                                            else -> Text(stringResource(R.string.character_count, exerciseName.length, 30), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            else -> Text(stringResource(R.string.character_count, exerciseName.length, nameLimit), color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
                                     }
                                 )
@@ -1114,11 +1125,11 @@ fun UnifiedAddDialog(
                                 if (isCreatingNewGroup) {
                                     OutlinedTextField(
                                         value = newGroupName,
-                                        onValueChange = { if (it.length <= 20) newGroupName = it },
+                                        onValueChange = { if (it.length <= TextLimits.GROUP_NAME) newGroupName = it },
                                         label = { Text(stringResource(R.string.new_group_name)) },
                                         modifier = Modifier.fillMaxWidth(),
                                         singleLine = true,
-                                        supportingText = { Text("${newGroupName.length}/20", color = MaterialTheme.colorScheme.onSurfaceVariant) },
+                                        supportingText = { Text(stringResource(R.string.character_count, newGroupName.length, TextLimits.GROUP_NAME), color = MaterialTheme.colorScheme.onSurfaceVariant) },
                                         trailingIcon = {
                                             IconButton(onClick = {
                                                 isCreatingNewGroup = false
@@ -1217,6 +1228,7 @@ fun UnifiedAddDialog(
                                             },
                                             label = { Text(stringResource(R.string.sets_count)) },
                                             placeholder = { Text(stringResource(R.string.example_3)) },
+                                            isError = targetHalfFilled && targetSets.isEmpty(),
                                             modifier = Modifier.weight(1f),
                                             singleLine = true,
                                             keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
@@ -1233,6 +1245,7 @@ fun UnifiedAddDialog(
                                             },
                                             label = { Text(stringResource(if (selectedType == "Dynamic") R.string.reps_label else R.string.time_label)) },
                                             placeholder = { Text(stringResource(if (selectedType == "Dynamic") R.string.example_10 else R.string.example_30)) },
+                                            isError = targetHalfFilled && targetValue.isEmpty(),
                                             modifier = Modifier.weight(1f),
                                             singleLine = true,
                                             keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
@@ -1258,7 +1271,7 @@ fun UnifiedAddDialog(
                                         )
                                         Slider(
                                             value = selectedLevel.toFloat(),
-                                            onValueChange = { selectedLevel = it.toInt() },
+                                            onValueChange = { selectedLevel = it.toInt(); levelChanged = true },
                                             valueRange = 1f..10f,
                                             steps = 8,
                                             modifier = Modifier.fillMaxWidth()
@@ -1439,13 +1452,13 @@ fun UnifiedAddDialog(
                                 )
                                 OutlinedTextField(
                                     value = description,
-                                    onValueChange = { if (it.length <= 120) description = it },
+                                    onValueChange = { if (it.length <= descriptionLimit) description = it },
                                     modifier = Modifier.fillMaxWidth(),
                                     minLines = 2,
                                     maxLines = 5,
                                     supportingText = {
                                         Text(
-                                            stringResource(R.string.character_count, description.length, 120),
+                                            stringResource(R.string.character_count, description.length, descriptionLimit),
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
@@ -1470,6 +1483,8 @@ fun GroupEditDialog(
     onConfirm: (String) -> Unit
 ) {
     var newName by remember { mutableStateOf(oldName) }
+    // A group from the catalogue or a shared file may be longer than the limit; it stays renamable.
+    val limit = TextLimits.allowed(TextLimits.GROUP_NAME, oldName)
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -1477,10 +1492,10 @@ fun GroupEditDialog(
         text = {
             OutlinedTextField(
                 value = newName,
-                onValueChange = { if (it.length <= 20) newName = it },
+                onValueChange = { if (it.length <= limit) newName = it },
                 label = { Text(stringResource(R.string.group_name)) },
                 singleLine = true,
-                supportingText = { Text("${newName.length}/20") }
+                supportingText = { Text(stringResource(R.string.character_count, newName.length, limit)) }
             )
         },
         confirmButton = {
@@ -1498,3 +1513,9 @@ fun GroupEditDialog(
         }
     )
 }
+
+/** An edited exercise keeps its stored level (0 = not set) unless the user moved the slider. */
+internal fun levelToSave(changed: Boolean, selected: Int, stored: Int): Int = if (changed) selected else stored
+
+/** A target with only one of its two numbers, which can't be saved. Both empty means no target. */
+internal fun isTargetHalfFilled(hasTarget: Boolean, sets: String, value: String): Boolean = hasTarget && sets.isEmpty() != value.isEmpty()
