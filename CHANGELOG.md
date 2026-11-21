@@ -10,6 +10,8 @@ from which Kalimory was forked; their version numbers are the original app's, no
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-11-21
+
 ### Added
 - A program entry can be left without a target: the workout runs it as a manual set where you count or time freely and tap Complete, and Save only needs sets. Older app versions show such an entry as 0 reps ([#293](https://github.com/WildeBeast2521/kalimory/pull/293))
 - The records CSV carries warm-up marks and effort ratings in two new last columns (warmUp, effortLeft), so they survive an export and import; a value that does not read is a line error, and old files without the columns import as before. Older app versions read the new file but ignore the two columns, so a warm-up comes in as an ordinary set there ([#292](https://github.com/WildeBeast2521/kalimory/pull/292))
@@ -63,7 +65,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - The Add button on the new exercise or group form is never greyed out: tapping it with the name missing shows "Enter a name" under the field; the type examples in English follow one style; an empty number in the workout editor shows a dash between the buttons ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - Small text in lists, cards and dialogs uses the app's type scale, so rows with small text are a little tighter and read the same on every screen ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - The exercise lists in Workout, Log a past workout, programs, intervals and To Do open with every group expanded, and the Library's open groups no longer decide what they show; long screen titles wrap onto a second line instead of ending in "…" ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
-- Only the main action on a screen is a filled button: Apply exercise settings and Add exercise are tonal, Add loop is a text button, buttons share one pill shape, and a program's sets, reps and rest use one colour instead of three ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
+- Only the main action on a screen is a filled button: Apply exercise settings, Add exercise and Add loop are tonal, buttons share one pill shape, and a program's sets, reps and rest use one colour instead of three ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - Choosing exercises looks the same everywhere: the lists in Log a past workout, Workout, programs, intervals and To Do use two shared rows (tap to pick one, or tick several) with the same card, text sizes and tags ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - The line under an exercise's name (group, difficulty, reps or time, one-sided) looks the same on every screen: one text size and the same colours, where it was drawn at 10, 11 or 12 sp with different colours depending on the screen ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - Empty lists (exercises, programs, intervals, To Do) show their message near the top of the screen, in one style, instead of floating in the middle of an empty page ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
@@ -725,7 +727,8 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Multi-language support (Japanese, English)
 - Completely offline, privacy-focused design
 
-[Unreleased]: https://github.com/WildeBeast2521/kalimory/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/WildeBeast2521/kalimory/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/WildeBeast2521/kalimory/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.0...v1.0.1
