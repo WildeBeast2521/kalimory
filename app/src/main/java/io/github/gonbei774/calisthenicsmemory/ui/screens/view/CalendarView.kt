@@ -426,7 +426,7 @@ private fun StatsCard(
         ) {
             Text(
                 text = formatStatsRange(rangeStart, rangeEnd),
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             StatsRow(label = stringResource(R.string.stats_total_sets), value = stats.totalSets.toString())
@@ -452,7 +452,7 @@ private fun StatsRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
+            .clip(MaterialTheme.shapes.extraSmall)
             .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .padding(horizontal = 12.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -460,7 +460,7 @@ private fun StatsRow(
     ) {
         Text(
             text = label,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
@@ -533,7 +533,7 @@ private fun DayCell(
         // 日付テキスト（中央）
         Text(
             text = dayOfMonth.toString(),
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
             color = textColor,
             textAlign = TextAlign.Center,
@@ -565,7 +565,7 @@ private fun WeekDayCell(
 ) {
     val locale = LocalConfiguration.current.locales[0]
     val dayOfWeekText = date.dayOfWeek.getDisplayName(TextStyle.SHORT, locale)
-    val shape = RoundedCornerShape(8.dp)
+    val shape = MaterialTheme.shapes.extraSmall
 
     Box(
         modifier = modifier
@@ -640,7 +640,7 @@ private fun DayRecordSummary(
             // 日付ヘッダー
             Text(
                 text = formatDate(date, LocalConfiguration.current.locales[0]),
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -684,7 +684,7 @@ private fun SessionSummaryRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
+            .clip(MaterialTheme.shapes.extraSmall)
             .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .then(
                 if (exercise != null) {
@@ -709,7 +709,7 @@ private fun SessionSummaryRow(
             )
             Text(
                 text = exerciseName,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -739,7 +739,7 @@ private fun IntervalSummaryRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
+            .clip(MaterialTheme.shapes.extraSmall)
             .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .padding(horizontal = 12.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -758,7 +758,7 @@ private fun IntervalSummaryRow(
             Column {
                 Text(
                     text = record.programName,
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
@@ -767,7 +767,7 @@ private fun IntervalSummaryRow(
                 if (exerciseNames.isNotEmpty()) {
                     Text(
                         text = exerciseNames.joinToString(", "),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis

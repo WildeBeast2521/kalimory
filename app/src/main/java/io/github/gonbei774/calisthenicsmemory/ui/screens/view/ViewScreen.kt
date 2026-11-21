@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import androidx.compose.animation.AnimatedVisibility
@@ -810,7 +811,7 @@ fun FilterBottomSheetContent(
                                 }
                             },
                             color = MaterialTheme.colorScheme.surfaceContainerLow,
-                            shape = RoundedCornerShape(8.dp)
+                            shape = MaterialTheme.shapes.extraSmall
                         ) {
                             Row(
                                 modifier = Modifier
@@ -829,13 +830,13 @@ fun FilterBottomSheetContent(
                                             null -> stringResource(R.string.no_group_display)
                                             else -> group.groupName
                                         },
-                                        fontSize = 16.sp,
+                                        style = MaterialTheme.typography.bodyLarge,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
                                         text = pluralStringResource(R.plurals.exercise_count, group.exercises.size, group.exercises.size),
-                                        fontSize = 14.sp,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
@@ -901,7 +902,7 @@ fun FilterExerciseItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = exercise.name,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                 )
@@ -912,38 +913,7 @@ fun FilterExerciseItem(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(top = 4.dp)
                 ) {
-                    // お気に入り
-                    if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
-                    }
-
-                    // レベル
-                    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                        Text(
-                            text = stringResource(R.string.level_format, exercise.sortOrder),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-
-                    // タイプ
-                    Text(
-                        text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    // Unilateral
-                    if (exercise.laterality == "Unilateral") {
-                        Text(
-                            text = stringResource(R.string.one_sided),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
+                    ExerciseBadges(exercise)
                 }
             }
 
@@ -983,7 +953,7 @@ fun FilterTextItem(
         ) {
             Text(
                 text = text,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
             )
@@ -1091,7 +1061,7 @@ fun ChallengeView(
                                 null -> stringResource(R.string.no_group_display)
                                 else -> group.groupName
                             },
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
@@ -1193,7 +1163,7 @@ fun ChallengeExerciseCard(
                 if (exercise.sortOrder > 0) {
                     Text(
                         text = stringResource(R.string.level_format, exercise.sortOrder),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.secondary
                     )
@@ -1273,7 +1243,7 @@ fun ChallengeExerciseCard(
                     if (lastRecordDate != null) {
                         Text(
                             text = stringResource(R.string.last_record_short, lastRecordDate),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -1282,7 +1252,7 @@ fun ChallengeExerciseCard(
                 // 課題なしの場合
                 Text(
                     text = stringResource(R.string.no_challenge_set),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }

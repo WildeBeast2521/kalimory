@@ -183,12 +183,12 @@ internal fun ProgramConfirmStep(
                 ) {
                     Text(
                         text = pluralStringResource(R.plurals.exercise_count, session.exercises.size, session.exercises.size),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = cs.onSurfaceVariant
                     )
                     Text(
                         text = stringResource(R.string.program_estimated_time, estimatedMinutes),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = cs.onSurfaceVariant
                     )
                 }
@@ -215,7 +215,7 @@ internal fun ProgramConfirmStep(
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = stringResource(R.string.auto_fill_target_label),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = cs.outline,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -269,7 +269,7 @@ internal fun ProgramConfirmStep(
                                 else -> R.string.program_use_previous_desc
                             }
                         ),
-                        fontSize = 11.sp,
+                        style = MaterialTheme.typography.labelSmall,
                         color = cs.onSurfaceVariant,
                         modifier = Modifier.padding(top = 6.dp, start = 4.dp)
                     )
@@ -418,7 +418,7 @@ internal fun SettingsSection(
                     Icon(AppIcons.Settings, contentDescription = null, modifier = Modifier.size(14.dp), tint = cs.onSurfaceVariant)
                     Text(
                         text = stringResource(R.string.settings),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = cs.onSurfaceVariant
                     )
                 }
@@ -456,7 +456,7 @@ internal fun SettingsSection(
             ) {
                 Text(
                     text = stringResource(R.string.start_countdown),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = cs.onSurface
                 )
                 Row(
@@ -469,7 +469,7 @@ internal fun SettingsSection(
                     }
                     Text(
                         text = startCountdownSeconds.toString(),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = cs.onSurface,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.width(24.dp)
@@ -480,7 +480,7 @@ internal fun SettingsSection(
                     }
                     Text(
                         text = stringResource(R.string.unit_seconds_short),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = cs.onSurfaceVariant
                     )
                 }
@@ -561,13 +561,13 @@ internal fun ProgramConfirmExerciseCard(
                 Box(
                     modifier = Modifier
                         .defaultMinSize(minWidth = 28.dp, minHeight = 28.dp)
-                        .background(cs.tertiary, RoundedCornerShape(8.dp))
+                        .background(cs.tertiary, MaterialTheme.shapes.extraSmall)
                         .padding(horizontal = 4.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = displayNumber.toString(),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         color = cs.onTertiary
                     )
@@ -585,12 +585,12 @@ internal fun ProgramConfirmExerciseCard(
                 // セット数バッジ
                 Box(
                     modifier = Modifier
-                        .background(cs.surfaceContainerHigh, RoundedCornerShape(12.dp))
+                        .background(cs.surfaceContainerHigh, MaterialTheme.shapes.small)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
                         text = countText(R.plurals.set_count, currentSetCount),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = cs.onSurfaceVariant
                     )
                 }
@@ -599,12 +599,12 @@ internal fun ProgramConfirmExerciseCard(
                 if (loopRounds != null) {
                     Box(
                         modifier = Modifier
-                            .background(cs.secondary.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                            .background(cs.secondary.copy(alpha = 0.3f), MaterialTheme.shapes.small)
                             .padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
                         Text(
                             text = pluralStringResource(R.plurals.loop_round_count, loopRounds, loopRounds),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.SemiBold,
                             color = cs.secondary
                         )
@@ -649,7 +649,7 @@ internal fun ProgramConfirmExerciseCard(
                             }
                             Text(
                                 text = currentSetCount.toString(),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = cs.onSurface,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.width(28.dp)
@@ -839,7 +839,7 @@ internal fun ProgramConfirmExerciseCard(
                         Icon(AppIcons.Timer, contentDescription = null, modifier = Modifier.size(14.dp), tint = cs.outline)
                         Text(
                             text = stringResource(R.string.interval_short),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = cs.outline
                         )
                         Box(
@@ -876,7 +876,7 @@ internal fun ProgramConfirmExerciseCard(
                         }
                         Text(
                             text = stringResource(R.string.unit_seconds_short),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = cs.outline
                         )
                     }
@@ -920,7 +920,7 @@ private fun ProgramConfirmLoopBlock(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(2.dp, cs.tertiary, RoundedCornerShape(12.dp)),
+            .border(2.dp, cs.tertiary, MaterialTheme.shapes.small),
         colors = CardDefaults.cardColors(containerColor = cs.surfaceContainerLow),
         shape = MaterialTheme.shapes.large
     ) {
@@ -950,12 +950,12 @@ private fun ProgramConfirmLoopBlock(
                 // ラウンド数バッジ
                 Box(
                     modifier = Modifier
-                        .background(cs.secondary.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                        .background(cs.secondary.copy(alpha = 0.3f), MaterialTheme.shapes.small)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
                     Text(
                         text = pluralStringResource(R.plurals.loop_round_count, loop.rounds, loop.rounds),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.SemiBold,
                         color = cs.secondary
                     )
@@ -965,12 +965,12 @@ private fun ProgramConfirmLoopBlock(
                 if (loop.restBetweenRounds > 0) {
                     Box(
                         modifier = Modifier
-                            .background(cs.surfaceContainerHigh, RoundedCornerShape(12.dp))
+                            .background(cs.surfaceContainerHigh, MaterialTheme.shapes.small)
                             .padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.loop_rest_format, loop.restBetweenRounds),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = cs.onSurfaceVariant
                         )
                     }

@@ -95,7 +95,7 @@
     <string name="no_exercises_available">没有可用动作</string>
     <string name="no_exercises_in_period">%s内未进行训练</string>
     <!-- Settings Screen -->
-    <string name="data_management">数据管理</string>
+    <string name="data_management">你的数据</string>
     <string name="export_data">导出数据</string>
     <string name="import_data">导入数据</string>
     <string name="restore_from_backup">从备份恢复</string>
@@ -139,7 +139,6 @@
     <string name="workout_title">训练</string>
     <string name="no_exercises_yet_workout">还没有动作</string>
     <string name="no_group_workout">无分组</string>
-    <string name="one_sided_workout">单侧</string>
     <string name="target_sets_label">目标组数</string>
     <string name="target_reps_label">目标次数</string>
     <string name="target_duration_label">目标时长（秒）</string>
@@ -184,6 +183,7 @@
     <!-- Additional hardcoded strings that need to be moved -->
     <string name="no_exercises_add_with_plus">还没有动作\n点击下方 + 按钮添加</string>
     <string name="delete_group_confirm_message">删除「%s」？\n该分组中的动作将移至「无分组」。</string>
+    <string name="name_required">请输入名称</string>
     <string name="duplicate_exercise_name">此动作名称已在使用</string>
     <string name="duplicate_group_name">此分组名称已在使用</string>
     <string name="bilateral_with_parenthesis">双侧</string>
@@ -256,8 +256,7 @@
     <string name="add_to_favorites">添加到收藏</string>
     <string name="remove_from_favorites">从收藏移除</string>
     <!-- Language Settings -->
-    <string name="section_language">语言设置</string>
-    <string name="section_language_description">更改应用显示语言。</string>
+    <string name="section_language">语言</string>
     <string name="language_setting">语言</string>
     <string name="current_language">当前：%s</string>
     <!-- Open Source Licenses -->
@@ -275,12 +274,9 @@
     <string name="settings_prefill_previous">预填上次记录</string>
     <string name="settings_prefill_previous_description">在记录和训练画面自动填充上次的值</string>
     <!-- Workout Settings -->
-    <string name="section_workout_settings">训练设置</string>
-    <string name="section_workout_settings_description">自定义训练界面的行为。</string>
+    <string name="section_workout_settings">训练</string>
     <string name="start_countdown_setting">开始倒计时</string>
     <string name="set_interval_setting">组间间歇</string>
-    <string name="start_countdown_dialog_title">开始倒计时</string>
-    <string name="set_interval_dialog_title">组间间歇</string>
     <string name="set_interval_note">注意：如果已配置，动作的特定设置优先。</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">计时器设置（可选）</string>
@@ -319,13 +315,11 @@
     <!-- Apply Exercise Settings Button -->
     <string name="apply_exercise_settings">应用动作设置</string>
     <!-- App Info Section -->
-    <string name="section_app_info">应用信息</string>
-    <string name="section_app_info_description">查看应用信息和许可证。</string>
+    <string name="section_app_info">关于</string>
     <string name="app_description">自重训练记录应用</string>
     <string name="app_version">版本</string>
     <string name="app_author">作者</string>
     <string name="app_source_code">源代码</string>
-    <string name="app_feedback">反馈</string>
     <string name="report_issue_github">在GitHub上报告问题</string>
     <!-- Flash Notification -->
     <string name="flash_notification_setting">LED闪光通知</string>
@@ -457,8 +451,8 @@
     <string name="description_optional">说明（可选）</string>
 
     <!-- Theme Settings -->
-    <string name="section_theme">主题设置</string>
-    <string name="section_theme_description">更改应用外观。</string>
+    <string name="section_theme">外观</string>
+    <string name="section_week">每周与建议</string>
     <string name="theme_setting">主题</string>
     <string name="current_theme">当前：%s</string>
     <string name="theme_system">跟随系统</string>
@@ -842,9 +836,6 @@
     </plurals>
     <plurals name="csv_import_more_items">
         <item quantity="other">… 以及其他 %d 项</item>
-    </plurals>
-    <plurals name="current_seconds">
-        <item quantity="other">当前：%d秒</item>
     </plurals>
     <plurals name="nav_sets_format">
         <item quantity="other">%1$d / %2$d 组</item>

@@ -75,7 +75,7 @@ fun RecordListView(
                     ) {
                         Text(
                             text = stringResource(R.string.no_records_for_exercise),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -159,7 +159,7 @@ fun SessionCard(
                     )
                     Text(
                         text = displayDateTime(session.date, session.time),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -204,7 +204,7 @@ fun SessionCard(
                     Icon(AppIcons.Comment, contentDescription = null, modifier = Modifier.size(14.dp))
                     Text(
                         text = session.comment,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontStyle = FontStyle.Italic
                     )
@@ -221,7 +221,7 @@ fun SessionCard(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
-                        shape = RoundedCornerShape(8.dp),
+                        shape = MaterialTheme.shapes.extraSmall,
                         onClick = { onRecordClick(record) }
                     ) {
                         Column(
@@ -240,7 +240,7 @@ fun SessionCard(
                                 val effort = record.effortLeft?.let { effortText(it, exercise?.type == "Dynamic") }
                                 Text(
                                     text = listOfNotNull(setText, warmUpLabel().takeIf { record.warmUp }, effort).joinToString(" · "),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
 
@@ -253,13 +253,13 @@ fun SessionCard(
                                     ) {
                                         Text(
                                             text = stringResource(R.string.right_value_short, record.valueRight, if (exercise?.type == "Dynamic") stringResource(R.string.unit_reps) else stringResource(R.string.unit_seconds)),
-                                            fontSize = 16.sp,
+                                            style = MaterialTheme.typography.bodyLarge,
                                             fontWeight = FontWeight.Bold,
                                             color = MaterialTheme.colorScheme.primary
                                         )
                                         Text(
                                             text = stringResource(R.string.left_value_short, record.valueLeft!!, if (exercise?.type == "Dynamic") stringResource(R.string.unit_reps) else stringResource(R.string.unit_seconds)),
-                                            fontSize = 16.sp,
+                                            style = MaterialTheme.typography.bodyLarge,
                                             fontWeight = FontWeight.Bold,
                                             color = MaterialTheme.colorScheme.primary
                                         )
@@ -361,7 +361,7 @@ fun IntervalRecordCard(
                     )
                     Text(
                         text = displayDateTime(record.date, record.time),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -405,7 +405,7 @@ fun IntervalRecordCard(
                     Icon(AppIcons.Comment, contentDescription = null, modifier = Modifier.size(14.dp))
                     Text(
                         text = record.comment!!,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontStyle = FontStyle.Italic
                     )
@@ -416,7 +416,7 @@ fun IntervalRecordCard(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                shape = RoundedCornerShape(8.dp)
+                shape = MaterialTheme.shapes.extraSmall
             ) {
                 Column(
                     modifier = Modifier
@@ -436,21 +436,21 @@ fun IntervalRecordCard(
                                 record.completedRounds,
                                 record.rounds
                             ),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = if (isFullCompletion) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         if (isFullCompletion) {
                             Text(
                                 text = stringResource(R.string.interval_record_complete),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.tertiary
                             )
                         } else {
                             Text(
                                 text = stringResource(R.string.interval_record_partial),
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
@@ -486,7 +486,7 @@ fun IntervalRecordCard(
                     ) {
                         Text(
                             text = pluralStringResource(R.plurals.exercise_count, exercises.size, exercises.size),
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Icon(

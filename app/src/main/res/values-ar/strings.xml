@@ -343,7 +343,7 @@
     <string name="challenge_target_label">الهدف</string>
     <string name="no_exercises_available">لا توجد تمارين متاحة</string>
     <string name="no_exercises_in_period">لا تمارين خلال %s</string>
-    <string name="data_management">إدارة البيانات</string>
+    <string name="data_management">بياناتك</string>
     <string name="export_data">تصدير البيانات</string>
     <string name="import_data">استيراد البيانات</string>
     <string name="restore_from_backup">الاستعادة من نسخة احتياطية</string>
@@ -385,7 +385,6 @@
     <string name="workout_title">تمرين</string>
     <string name="no_exercises_yet_workout">لا توجد تمارين بعد</string>
     <string name="no_group_workout">بلا مجموعة</string>
-    <string name="one_sided_workout">جانب واحد</string>
     <string name="target_sets_label">المجموعات المستهدفة</string>
     <string name="target_reps_label">التكرارات المستهدفة</string>
     <string name="target_duration_label">المدة المستهدفة (ث)</string>
@@ -472,6 +471,7 @@
     <string name="delete_exercise_used_in_programs">• البرامج: %s</string>
     <string name="delete_exercise_used_in_intervals">• الفترات: %s</string>
     <string name="delete_exercise_removed_note">وسيُزال منها أيضًا.</string>
+    <string name="name_required">أدخل اسمًا</string>
     <string name="duplicate_exercise_name">اسم التمرين هذا مستخدم بالفعل</string>
     <string name="duplicate_group_name">اسم المجموعة هذا مستخدم بالفعل</string>
     <string name="bilateral_with_parenthesis">ثنائي الجانب</string>
@@ -533,11 +533,10 @@
     <string name="add_to_favorites">إضافة إلى المفضلة</string>
     <string name="remove_from_favorites">إزالة من المفضلة</string>
     <string name="section_language">اللغة</string>
-    <string name="section_language_description">غيّر لغة واجهة التطبيق.</string>
     <string name="language_setting">اللغة</string>
     <string name="current_language">الحالية: %s</string>
     <string name="section_theme">المظهر</string>
-    <string name="section_theme_description">غيّر مظهر التطبيق.</string>
+    <string name="section_week">الأسبوع والاقتراحات</string>
     <string name="theme_setting">المظهر</string>
     <string name="current_theme">الحالي: %s</string>
     <string name="theme_light">فاتح</string>
@@ -552,12 +551,9 @@
     <string name="backup_failed">فشل النسخ الاحتياطي</string>
     <string name="settings_prefill_previous">ملء القيم السابقة</string>
     <string name="settings_prefill_previous_description">املأ القيم من الجلسة السابقة في شاشتي التسجيل والتمرين</string>
-    <string name="section_workout_settings">إعدادات التمرين</string>
-    <string name="section_workout_settings_description">خصّص سلوك شاشة التمرين.</string>
+    <string name="section_workout_settings">التمارين</string>
     <string name="start_countdown_setting">العد التنازلي للبدء</string>
     <string name="set_interval_setting">الراحة بين المجموعات</string>
-    <string name="start_countdown_dialog_title">العد التنازلي للبدء</string>
-    <string name="set_interval_dialog_title">الراحة بين المجموعات</string>
     <string name="set_interval_note">إعدادات التمرين نفسه لها الأولوية إن وُجدت.</string>
     <string name="flash_notification_setting">تنبيه الفلاش</string>
     <string name="flash_notification_description">وميض الفلاش مع أصوات التمرين</string>
@@ -584,12 +580,10 @@
     <string name="weight_display_format">%.1f كغ</string>
     <string name="apply_exercise_settings">تطبيق إعدادات التمرين</string>
     <string name="section_app_info">حول التطبيق</string>
-    <string name="section_app_info_description">معلومات التطبيق والتراخيص.</string>
     <string name="app_description">تمارين وزن الجسم بهدوء ومن دون إنترنت</string>
     <string name="app_version">الإصدار</string>
     <string name="app_author">المؤلف</string>
     <string name="app_source_code">الشيفرة المصدرية</string>
-    <string name="app_feedback">الملاحظات</string>
     <string name="report_issue_github">الإبلاغ عن مشكلة على GitHub</string>
     <string name="todo_title">المهام</string>
     <string name="todo_empty">اضغط + لإضافة تمارين</string>
@@ -846,14 +840,6 @@
         <item quantity="few">… و%d أخرى</item>
         <item quantity="many">… و%d أخرى</item>
         <item quantity="other">… و%d أخرى</item>
-    </plurals>
-    <plurals name="current_seconds">
-        <item quantity="zero">الحالي: %d ث</item>
-        <item quantity="one">الحالي: %d ث</item>
-        <item quantity="two">الحالي: %d ث</item>
-        <item quantity="few">الحالي: %d ث</item>
-        <item quantity="many">الحالي: %d ث</item>
-        <item quantity="other">الحالي: %d ث</item>
     </plurals>
     <plurals name="nav_sets_format">
         <item quantity="zero">%1$d / %2$d مجموعة</item>

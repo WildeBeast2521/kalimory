@@ -142,7 +142,6 @@ fun RecordAdjustDialog(
                         onClick = { value = targetValue },
                         enabled = !isAtTarget,
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(10.dp),
                         border = BorderStroke(
                             1.5.dp,
                             if (isAtTarget) MaterialTheme.colorScheme.outlineVariant else MaterialTheme.colorScheme.primary
@@ -304,19 +303,19 @@ private fun TrackingStepperRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = label,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = stringResource(R.string.previous_value_format, previousText),
-                fontSize = 11.sp,
+                style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         SmallStepButton(symbol = "−", enabled = minusEnabled, onClick = onMinus)
         Surface(
-            shape = RoundedCornerShape(8.dp),
+            shape = MaterialTheme.shapes.extraSmall,
             color = Color.Transparent,
             border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline),
             modifier = Modifier

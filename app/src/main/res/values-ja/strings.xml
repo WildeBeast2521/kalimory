@@ -107,7 +107,7 @@
     <string name="no_exercises_available">種目がありません</string>
     <string name="no_exercises_in_period">%sに取り組んだ種目がありません</string>
     <!-- Settings Screen -->
-    <string name="data_management">データ管理</string>
+    <string name="data_management">データ</string>
     <string name="export_data">データをエクスポート</string>
     <string name="import_data">データをインポート</string>
     <string name="restore_from_backup">バックアップから復元</string>
@@ -151,7 +151,6 @@
     <string name="workout_title">ワークアウト</string>
     <string name="no_exercises_yet_workout">種目がまだありません</string>
     <string name="no_group_workout">グループなし</string>
-    <string name="one_sided_workout">片側</string>
     <string name="target_sets_label">目標セット数</string>
     <string name="target_reps_label">目標回数</string>
     <string name="target_duration_label">目標秒数</string>
@@ -228,6 +227,7 @@
     <string name="delete_exercise_used_in_programs">・プログラム: %s</string>
     <string name="delete_exercise_used_in_intervals">・インターバル: %s</string>
     <string name="delete_exercise_removed_note">これらからも種目が取り除かれます。</string>
+    <string name="name_required">名前を入力してください</string>
     <string name="duplicate_exercise_name">この種目名は既に使用されています</string>
     <string name="duplicate_group_name">このグループ名は既に使用されています</string>
     <string name="bilateral_with_parenthesis">両側 (Bilateral)</string>
@@ -300,8 +300,7 @@
     <string name="add_to_favorites">お気に入りに追加</string>
     <string name="remove_from_favorites">お気に入りから削除</string>
     <!-- Language Settings -->
-    <string name="section_language">言語設定</string>
-    <string name="section_language_description">アプリの表示言語を変更できます。</string>
+    <string name="section_language">言語</string>
     <string name="language_setting">言語 / Language</string>
     <string name="current_language">現在: %s</string>
     <!-- Open Source Licenses -->
@@ -319,12 +318,9 @@
     <string name="settings_prefill_previous">前回の記録をプリフィル</string>
     <string name="settings_prefill_previous_description">記録・ワークアウト画面で前回の値を自動入力</string>
     <!-- Workout Settings -->
-    <string name="section_workout_settings">ワークアウト設定</string>
-    <string name="section_workout_settings_description">ワークアウト画面の動作をカスタマイズできます。</string>
+    <string name="section_workout_settings">ワークアウト</string>
     <string name="start_countdown_setting">開始カウントダウン</string>
     <string name="set_interval_setting">セット間インターバル</string>
-    <string name="start_countdown_dialog_title">開始カウントダウン</string>
-    <string name="set_interval_dialog_title">セット間インターバル</string>
     <string name="set_interval_note">※種目ごとの設定がある場合はそちらが優先されます。</string>
     <!-- Timer Settings (Per-Exercise) -->
     <string name="timer_settings_optional">タイマー設定（任意）</string>
@@ -364,13 +360,11 @@
     <!-- Apply Exercise Settings Button -->
     <string name="apply_exercise_settings">種目設定を適用</string>
     <!-- App Info Section -->
-    <string name="section_app_info">アプリ情報</string>
-    <string name="section_app_info_description">アプリの情報やライセンスを確認できます。</string>
+    <string name="section_app_info">アプリについて</string>
     <string name="app_description">自重トレーニング記録アプリ</string>
     <string name="app_version">バージョン</string>
     <string name="app_author">作者</string>
     <string name="app_source_code">ソースコード</string>
-    <string name="app_feedback">フィードバック</string>
     <string name="report_issue_github">GitHubで問題を報告する</string>
     <!-- Flash Notification -->
     <string name="flash_notification_setting">LEDフラッシュ通知</string>
@@ -512,8 +506,8 @@
     <string name="loop_number_format">ループ %d</string>
 
     <!-- Theme Settings -->
-    <string name="section_theme">テーマ設定</string>
-    <string name="section_theme_description">アプリの外観を変更します。</string>
+    <string name="section_theme">外観</string>
+    <string name="section_week">週と提案</string>
     <string name="theme_setting">テーマ</string>
     <string name="current_theme">現在: %s</string>
     <string name="theme_system">システムに従う</string>
@@ -848,9 +842,6 @@
     </plurals>
     <plurals name="csv_import_more_items">
         <item quantity="other">… その他 %d件</item>
-    </plurals>
-    <plurals name="current_seconds">
-        <item quantity="other">現在: %d秒</item>
     </plurals>
     <plurals name="nav_sets_format">
         <item quantity="other">%1$d / %2$d セット</item>

@@ -19,7 +19,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * The workout and program setup screens and the Programs and To Do lists at 200 % text on a 360 dp phone: no text cut off. These rows used
+ * The workout and program setup screens, Settings and the Programs and To Do lists at 200 % text on a 360 dp phone: no text cut off. These rows used
  * fixed widths and heights that only fit at 100 %, so switches left the card, buttons lost their text and
  * numbers were clipped. (Switch names and touch targets are checked in SwitchRowTest.)
  */
@@ -32,8 +32,8 @@ class SetupScreensLargeTextTest {
     @get:Rule
     val rules: TestRule = RuleChain.outerRule(MainScreenFixture.state(AppTheme.LIGHT)).around(compose)
 
-    private fun audit(ignore: String? = null, content: @Composable (TrainingViewModel) -> Unit) {
-        RuntimeEnvironment.setFontScale(2f)
+    private fun audit(ignore: String? = null, scale: Float = 2f, content: @Composable (TrainingViewModel) -> Unit) {
+        RuntimeEnvironment.setFontScale(scale)
         try {
             val vm = TrainingViewModel(ApplicationProvider.getApplicationContext<Application>())
             compose.setContent { CalisthenicsMemoryTheme { content(vm) } }
@@ -58,7 +58,23 @@ class SetupScreensLargeTextTest {
 
     // The top bar's collapsed title ("New interval") is shortened beside the Save button at this size: that
     // is the top bar's own problem (one shared bar, with room for two lines, is planned), not the rows.
-    @Test fun `new interval`() = audit(ignore = "\"New interval\"") { IntervalEditScreen(it, null, {}, {}) }
+    @Test fun `new interval`() = audit { IntervalEditScreen(it, null, {}, {}) }
 
     @Test fun `log a past workout entry`() = audit { RecordScreen(it, {}, initialExerciseId = 1L) }
+
+    @Test fun `settings`() = audit { SettingsScreenNew(it, {}, {}, {}, {}, {}, {}) }
+
+    // Same top-bar limit as above: the collapsed title is shortened beside the back button at this size.
+    @Test fun `backup`() = audit { BackupScreen(it, {}) }
+
+    @Test fun `csv files`() = audit { CsvDataManagementScreen(it, {}) }
+
+    @Test fun `share`() = audit { ShareHubScreen(it, {}, {}) }
+
+    // Text did not fit here at normal size either, once the step buttons grew to a 48 dp touch target.
+    @Test fun `log a past workout entry at normal size`() = audit(scale = 1f) { RecordScreen(it, {}, initialExerciseId = 1L) }
+
+    @Test fun `program setup at normal size`() = audit(scale = 1f) { ProgramExecutionScreen(it, 1L, onNavigateBack = {}, onComplete = {}) }
+
+    @Test fun `new interval at normal size`() = audit(scale = 1f) { IntervalEditScreen(it, null, {}, {}) }
 }

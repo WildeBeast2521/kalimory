@@ -218,7 +218,6 @@ fun SetCompleteButton(
         onClick = onClick,
         enabled = enabled,
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
             contentColor = MaterialTheme.colorScheme.primary,
@@ -236,7 +235,7 @@ fun SetCompleteButton(
         Text(
             text = stringResource(R.string.set_complete_button, setNumber),
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

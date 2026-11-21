@@ -148,8 +148,6 @@ class UnifiedWorkoutFlowTest {
     private fun startSingleWorkout() {
         launchAndOpenTrain()
         rule.onNodeWithText(text(R.string.home_workout)).performClick()
-        waitForText(text(R.string.no_group))
-        rule.onNodeWithText(text(R.string.no_group)).performClick()
         waitForText(exerciseName)
         rule.onNodeWithText(exerciseName).performClick()
         // Sets and targets start blank; this fills them from the exercise (2 sets of 3 reps).
@@ -279,8 +277,6 @@ class UnifiedWorkoutFlowTest {
     fun pastWorkoutIsRecordedAsEnteredWithoutTickingSets() = runBlocking {
         launchAndOpenTrain()
         rule.onNodeWithText(text(R.string.home_record)).performScrollTo().performClick()
-        waitForText(text(R.string.no_group))
-        rule.onNodeWithText(text(R.string.no_group)).performClick()
         waitForText(exerciseName)
         rule.onNodeWithText(exerciseName).performClick()
         // Fills 2 sets of 3 reps from the exercise; no set is ticked as done.
@@ -302,11 +298,6 @@ class UnifiedWorkoutFlowTest {
         launchAndOpenTrain()
         rule.onNodeWithText(text(R.string.home_record)).performScrollTo().performClick()
         repeat(2) { round ->
-            // The group stays open after the first pick.
-            if (rule.onAllNodesWithText(exerciseName).fetchSemanticsNodes().isEmpty()) {
-                waitForText(text(R.string.no_group))
-                rule.onNodeWithText(text(R.string.no_group)).performClick()
-            }
             waitForText(exerciseName)
             rule.onNodeWithText(exerciseName).performClick()
             waitForText(text(R.string.apply_exercise_settings))

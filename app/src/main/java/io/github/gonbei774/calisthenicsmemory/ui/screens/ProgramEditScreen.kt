@@ -312,7 +312,7 @@ fun ProgramEditScreen(
                             }
                             Text(
                                 text = stringResource(R.string.program_estimated_time, estimatedMinutes),
-                                fontSize = 14.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
@@ -332,7 +332,7 @@ fun ProgramEditScreen(
                                 text = stringResource(R.string.program_exercises_required),
                                 modifier = Modifier.padding(16.dp),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 14.sp
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }
@@ -424,10 +424,9 @@ fun ProgramEditScreen(
 
                 // Add exercise button
                 item {
-                    Button(
+                    FilledTonalButton(
                         onClick = { showAddExerciseDialog = true },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(
                             AppIcons.Add,
@@ -441,15 +440,9 @@ fun ProgramEditScreen(
 
                 // Add loop button
                 item {
-                    OutlinedButton(
+                    TextButton(
                         onClick = { showAddLoopDialog = true },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.primary
-                        ),
-                        border = ButtonDefaults.outlinedButtonBorder.copy(
-                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary))
-                        )
                     ) {
                         Icon(AppIcons.Repeat, contentDescription = null, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(8.dp))

@@ -3,6 +3,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.components.common
 import androidx.compose.foundation.layout.Row
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.ui.screens.tapTargetProblems
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
@@ -46,5 +47,27 @@ class NumberStepButtonTest {
         }
         val problems = tapTargetProblems(compose, compose.density)
         assertTrue(problems.joinToString("\n"), problems.isEmpty())
+    }
+
+    @Test fun `an empty stepper shows its placeholder, a filled one does not`() {
+        compose.setContent {
+            CalisthenicsMemoryTheme {
+                Row {
+                    NumberStepper(value = "", onValueChange = {}, unit = "reps", placeholder = "–")
+                }
+            }
+        }
+        compose.onNodeWithText("–").assertExists()
+    }
+
+    @Test fun `a filled stepper has no placeholder`() {
+        compose.setContent {
+            CalisthenicsMemoryTheme {
+                Row {
+                    NumberStepper(value = "12", onValueChange = {}, unit = "reps", placeholder = "–")
+                }
+            }
+        }
+        compose.onNodeWithText("–").assertDoesNotExist()
     }
 }

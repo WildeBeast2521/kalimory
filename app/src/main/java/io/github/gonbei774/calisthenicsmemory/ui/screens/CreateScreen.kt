@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.util.TextLimits
 import androidx.compose.runtime.mutableIntStateOf
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.AppFab
@@ -117,18 +119,7 @@ fun CreateScreen(
         }
     ) { paddingValues ->
         if (hierarchicalData.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.no_exercises_add_with_plus),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 16.sp
-                )
-            }
+            EmptyState(text = stringResource(R.string.no_exercises_add_with_plus), modifier = Modifier.padding(paddingValues))
         } else {
             // 階層データを3つに分離
             val favoriteGroup = hierarchicalData.firstOrNull {
@@ -505,7 +496,7 @@ fun ExpandableGroupCard(
                         )
                         Text(
                             text = pluralStringResource(R.plurals.exercise_count, group.exercises.size, group.exercises.size),
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -587,7 +578,7 @@ fun ExpandableGroupCard(
                                     colors = CardDefaults.cardColors(
                                         containerColor = if (isDragging) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.9f) else MaterialTheme.colorScheme.surfaceContainerHigh
                                     ),
-                                    shape = RoundedCornerShape(8.dp),
+                                    shape = MaterialTheme.shapes.extraSmall,
                                     elevation = CardDefaults.cardElevation(defaultElevation = elevation)
                                 ) {
                                     ExerciseItemCompactContent(
@@ -623,7 +614,7 @@ fun ExerciseItemCompactContent(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = exercise.name,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -632,44 +623,13 @@ fun ExerciseItemCompactContent(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier.padding(top = 4.dp)
             ) {
-                // お気に入り
-                if (exercise.isFavorite) {
-                    Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
-                }
-
-                // レベル（課題設定がある場合のみ）
-                if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                    Text(
-                        text = stringResource(R.string.level_format, exercise.sortOrder),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-                }
-
-                // タイプ（回数制/時間制）
-                Text(
-                    text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-
-                // Unilateral
-                if (exercise.laterality == "Unilateral") {
-                    Text(
-                        text = stringResource(R.string.one_sided),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
+                ExerciseBadges(exercise)
 
                 // 有効化している記録オプション（荷重/距離/アシスト）
                 if (exercise.weightTrackingEnabled) {
                     Text(
                         text = stringResource(R.string.legend_weight),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -677,7 +637,7 @@ fun ExerciseItemCompactContent(
                 if (exercise.distanceTrackingEnabled) {
                     Text(
                         text = stringResource(R.string.legend_distance),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.secondary
                     )
@@ -685,7 +645,7 @@ fun ExerciseItemCompactContent(
                 if (exercise.assistanceTrackingEnabled) {
                     Text(
                         text = stringResource(R.string.legend_assistance),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         color = Pink600
                     )
@@ -706,7 +666,7 @@ fun ExerciseItemCompactContent(
                             dynamic = exercise.type == "Dynamic",
                             unilateral = exercise.laterality == "Unilateral",
                         ),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -798,6 +758,8 @@ fun UnifiedAddDialog(
 
     // グループ用の状態
     var groupName by remember { mutableStateOf("") }
+    // Add stays enabled; tapping it with something missing marks the fields instead of doing nothing.
+    var triedToSave by remember { mutableStateOf(false) }
 
     val isDuplicate = remember(exerciseName, selectedType, exercises, exercise) {
         if (exerciseName.isBlank()) {
@@ -959,8 +921,8 @@ fun UnifiedAddDialog(
                                     else -> R.string.add_button
                                 }
                             ),
-                            enabled = isFormValid,
-                            onClick = onSave,
+                            enabled = true,
+                            onClick = { if (isFormValid) onSave() else triedToSave = true },
                         )
                     }
                 },
@@ -984,7 +946,7 @@ fun UnifiedAddDialog(
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(
                                     text = stringResource(R.string.create_type),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -1013,9 +975,10 @@ fun UnifiedAddDialog(
                                     label = { Text(stringResource(R.string.group_name)) },
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true,
-                                    isError = isGroupDuplicate,
+                                    isError = isGroupDuplicate || (triedToSave && groupName.isBlank()),
                                     supportingText = {
                                         when {
+                                            triedToSave && groupName.isBlank() -> Text(stringResource(R.string.name_required), color = MaterialTheme.colorScheme.error)
                                             isGroupDuplicate -> Text(stringResource(R.string.duplicate_group_name), color = MaterialTheme.colorScheme.error)
                                             else -> Text(stringResource(R.string.character_count, groupName.length, TextLimits.GROUP_NAME), color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
@@ -1043,9 +1006,10 @@ fun UnifiedAddDialog(
                                     label = { Text(stringResource(R.string.exercise_name)) },
                                     modifier = Modifier.fillMaxWidth(),
                                     singleLine = true,
-                                    isError = isDuplicate,
+                                    isError = isDuplicate || (triedToSave && exerciseName.isBlank()),
                                     supportingText = {
                                         when {
+                                            triedToSave && exerciseName.isBlank() -> Text(stringResource(R.string.name_required), color = MaterialTheme.colorScheme.error)
                                             isDuplicate -> Text(stringResource(R.string.duplicate_exercise_name), color = MaterialTheme.colorScheme.error)
                                             else -> Text(stringResource(R.string.character_count, exerciseName.length, nameLimit), color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
@@ -1056,7 +1020,7 @@ fun UnifiedAddDialog(
                                 Column {
                                     Text(
                                         text = stringResource(R.string.type),
-                                        fontSize = 14.sp,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -1072,7 +1036,7 @@ fun UnifiedAddDialog(
                                             stringResource(R.string.exercise_type_isometric_description)
                                         else
                                             stringResource(R.string.exercise_type_dynamic_description),
-                                        fontSize = 12.sp,
+                                        style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 4.dp)
                                     )
@@ -1082,7 +1046,7 @@ fun UnifiedAddDialog(
                                 Column {
                                     Text(
                                         text = stringResource(R.string.laterality),
-                                        fontSize = 14.sp,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -1097,7 +1061,7 @@ fun UnifiedAddDialog(
                                         text = stringResource(
                                             if (selectedLaterality == "Bilateral") R.string.example_bilateral else R.string.example_unilateral
                                         ),
-                                        fontSize = 12.sp,
+                                        style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 4.dp)
                                     )
@@ -1117,7 +1081,7 @@ fun UnifiedAddDialog(
                             ) {
                                 Text(
                                     text = stringResource(R.string.group_optional),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -1129,7 +1093,14 @@ fun UnifiedAddDialog(
                                         label = { Text(stringResource(R.string.new_group_name)) },
                                         modifier = Modifier.fillMaxWidth(),
                                         singleLine = true,
-                                        supportingText = { Text(stringResource(R.string.character_count, newGroupName.length, TextLimits.GROUP_NAME), color = MaterialTheme.colorScheme.onSurfaceVariant) },
+                                        isError = triedToSave && newGroupName.isBlank(),
+                                        supportingText = {
+                                            if (triedToSave && newGroupName.isBlank()) {
+                                                Text(stringResource(R.string.name_required), color = MaterialTheme.colorScheme.error)
+                                            } else {
+                                                Text(stringResource(R.string.character_count, newGroupName.length, TextLimits.GROUP_NAME), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            }
+                                        },
                                         trailingIcon = {
                                             IconButton(onClick = {
                                                 isCreatingNewGroup = false
@@ -1204,7 +1175,7 @@ fun UnifiedAddDialog(
                                 ) {
                                     Text(
                                         text = stringResource(R.string.set_challenge),
-                                        fontSize = 14.sp,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -1257,7 +1228,7 @@ fun UnifiedAddDialog(
                                     if (selectedLaterality == "Unilateral") {
                                         Text(
                                             text = stringResource(R.string.per_side_parenthesis),
-                                            fontSize = 12.sp,
+                                            style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
@@ -1266,7 +1237,7 @@ fun UnifiedAddDialog(
                                     Column {
                                         Text(
                                             text = stringResource(R.string.level_display, selectedLevel),
-                                            fontSize = 14.sp,
+                                            style = MaterialTheme.typography.bodyMedium,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                         Slider(
@@ -1294,13 +1265,13 @@ fun UnifiedAddDialog(
                                 Column {
                                     Text(
                                         text = stringResource(R.string.timer_settings_optional),
-                                        fontSize = 14.sp,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
                                         text = stringResource(R.string.timer_settings_description),
-                                        fontSize = 12.sp,
+                                        style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(top = 4.dp)
                                     )
@@ -1356,7 +1327,7 @@ fun UnifiedAddDialog(
                             ) {
                                 Text(
                                     text = stringResource(R.string.tracking_settings_optional),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -1370,12 +1341,12 @@ fun UnifiedAddDialog(
                                     Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
                                         Text(
                                             text = stringResource(R.string.track_distance),
-                                            fontSize = 14.sp,
+                                            style = MaterialTheme.typography.bodyMedium,
                                             color = MaterialTheme.colorScheme.onSurface
                                         )
                                         Text(
                                             text = stringResource(R.string.track_distance_description),
-                                            fontSize = 12.sp,
+                                            style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
@@ -1394,12 +1365,12 @@ fun UnifiedAddDialog(
                                     Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
                                         Text(
                                             text = stringResource(R.string.track_weight),
-                                            fontSize = 14.sp,
+                                            style = MaterialTheme.typography.bodyMedium,
                                             color = MaterialTheme.colorScheme.onSurface
                                         )
                                         Text(
                                             text = stringResource(R.string.track_weight_description),
-                                            fontSize = 12.sp,
+                                            style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
@@ -1418,12 +1389,12 @@ fun UnifiedAddDialog(
                                     Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
                                         Text(
                                             text = stringResource(R.string.track_assistance),
-                                            fontSize = 14.sp,
+                                            style = MaterialTheme.typography.bodyMedium,
                                             color = MaterialTheme.colorScheme.onSurface
                                         )
                                         Text(
                                             text = stringResource(R.string.track_assistance_description),
-                                            fontSize = 12.sp,
+                                            style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
@@ -1446,7 +1417,7 @@ fun UnifiedAddDialog(
                             ) {
                                 Text(
                                     text = stringResource(R.string.description_optional),
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Bold
                                 )

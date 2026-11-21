@@ -2,6 +2,8 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.components.program
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
@@ -44,7 +46,7 @@ fun AddExerciseToProgramDialog(
     onAdd: (List<Exercise>) -> Unit
 ) {
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
-    val expandedGroups by viewModel.expandedGroups.collectAsState()
+    val collapsedGroups by viewModel.collapsedPickerGroups.collectAsState()
 
     var selectedExercises by remember { mutableStateOf(listOf<Long>()) }
     var searchQuery by remember { mutableStateOf("") }
@@ -108,7 +110,7 @@ fun AddExerciseToProgramDialog(
                                     key = { index -> searchResults[index].id }
                                 ) { index ->
                                     val exercise = searchResults[index]
-                                    ProgramExerciseSelectItem(
+                                    ExerciseCheckRow(
                                         exercise = exercise,
                                         isSelected = exercise.id in selectedExercises,
                                         onToggle = { exerciseId ->
@@ -133,9 +135,9 @@ fun AddExerciseToProgramDialog(
                                         groupName = group.groupName,
                                         exercises = group.exercises,
                                         selectedExercises = selectedExercises,
-                                        isExpanded = (group.groupName ?: "ungrouped") in expandedGroups,
+                                        isExpanded = (group.groupName ?: "ungrouped") !in collapsedGroups,
                                         onExpandToggle = {
-                                            viewModel.toggleGroupExpansion(group.groupName ?: "ungrouped")
+                                            viewModel.togglePickerGroup(group.groupName ?: "ungrouped")
                                         },
                                         onExerciseToggle = { exerciseId ->
                                             selectedExercises = if (exerciseId in selectedExercises) {
@@ -175,116 +177,6 @@ fun AddExerciseToProgramDialog(
 }
 
 @Composable
-private fun ProgramExerciseSelectItem(
-    exercise: Exercise,
-    isSelected: Boolean,
-    onToggle: (Long) -> Unit,
-    showGroup: Boolean = false,
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(8.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .toggleable(value = isSelected, role = Role.Checkbox, onValueChange = { _ -> onToggle(exercise.id) })
-                .padding(horizontal = 8.dp, vertical = 4.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            Checkbox(
-                checked = isSelected,
-                onCheckedChange = null,
-                colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colorScheme.primary,
-                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            )
-            Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
-                Text(
-                    text = exercise.name,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                    modifier = Modifier.padding(top = 2.dp)
-                ) {
-                    // The group, in search results only (#278).
-                    if (showGroup) exercise.group?.let { GroupBadge(it) }
-                    if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
-                    }
-                    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                        Text(
-                            text = stringResource(R.string.level_format, exercise.sortOrder),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                    Text(
-                        text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    if (exercise.laterality == "Unilateral") {
-                        Text(
-                            text = stringResource(R.string.one_sided),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    if (exercise.weightTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_weight),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    if (exercise.distanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_distance),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                    if (exercise.assistanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_assistance),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Pink600
-                        )
-                    }
-                }
-                if (exercise.targetSets != null && exercise.targetValue != null) {
-                    Text(
-                        text = targetText(
-                            exercise.targetSets!!,
-                            exercise.targetValue!!,
-                            dynamic = exercise.type == "Dynamic",
-                            unilateral = exercise.laterality == "Unilateral",
-                        ),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(top = 2.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
 private fun ProgramSelectExerciseGroup(
     groupName: String?,
     exercises: List<Exercise>,
@@ -296,7 +188,7 @@ private fun ProgramSelectExerciseGroup(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.extraSmall
     ) {
         Column {
             Surface(
@@ -325,13 +217,13 @@ private fun ProgramSelectExerciseGroup(
                         )
                         Text(
                             text = groupName ?: stringResource(R.string.no_group),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = "(${exercises.size})",
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -366,7 +258,7 @@ private fun ProgramSelectExerciseGroup(
                             Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
                                 Text(
                                     text = exercise.name,
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
@@ -375,31 +267,7 @@ private fun ProgramSelectExerciseGroup(
                                     verticalArrangement = Arrangement.spacedBy(2.dp),
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
-                                    if (exercise.isFavorite) {
-                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
-                                    }
-                                    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                                        Text(
-                                            text = stringResource(R.string.level_format, exercise.sortOrder),
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.secondary
-                                        )
-                                    }
-                                    Text(
-                                        text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                    if (exercise.laterality == "Unilateral") {
-                                        Text(
-                                            text = stringResource(R.string.one_sided),
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
-                                    }
+                                    ExerciseBadges(exercise)
                                     if (exercise.weightTrackingEnabled) {
                                         Text(
                                             text = stringResource(R.string.legend_weight),
@@ -489,7 +357,7 @@ fun ExerciseSettingsDialog(
             ) {
                 Text(
                     text = exercise.name,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -559,7 +427,7 @@ fun ExerciseSettingsDialog(
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = stringResource(R.string.move_to_loop),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

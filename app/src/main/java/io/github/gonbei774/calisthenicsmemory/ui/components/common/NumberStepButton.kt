@@ -114,6 +114,8 @@ fun NumberStepper(
     step: Int = 1,
     min: Int = 0,
     max: Int = Int.MAX_VALUE,
+    // Shown, muted, while the field is empty, so an unset value is not a blank gap between the buttons.
+    placeholder: String? = null,
 ) {
     val current = value.toIntOrNull() ?: min
     fun stepped(delta: Int): Boolean {
@@ -143,6 +145,18 @@ fun NumberStepper(
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                 ),
                 cursorBrush = androidx.compose.ui.graphics.SolidColor(MaterialTheme.colorScheme.primary),
+                decorationBox = { field ->
+                    androidx.compose.foundation.layout.Box(contentAlignment = Alignment.Center) {
+                        if (value.isEmpty() && placeholder != null) {
+                            androidx.compose.material3.Text(
+                                placeholder,
+                                style = MaterialTheme.typography.headlineMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        field()
+                    }
+                },
             )
             androidx.compose.material3.Text(
                 unit,

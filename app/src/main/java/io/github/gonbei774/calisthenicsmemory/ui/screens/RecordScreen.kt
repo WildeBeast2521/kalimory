@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePickRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.util.AppClock
@@ -297,7 +299,7 @@ fun ExerciseSelectionScreen(
     // ViewModelを取得
     val viewModel: TrainingViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
-    val expandedGroups by viewModel.expandedGroups.collectAsState()
+    val collapsedGroups by viewModel.collapsedPickerGroups.collectAsState()
 
     // Search state
     var searchQuery by remember { mutableStateOf("") }
@@ -330,7 +332,6 @@ fun ExerciseSelectionScreen(
                             .navigationBarsPadding()
                             .padding(16.dp)
                             .heightIn(min = 56.dp),
-                        shape = RoundedCornerShape(12.dp)
                     ) {
                         Icon(AppIcons.Check, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
                         Text(pluralStringResource(R.plurals.record_save_exercises, staged.size, staged.size), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -408,7 +409,7 @@ fun ExerciseSelectionScreen(
                                 key = { index -> searchResults[index].id }
                             ) { index ->
                                 val exercise = searchResults[index]
-                                ExerciseSelectionItem(
+                                ExercisePickRow(
                                     exercise = exercise,
                                     onClick = { onExerciseSelected(exercise) },
                                     showGroup = true,
@@ -424,14 +425,10 @@ fun ExerciseSelectionScreen(
                             val group = hierarchicalData[index]
                             HierarchicalExerciseGroup(
                                 group = group,
-                                isExpanded = if (group.groupName != null) {
-                                    group.groupName in expandedGroups
-                                } else {
-                                    "ungrouped" in expandedGroups
-                                },
+                                isExpanded = (group.groupName ?: "ungrouped") !in collapsedGroups,
                                 onExpandToggle = {
                                     val key = group.groupName ?: "ungrouped"
-                                    viewModel.toggleGroupExpansion(key)
+                                    viewModel.togglePickerGroup(key)
                                 },
                                 onExerciseSelected = onExerciseSelected
                             )
@@ -491,7 +488,7 @@ fun HierarchicalExerciseGroup(
                         )
                         Text(
                             text = pluralStringResource(R.plurals.exercise_count, group.exercises.size, group.exercises.size),
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -509,141 +506,13 @@ fun HierarchicalExerciseGroup(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     group.exercises.forEach { exercise ->
-                        ExerciseSelectionItem(
+                        ExercisePickRow(
                             exercise = exercise,
                             onClick = { onExerciseSelected(exercise) }
                         )
                     }
                 }
             }
-        }
-    }
-}
-
-// 記録画面用の種目選択アイテム
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun ExerciseSelectionItem(
-    exercise: Exercise,
-    onClick: () -> Unit,
-    showGroup: Boolean = false,
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(8.dp),
-        onClick = onClick
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = exercise.name,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier.padding(top = 4.dp)
-                ) {
-                    // The group, in search results only (#278).
-                    if (showGroup) exercise.group?.let { GroupBadge(it) }
-                    // お気に入り
-                    if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
-                    }
-
-                    // レベル（課題設定がある場合のみ）
-                    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                        Text(
-                            text = stringResource(R.string.level_format, exercise.sortOrder),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-
-                    // タイプ（回数制/時間制）
-                    Text(
-                        text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    // Unilateral
-                    if (exercise.laterality == "Unilateral") {
-                        Text(
-                            text = stringResource(R.string.one_sided),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-
-                    // 有効化している記録オプション（荷重/距離/アシスト）
-                    if (exercise.weightTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_weight),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    if (exercise.distanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_distance),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                    if (exercise.assistanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_assistance),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Pink600
-                        )
-                    }
-                }
-
-                // 課題バッジ
-                if (exercise.targetSets != null && exercise.targetValue != null) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.padding(top = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = targetText(
-                                exercise.targetSets!!,
-                                exercise.targetValue!!,
-                                dynamic = exercise.type == "Dynamic",
-                                unilateral = exercise.laterality == "Unilateral",
-                            ),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            }
-
-            Icon(
-                AppIcons.Back,
-                contentDescription = stringResource(R.string.select),
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.rotate(180f)
-            )
         }
     }
 }
@@ -1032,7 +901,7 @@ fun WorkoutInputScreen(
                                     unilateral = exercise.laterality == "Unilateral",
                                     display = true,
                                 ),
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold
                             )
@@ -1044,7 +913,7 @@ fun WorkoutInputScreen(
             // 緑ボタン: 種目設定を適用
             if (exercise.targetSets != null || exercise.targetValue != null) {
                 item {
-                    Button(
+                    FilledTonalButton(
                         onClick = {
                             // セット数を反映
                             val targetSetsValue = exercise.targetSets ?: numberOfSets
@@ -1069,12 +938,7 @@ fun WorkoutInputScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 48.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            disabledContainerColor = MaterialTheme.colorScheme.outline
-                        ),
                         enabled = exercise.targetSets != null || exercise.targetValue != null,
-                        shape = RoundedCornerShape(8.dp)
                     ) {
                         Icon(
                             AppIcons.Check,
@@ -1084,7 +948,7 @@ fun WorkoutInputScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = stringResource(R.string.apply_exercise_settings),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -1125,7 +989,7 @@ fun WorkoutInputScreen(
                             ) {
                                 Text(
                                     text = stringResource(if (exercise.type == "Dynamic") R.string.reps_label else R.string.time_label),
-                                    fontSize = 12.sp,
+                                    style = MaterialTheme.typography.bodySmall,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -1452,7 +1316,6 @@ fun WorkoutInputScreen(
                         containerColor = MaterialTheme.colorScheme.primary,
                         disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest
                     ),
-                    shape = RoundedCornerShape(12.dp)
                 ) {
                     Icon(
                         AppIcons.Check,
@@ -1473,7 +1336,7 @@ fun WorkoutInputScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.record_done_count, enteredCount, numberOfSets),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimary
                         )
@@ -1491,7 +1354,6 @@ fun WorkoutInputScreen(
                     },
                     enabled = enteredCount > 0,
                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                    shape = RoundedCornerShape(12.dp)
                 ) {
                     Icon(AppIcons.Add, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
                     Text(stringResource(R.string.record_add_exercise))
@@ -1812,7 +1674,7 @@ private fun SetCardHeader(
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             text = stringResource(R.string.set_number_format, index + 1),
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
             color = if (status == SetStatus.PENDING) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface
         )
@@ -1888,8 +1750,9 @@ private fun InlineStepperRow(
     val labelText: @Composable (Modifier) -> Unit = { modifier ->
         Text(
             text = label,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = if (isLargeFontScale()) Int.MAX_VALUE else 1,
             modifier = modifier
         )
     }
@@ -1928,7 +1791,7 @@ private fun InlineStepperRow(
         if (previousText != null) {
             Text(
                 text = previousText,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.End,
                 maxLines = 1,

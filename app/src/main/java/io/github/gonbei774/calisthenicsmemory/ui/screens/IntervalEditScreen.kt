@@ -2,6 +2,8 @@
 
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseCheckRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwipeToDeleteBackground
@@ -310,7 +312,7 @@ fun IntervalEditScreen(
                                 text = stringResource(R.string.interval_exercises_required),
                                 modifier = Modifier.padding(16.dp),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 14.sp
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }
@@ -377,13 +379,13 @@ fun IntervalEditScreen(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.5f)
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = MaterialTheme.shapes.extraSmall
                     ) {
                         Text(
                             text = stringResource(R.string.interval_no_record_note),
                             modifier = Modifier.padding(12.dp),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
                 }
@@ -615,7 +617,7 @@ private fun IntervalExerciseItem(
             // Number
             Text(
                 text = "$index.",
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
@@ -624,13 +626,13 @@ private fun IntervalExerciseItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = exercise.name,
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 if (!exercise.description.isNullOrBlank()) {
                     Text(
                         text = exercise.description,
-                        fontSize = 11.sp,
+                        style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 2.dp)
                     )
@@ -649,7 +651,7 @@ private fun AddExerciseToIntervalDialog(
     onAdd: (List<Exercise>) -> Unit
 ) {
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
-    val expandedGroups by viewModel.expandedGroups.collectAsState()
+    val collapsedGroups by viewModel.collapsedPickerGroups.collectAsState()
 
     var selectedExercises by remember { mutableStateOf(listOf<Long>()) }
     var searchQuery by remember { mutableStateOf("") }
@@ -715,7 +717,7 @@ private fun AddExerciseToIntervalDialog(
                                     key = { index -> searchResults[index].id }
                                 ) { index ->
                                     val exercise = searchResults[index]
-                                    IntervalExerciseSelectItem(
+                                    ExerciseCheckRow(
                                         exercise = exercise,
                                         isSelected = exercise.id in selectedExercises,
                                         onToggle = { exerciseId ->
@@ -740,9 +742,9 @@ private fun AddExerciseToIntervalDialog(
                                         groupName = group.groupName,
                                         exercises = group.exercises,
                                         selectedExercises = selectedExercises,
-                                        isExpanded = (group.groupName ?: "ungrouped") in expandedGroups,
+                                        isExpanded = (group.groupName ?: "ungrouped") !in collapsedGroups,
                                         onExpandToggle = {
-                                            viewModel.toggleGroupExpansion(group.groupName ?: "ungrouped")
+                                            viewModel.togglePickerGroup(group.groupName ?: "ungrouped")
                                         },
                                         onExerciseToggle = { exerciseId ->
                                             selectedExercises = if (exerciseId in selectedExercises) {
@@ -782,117 +784,6 @@ private fun AddExerciseToIntervalDialog(
 }
 
 @Composable
-private fun IntervalExerciseSelectItem(
-    exercise: Exercise,
-    isSelected: Boolean,
-    onToggle: (Long) -> Unit,
-    showGroup: Boolean = false,
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(8.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .toggleable(value = isSelected, role = Role.Checkbox, onValueChange = { _ -> onToggle(exercise.id) })
-                .padding(horizontal = 8.dp, vertical = 4.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            Checkbox(
-                checked = isSelected,
-                onCheckedChange = null,
-                colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colorScheme.primary,
-                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            )
-            Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
-                Text(
-                    text = exercise.name,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                // Badges row
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                    modifier = Modifier.padding(top = 2.dp)
-                ) {
-                    // The group, in search results only (#278).
-                    if (showGroup) exercise.group?.let { GroupBadge(it) }
-                    if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
-                    }
-                    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                        Text(
-                            text = stringResource(R.string.level_format, exercise.sortOrder),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                    Text(
-                        text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    if (exercise.laterality == "Unilateral") {
-                        Text(
-                            text = stringResource(R.string.one_sided),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    if (exercise.weightTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_weight),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    if (exercise.distanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_distance),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                    if (exercise.assistanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_assistance),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Pink600
-                        )
-                    }
-                }
-                if (exercise.targetSets != null && exercise.targetValue != null) {
-                    Text(
-                        text = targetText(
-                            exercise.targetSets!!,
-                            exercise.targetValue!!,
-                            dynamic = exercise.type == "Dynamic",
-                            unilateral = exercise.laterality == "Unilateral",
-                        ),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(top = 2.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
 private fun IntervalSelectExerciseGroup(
     groupName: String?,
     exercises: List<Exercise>,
@@ -904,7 +795,7 @@ private fun IntervalSelectExerciseGroup(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.extraSmall
     ) {
         Column {
             // Group header
@@ -934,13 +825,13 @@ private fun IntervalSelectExerciseGroup(
                         )
                         Text(
                             text = groupName ?: stringResource(R.string.no_group),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             text = "(${exercises.size})",
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -976,7 +867,7 @@ private fun IntervalSelectExerciseGroup(
                             Column(modifier = Modifier.padding(start = 4.dp, top = 10.dp)) {
                                 Text(
                                     text = exercise.name,
-                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
@@ -986,31 +877,7 @@ private fun IntervalSelectExerciseGroup(
                                     verticalArrangement = Arrangement.spacedBy(2.dp),
                                     modifier = Modifier.padding(top = 2.dp)
                                 ) {
-                                    if (exercise.isFavorite) {
-                                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(10.dp), tint = MaterialTheme.colorScheme.secondary)
-                                    }
-                                    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                                        Text(
-                                            text = stringResource(R.string.level_format, exercise.sortOrder),
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.secondary
-                                        )
-                                    }
-                                    Text(
-                                        text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                    if (exercise.laterality == "Unilateral") {
-                                        Text(
-                                            text = stringResource(R.string.one_sided),
-                                            fontSize = 10.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
-                                    }
+                                    ExerciseBadges(exercise)
                                     if (exercise.weightTrackingEnabled) {
                                         Text(
                                             text = stringResource(R.string.legend_weight),

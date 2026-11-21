@@ -1,5 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExercisePickRow
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchValueRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
@@ -583,7 +585,7 @@ fun WorkoutScreen(
                                 ) {
                                     Text(
                                         text = stringResource(R.string.retry_set_button),
-                                        fontSize = 16.sp
+                                        style = MaterialTheme.typography.bodyLarge
                                     )
                                 }
                                 Button(
@@ -599,7 +601,7 @@ fun WorkoutScreen(
                                 ) {
                                     Text(
                                         text = stringResource(R.string.save_and_exit_button),
-                                        fontSize = 16.sp
+                                        style = MaterialTheme.typography.bodyLarge
                                     )
                                 }
                             }
@@ -747,7 +749,7 @@ fun ExerciseSelectionStep(
 ) {
     val exercises by viewModel.exercises.collectAsState()
     val hierarchicalData by viewModel.hierarchicalExercises.collectAsState()
-    val expandedGroups by viewModel.expandedGroups.collectAsState()
+    val collapsedGroups by viewModel.collapsedPickerGroups.collectAsState()
     val lastDone by viewModel.lastDone.collectAsState()
 
     // Search state
@@ -774,7 +776,7 @@ fun ExerciseSelectionStep(
             Text(
                 text = stringResource(R.string.no_exercises_yet_workout),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 16.sp
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     } else {
@@ -814,9 +816,10 @@ fun ExerciseSelectionStep(
                             key = { index -> searchResults[index].id }
                         ) { index ->
                             val exercise = searchResults[index]
-                            WorkoutSearchResultItem(
+                            ExercisePickRow(
                                 exercise = exercise,
-                                onSelected = { onExerciseSelected(exercise) }
+                                onClick = { onExerciseSelected(exercise) },
+                                showGroup = true,
                             )
                         }
                     }
@@ -830,14 +833,10 @@ fun ExerciseSelectionStep(
                         WorkoutHierarchicalGroup(
                             group = group,
                             lastDone = lastDone.exercises,
-                            isExpanded = if (group.groupName != null) {
-                                group.groupName in expandedGroups
-                            } else {
-                                "ungrouped" in expandedGroups
-                            },
+                            isExpanded = (group.groupName ?: "ungrouped") !in collapsedGroups,
                             onExpandToggle = {
                                 val key = group.groupName ?: "ungrouped"
-                                viewModel.toggleGroupExpansion(key)
+                                viewModel.togglePickerGroup(key)
                             },
                             onExerciseSelected = onExerciseSelected
                         )
@@ -897,7 +896,7 @@ fun WorkoutHierarchicalGroup(
                         )
                         Text(
                             text = pluralStringResource(R.plurals.exercise_count, group.exercises.size, group.exercises.size),
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -938,7 +937,7 @@ fun WorkoutExerciseItem(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(8.dp),
+        shape = MaterialTheme.shapes.extraSmall,
         onClick = onClick
     ) {
         Row(
@@ -951,7 +950,7 @@ fun WorkoutExerciseItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = exercise.name,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -961,44 +960,13 @@ fun WorkoutExerciseItem(
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier.padding(top = 4.dp)
                 ) {
-                    // お気に入り
-                    if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
-                    }
-
-                    // レベル
-                    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                        Text(
-                            text = stringResource(R.string.level_format, exercise.sortOrder),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-
-                    // タイプ
-                    Text(
-                        text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    // Unilateral
-                    if (exercise.laterality == "Unilateral") {
-                        Text(
-                            text = stringResource(R.string.one_sided_workout),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
+                    ExerciseBadges(exercise)
 
                     // 有効化している記録オプション（荷重/距離/アシスト）
                     if (exercise.weightTrackingEnabled) {
                         Text(
                             text = stringResource(R.string.legend_weight),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -1006,7 +974,7 @@ fun WorkoutExerciseItem(
                     if (exercise.distanceTrackingEnabled) {
                         Text(
                             text = stringResource(R.string.legend_distance),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.secondary
                         )
@@ -1014,7 +982,7 @@ fun WorkoutExerciseItem(
                     if (exercise.assistanceTrackingEnabled) {
                         Text(
                             text = stringResource(R.string.legend_assistance),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Bold,
                             color = Pink600
                         )
@@ -1035,7 +1003,7 @@ fun WorkoutExerciseItem(
                                 dynamic = exercise.type == "Dynamic",
                                 unilateral = exercise.laterality == "Unilateral",
                             ),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
                         )
@@ -1089,7 +1057,7 @@ private fun WorkoutSectionHeader(text: String, tag: String? = null) {
             ) {
                 Text(
                     text = tag,
-                    fontSize = 11.sp,
+                    style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -1339,7 +1307,7 @@ fun SettingsStep(
         ) {
             Text(
                 text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
@@ -1373,8 +1341,8 @@ fun SettingsStep(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // 種目設定を適用ボタン
-        Button(
+        // A helper for the fields above, so a tonal button: the one filled button on this screen is Start.
+        FilledTonalButton(
             onClick = {
                 // セット数を反映
                 if (exercise.targetSets != null) {
@@ -1400,8 +1368,6 @@ fun SettingsStep(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 48.dp),
-            colors = ButtonDefaults.buttonColors(),
-            shape = RoundedCornerShape(8.dp)
         ) {
             Icon(
                 imageVector = AppIcons.Check,
@@ -1411,7 +1377,7 @@ fun SettingsStep(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = stringResource(R.string.apply_exercise_settings),
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -1681,7 +1647,7 @@ private fun TimerAbortSheet(
             ) {
                 Text(
                     text = stringResource(R.string.save_and_exit_button),
-                    fontSize = 16.sp
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         }
@@ -2063,7 +2029,7 @@ fun ConfirmationStep(
             ) {
                 Text(
                     text = stringResource(R.string.program_result_zero_warning),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.padding(12.dp)
                 )
@@ -2334,7 +2300,7 @@ fun UnilateralSetItem(
         colors = CardDefaults.cardColors(
             containerColor = if (rightSet?.isSkipped == true && leftSet?.isSkipped == true) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.extraSmall
     ) {
         Column(
             modifier = Modifier
@@ -2348,7 +2314,7 @@ fun UnilateralSetItem(
             ) {
                 Text(
                     text = stringResource(R.string.set_label, setNumber),
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -2362,7 +2328,7 @@ fun UnilateralSetItem(
                             R.string.previous_value_format,
                             "${prevRight ?: "-"}/${prevLeft ?: "-"}"
                         ),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                     )
                 }
@@ -2371,7 +2337,7 @@ fun UnilateralSetItem(
             if (rightSet?.isSkipped == true && leftSet?.isSkipped == true) {
                 Text(
                     text = stringResource(R.string.skipped_label),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 4.dp)
                 )
@@ -2387,7 +2353,7 @@ fun UnilateralSetItem(
                 // 右側
                 Text(
                     text = stringResource(R.string.right_colon),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.width(30.dp)
                 )
@@ -2402,7 +2368,7 @@ fun UnilateralSetItem(
                     label = {
                         Text(
                             stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     },
                     modifier = Modifier.weight(1f),
@@ -2414,7 +2380,7 @@ fun UnilateralSetItem(
                 // 左側
                 Text(
                     text = stringResource(R.string.left_colon),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.width(30.dp)
                 )
@@ -2429,7 +2395,7 @@ fun UnilateralSetItem(
                     label = {
                         Text(
                             stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     },
                     modifier = Modifier.weight(1f),
@@ -2492,7 +2458,7 @@ fun BilateralSetItem(
         colors = CardDefaults.cardColors(
             containerColor = if (set.isSkipped) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.surfaceContainerLow
         ),
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.extraSmall
     ) {
         Column(
             modifier = Modifier
@@ -2507,14 +2473,14 @@ fun BilateralSetItem(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(R.string.set_label, set.setNumber),
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     if (set.isSkipped) {
                         Text(
                             text = stringResource(R.string.skipped_label),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -2522,7 +2488,7 @@ fun BilateralSetItem(
                     set.previousValue?.let { prev ->
                         Text(
                             text = stringResource(R.string.previous_value_format, prev),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                         )
                     }
@@ -2539,7 +2505,7 @@ fun BilateralSetItem(
                     label = {
                         Text(
                             stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     },
                     modifier = Modifier.width(100.dp),
@@ -2599,7 +2565,7 @@ private fun WorkoutSetTrackingFields(
                     onDistanceStrChange(normalized)
                 }
             },
-            label = { Text(stringResource(R.string.distance_input_label), fontSize = 12.sp) },
+            label = { Text(stringResource(R.string.distance_input_label), style = MaterialTheme.typography.bodySmall) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -2625,7 +2591,7 @@ private fun WorkoutSetTrackingFields(
                     onWeightStrChange(normalized)
                 }
             },
-            label = { Text(stringResource(R.string.weight_input_label), fontSize = 12.sp) },
+            label = { Text(stringResource(R.string.weight_input_label), style = MaterialTheme.typography.bodySmall) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -2651,7 +2617,7 @@ private fun WorkoutSetTrackingFields(
                     onAssistanceStrChange(normalized)
                 }
             },
-            label = { Text(stringResource(R.string.assistance_input_label), fontSize = 12.sp) },
+            label = { Text(stringResource(R.string.assistance_input_label), style = MaterialTheme.typography.bodySmall) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -2810,139 +2776,6 @@ fun SingleWorkoutSettingsSection(
                 value = isometricIntervalSeconds,
                 onValueChange = onIsometricIntervalSecondsChange,
                 unit = stringResource(R.string.unit_seconds_short),
-            )
-        }
-    }
-}
-
-// 検索結果用種目アイテム（フラットリスト表示）
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun WorkoutSearchResultItem(
-    exercise: Exercise,
-    onSelected: () -> Unit
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        shape = MaterialTheme.shapes.large,
-        onClick = onSelected
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                // 種目名とグループ名
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = exercise.name,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    // グループ名バッジ
-                    exercise.group?.let { GroupBadge(it) }
-                }
-
-                // バッジ行
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier.padding(top = 4.dp)
-                ) {
-                    // お気に入り
-                    if (exercise.isFavorite) {
-                        Icon(AppIcons.FavoriteFilled, contentDescription = null, modifier = Modifier.size(12.dp), tint = MaterialTheme.colorScheme.secondary)
-                    }
-
-                    // レベル
-                    if (exercise.targetSets != null && exercise.targetValue != null && exercise.sortOrder > 0) {
-                        Text(
-                            text = stringResource(R.string.level_format, exercise.sortOrder),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-
-                    // タイプ
-                    Text(
-                        text = stringResource(if (exercise.type == "Dynamic") R.string.dynamic_type else R.string.isometric_type),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    // Unilateral
-                    if (exercise.laterality == "Unilateral") {
-                        Text(
-                            text = stringResource(R.string.one_sided_workout),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-
-                    // 有効化している記録オプション（荷重/距離/アシスト）
-                    if (exercise.weightTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_weight),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    if (exercise.distanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_distance),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                    if (exercise.assistanceTrackingEnabled) {
-                        Text(
-                            text = stringResource(R.string.legend_assistance),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Pink600
-                        )
-                    }
-                }
-
-                // 課題情報
-                if (exercise.targetSets != null && exercise.targetValue != null) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.padding(top = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = targetText(
-                                exercise.targetSets ?: 0,
-                                exercise.targetValue ?: 0,
-                                dynamic = exercise.type == "Dynamic",
-                                unilateral = exercise.laterality == "Unilateral",
-                            ),
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-            }
-
-            Icon(
-                AppIcons.Forward,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
             )
         }
     }
