@@ -6,6 +6,7 @@ import io.github.gonbei774.calisthenicsmemory.data.Program
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExecutionSession
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramWorkoutSet
+import io.github.gonbei774.calisthenicsmemory.data.markSkipped
 import io.github.gonbei774.calisthenicsmemory.data.v2.BodySide
 import io.github.gonbei774.calisthenicsmemory.data.v2.ExerciseKind
 import io.github.gonbei774.calisthenicsmemory.data.v2.Laterality
@@ -90,5 +91,20 @@ class ProgramRunTest {
         val rated = session.copy(sets = session.sets.mapIndexed { i, set -> if (i == 0) set.copy(effortLeft = 1) else set }.toMutableList())
         val rows = ProgramWorkoutWriter.rows(rated.toProgramRun(emptyList(), savedAtWallMillis = 5_000))
         assertEquals(listOf(1, null), rows.exercises.first().second.map { it.effortLeft })
+    }
+
+    @Test fun `a set skipped from the workout screen is saved as skipped with no value and no time`() {
+        val skipped = ProgramExecutionSession(
+            program = Program(9, "Upper"),
+            exercises = listOf(ProgramExercise(21, 9, 1, 0, sets = 2, targetValue = 10) to pushUp),
+            sets = mutableListOf(set(0, 1, 10), set(0, 2, 7, done = false)),
+            comment = "【Program】Upper",
+            startedAtWallMillis = 100,
+        )
+        skipped.sets.markSkipped(1)
+        val rows = ProgramWorkoutWriter.rows(skipped.toProgramRun(emptyList(), savedAtWallMillis = 5_000))
+        val sets = rows.exercises.single().second
+        assertEquals(listOf(SetEntryStatus.COMPLETED, SetEntryStatus.SKIPPED), sets.map { it.status })
+        assertNull(sets[1].completedAtEpochMillis)
     }
 }

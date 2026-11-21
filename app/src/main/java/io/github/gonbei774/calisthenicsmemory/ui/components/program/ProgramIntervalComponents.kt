@@ -153,7 +153,9 @@ internal fun ProgramIntervalStep(
     val nextSet = session.sets.getOrNull(nextSetIndex)
 
     // ループ間休憩がある場合は追加
-    val totalInterval = currentSet.intervalSeconds + currentSet.loopRestAfterSeconds
+    // A skipped set has no rest of its own; the rest between rounds stays (see afterSet).
+    val ownInterval = if (currentSet.isSkipped && !currentSet.isCompleted) 0 else currentSet.intervalSeconds
+    val totalInterval = ownInterval + currentSet.loopRestAfterSeconds
     val hasLoopRest = currentSet.loopRestAfterSeconds > 0
 
     var isRunning by remember { mutableStateOf(true) }

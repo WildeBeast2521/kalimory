@@ -150,7 +150,9 @@
     <string name="side_left">Izquierdo</string>
     <string name="pause_button">Pausar</string>
     <string name="resume_button">Reanudar</string>
-    <string name="retry_set_button">Reiniciar Serie</string>
+    <string name="retry_set_button">Reiniciar serie</string>
+    <string name="skip_set_button">Saltar serie</string>
+    <string name="skip_exercise_button">Saltar ejercicio</string>
     <string name="interval_label">Intervalo</string>
     <string name="next_set_format">Siguiente: Serie %1$d/%2$d</string>
     <string name="next_set_format_with_side">Siguiente: Serie %1$d/%2$d - %3$s</string>

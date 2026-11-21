@@ -203,6 +203,20 @@ class UnifiedWorkoutFlowTest {
     }
 
     @Test
+    fun aSkippedSetIsSavedAsSkippedAndTheNextOneStillRuns() = runBlocking {
+        startSingleWorkout()
+        waitForText(text(R.string.skip_set_button))
+        rule.onNodeWithText(text(R.string.skip_set_button)).performClick()
+        completeSet()
+        waitForText(text(R.string.record_button))
+        rule.onNodeWithText(text(R.string.record_button)).performClick()
+
+        rule.waitUntil(TIMEOUT_MS) { runBlocking { newSessions().isNotEmpty() } }
+        val sets = database.workoutSessionDao().sessionGraph(newSessions().single().id)!!.exercises.single().second
+        assertEquals(listOf(SetEntryStatus.SKIPPED, SetEntryStatus.COMPLETED), sets.map { it.status })
+    }
+
+    @Test
     fun singleWorkoutSurvivesRecreationThroughTheResumeOffer() = runBlocking {
         startSingleWorkout()
         completeSet()

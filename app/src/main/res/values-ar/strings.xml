@@ -410,6 +410,8 @@
     <string name="resume_button">متابعة</string>
     <string name="save_and_exit_button">حفظ وخروج</string>
     <string name="retry_set_button">إعادة المجموعة</string>
+    <string name="skip_set_button">تخطي المجموعة</string>
+    <string name="skip_exercise_button">تخطي التمرين</string>
     <string name="interval_label">الفترات</string>
     <string name="loop_round_rest">الراحة بين الجولات</string>
     <string name="loop_round_current">الجولة %1$d/%2$d</string>

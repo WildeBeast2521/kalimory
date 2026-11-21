@@ -11,6 +11,8 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- Skip set under the main button of a running set, in a workout and in a program, and Skip exercise in a program, move on without recording a value; a skipped set is saved as skipped, has no rest of its own, and the next set shows the start countdown ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
+- A Restart set button under the main button of every running set, in a workout and in a program, starts the set again; it was in the single workout's menu only ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - A weekly review, opened from Today, shows the days you trained and your sets by movement (push, pull, legs, core and more) beside a mark at 10 sets a week, for this week and every week before it ([#248](https://github.com/WildeBeast2521/kalimory/pull/248))
 - The weekly review lists the week's new personal bests: each exercise whose best set beat every earlier one, with the day it came and the best before it ([#253](https://github.com/WildeBeast2521/kalimory/pull/253))
 - The weekly review lists the progression steps you mastered that week; tap one to open its progression ([#254](https://github.com/WildeBeast2521/kalimory/pull/254))
@@ -23,6 +25,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Rate how hard each set was, after turning on Settings › Effort per set: how many more reps you could have done, or how much longer you could have held, asked while you rest and when you review, enter or edit a workout ([#262](https://github.com/WildeBeast2521/kalimory/pull/262))
 
 ### Changed
+- A one-sided set rests only after its second side: the start countdown is the pause between the sides, and a program's time estimate counts the countdown once and at each switch of sides rather than before every set ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The Add button on the new exercise or group form is never greyed out: tapping it with the name missing shows "Enter a name" under the field; the type examples in English follow one style; an empty number in the workout editor shows a dash between the buttons ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - Small text in lists, cards and dialogs uses the app's type scale, so rows with small text are a little tighter and read the same on every screen ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - The exercise lists in Workout, Log a past workout, programs, intervals and To Do open with every group expanded, and the Library's open groups no longer decide what they show; long screen titles wrap onto a second line instead of ending in "…" ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
@@ -39,6 +42,9 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that can hold warm-up sets and effort ratings; earlier versions of the app cannot restore them ([#259](https://github.com/WildeBeast2521/kalimory/pull/259))
 
 ### Fixed
+- A set in a program that was skipped and later done is no longer both done and skipped, and Skip on a rest between sets no longer starts a countdown ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
+- The vibration that confirms a finished set also plays after the last set and when there is no rest, not only before a rest ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
+- The start countdown runs only before the first set, after a retry and after a jump, not again after every rest, so the "go" cue no longer plays twice between sets ([#289](https://github.com/WildeBeast2521/kalimory/pull/289))
 - The unselected options in a choice row, such as Theme, can be told apart from the card behind them in the dark theme ([#288](https://github.com/WildeBeast2521/kalimory/pull/288))
 - At large text sizes, the interval editor's timer settings and the stepper rows in Log a past workout no longer clip their units or split words: the label moves above the stepper ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))
 - At large text sizes, the Programs, Intervals and To Do lists keep names readable: the Start and other buttons move under the text instead of squeezing a name into a few letters per line ([#287](https://github.com/WildeBeast2521/kalimory/pull/287))

@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.components.single
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.workout.SetActions
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.ReportWorkoutProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.holdProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.repsProgress
@@ -148,6 +149,7 @@ fun SingleExecutingStepDynamicManual(
             onSetComplete = onSetComplete,
         )
 
+        SetActions(onRestart = onRetry, onSkipSet = { onSkip(session) })
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -272,6 +274,7 @@ fun SingleExecutingStepDynamicAuto(
             onSetComplete = onSetComplete,
         )
 
+        SetActions(onRestart = onRetry, onSkipSet = { onSkip(session) })
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -351,6 +354,7 @@ fun SingleExecutingStepDynamicSimple(
             },
         )
 
+        SetActions(onRestart = onRetry, onSkipSet = { onSkip(session) })
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -468,6 +472,7 @@ fun SingleExecutingStepIsometricManual(
             onSetComplete = onSetComplete,
         )
 
+        SetActions(onRestart = onRetry, onSkipSet = { onSkip(session) })
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
 }
@@ -588,6 +593,7 @@ fun SingleExecutingStepIsometricAuto(
             onSetComplete = onSetComplete,
         )
 
+        SetActions(onRestart = onRetry, onSkipSet = { onSkip(session) })
         NextSetText(session = session, currentSetIndex = currentSetIndex)
     }
 }
