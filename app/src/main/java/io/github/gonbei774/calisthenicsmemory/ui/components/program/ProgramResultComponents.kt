@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -267,15 +268,41 @@ internal fun ProgramUnilateralSetItem(
                 )
             }
 
+            // Each side has its own distance, weight and assistance; a change on the right also moves the left while
+            // the two were equal, which re-reads the left fields (leftReset).
+            var leftReset by remember(leftSet) { mutableIntStateOf(0) }
             ProgramResultTrackingInputs(
                 exercise = exercise,
-                weightG = rightSet?.weightG ?: leftSet?.weightG,
-                distanceCm = rightSet?.distanceCm ?: leftSet?.distanceCm,
-                assistanceG = rightSet?.assistanceG ?: leftSet?.assistanceG,
-                onWeightChange = { rightSet?.weightG = it; leftSet?.weightG = it },
-                onDistanceChange = { rightSet?.distanceCm = it; leftSet?.distanceCm = it },
-                onAssistanceChange = { rightSet?.assistanceG = it; leftSet?.assistanceG = it }
+                weightG = rightSet?.weightG,
+                distanceCm = rightSet?.distanceCm,
+                assistanceG = rightSet?.assistanceG,
+                labelPrefix = stringResource(R.string.right_colon) + " ",
+                onWeightChange = {
+                    if (leftSet != null && leftSet.weightG == rightSet?.weightG) { leftSet.weightG = it; leftReset++ }
+                    rightSet?.weightG = it
+                },
+                onDistanceChange = {
+                    if (leftSet != null && leftSet.distanceCm == rightSet?.distanceCm) { leftSet.distanceCm = it; leftReset++ }
+                    rightSet?.distanceCm = it
+                },
+                onAssistanceChange = {
+                    if (leftSet != null && leftSet.assistanceG == rightSet?.assistanceG) { leftSet.assistanceG = it; leftReset++ }
+                    rightSet?.assistanceG = it
+                },
             )
+            if (leftSet != null) {
+                ProgramResultTrackingInputs(
+                    exercise = exercise,
+                    weightG = leftSet.weightG,
+                    distanceCm = leftSet.distanceCm,
+                    assistanceG = leftSet.assistanceG,
+                    labelPrefix = stringResource(R.string.left_colon) + " ",
+                    resetKey = leftReset,
+                    onWeightChange = { leftSet.weightG = it },
+                    onDistanceChange = { leftSet.distanceCm = it },
+                    onAssistanceChange = { leftSet.assistanceG = it },
+                )
+            }
             if ((showWarmUp || showEffort) && !(rightSet?.isSkipped == true && leftSet?.isSkipped == true)) {
                 SetMarks(
                     warmUp,
@@ -392,19 +419,22 @@ private fun ProgramResultTrackingInputs(
     assistanceG: Int?,
     onWeightChange: (Int?) -> Unit,
     onDistanceChange: (Int?) -> Unit,
-    onAssistanceChange: (Int?) -> Unit
+    onAssistanceChange: (Int?) -> Unit,
+    // "Right: " or "Left: " before each label for a one-sided set; [resetKey] re-reads the values when it changes.
+    labelPrefix: String = "",
+    resetKey: Int = 0,
 ) {
     if (!exercise.distanceTrackingEnabled &&
         !exercise.weightTrackingEnabled &&
         !exercise.assistanceTrackingEnabled) return
 
-    var distanceStr by remember(distanceCm) {
+    var distanceStr by remember(distanceCm, resetKey) {
         mutableStateOf(distanceCm?.toString() ?: "")
     }
-    var weightStr by remember(weightG) {
+    var weightStr by remember(weightG, resetKey) {
         mutableStateOf(weightG?.let { "%.1f".format(it / 1000.0) } ?: "")
     }
-    var assistanceStr by remember(assistanceG) {
+    var assistanceStr by remember(assistanceG, resetKey) {
         mutableStateOf(assistanceG?.let { "%.1f".format(it / 1000.0) } ?: "")
     }
 
@@ -412,7 +442,7 @@ private fun ProgramResultTrackingInputs(
 
     if (exercise.distanceTrackingEnabled) {
         MetricStepper(
-            label = stringResource(R.string.distance_input_label),
+            label = labelPrefix + stringResource(R.string.distance_input_label),
             value = distanceStr,
             onValueChange = { value ->
                 val normalized = value
@@ -431,7 +461,7 @@ private fun ProgramResultTrackingInputs(
 
     if (exercise.weightTrackingEnabled) {
         MetricStepper(
-            label = stringResource(R.string.weight_input_label),
+            label = labelPrefix + stringResource(R.string.weight_input_label),
             value = weightStr,
             onValueChange = { value ->
                 val normalized = value
@@ -453,7 +483,7 @@ private fun ProgramResultTrackingInputs(
 
     if (exercise.assistanceTrackingEnabled) {
         MetricStepper(
-            label = stringResource(R.string.assistance_input_label),
+            label = labelPrefix + stringResource(R.string.assistance_input_label),
             value = assistanceStr,
             onValueChange = { value ->
                 val normalized = value
