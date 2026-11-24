@@ -341,6 +341,8 @@ class WorkoutEditorTest {
                 set.valueLeft?.toString().orEmpty(), set.comment, set.distanceCm?.toString().orEmpty(),
                 set.weightG?.toString().orEmpty(), set.assistanceG?.toString().orEmpty(),
                 set.warmUp.toString(), set.effortLeft?.toString().orEmpty(),
+                // The left side's own values are written only when the sides differ; none here.
+                "", "", "",
             )
         }
         assertEquals(expected, rows.drop(1))

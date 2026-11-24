@@ -1048,6 +1048,7 @@
     <string name="csv_issue_effort">Ligne %1$d : effortLeft « %2$s » non valide (0 à %3$d attendu)</string>
     <string name="csv_issue_exercise_missing">Ligne %1$d : exercice introuvable : %2$s (%3$s)</string>
     <string name="csv_issue_old_format">Ligne %1$d : non ajouté, car cette séance est dans l’ancien format d’enregistrement, qui ne peut pas contenir de marque d’échauffement ni d’effort</string>
+    <string name="csv_issue_old_format_sides">Ligne %1$d : non ajouté, car cette séance est dans l’ancien format d’enregistrement, qui ne peut pas contenir une valeur différente pour chaque côté</string>
     <string name="csv_issue_empty">Le fichier CSV est vide</string>
     <string name="csv_skip_exists">« %1$s » (existe déjà)</string>
     <string name="csv_skip_exists_link">« %1$s » (existe déjà ; le lien du catalogue n’est pas modifié)</string>

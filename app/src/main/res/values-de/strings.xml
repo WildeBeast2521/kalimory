@@ -1017,6 +1017,7 @@
     <string name="csv_issue_effort">Zeile %1$d: Ungültiger effortLeft-Wert „%2$s“ (erwartet 0 bis %3$d)</string>
     <string name="csv_issue_exercise_missing">Zeile %1$d: Übung nicht gefunden: %2$s (%3$s)</string>
     <string name="csv_issue_old_format">Zeile %1$d: Nicht hinzugefügt, weil dieses Training im älteren Satzformat vorliegt, das keine Aufwärmmarkierung und keine Anstrengung speichern kann</string>
+    <string name="csv_issue_old_format_sides">Zeile %1$d: Nicht hinzugefügt, weil dieses Training im älteren Satzformat vorliegt, das keinen unterschiedlichen Wert für jede Seite speichern kann</string>
     <string name="csv_issue_empty">Die CSV-Datei ist leer</string>
     <string name="csv_skip_exists">„%1$s“ (gibt es schon)</string>
     <string name="csv_skip_exists_link">„%1$s“ (gibt es schon; die Katalogverknüpfung bleibt unverändert)</string>

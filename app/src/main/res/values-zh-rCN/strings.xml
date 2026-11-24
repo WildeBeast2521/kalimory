@@ -993,6 +993,7 @@
     <string name="csv_issue_effort">第 %1$d 行：effortLeft“%2$s”无效（应为 0 到 %3$d）</string>
     <string name="csv_issue_exercise_missing">第 %1$d 行：找不到动作：%2$s（%3$s）</string>
     <string name="csv_issue_old_format">第 %1$d 行：未添加，因为此训练使用较旧的记录格式，无法保存热身标记或用力程度</string>
+    <string name="csv_issue_old_format_sides">第 %1$d 行：未添加，因为此训练使用较旧的记录格式，无法保存左右两侧不同的值</string>
     <string name="csv_issue_empty">CSV 文件为空</string>
     <string name="csv_skip_exists">“%1$s”（已存在）</string>
     <string name="csv_skip_exists_link">“%1$s”（已存在；目录链接不变）</string>

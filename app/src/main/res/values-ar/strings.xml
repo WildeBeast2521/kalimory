@@ -1082,6 +1082,7 @@
     <string name="csv_issue_effort">السطر %1$d: قيمة effortLeft \"%2$s\" غير صالحة (المتوقع من 0 إلى %3$d)</string>
     <string name="csv_issue_exercise_missing">السطر %1$d: التمرين غير موجود: %2$s (%3$s)</string>
     <string name="csv_issue_old_format">السطر %1$d: لم تتم الإضافة لأن هذا التمرين بصيغة السجل الأقدم التي لا تحمل علامات الإحماء أو الجهد</string>
+    <string name="csv_issue_old_format_sides">السطر %1$d: لم تتم الإضافة لأن هذا التمرين بصيغة السجل الأقدم التي لا تحمل قيمة مختلفة لكل جانب</string>
     <string name="csv_issue_empty">ملف CSV فارغ</string>
     <string name="csv_skip_exists">\"%1$s\" (موجود بالفعل)</string>
     <string name="csv_skip_exists_link">\"%1$s\" (موجود بالفعل؛ لم يتغير ربط الفهرس)</string>

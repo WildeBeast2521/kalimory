@@ -104,7 +104,7 @@ class CsvTransfer(
 
             val csvBuilder = StringBuilder()
 
-            // Header: 13 columns, the last two (warmUp, effortLeft) optional on import
+            // Header: 16 columns, the last five (warmUp, effortLeft and the left side's weight, assistance and distance) optional on import
             csvBuilder.appendLine(RECORDS_CSV_HEADER)
 
             // 入力例（コメント - 英語のみ）
@@ -119,6 +119,8 @@ class CsvTransfer(
             csvBuilder.appendLine("# Weighted Push-up,Dynamic,2025-11-09,10:00,1,10,,With vest,,10000,")
             csvBuilder.appendLine("# With assistance (g) - band assisted")
             csvBuilder.appendLine("# Pull-up,Dynamic,2025-11-09,11:00,1,5,,With band,,,22000")
+            csvBuilder.appendLine("# One-sided set with a different weight (g) on the left: the last three cells are weightLeftG, assistanceLeftG, distanceLeftCm; empty means the same as the right")
+            csvBuilder.appendLine("# One-arm Pull-up,Dynamic,2025-11-09,11:30,1,3,3,Right assisted less,,,5000,,,,9000,")
             csvBuilder.appendLine("# Warm-up mark (warmUp true) and effort (effortLeft 0-4, reps in reserve)")
             csvBuilder.appendLine("# Wall Push-up,Dynamic,2025-11-09,09:55,1,12,,Warm-up,,,,true,4")
             csvBuilder.appendLine("#")
@@ -426,6 +428,7 @@ class CsvTransfer(
                     valueRight = row.valueRight, valueLeft = row.valueLeft, comment = row.comment,
                     distanceCm = row.distanceCm, weightG = row.weightG, assistanceG = row.assistanceG,
                     warmUp = row.warmUp, effortLeft = row.effortLeft,
+                    weightLeftG = row.weightLeftG, assistanceLeftG = row.assistanceLeftG, distanceLeftCm = row.distanceLeftCm,
                 )
             }
 
@@ -435,7 +438,7 @@ class CsvTransfer(
             }
             skipped = plan.skipped.size
             plan.refused.forEach {
-                errors.add(ImportIssue(R.string.csv_issue_old_format).atLine(it.line))
+                errors.add(ImportIssue(if (it.hasMarks) R.string.csv_issue_old_format else R.string.csv_issue_old_format_sides).atLine(it.line))
                 errorCount++
             }
             CsvWorkoutImport.write(database, plan)

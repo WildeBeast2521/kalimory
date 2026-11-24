@@ -15,8 +15,8 @@ class CsvWorkoutImportTest {
 
     private fun row(
         line: Int, exercise: Exercise, set: Int, value: Int, left: Int? = null, date: String = "2026-03-09", time: String = "07:30",
-        comment: String = "", warmUp: Boolean = false, effort: Int? = null,
-    ) = CsvWorkoutImport.Row(line, exercise, date, time, set, value, left, comment, null, null, null, warmUp, effort)
+        comment: String = "", warmUp: Boolean = false, effort: Int? = null, weight: Int? = null, weightLeft: Int? = null,
+    ) = CsvWorkoutImport.Row(line, exercise, date, time, set, value, left, comment, null, weight, null, warmUp, effort, weightLeftG = weightLeft)
 
     private fun plan(rows: List<CsvWorkoutImport.Row>, keys: Set<List<Any>> = emptySet(), minutes: Set<List<Any>> = emptySet()) =
         CsvWorkoutImport.plan(rows, emptyList(), keys, minutes, zone, nowEpochMillis = 1_000L)
@@ -102,5 +102,19 @@ class CsvWorkoutImportTest {
         val set = p.sessions.single().exercises.single().sets.single()
         assertEquals(true, set.isWarmUp)
         assertEquals(3, set.effortLeft)
+    }
+
+    @Test fun `a left weight goes to the left entry, and empty means the same as the right`() {
+        val p = plan(listOf(row(2, lunge, 1, 5, left = 5, weight = 2_000, weightLeft = 4_000), row(3, lunge, 2, 5, left = 5, weight = 3_000)))
+        val sets = p.sessions.single().exercises.single().sets
+        assertEquals(listOf<Int?>(2_000, 4_000, 3_000, 3_000), sets.map { it.addedWeightGrams })
+        assertEquals(listOf(BodySide.RIGHT, BodySide.LEFT, BodySide.RIGHT, BodySide.LEFT), sets.map { it.side })
+    }
+
+    @Test fun `different sides at a minute that already has a set are refused, not squeezed into one value`() {
+        val minute = setOf<List<Any>>(listOf(3L, "2026-03-09", "07:30"))
+        val p = plan(listOf(row(2, lunge, 1, 5, left = 5, weight = 2_000, weightLeft = 4_000)), minutes = minute)
+        assertEquals(1, p.refused.size)
+        assertEquals(0, p.legacy.size)
     }
 }

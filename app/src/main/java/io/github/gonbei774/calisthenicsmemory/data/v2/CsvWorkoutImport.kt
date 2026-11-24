@@ -44,8 +44,17 @@ object CsvWorkoutImport {
         val assistanceG: Int?,
         val warmUp: Boolean = false,
         val effortLeft: Int? = null,
+        /** The left side's own values; null means the same as the right side. */
+        val weightLeftG: Int? = null,
+        val assistanceLeftG: Int? = null,
+        val distanceLeftCm: Int? = null,
     ) {
         val hasMarks: Boolean get() = warmUp || effortLeft != null
+
+        /** The two sides carry different values, which a legacy record (one value for both sides) cannot hold. */
+        val sidesDiffer: Boolean get() = valueLeft != null &&
+            ((weightLeftG != null && weightLeftG != weightG) || (assistanceLeftG != null && assistanceLeftG != assistanceG) ||
+                (distanceLeftCm != null && distanceLeftCm != distanceCm))
         val key: List<Any> get() = listOf(exercise.id, date, time, setNumber)
     }
 
@@ -100,7 +109,7 @@ object CsvWorkoutImport {
                     val fits = startedAt != null && kind != null && laterality != null &&
                         minute !in existingMinutes && (minuteOwner[minute] ?: groupKey) == groupKey
                     if (!fits) {
-                        exerciseRows.forEach { if (it.hasMarks) refused += it else legacy += it }
+                        exerciseRows.forEach { if (it.hasMarks || it.sidesDiffer) refused += it else legacy += it }
                         return@forEach
                     }
                     minuteOwner[minute] = groupKey
@@ -120,9 +129,10 @@ object CsvWorkoutImport {
                                 side = side,
                                 repetitions = if (kind == ExerciseKind.DYNAMIC) value else null,
                                 durationMillis = if (kind == ExerciseKind.ISOMETRIC) value * 1_000L else null,
-                                distanceCm = r.distanceCm,
-                                addedWeightGrams = r.weightG,
-                                assistanceGrams = r.assistanceG,
+                                // The left side has its own value when the row gives one; empty means the same as the right.
+                                distanceCm = if (side == BodySide.LEFT) r.distanceLeftCm ?: r.distanceCm else r.distanceCm,
+                                addedWeightGrams = if (side == BodySide.LEFT) r.weightLeftG ?: r.weightG else r.weightG,
+                                assistanceGrams = if (side == BodySide.LEFT) r.assistanceLeftG ?: r.assistanceG else r.assistanceG,
                                 timePrecision = TimePrecision.MINUTE,
                                 isWarmUp = r.warmUp,
                                 effortLeft = r.effortLeft,

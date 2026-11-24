@@ -10,6 +10,9 @@ from which Kalimory was forked; their version numbers are the original app's, no
 
 ## [Unreleased]
 
+### Added
+- The records CSV carries a one-sided set's own left-side weight, assistance and distance in three new last columns (weightLeftG, assistanceLeftG, distanceLeftCm); an empty cell means the same as the right side, so old files import as before. Older app versions ignore the new columns and give both sides the right side's value ([#0](https://github.com/WildeBeast2521/kalimory/pull/0))
+
 ### Fixed
 - A one-sided set loaded differently on its two sides shows both in History (for example 5.0 kg / 9.0 kg), and its graphs, personal bests and progression moves count the left side too; they used to read only the right side ([#0](https://github.com/WildeBeast2521/kalimory/pull/0))
 

@@ -71,4 +71,21 @@ class RecordCsvRowTest {
         assertEquals(ImportIssue(R.string.csv_issue_effort, listOf("5", 4)), error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "false", "5"))
         assertEquals(ImportIssue(R.string.csv_issue_effort, listOf("x", 4)), error("A", "Dynamic", "2026-10-08", "07:30", "1", "12", "", "", "", "", "", "", "x"))
     }
+
+    @Test fun `the left side's weight, assistance and distance read from the last columns`() {
+        val r = row("A", "Dynamic", "2026-10-08", "07:30", "1", "3", "3", "", "", "", "5000", "", "", "", "9000", "-20").getOrThrow()
+        assertEquals(null, r.weightLeftG)
+        assertEquals(9_000, r.assistanceLeftG)
+        assertEquals(-20, r.distanceLeftCm)
+    }
+
+    @Test fun `an older file without the left columns reads as the same on both sides`() {
+        val r = row("A", "Dynamic", "2026-10-08", "07:30", "1", "3", "3", "", "", "", "5000").getOrThrow()
+        assertEquals(null, r.assistanceLeftG)
+    }
+
+    @Test fun `a negative left weight is refused, a negative left distance is not`() {
+        assertEquals(ImportIssue(R.string.csv_issue_negative), error("A", "Dynamic", "2026-10-08", "07:30", "1", "3", "3", "", "", "", "", "", "", "-1"))
+        assertEquals(null, error("A", "Dynamic", "2026-10-08", "07:30", "1", "3", "3", "", "", "", "", "", "", "", "", "-5"))
+    }
 }
