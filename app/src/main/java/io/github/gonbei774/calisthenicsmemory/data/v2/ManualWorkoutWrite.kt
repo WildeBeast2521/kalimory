@@ -18,6 +18,10 @@ data class ManualSet(
     val warmUp: Boolean = false,
     /** The user's effort rating, 0..[Effort.MAX_EFFORT_LEFT], or null. */
     val effortLeft: Int? = null,
+    /** The left side's own values; null means the same as the right side. */
+    val distanceLeftCm: Int? = null,
+    val weightLeftG: Int? = null,
+    val assistanceLeftG: Int? = null,
 )
 
 /** Sets entered by hand for one exercise, at a date and time the user chose. */
@@ -55,9 +59,10 @@ object ManualWorkoutWriter {
             side = side,
             repetitions = if (isometric) null else value,
             durationMillis = if (isometric) value * 1_000L else null,
-            distanceCm = set.distanceCm,
-            addedWeightGrams = set.weightG,
-            assistanceGrams = set.assistanceG,
+            // The left side takes its own value when one was entered, and the right side's otherwise.
+            distanceCm = if (side == BodySide.LEFT) set.distanceLeftCm ?: set.distanceCm else set.distanceCm,
+            addedWeightGrams = if (side == BodySide.LEFT) set.weightLeftG ?: set.weightG else set.weightG,
+            assistanceGrams = if (side == BodySide.LEFT) set.assistanceLeftG ?: set.assistanceG else set.assistanceG,
             timePrecision = TimePrecision.MINUTE,
             isWarmUp = set.warmUp,
             effortLeft = set.effortLeft,

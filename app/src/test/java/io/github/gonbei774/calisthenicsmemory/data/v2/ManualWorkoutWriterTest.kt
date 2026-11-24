@@ -103,4 +103,13 @@ class ManualWorkoutWriterTest {
             ManualWorkoutWriter.rows(workout(listOf(ManualSet(8, null, null, null, null, effortLeft = -1))), zone)
         }
     }
+
+    @Test fun `the left side of a one-sided set takes its own value, or the right side's when none was entered`() {
+        val own = ManualSet(3, 3, null, null, 5_000, assistanceLeftG = 9_000)
+        val same = ManualSet(3, 3, null, 2_000, null)
+        val rows = ManualWorkoutWriter.rows(workout(listOf(own, same), laterality = Laterality.UNILATERAL), zone)
+        assertEquals(listOf(BodySide.RIGHT, BodySide.LEFT, BodySide.RIGHT, BodySide.LEFT), rows.sets.map { it.side })
+        assertEquals(listOf<Int?>(5_000, 9_000, null, null), rows.sets.map { it.assistanceGrams })
+        assertEquals(listOf<Int?>(null, null, 2_000, 2_000), rows.sets.map { it.addedWeightGrams })
+    }
 }
