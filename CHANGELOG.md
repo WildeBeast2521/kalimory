@@ -11,7 +11,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
-- A one-sided set can have its own weight, assistance and distance for each side in the workout editor: the left field follows the right one until you change it, so one value for both sides takes the same taps as before ([#0](https://github.com/WildeBeast2521/kalimory/pull/0))
+- A one-sided set can have its own weight, assistance and distance for each side, in a single workout's setup and result and in the workout editor: the left field follows the right one until you change it, so one value for both sides takes the same taps as before ([#0](https://github.com/WildeBeast2521/kalimory/pull/0))
 - The records CSV carries a one-sided set's own left-side weight, assistance and distance in three new last columns (weightLeftG, assistanceLeftG, distanceLeftCm); an empty cell means the same as the right side, so old files import as before. Older app versions ignore the new columns and give both sides the right side's value ([#0](https://github.com/WildeBeast2521/kalimory/pull/0))
 
 ### Fixed

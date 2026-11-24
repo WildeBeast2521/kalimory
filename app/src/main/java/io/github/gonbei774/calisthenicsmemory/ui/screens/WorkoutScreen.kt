@@ -12,6 +12,10 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.workout.restDialProgress
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepButton
+import io.github.gonbei774.calisthenicsmemory.data.v2.linkedLeft
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftWeightG
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftDistanceCm
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftAssistanceG
 import io.github.gonbei774.calisthenicsmemory.data.defaultPlan
 import io.github.gonbei774.calisthenicsmemory.data.AfterSet
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.recommendedRestSeconds
@@ -1274,6 +1278,10 @@ fun SettingsStep(
     var distanceInput by remember { mutableStateOf("") }
     var weightInput by remember { mutableStateOf("") }
     var assistanceInput by remember { mutableStateOf("") }
+    // A one-sided exercise can have its own value on the left; each follows the right one until it is changed.
+    var distanceLeftInput by remember { mutableStateOf("") }
+    var weightLeftInput by remember { mutableStateOf("") }
+    var assistanceLeftInput by remember { mutableStateOf("") }
 
     // Auto mode follows the setting for reps and holds alike, as it does in a program.
     var isAutoMode by remember { mutableStateOf(workoutPrefs.isAutoMode()) }
@@ -1302,18 +1310,21 @@ fun SettingsStep(
                 prevSession.firstOrNull()?.distanceCm?.let {
                     distanceInput = it.toString()
                 }
+                distanceLeftInput = prevSession.firstOrNull()?.leftDistanceCm?.toString() ?: distanceInput
             }
             // 荷重をプリフィル（トラッキング有効時）
             if (exercise.weightTrackingEnabled) {
                 prevSession.firstOrNull()?.weightG?.let {
                     weightInput = (it / 1000.0).toString()
                 }
+                weightLeftInput = prevSession.firstOrNull()?.leftWeightG?.let { (it / 1000.0).toString() } ?: weightInput
             }
             // アシストをプリフィル（トラッキング有効時）
             if (exercise.assistanceTrackingEnabled) {
                 prevSession.firstOrNull()?.assistanceG?.let {
                     assistanceInput = (it / 1000.0).toString()
                 }
+                assistanceLeftInput = prevSession.firstOrNull()?.leftAssistanceG?.let { (it / 1000.0).toString() } ?: assistanceInput
             }
         }
         // No target of its own and none suggested: start from what was done last time, if anything.
@@ -1507,7 +1518,7 @@ fun SettingsStep(
                 // 距離入力（マイナス値=ディフィシット等も許可。下限なし）
                 if (exercise.distanceTrackingEnabled) {
                     WorkoutStepperItem(
-                        label = stringResource(R.string.workout_label_distance),
+                        label = (if (exercise.laterality == "Unilateral") stringResource(R.string.right_colon) + " " else "") + stringResource(R.string.workout_label_distance),
                         value = distanceInput,
                         unit = cmUnit,
                         accentColor = MaterialTheme.colorScheme.primary,
@@ -1516,7 +1527,7 @@ fun SettingsStep(
                                 .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
                                 .replace("．", ".").replace("－", "-")
                             if (normalized.isEmpty() || normalized == "-" || normalized.toIntOrNull() != null) {
-                                distanceInput = normalized
+                                distanceInput = normalized.also { distanceLeftInput = linkedLeft(distanceInput, it, distanceLeftInput) }
                             }
                         },
                         decrementEnabled = true,
@@ -1525,11 +1536,30 @@ fun SettingsStep(
                     )
                     needDivider = true
                 }
+                if (exercise.distanceTrackingEnabled && exercise.laterality == "Unilateral") {
+                    WorkoutStepperItem(
+                        label = stringResource(R.string.left_colon) + " " + stringResource(R.string.workout_label_distance),
+                        value = distanceLeftInput,
+                        unit = cmUnit,
+                        accentColor = MaterialTheme.colorScheme.primary,
+                        onValueChange = { value ->
+                            val normalized = value
+                                .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
+                                .replace("．", ".").replace("－", "-")
+                            if (normalized.isEmpty() || normalized == "-" || normalized.toIntOrNull() != null) {
+                                distanceLeftInput = normalized
+                            }
+                        },
+                        decrementEnabled = true,
+                        onDecrement = { distanceLeftInput = ((distanceLeftInput.toIntOrNull() ?: 0) - 1).toString(); true },
+                        onIncrement = { distanceLeftInput = ((distanceLeftInput.toIntOrNull() ?: 0) + 1).toString(); true }
+                    )
+                }
                 // 荷重入力（最小0kg、0.5kg刻み）
                 if (exercise.weightTrackingEnabled) {
                     if (needDivider) WorkoutStepperDivider()
                     WorkoutStepperItem(
-                        label = stringResource(R.string.workout_label_weight),
+                        label = (if (exercise.laterality == "Unilateral") stringResource(R.string.right_colon) + " " else "") + stringResource(R.string.workout_label_weight),
                         value = weightInput,
                         unit = kgUnit,
                         accentColor = MaterialTheme.colorScheme.primary,
@@ -1542,20 +1572,44 @@ fun SettingsStep(
                                 normalized == "." ||
                                 normalized.matches(Regex("^\\d*\\.?\\d?\$"))
                             if (isValidDecimal) {
-                                weightInput = normalized
+                                weightInput = normalized.also { weightLeftInput = linkedLeft(weightInput, it, weightLeftInput) }
                             }
                         },
                         decrementEnabled = (weightInput.toDoubleOrNull() ?: 0.0) > 0.0,
-                        onDecrement = { weightInput = stepDecimalValue(weightInput, -0.5, 0.0); (weightInput.toDoubleOrNull() ?: 0.0) > 0.0 },
-                        onIncrement = { weightInput = stepDecimalValue(weightInput, 0.5, 0.0); true }
+                        onDecrement = { weightInput = stepDecimalValue(weightInput, -0.5, 0.0).also { weightLeftInput = linkedLeft(weightInput, it, weightLeftInput) }; (weightInput.toDoubleOrNull() ?: 0.0) > 0.0 },
+                        onIncrement = { weightInput = stepDecimalValue(weightInput, 0.5, 0.0).also { weightLeftInput = linkedLeft(weightInput, it, weightLeftInput) }; true }
                     )
                     needDivider = true
+                }
+                if (exercise.weightTrackingEnabled && exercise.laterality == "Unilateral") {
+                    if (needDivider) WorkoutStepperDivider()
+                    WorkoutStepperItem(
+                        label = stringResource(R.string.left_colon) + " " + stringResource(R.string.workout_label_weight),
+                        value = weightLeftInput,
+                        unit = kgUnit,
+                        accentColor = MaterialTheme.colorScheme.primary,
+                        keyboardType = KeyboardType.Decimal,
+                        onValueChange = { value ->
+                            val normalized = value
+                                .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
+                                .replace("．", ".")
+                            val isValidDecimal = normalized.isEmpty() ||
+                                normalized == "." ||
+                                normalized.matches(Regex("^\\d*\\.?\\d?\$"))
+                            if (isValidDecimal) {
+                                weightLeftInput = normalized
+                            }
+                        },
+                        decrementEnabled = (weightLeftInput.toDoubleOrNull() ?: 0.0) > 0.0,
+                        onDecrement = { weightLeftInput = stepDecimalValue(weightLeftInput, -0.5, 0.0); (weightLeftInput.toDoubleOrNull() ?: 0.0) > 0.0 },
+                        onIncrement = { weightLeftInput = stepDecimalValue(weightLeftInput, 0.5, 0.0); true }
+                    )
                 }
                 // アシスト入力（最小0kg、0.5kg刻み）
                 if (exercise.assistanceTrackingEnabled) {
                     if (needDivider) WorkoutStepperDivider()
                     WorkoutStepperItem(
-                        label = stringResource(R.string.workout_label_assistance),
+                        label = (if (exercise.laterality == "Unilateral") stringResource(R.string.right_colon) + " " else "") + stringResource(R.string.workout_label_assistance),
                         value = assistanceInput,
                         unit = kgUnit,
                         accentColor = MaterialTheme.colorScheme.primary,
@@ -1568,14 +1622,38 @@ fun SettingsStep(
                                 normalized == "." ||
                                 normalized.matches(Regex("^\\d*\\.?\\d?\$"))
                             if (isValidDecimal) {
-                                assistanceInput = normalized
+                                assistanceInput = normalized.also { assistanceLeftInput = linkedLeft(assistanceInput, it, assistanceLeftInput) }
                             }
                         },
                         decrementEnabled = (assistanceInput.toDoubleOrNull() ?: 0.0) > 0.0,
-                        onDecrement = { assistanceInput = stepDecimalValue(assistanceInput, -0.5, 0.0); (assistanceInput.toDoubleOrNull() ?: 0.0) > 0.0 },
-                        onIncrement = { assistanceInput = stepDecimalValue(assistanceInput, 0.5, 0.0); true }
+                        onDecrement = { assistanceInput = stepDecimalValue(assistanceInput, -0.5, 0.0).also { assistanceLeftInput = linkedLeft(assistanceInput, it, assistanceLeftInput) }; (assistanceInput.toDoubleOrNull() ?: 0.0) > 0.0 },
+                        onIncrement = { assistanceInput = stepDecimalValue(assistanceInput, 0.5, 0.0).also { assistanceLeftInput = linkedLeft(assistanceInput, it, assistanceLeftInput) }; true }
                     )
                     needDivider = true
+                }
+                if (exercise.assistanceTrackingEnabled && exercise.laterality == "Unilateral") {
+                    if (needDivider) WorkoutStepperDivider()
+                    WorkoutStepperItem(
+                        label = stringResource(R.string.left_colon) + " " + stringResource(R.string.workout_label_assistance),
+                        value = assistanceLeftInput,
+                        unit = kgUnit,
+                        accentColor = MaterialTheme.colorScheme.primary,
+                        keyboardType = KeyboardType.Decimal,
+                        onValueChange = { value ->
+                            val normalized = value
+                                .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
+                                .replace("．", ".")
+                            val isValidDecimal = normalized.isEmpty() ||
+                                normalized == "." ||
+                                normalized.matches(Regex("^\\d*\\.?\\d?\$"))
+                            if (isValidDecimal) {
+                                assistanceLeftInput = normalized
+                            }
+                        },
+                        decrementEnabled = (assistanceLeftInput.toDoubleOrNull() ?: 0.0) > 0.0,
+                        onDecrement = { assistanceLeftInput = stepDecimalValue(assistanceLeftInput, -0.5, 0.0); (assistanceLeftInput.toDoubleOrNull() ?: 0.0) > 0.0 },
+                        onIncrement = { assistanceLeftInput = stepDecimalValue(assistanceLeftInput, 0.5, 0.0); true }
+                    )
                 }
             }
         }
@@ -1615,6 +1693,11 @@ fun SettingsStep(
                 // アシストはkgで入力、gに変換（例: 22.5kg → 22500g）
                 val assistanceG = assistanceInput.ifEmpty { null }?.toDoubleOrNull()?.let { (it * 1000).toInt() }
 
+                // The left side's own values; the same as the right when it was not changed.
+                val distanceLeftCm = distanceLeftInput.ifEmpty { null }?.toIntOrNull()
+                val weightLeftG = weightLeftInput.ifEmpty { null }?.toDoubleOrNull()?.let { (it * 1000).toInt() }
+                val assistanceLeftG = assistanceLeftInput.ifEmpty { null }?.toDoubleOrNull()?.let { (it * 1000).toInt() }
+
                 val workoutSets = mutableListOf<WorkoutSet>()
                 if (exercise.laterality == "Unilateral") {
                     for (i in 1..totalSets) {
@@ -1634,9 +1717,9 @@ fun SettingsStep(
                             side = "Left",
                             targetValue = target,
                             previousValue = prevRecord?.valueLeft,
-                            distanceCm = distanceCm,
-                            weightG = weightG,
-                            assistanceG = assistanceG
+                            distanceCm = distanceLeftCm,
+                            weightG = weightLeftG,
+                            assistanceG = assistanceLeftG
                         ))
                     }
                 } else {
@@ -2025,19 +2108,12 @@ fun ConfirmationStep(
                         onLeftValueChange = { newValue ->
                             leftSet?.actualValue = newValue
                         },
-                        onDistanceChange = { newValue ->
-                            // L/R両方に同じ値を書き戻す（セット別単一値）
-                            rightSet?.distanceCm = newValue
-                            leftSet?.distanceCm = newValue
-                        },
-                        onWeightChange = { newValue ->
-                            rightSet?.weightG = newValue
-                            leftSet?.weightG = newValue
-                        },
-                        onAssistanceChange = { newValue ->
-                            rightSet?.assistanceG = newValue
-                            leftSet?.assistanceG = newValue
-                        },
+                        onDistanceChange = { newValue -> rightSet?.distanceCm = newValue },
+                        onWeightChange = { newValue -> rightSet?.weightG = newValue },
+                        onAssistanceChange = { newValue -> rightSet?.assistanceG = newValue },
+                        onLeftDistanceChange = { newValue -> leftSet?.distanceCm = newValue },
+                        onLeftWeightChange = { newValue -> leftSet?.weightG = newValue },
+                        onLeftAssistanceChange = { newValue -> leftSet?.assistanceG = newValue },
                         showWarmUp = showWarmUp,
                         onWarmUpChange = { marked ->
                             rightSet?.isWarmUp = marked
@@ -2299,6 +2375,10 @@ fun UnilateralSetItem(
     onDistanceChange: (Int?) -> Unit,
     onWeightChange: (Int?) -> Unit,
     onAssistanceChange: (Int?) -> Unit,
+    // The left side's own values (a one-sided set keeps one value per side).
+    onLeftDistanceChange: (Int?) -> Unit,
+    onLeftWeightChange: (Int?) -> Unit,
+    onLeftAssistanceChange: (Int?) -> Unit,
     showWarmUp: Boolean = false,
     onWarmUpChange: (Boolean) -> Unit = {},
     showEffort: Boolean = false,
@@ -2321,6 +2401,9 @@ fun UnilateralSetItem(
     var assistanceStr by remember(rightSet) {
         mutableStateOf(rightSet?.assistanceG?.let { "%.1f".format(it / 1000.0) } ?: "")
     }
+    var distanceLeftStr by remember(leftSet) { mutableStateOf(leftSet?.distanceCm?.toString() ?: "") }
+    var weightLeftStr by remember(leftSet) { mutableStateOf(leftSet?.weightG?.let { "%.1f".format(it / 1000.0) } ?: "") }
+    var assistanceLeftStr by remember(leftSet) { mutableStateOf(leftSet?.assistanceG?.let { "%.1f".format(it / 1000.0) } ?: "") }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -2430,15 +2513,30 @@ fun UnilateralSetItem(
                 )
             }
 
-            // セット別 距離/荷重/アシスト（L/R共通）
+            // Distance, weight and assistance for each side; the left follows the right until it is changed.
             WorkoutSetTrackingFields(
                 exercise = exercise,
                 distanceStr = distanceStr,
                 weightStr = weightStr,
                 assistanceStr = assistanceStr,
-                onDistanceStrChange = { distanceStr = it; onDistanceChange(parseDistanceCmValue(it)) },
-                onWeightStrChange = { weightStr = it; onWeightChange(parseWeightGValue(it)) },
-                onAssistanceStrChange = { assistanceStr = it; onAssistanceChange(parseWeightGValue(it)) }
+                onDistanceStrChange = {
+                    distanceLeftStr = linkedLeft(distanceStr, it, distanceLeftStr); onLeftDistanceChange(parseDistanceCmValue(distanceLeftStr))
+                    distanceStr = it; onDistanceChange(parseDistanceCmValue(it))
+                },
+                onWeightStrChange = {
+                    weightLeftStr = linkedLeft(weightStr, it, weightLeftStr); onLeftWeightChange(parseWeightGValue(weightLeftStr))
+                    weightStr = it; onWeightChange(parseWeightGValue(it))
+                },
+                onAssistanceStrChange = {
+                    assistanceLeftStr = linkedLeft(assistanceStr, it, assistanceLeftStr); onLeftAssistanceChange(parseWeightGValue(assistanceLeftStr))
+                    assistanceStr = it; onAssistanceChange(parseWeightGValue(it))
+                },
+                left = LeftTracking(
+                    distanceStr = distanceLeftStr, weightStr = weightLeftStr, assistanceStr = assistanceLeftStr,
+                    onDistanceStrChange = { distanceLeftStr = it; onLeftDistanceChange(parseDistanceCmValue(it)) },
+                    onWeightStrChange = { weightLeftStr = it; onLeftWeightChange(parseWeightGValue(it)) },
+                    onAssistanceStrChange = { assistanceLeftStr = it; onLeftAssistanceChange(parseWeightGValue(it)) },
+                ),
             )
             if (showWarmUp || showEffort) {
                 SetMarks(
@@ -2564,6 +2662,16 @@ fun BilateralSetItem(
 /**
  * Confirmation画面の各セットCard内に表示する 距離/荷重/アシスト 入力欄
  */
+/** The left side's own distance, weight and assistance texts and their handlers, for a one-sided set. */
+private class LeftTracking(
+    val distanceStr: String,
+    val weightStr: String,
+    val assistanceStr: String,
+    val onDistanceStrChange: (String) -> Unit,
+    val onWeightStrChange: (String) -> Unit,
+    val onAssistanceStrChange: (String) -> Unit,
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun WorkoutSetTrackingFields(
@@ -2573,71 +2681,64 @@ private fun WorkoutSetTrackingFields(
     assistanceStr: String,
     onDistanceStrChange: (String) -> Unit,
     onWeightStrChange: (String) -> Unit,
-    onAssistanceStrChange: (String) -> Unit
+    onAssistanceStrChange: (String) -> Unit,
+    // For a one-sided set: a second field for each tracked value, the left side's own.
+    left: LeftTracking? = null,
 ) {
     if (!exercise.distanceTrackingEnabled &&
         !exercise.weightTrackingEnabled &&
         !exercise.assistanceTrackingEnabled) return
 
     Spacer(modifier = Modifier.height(8.dp))
+    val right = if (left != null) stringResource(R.string.right_colon) + " " else ""
+    val leftLabel = stringResource(R.string.left_colon) + " "
 
-    if (exercise.distanceTrackingEnabled) {
+    @Composable
+    fun distance(label: String, value: String, onChange: (String) -> Unit) {
         MetricStepper(
-            label = stringResource(R.string.distance_input_label),
-            value = distanceStr,
-            onValueChange = { value ->
-                val normalized = value
+            label = label,
+            value = value,
+            onValueChange = { text ->
+                val normalized = text
                     .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
                     .replace("．", ".").replace("－", "-")
-                if (normalized.isEmpty() || normalized == "-" || normalized.toIntOrNull() != null) {
-                    onDistanceStrChange(normalized)
-                }
+                if (normalized.isEmpty() || normalized == "-" || normalized.toIntOrNull() != null) onChange(normalized)
             },
             keyboardType = KeyboardType.Number,
-                    modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(4.dp))
     }
 
+    @Composable
+    fun kilograms(label: String, value: String, onChange: (String) -> Unit) {
+        MetricStepper(
+            label = label,
+            value = value,
+            onValueChange = { text ->
+                val normalized = text
+                    .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
+                    .replace("．", ".")
+                if (normalized.isEmpty() || normalized == "." || normalized.matches(Regex("^\\d*\\.?\\d?$"))) onChange(normalized)
+            },
+            keyboardType = KeyboardType.Decimal,
+            decimals = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+    }
+
+    if (exercise.distanceTrackingEnabled) {
+        distance(right + stringResource(R.string.distance_input_label), distanceStr, onDistanceStrChange)
+        if (left != null) distance(leftLabel + stringResource(R.string.distance_input_label), left.distanceStr, left.onDistanceStrChange)
+    }
     if (exercise.weightTrackingEnabled) {
-        MetricStepper(
-            label = stringResource(R.string.weight_input_label),
-            value = weightStr,
-            onValueChange = { value ->
-                val normalized = value
-                    .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
-                    .replace("．", ".")
-                val isValid = normalized.isEmpty() || normalized == "." ||
-                    normalized.matches(Regex("^\\d*\\.?\\d?$"))
-                if (isValid) {
-                    onWeightStrChange(normalized)
-                }
-            },
-            keyboardType = KeyboardType.Decimal,
-            decimals = true,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Spacer(modifier = Modifier.height(4.dp))
+        kilograms(right + stringResource(R.string.weight_input_label), weightStr, onWeightStrChange)
+        if (left != null) kilograms(leftLabel + stringResource(R.string.weight_input_label), left.weightStr, left.onWeightStrChange)
     }
-
     if (exercise.assistanceTrackingEnabled) {
-        MetricStepper(
-            label = stringResource(R.string.assistance_input_label),
-            value = assistanceStr,
-            onValueChange = { value ->
-                val normalized = value
-                    .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
-                    .replace("．", ".")
-                val isValid = normalized.isEmpty() || normalized == "." ||
-                    normalized.matches(Regex("^\\d*\\.?\\d?$"))
-                if (isValid) {
-                    onAssistanceStrChange(normalized)
-                }
-            },
-            keyboardType = KeyboardType.Decimal,
-            decimals = true,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        kilograms(right + stringResource(R.string.assistance_input_label), assistanceStr, onAssistanceStrChange)
+        if (left != null) kilograms(leftLabel + stringResource(R.string.assistance_input_label), left.assistanceStr, left.onAssistanceStrChange)
     }
 }
 
