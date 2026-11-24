@@ -11,12 +11,12 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
-- A one-sided set can have its own weight, assistance and distance for each side, in a single workout's setup and result, in a program's start and result screens, when logging a past workout, and in the workout editor: the left field follows the right one until you change it, so one value for both sides takes the same taps as before ([#0](https://github.com/WildeBeast2521/kalimory/pull/0))
-- The records CSV carries a one-sided set's own left-side weight, assistance and distance in three new last columns (weightLeftG, assistanceLeftG, distanceLeftCm); an empty cell means the same as the right side, so old files import as before. Older app versions ignore the new columns and give both sides the right side's value ([#0](https://github.com/WildeBeast2521/kalimory/pull/0))
+- A one-sided set can have its own weight, assistance and distance for each side, in a single workout's setup and result, in a program's start and result screens, when logging a past workout, and in the workout editor: the left field follows the right one until you change it, so one value for both sides takes the same taps as before ([#0](https://github.com/WildeBeast2521/kalimory/pull/299))
+- The records CSV carries a one-sided set's own left-side weight, assistance and distance in three new last columns (weightLeftG, assistanceLeftG, distanceLeftCm); an empty cell means the same as the right side, so old files import as before. Older app versions ignore the new columns and give both sides the right side's value ([#0](https://github.com/WildeBeast2521/kalimory/pull/299))
 
 ### Fixed
-- Editing a one-sided set no longer overwrites its left side's weight, assistance and distance with the right side's ([#0](https://github.com/WildeBeast2521/kalimory/pull/0))
-- A one-sided set loaded differently on its two sides shows both in History (for example 5.0 kg / 9.0 kg), and its graphs, personal bests and progression moves count the left side too; they used to read only the right side ([#0](https://github.com/WildeBeast2521/kalimory/pull/0))
+- Editing a one-sided set no longer overwrites its left side's weight, assistance and distance with the right side's ([#0](https://github.com/WildeBeast2521/kalimory/pull/299))
+- A one-sided set loaded differently on its two sides shows both in History (for example 5.0 kg / 9.0 kg), and its graphs, personal bests and progression moves count the left side too; they used to read only the right side ([#0](https://github.com/WildeBeast2521/kalimory/pull/299))
 
 ## [1.1.1] - 2026-11-21
 
