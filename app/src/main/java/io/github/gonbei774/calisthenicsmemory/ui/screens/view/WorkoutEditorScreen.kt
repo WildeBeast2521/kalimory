@@ -66,6 +66,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.v2.linkedLeft
 import io.github.gonbei774.calisthenicsmemory.data.WorkoutPreferences
 import androidx.compose.ui.platform.LocalContext
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
@@ -282,6 +283,8 @@ internal fun EditorContent(
                 showWarmUp = !state.legacy && showWarmUp,
                 showEffort = !state.legacy && showEffort,
                 marksAllowed = !state.legacy,
+                // A legacy record stores one value for both sides, so only a v2 workout shows a field per side.
+                perSideAllowed = !state.legacy,
                 onSetChange = { setIndex, set -> onChange(WorkoutEditorModel.withSet(state, exerciseIndex, setIndex, set)) },
                 onRemoveSet = { setIndex -> onChange(WorkoutEditorModel.withoutSet(state, exerciseIndex, setIndex)) },
                 onAddSet = { onChange(WorkoutEditorModel.withNewSet(state, exerciseIndex)) },
@@ -331,6 +334,7 @@ private fun ExerciseCard(
     showWarmUp: Boolean,
     showEffort: Boolean,
     marksAllowed: Boolean,
+    perSideAllowed: Boolean,
     onSetChange: (Int, EditorSet) -> Unit,
     onRemoveSet: (Int) -> Unit,
     onAddSet: () -> Unit,
@@ -366,17 +370,37 @@ private fun ExerciseCard(
                     } else {
                         NumberStepper(value = set.value, onValueChange = { onSetChange(index, set.copy(value = it)) }, unit = unit, placeholder = "–")
                     }
+                    val perSide = exercise.unilateral && perSideAllowed
+                    val right = if (perSide) stringResource(R.string.right_colon) + " " else ""
+                    val left = if (perSide) stringResource(R.string.left_colon) + " " else ""
                     if (exercise.showDistance) {
-                        MetricField(R.string.distance_input_label, set.distanceCm, KeyboardType.Number, signed = true) {
-                            onSetChange(index, set.copy(distanceCm = it))
+                        MetricField(right + stringResource(R.string.distance_input_label), set.distanceCm, KeyboardType.Number, signed = true) {
+                            onSetChange(index, set.copy(distanceCm = it, distanceLeftCm = linkedLeft(set.distanceCm, it, set.distanceLeftCm)))
+                        }
+                        if (perSide) {
+                            MetricField(left + stringResource(R.string.distance_input_label), set.distanceLeftCm, KeyboardType.Number, signed = true) {
+                                onSetChange(index, set.copy(distanceLeftCm = it))
+                            }
                         }
                     }
                     if (exercise.showWeight) {
-                        MetricField(R.string.weight_input_label, set.weightKg, KeyboardType.Decimal) { onSetChange(index, set.copy(weightKg = it)) }
+                        MetricField(right + stringResource(R.string.weight_input_label), set.weightKg, KeyboardType.Decimal) {
+                            onSetChange(index, set.copy(weightKg = it, weightLeftKg = linkedLeft(set.weightKg, it, set.weightLeftKg)))
+                        }
+                        if (perSide) {
+                            MetricField(left + stringResource(R.string.weight_input_label), set.weightLeftKg, KeyboardType.Decimal) {
+                                onSetChange(index, set.copy(weightLeftKg = it))
+                            }
+                        }
                     }
                     if (exercise.showAssistance) {
-                        MetricField(R.string.assistance_input_label, set.assistanceKg, KeyboardType.Decimal) {
-                            onSetChange(index, set.copy(assistanceKg = it))
+                        MetricField(right + stringResource(R.string.assistance_input_label), set.assistanceKg, KeyboardType.Decimal) {
+                            onSetChange(index, set.copy(assistanceKg = it, assistanceLeftKg = linkedLeft(set.assistanceKg, it, set.assistanceLeftKg)))
+                        }
+                        if (perSide) {
+                            MetricField(left + stringResource(R.string.assistance_input_label), set.assistanceLeftKg, KeyboardType.Decimal) {
+                                onSetChange(index, set.copy(assistanceLeftKg = it))
+                            }
                         }
                     }
                     // Shown while a setting is on, and always for a marked or rated set, so it can be removed.
@@ -404,9 +428,9 @@ private fun ExerciseCard(
 
 /** A distance (whole centimetres, may be negative) or a load (kilograms with up to three decimals). */
 @Composable
-private fun MetricField(label: Int, value: String, keyboard: KeyboardType, signed: Boolean = false, onValueChange: (String) -> Unit) {
+private fun MetricField(label: String, value: String, keyboard: KeyboardType, signed: Boolean = false, onValueChange: (String) -> Unit) {
     MetricStepper(
-        label = stringResource(label),
+        label = label,
         value = value,
         onValueChange = { text ->
             val allowed = if (signed) Regex("""-?\d*""") else Regex("""\d*([.,]\d{0,3})?""")

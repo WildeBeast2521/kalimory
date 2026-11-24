@@ -9,6 +9,7 @@ import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
 import io.github.gonbei774.calisthenicsmemory.data.progression.Progressions
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftAssistanceG
 import io.github.gonbei774.calisthenicsmemory.data.v2.BodySide
 import io.github.gonbei774.calisthenicsmemory.data.v2.CompatibilityHistory
 import io.github.gonbei774.calisthenicsmemory.data.v2.DraftExercise
@@ -172,6 +173,32 @@ class WorkoutEditorTest {
         assertEquals(1, rows.last().setNumber)
         assertNull(rows.last().completedAtEpochMillis)
         assertEquals(listOf(9 to 6), shownValues(2))
+    }
+
+    @Test
+    fun theTwoSidesOfASetKeepTheirOwnAssistanceWhenSaved() = runBlocking {
+        val loaded = loadV2()
+        // 5 kg of assistance on the right and 9 kg on the left, as the issue's one-arm pull-up needs.
+        val perSide = loaded.withExercise(lungeId) {
+            it.copy(sets = listOf(it.sets[0].copy(assistanceG = 5_000, assistanceLeftG = 9_000, perSide = true)))
+        }
+        assertEquals(WorkoutSaveResult.SAVED, saveV2(loaded, perSide))
+        assertEquals(listOf(BodySide.RIGHT to 5_000, BodySide.LEFT to 9_000), entries(lungeId).map { it.side to it.assistanceGrams })
+        val shown = history().single { it.exerciseId == 2L }
+        assertEquals(5_000, shown.assistanceG)
+        assertEquals(9_000, shown.leftAssistanceG)
+
+        // Saving it again unchanged writes nothing, and editing only the reps leaves the left assistance alone.
+        val reloaded = loadV2()
+        assertEquals(WorkoutSaveResult.UNCHANGED, saveV2(reloaded, reloaded))
+        val moreReps = reloaded.withExercise(lungeId) { it.copy(sets = listOf(it.sets[0].copy(value = 9))) }
+        assertEquals(WorkoutSaveResult.SAVED, saveV2(reloaded, moreReps))
+        assertEquals(listOf(5_000, 9_000), entries(lungeId).map { it.assistanceGrams })
+
+        // A set entered with one value still gives both sides that value.
+        val same = loadV2().withExercise(lungeId) { it.copy(sets = listOf(it.sets[0].copy(assistanceG = 4_000, perSide = false))) }
+        assertEquals(WorkoutSaveResult.SAVED, saveV2(loadV2(), same))
+        assertEquals(listOf(4_000, 4_000), entries(lungeId).map { it.assistanceGrams })
     }
 
     @Test

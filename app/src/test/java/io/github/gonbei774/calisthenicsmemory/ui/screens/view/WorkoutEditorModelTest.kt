@@ -108,4 +108,29 @@ class WorkoutEditorModelTest {
         assertFalse(plan.isEmpty)
         assertEquals(false to 2, plan.changedSets.single().second.let { it.warmUp to it.effortLeft })
     }
+
+    @Test fun `a set loaded differently on its sides saves back unchanged, and an untouched left stays empty`() {
+        val differing = WorkoutDraft(
+            LocalDate.of(2026, 3, 2), LocalTime.of(7, 30), "",
+            listOf(DraftExercise(11, 2, true, listOf(
+                DraftSet(listOf(110, 111), 3, 3, assistanceG = 5_000, assistanceLeftG = 9_000, perSide = true),
+                // Right 5 kg, left none: saving must not copy the right value onto the left.
+                DraftSet(listOf(112, 113), 3, 3, weightG = 5_000, weightLeftG = null, perSide = true),
+            ))),
+        )
+        assertEquals(differing, WorkoutEditorModel.toDraft(WorkoutEditorModel.from(differing, library)))
+    }
+
+    @Test fun `typing a different left value makes the set per side, and equal values are one set of values`() {
+        val one = WorkoutDraft(LocalDate.of(2026, 3, 2), LocalTime.of(7, 30), "", listOf(DraftExercise(11, 2, true, listOf(DraftSet(listOf(110, 111), 3, 3, weightG = 5_000)))))
+        val loaded = WorkoutEditorModel.from(one, library)
+        val set = loaded.exercises.single().sets.single()
+        assertEquals("5", set.weightKg)
+        assertEquals("5", set.weightLeftKg)
+        val changed = loaded.copy(exercises = listOf(loaded.exercises.single().copy(sets = listOf(set.copy(weightLeftKg = "4")))))
+        val saved = WorkoutEditorModel.toDraft(changed)!!.exercises.single().sets.single()
+        assertEquals(true, saved.perSide)
+        assertEquals(5_000, saved.weightG)
+        assertEquals(4_000, saved.weightLeftG)
+    }
 }

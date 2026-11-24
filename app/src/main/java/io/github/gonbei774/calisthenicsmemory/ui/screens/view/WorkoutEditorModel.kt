@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.view
 
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
+import io.github.gonbei774.calisthenicsmemory.data.v2.linkedLeft
 import io.github.gonbei774.calisthenicsmemory.data.v2.DraftExercise
 import io.github.gonbei774.calisthenicsmemory.data.v2.DraftSet
 import io.github.gonbei774.calisthenicsmemory.data.v2.WorkoutDraft
@@ -24,6 +25,14 @@ data class EditorSet(
     /** The warm-up mark and effort rating (ADR 0012), carried unchanged unless the user changes them. */
     val warmUp: Boolean = false,
     val effortLeft: Int? = null,
+    /**
+     * The left side's own distance, weight and assistance for a one-sided set. They start equal to the right side's
+     * and follow it ([linkedLeft]); [perSide] says the saved sides already differed, so they are kept as they are.
+     */
+    val distanceLeftCm: String = "",
+    val weightLeftKg: String = "",
+    val assistanceLeftKg: String = "",
+    val perSide: Boolean = false,
 )
 
 /** One exercise in the editor, with what its fields need from the library. */
@@ -68,6 +77,11 @@ object WorkoutEditorModel {
                         assistanceKg = set.assistanceG?.let(::kilograms).orEmpty(),
                         warmUp = set.warmUp,
                         effortLeft = set.effortLeft,
+                        // Both sides alike unless the saved sides differed, in which case the left shows its own.
+                        distanceLeftCm = (if (set.perSide) set.distanceLeftCm else set.distanceCm)?.toString().orEmpty(),
+                        weightLeftKg = (if (set.perSide) set.weightLeftG else set.weightG)?.let(::kilograms).orEmpty(),
+                        assistanceLeftKg = (if (set.perSide) set.assistanceLeftG else set.assistanceG)?.let(::kilograms).orEmpty(),
+                        perSide = set.perSide,
                     )
                 }
                 editorExercise(exercise.key, exercise.exerciseId, exercise.unilateral, byId[exercise.exerciseId], sets)
@@ -122,6 +136,12 @@ object WorkoutEditorModel {
         val distance = optionalInt(set.distanceCm) ?: return null
         val weight = optionalGrams(set.weightKg) ?: return null
         val assistance = optionalGrams(set.assistanceKg) ?: return null
+        // A one-sided set of a v2 workout may carry a different value on the left; a legacy record cannot.
+        val perSide = unilateral && !legacy && (set.perSide || set.distanceLeftCm != set.distanceCm ||
+            set.weightLeftKg != set.weightKg || set.assistanceLeftKg != set.assistanceKg)
+        val distanceLeft = optionalInt(set.distanceLeftCm) ?: return null
+        val weightLeft = optionalGrams(set.weightLeftKg) ?: return null
+        val assistanceLeft = optionalGrams(set.assistanceLeftKg) ?: return null
         return DraftSet(
             ids = set.ids,
             value = value.value,
@@ -131,6 +151,11 @@ object WorkoutEditorModel {
             assistanceG = assistance.value,
             warmUp = set.warmUp,
             effortLeft = set.effortLeft,
+            // The left values count only when the sides differ; otherwise both sides take the right side's.
+            distanceLeftCm = distanceLeft.value.takeIf { perSide },
+            weightLeftG = weightLeft.value.takeIf { perSide },
+            assistanceLeftG = assistanceLeft.value.takeIf { perSide },
+            perSide = perSide,
         )
     }
 
@@ -165,9 +190,9 @@ object WorkoutEditorModel {
             unilateral = unilateral,
             dynamic = library?.type != "Isometric",
             // A field shows when the exercise tracks it or a set already holds a value for it.
-            showDistance = library?.distanceTrackingEnabled == true || sets.any { it.distanceCm.isNotEmpty() },
-            showWeight = library?.weightTrackingEnabled == true || sets.any { it.weightKg.isNotEmpty() },
-            showAssistance = library?.assistanceTrackingEnabled == true || sets.any { it.assistanceKg.isNotEmpty() },
+            showDistance = library?.distanceTrackingEnabled == true || sets.any { it.distanceCm.isNotEmpty() || it.distanceLeftCm.isNotEmpty() },
+            showWeight = library?.weightTrackingEnabled == true || sets.any { it.weightKg.isNotEmpty() || it.weightLeftKg.isNotEmpty() },
+            showAssistance = library?.assistanceTrackingEnabled == true || sets.any { it.assistanceKg.isNotEmpty() || it.assistanceLeftKg.isNotEmpty() },
             sets = sets,
         )
 }
