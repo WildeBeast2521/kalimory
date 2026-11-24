@@ -77,4 +77,20 @@ class SetupScreensLargeTextTest {
     @Test fun `program setup at normal size`() = audit(scale = 1f) { ProgramExecutionScreen(it, 1L, onNavigateBack = {}, onComplete = {}) }
 
     @Test fun `new interval at normal size`() = audit(scale = 1f) { IntervalEditScreen(it, null, {}, {}) }
+
+    // A one-sided set's result row: the side names must not be split inside a word, at either size.
+    private val oneSided = io.github.gonbei774.calisthenicsmemory.data.Exercise(
+        id = 1L, name = "One-arm pull-up", type = "Dynamic", laterality = "Unilateral",
+        weightTrackingEnabled = true, assistanceTrackingEnabled = true,
+    )
+    private val rightSet = WorkoutSet(setNumber = 1, side = "Right", targetValue = 4, actualValue = 4, isCompleted = true, weightG = 2_500, assistanceG = 3_500)
+    private val leftSet = rightSet.copy(side = "Left", weightG = 5_000, assistanceG = 8_500)
+
+    @Test fun `one-sided set row`() = audit {
+        UnilateralSetItem(1, rightSet, leftSet, oneSided, {}, {}, {}, {}, {}, {}, {}, {})
+    }
+
+    @Test fun `one-sided set row at normal size`() = audit(scale = 1f) {
+        UnilateralSetItem(1, rightSet, leftSet, oneSided, {}, {}, {}, {}, {}, {}, {}, {})
+    }
 }
