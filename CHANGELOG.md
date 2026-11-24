@@ -10,6 +10,9 @@ from which Kalimory was forked; their version numbers are the original app's, no
 
 ## [Unreleased]
 
+### Fixed
+- A one-sided set loaded differently on its two sides shows both in History (for example 5.0 kg / 9.0 kg), and its graphs, personal bests and progression moves count the left side too; they used to read only the right side ([#0](https://github.com/WildeBeast2521/kalimory/pull/0))
+
 ## [1.1.1] - 2026-11-21
 
 ### Added

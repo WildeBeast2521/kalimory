@@ -12,17 +12,18 @@ class CompatibilityHistoryTest {
 
     private fun row(id: Long, exercise: Long = 1, set: Int = 1, side: BodySide = BodySide.BILATERAL, reps: Int? = null,
                     durationMillis: Long? = null, kind: ExerciseKind = ExerciseKind.DYNAMIC, completedAt: Long? = null,
-                    warmUp: Boolean = false, effort: Int? = null) =
+                    warmUp: Boolean = false, effort: Int? = null, weight: Int? = 2_000, assistance: Int? = null) =
         V2HistoryRow(id, sessionExerciseId = exercise * 10, exerciseId = exercise, exerciseKindSnapshot = kind, setNumber = set,
             orderIndex = id.toInt(), side = side, repetitions = reps, durationMillis = durationMillis, distanceCm = null,
-            addedWeightGrams = 2_000, assistanceGrams = null, completedAtEpochMillis = completedAt,
+            addedWeightGrams = weight, assistanceGrams = assistance, completedAtEpochMillis = completedAt,
             sessionStartedAtEpochMillis = start, sessionComment = "v2 workout", isWarmUp = warmUp, effortLeft = effort)
 
     @Test fun `legacy records pass through unchanged`() {
         val legacy = TrainingRecord(7, 1, 12, 11, 2, "2024-12-31", "18:00", "old", 100, 200, 300)
         val merged = CompatibilityHistory.merge(listOf(legacy), emptyList(), zone).single()
         assertEquals(
-            HistorySet(HistorySource.LEGACY, 7, emptyList(), 1, "2024-12-31", "18:00", 2, 12, 11, "old", 100, 200, 300),
+            HistorySet(HistorySource.LEGACY, 7, emptyList(), 1, "2024-12-31", "18:00", 2, 12, 11, "old", 100, 200, 300,
+                distanceLeftCm = 100, weightLeftG = 200, assistanceLeftG = 300),
             merged,
         )
     }
@@ -132,5 +133,38 @@ class CompatibilityHistoryTest {
     @Test fun `a stored rating outside the scale reads as the scale allows`() {
         assertEquals(Effort.MAX_EFFORT_LEFT, CompatibilityHistory.merge(emptyList(), listOf(row(1, reps = 5, effort = 9)), zone).single().effortLeft)
         assertEquals(null, CompatibilityHistory.merge(emptyList(), listOf(row(1, reps = 5, effort = -1)), zone).single().effortLeft)
+    }
+
+    @Test fun `the two sides of a one-sided set keep their own weight and assistance`() {
+        val rows = listOf(
+            row(1, side = BodySide.RIGHT, reps = 3, weight = null, assistance = 5_000),
+            row(2, side = BodySide.LEFT, reps = 3, weight = null, assistance = 9_000),
+        )
+        val set = CompatibilityHistory.merge(emptyList(), rows, zone).single()
+        assertEquals(5_000, set.assistanceG)
+        assertEquals(9_000, set.leftAssistanceG)
+        assertEquals(null, set.weightG)
+        assertEquals(null, set.leftWeightG)
+    }
+
+    @Test fun `a legacy row and a two-sided set read the single value for the left side`() {
+        val legacy = CompatibilityHistory.merge(listOf(TrainingRecord(1, 1, 5, 4, 1, "2024-12-31", "18:00", "", null, 7_000, null)), emptyList(), zone).single()
+        assertEquals(7_000, legacy.leftWeightG)
+        val bilateral = CompatibilityHistory.merge(emptyList(), listOf(row(1, reps = 5, weight = 3_000)), zone).single()
+        assertEquals(3_000, bilateral.leftWeightG)
+        assertEquals(null, bilateral.weightLeftG)
+    }
+
+    @Test fun `a set loaded on one side only is not plain, on either side`() {
+        val onlyLeft = CompatibilityHistory.merge(emptyList(), listOf(
+            row(1, side = BodySide.RIGHT, reps = 5, weight = null),
+            row(2, side = BodySide.LEFT, reps = 5, weight = 4_000),
+        ), zone).single()
+        assertEquals(false, onlyLeft.isPlain)
+        val plain = CompatibilityHistory.merge(emptyList(), listOf(
+            row(1, side = BodySide.RIGHT, reps = 5, weight = null),
+            row(2, side = BodySide.LEFT, reps = 5, weight = null),
+        ), zone).single()
+        assertEquals(true, plain.isPlain)
     }
 }

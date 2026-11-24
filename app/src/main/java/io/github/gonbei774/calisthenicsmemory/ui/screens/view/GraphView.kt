@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftWeightG
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
@@ -578,7 +579,7 @@ fun prepareVolumeData(
     }
 
     // 荷重データがあるレコードのみ抽出
-    val recordsWithWeight = filteredRecords.filter { it.weightG != null && it.weightG > 0 }
+    val recordsWithWeight = filteredRecords.filter { (it.weightG ?: 0) > 0 || (it.leftWeightG ?: 0) > 0 }
     if (recordsWithWeight.isEmpty()) {
         return emptyList()
     }
@@ -595,7 +596,7 @@ fun prepareVolumeData(
                     record.valueRight * (record.weightG ?: 0) / 1000.0
                 }.toFloat()
                 val volumeLeft = sessionRecords.sumOf { record ->
-                    (record.valueLeft ?: 0) * (record.weightG ?: 0) / 1000.0
+                    (record.valueLeft ?: 0) * (record.leftWeightG ?: 0) / 1000.0
                 }.toFloat()
                 Pair(volumeRight, volumeLeft)
             } else {
@@ -726,7 +727,7 @@ fun prepareWeightData(
     }
 
     // 荷重データがあるレコードのみ抽出
-    val recordsWithWeight = filteredRecords.filter { it.weightG != null && it.weightG > 0 }
+    val recordsWithWeight = filteredRecords.filter { (it.weightG ?: 0) > 0 || (it.leftWeightG ?: 0) > 0 }
     if (recordsWithWeight.isEmpty()) {
         return emptyList()
     }
@@ -735,7 +736,7 @@ fun prepareWeightData(
     val maxWeightByDate = recordsWithWeight
         .groupBy { it.date }
         .mapValues { (_, sessionRecords) ->
-            (sessionRecords.maxOf { it.weightG ?: 0 }) / 1000f
+            (sessionRecords.maxOf { maxOf(it.weightG ?: 0, it.leftWeightG ?: 0) }) / 1000f
         }
 
     // データポイントを作成
@@ -2355,7 +2356,7 @@ fun calculateStatistics(
 
     // 荷重統計（weightTrackingEnabled時のみ）
     val weightStats = if (exercise.weightTrackingEnabled) {
-        val recordsWithWeight = filteredRecords.filter { it.weightG != null && it.weightG > 0 }
+        val recordsWithWeight = filteredRecords.filter { (it.weightG ?: 0) > 0 || (it.leftWeightG ?: 0) > 0 }
         if (recordsWithWeight.isNotEmpty()) {
             // 日ごとにボリュームを集計（左右別々）
             val volumeByDateRight = recordsWithWeight
@@ -2373,14 +2374,14 @@ fun calculateStatistics(
                     .groupBy { it.date }
                     .mapValues { (_, dayRecords) ->
                         dayRecords.sumOf { record ->
-                            (record.valueLeft ?: 0) * (record.weightG ?: 0) / 1000.0
+                            (record.valueLeft ?: 0) * (record.leftWeightG ?: 0) / 1000.0
                         }.toFloat()
                     }
                     .values
                     .toList()
             } else null
 
-            val weights = recordsWithWeight.map { (it.weightG ?: 0) / 1000f }
+            val weights = recordsWithWeight.flatMap { listOf(it.weightG ?: 0, it.leftWeightG ?: 0) }.filter { it > 0 }.map { it / 1000f }
 
             // Holds have no volume (seconds times kilograms means nothing), only their weights.
             val hasVolume = exercise.type == "Dynamic"
