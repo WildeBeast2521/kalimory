@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.MetricStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.SectionHeading
 import io.github.gonbei774.calisthenicsmemory.ui.components.workout.rememberCountdownHaptics
@@ -2455,62 +2456,38 @@ fun UnilateralSetItem(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // 右側
+            val valueLabel = stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input)
+            val rightLabel = stringResource(R.string.right_colon)
+            val leftLabel = stringResource(R.string.left_colon)
+            // The side's name takes the width its text needs, so it is never split inside a word.
+            val sideField: @Composable RowScope.(String, String, (String) -> Unit) -> Unit = { side, value, onChange ->
                 Text(
-                    text = stringResource(R.string.right_colon),
+                    text = side,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.width(30.dp)
+                    softWrap = false
                 )
                 OutlinedTextField(
-                    value = rightValue,
-                    onValueChange = { newValue ->
-                        if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
-                            rightValue = newValue
-                            newValue.toIntOrNull()?.let { onRightValueChange(it) }
-                        }
-                    },
-                    label = {
-                        Text(
-                            stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    },
+                    value = value,
+                    onValueChange = { newValue -> if (newValue.isEmpty() || newValue.all { it.isDigit() }) onChange(newValue) },
+                    label = { Text(valueLabel, style = MaterialTheme.typography.bodySmall) },
                     modifier = Modifier.weight(1f),
                     singleLine = true
                 )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                // 左側
-                Text(
-                    text = stringResource(R.string.left_colon),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.width(30.dp)
-                )
-                OutlinedTextField(
-                    value = leftValue,
-                    onValueChange = { newValue ->
-                        if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
-                            leftValue = newValue
-                            newValue.toIntOrNull()?.let { onLeftValueChange(it) }
-                        }
-                    },
-                    label = {
-                        Text(
-                            stringResource(if (exerciseType == "Dynamic") R.string.reps_input else R.string.seconds_input),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    },
-                    modifier = Modifier.weight(1f),
-                    singleLine = true
-                )
+            }
+            val onRight: (String) -> Unit = { rightValue = it; it.toIntOrNull()?.let(onRightValueChange) }
+            val onLeft: (String) -> Unit = { leftValue = it; it.toIntOrNull()?.let(onLeftValueChange) }
+            // At large text each side gets its own row; side by side the fields would be too narrow.
+            if (isLargeFontScale()) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp), Alignment.CenterVertically) { sideField(rightLabel, rightValue, onRight) }
+                    Row(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp), Alignment.CenterVertically) { sideField(leftLabel, leftValue, onLeft) }
+                }
+            } else {
+                Row(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp), Alignment.CenterVertically) {
+                    sideField(rightLabel, rightValue, onRight)
+                    sideField(leftLabel, leftValue, onLeft)
+                }
             }
 
             // Distance, weight and assistance for each side; the left follows the right until it is changed.

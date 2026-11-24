@@ -1905,7 +1905,8 @@ private fun InlineStepperRow(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
-                .width(56.dp)
+                // Wide enough for "10.0" in 200 % digits, which otherwise scroll out of sight.
+                .width(if (isLargeFontScale()) 112.dp else 56.dp)
                 .padding(horizontal = 4.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
