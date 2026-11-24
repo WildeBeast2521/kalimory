@@ -77,6 +77,28 @@ fun isOtherSide(a: ProgramWorkoutSet, b: ProgramWorkoutSet): Boolean =
  * After the set at [index] was done: the sets still to do for the same exercise and side aim for at least what
  * was just done. It only raises, never lowers, and a skipped set or a warm-up changes nothing.
  */
+/**
+ * A distance, weight or assistance change on [target], given to its own side of the set in every round. A change on the
+ * Right side also moves the Left side while that still held the old right value, so one value for both sides takes the
+ * same taps as before, and a left value that was set apart is never overwritten.
+ */
+fun <T> List<ProgramWorkoutSet>.withSideChange(
+    target: ProgramWorkoutSet,
+    get: (ProgramWorkoutSet) -> T,
+    set: (ProgramWorkoutSet, T) -> ProgramWorkoutSet,
+    value: T,
+): List<ProgramWorkoutSet> {
+    val old = get(target)
+    return map { s ->
+        when {
+            s.exerciseIndex != target.exerciseIndex || s.setNumber != target.setNumber -> s
+            s.side == target.side -> set(s, value)
+            target.side == "Right" && s.side == "Left" && get(s) == old -> set(s, value)
+            else -> s
+        }
+    }
+}
+
 /** True when [value] has reached [target]. A set with no target (0) never reaches it. */
 fun reached(value: Int, target: Int): Boolean = target > 0 && value >= target
 

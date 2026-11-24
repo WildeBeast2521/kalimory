@@ -36,6 +36,14 @@ data class HistorySet(
     val warmUp: Boolean = false,
     /** The user's effort rating, 0..[Effort.MAX_EFFORT_LEFT]; null when not rated, and for legacy rows. */
     val effortLeft: Int? = null,
+    /**
+     * The left side's own distance, weight and assistance, for a one-sided set (valueLeft is not null): they may
+     * differ from the right side's. For a two-sided set they are null; read them through [leftDistanceCm],
+     * [leftWeightG] and [leftAssistanceG], which fall back to the single value.
+     */
+    val distanceLeftCm: Int? = null,
+    val weightLeftG: Int? = null,
+    val assistanceLeftG: Int? = null,
 ) {
     /** The legacy row behind this set, for legacy edit and delete actions; null for v2-only sets. */
     fun toLegacyRecord(): TrainingRecord? = legacyRecordId?.takeIf { source == HistorySource.LEGACY }?.let {
@@ -86,6 +94,10 @@ object CompatibilityHistory {
             HistorySet(
                 HistorySource.LEGACY, it.id, emptyList(), it.exerciseId, it.date, it.time, it.setNumber,
                 it.valueRight, it.valueLeft, it.comment, it.distanceCm, it.weightG, it.assistanceG,
+                // A legacy row holds one value for both sides.
+                distanceLeftCm = it.distanceCm.takeIf { _ -> it.valueLeft != null },
+                weightLeftG = it.weightG.takeIf { _ -> it.valueLeft != null },
+                assistanceLeftG = it.assistanceG.takeIf { _ -> it.valueLeft != null },
             )
         }
         // RIGHT and LEFT entries of one set (in one round) become one row, as the legacy screens store them.
@@ -124,6 +136,9 @@ object CompatibilityHistory {
                 // half-marked set; two different ratings (only from an edited backup) read as the harder one.
                 warmUp = rows.all { it.isWarmUp },
                 effortLeft = rows.mapNotNull { Effort.normalized(it.effortLeft) }.minOrNull(),
+                distanceLeftCm = left?.takeIf { primary.side != BodySide.BILATERAL && it !== primary }?.distanceCm,
+                weightLeftG = left?.takeIf { primary.side != BodySide.BILATERAL && it !== primary }?.addedWeightGrams,
+                assistanceLeftG = left?.takeIf { primary.side != BodySide.BILATERAL && it !== primary }?.assistanceGrams,
             )
         }
         return (legacySets + v2Sets).sortedWith(
@@ -171,7 +186,17 @@ object CompatibilityHistory {
  * Bests compare plain sets only, as a loaded or assisted count means something else.
  */
 val HistorySet.isPlain: Boolean
-    get() = (weightG ?: 0) == 0 && (assistanceG ?: 0) == 0 && (distanceCm ?: 0) == 0
+    get() = (weightG ?: 0) == 0 && (assistanceG ?: 0) == 0 && (distanceCm ?: 0) == 0 &&
+        (leftWeightG ?: 0) == 0 && (leftAssistanceG ?: 0) == 0 && (leftDistanceCm ?: 0) == 0
+
+/** The left side's distance: its own for a one-sided set, the single value otherwise. */
+val HistorySet.leftDistanceCm: Int? get() = if (valueLeft != null) distanceLeftCm else distanceCm
+
+/** The left side's weight: its own for a one-sided set, the single value otherwise. */
+val HistorySet.leftWeightG: Int? get() = if (valueLeft != null) weightLeftG else weightG
+
+/** The left side's assistance: its own for a one-sided set, the single value otherwise. */
+val HistorySet.leftAssistanceG: Int? get() = if (valueLeft != null) assistanceLeftG else assistanceG
 
 /** [HistorySet.isPlain] for a stored set. */
 val SetEntryEntity.isPlain: Boolean

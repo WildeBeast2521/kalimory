@@ -1048,6 +1048,7 @@
     <string name="csv_issue_effort">Línea %1$d: effortLeft «%2$s» no válido (se espera de 0 a %3$d)</string>
     <string name="csv_issue_exercise_missing">Línea %1$d: no se encontró el ejercicio: %2$s (%3$s)</string>
     <string name="csv_issue_old_format">Línea %1$d: no se añadió porque este entrenamiento está en el formato de registro anterior, que no admite marcas de calentamiento ni esfuerzo</string>
+    <string name="csv_issue_old_format_sides">Línea %1$d: no se añadió porque este entrenamiento está en el formato de registro anterior, que no admite un valor distinto para cada lado</string>
     <string name="csv_issue_empty">El archivo CSV está vacío</string>
     <string name="csv_skip_exists">«%1$s» (ya existe)</string>
     <string name="csv_skip_exists_link">«%1$s» (ya existe; el enlace al catálogo no cambia)</string>

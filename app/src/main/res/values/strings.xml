@@ -1027,6 +1027,7 @@
     <string name="csv_issue_effort">Line %1$d: invalid effortLeft \"%2$s\" (expected 0 to %3$d)</string>
     <string name="csv_issue_exercise_missing">Line %1$d: exercise not found: %2$s (%3$s)</string>
     <string name="csv_issue_old_format">Line %1$d: not added, because this workout is in the older record format, which cannot hold warm-up marks or effort</string>
+    <string name="csv_issue_old_format_sides">Line %1$d: not added, because this workout is in the older record format, which cannot hold a different value for each side</string>
     <string name="csv_issue_empty">The CSV file is empty</string>
     <string name="csv_skip_exists">\"%1$s\" (already exists)</string>
     <string name="csv_skip_exists_link">\"%1$s\" (already exists; the catalogue link is not changed)</string>

@@ -661,6 +661,14 @@ internal fun ProgramConfirmExerciseCard(
                         }
                         if (setIndex < 0) return@forEachIndexed
                         val currentSet = allSets[setIndex]
+                        // A one-sided exercise has the left side's own values too, as rows of its Left set.
+                        val leftIndex = if (exercise.laterality == "Unilateral") allSets.indexOfFirst {
+                            it.exerciseIndex == set.exerciseIndex && it.setNumber == set.setNumber &&
+                                it.side == "Left" && it.roundNumber == set.roundNumber
+                        } else -1
+                        val leftSet = allSets.getOrNull(leftIndex)
+                        val rightPrefix = if (leftSet != null) stringResource(R.string.right_colon) + " " else ""
+                        val leftPrefix = stringResource(R.string.left_colon) + " "
 
                         if (index > 0) Spacer(modifier = Modifier.height(10.dp))
 
@@ -722,7 +730,7 @@ internal fun ProgramConfirmExerciseCard(
                                 mutableStateOf(currentSet.distanceCm?.toString() ?: "")
                             }
                             UnifiedStepperRow(
-                                label = stringResource(R.string.distance_input_label),
+                                label = rightPrefix + stringResource(R.string.distance_input_label),
                                 valueText = distanceStr,
                                 onValueTextChange = { value ->
                                     val normalized = value
@@ -747,13 +755,43 @@ internal fun ProgramConfirmExerciseCard(
                             )
                         }
 
+                        if (exercise.distanceTrackingEnabled && leftSet != null) {
+                            var distanceStr by remember(leftIndex, leftSet!!.distanceCm) {
+                                mutableStateOf(leftSet!!.distanceCm?.toString() ?: "")
+                            }
+                            UnifiedStepperRow(
+                                label = leftPrefix + stringResource(R.string.distance_input_label),
+                                valueText = distanceStr,
+                                onValueTextChange = { value ->
+                                    val normalized = value
+                                        .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
+                                        .replace("．", ".").replace("－", "-")
+                                    if (normalized.isEmpty() || normalized == "-" || normalized.toIntOrNull() != null) {
+                                        distanceStr = normalized
+                                        onUpdateDistanceCm(leftIndex, parseProgramDistanceCmValue(normalized))
+                                    }
+                                },
+                                keyboardType = KeyboardType.Number,
+                                previousText = leftSet!!.previousDistanceCm?.toString() ?: "-",
+                                onMinus = {
+                                    val newCm = ((leftSet!!.distanceCm ?: 0) - 1).coerceAtLeast(0)
+                                    onUpdateDistanceCm(leftIndex, newCm)
+                                },
+                                onPlus = {
+                                    val newCm = ((leftSet!!.distanceCm ?: 0) + 1).coerceAtLeast(0)
+                                    onUpdateDistanceCm(leftIndex, newCm)
+                                },
+                                minusEnabled = (leftSet!!.distanceCm ?: 0) > 0
+                            )
+                        }
+
                         // 荷重（kg）
                         if (exercise.weightTrackingEnabled) {
                             var weightStr by remember(setIndex, currentSet.weightG) {
                                 mutableStateOf(currentSet.weightG?.let { "%.1f".format(it / 1000.0) } ?: "")
                             }
                             UnifiedStepperRow(
-                                label = stringResource(R.string.weight_input_label),
+                                label = rightPrefix + stringResource(R.string.weight_input_label),
                                 valueText = weightStr,
                                 onValueTextChange = { value ->
                                     val normalized = value
@@ -780,13 +818,45 @@ internal fun ProgramConfirmExerciseCard(
                             )
                         }
 
+                        if (exercise.weightTrackingEnabled && leftSet != null) {
+                            var weightStr by remember(leftIndex, leftSet!!.weightG) {
+                                mutableStateOf(leftSet!!.weightG?.let { "%.1f".format(it / 1000.0) } ?: "")
+                            }
+                            UnifiedStepperRow(
+                                label = leftPrefix + stringResource(R.string.weight_input_label),
+                                valueText = weightStr,
+                                onValueTextChange = { value ->
+                                    val normalized = value
+                                        .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
+                                        .replace("．", ".")
+                                    val isValid = normalized.isEmpty() || normalized == "." ||
+                                        normalized.matches(Regex("^\\d*\\.?\\d?$"))
+                                    if (isValid) {
+                                        weightStr = normalized
+                                        onUpdateWeightG(leftIndex, parseProgramWeightGValue(normalized))
+                                    }
+                                },
+                                keyboardType = KeyboardType.Decimal,
+                                previousText = leftSet!!.previousWeightG?.let { "%.1f".format(it / 1000.0) } ?: "-",
+                                onMinus = {
+                                    val newG = ((leftSet!!.weightG ?: 0) - 1000).coerceAtLeast(0)
+                                    onUpdateWeightG(leftIndex, newG)
+                                },
+                                onPlus = {
+                                    val newG = ((leftSet!!.weightG ?: 0) + 1000).coerceAtLeast(0)
+                                    onUpdateWeightG(leftIndex, newG)
+                                },
+                                minusEnabled = (leftSet!!.weightG ?: 0) > 0
+                            )
+                        }
+
                         // アシスト（kg）
                         if (exercise.assistanceTrackingEnabled) {
                             var assistanceStr by remember(setIndex, currentSet.assistanceG) {
                                 mutableStateOf(currentSet.assistanceG?.let { "%.1f".format(it / 1000.0) } ?: "")
                             }
                             UnifiedStepperRow(
-                                label = stringResource(R.string.assistance_input_label),
+                                label = rightPrefix + stringResource(R.string.assistance_input_label),
                                 valueText = assistanceStr,
                                 onValueTextChange = { value ->
                                     val normalized = value
@@ -810,6 +880,38 @@ internal fun ProgramConfirmExerciseCard(
                                     onUpdateAssistanceG(setIndex, newG)
                                 },
                                 minusEnabled = (currentSet.assistanceG ?: 0) > 0
+                            )
+                        }
+
+                        if (exercise.assistanceTrackingEnabled && leftSet != null) {
+                            var assistanceStr by remember(leftIndex, leftSet!!.assistanceG) {
+                                mutableStateOf(leftSet!!.assistanceG?.let { "%.1f".format(it / 1000.0) } ?: "")
+                            }
+                            UnifiedStepperRow(
+                                label = leftPrefix + stringResource(R.string.assistance_input_label),
+                                valueText = assistanceStr,
+                                onValueTextChange = { value ->
+                                    val normalized = value
+                                        .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
+                                        .replace("．", ".")
+                                    val isValid = normalized.isEmpty() || normalized == "." ||
+                                        normalized.matches(Regex("^\\d*\\.?\\d?$"))
+                                    if (isValid) {
+                                        assistanceStr = normalized
+                                        onUpdateAssistanceG(leftIndex, parseProgramWeightGValue(normalized))
+                                    }
+                                },
+                                keyboardType = KeyboardType.Decimal,
+                                previousText = leftSet!!.previousAssistanceG?.let { "%.1f".format(it / 1000.0) } ?: "-",
+                                onMinus = {
+                                    val newG = ((leftSet!!.assistanceG ?: 0) - 1000).coerceAtLeast(0)
+                                    onUpdateAssistanceG(leftIndex, newG)
+                                },
+                                onPlus = {
+                                    val newG = ((leftSet!!.assistanceG ?: 0) + 1000).coerceAtLeast(0)
+                                    onUpdateAssistanceG(leftIndex, newG)
+                                },
+                                minusEnabled = (leftSet!!.assistanceG ?: 0) > 0
                             )
                         }
                     }

@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftWeightG
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.IntervalRecord
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
@@ -298,7 +299,10 @@ fun SessionCard(
                                     }
                                     if (hasWeight) {
                                         Text(
-                                            text = stringResource(R.string.weight_display_format, record.weightG!! / 1000.0f),
+                                            text = stringResource(R.string.weight_display_format, record.weightG!! / 1000.0f) +
+                                                // A one-sided set loaded differently on its two sides shows both.
+                                                (record.leftWeightG?.takeIf { record.valueLeft != null && it != record.weightG }
+                                                    ?.let { " / " + stringResource(R.string.weight_display_format, it / 1000.0f) } ?: ""),
                                             fontSize = 13.sp,
                                             color = MaterialTheme.colorScheme.primary,
                                             fontWeight = FontWeight.Bold

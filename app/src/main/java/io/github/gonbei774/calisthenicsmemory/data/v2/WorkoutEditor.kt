@@ -47,6 +47,8 @@ object WorkoutEditor {
                     val right = sides.firstOrNull { it.side != BodySide.LEFT }
                     val left = sides.firstOrNull { it.side == BodySide.LEFT }
                     val primary = right ?: left!!
+                    val perSide = left != null && right != null &&
+                        (left.distanceCm != right.distanceCm || left.addedWeightGrams != right.addedWeightGrams || left.assistanceGrams != right.assistanceGrams)
                     DraftSet(
                         ids = sides.map { it.id },
                         value = right?.let { value(it, kind) },
@@ -57,6 +59,11 @@ object WorkoutEditor {
                         // The merged history's rule: a warm-up only when every side is, the harder rating.
                         warmUp = sides.all { it.isWarmUp },
                         effortLeft = sides.mapNotNull { Effort.normalized(it.effortLeft) }.minOrNull(),
+                        // Each side keeps its own values when they differ, and the flag says so, so saving puts back what was there.
+                        distanceLeftCm = left?.distanceCm.takeIf { perSide },
+                        weightLeftG = left?.addedWeightGrams.takeIf { perSide },
+                        assistanceLeftG = left?.assistanceGrams.takeIf { perSide },
+                        perSide = perSide,
                     )
                 }
             DraftExercise(
@@ -220,10 +227,15 @@ object WorkoutEditor {
             if ((entry.durationMillis ?: -1) / 1_000 == value.toLong()) entry else entry.copy(durationMillis = value * 1_000L)
     }
 
-    private fun withMetrics(entry: SetEntryEntity, set: DraftSet) = entry.copy(
-        distanceCm = set.distanceCm, addedWeightGrams = set.weightG, assistanceGrams = set.assistanceG,
-        isWarmUp = set.warmUp, effortLeft = set.effortLeft,
-    )
+    private fun withMetrics(entry: SetEntryEntity, set: DraftSet): SetEntryEntity {
+        val own = set.perSide && entry.side == BodySide.LEFT
+        return entry.copy(
+            distanceCm = if (own) set.distanceLeftCm else set.distanceCm,
+            addedWeightGrams = if (own) set.weightLeftG else set.weightG,
+            assistanceGrams = if (own) set.assistanceLeftG else set.assistanceG,
+            isWarmUp = set.warmUp, effortLeft = set.effortLeft,
+        )
+    }
 
     private fun sidesOf(set: DraftSet, unilateral: Boolean): List<Pair<BodySide, Int>> =
         if (unilateral) listOfNotNull(set.value?.let { BodySide.RIGHT to it }, set.valueLeft?.let { BodySide.LEFT to it })
@@ -241,9 +253,9 @@ object WorkoutEditor {
         side = side,
         repetitions = if (kind == ExerciseKind.DYNAMIC) value else null,
         durationMillis = if (kind == ExerciseKind.ISOMETRIC) value * 1_000L else null,
-        distanceCm = set.distanceCm,
-        addedWeightGrams = set.weightG,
-        assistanceGrams = set.assistanceG,
+        distanceCm = if (set.perSide && side == BodySide.LEFT) set.distanceLeftCm else set.distanceCm,
+        addedWeightGrams = if (set.perSide && side == BodySide.LEFT) set.weightLeftG else set.weightG,
+        assistanceGrams = if (set.perSide && side == BodySide.LEFT) set.assistanceLeftG else set.assistanceG,
         timePrecision = TimePrecision.MINUTE,
         isWarmUp = set.warmUp,
         effortLeft = set.effortLeft,

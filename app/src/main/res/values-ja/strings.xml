@@ -999,6 +999,7 @@
     <string name="csv_issue_effort">%1$d行目: effortLeft「%2$s」が正しくありません（0〜%3$d）</string>
     <string name="csv_issue_exercise_missing">%1$d行目: 種目が見つかりません: %2$s（%3$s）</string>
     <string name="csv_issue_old_format">%1$d行目: このワークアウトは古い記録形式のため追加されませんでした。ウォームアップの印や負荷は保存できません</string>
+    <string name="csv_issue_old_format_sides">%1$d行目: このワークアウトは古い記録形式のため追加されませんでした。左右で異なる値は保存できません</string>
     <string name="csv_issue_empty">CSVファイルが空です</string>
     <string name="csv_skip_exists">「%1$s」（すでにあります）</string>
     <string name="csv_skip_exists_link">「%1$s」（すでにあります。カタログのリンクは変更されません）</string>

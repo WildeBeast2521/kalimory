@@ -94,4 +94,12 @@ class SingleWorkoutWriterTest {
     @Test fun `a rating outside the scale is refused`() {
         assertThrows(IllegalArgumentException::class.java) { SingleWorkoutWriter.rows(workout(listOf(set(1, 8).copy(effortLeft = 5)))) }
     }
+
+    @Test fun `each side of a one-sided set is written with its own assistance`() {
+        val right = SingleWorkoutSet(1, BodySide.RIGHT, 3, targetValue = 3, distanceCm = null, weightG = null, assistanceG = 5_000, completedAtWallMillis = 1_000L)
+        val left = SingleWorkoutSet(1, BodySide.LEFT, 3, targetValue = 3, distanceCm = null, weightG = null, assistanceG = 9_000, completedAtWallMillis = 2_000L)
+        val rows = SingleWorkoutWriter.rows(workout(listOf(right, left), laterality = Laterality.UNILATERAL))
+        assertEquals(listOf(BodySide.RIGHT, BodySide.LEFT), rows.sets.map { it.side })
+        assertEquals(listOf<Int?>(5_000, 9_000), rows.sets.map { it.assistanceGrams })
+    }
 }

@@ -21,6 +21,14 @@ data class DraftSet(
     val warmUp: Boolean = false,
     /** The user's effort rating, 0..[Effort.MAX_EFFORT_LEFT], or null. Never set on a legacy workout. */
     val effortLeft: Int? = null,
+    /**
+     * The left side's own distance, weight and assistance, used when [perSide] is true. When it is false both
+     * sides take the values above, as a set entered with one weight always did.
+     */
+    val distanceLeftCm: Int? = null,
+    val weightLeftG: Int? = null,
+    val assistanceLeftG: Int? = null,
+    val perSide: Boolean = false,
 )
 
 /**

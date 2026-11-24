@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.withSideChange
 import io.github.gonbei774.calisthenicsmemory.data.raiseLaterTargets
 import io.github.gonbei774.calisthenicsmemory.data.skipExercise
 import io.github.gonbei774.calisthenicsmemory.data.nextPendingIndex
@@ -529,36 +530,21 @@ fun ProgramExecutionScreen(
                             onUpdateSetWeightG = { setIndex, newValue ->
                                 if (setIndex !in step.session.sets.indices) return@ProgramConfirmStep
                                 val target = step.session.sets[setIndex]
-                                // 同じ exerciseIndex + setNumber の全行（R/L 両側 + 全ラウンド）に伝播
-                                // Confirm 画面はラウンド1のみ表示するため、編集は全ラウンドに反映
-                                val newSets = step.session.sets.toMutableList()
-                                newSets.forEachIndexed { i, s ->
-                                    if (s.exerciseIndex == target.exerciseIndex && s.setNumber == target.setNumber) {
-                                        newSets[i] = s.copy(weightG = newValue)
-                                    }
-                                }
+                                // The Confirm screen shows round 1 only, so an edit goes to that side in every round; a Right
+                                // edit also moves the Left side while it still equalled the old Right value.
+                                val newSets = step.session.sets.withSideChange(target, { it.weightG }, { x, v -> x.copy(weightG = v) }, newValue).toMutableList()
                                 currentStep = ProgramExecutionStep.Confirm(step.session.copy(sets = newSets))
                             },
                             onUpdateSetDistanceCm = { setIndex, newValue ->
                                 if (setIndex !in step.session.sets.indices) return@ProgramConfirmStep
                                 val target = step.session.sets[setIndex]
-                                val newSets = step.session.sets.toMutableList()
-                                newSets.forEachIndexed { i, s ->
-                                    if (s.exerciseIndex == target.exerciseIndex && s.setNumber == target.setNumber) {
-                                        newSets[i] = s.copy(distanceCm = newValue)
-                                    }
-                                }
+                                val newSets = step.session.sets.withSideChange(target, { it.distanceCm }, { x, v -> x.copy(distanceCm = v) }, newValue).toMutableList()
                                 currentStep = ProgramExecutionStep.Confirm(step.session.copy(sets = newSets))
                             },
                             onUpdateSetAssistanceG = { setIndex, newValue ->
                                 if (setIndex !in step.session.sets.indices) return@ProgramConfirmStep
                                 val target = step.session.sets[setIndex]
-                                val newSets = step.session.sets.toMutableList()
-                                newSets.forEachIndexed { i, s ->
-                                    if (s.exerciseIndex == target.exerciseIndex && s.setNumber == target.setNumber) {
-                                        newSets[i] = s.copy(assistanceG = newValue)
-                                    }
-                                }
+                                val newSets = step.session.sets.withSideChange(target, { it.assistanceG }, { x, v -> x.copy(assistanceG = v) }, newValue).toMutableList()
                                 currentStep = ProgramExecutionStep.Confirm(step.session.copy(sets = newSets))
                             },
                             onUpdateSetCount = { exerciseIndex, newSetCount ->
@@ -1269,7 +1255,9 @@ fun ProgramExecutionScreen(
                             if (pair.exerciseIndex == target.exerciseIndex
                                 && pair.setNumber == target.setNumber
                                 && pair.roundNumber == target.roundNumber
-                                && pair.side != null && pair.side != target.side) {
+                                && pair.side != null && pair.side != target.side
+                                // The left follows the right only while they were equal.
+                                && target.side == "Right" && pair.weightG == target.weightG) {
                                 newSets[pairIndex] = pair.copy(weightG = newValue)
                             }
                         }
@@ -1297,7 +1285,9 @@ fun ProgramExecutionScreen(
                             if (pair.exerciseIndex == target.exerciseIndex
                                 && pair.setNumber == target.setNumber
                                 && pair.roundNumber == target.roundNumber
-                                && pair.side != null && pair.side != target.side) {
+                                && pair.side != null && pair.side != target.side
+                                // The left follows the right only while they were equal.
+                                && target.side == "Right" && pair.distanceCm == target.distanceCm) {
                                 newSets[pairIndex] = pair.copy(distanceCm = newValue)
                             }
                         }
@@ -1325,7 +1315,9 @@ fun ProgramExecutionScreen(
                             if (pair.exerciseIndex == target.exerciseIndex
                                 && pair.setNumber == target.setNumber
                                 && pair.roundNumber == target.roundNumber
-                                && pair.side != null && pair.side != target.side) {
+                                && pair.side != null && pair.side != target.side
+                                // The left follows the right only while they were equal.
+                                && target.side == "Right" && pair.assistanceG == target.assistanceG) {
                                 newSets[pairIndex] = pair.copy(assistanceG = newValue)
                             }
                         }

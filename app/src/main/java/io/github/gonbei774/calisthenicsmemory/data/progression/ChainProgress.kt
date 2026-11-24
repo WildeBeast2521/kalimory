@@ -5,6 +5,7 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueChain
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Standard
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftAssistanceG
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
 
@@ -112,7 +113,7 @@ object Progressions {
                 StepSession(
                     key.second, key.third,
                     sets.map(::value).sortedDescending(),
-                    sets.filter { (it.assistanceG ?: 0) == 0 }.map(::value).sortedDescending(),
+                    sets.filter { (it.assistanceG ?: 0) == 0 && (it.leftAssistanceG ?: 0) == 0 }.map(::value).sortedDescending(),
                 )
             }
             .sortedWith(compareBy({ it.date }, { it.time }))

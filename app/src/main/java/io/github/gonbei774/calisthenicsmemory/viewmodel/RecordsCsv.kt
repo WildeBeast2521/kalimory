@@ -9,9 +9,12 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.ResolverStyle
 
-/** The records CSV header (13 columns; warmUp and effortLeft are optional on import, so older files still read). */
+/**
+ * The records CSV header (16 columns). The last five are optional on import, so older files still read: warmUp, effortLeft,
+ * and the left side's own weightLeftG, assistanceLeftG and distanceLeftCm, where an empty cell means "the same as the right side".
+ */
 internal const val RECORDS_CSV_HEADER =
-    "exerciseName,exerciseType,date,time,setNumber,valueRight,valueLeft,comment,distanceCm,weightG,assistanceG,warmUp,effortLeft"
+    "exerciseName,exerciseType,date,time,setNumber,valueRight,valueLeft,comment,distanceCm,weightG,assistanceG,warmUp,effortLeft,weightLeftG,assistanceLeftG,distanceLeftCm"
 
 /**
  * Every set in [records], legacy or v2, as the records CSV: sorted by date, time and set number,
@@ -40,6 +43,10 @@ internal fun recordsCsv(records: List<HistorySet>, exercises: List<Exercise>): S
                     record.assistanceG?.toString() ?: "",
                     record.warmUp.toString(),
                     record.effortLeft?.toString() ?: "",
+                    // A left value is written only when the sides differ; a legacy row and an equal value stay empty.
+                    leftCell(record.valueLeft, record.weightG, record.weightLeftG),
+                    leftCell(record.valueLeft, record.assistanceG, record.assistanceLeftG),
+                    leftCell(record.valueLeft, record.distanceCm, record.distanceLeftCm),
                 )
             )
         }
@@ -61,7 +68,15 @@ internal data class RecordCsvRow(
     val assistanceG: Int?,
     val warmUp: Boolean = false,
     val effortLeft: Int? = null,
+    /** The left side's own values; null means the same as the right side. */
+    val weightLeftG: Int? = null,
+    val assistanceLeftG: Int? = null,
+    val distanceLeftCm: Int? = null,
 )
+
+/** The cell for a left-side value: only when the set has a left side and it differs from the right side's. */
+private fun leftCell(valueLeft: Int?, right: Int?, left: Int?): String =
+    if (valueLeft != null && left != right) left?.toString() ?: "" else ""
 
 private val CSV_DATE = DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(ResolverStyle.STRICT)
 private val CSV_TIME = DateTimeFormatter.ofPattern("HH:mm").withResolverStyle(ResolverStyle.STRICT)
@@ -87,12 +102,12 @@ internal fun parseRecordCsvRow(columns: List<String>): Result<RecordCsvRow> {
     }
     if (runCatching { LocalDate.parse(date, CSV_DATE) }.isFailure) return invalid(R.string.csv_issue_date, date)
     if (runCatching { LocalTime.parse(time, CSV_TIME) }.isFailure) return invalid(R.string.csv_issue_time, time)
-    val optional = listOf(6, 8, 9, 10).associateWith { field(it) }
+    val optional = listOf(6, 8, 9, 10, 13, 14, 15).associateWith { field(it) }
     val numbers = (listOf(setNumber, valueRight) + optional.values.filter { it.isNotEmpty() }).map { it.toIntOrNull() }
     if (numbers.any { it == null }) return invalid(R.string.csv_issue_number)
     // Every number but the distance must be 0 or more; a distance may be negative, as every distance
     // input in the app allows, so a file the app wrote always reads back.
-    val mustBePositive = listOf(setNumber, valueRight) + listOf(6, 9, 10).map { optional.getValue(it) }.filter { it.isNotEmpty() }
+    val mustBePositive = listOf(setNumber, valueRight) + listOf(6, 9, 10, 13, 14).map { optional.getValue(it) }.filter { it.isNotEmpty() }
     if (mustBePositive.any { it.toInt() < 0 }) return invalid(R.string.csv_issue_negative)
     fun number(index: Int) = optional.getValue(index).takeIf { it.isNotEmpty() }?.toInt()
     // Warm-up and effort (optional): a value that does not read is an error, never quietly an empty cell.
@@ -116,6 +131,9 @@ internal fun parseRecordCsvRow(columns: List<String>): Result<RecordCsvRow> {
             assistanceG = number(10),
             warmUp = warmUp,
             effortLeft = effortLeft,
+            weightLeftG = number(13),
+            assistanceLeftG = number(14),
+            distanceLeftCm = number(15),
         )
     )
 }

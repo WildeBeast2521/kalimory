@@ -1053,6 +1053,7 @@
     <string name="csv_issue_effort">Riga %1$d: effortLeft \"%2$s\" non valido (atteso da 0 a %3$d)</string>
     <string name="csv_issue_exercise_missing">Riga %1$d: esercizio non trovato: %2$s (%3$s)</string>
     <string name="csv_issue_old_format">Riga %1$d: non aggiunto perché questo allenamento è nel formato di registro precedente, che non può contenere segni di riscaldamento né sforzo</string>
+    <string name="csv_issue_old_format_sides">Riga %1$d: non aggiunto perché questo allenamento è nel formato di registro precedente, che non può contenere un valore diverso per ogni lato</string>
     <string name="csv_issue_empty">Il file CSV è vuoto</string>
     <string name="csv_skip_exists">\"%1$s\" (esiste già)</string>
     <string name="csv_skip_exists_link">\"%1$s\" (esiste già; il collegamento al catalogo non cambia)</string>

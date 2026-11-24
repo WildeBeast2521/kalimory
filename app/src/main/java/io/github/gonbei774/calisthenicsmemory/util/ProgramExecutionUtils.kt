@@ -130,12 +130,12 @@ fun buildProgramValueSets(
                     roundNumber = round,
                     totalRounds = totalRounds,
                     loopRestAfterSeconds = if (isLastSetOfRound) loopRestAfter else 0,
-                    weightG = priorTracking?.weightG,
-                    distanceCm = priorTracking?.distanceCm,
-                    assistanceG = priorTracking?.assistanceG,
-                    previousWeightG = priorTracking?.previousWeightG,
-                    previousDistanceCm = priorTracking?.previousDistanceCm,
-                    previousAssistanceG = priorTracking?.previousAssistanceG
+                    weightG = (priorLeft ?: priorTracking)?.weightG,
+                    distanceCm = (priorLeft ?: priorTracking)?.distanceCm,
+                    assistanceG = (priorLeft ?: priorTracking)?.assistanceG,
+                    previousWeightG = (priorLeft ?: priorTracking)?.previousWeightG,
+                    previousDistanceCm = (priorLeft ?: priorTracking)?.previousDistanceCm,
+                    previousAssistanceG = (priorLeft ?: priorTracking)?.previousAssistanceG
                 ))
             } else {
                 val priorSet = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == null && it.roundNumber == round }
@@ -228,12 +228,12 @@ fun buildChallengeValueSets(
                     roundNumber = round,
                     totalRounds = totalRounds,
                     loopRestAfterSeconds = if (isLastSetOfRound) loopRestAfter else 0,
-                    weightG = priorTracking?.weightG,
-                    distanceCm = priorTracking?.distanceCm,
-                    assistanceG = priorTracking?.assistanceG,
-                    previousWeightG = priorTracking?.previousWeightG,
-                    previousDistanceCm = priorTracking?.previousDistanceCm,
-                    previousAssistanceG = priorTracking?.previousAssistanceG
+                    weightG = (priorLeft ?: priorTracking)?.weightG,
+                    distanceCm = (priorLeft ?: priorTracking)?.distanceCm,
+                    assistanceG = (priorLeft ?: priorTracking)?.assistanceG,
+                    previousWeightG = (priorLeft ?: priorTracking)?.previousWeightG,
+                    previousDistanceCm = (priorLeft ?: priorTracking)?.previousDistanceCm,
+                    previousAssistanceG = (priorLeft ?: priorTracking)?.previousAssistanceG
                 ))
             } else {
                 val priorSet = originalSets.find { it.exerciseIndex == index && it.setNumber == setNum && it.side == null && it.roundNumber == round }

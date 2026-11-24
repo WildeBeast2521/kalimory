@@ -45,6 +45,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.v2.linkedLeft
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftWeightG
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftDistanceCm
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftAssistanceG
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
@@ -610,6 +614,27 @@ fun WorkoutInputScreen(
         )
     }
 
+    // A one-sided exercise: the left side's own distance, weight and assistance per set, starting from the last
+    // session's left side and following the right one until changed.
+    var distanceLeftInputs by remember(prefillData) {
+        mutableStateOf(
+            if (exercise.distanceTrackingEnabled) List(numberOfSets) { index -> prefillData?.getOrNull(index)?.leftDistanceCm?.toString() ?: "" }
+            else List(numberOfSets) { "" }
+        )
+    }
+    var weightLeftInputs by remember(prefillData) {
+        mutableStateOf(
+            if (exercise.weightTrackingEnabled) List(numberOfSets) { index -> prefillData?.getOrNull(index)?.leftWeightG?.let { (it / 1000.0).toString() } ?: "" }
+            else List(numberOfSets) { "" }
+        )
+    }
+    var assistanceLeftInputs by remember(prefillData) {
+        mutableStateOf(
+            if (exercise.assistanceTrackingEnabled) List(numberOfSets) { index -> prefillData?.getOrNull(index)?.leftAssistanceG?.let { (it / 1000.0).toString() } ?: "" }
+            else List(numberOfSets) { "" }
+        )
+    }
+
     // セット状態（DONE/CURRENT/PENDING）。セッション限定の UI 状態で DB には保存しない。
     // 初期状態は「セット1が実行中、残りは未着手」。
     var setStatuses by remember(prefillData) {
@@ -676,6 +701,9 @@ fun WorkoutInputScreen(
         distanceInputs.joinToString(","),
         weightInputs.joinToString(","),
         assistanceInputs.joinToString(","),
+        distanceLeftInputs.joinToString(","),
+        weightLeftInputs.joinToString(","),
+        assistanceLeftInputs.joinToString(","),
         warmUps.joinToString(","),
         efforts.joinToString(","),
         comment
@@ -726,12 +754,18 @@ fun WorkoutInputScreen(
                 val assistancesG = validIndices.map { i ->
                     parseWeightG(assistanceInputs.getOrElse(i) { "" })
                 }
+                // The left side's own values; an empty field is the same as the right side.
+                val distancesLeftCm = validIndices.map { i -> parseDistanceCm(distanceLeftInputs.getOrElse(i) { "" }) }
+                val weightsLeftG = validIndices.map { i -> parseWeightG(weightLeftInputs.getOrElse(i) { "" }) }
+                val assistancesLeftG = validIndices.map { i -> parseWeightG(assistanceLeftInputs.getOrElse(i) { "" }) }
 
                 finish(
                     manualWorkout(
                         exercise, groups, selectedDate, selectedTime, comment,
                         valuesRight.indices.map { i ->
-                            ManualSet(valuesRight[i], valuesLeft[i], distancesCm[i], weightsG[i], assistancesG[i], warmUp = warmUps.getOrElse(validIndices[i]) { false }, effortLeft = efforts.getOrElse(validIndices[i]) { null })
+                            ManualSet(valuesRight[i], valuesLeft[i], distancesCm[i], weightsG[i], assistancesG[i],
+                                distanceLeftCm = distancesLeftCm[i], weightLeftG = weightsLeftG[i], assistanceLeftG = assistancesLeftG[i],
+                                warmUp = warmUps.getOrElse(validIndices[i]) { false }, effortLeft = efforts.getOrElse(validIndices[i]) { null })
                         }
                     )
                 )
@@ -785,6 +819,9 @@ fun WorkoutInputScreen(
         distanceInputs = List(numberOfSets) { index -> distanceInputs.getOrElse(index) { "" } }
         weightInputs = List(numberOfSets) { index -> weightInputs.getOrElse(index) { "" } }
         assistanceInputs = List(numberOfSets) { index -> assistanceInputs.getOrElse(index) { "" } }
+        distanceLeftInputs = List(numberOfSets) { index -> distanceLeftInputs.getOrElse(index) { "" } }
+        weightLeftInputs = List(numberOfSets) { index -> weightLeftInputs.getOrElse(index) { "" } }
+        assistanceLeftInputs = List(numberOfSets) { index -> assistanceLeftInputs.getOrElse(index) { "" } }
         // セット状態もリサイズ（既存は維持、新規は未着手）。実行中が居なくなったら先頭の未着手を昇格。
         val resized = List(numberOfSets) { index -> setStatuses.getOrElse(index) { SetStatus.PENDING } }
         setStatuses = if (resized.none { it == SetStatus.CURRENT }) {
@@ -829,6 +866,9 @@ fun WorkoutInputScreen(
             distanceInputs = distanceInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             weightInputs = weightInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             assistanceInputs = assistanceInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
+            distanceLeftInputs = distanceLeftInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
+            weightLeftInputs = weightLeftInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
+            assistanceLeftInputs = assistanceLeftInputs.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
             // セット状態からも削除。実行中を消した場合は次の未着手（無ければ末尾）を昇格。
             val wasCurrent = setStatuses.getOrNull(idx) == SetStatus.CURRENT
             val newStatuses = setStatuses.toMutableList().also { if (idx in it.indices) it.removeAt(idx) }
@@ -1072,14 +1112,23 @@ fun WorkoutInputScreen(
                                 weightInputs = weightInputs,
                                 assistanceInputs = assistanceInputs,
                                 onDistanceChange = { i, v ->
+                                    distanceLeftInputs = distanceLeftInputs.toMutableList().also { if (i in it.indices) it[i] = linkedLeft(distanceInputs.getOrElse(i) { "" }, v, it[i]) }
                                     distanceInputs = distanceInputs.toMutableList().also { it[i] = v }
                                 },
                                 onWeightChange = { i, v ->
+                                    weightLeftInputs = weightLeftInputs.toMutableList().also { if (i in it.indices) it[i] = linkedLeft(weightInputs.getOrElse(i) { "" }, v, it[i]) }
                                     weightInputs = weightInputs.toMutableList().also { it[i] = v }
                                 },
                                 onAssistanceChange = { i, v ->
+                                    assistanceLeftInputs = assistanceLeftInputs.toMutableList().also { if (i in it.indices) it[i] = linkedLeft(assistanceInputs.getOrElse(i) { "" }, v, it[i]) }
                                     assistanceInputs = assistanceInputs.toMutableList().also { it[i] = v }
                                 },
+                                leftDistanceInputs = distanceLeftInputs,
+                                leftWeightInputs = weightLeftInputs,
+                                leftAssistanceInputs = assistanceLeftInputs,
+                                onLeftDistanceChange = { i, v -> distanceLeftInputs = distanceLeftInputs.toMutableList().also { if (i in it.indices) it[i] = v } },
+                                onLeftWeightChange = { i, v -> weightLeftInputs = weightLeftInputs.toMutableList().also { if (i in it.indices) it[i] = v } },
+                                onLeftAssistanceChange = { i, v -> assistanceLeftInputs = assistanceLeftInputs.toMutableList().also { if (i in it.indices) it[i] = v } },
                                 previousSession = previousSession
                             )
                             if (showWarmUp || showEffort) {
@@ -1217,6 +1266,9 @@ fun WorkoutInputScreen(
                             distanceInputs = distanceInputs + (distanceInputs.lastOrNull() ?: "")
                             weightInputs = weightInputs + (weightInputs.lastOrNull() ?: "")
                             assistanceInputs = assistanceInputs + (assistanceInputs.lastOrNull() ?: "")
+                            distanceLeftInputs = distanceLeftInputs + (distanceLeftInputs.lastOrNull() ?: "")
+                            weightLeftInputs = weightLeftInputs + (weightLeftInputs.lastOrNull() ?: "")
+                            assistanceLeftInputs = assistanceLeftInputs + (assistanceLeftInputs.lastOrNull() ?: "")
                             pendingScrollToNewSet = true
                             onAddSet()
                         },
@@ -1481,13 +1533,22 @@ private fun PerSetTrackingFields(
     onDistanceChange: (Int, String) -> Unit,
     onWeightChange: (Int, String) -> Unit,
     onAssistanceChange: (Int, String) -> Unit,
-    previousSession: List<HistorySet>? = null
+    previousSession: List<HistorySet>? = null,
+    // For a one-sided exercise: the left side's own value under each right one.
+    leftDistanceInputs: List<String>? = null,
+    leftWeightInputs: List<String>? = null,
+    leftAssistanceInputs: List<String>? = null,
+    onLeftDistanceChange: (Int, String) -> Unit = { _, _ -> },
+    onLeftWeightChange: (Int, String) -> Unit = { _, _ -> },
+    onLeftAssistanceChange: (Int, String) -> Unit = { _, _ -> },
 ) {
+    val rightPrefix = if (leftDistanceInputs != null) stringResource(R.string.right_colon) + " " else ""
+    val leftPrefix = stringResource(R.string.left_colon) + " "
     // 距離
     if (exercise.distanceTrackingEnabled) {
         val distanceCurrent = distanceInputs.getOrElse(index) { "" }.toIntOrNull() ?: 0
         InlineStepperRow(
-            label = stringResource(R.string.distance_input_label),
+            label = rightPrefix + stringResource(R.string.distance_input_label),
             value = distanceInputs.getOrElse(index) { "" },
             onValueChange = { value ->
                 val normalized = value
@@ -1517,12 +1578,45 @@ private fun PerSetTrackingFields(
             )
         )
     }
+    if (exercise.distanceTrackingEnabled && leftDistanceInputs != null) {
+        val distanceCurrent = leftDistanceInputs!!.getOrElse(index) { "" }.toIntOrNull() ?: 0
+        InlineStepperRow(
+            label = leftPrefix + stringResource(R.string.distance_input_label),
+            value = leftDistanceInputs!!.getOrElse(index) { "" },
+            onValueChange = { value ->
+                val normalized = value
+                    .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
+                    .replace("．", ".").replace("－", "-")
+                if (normalized.isEmpty() || normalized == "-" || normalized.toIntOrNull() != null) {
+                    onLeftDistanceChange(index, normalized)
+                }
+            },
+            keyboardType = KeyboardType.Number,
+            accentColor = MaterialTheme.colorScheme.secondary,
+            decrementEnabled = distanceCurrent > 0,
+            onDecrement = {
+                val current = leftDistanceInputs!!.getOrElse(index) { "" }.toIntOrNull() ?: 0
+                val next = (current - 1).coerceAtLeast(0)
+                if (next == current) return@InlineStepperRow false
+                onLeftDistanceChange(index, next.toString())
+                true
+            },
+            onIncrement = {
+                val current = leftDistanceInputs!!.getOrElse(index) { "" }.toIntOrNull() ?: 0
+                onLeftDistanceChange(index, (current + 1).toString())
+                true
+            },
+            previousText = previousAnnotation(
+                previousSession?.let { it.getOrNull(index)?.leftDistanceCm?.toString() ?: "—" }
+            )
+        )
+    }
 
     // 荷重（kg）
     if (exercise.weightTrackingEnabled) {
         val weightCurrent = weightInputs.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0
         InlineStepperRow(
-            label = stringResource(R.string.weight_input_label),
+            label = rightPrefix + stringResource(R.string.weight_input_label),
             value = weightInputs.getOrElse(index) { "" },
             onValueChange = { value ->
                 val normalized = value
@@ -1555,12 +1649,48 @@ private fun PerSetTrackingFields(
             )
         )
     }
+    if (exercise.weightTrackingEnabled && leftWeightInputs != null) {
+        val weightCurrent = leftWeightInputs!!.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0
+        InlineStepperRow(
+            label = leftPrefix + stringResource(R.string.weight_input_label),
+            value = leftWeightInputs!!.getOrElse(index) { "" },
+            onValueChange = { value ->
+                val normalized = value
+                    .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
+                    .replace("．", ".")
+                val isValidDecimal = normalized.isEmpty() ||
+                    normalized == "." ||
+                    normalized.matches(Regex("^\\d*\\.?\\d?$"))
+                if (isValidDecimal) {
+                    onLeftWeightChange(index, normalized)
+                }
+            },
+            keyboardType = KeyboardType.Decimal,
+            accentColor = MaterialTheme.colorScheme.primary,
+            decrementEnabled = weightCurrent > 0.0,
+            onDecrement = {
+                val current = leftWeightInputs!!.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0
+                val next = (current - 1.0).coerceAtLeast(0.0)
+                if (next == current) return@InlineStepperRow false
+                onLeftWeightChange(index, formatStepKg(next))
+                true
+            },
+            onIncrement = {
+                val current = leftWeightInputs!!.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0
+                onLeftWeightChange(index, formatStepKg(current + 1.0))
+                true
+            },
+            previousText = previousAnnotation(
+                previousSession?.let { it.getOrNull(index)?.leftWeightG?.let { g -> formatStepKg(g / 1000.0) } ?: "—" }
+            )
+        )
+    }
 
     // アシスト（kg）
     if (exercise.assistanceTrackingEnabled) {
         val assistCurrent = assistanceInputs.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0
         InlineStepperRow(
-            label = stringResource(R.string.assistance_input_label),
+            label = rightPrefix + stringResource(R.string.assistance_input_label),
             value = assistanceInputs.getOrElse(index) { "" },
             onValueChange = { value ->
                 val normalized = value
@@ -1590,6 +1720,42 @@ private fun PerSetTrackingFields(
             },
             previousText = previousAnnotation(
                 previousSession?.let { it.getOrNull(index)?.assistanceG?.let { g -> formatStepKg(g / 1000.0) } ?: "—" }
+            )
+        )
+    }
+    if (exercise.assistanceTrackingEnabled && leftAssistanceInputs != null) {
+        val assistCurrent = leftAssistanceInputs!!.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0
+        InlineStepperRow(
+            label = leftPrefix + stringResource(R.string.assistance_input_label),
+            value = leftAssistanceInputs!!.getOrElse(index) { "" },
+            onValueChange = { value ->
+                val normalized = value
+                    .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
+                    .replace("．", ".")
+                val isValidDecimal = normalized.isEmpty() ||
+                    normalized == "." ||
+                    normalized.matches(Regex("^\\d*\\.?\\d?$"))
+                if (isValidDecimal) {
+                    onLeftAssistanceChange(index, normalized)
+                }
+            },
+            keyboardType = KeyboardType.Decimal,
+            accentColor = MaterialTheme.colorScheme.primary,
+            decrementEnabled = assistCurrent > 0.0,
+            onDecrement = {
+                val current = leftAssistanceInputs!!.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0
+                val next = (current - 1.0).coerceAtLeast(0.0)
+                if (next == current) return@InlineStepperRow false
+                onLeftAssistanceChange(index, formatStepKg(next))
+                true
+            },
+            onIncrement = {
+                val current = leftAssistanceInputs!!.getOrElse(index) { "" }.toDoubleOrNull() ?: 0.0
+                onLeftAssistanceChange(index, formatStepKg(current + 1.0))
+                true
+            },
+            previousText = previousAnnotation(
+                previousSession?.let { it.getOrNull(index)?.leftAssistanceG?.let { g -> formatStepKg(g / 1000.0) } ?: "—" }
             )
         )
     }
@@ -1723,7 +1889,7 @@ private fun InlineStepperRow(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = if (isLargeFontScale()) Int.MAX_VALUE else 1,
+            maxLines = if (isLargeFontScale()) Int.MAX_VALUE else 2,
             modifier = modifier
         )
     }

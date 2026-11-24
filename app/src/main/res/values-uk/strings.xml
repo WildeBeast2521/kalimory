@@ -1025,6 +1025,7 @@
     <string name="csv_issue_effort">Рядок %1$d: недійсне значення effortLeft «%2$s» (потрібно від 0 до %3$d)</string>
     <string name="csv_issue_exercise_missing">Рядок %1$d: вправу не знайдено: %2$s (%3$s)</string>
     <string name="csv_issue_old_format">Рядок %1$d: не додано — це тренування у старому форматі запису, який не зберігає позначки розминки й зусилля</string>
+    <string name="csv_issue_old_format_sides">Рядок %1$d: не додано — це тренування у старому форматі запису, який не зберігає різні значення для кожної сторони</string>
     <string name="csv_issue_empty">Файл CSV порожній</string>
     <string name="csv_skip_exists">«%1$s» (вже є)</string>
     <string name="csv_skip_exists_link">«%1$s» (вже є; зв’язок із каталогом не змінюється)</string>

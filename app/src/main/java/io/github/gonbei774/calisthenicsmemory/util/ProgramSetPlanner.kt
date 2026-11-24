@@ -1,5 +1,8 @@
 package io.github.gonbei774.calisthenicsmemory.util
 
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftAssistanceG
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftDistanceCm
+import io.github.gonbei774.calisthenicsmemory.data.v2.leftWeightG
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
 import io.github.gonbei774.calisthenicsmemory.data.ProgramLoop
@@ -136,12 +139,12 @@ object ProgramSetPlanner {
                                 roundNumber = roundNumber,
                                 totalRounds = totalRounds,
                                 loopRestAfterSeconds = actualLoopRestAfter,
-                                weightG = record.weightG,
-                                distanceCm = record.distanceCm,
-                                assistanceG = record.assistanceG,
-                                previousWeightG = record.weightG,
-                                previousDistanceCm = record.distanceCm,
-                                previousAssistanceG = record.assistanceG
+                                weightG = record.leftWeightG,
+                                distanceCm = record.leftDistanceCm,
+                                assistanceG = record.leftAssistanceG,
+                                previousWeightG = record.leftWeightG,
+                                previousDistanceCm = record.leftDistanceCm,
+                                previousAssistanceG = record.leftAssistanceG
                             )
                         )
                     } else {
@@ -219,12 +222,12 @@ object ProgramSetPlanner {
                             roundNumber = roundNumber,
                             totalRounds = totalRounds,
                             loopRestAfterSeconds = actualLoopRestAfter,
-                            weightG = matchingRecord?.weightG,
-                            distanceCm = matchingRecord?.distanceCm,
-                            assistanceG = matchingRecord?.assistanceG,
-                            previousWeightG = matchingRecord?.weightG,
-                            previousDistanceCm = matchingRecord?.distanceCm,
-                            previousAssistanceG = matchingRecord?.assistanceG
+                            weightG = matchingRecord?.leftWeightG,
+                            distanceCm = matchingRecord?.leftDistanceCm,
+                            assistanceG = matchingRecord?.leftAssistanceG,
+                            previousWeightG = matchingRecord?.leftWeightG,
+                            previousDistanceCm = matchingRecord?.leftDistanceCm,
+                            previousAssistanceG = matchingRecord?.leftAssistanceG
                         )
                     )
                 } else {

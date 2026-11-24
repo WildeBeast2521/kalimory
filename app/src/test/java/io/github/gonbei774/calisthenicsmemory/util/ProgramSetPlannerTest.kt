@@ -78,4 +78,10 @@ class ProgramSetPlannerTest {
         val sets = ProgramSetPlanner.plan(listOf(pe(lunge, 0, sets = 2, target = 8) to lunge), emptyList(), emptyMap(), prefill = false)
         assertEquals(listOf("Right", "Left", "Right", "Left"), sets.map { it.side })
     }
+
+    @Test fun `with prefill, a one-sided exercise's left set starts from the left side of the last session`() {
+        val history = last(lunge, 5, left = 5).map { it.copy(assistanceG = 5_000, assistanceLeftG = 9_000, distanceLeftCm = null) }
+        val sets = ProgramSetPlanner.plan(listOf(pe(lunge, 0, sets = 1, target = 5) to lunge), emptyList(), mapOf(lunge.id to history), prefill = true)
+        assertEquals(listOf("Right" to 5_000, "Left" to 9_000), sets.map { it.side to it.assistanceG })
+    }
 }
