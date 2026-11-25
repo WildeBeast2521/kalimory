@@ -963,6 +963,7 @@
     <string name="weekly_review_mobility">Mobilità</string>
     <string name="weekly_review_other">Altri esercizi</string>
     <string name="weekly_review_other_detail">Non collegati al catalogo</string>
+    <string name="body_map_other_detail">Nessun muscolo scelto</string>
     <string name="weekly_review_intervals">Intervalli</string>
     <string name="weekly_review_intervals_detail">Ogni intervallo di lavoro conta come una serie</string>
     <string name="weekly_review_reference">Il segno indica 10 serie a settimana. In una revisione di 15 studi sull\'allenamento con i pesi, più serie a settimana si accompagnavano a una maggiore crescita muscolare, e i gruppi che facevano 10 o più serie per muscolo sono cresciuti di più (Schoenfeld et al., 2017).</string>

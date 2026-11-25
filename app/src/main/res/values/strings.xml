@@ -938,6 +938,7 @@
     <string name="weekly_review_mobility">Mobility</string>
     <string name="weekly_review_other">Other exercises</string>
     <string name="weekly_review_other_detail">Not linked to the catalogue</string>
+    <string name="body_map_other_detail">No muscles chosen</string>
     <string name="weekly_review_intervals">Intervals</string>
     <string name="weekly_review_intervals_detail">Each work interval counts as a set</string>
     <string name="weekly_review_reference">The mark shows 10 sets a week. In a review of 15 studies of weight training, more sets a week went with more muscle growth, and groups doing 10 or more sets per muscle grew the most (Schoenfeld et al., 2017).</string>

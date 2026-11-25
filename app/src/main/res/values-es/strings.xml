@@ -958,6 +958,7 @@
     <string name="weekly_review_mobility">Movilidad</string>
     <string name="weekly_review_other">Otros ejercicios</string>
     <string name="weekly_review_other_detail">Sin vínculo con el catálogo</string>
+    <string name="body_map_other_detail">Sin músculos elegidos</string>
     <string name="weekly_review_intervals">Intervalos</string>
     <string name="weekly_review_intervals_detail">Cada intervalo de trabajo cuenta como una serie</string>
     <string name="weekly_review_reference">La marca indica 10 series por semana. En una revisión de 15 estudios de entrenamiento con pesas, más series por semana se asociaron con más crecimiento muscular, y los grupos que hacían 10 o más series por músculo fueron los que más crecieron (Schoenfeld et al., 2017).</string>

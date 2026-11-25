@@ -930,6 +930,7 @@
     <string name="weekly_review_mobility">Подвижность</string>
     <string name="weekly_review_other">Другие упражнения</string>
     <string name="weekly_review_other_detail">Не связаны с каталогом</string>
+    <string name="body_map_other_detail">Мышцы не выбраны</string>
     <string name="weekly_review_intervals">Интервалы</string>
     <string name="weekly_review_intervals_detail">Каждый рабочий интервал считается подходом</string>
     <string name="weekly_review_reference">Отметка — 10 подходов в неделю. В обзоре 15 исследований тренировок с отягощениями больше подходов в неделю сопровождалось большим ростом мышц, а группы с 10 и более подходами на мышцу выросли сильнее всех (Schoenfeld et al., 2017).</string>

@@ -986,6 +986,7 @@
     <string name="weekly_review_mobility">المرونة</string>
     <string name="weekly_review_other">تمارين أخرى</string>
     <string name="weekly_review_other_detail">غير مرتبطة بكتالوج التمارين</string>
+    <string name="body_map_other_detail">لم تُختر عضلات</string>
     <string name="weekly_review_intervals">الفترات</string>
     <string name="weekly_review_intervals_detail">تُحسب كل فترة عمل مجموعةً واحدة</string>
     <string name="weekly_review_reference">تشير العلامة إلى 10 مجموعات أسبوعيًا. في مراجعة لـ15 دراسة عن التدريب بالأثقال، ارتبط عدد أكبر من المجموعات أسبوعيًا بنمو عضلي أكبر، وحقق المشاركون الذين أدّوا 10 مجموعات أو أكثر لكل عضلة أكبر نمو (Schoenfeld et al., 2017).</string>

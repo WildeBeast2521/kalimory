@@ -309,7 +309,7 @@ private fun NotOnMap(summary: MuscleVolumeSummary) {
                 ReviewRow(
                     stringResource(R.string.weekly_review_other),
                     pluralStringResource(R.plurals.set_count, summary.otherSets, summary.otherSets),
-                    stringResource(R.string.weekly_review_other_detail),
+                    stringResource(R.string.body_map_other_detail),
                 )
             }
             if (summary.intervalSets > 0) {

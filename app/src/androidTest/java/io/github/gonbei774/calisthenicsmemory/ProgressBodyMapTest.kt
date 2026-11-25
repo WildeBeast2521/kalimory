@@ -78,6 +78,30 @@ class ProgressBodyMapTest {
         rule.onNode(hasText(text(R.string.nav_progress)) and isHeading()).assertExists()
     }
 
+    @Test
+    fun aMuscleOnlyAnOwnExerciseTrainsShowsOnTheMap() {
+        // An exercise of your own with a muscle chosen counts like a catalogue exercise (ADR 0014).
+        val curlId = runBlocking {
+            database.exerciseDao().insertExercise(
+                Exercise(name = "Own neck work ${System.nanoTime()}", type = "Dynamic", primaryMuscles = linkedSetOf(Muscle.NECK))
+            ).also {
+                database.trainingRecordDao().insertRecord(
+                    TrainingRecord(exerciseId = it, valueRight = 10, setNumber = 1, date = LocalDate.now().toString(), time = "07:05")
+                )
+            }
+        }
+        try {
+            scenario = ActivityScenario.launch(MainActivity::class.java)
+            val progress = hasText(text(PrimaryDestination.PROGRESS.label)) and hasAnyAncestor(hasTestTag(PRIMARY_NAVIGATION_BAR_TAG))
+            rule.waitUntil(STARTUP_TIMEOUT_MS) { rule.onAllNodes(progress).fetchSemanticsNodes().isNotEmpty() }
+            rule.onNode(progress).performClick()
+            rule.onNode(hasContentDescription(text(R.string.body_map_open))).performClick()
+            rule.waitUntil(STARTUP_TIMEOUT_MS) { rule.onAllNodes(hasText(text(R.string.muscle_neck))).fetchSemanticsNodes().isNotEmpty() }
+        } finally {
+            runBlocking { database.exerciseDao().getExerciseById(curlId)?.let { database.exerciseDao().deleteExerciseAndTodoTasks(it) } }
+        }
+    }
+
     private companion object {
         const val STARTUP_TIMEOUT_MS = 10_000L
     }

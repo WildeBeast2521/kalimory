@@ -929,6 +929,7 @@
     <string name="weekly_review_mobility">Mobilität</string>
     <string name="weekly_review_other">Andere Übungen</string>
     <string name="weekly_review_other_detail">Nicht mit dem Katalog verknüpft</string>
+    <string name="body_map_other_detail">Keine Muskeln gewählt</string>
     <string name="weekly_review_intervals">Intervalle</string>
     <string name="weekly_review_intervals_detail">Jedes Arbeitsintervall zählt als Satz</string>
     <string name="weekly_review_reference">Die Markierung zeigt 10 Sätze pro Woche. In einer Auswertung von 15 Studien zum Training mit Gewichten gingen mehr Sätze pro Woche mit mehr Muskelwachstum einher, und Gruppen mit 10 oder mehr Sätzen pro Muskel legten am meisten zu (Schoenfeld et al., 2017).</string>

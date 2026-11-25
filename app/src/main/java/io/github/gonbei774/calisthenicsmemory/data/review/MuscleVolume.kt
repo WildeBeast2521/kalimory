@@ -26,11 +26,11 @@ data class MuscleVolumeSummary(
     val end: LocalDate,
     /** Muscles with at least one direct or helping set, most weighted first, ties in [Muscle] order. */
     val muscles: List<MuscleSets>,
-    /** Sets of catalogue training steps: the sets behind the figure. */
+    /** Sets behind the figure: catalogue training steps, and own exercises with muscles chosen. */
     val mappedSets: Int,
     /** Sets of mobility steps, which stretch rather than train and are not on the figure. */
     val mobilitySets: Int,
-    /** Sets of exercises with no catalogue link, an unknown link, or missing from the library. */
+    /** Sets of exercises with no catalogue link and no muscles chosen, or missing from the library. */
     val otherSets: Int,
     /** Work intervals done ([IntervalHistoryItem.completedSets]). */
     val intervalSets: Int,
@@ -49,7 +49,7 @@ enum class RecentTier { WORKED, RECOVERING }
  */
 data class MuscleRecent(val muscle: Muscle, val tier: RecentTier, val daysAgo: Int)
 
-/** Sets per muscle from history and each exercise's catalogue step (ADR 0011). Pure, nothing stored. */
+/** Sets per muscle from history and each exercise's muscles: its catalogue step's, or those chosen for an own exercise (ADR 0011, ADR 0014). Pure, nothing stored. */
 object MuscleVolume {
     /** Weekly sets at which the shades change: under 5, 5 to 9, 10 or more. */
     const val MID_SETS = 5
@@ -76,15 +76,13 @@ object MuscleVolume {
         var other = 0
         for (set in history) {
             if (!set.countsAsWork || !inPeriod(set.date)) continue
-            val step = stepOf(exercisesById[set.exerciseId])
-            when {
-                step == null -> other++
-                isMobility(step) -> mobility++
-                else -> {
+            when (val target = targetOf(exercisesById[set.exerciseId])) {
+                Target.Other -> other++
+                Target.Mobility -> mobility++
+                is Target.Muscles -> {
                     mapped++
-                    step.primaryMuscles.forEach { direct[it] = (direct[it] ?: 0) + 1 }
-                    // A muscle named in both lists counts once, as doing the work.
-                    (step.secondaryMuscles - step.primaryMuscles).forEach { helping[it] = (helping[it] ?: 0) + 1 }
+                    target.primary.forEach { direct[it] = (direct[it] ?: 0) + 1 }
+                    target.helping.forEach { helping[it] = (helping[it] ?: 0) + 1 }
                 }
             }
         }
@@ -117,7 +115,7 @@ object MuscleVolume {
      * rated 0 or 1 left ([Effort.isHard]) add up to at least one full set for it today or in the two
      * days before, and [RecentTier.WORKED] when any sets of work add up to one today or yesterday.
      * A set counts 1 for a muscle it mainly works and 0.5 for one that helps. Warm-ups, mobility and
-     * unlinked exercises count for neither, and an unrated set is never "recovering": the app does
+     * exercises with no known muscles count for neither, and an unrated set is never "recovering": the app does
      * not know how hard it was. Recovering first, then worked; each in [Muscle] order.
      */
     fun recent(today: LocalDate, history: List<HistorySet>, exercises: List<Exercise>): List<MuscleRecent> {
@@ -131,9 +129,8 @@ object MuscleVolume {
             val day = parse(set.date) ?: continue
             val daysAgo = ChronoUnit.DAYS.between(day, today).toInt()
             if (daysAgo !in 0..2) continue
-            val step = stepOf(exercisesById[set.exerciseId]) ?: continue
-            if (isMobility(step)) continue
-            val weights = step.primaryMuscles.associateWith { 1.0 } + (step.secondaryMuscles - step.primaryMuscles).associateWith { 0.5 }
+            val target = targetOf(exercisesById[set.exerciseId]) as? Target.Muscles ?: continue
+            val weights = target.primary.associateWith { 1.0 } + target.helping.associateWith { 0.5 }
             weights.forEach { (muscle, weight) ->
                 if (Effort.isHard(set.effortLeft)) {
                     hard[muscle] = (hard[muscle] ?: 0.0) + weight
@@ -149,6 +146,29 @@ object MuscleVolume {
         val recentlyWorked = worked.filterValues { it >= 1.0 }.keys - recovering
         return recovering.sortedBy { it.ordinal }.map { MuscleRecent(it, RecentTier.RECOVERING, lastHard.getValue(it)) } +
             recentlyWorked.sortedBy { it.ordinal }.map { MuscleRecent(it, RecentTier.WORKED, lastWorked.getValue(it)) }
+    }
+
+    /** What a set's exercise trains: a catalogue step's muscles, the muscles chosen for an own exercise, or nothing known. */
+    private sealed interface Target {
+        data object Mobility : Target
+        data object Other : Target
+        /** [helping] never repeats a muscle in [primary]: a muscle named in both counts once, as doing the work. */
+        data class Muscles(val primary: Set<Muscle>, val helping: Set<Muscle>) : Target
+    }
+
+    /**
+     * A linked exercise uses its step's muscles, fixed (ADR 0007). Only an exercise with no step, or an
+     * unknown one, uses the muscles its owner chose (ADR 0014); with none chosen it is "other".
+     */
+    private fun targetOf(exercise: Exercise?): Target {
+        val step = stepOf(exercise)
+        return when {
+            step != null && isMobility(step) -> Target.Mobility
+            step != null -> Target.Muscles(step.primaryMuscles, step.secondaryMuscles - step.primaryMuscles)
+            exercise != null && (exercise.primaryMuscles.isNotEmpty() || exercise.secondaryMuscles.isNotEmpty()) ->
+                Target.Muscles(exercise.primaryMuscles, exercise.secondaryMuscles - exercise.primaryMuscles)
+            else -> Target.Other
+        }
     }
 
     /** The catalogue step a library exercise is linked to; null when unlinked or unknown. */

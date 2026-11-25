@@ -210,4 +210,63 @@ class MuscleVolumeTest {
         assertEquals(tiers.sortedByDescending { it.ordinal }, tiers)
         list.groupBy { it.tier }.values.forEach { group -> assertEquals(group.sortedBy { it.muscle.ordinal }, group) }
     }
+
+    // Own exercises: the muscles their owner chose count like a catalogue step's (ADR 0014).
+    private fun own(id: Long, primary: Set<Muscle> = emptySet(), helping: Set<Muscle> = emptySet(), stepId: String? = null) =
+        Exercise(id = id, name = "Own$id", type = "Dynamic", catalogId = stepId, primaryMuscles = primary, secondaryMuscles = helping)
+
+    @Test fun `an own exercise with muscles chosen counts them in full and as half, like a step`() {
+        val curl = own(7, primary = setOf(Muscle.BICEPS), helping = setOf(Muscle.FOREARMS))
+        val summary = build(listOf(set("2026-03-10", 7), set("2026-03-11", 7)), listOf(curl))
+        assertEquals(MuscleSets(Muscle.BICEPS, 2, 0), summary.muscles.single { it.muscle == Muscle.BICEPS })
+        assertEquals(MuscleSets(Muscle.FOREARMS, 0, 2), summary.muscles.single { it.muscle == Muscle.FOREARMS })
+        assertEquals(2, summary.mappedSets)
+        assertEquals(0, summary.otherSets)
+        assertEquals(2, summary.totalSets)
+    }
+
+    @Test fun `an own exercise with only helping muscles counts them as helping`() {
+        val summary = build(listOf(set("2026-03-10", 7)), listOf(own(7, helping = setOf(Muscle.TRAPS))))
+        assertEquals(MuscleSets(Muscle.TRAPS, 0, 1), summary.muscles.single())
+        assertEquals(1, summary.mappedSets)
+    }
+
+    @Test fun `a muscle chosen as both works and helps counts once, as working`() {
+        val summary = build(listOf(set("2026-03-10", 7)), listOf(own(7, primary = setOf(Muscle.LATS), helping = setOf(Muscle.LATS))))
+        assertEquals(MuscleSets(Muscle.LATS, 1, 0), summary.muscles.single())
+    }
+
+    @Test fun `an own exercise with no muscles chosen is still an other exercise`() {
+        val summary = build(listOf(set("2026-03-10", 7)), listOf(own(7)))
+        assertEquals(1, summary.otherSets)
+        assertEquals(0, summary.mappedSets)
+        assertTrue(summary.muscles.isEmpty())
+    }
+
+    @Test fun `a catalogue step's muscles are fixed, so muscles chosen on a linked exercise are ignored`() {
+        val ignored = own(7, primary = setOf(Muscle.NECK), stepId = stepWithHelpers.id)
+        val summary = build(listOf(set("2026-03-10", 7)), listOf(ignored))
+        assertTrue(summary.muscles.none { it.muscle == Muscle.NECK && Muscle.NECK !in stepWithHelpers.primaryMuscles + stepWithHelpers.secondaryMuscles })
+        assertEquals(stepWithHelpers.primaryMuscles, summary.muscles.filter { it.direct > 0 }.map { it.muscle }.toSet())
+    }
+
+    @Test fun `an unknown catalogue link falls back to the muscles chosen`() {
+        val summary = build(listOf(set("2026-03-10", 7)), listOf(own(7, primary = setOf(Muscle.CALVES), stepId = "gone.step")))
+        assertEquals(MuscleSets(Muscle.CALVES, 1, 0), summary.muscles.single())
+    }
+
+    @Test fun `a muscle trained only by own exercises is worked, not missing from the not worked view`() {
+        val summary = build(listOf(set("2026-03-10", 7)), listOf(own(7, primary = setOf(Muscle.BICEPS))))
+        assertTrue(Muscle.BICEPS !in MuscleVolume.notWorked(summary))
+    }
+
+    @Test fun `own exercises with muscles show as recovering after a hard set, like a step`() {
+        val curl = own(7, primary = setOf(Muscle.BICEPS), helping = setOf(Muscle.FOREARMS))
+        val today = LocalDate.of(2026, 3, 10)
+        val recent = MuscleVolume.recent(today, listOf(set("2026-03-10", 7, effort = 0), set("2026-03-10", 7, effort = 0)), listOf(curl))
+        assertEquals(MuscleRecent(Muscle.BICEPS, RecentTier.RECOVERING, 0), recent.single { it.muscle == Muscle.BICEPS })
+        assertEquals(RecentTier.RECOVERING, recent.single { it.muscle == Muscle.FOREARMS }.tier)
+        // With no muscles chosen, nothing is shown, as before.
+        assertTrue(MuscleVolume.recent(today, listOf(set("2026-03-10", 7, effort = 0)), listOf(own(7))).isEmpty())
+    }
 }
