@@ -47,6 +47,9 @@ import io.github.gonbei774.calisthenicsmemory.data.TodoTask
 import io.github.gonbei774.calisthenicsmemory.data.AppTheme
 import io.github.gonbei774.calisthenicsmemory.data.ThemePreferences
 import io.github.gonbei774.calisthenicsmemory.data.OnboardingPreferences
+import androidx.compose.runtime.produceState
+import io.github.gonbei774.calisthenicsmemory.ui.screens.whatsnew.WhatsNewSheet
+import io.github.gonbei774.calisthenicsmemory.data.CrashReports
 import io.github.gonbei774.calisthenicsmemory.ui.screens.onboarding.WelcomeGuide
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -393,6 +396,21 @@ fun CalisthenicsMemoryApp(
     // After a crash, the kept report is offered once (never over the welcome guide).
     CrashReportOffer()
 
+    // After an update: what changed, once, over Home and never over a crash report; and again from Settings.
+    var whatsNew by rememberSaveable { mutableIntStateOf(if (onboarding.isWhatsNewDue()) WHATS_NEW_UPDATE else WHATS_NEW_NONE) }
+    val lastSeenVersion = rememberSaveable { mutableStateOf(onboarding.lastSeenVersionName()) }.value
+    val crashReportsClear by produceState(false) { value = withContext(Dispatchers.IO) { CrashReports.forApp(context).pending().isEmpty() } }
+    if (whatsNew == WHATS_NEW_SETTINGS || (whatsNew == WHATS_NEW_UPDATE && currentScreen is Screen.Home && crashReportsClear)) {
+        WhatsNewSheet(
+            lastSeenVersion = lastSeenVersion,
+            celebrate = whatsNew == WHATS_NEW_UPDATE,
+            onDismiss = {
+                if (whatsNew == WHATS_NEW_UPDATE) onboarding.markWhatsNewSeen()
+                whatsNew = WHATS_NEW_NONE
+            },
+        )
+    }
+
     val showPrimaryNavigation = currentScreen is Screen.Home
 
     // Android 13+ blocks notifications until allowed. The workout timer shows one, so the app
@@ -611,6 +629,7 @@ fun CalisthenicsMemoryApp(
                             onNavigateBack = { currentScreen = Screen.Home },
                             onNavigateToLicenses = { currentScreen = Screen.Licenses },
                             onOpenWelcomeGuide = { showWelcome = true },
+                            onOpenWhatsNew = { whatsNew = WHATS_NEW_SETTINGS },
                             onNavigateToBackup = { currentScreen = Screen.Backup },
                             onNavigateToCsvDataManagement = { currentScreen = Screen.CsvDataManagement },
                             onNavigateToShareHub = { currentScreen = Screen.ShareHub },
@@ -968,3 +987,7 @@ private val ScreenSaver = mapSaver(
         }
     }
 )
+
+private const val WHATS_NEW_NONE = 0
+private const val WHATS_NEW_UPDATE = 1
+private const val WHATS_NEW_SETTINGS = 2
