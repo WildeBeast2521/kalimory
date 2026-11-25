@@ -63,6 +63,9 @@ data class ExportExercise(
     val assistanceTrackingEnabled: Boolean = false, // アシスト入力を有効化（v6で追加）
     val description: String? = null,               // 種目の説明文（v6で追加）
     val catalogId: String? = null,                 // Format 11: the catalogue step it was added from (ADR 0007)
+    // Format 13: the muscles chosen for an own exercise, as muscle codes (ADR 0014). Absent in older backups.
+    val primaryMuscles: List<String> = emptyList(),
+    val secondaryMuscles: List<String> = emptyList(),
 )
 
 @Serializable

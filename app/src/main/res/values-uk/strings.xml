@@ -25,6 +25,8 @@
     <string name="sets_count">Підходи</string>
     <string name="one_sided">Одностороння</string>
     <string name="group_optional">Група (необов’язково)</string>
+    <string name="exercise_muscles">М’язи (необов’язково)</string>
+    <string name="exercise_muscles_hint">Карта тіла рахує кожен підхід повністю для м’язів, що працюють, і наполовину для тих, що допомагають.</string>
     <string name="new_group_name">Назва нової групи</string>
     <string name="no_group">Без групи</string>
     <string name="create_type">Що додати</string>
@@ -933,6 +935,7 @@
     <string name="weekly_review_mobility">Рухливість</string>
     <string name="weekly_review_other">Інші вправи</string>
     <string name="weekly_review_other_detail">Не пов\'язані з каталогом</string>
+    <string name="body_map_other_detail">М\'язи не вибрані</string>
     <string name="weekly_review_intervals">Інтервали</string>
     <string name="weekly_review_intervals_detail">Кожен робочий інтервал рахується як підхід</string>
     <string name="weekly_review_reference">Позначка — 10 підходів на тиждень. В огляді 15 досліджень тренувань з обтяженнями більше підходів на тиждень супроводжувалося більшим ростом м\'язів, а групи з 10 і більше підходами на м\'яз виросли найбільше (Schoenfeld et al., 2017).</string>
@@ -1014,6 +1017,7 @@
     <string name="csv_issue_type">Рядок %1$d: недійсний тип «%2$s» (потрібен Dynamic або Isometric)</string>
     <string name="csv_issue_laterality">Рядок %1$d: недійсна сторонність «%2$s» (потрібно Bilateral або Unilateral)</string>
     <string name="csv_issue_catalog_id">Рядок %1$d: недійсний catalogId «%2$s»</string>
+    <string name="csv_issue_unknown_muscle">Рядок %1$d: невідомий м\'яз «%2$s»</string>
     <string name="csv_issue_text">Рядок %1$d: %2$s</string>
     <string name="csv_issue_record_columns">Рядок %1$d: недостатньо стовпців</string>
     <string name="csv_issue_record_required">Рядок %1$d: не вказано обов’язкове значення</string>
@@ -1044,6 +1048,7 @@
     <string name="share_issue_invalid_catalog">%1$s: недійсний catalogId «%2$s»</string>
     <string name="share_issue_range">%1$s: %2$s має бути від %3$d до %4$d</string>
     <string name="share_issue_dup_catalog">%1$s: catalogId «%2$s» використано двічі</string>
+    <string name="share_issue_unknown_muscle">%1$s: невідомий м\'яз «%2$s»</string>
     <string name="share_issue_dup_exercise">%1$s: вправа «%2$s» зустрічається двічі</string>
     <string name="share_issue_dup_program">%1$s: назва програми «%2$s» використана двічі</string>
     <string name="share_issue_dup_interval">%1$s: назва інтервального тренування «%2$s» використана двічі</string>

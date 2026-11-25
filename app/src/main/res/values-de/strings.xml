@@ -31,6 +31,8 @@
     <string name="laterality">Seiten</string>
     <string name="one_sided">Einseitig</string>
     <string name="group_optional">Gruppe (optional)</string>
+    <string name="exercise_muscles">Muskeln (optional)</string>
+    <string name="exercise_muscles_hint">Die Körperkarte zählt jeden Satz voll für die Muskeln, die er trainiert, und halb für die, die mithelfen.</string>
     <string name="new_group_name">Neuer Gruppenname</string>
     <string name="no_group">Keine Gruppe</string>
     <string name="create_type">Was hinzufügen</string>
@@ -929,6 +931,7 @@
     <string name="weekly_review_mobility">Mobilität</string>
     <string name="weekly_review_other">Andere Übungen</string>
     <string name="weekly_review_other_detail">Nicht mit dem Katalog verknüpft</string>
+    <string name="body_map_other_detail">Keine Muskeln gewählt</string>
     <string name="weekly_review_intervals">Intervalle</string>
     <string name="weekly_review_intervals_detail">Jedes Arbeitsintervall zählt als Satz</string>
     <string name="weekly_review_reference">Die Markierung zeigt 10 Sätze pro Woche. In einer Auswertung von 15 Studien zum Training mit Gewichten gingen mehr Sätze pro Woche mit mehr Muskelwachstum einher, und Gruppen mit 10 oder mehr Sätzen pro Muskel legten am meisten zu (Schoenfeld et al., 2017).</string>
@@ -1006,6 +1009,7 @@
     <string name="csv_issue_type">Zeile %1$d: Ungültiger Typ „%2$s“ (muss Dynamic oder Isometric sein)</string>
     <string name="csv_issue_laterality">Zeile %1$d: Ungültige Seitigkeit „%2$s“ (muss Bilateral oder Unilateral sein)</string>
     <string name="csv_issue_catalog_id">Zeile %1$d: Ungültige catalogId „%2$s“</string>
+    <string name="csv_issue_unknown_muscle">Zeile %1$d: Unbekannter Muskel „%2$s“</string>
     <string name="csv_issue_text">Zeile %1$d: %2$s</string>
     <string name="csv_issue_record_columns">Zeile %1$d: Zu wenige Spalten</string>
     <string name="csv_issue_record_required">Zeile %1$d: Ein Pflichtwert fehlt</string>
@@ -1036,6 +1040,7 @@
     <string name="share_issue_invalid_catalog">%1$s: Ungültige catalogId „%2$s“</string>
     <string name="share_issue_range">%1$s: %2$s muss zwischen %3$d und %4$d liegen</string>
     <string name="share_issue_dup_catalog">%1$s: Die catalogId „%2$s“ kommt doppelt vor</string>
+    <string name="share_issue_unknown_muscle">%1$s: Unbekannter Muskel „%2$s“</string>
     <string name="share_issue_dup_exercise">%1$s: Die Übung „%2$s“ kommt doppelt vor</string>
     <string name="share_issue_dup_program">%1$s: Der Programmname „%2$s“ kommt doppelt vor</string>
     <string name="share_issue_dup_interval">%1$s: Der Intervallname „%2$s“ kommt doppelt vor</string>

@@ -267,6 +267,45 @@ class CsvImportTest {
     }
 
     @Test
+    fun importExercises_muscles_chosenForAnOwnExercise() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles
+            Biceps curl,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,,biceps,forearms;lower back
+        """.trimIndent()
+        val report = importExercisesCsv(csv)
+        assertEquals(1, report.successCount)
+        val curl = exerciseDao.getExerciseByNameAndType("Biceps curl", "Dynamic")!!
+        assertEquals(setOf(io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle.BICEPS), curl.primaryMuscles)
+        assertEquals(
+            setOf(io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle.FOREARMS, io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle.LOWER_BACK),
+            curl.secondaryMuscles,
+        )
+    }
+
+    @Test
+    fun importExercises_oldFileWithoutMuscles_hasNone() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Plain curl,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,
+        """.trimIndent()
+        assertEquals(1, importExercisesCsv(csv).successCount)
+        val curl = exerciseDao.getExerciseByNameAndType("Plain curl", "Dynamic")!!
+        assertTrue(curl.primaryMuscles.isEmpty() && curl.secondaryMuscles.isEmpty())
+    }
+
+    @Test
+    fun importExercises_unknownMuscle_error() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles
+            Biceps curl,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,,biceps;wings,
+        """.trimIndent()
+        val report = importExercisesCsv(csv)
+        assertEquals(0, report.successCount)
+        assertEquals(1, report.errorCount)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("Biceps curl", "Dynamic"))
+    }
+
+    @Test
     fun importExercises_malformedCatalogId_error() = runBlocking {
         val csv = """
             name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId

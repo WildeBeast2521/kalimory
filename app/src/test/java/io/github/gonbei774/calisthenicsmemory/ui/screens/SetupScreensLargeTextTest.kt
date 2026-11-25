@@ -93,4 +93,9 @@ class SetupScreensLargeTextTest {
     @Test fun `one-sided set row at normal size`() = audit(scale = 1f) {
         UnilateralSetItem(1, rightSet, leftSet, oneSided, {}, {}, {}, {}, {}, {}, {}, {})
     }
+
+    // The exercise form with its muscle chips: 34 chips wrap rather than cut text off.
+    @Test fun `new exercise form with the muscle chips`() = audit { UnifiedAddDialog(exercise = null, viewModel = it, onDismiss = {}) }
+
+    @Test fun `new exercise form with the muscle chips at normal size`() = audit(scale = 1f) { UnifiedAddDialog(exercise = null, viewModel = it, onDismiss = {}) }
 }

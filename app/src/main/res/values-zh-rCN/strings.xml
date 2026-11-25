@@ -31,6 +31,8 @@
     <string name="laterality">左右侧</string>
     <string name="one_sided">单侧</string>
     <string name="group_optional">分组（可选）</string>
+    <string name="exercise_muscles">肌肉（可选）</string>
+    <string name="exercise_muscles_hint">人体图对主要锻炼的肌肉按完整一组计算，对辅助肌肉按半组计算。</string>
     <string name="new_group_name">新分组名称</string>
     <string name="no_group">无分组</string>
     <string name="create_type">添加内容</string>
@@ -907,6 +909,7 @@
     <string name="weekly_review_mobility">灵活性</string>
     <string name="weekly_review_other">其他动作</string>
     <string name="weekly_review_other_detail">未关联动作目录</string>
+    <string name="body_map_other_detail">未选择肌肉</string>
     <string name="weekly_review_intervals">间歇</string>
     <string name="weekly_review_intervals_detail">每个训练间歇计为一组</string>
     <string name="weekly_review_reference">标记表示每周 10 组。一项汇总 15 项负重训练研究的分析发现，每周组数越多，肌肉增长越多；每块肌肉每周做 10 组或以上的组别增长最多（Schoenfeld et al., 2017）。</string>
@@ -982,6 +985,7 @@
     <string name="csv_issue_type">第 %1$d 行：类型“%2$s”无效（必须是 Dynamic 或 Isometric）</string>
     <string name="csv_issue_laterality">第 %1$d 行：单双侧“%2$s”无效（必须是 Bilateral 或 Unilateral）</string>
     <string name="csv_issue_catalog_id">第 %1$d 行：catalogId“%2$s”无效</string>
+    <string name="csv_issue_unknown_muscle">第 %1$d 行：未知肌肉“%2$s”</string>
     <string name="csv_issue_text">第 %1$d 行：%2$s</string>
     <string name="csv_issue_record_columns">第 %1$d 行：列数不足</string>
     <string name="csv_issue_record_required">第 %1$d 行：缺少必填值</string>
@@ -1012,6 +1016,7 @@
     <string name="share_issue_invalid_catalog">%1$s：catalogId“%2$s”无效</string>
     <string name="share_issue_range">%1$s：%2$s 必须在 %3$d 到 %4$d 之间</string>
     <string name="share_issue_dup_catalog">%1$s：catalogId“%2$s”重复</string>
+    <string name="share_issue_unknown_muscle">%1$s：未知肌肉“%2$s”</string>
     <string name="share_issue_dup_exercise">%1$s：动作“%2$s”重复</string>
     <string name="share_issue_dup_program">%1$s：程序名称“%2$s”重复</string>
     <string name="share_issue_dup_interval">%1$s：间歇名称“%2$s”重复</string>

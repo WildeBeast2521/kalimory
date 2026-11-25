@@ -31,6 +31,8 @@
     <string name="laterality">Lados</string>
     <string name="one_sided">Un lado</string>
     <string name="group_optional">Grupo (Opcional)</string>
+    <string name="exercise_muscles">Músculos (opcional)</string>
+    <string name="exercise_muscles_hint">El mapa corporal cuenta cada serie completa para los músculos que trabaja y como media para los que ayudan.</string>
     <string name="new_group_name">Nombre del Nuevo Grupo</string>
     <string name="no_group">Sin Grupo</string>
     <string name="create_type">Qué añadir</string>
@@ -958,6 +960,7 @@
     <string name="weekly_review_mobility">Movilidad</string>
     <string name="weekly_review_other">Otros ejercicios</string>
     <string name="weekly_review_other_detail">Sin vínculo con el catálogo</string>
+    <string name="body_map_other_detail">Sin músculos elegidos</string>
     <string name="weekly_review_intervals">Intervalos</string>
     <string name="weekly_review_intervals_detail">Cada intervalo de trabajo cuenta como una serie</string>
     <string name="weekly_review_reference">La marca indica 10 series por semana. En una revisión de 15 estudios de entrenamiento con pesas, más series por semana se asociaron con más crecimiento muscular, y los grupos que hacían 10 o más series por músculo fueron los que más crecieron (Schoenfeld et al., 2017).</string>
@@ -1037,6 +1040,7 @@
     <string name="csv_issue_type">Línea %1$d: tipo «%2$s» no válido (debe ser Dynamic o Isometric)</string>
     <string name="csv_issue_laterality">Línea %1$d: lateralidad «%2$s» no válida (debe ser Bilateral o Unilateral)</string>
     <string name="csv_issue_catalog_id">Línea %1$d: catalogId «%2$s» no válido</string>
+    <string name="csv_issue_unknown_muscle">Línea %1$d: músculo desconocido «%2$s»</string>
     <string name="csv_issue_text">Línea %1$d: %2$s</string>
     <string name="csv_issue_record_columns">Línea %1$d: faltan columnas</string>
     <string name="csv_issue_record_required">Línea %1$d: falta un valor obligatorio</string>
@@ -1067,6 +1071,7 @@
     <string name="share_issue_invalid_catalog">%1$s: catalogId «%2$s» no válido</string>
     <string name="share_issue_range">%1$s: %2$s debe estar entre %3$d y %4$d</string>
     <string name="share_issue_dup_catalog">%1$s: el catalogId «%2$s» se usa dos veces</string>
+    <string name="share_issue_unknown_muscle">%1$s: músculo desconocido «%2$s»</string>
     <string name="share_issue_dup_exercise">%1$s: el ejercicio «%2$s» aparece dos veces</string>
     <string name="share_issue_dup_program">%1$s: el nombre de programa «%2$s» se usa dos veces</string>
     <string name="share_issue_dup_interval">%1$s: el nombre de intervalo «%2$s» se usa dos veces</string>

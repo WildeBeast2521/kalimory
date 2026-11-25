@@ -7,6 +7,8 @@ import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import android.app.Application
 import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -88,5 +90,64 @@ class AddExerciseFormTest {
         restFewer().performClick()
         restFewer().performClick()
         compose.onNodeWithText("0").assertDoesNotExist()
+    }
+
+    // Muscles for an exercise of your own (ADR 0014).
+    private val own = io.github.gonbei774.calisthenicsmemory.data.Exercise(id = 6, name = "My move", type = "Dynamic")
+
+    @Test fun `an exercise of your own offers the muscles in two rows`() {
+        open(own)
+        compose.onNodeWithText("Muscles (optional)").performScrollTo().assertExists()
+        compose.onNodeWithText("Works").assertExists()
+        compose.onNodeWithText("Also").assertExists()
+        compose.onAllNodesWithText("Biceps").assertCountEquals(2)
+    }
+
+    @Test fun `a new exercise offers the muscles too`() {
+        open()
+        compose.onNodeWithText("Muscles (optional)").assertExists()
+    }
+
+    @Test fun `an exercise from the catalogue offers no muscle choice, its step's are fixed`() {
+        val step = io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue.chains.first().steps.first()
+        open(own.copy(id = 7, catalogId = step.id))
+        compose.onNodeWithText("Muscles (optional)").assertDoesNotExist()
+    }
+
+    @Test fun `a muscle is in one row at a time, and a second tap clears it`() {
+        open(own)
+        fun chip(row: Int) = compose.onAllNodesWithText("Biceps")[row]
+        chip(0).performScrollTo().performClick()
+        chip(0).assertIsSelected(); chip(1).assertIsNotSelected()
+        chip(1).performScrollTo().performClick()
+        chip(1).assertIsSelected(); chip(0).assertIsNotSelected()
+        chip(1).performClick()
+        chip(0).assertIsNotSelected(); chip(1).assertIsNotSelected()
+    }
+
+    @Test fun `the muscles chosen are saved with the exercise`() {
+        val app = ApplicationProvider.getApplicationContext<Application>()
+        val db = io.github.gonbei774.calisthenicsmemory.data.AppDatabase.getDatabase(app)
+        val id = kotlinx.coroutines.runBlocking { db.exerciseDao().insertExercise(own.copy(id = 0, name = "Chosen curl")) }
+        open(db.let { kotlinx.coroutines.runBlocking { it.exerciseDao().getExerciseById(id)!! } })
+        compose.onAllNodesWithText("Biceps")[0].performScrollTo().performClick()
+        compose.onAllNodesWithText("Forearms")[1].performScrollTo().performClick()
+        compose.onNode(androidx.compose.ui.test.hasText("Save") and androidx.compose.ui.test.hasClickAction()).performClick()
+        val deadline = System.currentTimeMillis() + 5_000
+        var saved = kotlinx.coroutines.runBlocking { db.exerciseDao().getExerciseById(id)!! }
+        while (saved.primaryMuscles.isEmpty() && System.currentTimeMillis() < deadline) {
+            compose.waitForIdle(); Thread.sleep(100)
+            saved = kotlinx.coroutines.runBlocking { db.exerciseDao().getExerciseById(id)!! }
+        }
+        assertEquals(setOf(io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle.BICEPS), saved.primaryMuscles)
+        assertEquals(setOf(io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle.FOREARMS), saved.secondaryMuscles)
+    }
+
+    @Test fun `the form with the muscle chips meets the touch rules`() {
+        open(own)
+        compose.onNodeWithText("Muscles (optional)").performScrollTo()
+        // One unlabeled tap target is already in the form without any chips; the chips must add none.
+        val problems = tapTargetProblems(compose, compose.density).filterNot { it.startsWith("\"\" \u2014 no label") }
+        assertEquals(problems.joinToString("\n"), emptyList<String>(), problems)
     }
 }
