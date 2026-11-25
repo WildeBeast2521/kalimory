@@ -146,8 +146,14 @@ class AddExerciseFormTest {
     @Test fun `the form with the muscle chips meets the touch rules`() {
         open(own)
         compose.onNodeWithText("Muscles (optional)").performScrollTo()
-        // One unlabeled tap target is already in the form without any chips; the chips must add none.
-        val problems = tapTargetProblems(compose, compose.density).filterNot { it.startsWith("\"\" \u2014 no label") }
+        val problems = tapTargetProblems(compose, compose.density)
         assertEquals(problems.joinToString("\n"), emptyList<String>(), problems)
+    }
+
+    @Test fun `the group dropdown is named for screen readers and reads its value`() {
+        open(own)
+        compose.onNode(androidx.compose.ui.test.hasContentDescription("Group (optional)") and androidx.compose.ui.test.hasClickAction())
+            .performScrollTo().assertExists()
+        compose.onNode(androidx.compose.ui.test.hasStateDescription("No group")).assertExists()
     }
 }

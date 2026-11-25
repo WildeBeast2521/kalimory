@@ -20,6 +20,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - Backups are saved in a new format that holds the muscles chosen for your own exercises; earlier versions of the app cannot restore them ([#301](https://github.com/WildeBeast2521/kalimory/pull/301))
 
 ### Fixed
+- The group picker in the exercise form and the loop picker in the program editor are named and read their value for screen readers ([#302](https://github.com/WildeBeast2521/kalimory/pull/302))
 - Editing a one-sided set no longer overwrites the left side's values with the right side's ([#299](https://github.com/WildeBeast2521/kalimory/pull/299))
 - History, graphs, personal bests and progression moves count both sides of a one-sided set ([#299](https://github.com/WildeBeast2521/kalimory/pull/299))
 - Side names and weight values are no longer split or cut off at large text sizes ([#300](https://github.com/WildeBeast2521/kalimory/pull/300))

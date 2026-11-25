@@ -5,6 +5,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.common.SwitchRow
 import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import androidx.compose.ui.semantics.heading
@@ -1162,13 +1163,17 @@ fun UnifiedAddDialog(
                                         expanded = showGroupDropdown,
                                         onExpandedChange = { showGroupDropdown = it }
                                     ) {
+                                        val groupTitle = stringResource(R.string.group_optional)
+                                        val groupValue = selectedGroup ?: stringResource(R.string.no_group_display)
                                         OutlinedTextField(
-                                            value = selectedGroup ?: stringResource(R.string.no_group_display),
+                                            value = groupValue,
                                             onValueChange = {},
                                             readOnly = true,
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
+                                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                                                // The title above the field is a separate text: name the dropdown itself and read its value.
+                                                .semantics { contentDescription = groupTitle; stateDescription = groupValue },
                                             trailingIcon = { Icon(AppIcons.DropDown, null) }
                                         )
 
