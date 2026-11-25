@@ -31,6 +31,8 @@
     <string name="laterality">Seiten</string>
     <string name="one_sided">Einseitig</string>
     <string name="group_optional">Gruppe (optional)</string>
+    <string name="exercise_muscles">Muskeln (optional)</string>
+    <string name="exercise_muscles_hint">Die Körperkarte zählt jeden Satz voll für die Muskeln, die er trainiert, und halb für die, die mithelfen.</string>
     <string name="new_group_name">Neuer Gruppenname</string>
     <string name="no_group">Keine Gruppe</string>
     <string name="create_type">Was hinzufügen</string>

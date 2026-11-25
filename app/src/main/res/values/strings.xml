@@ -32,6 +32,8 @@
     <string name="laterality">Sides</string>
     <string name="one_sided">One-sided</string>
     <string name="group_optional">Group (optional)</string>
+    <string name="exercise_muscles">Muscles (optional)</string>
+    <string name="exercise_muscles_hint">The body map counts each set in full for the muscles it works and as half for the ones that help.</string>
     <string name="new_group_name">New group name</string>
     <string name="no_group">No group</string>
     <string name="create_type">What to add</string>

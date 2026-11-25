@@ -25,6 +25,8 @@
     <string name="sets_count">Підходи</string>
     <string name="one_sided">Одностороння</string>
     <string name="group_optional">Група (необов’язково)</string>
+    <string name="exercise_muscles">М’язи (необов’язково)</string>
+    <string name="exercise_muscles_hint">Карта тіла рахує кожен підхід повністю для м’язів, що працюють, і наполовину для тих, що допомагають.</string>
     <string name="new_group_name">Назва нової групи</string>
     <string name="no_group">Без групи</string>
     <string name="create_type">Що додати</string>

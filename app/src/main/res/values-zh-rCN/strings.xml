@@ -31,6 +31,8 @@
     <string name="laterality">左右侧</string>
     <string name="one_sided">单侧</string>
     <string name="group_optional">分组（可选）</string>
+    <string name="exercise_muscles">肌肉（可选）</string>
+    <string name="exercise_muscles_hint">人体图对主要锻炼的肌肉按完整一组计算，对辅助肌肉按半组计算。</string>
     <string name="new_group_name">新分组名称</string>
     <string name="no_group">无分组</string>
     <string name="create_type">添加内容</string>

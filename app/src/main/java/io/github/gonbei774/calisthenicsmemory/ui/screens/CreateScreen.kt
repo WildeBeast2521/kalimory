@@ -6,6 +6,9 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.muscles.muscleLabel
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.semantics
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
+import androidx.compose.ui.semantics.heading
+import androidx.compose.material3.FilterChip
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.NumberStepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ExerciseBadges
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
@@ -755,6 +758,11 @@ fun UnifiedAddDialog(
     // 説明文の状態
     var description by remember { mutableStateOf(exercise?.description ?: "") }
 
+    // The muscles chosen for an own exercise; a catalogue exercise keeps its step's, fixed (ADR 0014).
+    var primaryMuscles by remember { mutableStateOf(exercise?.primaryMuscles ?: emptySet()) }
+    var secondaryMuscles by remember { mutableStateOf(exercise?.secondaryMuscles ?: emptySet()) }
+    val choosesMuscles = exercise?.catalogId?.let { Catalogue.step(it) } == null
+
     // トラッキング設定用の状態
     var distanceTrackingEnabled by remember { mutableStateOf(exercise?.distanceTrackingEnabled ?: false) }
     var weightTrackingEnabled by remember { mutableStateOf(exercise?.weightTrackingEnabled ?: false) }
@@ -836,7 +844,9 @@ fun UnifiedAddDialog(
                         distanceTrackingEnabled = distanceTrackingEnabled,
                         weightTrackingEnabled = weightTrackingEnabled,
                         assistanceTrackingEnabled = assistanceTrackingEnabled,
-                        description = description.ifBlank { null }
+                        description = description.ifBlank { null },
+                        primaryMuscles = if (choosesMuscles) primaryMuscles else exercise.primaryMuscles,
+                        secondaryMuscles = if (choosesMuscles) secondaryMuscles else exercise.secondaryMuscles
                     )
                 )
                 onDismiss()
@@ -870,7 +880,9 @@ fun UnifiedAddDialog(
                     distanceTrackingEnabled,
                     weightTrackingEnabled,
                     assistanceTrackingEnabled,
-                    description.ifBlank { null }
+                    description.ifBlank { null },
+                    primaryMuscles,
+                    secondaryMuscles
                 )
                 onDismiss()
             }
@@ -1088,6 +1100,20 @@ fun UnifiedAddDialog(
                                     )
                                 }
                             }
+                        }
+
+                        if (choosesMuscles) {
+                            MusclesCard(
+                                primary = primaryMuscles,
+                                helping = secondaryMuscles,
+                                onToggle = { muscle, works ->
+                                    // A muscle is in one list at a time: choosing it in one takes it out of the other.
+                                    val (own, other) = if (works) primaryMuscles to secondaryMuscles else secondaryMuscles to primaryMuscles
+                                    val newOwn = if (muscle in own) own - muscle else own + muscle
+                                    val newOther = other - muscle
+                                    if (works) { primaryMuscles = newOwn; secondaryMuscles = newOther } else { secondaryMuscles = newOwn; primaryMuscles = newOther }
+                                },
+                            )
                         }
 
                         // グループ設定カード
@@ -1447,3 +1473,45 @@ internal fun levelToSave(changed: Boolean, selected: Int, stored: Int): Int = if
 
 /** A target with only one of its two numbers, which can't be saved. Both empty means no target. */
 internal fun isTargetHalfFilled(hasTarget: Boolean, sets: String, value: String): Boolean = hasTarget && sets.isEmpty() != value.isEmpty()
+
+/**
+ * The muscles an own exercise works and the ones that help: the same list as the catalogue's filter.
+ * The body map counts a set in full for the first and as half for the second.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun MusclesCard(primary: Set<Muscle>, helping: Set<Muscle>, onToggle: (muscle: Muscle, works: Boolean) -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        shape = MaterialTheme.shapes.large
+    ) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                text = stringResource(R.string.exercise_muscles),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.semantics { heading() }
+            )
+            Text(
+                text = stringResource(R.string.exercise_muscles_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            listOf(true to primary, false to helping).forEach { (works, chosen) ->
+                Text(
+                    text = stringResource(if (works) R.string.catalogue_works else R.string.catalogue_also),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(top = 4.dp).semantics { heading() }
+                )
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Muscle.entries.forEach { muscle ->
+                        FilterChip(selected = muscle in chosen, onClick = { onToggle(muscle, works) }, label = { Text(muscleLabel(muscle)) })
+                    }
+                }
+            }
+        }
+    }
+}

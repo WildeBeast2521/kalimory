@@ -31,6 +31,8 @@
     <string name="laterality">Côtés</string>
     <string name="one_sided">Un côté</string>
     <string name="group_optional">Groupe (Facultatif)</string>
+    <string name="exercise_muscles">Muscles (facultatif)</string>
+    <string name="exercise_muscles_hint">La carte du corps compte chaque série en entier pour les muscles travaillés et pour moitié pour ceux qui aident.</string>
     <string name="new_group_name">Nom du Nouveau Groupe</string>
     <string name="no_group">Aucun Groupe</string>
     <string name="create_type">Quoi ajouter</string>

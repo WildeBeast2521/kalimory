@@ -4,6 +4,7 @@ import io.github.gonbei774.calisthenicsmemory.util.AppClock
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.ProgressionPreferences
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueAddResult
@@ -231,7 +232,9 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         distanceTrackingEnabled: Boolean = false,  // 距離トラッキング有効
         weightTrackingEnabled: Boolean = false,    // 荷重トラッキング有効
         assistanceTrackingEnabled: Boolean = false, // アシストトラッキング有効
-        description: String? = null                // 種目の説明文
+        description: String? = null,               // 種目の説明文
+        primaryMuscles: Set<Muscle> = emptySet(),  // the muscles chosen for an own exercise (ADR 0014)
+        secondaryMuscles: Set<Muscle> = emptySet()
     ) {
         viewModelScope.launch {
             try {
@@ -259,7 +262,9 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                     distanceTrackingEnabled = distanceTrackingEnabled,
                     weightTrackingEnabled = weightTrackingEnabled,
                     assistanceTrackingEnabled = assistanceTrackingEnabled,
-                    description = description
+                    description = description,
+                    primaryMuscles = primaryMuscles,
+                    secondaryMuscles = secondaryMuscles
                 )
                 exerciseDao.insertExercise(exercise)
                 _snackbarMessage.value = UiMessage.ExerciseAdded

@@ -31,6 +31,8 @@
     <string name="laterality">Lati</string>
     <string name="one_sided">Un lato</string>
     <string name="group_optional">Gruppo (Opzionale)</string>
+    <string name="exercise_muscles">Muscoli (facoltativo)</string>
+    <string name="exercise_muscles_hint">La mappa del corpo conta ogni serie per intero per i muscoli che allena e per metà per quelli che aiutano.</string>
     <string name="new_group_name">Nome Nuovo Gruppo</string>
     <string name="no_group">Nessun Gruppo</string>
     <string name="create_type">Cosa aggiungere</string>

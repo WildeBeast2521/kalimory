@@ -273,6 +273,8 @@
     <string name="laterality">الجانبان</string>
     <string name="one_sided">جانب واحد</string>
     <string name="group_optional">المجموعة (اختيارية)</string>
+    <string name="exercise_muscles">العضلات (اختيارية)</string>
+    <string name="exercise_muscles_hint">تحتسب خريطة الجسم كل مجموعة كاملة للعضلات التي يعمل عليها التمرين، ونصف مجموعة للعضلات المساعدة.</string>
     <string name="new_group_name">اسم المجموعة الجديدة</string>
     <string name="no_group">بلا مجموعة</string>
     <string name="create_type">ماذا تريد أن تضيف</string>

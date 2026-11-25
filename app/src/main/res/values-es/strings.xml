@@ -31,6 +31,8 @@
     <string name="laterality">Lados</string>
     <string name="one_sided">Un lado</string>
     <string name="group_optional">Grupo (Opcional)</string>
+    <string name="exercise_muscles">Músculos (opcional)</string>
+    <string name="exercise_muscles_hint">El mapa corporal cuenta cada serie completa para los músculos que trabaja y como media para los que ayudan.</string>
     <string name="new_group_name">Nombre del Nuevo Grupo</string>
     <string name="no_group">Sin Grupo</string>
     <string name="create_type">Qué añadir</string>

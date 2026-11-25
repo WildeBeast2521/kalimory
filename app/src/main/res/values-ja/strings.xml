@@ -30,6 +30,8 @@
     <string name="laterality">左右</string>
     <string name="one_sided">片側</string>
     <string name="group_optional">グループ（任意）</string>
+    <string name="exercise_muscles">筋肉（任意）</string>
+    <string name="exercise_muscles_hint">ボディマップでは、主に使う部位には1セット分、補助の部位には半分として数えます。</string>
     <string name="new_group_name">新しいグループ名</string>
     <string name="no_group">グループなし</string>
     <string name="create_type">追加するもの</string>

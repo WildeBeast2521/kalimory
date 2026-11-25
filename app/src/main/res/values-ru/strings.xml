@@ -26,6 +26,8 @@
     <string name="laterality">Стороны</string>
     <string name="one_sided">Односторонний</string>
     <string name="group_optional">Группа (Опционально)</string>
+    <string name="exercise_muscles">Мышцы (необязательно)</string>
+    <string name="exercise_muscles_hint">Карта тела считает каждый подход полностью для мышц, которые работают, и наполовину для тех, что помогают.</string>
     <string name="new_group_name">Название новой группы</string>
     <string name="no_group">Без группы</string>
     <string name="create_type">Что добавить</string>
