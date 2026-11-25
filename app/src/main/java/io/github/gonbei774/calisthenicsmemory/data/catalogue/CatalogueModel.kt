@@ -30,6 +30,24 @@ enum class Muscle(val code: String) {
     TRICEPS("triceps"),
 }
 
+/**
+ * Muscles gathered the way people talk about training them (#274). Derived from the muscle, never
+ * stored: every muscle is in exactly one group, in the order the groups are shown.
+ */
+enum class MuscleGroup { CHEST, SHOULDERS, BACK, ARMS, CORE, LEGS, CALVES }
+
+/** The group of this muscle. Exhaustive, so a new muscle does not compile until it has one. */
+val Muscle.group: MuscleGroup
+    get() = when (this) {
+        Muscle.CHEST -> MuscleGroup.CHEST
+        Muscle.SHOULDERS -> MuscleGroup.SHOULDERS
+        Muscle.LATS, Muscle.MIDDLE_BACK, Muscle.LOWER_BACK, Muscle.TRAPS, Muscle.NECK -> MuscleGroup.BACK
+        Muscle.BICEPS, Muscle.TRICEPS, Muscle.FOREARMS -> MuscleGroup.ARMS
+        Muscle.ABDOMINALS -> MuscleGroup.CORE
+        Muscle.QUADRICEPS, Muscle.HAMSTRINGS, Muscle.GLUTES, Muscle.ADDUCTORS, Muscle.ABDUCTORS -> MuscleGroup.LEGS
+        Muscle.CALVES -> MuscleGroup.CALVES
+    }
+
 /** What a step needs besides the floor. Nothing listed means floor and bodyweight only. */
 enum class Equipment {
     PULL_UP_BAR,

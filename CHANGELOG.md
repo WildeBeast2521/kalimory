@@ -11,6 +11,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- The body map has an Over time view: sets a week for each muscle group or muscle over a month, three months, a year or all time ([#304](https://github.com/WildeBeast2521/kalimory/pull/304))
 - A What's new sheet shows the changes of a new version after an update, and can be opened again from Settings ([#303](https://github.com/WildeBeast2521/kalimory/pull/303))
 - You can choose the muscles an exercise of your own works and the ones that help, and the body map counts them like catalogue exercises ([#301](https://github.com/WildeBeast2521/kalimory/pull/301))
 - A one-sided exercise can have its own weight, assistance and distance for each side ([#299](https://github.com/WildeBeast2521/kalimory/pull/299))

@@ -11,6 +11,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.LayoutDirection
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleRecent
+import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.hasContentDescription
+import io.github.gonbei774.calisthenicsmemory.data.review.TrendSpan
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.MuscleGroup
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleVolumeSummary
 import io.github.gonbei774.calisthenicsmemory.ui.screens.tapTargetProblems
 import io.github.gonbei774.calisthenicsmemory.ui.screens.textFitProblems
@@ -157,5 +162,78 @@ class BodyMapContentTest {
         } finally {
             RuntimeEnvironment.setFontScale(1f)
         }
+    }
+
+    // Over time (ADR 0015).
+    private fun showTrend(
+        group: MuscleGroup? = MuscleGroup.BACK,
+        muscle: Muscle? = null,
+        direction: LayoutDirection = LayoutDirection.Ltr,
+        onGroup: (MuscleGroup) -> Unit = {},
+        onMuscle: (Muscle?) -> Unit = {},
+        buckets: List<io.github.gonbei774.calisthenicsmemory.data.review.TrendBucket> = BodyMapSamples.trendBuckets,
+    ) = compose.setContent {
+        CalisthenicsMemoryTheme {
+            CompositionLocalProvider(LocalLayoutDirection provides direction) {
+                BodyMapContent(
+                    BodyMapSamples.week, weeks = 1.0, period = Period.OneWeek, onPeriod = {}, view = BodyMapView.TREND,
+                    trend = TrendUi(TrendSpan.THREE_MONTHS, {}, buckets, group, onGroup, muscle, onMuscle),
+                    trendSummary = BodyMapSamples.week,
+                )
+            }
+        }
+    }
+
+    @Test fun `the over time view offers the four spans and the seven groups`() {
+        showTrend()
+        listOf("1 month", "3 months", "1 year", "All").forEach { compose.onNodeWithText(it).assertExists() }
+        listOf("Chest", "Shoulders", "Back", "Arms", "Core", "Legs", "Calves").forEach { compose.onNodeWithText(it).assertExists() }
+        compose.onNodeWithText("Back").assertIsSelected()
+    }
+
+    @Test fun `the chart has a text alternative and every week is a row, the running one saying so`() {
+        showTrend()
+        compose.onNode(hasContentDescription("Sets a week for Back from", substring = true)).assertExists()
+        compose.onNode(hasText("Week by week") and isHeading).assertExists()
+        // The newest bucket: nine sets of lats, still running.
+        compose.onNode(hasText("9 sets") and hasText("So far")).assertExists()
+        compose.onNode(hasText("2 sets")).assertExists()
+    }
+
+    @Test fun `a group offers its own muscles, and choosing one is reported`() {
+        val chosen = mutableListOf<Muscle?>()
+        showTrend(onMuscle = { chosen += it })
+        compose.onNodeWithText("Lats").performClick()
+        compose.onNodeWithText("Whole group").performClick()
+        assertEquals(listOf<Muscle?>(Muscle.LATS, null), chosen)
+    }
+
+    @Test fun `a group with one muscle offers no muscle row`() {
+        showTrend(group = MuscleGroup.CALVES)
+        compose.onNodeWithText("No sets for Calves in this period").assertExists()
+    }
+
+    @Test fun `the reference line and how sets count are explained in the cited words`() {
+        showTrend()
+        compose.onNode(hasText("The mark shows 10 sets a week", substring = true)).assertExists()
+    }
+
+    @Test fun `over time at 200 percent has no cut-off text and every control is a full target`() {
+        RuntimeEnvironment.setFontScale(2f)
+        try {
+            showTrend()
+            compose.waitForIdle()
+            val problems = tapTargetProblems(compose, compose.density) + textFitProblems(compose)
+            assertTrue(problems.joinToString("\n"), problems.isEmpty())
+        } finally {
+            RuntimeEnvironment.setFontScale(1f)
+        }
+    }
+
+    @Test fun `over time in a right-to-left layout has no cut-off text`() {
+        showTrend(direction = LayoutDirection.Rtl)
+        compose.waitForIdle()
+        val problems = tapTargetProblems(compose, compose.density) + textFitProblems(compose)
+        assertTrue(problems.joinToString("\n"), problems.isEmpty())
     }
 }

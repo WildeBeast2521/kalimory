@@ -5,11 +5,15 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.MovementPattern
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.MuscleGroup
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.group
 import io.github.gonbei774.calisthenicsmemory.data.v2.Effort
 import io.github.gonbei774.calisthenicsmemory.data.v2.HistorySet
 import io.github.gonbei774.calisthenicsmemory.data.v2.IntervalHistoryItem
 import io.github.gonbei774.calisthenicsmemory.data.v2.countsAsWork
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.temporal.TemporalAdjusters
 import java.time.temporal.ChronoUnit
 
 /** One muscle's sets in a period (ADR 0011): sets where it does the work, and sets it helps in. */
@@ -48,6 +52,27 @@ enum class RecentTier { WORKED, RECOVERING }
  * last day of the sets that put it in its [tier].
  */
 data class MuscleRecent(val muscle: Muscle, val tier: RecentTier, val daysAgo: Int)
+
+/** Sets where something does the work, and sets it helps in; helping counts half. */
+data class SetCounts(val direct: Int, val helping: Int) {
+    val weighted: Double get() = direct + helping / 2.0
+}
+
+/** How far back the over-time view looks. Month and three months count by week; a year and all time by month. */
+enum class TrendSpan(val days: Int?) { MONTH(30), THREE_MONTHS(90), YEAR(365), ALL(null); val byMonth: Boolean get() = this == YEAR || this == ALL }
+
+/**
+ * One week or month of [MuscleVolume.trend]: [start] to [endInclusive] (cut at today), the sets per
+ * muscle and per muscle group, and how many weeks it spans for a rate. A bucket shorter than a week
+ * counts as a week, so a few days at the start of a month are never scaled up.
+ */
+data class TrendBucket(
+    val start: LocalDate,
+    val endInclusive: LocalDate,
+    val muscles: Map<Muscle, SetCounts>,
+    val groups: Map<MuscleGroup, SetCounts>,
+    val weeks: Double,
+)
 
 /** Sets per muscle from history and each exercise's muscles: its catalogue step's, or those chosen for an own exercise (ADR 0011, ADR 0014). Pure, nothing stored. */
 object MuscleVolume {
@@ -187,6 +212,63 @@ object MuscleVolume {
     /** Each muscle's shade, for a period [weeks] long (1 for the calendar week). */
     fun tiers(summary: MuscleVolumeSummary, weeks: Double): Map<Muscle, VolumeTier> =
         summary.muscles.associate { it.muscle to tier(it.weighted / weeks) }
+
+    /**
+     * The first day of each week or month the over-time view shows (#274, ADR 0015): weeks from the
+     * user's [firstDay] for a month or three months, calendar months for a year or all time, the
+     * first one complete and the last the one that contains [today]. [earliest] is the oldest date
+     * with sets, for all time.
+     */
+    fun trendStarts(span: TrendSpan, today: LocalDate, firstDay: DayOfWeek, earliest: LocalDate?): List<LocalDate> {
+        val from = if (span.days != null) today.minusDays(span.days - 1L) else earliest?.takeIf { it <= today } ?: today
+        return if (span.byMonth) {
+            generateSequence(from.withDayOfMonth(1)) { it.plusMonths(1) }.takeWhile { it <= today }.toList()
+        } else {
+            generateSequence(from.with(TemporalAdjusters.previousOrSame(firstDay))) { it.plusWeeks(1) }.takeWhile { it <= today }.toList()
+        }
+    }
+
+    /** The oldest date among the sets that count as work and can be read, for [trendStarts] of all time. */
+    fun earliest(history: List<HistorySet>): LocalDate? = history.asSequence().filter { it.countsAsWork }.mapNotNull { parse(it.date) }.minOrNull()
+
+    /**
+     * Sets per muscle and per group in each bucket that starts at [starts] (ascending; a bucket ends
+     * the day before the next one, the last at [end]), in one pass over [history]: each set is placed
+     * by binary search, so years of sets stay cheap. A set counts like [build] counts it: the same
+     * resolver, warm-ups, mobility and unknown muscles left out. A group gets a set in full when any
+     * muscle that does the work is in it, otherwise as helping when any helping muscle is, never twice.
+     */
+    fun trend(starts: List<LocalDate>, end: LocalDate, history: List<HistorySet>, exercises: List<Exercise>): List<TrendBucket> {
+        if (starts.isEmpty()) return emptyList()
+        val exercisesById = exercises.associateBy { it.id }
+        val muscleDirect = List(starts.size) { mutableMapOf<Muscle, Int>() }
+        val muscleHelping = List(starts.size) { mutableMapOf<Muscle, Int>() }
+        val groupDirect = List(starts.size) { mutableMapOf<MuscleGroup, Int>() }
+        val groupHelping = List(starts.size) { mutableMapOf<MuscleGroup, Int>() }
+        for (set in history) {
+            if (!set.countsAsWork) continue
+            val day = parse(set.date) ?: continue
+            if (day < starts.first() || day > end) continue
+            val target = targetOf(exercisesById[set.exerciseId]) as? Target.Muscles ?: continue
+            var index = starts.binarySearch(day)
+            if (index < 0) index = -index - 2
+            target.primary.forEach { muscleDirect[index].merge(it, 1, Int::plus) }
+            target.helping.forEach { muscleHelping[index].merge(it, 1, Int::plus) }
+            val mainGroups = target.primary.mapTo(mutableSetOf()) { it.group }
+            mainGroups.forEach { groupDirect[index].merge(it, 1, Int::plus) }
+            (target.helping.mapTo(mutableSetOf()) { it.group } - mainGroups).forEach { groupHelping[index].merge(it, 1, Int::plus) }
+        }
+        return starts.mapIndexed { i, start ->
+            val last = if (i + 1 < starts.size) starts[i + 1].minusDays(1) else end
+            val days = ChronoUnit.DAYS.between(start, last).toInt() + 1
+            TrendBucket(
+                start, last,
+                (muscleDirect[i].keys + muscleHelping[i].keys).associateWith { SetCounts(muscleDirect[i][it] ?: 0, muscleHelping[i][it] ?: 0) },
+                (groupDirect[i].keys + groupHelping[i].keys).associateWith { SetCounts(groupDirect[i][it] ?: 0, groupHelping[i][it] ?: 0) },
+                maxOf(days, 7) / 7.0,
+            )
+        }
+    }
 
     private fun parse(date: String): LocalDate? = runCatching { LocalDate.parse(date) }.getOrNull()
 }
