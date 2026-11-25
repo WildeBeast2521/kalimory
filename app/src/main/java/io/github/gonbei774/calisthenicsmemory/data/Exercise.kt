@@ -1,8 +1,10 @@
 package io.github.gonbei774.calisthenicsmemory.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 
 @Entity(
     tableName = "exercises",
@@ -32,4 +34,10 @@ data class Exercise(
     val description: String? = null,              // 種目の説明文（最大120文字）
     /** The catalogue step this exercise was added from, such as "push.incline" (ADR 0007). */
     val catalogId: String? = null,
+    /**
+     * Muscles the owner chose for an exercise of their own: those it works and those that help.
+     * Used only while the exercise has no catalogue step; a step's muscles are fixed (ADR 0014).
+     */
+    @ColumnInfo(defaultValue = "") val primaryMuscles: Set<Muscle> = emptySet(),
+    @ColumnInfo(defaultValue = "") val secondaryMuscles: Set<Muscle> = emptySet(),
 )

@@ -335,4 +335,26 @@ class MigrationDataPreservationTest {
         assertEquals(listOf(listOf<Any?>(1L, 2L)), db.rows("SELECT isWarmUp, effortLeft FROM set_entries WHERE id = 1"))
         db.close()
     }
+
+    @Test
+    fun migrate26To27KeepsExercisesWithNoMuscles() {
+        val db = migrate(26, 27) {
+            it.execSQL(
+                "INSERT INTO exercises (id, name, type, sortOrder, displayOrder, laterality, isFavorite, distanceTrackingEnabled, weightTrackingEnabled, assistanceTrackingEnabled) " +
+                    "VALUES (900, 'Biceps curl', 'Dynamic', 0, 0, 'Bilateral', 0, 0, 0, 0)"
+            )
+        }
+        // The exercise is kept and no muscle is guessed for it.
+        assertEquals(
+            listOf(listOf<Any?>("Biceps curl", "", "")),
+            db.rows("SELECT name, primaryMuscles, secondaryMuscles FROM exercises WHERE id = 900"),
+        )
+        // The new columns take the values the app writes.
+        db.execSQL("UPDATE exercises SET primaryMuscles = 'biceps', secondaryMuscles = 'forearms,lower back' WHERE id = 900")
+        assertEquals(
+            listOf(listOf<Any?>("biceps", "forearms,lower back")),
+            db.rows("SELECT primaryMuscles, secondaryMuscles FROM exercises WHERE id = 900"),
+        )
+        db.close()
+    }
 }

@@ -18,10 +18,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class, WorkoutSessionEntity::class, SessionExerciseEntity::class, SetEntryEntity::class, ChainPlacement::class],
-    version = 26,
+    version = 27,
     exportSchema = true
 )
-@TypeConverters(WorkoutTypeConverters::class)
+@TypeConverters(WorkoutTypeConverters::class, MuscleSetConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun exerciseDao(): ExerciseDao
@@ -59,7 +59,7 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // Must equal the version in @Database; MigrationRegistrationTest checks it against the schemas.
-        const val CURRENT_VERSION = 26
+        const val CURRENT_VERSION = 27
 
         // The production configuration. Migration tests open their databases through it.
         // Unsupported installed versions are refused before Room can modify the file, and
@@ -469,6 +469,15 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Version 27: the muscles chosen for an exercise of your own (ADR 0014). Additive only: every
+        // existing exercise is kept with no muscles, which is what it had, since none could be chosen.
+        val MIGRATION_26_27 = object : Migration(26, 27) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE `exercises` ADD COLUMN `primaryMuscles` TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE `exercises` ADD COLUMN `secondaryMuscles` TEXT NOT NULL DEFAULT ''")
+            }
+        }
+
         // Oldest installed database version that can migrate to the current version.
         const val OLDEST_SUPPORTED_VERSION = 9
 
@@ -492,6 +501,7 @@ abstract class AppDatabase : RoomDatabase() {
             MIGRATION_23_24,
             MIGRATION_24_25,
             MIGRATION_25_26,
+            MIGRATION_26_27,
         )
     }
 }
