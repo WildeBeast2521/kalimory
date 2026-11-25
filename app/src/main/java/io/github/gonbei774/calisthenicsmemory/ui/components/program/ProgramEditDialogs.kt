@@ -10,6 +10,9 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.common.GroupBadge
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.CalmSearchField
 import io.github.gonbei774.calisthenicsmemory.ui.components.targetText
 import io.github.gonbei774.calisthenicsmemory.ui.icons.AppIcons
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.animation.AnimatedVisibility
@@ -123,15 +126,17 @@ fun ExerciseSettingsDialog(
                         expanded = loopDropdownExpanded,
                         onExpandedChange = { loopDropdownExpanded = it }
                     ) {
-                        OutlinedTextField(
-                            value = selectedLoopId?.let { id ->
+                        val loopTitle = stringResource(R.string.move_to_loop)
+                        val loopValue = selectedLoopId?.let { id ->
                                 val loopIndex = availableLoops.indexOfFirst { it.id == id }
                                 if (loopIndex >= 0) {
                                     stringResource(R.string.loop_number_format, loopIndex + 1)
                                 } else {
                                     stringResource(R.string.none)
                                 }
-                            } ?: stringResource(R.string.none),
+                            } ?: stringResource(R.string.none)
+                        OutlinedTextField(
+                            value = loopValue,
                             onValueChange = {},
                             readOnly = true,
                             trailingIcon = {
@@ -139,7 +144,9 @@ fun ExerciseSettingsDialog(
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
+                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                                // The title above the field is a separate text: name the dropdown itself and read its value.
+                                .semantics { contentDescription = loopTitle; stateDescription = loopValue },
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                                 focusedLabelColor = MaterialTheme.colorScheme.primary,
