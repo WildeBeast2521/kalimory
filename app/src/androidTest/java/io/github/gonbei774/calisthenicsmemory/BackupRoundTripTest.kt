@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.BackupSnapshot
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.Program
 import io.github.gonbei774.calisthenicsmemory.data.ProgramExercise
@@ -182,6 +183,32 @@ class BackupRoundTripTest {
         assertTrue("restore: $restored", restored is BackupResult.Success)
 
         assertEquals(progression, target.backupDao().snapshot())
+    }
+
+    // Format 13 (ADR 0014): the muscles chosen for an own exercise.
+    private val muscles = BackupSnapshot(
+        groups = emptyList(),
+        exercises = listOf(
+            Exercise(1, "Biceps curl", "Dynamic", primaryMuscles = linkedSetOf(Muscle.BICEPS), secondaryMuscles = linkedSetOf(Muscle.FOREARMS, Muscle.LOWER_BACK)),
+            Exercise(2, "Plank", "Isometric"),
+        ),
+        records = emptyList(), programs = emptyList(), programExercises = emptyList(), programLoops = emptyList(),
+        intervalPrograms = emptyList(), intervalProgramExercises = emptyList(), intervalRecords = emptyList(), todoTasks = emptyList(),
+    )
+
+    @Test
+    fun chosenMusclesRestoreExactly() = runBlocking {
+        source.backupDao().replaceAll(muscles)
+
+        val json = (BackupService(source.backupDao()).export() as BackupResult.Success).value.json
+        assertTrue(json.contains("\"primaryMuscles\":[\"biceps\"]"))
+        assertTrue(json.contains("\"secondaryMuscles\":[\"forearms\",\"lower back\"]"))
+        val parsed = BackupService(target.backupDao()).parse(json)
+        assertTrue("parse: $parsed", parsed is BackupResult.Success)
+        val restored = BackupService(target.backupDao()).restore((parsed as BackupResult.Success).value.data)
+        assertTrue("restore: $restored", restored is BackupResult.Success)
+
+        assertEquals(muscles, target.backupDao().snapshot())
     }
 
     @Test

@@ -2,6 +2,8 @@ package io.github.gonbei774.calisthenicsmemory.viewmodel
 
 import io.github.gonbei774.calisthenicsmemory.data.BackupDao
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Catalogue
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
+import io.github.gonbei774.calisthenicsmemory.data.muscleOfCode
 import io.github.gonbei774.calisthenicsmemory.data.progression.ChainPlacement
 import io.github.gonbei774.calisthenicsmemory.data.BackupSnapshot
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
@@ -141,6 +143,11 @@ class BackupService(
     private fun validate(data: BackupData): String? {
         if (data.app != APP_NAME) return "Unexpected backup app: ${data.app}"
         if (data.version !in MIN_VERSION..CURRENT_VERSION) return "Unsupported backup version: ${data.version}"
+
+        data.exercises.forEach { exercise ->
+            (exercise.primaryMuscles + exercise.secondaryMuscles).firstOrNull { code -> Muscle.entries.none { it.code == code } }
+                ?.let { code -> return "Exercise ${exercise.id} names unknown muscle $code" }
+        }
 
         duplicateId("group", data.groups.map { it.id })?.let { return it }
         duplicateId("exercise", data.exercises.map { it.id })?.let { return it }
@@ -317,7 +324,7 @@ class BackupService(
     companion object {
         const val APP_NAME = "CalisthenicsMemory"
         const val MIN_VERSION = 1
-        const val CURRENT_VERSION = 12
+        const val CURRENT_VERSION = 13
     }
 }
 
@@ -326,7 +333,7 @@ private fun BackupSnapshot.toBackupData(exportDate: String) = BackupData(
     exportDate = exportDate,
     app = BackupService.APP_NAME,
     groups = groups.map { ExportGroup(it.id, it.name, it.displayOrder) },
-    exercises = exercises.map { ExportExercise(it.id, it.name, it.type, it.group, it.sortOrder, it.displayOrder, it.laterality, it.targetSets, it.targetValue, it.isFavorite, it.restInterval, it.repDuration, it.distanceTrackingEnabled, it.weightTrackingEnabled, it.assistanceTrackingEnabled, it.description, it.catalogId) },
+    exercises = exercises.map { ExportExercise(it.id, it.name, it.type, it.group, it.sortOrder, it.displayOrder, it.laterality, it.targetSets, it.targetValue, it.isFavorite, it.restInterval, it.repDuration, it.distanceTrackingEnabled, it.weightTrackingEnabled, it.assistanceTrackingEnabled, it.description, it.catalogId, it.primaryMuscles.map { m -> m.code }, it.secondaryMuscles.map { m -> m.code }) },
     records = records.map { ExportRecord(it.id, it.exerciseId, it.valueRight, it.valueLeft, it.setNumber, it.date, it.time, it.comment, it.distanceCm, it.weightG, it.assistanceG) },
     programs = programs.map { ExportProgram(it.id, it.name) },
     programExercises = programExercises.map { ExportProgramExercise(it.id, it.programId, it.exerciseId, it.sortOrder, it.sets, it.targetValue, it.intervalSeconds, it.loopId) },
@@ -343,7 +350,7 @@ private fun BackupSnapshot.toBackupData(exportDate: String) = BackupData(
 
 private fun BackupData.toSnapshot() = BackupSnapshot(
     groups.map { ExerciseGroup(it.id, it.name, it.displayOrder) },
-    exercises.map { Exercise(it.id, it.name, it.type, it.group, it.sortOrder, it.displayOrder, it.laterality, it.targetSets, it.targetValue, it.isFavorite, it.restInterval, it.repDuration, it.distanceTrackingEnabled, it.weightTrackingEnabled, it.assistanceTrackingEnabled, it.description, it.catalogId) },
+    exercises.map { Exercise(it.id, it.name, it.type, it.group, it.sortOrder, it.displayOrder, it.laterality, it.targetSets, it.targetValue, it.isFavorite, it.restInterval, it.repDuration, it.distanceTrackingEnabled, it.weightTrackingEnabled, it.assistanceTrackingEnabled, it.description, it.catalogId, it.primaryMuscles.mapTo(linkedSetOf()) { c -> muscleOfCode(c) }, it.secondaryMuscles.mapTo(linkedSetOf()) { c -> muscleOfCode(c) }) },
     records.map { TrainingRecord(it.id, it.exerciseId, it.valueRight, it.valueLeft, it.setNumber, it.date, it.time, it.comment, it.distanceCm, it.weightG, it.assistanceG) },
     programs.map { Program(it.id, it.name) },
     programExercises.map { ProgramExercise(it.id, it.programId, it.exerciseId, it.sortOrder, it.sets, it.targetValue, it.intervalSeconds, it.loopId) },
