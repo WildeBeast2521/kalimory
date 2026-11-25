@@ -1043,6 +1043,7 @@
     <string name="csv_issue_type">Riga %1$d: tipo \"%2$s\" non valido (deve essere Dynamic o Isometric)</string>
     <string name="csv_issue_laterality">Riga %1$d: lateralità \"%2$s\" non valida (deve essere Bilateral o Unilateral)</string>
     <string name="csv_issue_catalog_id">Riga %1$d: catalogId \"%2$s\" non valido</string>
+    <string name="csv_issue_unknown_muscle">Riga %1$d: muscolo sconosciuto \"%2$s\"</string>
     <string name="csv_issue_text">Riga %1$d: %2$s</string>
     <string name="csv_issue_record_columns">Riga %1$d: colonne insufficienti</string>
     <string name="csv_issue_record_required">Riga %1$d: manca un valore obbligatorio</string>
@@ -1073,6 +1074,7 @@
     <string name="share_issue_invalid_catalog">%1$s: catalogId \"%2$s\" non valido</string>
     <string name="share_issue_range">%1$s: %2$s deve essere tra %3$d e %4$d</string>
     <string name="share_issue_dup_catalog">%1$s: il catalogId \"%2$s\" è usato due volte</string>
+    <string name="share_issue_unknown_muscle">%1$s: muscolo sconosciuto \"%2$s\"</string>
     <string name="share_issue_dup_exercise">%1$s: l’esercizio \"%2$s\" compare due volte</string>
     <string name="share_issue_dup_program">%1$s: il nome del programma \"%2$s\" è usato due volte</string>
     <string name="share_issue_dup_interval">%1$s: il nome dell’intervallo \"%2$s\" è usato due volte</string>

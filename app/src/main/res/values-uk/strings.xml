@@ -1015,6 +1015,7 @@
     <string name="csv_issue_type">Рядок %1$d: недійсний тип «%2$s» (потрібен Dynamic або Isometric)</string>
     <string name="csv_issue_laterality">Рядок %1$d: недійсна сторонність «%2$s» (потрібно Bilateral або Unilateral)</string>
     <string name="csv_issue_catalog_id">Рядок %1$d: недійсний catalogId «%2$s»</string>
+    <string name="csv_issue_unknown_muscle">Рядок %1$d: невідомий м\'яз «%2$s»</string>
     <string name="csv_issue_text">Рядок %1$d: %2$s</string>
     <string name="csv_issue_record_columns">Рядок %1$d: недостатньо стовпців</string>
     <string name="csv_issue_record_required">Рядок %1$d: не вказано обов’язкове значення</string>
@@ -1045,6 +1046,7 @@
     <string name="share_issue_invalid_catalog">%1$s: недійсний catalogId «%2$s»</string>
     <string name="share_issue_range">%1$s: %2$s має бути від %3$d до %4$d</string>
     <string name="share_issue_dup_catalog">%1$s: catalogId «%2$s» використано двічі</string>
+    <string name="share_issue_unknown_muscle">%1$s: невідомий м\'яз «%2$s»</string>
     <string name="share_issue_dup_exercise">%1$s: вправа «%2$s» зустрічається двічі</string>
     <string name="share_issue_dup_program">%1$s: назва програми «%2$s» використана двічі</string>
     <string name="share_issue_dup_interval">%1$s: назва інтервального тренування «%2$s» використана двічі</string>

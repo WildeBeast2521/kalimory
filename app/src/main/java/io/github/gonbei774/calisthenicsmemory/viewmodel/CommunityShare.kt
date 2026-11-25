@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.R
 import kotlinx.serialization.Serializable
 
@@ -44,7 +45,10 @@ data class ShareExercise(
     val assistanceTrackingEnabled: Boolean = false,
     val description: String? = null,
     /** The catalogue step it is linked to (ADR 0007); older apps ignore it. */
-    val catalogId: String? = null
+    val catalogId: String? = null,
+    /** The muscles chosen for an own exercise, as muscle codes (ADR 0014); older apps ignore them. */
+    val primaryMuscles: List<String> = emptyList(),
+    val secondaryMuscles: List<String> = emptyList()
 )
 
 @Serializable
@@ -185,6 +189,9 @@ fun validateCommunityShareContent(data: CommunityShareData): List<ImportIssue> {
             } else if (!catalogIds.add(it)) {
                 errors.add(ImportIssue(R.string.share_issue_dup_catalog, listOf("exercises[$index]", "$it")))
             }
+        }
+        (exercise.primaryMuscles + exercise.secondaryMuscles).firstOrNull { code -> Muscle.entries.none { it.code == code } }?.let { code ->
+            errors.add(ImportIssue(R.string.share_issue_unknown_muscle, listOf("exercises[$index]", code)))
         }
         // グループ参照チェック
         exercise.group?.let { groupName ->

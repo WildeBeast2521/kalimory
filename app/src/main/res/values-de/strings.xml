@@ -1007,6 +1007,7 @@
     <string name="csv_issue_type">Zeile %1$d: Ungültiger Typ „%2$s“ (muss Dynamic oder Isometric sein)</string>
     <string name="csv_issue_laterality">Zeile %1$d: Ungültige Seitigkeit „%2$s“ (muss Bilateral oder Unilateral sein)</string>
     <string name="csv_issue_catalog_id">Zeile %1$d: Ungültige catalogId „%2$s“</string>
+    <string name="csv_issue_unknown_muscle">Zeile %1$d: Unbekannter Muskel „%2$s“</string>
     <string name="csv_issue_text">Zeile %1$d: %2$s</string>
     <string name="csv_issue_record_columns">Zeile %1$d: Zu wenige Spalten</string>
     <string name="csv_issue_record_required">Zeile %1$d: Ein Pflichtwert fehlt</string>
@@ -1037,6 +1038,7 @@
     <string name="share_issue_invalid_catalog">%1$s: Ungültige catalogId „%2$s“</string>
     <string name="share_issue_range">%1$s: %2$s muss zwischen %3$d und %4$d liegen</string>
     <string name="share_issue_dup_catalog">%1$s: Die catalogId „%2$s“ kommt doppelt vor</string>
+    <string name="share_issue_unknown_muscle">%1$s: Unbekannter Muskel „%2$s“</string>
     <string name="share_issue_dup_exercise">%1$s: Die Übung „%2$s“ kommt doppelt vor</string>
     <string name="share_issue_dup_program">%1$s: Der Programmname „%2$s“ kommt doppelt vor</string>
     <string name="share_issue_dup_interval">%1$s: Der Intervallname „%2$s“ kommt doppelt vor</string>

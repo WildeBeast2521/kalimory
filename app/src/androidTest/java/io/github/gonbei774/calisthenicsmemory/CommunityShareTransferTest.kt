@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.IntervalProgram
 import io.github.gonbei774.calisthenicsmemory.data.IntervalProgramExercise
@@ -64,6 +65,28 @@ class CommunityShareTransferTest {
         assertEquals(after.programLoops.single().id, after.programExercises.single().loopId)
         assertEquals(listOf("Core"), after.intervalPrograms.map { it.name })
         assertEquals(after.exercises.single { it.name == "Plank" }.id, after.intervalProgramExercises.single().exerciseId)
+    }
+
+    @Test
+    fun aSharedOwnExerciseKeepsItsChosenMuscles() = runBlocking {
+        val curl = source.exerciseDao().insertExercise(
+            Exercise(name = "Biceps curl", type = "Dynamic", primaryMuscles = linkedSetOf(Muscle.BICEPS), secondaryMuscles = linkedSetOf(Muscle.FOREARMS))
+        )
+        // A catalogue exercise shares its link only; its muscles come from the step.
+        val wall = source.exerciseDao().insertExercise(
+            Exercise(name = "Wall push-up", type = "Dynamic", catalogId = "push.wall", primaryMuscles = linkedSetOf(Muscle.NECK))
+        )
+        val program = source.programDao().insert(Program(name = "Arms"))
+        source.programExerciseDao().insert(ProgramExercise(programId = program, exerciseId = curl, sortOrder = 0, sets = 3, targetValue = 10, intervalSeconds = 60))
+        source.programExerciseDao().insert(ProgramExercise(programId = program, exerciseId = wall, sortOrder = 1, sets = 3, targetValue = 10, intervalSeconds = 60))
+
+        val report = transfer(target).importCommunityShare(transfer(source).exportCommunityShare(setOf(program), emptySet(), emptySet()))
+
+        assertTrue(report.errors.toString(), report.errors.isEmpty())
+        val after = target.backupDao().snapshot().exercises
+        assertEquals(setOf(Muscle.BICEPS), after.single { it.name == "Biceps curl" }.primaryMuscles)
+        assertEquals(setOf(Muscle.FOREARMS), after.single { it.name == "Biceps curl" }.secondaryMuscles)
+        assertTrue(after.single { it.name == "Wall push-up" }.primaryMuscles.isEmpty())
     }
 
     @Test

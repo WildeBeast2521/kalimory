@@ -1,5 +1,6 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
+import io.github.gonbei774.calisthenicsmemory.data.muscleOfCode
 import io.github.gonbei774.calisthenicsmemory.util.TextLimits
 import androidx.room.withTransaction
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
@@ -73,7 +74,9 @@ class CommunityShareImporter(private val database: AppDatabase) {
                         assistanceTrackingEnabled = shareExercise.assistanceTrackingEnabled,
                         description = shareExercise.description?.take(TextLimits.DESCRIPTION),
                         // Linked only when no exercise here holds that step yet; existing ones are left as they are.
-                        catalogId = shareExercise.catalogId?.takeIf { database.exerciseDao().getExerciseByCatalogId(it) == null }
+                        catalogId = shareExercise.catalogId?.takeIf { database.exerciseDao().getExerciseByCatalogId(it) == null },
+                        primaryMuscles = shareExercise.primaryMuscles.mapTo(linkedSetOf()) { muscleOfCode(it) },
+                        secondaryMuscles = shareExercise.secondaryMuscles.mapTo(linkedSetOf()) { muscleOfCode(it) }
                     )
                     val newId = database.exerciseDao().insertExercise(newExercise)
                     exerciseIdMap[key] = newId

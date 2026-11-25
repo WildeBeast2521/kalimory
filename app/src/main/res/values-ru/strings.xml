@@ -1012,6 +1012,7 @@
     <string name="csv_issue_type">Строка %1$d: недопустимый тип «%2$s» (нужен Dynamic или Isometric)</string>
     <string name="csv_issue_laterality">Строка %1$d: недопустимая сторонность «%2$s» (нужно Bilateral или Unilateral)</string>
     <string name="csv_issue_catalog_id">Строка %1$d: недопустимый catalogId «%2$s»</string>
+    <string name="csv_issue_unknown_muscle">Строка %1$d: неизвестная мышца «%2$s»</string>
     <string name="csv_issue_text">Строка %1$d: %2$s</string>
     <string name="csv_issue_record_columns">Строка %1$d: недостаточно столбцов</string>
     <string name="csv_issue_record_required">Строка %1$d: не указано обязательное значение</string>
@@ -1042,6 +1043,7 @@
     <string name="share_issue_invalid_catalog">%1$s: недопустимый catalogId «%2$s»</string>
     <string name="share_issue_range">%1$s: %2$s должно быть от %3$d до %4$d</string>
     <string name="share_issue_dup_catalog">%1$s: catalogId «%2$s» встречается дважды</string>
+    <string name="share_issue_unknown_muscle">%1$s: неизвестная мышца «%2$s»</string>
     <string name="share_issue_dup_exercise">%1$s: упражнение «%2$s» встречается дважды</string>
     <string name="share_issue_dup_program">%1$s: название программы «%2$s» встречается дважды</string>
     <string name="share_issue_dup_interval">%1$s: название интервальной тренировки «%2$s» встречается дважды</string>

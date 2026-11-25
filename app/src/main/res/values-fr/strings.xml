@@ -1038,6 +1038,7 @@
     <string name="csv_issue_type">Ligne %1$d : type « %2$s » non valide (Dynamic ou Isometric attendu)</string>
     <string name="csv_issue_laterality">Ligne %1$d : latéralité « %2$s » non valide (Bilateral ou Unilateral attendu)</string>
     <string name="csv_issue_catalog_id">Ligne %1$d : catalogId « %2$s » non valide</string>
+    <string name="csv_issue_unknown_muscle">Ligne %1$d : muscle inconnu « %2$s »</string>
     <string name="csv_issue_text">Ligne %1$d : %2$s</string>
     <string name="csv_issue_record_columns">Ligne %1$d : pas assez de colonnes</string>
     <string name="csv_issue_record_required">Ligne %1$d : une valeur obligatoire est manquante</string>
@@ -1068,6 +1069,7 @@
     <string name="share_issue_invalid_catalog">%1$s : catalogId « %2$s » non valide</string>
     <string name="share_issue_range">%1$s : %2$s doit être compris entre %3$d et %4$d</string>
     <string name="share_issue_dup_catalog">%1$s : le catalogId « %2$s » est utilisé deux fois</string>
+    <string name="share_issue_unknown_muscle">%1$s : muscle inconnu « %2$s »</string>
     <string name="share_issue_dup_exercise">%1$s : l’exercice « %2$s » apparaît deux fois</string>
     <string name="share_issue_dup_program">%1$s : le nom de programme « %2$s » est utilisé deux fois</string>
     <string name="share_issue_dup_interval">%1$s : le nom d’intervalle « %2$s » est utilisé deux fois</string>

@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.viewmodel
 
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
@@ -60,7 +61,7 @@ class CsvTransfer(
             val currentExercises = exerciseDao.getAllExercises().first()
 
             val csvBuilder = StringBuilder()
-            csvBuilder.appendLine("name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId")
+            csvBuilder.appendLine("name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles")
 
             currentExercises.forEach { exercise ->
                 csvBuilder.appendLine(
@@ -80,7 +81,9 @@ class CsvTransfer(
                         exercise.weightTrackingEnabled.toString(),
                         exercise.assistanceTrackingEnabled.toString(),
                         exercise.description ?: "",
-                        exercise.catalogId ?: ""
+                        exercise.catalogId ?: "",
+                        exercise.primaryMuscles.toCsvCell(),
+                        exercise.secondaryMuscles.toCsvCell()
                     )
                 )
             }
@@ -265,6 +268,8 @@ class CsvTransfer(
                     val assistanceTrackingEnabledStr = columns.getOrNull(13)?.trim() ?: ""
                     val descriptionStr = columns.getOrNull(14)?.trim() ?: ""
                     val catalogIdStr = columns.getOrNull(15)?.trim() ?: ""
+                    val primaryMusclesStr = columns.getOrNull(16)?.trim() ?: ""
+                    val secondaryMusclesStr = columns.getOrNull(17)?.trim() ?: ""
 
                     // 必須フィールドチェック
                     if (name.isEmpty() || type.isEmpty() || laterality.isEmpty()) {
@@ -333,6 +338,15 @@ class CsvTransfer(
                         return@forEachIndexed
                     }
 
+                    // The muscles chosen for an own exercise, when the file has them: an unknown one is refused before anything is created.
+                    val primaryMuscles = musclesOfCsvCell(primaryMusclesStr)
+                    val secondaryMuscles = musclesOfCsvCell(secondaryMusclesStr)
+                    val unknownMuscle = (primaryMuscles.unknown + secondaryMuscles.unknown).firstOrNull()
+                    if (unknownMuscle != null) {
+                        errors.add(ImportIssue(R.string.csv_issue_unknown_muscle, listOf(unknownMuscle)).atLine(index + 2))
+                        errorCount++
+                        return@forEachIndexed
+                    }
                     // A catalogue step can be linked to one exercise only: one that is already linked here, or
                     // repeated in this file, comes in without its link and says so.
                     val catalogId = catalogIdStr.ifEmpty { null }?.takeIf { id ->
@@ -346,6 +360,8 @@ class CsvTransfer(
                         type = type,
                         group = group,
                         catalogId = catalogId,
+                        primaryMuscles = primaryMuscles.muscles,
+                        secondaryMuscles = secondaryMuscles.muscles,
                         sortOrder = sortOrder,
                         displayOrder = displayOrder,
                         laterality = laterality,
@@ -449,4 +465,16 @@ class CsvTransfer(
 
         return@withContext CsvImportReport(CsvType.RECORDS, added, skipped, errorCount, skippedItems, errors)
     }
+}
+
+/** Muscle codes in one CSV cell, separated by ";" and written in enum order. */
+private fun Set<Muscle>.toCsvCell(): String = Muscle.entries.filter { it in this }.joinToString(";") { it.code }
+
+private class CsvMuscles(val muscles: Set<Muscle>, val unknown: List<String>)
+
+/** Reads a cell written by [toCsvCell]; empty means none, and codes this version does not know are listed in `unknown`. */
+private fun musclesOfCsvCell(cell: String): CsvMuscles {
+    val codes = cell.split(';').map { it.trim() }.filter { it.isNotEmpty() }
+    val known = codes.mapNotNull { code -> Muscle.entries.firstOrNull { it.code == code } }
+    return CsvMuscles(known.toCollection(linkedSetOf()), codes.filter { code -> Muscle.entries.none { it.code == code } })
 }

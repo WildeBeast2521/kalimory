@@ -13,6 +13,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ### Added
 - A one-sided exercise can have its own weight, assistance and distance for each side ([#299](https://github.com/WildeBeast2521/kalimory/pull/299))
 - The records CSV carries those left-side values in three optional last columns; old files import as before ([#299](https://github.com/WildeBeast2521/kalimory/pull/299))
+- The exercises CSV and Share carry the muscles chosen for your own exercises; old files import as before ([#301](https://github.com/WildeBeast2521/kalimory/pull/301))
 
 ### Changed
 - Backups are saved in a new format that holds the muscles chosen for your own exercises; earlier versions of the app cannot restore them ([#301](https://github.com/WildeBeast2521/kalimory/pull/301))

@@ -989,6 +989,7 @@
     <string name="csv_issue_type">%1$d行目: タイプ「%2$s」が正しくありません（Dynamic または Isometric）</string>
     <string name="csv_issue_laterality">%1$d行目: 片側/両側「%2$s」が正しくありません（Bilateral または Unilateral）</string>
     <string name="csv_issue_catalog_id">%1$d行目: catalogId「%2$s」が正しくありません</string>
+    <string name="csv_issue_unknown_muscle">%1$d行目: 不明な筋肉「%2$s」</string>
     <string name="csv_issue_text">%1$d行目: %2$s</string>
     <string name="csv_issue_record_columns">%1$d行目: 列が足りません</string>
     <string name="csv_issue_record_required">%1$d行目: 必須の値がありません</string>
@@ -1019,6 +1020,7 @@
     <string name="share_issue_invalid_catalog">%1$s: catalogId「%2$s」が正しくありません</string>
     <string name="share_issue_range">%1$s: %2$sは%3$d〜%4$dにしてください</string>
     <string name="share_issue_dup_catalog">%1$s: catalogId「%2$s」が重複しています</string>
+    <string name="share_issue_unknown_muscle">%1$s: 不明な筋肉「%2$s」</string>
     <string name="share_issue_dup_exercise">%1$s: 種目「%2$s」が重複しています</string>
     <string name="share_issue_dup_program">%1$s: プログラム名「%2$s」が重複しています</string>
     <string name="share_issue_dup_interval">%1$s: インターバル名「%2$s」が重複しています</string>

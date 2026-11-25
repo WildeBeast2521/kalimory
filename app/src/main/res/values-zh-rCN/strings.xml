@@ -983,6 +983,7 @@
     <string name="csv_issue_type">第 %1$d 行：类型“%2$s”无效（必须是 Dynamic 或 Isometric）</string>
     <string name="csv_issue_laterality">第 %1$d 行：单双侧“%2$s”无效（必须是 Bilateral 或 Unilateral）</string>
     <string name="csv_issue_catalog_id">第 %1$d 行：catalogId“%2$s”无效</string>
+    <string name="csv_issue_unknown_muscle">第 %1$d 行：未知肌肉“%2$s”</string>
     <string name="csv_issue_text">第 %1$d 行：%2$s</string>
     <string name="csv_issue_record_columns">第 %1$d 行：列数不足</string>
     <string name="csv_issue_record_required">第 %1$d 行：缺少必填值</string>
@@ -1013,6 +1014,7 @@
     <string name="share_issue_invalid_catalog">%1$s：catalogId“%2$s”无效</string>
     <string name="share_issue_range">%1$s：%2$s 必须在 %3$d 到 %4$d 之间</string>
     <string name="share_issue_dup_catalog">%1$s：catalogId“%2$s”重复</string>
+    <string name="share_issue_unknown_muscle">%1$s：未知肌肉“%2$s”</string>
     <string name="share_issue_dup_exercise">%1$s：动作“%2$s”重复</string>
     <string name="share_issue_dup_program">%1$s：程序名称“%2$s”重复</string>
     <string name="share_issue_dup_interval">%1$s：间歇名称“%2$s”重复</string>

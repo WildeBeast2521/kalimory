@@ -165,7 +165,10 @@ class CommunityShareTransfer(
                     weightTrackingEnabled = exercise.weightTrackingEnabled,
                     assistanceTrackingEnabled = exercise.assistanceTrackingEnabled,
                     description = exercise.description,
-                    catalogId = exercise.catalogId
+                    catalogId = exercise.catalogId,
+                    // A catalogue exercise's muscles come from its step; only an own exercise's chosen ones travel.
+                    primaryMuscles = if (exercise.catalogId == null) exercise.primaryMuscles.map { it.code } else emptyList(),
+                    secondaryMuscles = if (exercise.catalogId == null) exercise.secondaryMuscles.map { it.code } else emptyList()
                 )
                 exercise.group?.let { groupNames.add(it) }
             }

@@ -1072,6 +1072,7 @@
     <string name="csv_issue_type">السطر %1$d: النوع \"%2$s\" غير صالح (يجب أن يكون Dynamic أو Isometric)</string>
     <string name="csv_issue_laterality">السطر %1$d: الجانبية \"%2$s\" غير صالحة (يجب أن تكون Bilateral أو Unilateral)</string>
     <string name="csv_issue_catalog_id">السطر %1$d: catalogId \"%2$s\" غير صالح</string>
+    <string name="csv_issue_unknown_muscle">السطر %1$d: عضلة غير معروفة \"%2$s\"</string>
     <string name="csv_issue_text">السطر %1$d: %2$s</string>
     <string name="csv_issue_record_columns">السطر %1$d: عدد الأعمدة غير كافٍ</string>
     <string name="csv_issue_record_required">السطر %1$d: قيمة مطلوبة مفقودة</string>
@@ -1102,6 +1103,7 @@
     <string name="share_issue_invalid_catalog">%1$s: catalogId \"%2$s\" غير صالح</string>
     <string name="share_issue_range">%1$s: يجب أن تكون %2$s من %3$d إلى %4$d</string>
     <string name="share_issue_dup_catalog">%1$s: catalogId \"%2$s\" مستخدم مرتين</string>
+    <string name="share_issue_unknown_muscle">%1$s: عضلة غير معروفة \"%2$s\"</string>
     <string name="share_issue_dup_exercise">%1$s: التمرين \"%2$s\" مكرر</string>
     <string name="share_issue_dup_program">%1$s: اسم البرنامج \"%2$s\" مستخدم مرتين</string>
     <string name="share_issue_dup_interval">%1$s: اسم الفاصل \"%2$s\" مستخدم مرتين</string>
