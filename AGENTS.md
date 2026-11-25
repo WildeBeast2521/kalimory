@@ -52,6 +52,10 @@ application ID changed.
 
 ## Generated content
 
+- **What's new.** The sheet shown after an update reads `CHANGELOG.md` and the en-US Fastlane
+  changelogs, which `CopyWhatsNew` in `app/build.gradle.kts` copies into the app's assets at build
+  time. `ChangelogTest` parses the real file, so a malformed `CHANGELOG.md` fails CI. The Fastlane
+  summary of a version is the overview at the top of its sheet: write it for people, not only the store.
 - **Catalogue.** Edit `scripts/catalogue/catalogue_spec.py`, then run
   `python3 scripts/catalogue/generate_catalogue.py .`. It writes `Catalogue.kt` and English
   `catalogue_strings.xml`. Add each new key to every `values-*/catalogue_strings.xml` by hand.
@@ -201,6 +205,8 @@ SHA-256 is in `.github/release-certificate.sha256`; a release signed with any ot
 ## Changelog and release notes
 
 One standard, for every release:
+
+The app also shows this file in its "What's new" sheet, one more reason to keep each bullet short.
 
 - `CHANGELOG.md` follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/) and Semantic
   Versioning. The latest version comes first, under an `## [Unreleased]` section that is always

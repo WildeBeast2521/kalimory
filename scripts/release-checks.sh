@@ -21,6 +21,8 @@ grep -q "^## \[$version_name\] - [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}$" CHANGELOG.md
 # Keep a Changelog 1.1.0 and every link, including [Unreleased] comparing this version with HEAD.
 python3 -I scripts/changelog-links.py --check >/dev/null \
     || fail "CHANGELOG.md breaks the rules; see python3 -I scripts/changelog-links.py --check"
+! grep -q "/pull/0)" CHANGELOG.md \
+    || fail "CHANGELOG.md still has a #0 placeholder for a pull request"
 grep -qxF "[Unreleased]: $github/compare/v$version_name...HEAD" CHANGELOG.md \
     || fail "$version_name is not the newest version in CHANGELOG.md"
 

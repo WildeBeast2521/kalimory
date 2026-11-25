@@ -113,6 +113,20 @@ android {
     }
 }
 
+// The "What's new" sheet shows CHANGELOG.md and the store summary of each version. They are copied
+// into the app's assets at build time, with no network, so the F-Droid build from source has them too.
+abstract class CopyWhatsNew : DefaultTask() {
+    @get:InputFile abstract val changelog: RegularFileProperty
+    @get:InputDirectory abstract val summaries: DirectoryProperty
+    @get:OutputDirectory abstract val output: DirectoryProperty
+
+    @TaskAction fun copy() {
+        val target = output.get().asFile.resolve("whatsnew").apply { deleteRecursively(); mkdirs() }
+        changelog.get().asFile.copyTo(target.resolve("CHANGELOG.md"))
+        summaries.get().asFile.listFiles { f -> f.extension == "txt" }.orEmpty().forEach { it.copyTo(target.resolve(it.name)) }
+    }
+}
+
 // The Baseline Profile plugin adds benchmark and non-minified copies of release. Without a
 // keystore in the repository they are signed with the debug key so they can be installed.
 androidComponents {
@@ -121,6 +135,11 @@ androidComponents {
         if (type.startsWith("benchmark") || type.startsWith("nonMinified")) {
             variant.signingConfig.setConfig(android.signingConfigs.getByName("debug"))
         }
+        val copyWhatsNew = tasks.register<CopyWhatsNew>("copyWhatsNew${variant.name.replaceFirstChar { it.uppercase() }}") {
+            changelog.set(rootProject.layout.projectDirectory.file("CHANGELOG.md"))
+            summaries.set(rootProject.layout.projectDirectory.dir("fastlane/metadata/android/en-US/changelogs"))
+        }
+        variant.sources.assets?.addGeneratedSourceDirectory(copyWhatsNew, CopyWhatsNew::output)
     }
 }
 

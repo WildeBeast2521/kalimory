@@ -60,6 +60,7 @@ fun SettingsScreenNew(
     onNavigateBack: () -> Unit,
     onNavigateToLicenses: () -> Unit = {},
     onOpenWelcomeGuide: () -> Unit = {},
+    onOpenWhatsNew: () -> Unit = {},
     onNavigateToBackup: () -> Unit = {},
     onNavigateToCsvDataManagement: () -> Unit = {},
     onNavigateToShareHub: () -> Unit = {},
@@ -417,6 +418,7 @@ fun SettingsScreenNew(
                         )
                     }
                     SettingRow(title = stringResource(R.string.app_version), description = BuildConfig.VERSION_NAME, icon = AppIcons.Info)
+                    SettingLinkRow(title = stringResource(R.string.whats_new_title), icon = AppIcons.History, onClick = onOpenWhatsNew)
                     SettingLinkRow(
                         title = stringResource(R.string.app_source_code),
                         icon = AppIcons.SourceCode,
