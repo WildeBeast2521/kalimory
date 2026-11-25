@@ -11,6 +11,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- A What's new sheet shows the changes of a new version after an update, and can be opened again from Settings ([#303](https://github.com/WildeBeast2521/kalimory/pull/303))
 - You can choose the muscles an exercise of your own works and the ones that help, and the body map counts them like catalogue exercises ([#301](https://github.com/WildeBeast2521/kalimory/pull/301))
 - A one-sided exercise can have its own weight, assistance and distance for each side ([#299](https://github.com/WildeBeast2521/kalimory/pull/299))
 - The records CSV carries those left-side values in three optional last columns; old files import as before ([#299](https://github.com/WildeBeast2521/kalimory/pull/299))
