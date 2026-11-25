@@ -53,6 +53,22 @@ class BodyMapScreenshotTest(private val theme: ScreenshotTheme) {
         compose.onRoot().captureRoboImage("src/test/screenshots/BodyMapRecent_${theme.label}.png")
     }
 
+    @Test fun trend() {
+        compose.setContent {
+            CalisthenicsMemoryTheme(darkTheme = theme.dark, dynamicColor = false, trueBlack = theme.trueBlack) {
+                BodyMapContent(
+                    BodyMapSamples.week, weeks = 1.0, period = Period.OneWeek, onPeriod = {}, view = BodyMapView.TREND,
+                    trend = TrendUi(
+                        io.github.gonbei774.calisthenicsmemory.data.review.TrendSpan.THREE_MONTHS, {}, BodyMapSamples.trendBuckets,
+                        io.github.gonbei774.calisthenicsmemory.data.catalogue.MuscleGroup.BACK, {}, null, {},
+                    ),
+                    trendSummary = BodyMapSamples.week,
+                )
+            }
+        }
+        compose.onRoot().captureRoboImage("src/test/screenshots/BodyMapTrend_${theme.label}.png")
+    }
+
     companion object {
         @JvmStatic
         @ParameterizedRobolectricTestRunner.Parameters(name = "{0}")

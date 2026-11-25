@@ -1,6 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens.review
 
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.MuscleGroup
+import io.github.gonbei774.calisthenicsmemory.data.review.SetCounts
+import io.github.gonbei774.calisthenicsmemory.data.review.TrendBucket
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleRecent
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleSets
 import io.github.gonbei774.calisthenicsmemory.data.review.RecentTier
@@ -30,4 +33,15 @@ internal object BodyMapSamples {
         MuscleRecent(Muscle.QUADRICEPS, RecentTier.WORKED, 1),
     )
     val empty = MuscleVolumeSummary(LocalDate.of(2026, 3, 9), LocalDate.of(2026, 3, 15), emptyList(), 0, 0, 0, 0)
+
+    /** Eight made-up weeks of back and arm work, rising; the last is still running. */
+    val trendBuckets = (0 until 8).map { i ->
+        val start = LocalDate.of(2026, 1, 12).plusWeeks(i.toLong())
+        TrendBucket(
+            start, start.plusDays(6),
+            muscles = mapOf(Muscle.LATS to SetCounts(i + 2, 0), Muscle.BICEPS to SetCounts(0, i + 1)),
+            groups = mapOf(MuscleGroup.BACK to SetCounts(i + 2, 0), MuscleGroup.ARMS to SetCounts(0, i + 1)),
+            weeks = 1.0,
+        )
+    }
 }

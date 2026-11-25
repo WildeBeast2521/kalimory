@@ -102,6 +102,21 @@ class ProgressBodyMapTest {
         }
     }
 
+    @Test
+    fun overTimeListsEachWeekOfAMuscleGroup() {
+        scenario = ActivityScenario.launch(MainActivity::class.java)
+        val progress = hasText(text(PrimaryDestination.PROGRESS.label)) and hasAnyAncestor(hasTestTag(PRIMARY_NAVIGATION_BAR_TAG))
+        rule.waitUntil(STARTUP_TIMEOUT_MS) { rule.onAllNodes(progress).fetchSemanticsNodes().isNotEmpty() }
+        rule.onNode(progress).performClick()
+        rule.onNode(hasContentDescription(text(R.string.body_map_open))).performClick()
+        rule.waitUntil(STARTUP_TIMEOUT_MS) { rule.onAllNodes(hasText(text(R.string.body_map_view_trend))).fetchSemanticsNodes().isNotEmpty() }
+        rule.onNode(hasText(text(R.string.body_map_view_trend))).performClick()
+        // The seeded chest set is this week's: the chest group lists its weeks, the running one saying so.
+        rule.onNode(hasText(text(R.string.muscle_chest)) and androidx.compose.ui.test.hasClickAction()).performClick()
+        rule.waitUntil(STARTUP_TIMEOUT_MS) { rule.onAllNodes(hasText(text(R.string.body_map_trend_by_week))).fetchSemanticsNodes().isNotEmpty() }
+        rule.onAllNodes(hasText(text(R.string.body_map_trend_so_far))).fetchSemanticsNodes().isNotEmpty().also { check(it) { "the running week is not marked" } }
+    }
+
     private companion object {
         const val STARTUP_TIMEOUT_MS = 10_000L
     }

@@ -41,6 +41,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.R
+import java.time.LocalDate
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
+import io.github.gonbei774.calisthenicsmemory.data.review.TrendSpan
+import io.github.gonbei774.calisthenicsmemory.data.review.TrendBucket
+import io.github.gonbei774.calisthenicsmemory.data.catalogue.MuscleGroup
+import androidx.compose.runtime.produceState
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleRecent
 import io.github.gonbei774.calisthenicsmemory.data.review.MuscleVolume
@@ -80,6 +87,28 @@ fun BodyMapScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit) {
     }
     val recent = remember(today, history, exercises) { MuscleVolume.recent(today, history, exercises) }
 
+    // Over time (ADR 0015): computed in one pass off the main thread, only while that view is open.
+    var spanName by rememberSaveable { mutableStateOf(TrendSpan.THREE_MONTHS.name) }
+    var groupName by rememberSaveable { mutableStateOf("") }
+    var muscleName by rememberSaveable { mutableStateOf("") }
+    val span = TrendSpan.valueOf(spanName)
+    val overTime = viewName == BodyMapView.TREND.name
+    val trendResult by produceState<TrendResult?>(null, span, today, firstDay, history, exercises, overTime) {
+        value = if (!overTime) null else withContext(Dispatchers.Default) {
+            val starts = MuscleVolume.trendStarts(span, today, firstDay, if (span == TrendSpan.ALL) MuscleVolume.earliest(history) else null)
+            TrendResult(starts.first(), MuscleVolume.trend(starts, today, history, exercises))
+        }
+    }
+    val trendSummary = remember(trendResult?.start, today, history, intervalHistory, exercises) {
+        trendResult?.let { MuscleVolume.build(it.start, today, history, intervalHistory, exercises) }
+    }
+    val trend = TrendUi(
+        span = span, onSpan = { spanName = it.name },
+        buckets = trendResult?.buckets,
+        group = groupName.takeIf { it.isNotEmpty() }?.let(MuscleGroup::valueOf), onGroup = { groupName = it.name; muscleName = "" },
+        muscle = muscleName.takeIf { it.isNotEmpty() }?.let(Muscle::valueOf), onMuscle = { muscleName = it?.name.orEmpty() },
+    )
+
     val topBarScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
         modifier = Modifier.nestedScroll(topBarScroll.nestedScrollConnection),
@@ -93,6 +122,8 @@ fun BodyMapScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit) {
             view = BodyMapView.valueOf(viewName),
             onView = { viewName = it.name },
             recent = recent,
+            trend = trend,
+            trendSummary = trendSummary,
             modifier = Modifier.padding(padding),
         )
     }
@@ -103,7 +134,11 @@ internal enum class BodyMapView(@StringRes val label: Int) {
     SETS(R.string.body_map_view_sets),
     RECENT(R.string.body_map_view_recent),
     NOT_WORKED(R.string.body_map_view_untrained),
+    TREND(R.string.body_map_view_trend),
 }
+
+/** The weekly or monthly buckets of the over-time view and the day the first one starts. */
+internal class TrendResult(val start: LocalDate, val buckets: List<TrendBucket>)
 
 /** The body map without state: shown by the screen and by its tests. */
 @Composable
@@ -118,6 +153,10 @@ internal fun BodyMapContent(
     onView: (BodyMapView) -> Unit = {},
     /** Muscles worked in the last days, for the Recent view; it has no period. */
     recent: List<MuscleRecent> = emptyList(),
+    /** The over-time view's state; without it that view shows nothing. */
+    trend: TrendUi? = null,
+    /** What is not on the muscles over the over-time span, for the rows under its chart. */
+    trendSummary: MuscleVolumeSummary? = null,
 ) {
     Surface(modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
@@ -128,7 +167,14 @@ internal fun BodyMapContent(
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 ViewChips(view, onView)
-                if (view != BodyMapView.RECENT) PeriodChips(period, onPeriod)
+                when {
+                    view == BodyMapView.TREND -> trend?.let { TrendSpanChips(it.span, it.onSpan) }
+                    view != BodyMapView.RECENT -> PeriodChips(period, onPeriod)
+                }
+            }
+            if (view == BodyMapView.TREND) {
+                if (trend != null) TrendBody(trend, trendSummary ?: summary)
+                return@Column
             }
             if (view == BodyMapView.RECENT) {
                 Recent(recent)
@@ -293,7 +339,7 @@ private fun Swatch(tier: VolumeTier) {
 
 /** Sets that are not on the figure, listed so none goes missing. */
 @Composable
-private fun NotOnMap(summary: MuscleVolumeSummary) {
+internal fun NotOnMap(summary: MuscleVolumeSummary) {
     if (summary.mobilitySets + summary.otherSets + summary.intervalSets == 0) return
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
         SectionHeading(stringResource(R.string.body_map_not_on_map))
