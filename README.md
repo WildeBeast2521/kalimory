@@ -159,6 +159,8 @@ request that did it.
 - [ ] A year heatmap
 - [ ] A "what I own" equipment profile
 - [ ] A larger catalogue, about 500 curated steps, with warm-up, mobility, stretching and conditioning
+- [ ] Body weight, counted in the volume of bodyweight exercises
+- [x] Choose the muscles for your own exercises
 - [x] Search that finds anything a section shows
 
 **1.3 Progression v2**

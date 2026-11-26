@@ -8,6 +8,8 @@ Start one exercise from Train › Quick start. For reps, the app can count out l
 
 In auto mode a set ends by itself when it reaches its target, in single exercises and programs alike. To end a set earlier, tap Complete: the set pauses and the app asks for the value to save, as it does in manual mode. Cancel to carry on with the set.
 
+A one-sided exercise can take its own weight, assistance and distance for each side, in a single exercise, a program, a past workout and when you correct a workout. The left side follows the right until you change it, so one value for both sides takes the same taps as before.
+
 ## Programs
 
 A program is a list of exercises with their sets, run in order. Create one in Library › Programs. While it runs, the overview lets you jump to another exercise, redo a set or skip one.
