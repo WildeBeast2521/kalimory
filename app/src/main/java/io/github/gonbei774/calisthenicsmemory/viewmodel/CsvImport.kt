@@ -13,7 +13,8 @@ enum class CsvImportMode {
 enum class CsvType {
     GROUPS,
     EXERCISES,
-    RECORDS
+    RECORDS,
+    BODY_WEIGHTS
 }
 
 /**

@@ -11,6 +11,10 @@ from which Kalimory was forked; their version numbers are the original app's, no
 ## [Unreleased]
 
 ### Added
+- A body-weight list in Progress, and an optional share of body weight for each rep exercise, counted in its volume ([#306](https://github.com/WildeBeast2521/kalimory/pull/306))
+- Progress shows the heaviest load per body weight for those exercises ([#306](https://github.com/WildeBeast2521/kalimory/pull/306))
+- Body weights can be imported from an openScale CSV file, with a preview and an undo ([#306](https://github.com/WildeBeast2521/kalimory/pull/306))
+- The exercises CSV and Share carry the share of body weight, and the CSV export has a body weight file ([#306](https://github.com/WildeBeast2521/kalimory/pull/306))
 - The body map has an Over time view: sets a week for each muscle group or muscle over a month, three months, a year or all time ([#304](https://github.com/WildeBeast2521/kalimory/pull/304))
 - A What's new sheet shows the changes of a new version after an update, and can be opened again from Settings ([#303](https://github.com/WildeBeast2521/kalimory/pull/303))
 - You can choose the muscles an exercise of your own works and the ones that help, and the body map counts them like catalogue exercises ([#301](https://github.com/WildeBeast2521/kalimory/pull/301))
@@ -19,7 +23,7 @@ from which Kalimory was forked; their version numbers are the original app's, no
 - The exercises CSV and Share carry the muscles chosen for your own exercises; old files import as before ([#301](https://github.com/WildeBeast2521/kalimory/pull/301))
 
 ### Changed
-- Backups are saved in a new format that holds the muscles chosen for your own exercises; earlier versions of the app cannot restore them ([#301](https://github.com/WildeBeast2521/kalimory/pull/301))
+- Backups are saved in a new format that holds the muscles chosen for your own exercises and your body weights; earlier versions of the app cannot restore them ([#301](https://github.com/WildeBeast2521/kalimory/pull/301)) ([#306](https://github.com/WildeBeast2521/kalimory/pull/306))
 
 ### Fixed
 - The group picker in the exercise form and the loop picker in the program editor are named and read their value for screen readers ([#302](https://github.com/WildeBeast2521/kalimory/pull/302))

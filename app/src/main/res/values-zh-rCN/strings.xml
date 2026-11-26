@@ -359,6 +359,17 @@
     <string name="csv_export_body_weights_description">导出体重列表（日期和 kg）</string>
     <string name="csv_issue_body_weight_percent">第 %1$d 行：bodyWeightPercent“%2$s”无效</string>
     <string name="share_issue_body_weight_percent">%1$s：体重占比必须在 1 到 100 之间，而不是 %2$d</string>
+    <string name="body_weight_issue_columns">文件需要日期列和体重列</string>
+    <string name="body_weight_issue_date">第 %1$d 行：日期“%2$s”无法读取（需要类似 2026-11-11 的日期）</string>
+    <string name="body_weight_issue_weight">第 %1$d 行：体重“%2$s”无法读取</string>
+    <string name="body_weight_issue_range">第 %1$d 行：体重“%2$s”不在 1 到 500 kg 之间</string>
+    <string name="body_weight_import_exists">%1$s 已有体重</string>
+    <string name="body_weight_import_to_add">将添加</string>
+    <string name="body_weight_import_existing">已有体重的日期</string>
+    <string name="body_weight_import_unreadable">无法读取的行</string>
+    <string name="body_weight_import_kg_note">体重按千克读取。如果 openScale 使用磅或英石，请在导出前切换为 kg。</string>
+    <string name="body_weight_import_undo">撤销上次导入（%1$d）</string>
+    <string name="csv_not_recognised">此文件不是分组、动作、记录或体重的 CSV 文件</string>
     <string name="todo_empty">点击 + 添加动作</string>
     <string name="todo_all_added">所有动作已添加到列表中</string>
     <string name="todo_drag_to_reorder">拖动以重新排序</string>

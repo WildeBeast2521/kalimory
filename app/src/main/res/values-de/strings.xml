@@ -355,6 +355,17 @@
     <string name="csv_export_body_weights_description">Die Liste des Körpergewichts exportieren, Datum und kg</string>
     <string name="csv_issue_body_weight_percent">Zeile %1$d: Ungültiger bodyWeightPercent „%2$s“</string>
     <string name="share_issue_body_weight_percent">%1$s: Der Körpergewichtsanteil muss zwischen 1 und 100 liegen, nicht %2$d</string>
+    <string name="body_weight_issue_columns">Die Datei braucht eine Datums- und eine Gewichtsspalte</string>
+    <string name="body_weight_issue_date">Zeile %1$d: Datum „%2$s“ nicht lesbar (nötig ist ein Datum wie 2026-11-11)</string>
+    <string name="body_weight_issue_weight">Zeile %1$d: Gewicht „%2$s“ nicht lesbar</string>
+    <string name="body_weight_issue_range">Zeile %1$d: Das Gewicht „%2$s“ liegt nicht zwischen 1 und 500 kg</string>
+    <string name="body_weight_import_exists">%1$s hat schon ein Gewicht</string>
+    <string name="body_weight_import_to_add">Hinzuzufügen</string>
+    <string name="body_weight_import_existing">Daten mit vorhandenem Gewicht</string>
+    <string name="body_weight_import_unreadable">Nicht lesbare Zeilen</string>
+    <string name="body_weight_import_kg_note">Gewichte werden als Kilogramm gelesen. Verwendet openScale lb oder st, stelle es vor dem Export auf kg um.</string>
+    <string name="body_weight_import_undo">Letzten Import rückgängig machen (%1$d)</string>
+    <string name="csv_not_recognised">Diese Datei ist keine CSV-Datei für Gruppen, Übungen, Aufzeichnungen oder Körpergewicht</string>
     <string name="todo_empty">Tippe + um Übungen hinzuzufügen</string>
     <string name="todo_all_added">Alle Übungen sind bereits in der Liste</string>
     <string name="todo_drag_to_reorder">Ziehen zum Sortieren</string>

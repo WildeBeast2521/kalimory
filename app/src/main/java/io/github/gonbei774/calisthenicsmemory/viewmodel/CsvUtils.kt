@@ -35,7 +35,7 @@ fun csvRow(vararg fields: String): String = fields.joinToString(",") { csvEscape
  * クォート内のカンマ・改行・"" エスケープを処理する。レコード境界はクォート外の
  * 改行（\n / \r\n / \r）。空文字列は空のリストを返す。
  */
-fun parseCsv(text: String): List<List<String>> {
+fun parseCsv(text: String, separator: Char = ','): List<List<String>> {
     val records = mutableListOf<List<String>>()
     var fields = mutableListOf<String>()
     val field = StringBuilder()
@@ -96,7 +96,7 @@ fun parseCsv(text: String): List<List<String>> {
                 }
                 i++
             }
-            ',' -> {
+            separator -> {
                 endField()
                 i++
             }

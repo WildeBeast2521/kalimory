@@ -405,6 +405,17 @@
     <string name="csv_export_body_weights_description">体重の一覧（日付とkg）を書き出す</string>
     <string name="csv_issue_body_weight_percent">%1$d行目: bodyWeightPercent「%2$s」が正しくありません</string>
     <string name="share_issue_body_weight_percent">%1$s: 体重の割合は1〜100にしてください（%2$d は不可）</string>
+    <string name="body_weight_issue_columns">ファイルには日付の列と体重の列が必要です</string>
+    <string name="body_weight_issue_date">%1$d行目: 日付「%2$s」を読み取れません（2026-11-11 のような日付が必要です）</string>
+    <string name="body_weight_issue_weight">%1$d行目: 体重「%2$s」を読み取れません</string>
+    <string name="body_weight_issue_range">%1$d行目: 体重「%2$s」が1〜500 kgの範囲外です</string>
+    <string name="body_weight_import_exists">%1$s にはすでに体重があります</string>
+    <string name="body_weight_import_to_add">追加する数</string>
+    <string name="body_weight_import_existing">すでに体重がある日付</string>
+    <string name="body_weight_import_unreadable">読み取れない行</string>
+    <string name="body_weight_import_kg_note">体重はキログラムとして読み取ります。openScale がlbやstの場合は、書き出す前にkgに切り替えてください。</string>
+    <string name="body_weight_import_undo">直前のインポートを取り消す（%1$d）</string>
+    <string name="csv_not_recognised">このファイルはグループ、種目、記録、体重のCSVではありません</string>
     <string name="todo_empty">右下の + で種目を追加</string>
     <string name="todo_all_added">すべての種目が追加済みです</string>
     <string name="todo_drag_to_reorder">ドラッグで並び替え</string>

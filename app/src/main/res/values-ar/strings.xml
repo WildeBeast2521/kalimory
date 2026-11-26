@@ -617,6 +617,17 @@
     <string name="csv_export_body_weights_description">تصدير قائمة وزن الجسم: التاريخ والوزن بالكيلوغرام</string>
     <string name="csv_issue_body_weight_percent">السطر %1$d: bodyWeightPercent \"%2$s\" غير صالح</string>
     <string name="share_issue_body_weight_percent">%1$s: يجب أن تكون نسبة وزن الجسم من 1 إلى 100، وليس %2$d</string>
+    <string name="body_weight_issue_columns">يحتاج الملف إلى عمود للتاريخ وعمود للوزن</string>
+    <string name="body_weight_issue_date">السطر %1$d: تاريخ غير مقروء \"%2$s\" (المطلوب تاريخ مثل 2026-11-11)</string>
+    <string name="body_weight_issue_weight">السطر %1$d: وزن غير مقروء \"%2$s\"</string>
+    <string name="body_weight_issue_range">السطر %1$d: الوزن \"%2$s\" ليس بين 1 و500 كغ</string>
+    <string name="body_weight_import_exists">%1$s لديه وزن مسجّل بالفعل</string>
+    <string name="body_weight_import_to_add">للإضافة</string>
+    <string name="body_weight_import_existing">تواريخ لها وزن مسجّل</string>
+    <string name="body_weight_import_unreadable">أسطر تعذّرت قراءتها</string>
+    <string name="body_weight_import_kg_note">تُقرأ الأوزان بالكيلوغرام. إذا كان openScale يستخدم الرطل أو الستون، فبدّله إلى كغ قبل التصدير.</string>
+    <string name="body_weight_import_undo">التراجع عن آخر استيراد (%1$d)</string>
+    <string name="csv_not_recognised">هذا الملف ليس ملف CSV للمجموعات أو التمارين أو السجلات أو وزن الجسم</string>
     <string name="todo_empty">اضغط + لإضافة تمارين</string>
     <string name="todo_all_added">كل التمارين في القائمة بالفعل</string>
     <string name="todo_drag_to_reorder">اسحب لإعادة الترتيب</string>

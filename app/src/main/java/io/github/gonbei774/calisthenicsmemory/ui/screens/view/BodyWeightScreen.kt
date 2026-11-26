@@ -66,12 +66,21 @@ internal fun kgText(grams: Int): String = BigDecimal(grams).movePointLeft(3).str
 @Composable
 fun BodyWeightScreen(viewModel: TrainingViewModel, onNavigateBack: () -> Unit) {
     val weights by viewModel.bodyWeights.collectAsState()
+    val lastImportCount by viewModel.lastImportCount.collectAsState()
     BodyWeightContent(
         weights = weights,
         today = rememberToday(),
         onSave = { date, grams, replacing -> viewModel.saveBodyWeight(date, grams, replacing) },
         onDelete = { viewModel.deleteBodyWeight(it.id) },
         onNavigateBack = onNavigateBack,
+        footer = {
+            // The entries the latest import added can be taken back as a whole; typed and edited ones never are.
+            if (lastImportCount > 0) {
+                OutlinedButton(onClick = { viewModel.undoBodyWeightImport() }, modifier = Modifier.fillMaxWidth()) {
+                    Text(stringResource(R.string.body_weight_import_undo, lastImportCount))
+                }
+            }
+        },
     )
 }
 

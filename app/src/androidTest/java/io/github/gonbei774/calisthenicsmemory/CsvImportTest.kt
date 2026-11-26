@@ -359,6 +359,39 @@ class CsvImportTest {
     }
 
     @Test
+    fun importBodyWeights_addsNewDatesOnly_andUndoRemovesOnlyThoseEntries() = runBlocking {
+        val dao = database.bodyWeightDao()
+        // One entry typed by hand, on a date the file also has: it must stay as it is, and survive an undo.
+        dao.insert(io.github.gonbei774.calisthenicsmemory.data.BodyWeight(date = "2026-11-11", weightG = 70_000))
+        val csv = "\uFEFFDATE,TIME,WEIGHT\r\n2026-11-11,08:31:43,62.85\r\n2026-08-08,16:27:21.835,64.9\r\n2026-09-09,,x\r\n"
+
+        val preview = transfer().previewBodyWeights(csv)
+        assertEquals(1, preview.toAdd); assertEquals(1, preview.alreadyThere); assertEquals(1, preview.unreadable)
+        assertEquals(1, dao.latestImportId().let { if (it == null) 1 else 0 }) // the preview wrote nothing
+
+        val report = transfer().importBodyWeights(csv)
+        assertEquals(1, report.successCount)
+        assertEquals(1, report.skippedItems.size)
+        assertEquals(1, report.errorCount)
+        val after = database.backupDao().bodyWeights()
+        assertEquals(listOf("2026-08-08" to 64_900, "2026-11-11" to 70_000), after.map { it.date to it.weightG })
+        val importId = dao.latestImportId()!!
+        assertEquals(1, dao.countImport(importId))
+
+        // An edited import is the user's now, and an undo leaves it alone.
+        assertEquals(1, dao.deleteImport(importId))
+        assertEquals(listOf("2026-11-11"), database.backupDao().bodyWeights().map { it.date })
+    }
+
+    @Test
+    fun importBodyWeights_aFileWithoutAWeightColumnWritesNothing() = runBlocking {
+        val report = transfer().importBodyWeights("date,bmi\n2026-11-11,22\n")
+        assertEquals(0, report.successCount)
+        assertEquals(1, report.errorCount)
+        assertEquals(0, database.backupDao().bodyWeights().size)
+    }
+
+    @Test
     fun importExercises_malformedCatalogId_error() = runBlocking {
         val csv = """
             name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId

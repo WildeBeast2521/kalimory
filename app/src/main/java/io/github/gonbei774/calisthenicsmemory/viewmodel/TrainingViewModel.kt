@@ -153,6 +153,20 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    /** How many entries the latest import added and an undo would remove; 0 when there is nothing to undo. */
+    val lastImportCount: StateFlow<Int> = bodyWeights.map { rows ->
+        val latest = rows.mapNotNull { it.importId }.maxOrNull()
+        if (latest == null) 0 else rows.count { it.importId == latest }
+    }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = 0)
+
+    /** Removes the entries the latest import added, and only those: typed, edited and restored entries have no import marker. */
+    fun undoBodyWeightImport() {
+        viewModelScope.launch {
+            val dao = database.bodyWeightDao()
+            dao.latestImportId()?.let { dao.deleteImport(it) }
+        }
+    }
+
     fun deleteBodyWeight(id: Long) {
         viewModelScope.launch { database.bodyWeightDao().delete(id) }
     }
@@ -611,6 +625,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     suspend fun exportRecordTemplate(): String = csvTransfer.exportRecordTemplate()
     suspend fun exportRecords(): String = csvTransfer.exportRecords()
     suspend fun exportBodyWeights(): String = csvTransfer.exportBodyWeights()
+    suspend fun previewBodyWeights(csvString: String): BodyWeightPreview = csvTransfer.previewBodyWeights(csvString)
+    suspend fun importBodyWeights(csvString: String): CsvImportReport = csvTransfer.importBodyWeights(csvString)
     suspend fun importGroups(csvString: String): CsvImportReport = csvTransfer.importGroups(csvString)
     suspend fun importExercises(csvString: String): CsvImportReport = csvTransfer.importExercises(csvString)
     suspend fun importRecordsFromCsv(csvString: String): CsvImportReport = csvTransfer.importRecordsFromCsv(csvString)

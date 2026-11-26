@@ -607,6 +607,17 @@
     <string name="csv_export_body_weights_description">Экспортировать список веса тела: дата и кг</string>
     <string name="csv_issue_body_weight_percent">Строка %1$d: недопустимый bodyWeightPercent «%2$s»</string>
     <string name="share_issue_body_weight_percent">%1$s: доля веса тела должна быть от 1 до 100, а не %2$d</string>
+    <string name="body_weight_issue_columns">В файле нужны столбец даты и столбец веса</string>
+    <string name="body_weight_issue_date">Строка %1$d: не удалось прочитать дату «%2$s» (нужна дата вида 2026-11-11)</string>
+    <string name="body_weight_issue_weight">Строка %1$d: не удалось прочитать вес «%2$s»</string>
+    <string name="body_weight_issue_range">Строка %1$d: вес «%2$s» не в пределах от 1 до 500 кг</string>
+    <string name="body_weight_import_exists">На %1$s уже есть вес</string>
+    <string name="body_weight_import_to_add">Будет добавлено</string>
+    <string name="body_weight_import_existing">Даты, на которые уже есть вес</string>
+    <string name="body_weight_import_unreadable">Строки, которые не удалось прочитать</string>
+    <string name="body_weight_import_kg_note">Вес читается в килограммах. Если в openScale используются фунты или стоуны, переключите на кг перед экспортом.</string>
+    <string name="body_weight_import_undo">Отменить последний импорт (%1$d)</string>
+    <string name="csv_not_recognised">Этот файл не является CSV групп, упражнений, записей или веса тела</string>
     <string name="todo_empty">Нажмите +, чтобы добавить</string>
     <string name="todo_all_added">Все упражнения уже в списке</string>
     <string name="todo_drag_to_reorder">Перетащите, чтобы изменить порядок</string>

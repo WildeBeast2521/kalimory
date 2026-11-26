@@ -359,6 +359,17 @@
     <string name="csv_export_body_weights_description">Esporta l\'elenco del peso corporeo, data e kg</string>
     <string name="csv_issue_body_weight_percent">Riga %1$d: bodyWeightPercent \"%2$s\" non valido</string>
     <string name="share_issue_body_weight_percent">%1$s: la quota del peso corporeo deve essere da 1 a 100, non %2$d</string>
+    <string name="body_weight_issue_columns">Il file ha bisogno di una colonna per la data e una per il peso</string>
+    <string name="body_weight_issue_date">Riga %1$d: data \"%2$s\" illeggibile (serve una data come 2026-11-11)</string>
+    <string name="body_weight_issue_weight">Riga %1$d: peso \"%2$s\" illeggibile</string>
+    <string name="body_weight_issue_range">Riga %1$d: il peso \"%2$s\" non è tra 1 e 500 kg</string>
+    <string name="body_weight_import_exists">%1$s ha già un peso</string>
+    <string name="body_weight_import_to_add">Da aggiungere</string>
+    <string name="body_weight_import_existing">Date che hanno già un peso</string>
+    <string name="body_weight_import_unreadable">Righe non leggibili</string>
+    <string name="body_weight_import_kg_note">I pesi vengono letti come chilogrammi. Se openScale usa lb o st, impostalo su kg prima di esportare.</string>
+    <string name="body_weight_import_undo">Annulla l\'ultima importazione (%1$d)</string>
+    <string name="csv_not_recognised">Questo file non è un CSV di gruppi, esercizi, registrazioni o peso corporeo</string>
     <string name="todo_empty">Tocca + per aggiungere esercizi</string>
     <string name="todo_all_added">Tutti gli esercizi sono già nella lista</string>
     <string name="todo_drag_to_reorder">Trascina per riordinare</string>

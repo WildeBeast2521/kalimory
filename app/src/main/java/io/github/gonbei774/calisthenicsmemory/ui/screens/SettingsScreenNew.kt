@@ -455,6 +455,7 @@ fun getCsvTypeLocalizedString(csvType: CsvType?): String {
         CsvType.GROUPS -> stringResource(R.string.groups)
         CsvType.EXERCISES -> stringResource(R.string.exercises)
         CsvType.RECORDS -> stringResource(R.string.records)
+        CsvType.BODY_WEIGHTS -> stringResource(R.string.body_weight_title)
         null -> stringResource(R.string.unknown_short)
     }
 }
@@ -463,7 +464,7 @@ fun getCsvTypeLocalizedString(csvType: CsvType?): String {
  * CSV種類を自動判定する関数
  */
 fun detectCsvType(csvString: String): CsvType? {
-    val firstLine = csvString.lines()
+    val firstLine = csvString.removePrefix("\uFEFF").lines()
         .filter { it.isNotBlank() && !it.startsWith("#") }
         .firstOrNull() ?: return null
 
@@ -471,6 +472,7 @@ fun detectCsvType(csvString: String): CsvType? {
         firstLine.trim() == "name" -> CsvType.GROUPS
         firstLine.startsWith("name,type,group,sortOrder") -> CsvType.EXERCISES
         firstLine.startsWith("exerciseName,exerciseType") -> CsvType.RECORDS
+        io.github.gonbei774.calisthenicsmemory.viewmodel.BodyWeightCsv.looksLikeBodyWeights(firstLine) -> CsvType.BODY_WEIGHTS
         else -> null
     }
 }
@@ -488,6 +490,7 @@ suspend fun executeCsvImport(
             CsvType.GROUPS -> viewModel.importGroups(csvData)
             CsvType.EXERCISES -> viewModel.importExercises(csvData)
             CsvType.RECORDS -> viewModel.importRecordsFromCsv(csvData)
+            CsvType.BODY_WEIGHTS -> viewModel.importBodyWeights(csvData)
             else -> null
         }
     }
