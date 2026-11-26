@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A bathroom scale: a rounded square with a dial. Drawn by hand in the Material Symbols format, not fetched. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960"
+    android:tint="?attr/colorControlNormal">
+  <path
+      android:fillColor="@android:color/white"
+      android:fillType="evenOdd"
+      android:pathData="M200,120L760,120Q840,120 840,200L840,760Q840,840 760,840L200,840Q120,840 120,760L120,200Q120,120 200,120ZM200,200L200,760L760,760L760,200L200,200ZM300,480A180,180 0 0 1 660,480L580,480A100,100 0 0 0 380,480L300,480ZM470,500L490,500L560,340L540,330L470,500Z"/>
+</vector>

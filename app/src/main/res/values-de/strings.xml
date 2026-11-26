@@ -339,6 +339,14 @@
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
     <string name="body_weight_title">Körpergewicht</string>
+    <string name="body_weight_add">Körpergewicht hinzufügen</string>
+    <string name="body_weight_edit">Körpergewicht bearbeiten</string>
+    <string name="body_weight_empty">Trage dein Körpergewicht ein, damit es im Volumen von Übungen mit Körpergewichtsanteil zählt</string>
+    <string name="body_weight_kg_label">Gewicht (kg)</string>
+    <string name="body_weight_date_label">Datum</string>
+    <string name="body_weight_date_exists">Für dieses Datum gibt es schon ein Gewicht; Speichern ändert es</string>
+    <string name="body_weight_delete_title">Körpergewicht löschen</string>
+    <string name="body_weight_delete_message">Das Gewicht vom %1$s löschen?</string>
     <string name="todo_empty">Tippe + um Übungen hinzuzufügen</string>
     <string name="todo_all_added">Alle Übungen sind bereits in der Liste</string>
     <string name="todo_drag_to_reorder">Ziehen zum Sortieren</string>

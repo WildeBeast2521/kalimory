@@ -351,7 +351,8 @@ private fun normalizeNumber(s: String): String = s
     .replace(Regex("[０-９]")) { (it.value[0].code - '０'.code + '0'.code).toChar().toString() }
     .replace("．", ".")
 
-private fun kgStringToG(s: String): Int? {
+/** Kilograms typed by a person ("62.5", "62,5") as grams; null for nothing or text that is not a number. */
+internal fun kgStringToG(s: String): Int? {
     val n = normalizeNumber(s)
     if (n.isBlank() || n == ".") return null
     val kg = n.toDoubleOrNull() ?: return null

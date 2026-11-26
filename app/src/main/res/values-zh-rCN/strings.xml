@@ -343,6 +343,14 @@
     <!-- To Do Screen -->
     <string name="todo_title">待办事项</string>
     <string name="body_weight_title">体重</string>
+    <string name="body_weight_add">添加体重</string>
+    <string name="body_weight_edit">编辑体重</string>
+    <string name="body_weight_empty">添加体重，即可计入设有体重占比的动作的训练量</string>
+    <string name="body_weight_kg_label">体重（kg）</string>
+    <string name="body_weight_date_label">日期</string>
+    <string name="body_weight_date_exists">此日期已有体重，保存将覆盖</string>
+    <string name="body_weight_delete_title">删除体重</string>
+    <string name="body_weight_delete_message">删除 %1$s 的体重？</string>
     <string name="todo_empty">点击 + 添加动作</string>
     <string name="todo_all_added">所有动作已添加到列表中</string>
     <string name="todo_drag_to_reorder">拖动以重新排序</string>

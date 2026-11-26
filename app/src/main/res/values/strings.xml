@@ -405,6 +405,14 @@
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
     <string name="body_weight_title">Body weight</string>
+    <string name="body_weight_add">Add body weight</string>
+    <string name="body_weight_edit">Edit body weight</string>
+    <string name="body_weight_empty">Add your body weight to count it in the volume of exercises that have a share of body weight</string>
+    <string name="body_weight_kg_label">Weight (kg)</string>
+    <string name="body_weight_date_label">Date</string>
+    <string name="body_weight_date_exists">This date already has a weight; saving changes it</string>
+    <string name="body_weight_delete_title">Delete body weight</string>
+    <string name="body_weight_delete_message">Delete the weight from %1$s?</string>
     <string name="todo_empty">Tap + to add exercises</string>
     <string name="todo_all_added">All exercises are already in the list</string>
     <string name="todo_drag_to_reorder">Drag to reorder</string>

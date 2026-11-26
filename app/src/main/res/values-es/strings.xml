@@ -343,6 +343,14 @@
     <!-- To Do Screen -->
     <string name="todo_title">Pendientes</string>
     <string name="body_weight_title">Peso corporal</string>
+    <string name="body_weight_add">Añadir peso corporal</string>
+    <string name="body_weight_edit">Editar peso corporal</string>
+    <string name="body_weight_empty">Añade tu peso corporal para contarlo en el volumen de los ejercicios con una parte del peso corporal</string>
+    <string name="body_weight_kg_label">Peso (kg)</string>
+    <string name="body_weight_date_label">Fecha</string>
+    <string name="body_weight_date_exists">Esta fecha ya tiene un peso; al guardar se cambia</string>
+    <string name="body_weight_delete_title">Eliminar peso corporal</string>
+    <string name="body_weight_delete_message">¿Eliminar el peso del %1$s?</string>
     <string name="todo_empty">Toca + para añadir ejercicios</string>
     <string name="todo_all_added">Todos los ejercicios ya están en la lista</string>
     <string name="todo_drag_to_reorder">Arrastra para reordenar</string>

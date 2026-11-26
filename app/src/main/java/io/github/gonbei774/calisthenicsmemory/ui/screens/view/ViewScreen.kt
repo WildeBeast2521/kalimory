@@ -35,6 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import io.github.gonbei774.calisthenicsmemory.R
+import androidx.compose.foundation.layout.Arrangement
+import io.github.gonbei774.calisthenicsmemory.ui.components.common.isLargeFontScale
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -122,6 +124,7 @@ fun ViewScreen(
     onOpenChain: (String) -> Unit = {},
     onOpenCatalogue: () -> Unit = {},
     onOpenBodyMap: () -> Unit = {},
+    onOpenBodyWeight: () -> Unit = {},
     onOpenWeeklyReview: () -> Unit = {},
     onOpenLibrary: () -> Unit = {},
 ) {
@@ -222,22 +225,38 @@ fun ViewScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            // The same large title as the other primary destinations, with the body map at its end.
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            // The same large title as the other primary destinations, with its shortcuts at the end. At large text
+            // three icons would squeeze the title, so they sit in a row of their own under it.
+            val title = @Composable { modifier: Modifier ->
                 Text(
                     text = stringResource(R.string.nav_progress),
                     style = MaterialTheme.typography.displaySmall,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier
-                        .weight(1f)
+                    modifier = modifier
                         .semantics { heading() }
                         .padding(start = Spacing.l, end = Spacing.l, top = Spacing.xl, bottom = Spacing.s)
                 )
-                IconButton(onClick = onOpenWeeklyReview, modifier = Modifier.padding(top = Spacing.xl)) {
+            }
+            val shortcuts = @Composable { top: androidx.compose.ui.unit.Dp ->
+                IconButton(onClick = onOpenWeeklyReview, modifier = Modifier.padding(top = top)) {
                     Icon(AppIcons.Chart, contentDescription = stringResource(R.string.weekly_review_open), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                IconButton(onClick = onOpenBodyMap, modifier = Modifier.padding(top = Spacing.xl, end = Spacing.s)) {
+                IconButton(onClick = onOpenBodyWeight, modifier = Modifier.padding(top = top)) {
+                    Icon(AppIcons.BodyWeight, contentDescription = stringResource(R.string.body_weight_title), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                IconButton(onClick = onOpenBodyMap, modifier = Modifier.padding(top = top, end = Spacing.s)) {
                     Icon(AppIcons.BodyMap, contentDescription = stringResource(R.string.body_map_open), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+            if (isLargeFontScale()) {
+                Column {
+                    title(Modifier.fillMaxWidth())
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { shortcuts(0.dp) }
+                }
+            } else {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    title(Modifier.weight(1f))
+                    shortcuts(Spacing.xl)
                 }
             }
         },

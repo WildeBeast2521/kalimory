@@ -11,6 +11,7 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueAddResult
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueLibrary
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStepText
+import io.github.gonbei774.calisthenicsmemory.data.BodyWeight
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.Program
@@ -133,6 +134,28 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             started = SharingStarted.Eagerly,
             initialValue = emptyList()
         )
+
+    // Body weights (ADR 0016): one entry per date, each counting until the next.
+    val bodyWeights: StateFlow<List<BodyWeight>> = database.bodyWeightDao().observeAll()
+        .stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = emptyList())
+
+    /**
+     * Saves [weightG] on [date]. A date that already has an entry takes the new weight; when [replacing]
+     * is edited to another date, its old entry goes. A typed or edited entry is never one an import added.
+     */
+    fun saveBodyWeight(date: java.time.LocalDate, weightG: Int, replacing: BodyWeight? = null) {
+        viewModelScope.launch {
+            val dao = database.bodyWeightDao()
+            if (replacing != null && replacing.date != date.toString()) dao.delete(replacing.id)
+            val existing = dao.onDate(date.toString())
+            if (existing == null) dao.insert(BodyWeight(date = date.toString(), weightG = weightG))
+            else dao.update(existing.copy(weightG = weightG, importId = null))
+        }
+    }
+
+    fun deleteBodyWeight(id: Long) {
+        viewModelScope.launch { database.bodyWeightDao().delete(id) }
+    }
 
     // Exercise Groups
     val groups: StateFlow<List<ExerciseGroup>> = groupDao.getAllGroups()

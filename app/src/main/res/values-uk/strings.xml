@@ -281,6 +281,14 @@
     <string name="left_short">Ліва</string>
     <string name="todo_title">Список завдань</string>
     <string name="body_weight_title">Вага тіла</string>
+    <string name="body_weight_add">Додати вагу тіла</string>
+    <string name="body_weight_edit">Змінити вагу тіла</string>
+    <string name="body_weight_empty">Додайте вагу тіла, щоб вона враховувалась в обсязі вправ із часткою ваги тіла</string>
+    <string name="body_weight_kg_label">Вага (кг)</string>
+    <string name="body_weight_date_label">Дата</string>
+    <string name="body_weight_date_exists">На цю дату вже є вага; збереження змінить її</string>
+    <string name="body_weight_delete_title">Видалити вагу тіла</string>
+    <string name="body_weight_delete_message">Видалити вагу за %1$s?</string>
     <string name="unit_seconds">с</string>
     <string name="minus_10sec">-10\u00A0с</string>
     <string name="plus_10sec">+10\u00A0с</string>

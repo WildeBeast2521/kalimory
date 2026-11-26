@@ -389,6 +389,14 @@
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
     <string name="body_weight_title">体重</string>
+    <string name="body_weight_add">体重を追加</string>
+    <string name="body_weight_edit">体重を編集</string>
+    <string name="body_weight_empty">体重を追加すると、体重の割合を設定した種目のボリュームに反映されます</string>
+    <string name="body_weight_kg_label">体重（kg）</string>
+    <string name="body_weight_date_label">日付</string>
+    <string name="body_weight_date_exists">この日付にはすでに体重があります。保存すると変更されます</string>
+    <string name="body_weight_delete_title">体重を削除</string>
+    <string name="body_weight_delete_message">%1$s の体重を削除しますか？</string>
     <string name="todo_empty">右下の + で種目を追加</string>
     <string name="todo_all_added">すべての種目が追加済みです</string>
     <string name="todo_drag_to_reorder">ドラッグで並び替え</string>

@@ -73,6 +73,7 @@ object AppIcons {
     val Settings: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_settings)
     val SourceCode: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_code)
     val Info: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_info)
+    val BodyWeight: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_monitor_weight)
     val Warning: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_warning)
     val Theme: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_palette)
     val Brightness: ImageVector @Composable get() = ImageVector.vectorResource(R.drawable.ms_light_mode)

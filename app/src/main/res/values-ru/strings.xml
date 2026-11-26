@@ -591,6 +591,14 @@
     <string name="report_issue_github">Сообщить о проблеме на GitHub</string>
     <string name="todo_title">Список дел</string>
     <string name="body_weight_title">Вес тела</string>
+    <string name="body_weight_add">Добавить вес тела</string>
+    <string name="body_weight_edit">Изменить вес тела</string>
+    <string name="body_weight_empty">Добавьте вес тела, чтобы он учитывался в объёме упражнений с долей веса тела</string>
+    <string name="body_weight_kg_label">Вес (кг)</string>
+    <string name="body_weight_date_label">Дата</string>
+    <string name="body_weight_date_exists">На эту дату уже есть вес; сохранение изменит его</string>
+    <string name="body_weight_delete_title">Удалить вес тела</string>
+    <string name="body_weight_delete_message">Удалить вес за %1$s?</string>
     <string name="todo_empty">Нажмите +, чтобы добавить</string>
     <string name="todo_all_added">Все упражнения уже в списке</string>
     <string name="todo_drag_to_reorder">Перетащите, чтобы изменить порядок</string>
