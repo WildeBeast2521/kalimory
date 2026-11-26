@@ -402,6 +402,9 @@
     <string name="body_weight_not_counted">最初の体重より前の日は数えません：%1$d 日</string>
     <string name="body_weight_none_yet">体重がまだ記録されていないため、体重の割合は数えられません。</string>
     <string name="heaviest_load_per_body_weight">体重に対する最大負荷</string>
+    <string name="csv_export_body_weights_description">体重の一覧（日付とkg）を書き出す</string>
+    <string name="csv_issue_body_weight_percent">%1$d行目: bodyWeightPercent「%2$s」が正しくありません</string>
+    <string name="share_issue_body_weight_percent">%1$s: 体重の割合は1〜100にしてください（%2$d は不可）</string>
     <string name="todo_empty">右下の + で種目を追加</string>
     <string name="todo_all_added">すべての種目が追加済みです</string>
     <string name="todo_drag_to_reorder">ドラッグで並び替え</string>

@@ -61,7 +61,7 @@ class CsvTransfer(
             val currentExercises = exerciseDao.getAllExercises().first()
 
             val csvBuilder = StringBuilder()
-            csvBuilder.appendLine("name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles")
+            csvBuilder.appendLine("name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles,bodyWeightPercent")
 
             currentExercises.forEach { exercise ->
                 csvBuilder.appendLine(
@@ -83,7 +83,8 @@ class CsvTransfer(
                         exercise.description ?: "",
                         exercise.catalogId ?: "",
                         exercise.primaryMuscles.toCsvCell(),
-                        exercise.secondaryMuscles.toCsvCell()
+                        exercise.secondaryMuscles.toCsvCell(),
+                        exercise.bodyWeightPercent?.toString() ?: ""
                     )
                 )
             }
@@ -101,6 +102,15 @@ class CsvTransfer(
      * 記録入力用テンプレートCSVをエクスポート
      * 種目リスト + コメント例
      */
+    /** The body weight list as "date,weightKg": the date as stored and the weight exactly, without trailing zeros. */
+    suspend fun exportBodyWeights(): String = withContext(Dispatchers.IO) {
+        val rows = database.bodyWeightDao().observeAll().first()
+        val builder = StringBuilder("date,weightKg\n")
+        rows.forEach { builder.appendLine(csvRow(it.date, java.math.BigDecimal(it.weightG).movePointLeft(3).stripTrailingZeros().toPlainString())) }
+        onMessage(UiMessage.CsvExportSuccess("Body weight", rows.size))
+        builder.toString()
+    }
+
     suspend fun exportRecordTemplate(): String = withContext(Dispatchers.IO) {
         try {
             val currentExercises = exerciseDao.getAllExercises().first()
@@ -270,6 +280,7 @@ class CsvTransfer(
                     val catalogIdStr = columns.getOrNull(15)?.trim() ?: ""
                     val primaryMusclesStr = columns.getOrNull(16)?.trim() ?: ""
                     val secondaryMusclesStr = columns.getOrNull(17)?.trim() ?: ""
+                    val bodyWeightPercentStr = columns.getOrNull(18)?.trim() ?: ""
 
                     // 必須フィールドチェック
                     if (name.isEmpty() || type.isEmpty() || laterality.isEmpty()) {
@@ -347,6 +358,14 @@ class CsvTransfer(
                         errorCount++
                         return@forEachIndexed
                     }
+                    // The share of body weight, when the file has one: whole percent from 1 to 100, refused before anything is created.
+                    val bodyWeightPercent = bodyWeightPercentStr.takeIf { it.isNotEmpty() }?.let { text ->
+                        text.toIntOrNull()?.takeIf { it in 1..100 } ?: run {
+                            errors.add(ImportIssue(R.string.csv_issue_body_weight_percent, listOf(text)).atLine(index + 2))
+                            errorCount++
+                            return@forEachIndexed
+                        }
+                    }
                     // A catalogue step can be linked to one exercise only: one that is already linked here, or
                     // repeated in this file, comes in without its link and says so.
                     val catalogId = catalogIdStr.ifEmpty { null }?.takeIf { id ->
@@ -362,6 +381,7 @@ class CsvTransfer(
                         catalogId = catalogId,
                         primaryMuscles = primaryMuscles.muscles,
                         secondaryMuscles = secondaryMuscles.muscles,
+                        bodyWeightPercent = bodyWeightPercent,
                         sortOrder = sortOrder,
                         displayOrder = displayOrder,
                         laterality = laterality,

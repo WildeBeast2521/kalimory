@@ -76,7 +76,8 @@ class CommunityShareImporter(private val database: AppDatabase) {
                         // Linked only when no exercise here holds that step yet; existing ones are left as they are.
                         catalogId = shareExercise.catalogId?.takeIf { database.exerciseDao().getExerciseByCatalogId(it) == null },
                         primaryMuscles = shareExercise.primaryMuscles.mapTo(linkedSetOf()) { muscleOfCode(it) },
-                        secondaryMuscles = shareExercise.secondaryMuscles.mapTo(linkedSetOf()) { muscleOfCode(it) }
+                        secondaryMuscles = shareExercise.secondaryMuscles.mapTo(linkedSetOf()) { muscleOfCode(it) },
+                        bodyWeightPercent = shareExercise.bodyWeightPercent
                     )
                     val newId = database.exerciseDao().insertExercise(newExercise)
                     exerciseIdMap[key] = newId

@@ -356,6 +356,9 @@
     <string name="body_weight_not_counted">I giorni prima del tuo primo peso corporeo non sono contati: %1$d</string>
     <string name="body_weight_none_yet">Non c\'è ancora un peso corporeo registrato, quindi la quota del peso corporeo non viene contata.</string>
     <string name="heaviest_load_per_body_weight">Carico più pesante rispetto al peso corporeo</string>
+    <string name="csv_export_body_weights_description">Esporta l\'elenco del peso corporeo, data e kg</string>
+    <string name="csv_issue_body_weight_percent">Riga %1$d: bodyWeightPercent \"%2$s\" non valido</string>
+    <string name="share_issue_body_weight_percent">%1$s: la quota del peso corporeo deve essere da 1 a 100, non %2$d</string>
     <string name="todo_empty">Tocca + per aggiungere esercizi</string>
     <string name="todo_all_added">Tutti gli esercizi sono già nella lista</string>
     <string name="todo_drag_to_reorder">Trascina per riordinare</string>

@@ -418,6 +418,9 @@
     <string name="body_weight_not_counted">Days before your first body weight are not counted: %1$d</string>
     <string name="body_weight_none_yet">No body weight is recorded yet, so the share of body weight is not counted.</string>
     <string name="heaviest_load_per_body_weight">Heaviest load per body weight</string>
+    <string name="csv_export_body_weights_description">Export the body weight list, date and kg</string>
+    <string name="csv_issue_body_weight_percent">Line %1$d: invalid bodyWeightPercent \"%2$s\"</string>
+    <string name="share_issue_body_weight_percent">%1$s: the share of body weight must be from 1 to 100, not %2$d</string>
     <string name="todo_empty">Tap + to add exercises</string>
     <string name="todo_all_added">All exercises are already in the list</string>
     <string name="todo_drag_to_reorder">Drag to reorder</string>

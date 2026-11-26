@@ -610,6 +610,7 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     suspend fun exportExercises(): String = csvTransfer.exportExercises()
     suspend fun exportRecordTemplate(): String = csvTransfer.exportRecordTemplate()
     suspend fun exportRecords(): String = csvTransfer.exportRecords()
+    suspend fun exportBodyWeights(): String = csvTransfer.exportBodyWeights()
     suspend fun importGroups(csvString: String): CsvImportReport = csvTransfer.importGroups(csvString)
     suspend fun importExercises(csvString: String): CsvImportReport = csvTransfer.importExercises(csvString)
     suspend fun importRecordsFromCsv(csvString: String): CsvImportReport = csvTransfer.importRecordsFromCsv(csvString)

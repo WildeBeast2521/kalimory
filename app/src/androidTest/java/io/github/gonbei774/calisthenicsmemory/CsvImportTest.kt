@@ -306,6 +306,59 @@ class CsvImportTest {
     }
 
     @Test
+    fun importExercises_bodyWeightPercent_read() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles,bodyWeightPercent
+            Push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,,,,65
+        """.trimIndent()
+        assertEquals(1, importExercisesCsv(csv).successCount)
+        assertEquals(65, exerciseDao.getExerciseByNameAndType("Push-up", "Dynamic")?.bodyWeightPercent)
+    }
+
+    @Test
+    fun importExercises_bodyWeightPercent_outOfRangeOrNotANumber_error() = runBlocking {
+        listOf("0", "101", "abc", "-5").forEachIndexed { i, bad ->
+            val csv = """
+                name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles,bodyWeightPercent
+                Bad $i,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,,,,$bad
+            """.trimIndent()
+            val report = importExercisesCsv(csv)
+            assertEquals("share $bad", 0, report.successCount)
+            assertEquals("share $bad", 1, report.errorCount)
+            assertEquals(null, exerciseDao.getExerciseByNameAndType("Bad $i", "Dynamic"))
+        }
+    }
+
+    @Test
+    fun importExercises_oldFileWithoutTheShare_hasNone() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Old push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,
+        """.trimIndent()
+        assertEquals(1, importExercisesCsv(csv).successCount)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("Old push-up", "Dynamic")?.bodyWeightPercent)
+    }
+
+    @Test
+    fun exportedExercises_carryTheShare_andComeBackWithIt() = runBlocking {
+        exerciseDao.insertExercise(io.github.gonbei774.calisthenicsmemory.data.Exercise(name = "Shared push-up", type = "Dynamic", bodyWeightPercent = 65))
+        exerciseDao.insertExercise(io.github.gonbei774.calisthenicsmemory.data.Exercise(name = "Plain squat", type = "Dynamic"))
+        val csv = transfer().exportExercises()
+        assertTrue(csv.lines().first().endsWith("bodyWeightPercent"))
+        database.clearAllTables()
+        assertEquals(2, importExercisesCsv(csv).successCount)
+        assertEquals(65, exerciseDao.getExerciseByNameAndType("Shared push-up", "Dynamic")?.bodyWeightPercent)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("Plain squat", "Dynamic")?.bodyWeightPercent)
+    }
+
+    @Test
+    fun exportedBodyWeights_areDateAndExactKilograms() = runBlocking {
+        database.bodyWeightDao().insert(io.github.gonbei774.calisthenicsmemory.data.BodyWeight(date = "2026-11-11", weightG = 62_850))
+        database.bodyWeightDao().insert(io.github.gonbei774.calisthenicsmemory.data.BodyWeight(date = "2026-10-12", weightG = 65_000))
+        assertEquals("date,weightKg\n2026-10-12,65\n2026-11-11,62.85\n", transfer().exportBodyWeights().replace("\r\n", "\n"))
+    }
+
+    @Test
     fun importExercises_malformedCatalogId_error() = runBlocking {
         val csv = """
             name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId

@@ -294,6 +294,9 @@
     <string name="body_weight_not_counted">Дні до першого запису ваги тіла не враховуються: %1$d</string>
     <string name="body_weight_none_yet">Вагу тіла ще не записано, тому частка ваги тіла не враховується.</string>
     <string name="heaviest_load_per_body_weight">Найбільше навантаження відносно ваги тіла</string>
+    <string name="csv_export_body_weights_description">Експортувати список ваги тіла: дата і кг</string>
+    <string name="csv_issue_body_weight_percent">Рядок %1$d: недійсний bodyWeightPercent «%2$s»</string>
+    <string name="share_issue_body_weight_percent">%1$s: частка ваги тіла має бути від 1 до 100, а не %2$d</string>
     <string name="unit_seconds">с</string>
     <string name="minus_10sec">-10\u00A0с</string>
     <string name="plus_10sec">+10\u00A0с</string>

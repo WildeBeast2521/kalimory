@@ -614,6 +614,9 @@
     <string name="body_weight_not_counted">الأيام التي تسبق أول وزن جسم مسجّل لا تُحتسب: %1$d</string>
     <string name="body_weight_none_yet">لم يُسجَّل وزن جسم بعد، لذا لا تُحتسب نسبة وزن الجسم.</string>
     <string name="heaviest_load_per_body_weight">أعلى حمل مقارنةً بوزن الجسم</string>
+    <string name="csv_export_body_weights_description">تصدير قائمة وزن الجسم: التاريخ والوزن بالكيلوغرام</string>
+    <string name="csv_issue_body_weight_percent">السطر %1$d: bodyWeightPercent \"%2$s\" غير صالح</string>
+    <string name="share_issue_body_weight_percent">%1$s: يجب أن تكون نسبة وزن الجسم من 1 إلى 100، وليس %2$d</string>
     <string name="todo_empty">اضغط + لإضافة تمارين</string>
     <string name="todo_all_added">كل التمارين في القائمة بالفعل</string>
     <string name="todo_drag_to_reorder">اسحب لإعادة الترتيب</string>

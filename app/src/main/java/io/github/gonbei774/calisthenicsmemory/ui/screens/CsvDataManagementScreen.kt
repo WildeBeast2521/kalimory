@@ -131,6 +131,29 @@ fun CsvDataManagementScreen(
         }
     }
 
+    // CSV export: the body weight list
+    val csvExportBodyWeightsLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("text/csv")
+    ) { uri: Uri? ->
+        uri?.let {
+            scope.launch {
+                isLoading = true
+                try {
+                    withContext(Dispatchers.IO) {
+                        val csvData = viewModel.exportBodyWeights()
+                        context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                            outputStream.write(csvData.toByteArray())
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) { }
+                } finally {
+                    isLoading = false
+                }
+            }
+        }
+    }
+
     // CSVエクスポート用ランチャー（記録テンプレート）
     val csvExportRecordTemplateLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("text/csv")
@@ -439,6 +462,43 @@ fun CsvDataManagementScreen(
                                 )
                                 Text(
                                     text = stringResource(R.string.csv_export_records_description),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+
+                    // Body weight
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                        ),
+                        onClick = {
+                            showCsvExportDialog = false
+                            val dateTime = LocalDateTime.now()
+                            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm")
+                            csvExportBodyWeightsLauncher.launch("body_weight_${dateTime.format(formatter)}.csv")
+                        }
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(AppIcons.BodyWeight, contentDescription = null, modifier = Modifier.size(24.dp))
+                            Column {
+                                Text(
+                                    text = stringResource(R.string.body_weight_title),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = stringResource(R.string.csv_export_body_weights_description),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )

@@ -352,6 +352,9 @@
     <string name="body_weight_not_counted">Tage vor deinem ersten Körpergewicht zählen nicht: %1$d</string>
     <string name="body_weight_none_yet">Es ist noch kein Körpergewicht eingetragen, daher zählt der Körpergewichtsanteil nicht.</string>
     <string name="heaviest_load_per_body_weight">Schwerste Last im Verhältnis zum Körpergewicht</string>
+    <string name="csv_export_body_weights_description">Die Liste des Körpergewichts exportieren, Datum und kg</string>
+    <string name="csv_issue_body_weight_percent">Zeile %1$d: Ungültiger bodyWeightPercent „%2$s“</string>
+    <string name="share_issue_body_weight_percent">%1$s: Der Körpergewichtsanteil muss zwischen 1 und 100 liegen, nicht %2$d</string>
     <string name="todo_empty">Tippe + um Übungen hinzuzufügen</string>
     <string name="todo_all_added">Alle Übungen sind bereits in der Liste</string>
     <string name="todo_drag_to_reorder">Ziehen zum Sortieren</string>
