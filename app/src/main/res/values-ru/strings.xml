@@ -601,6 +601,9 @@
     <string name="body_weight_delete_message">Удалить вес за %1$s?</string>
     <string name="body_weight_share">Доля веса тела</string>
     <string name="body_weight_share_description">Каждое повторение учитывает эту долю веса тела в тот день плюс добавленный вес в объёме. Оставьте пустым, чтобы учитывался только добавленный вес.</string>
+    <string name="body_weight_not_counted">Дни до первой записи веса тела не учитываются: %1$d</string>
+    <string name="body_weight_none_yet">Вес тела ещё не записан, поэтому доля веса тела не учитывается.</string>
+    <string name="heaviest_load_per_body_weight">Наибольшая нагрузка относительно веса тела</string>
     <string name="todo_empty">Нажмите +, чтобы добавить</string>
     <string name="todo_all_added">Все упражнения уже в списке</string>
     <string name="todo_drag_to_reorder">Перетащите, чтобы изменить порядок</string>

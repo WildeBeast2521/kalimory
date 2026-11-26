@@ -353,6 +353,9 @@
     <string name="body_weight_delete_message">¿Eliminar el peso del %1$s?</string>
     <string name="body_weight_share">Parte del peso corporal</string>
     <string name="body_weight_share_description">Cada repetición cuenta esta parte de tu peso corporal del día, más el peso añadido, en el volumen. Déjalo vacío para contar solo el peso añadido.</string>
+    <string name="body_weight_not_counted">Los días anteriores a tu primer peso corporal no se cuentan: %1$d</string>
+    <string name="body_weight_none_yet">Aún no hay peso corporal registrado, así que la parte del peso corporal no se cuenta.</string>
+    <string name="heaviest_load_per_body_weight">Carga más pesada según el peso corporal</string>
     <string name="todo_empty">Toca + para añadir ejercicios</string>
     <string name="todo_all_added">Todos los ejercicios ya están en la lista</string>
     <string name="todo_drag_to_reorder">Arrastra para reordenar</string>

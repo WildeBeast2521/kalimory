@@ -421,12 +421,15 @@ fun ViewScreen(
                                     modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp)
                                 )
                             }
+                            val bodyWeights by viewModel.bodyWeights.collectAsState()
                             GraphView(
                                 exercises = exercises,
                                 records = records,
                                 selectedExerciseFilter = graphExercise,
                                 selectedPeriod = selectedPeriod,
                                 onOpenLibrary = onOpenLibrary,
+                                bodyWeights = bodyWeights,
+                                onOpenBodyWeight = onOpenBodyWeight,
                             )
                         }
                     }
