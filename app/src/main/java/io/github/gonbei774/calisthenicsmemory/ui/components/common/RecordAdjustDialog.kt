@@ -353,7 +353,8 @@ private fun normalizeNumber(s: String): String = s
 
 /** Kilograms typed by a person ("62.5", "62,5") as grams; null for nothing or text that is not a number. */
 internal fun kgStringToG(s: String): Int? {
-    val n = normalizeNumber(s)
+    // A decimal comma ("62,5") is read as a point.
+    val n = normalizeNumber(s).replace(',', '.')
     if (n.isBlank() || n == ".") return null
     val kg = n.toDoubleOrNull() ?: return null
     return (kg * 1000).toInt()

@@ -30,7 +30,7 @@ internal class BodyWeightFile(
  * is never guessed. Several readings on one date keep the latest time, or the last one in the file.
  */
 internal object BodyWeightCsv {
-    private const val BOM = "﻿"
+    private const val BOM = "\uFEFF"
 
     private fun separatorOf(headerLine: String) = if (';' in headerLine && ',' !in headerLine) ';' else ','
 

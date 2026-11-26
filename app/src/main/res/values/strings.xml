@@ -422,7 +422,8 @@
     <string name="csv_issue_body_weight_percent">Line %1$d: invalid bodyWeightPercent \"%2$s\"</string>
     <string name="share_issue_body_weight_percent">%1$s: the share of body weight must be from 1 to 100, not %2$d</string>
     <string name="body_weight_issue_columns">The file needs a date column and a weight column</string>
-    <string name="body_weight_issue_date">Line %1$d: unreadable date \"%2$s\" (a date such as 2026-11-11 is needed)</string>
+    <!-- 2026-11-11 is an example of an ISO date, not a range of numbers. -->
+    <string name="body_weight_issue_date" tools:ignore="TypographyDashes">Line %1$d: unreadable date \"%2$s\" (a date such as 2026-11-11 is needed)</string>
     <string name="body_weight_issue_weight">Line %1$d: unreadable weight \"%2$s\"</string>
     <string name="body_weight_issue_range">Line %1$d: the weight \"%2$s\" is not between 1 and 500 kg</string>
     <string name="body_weight_import_exists">%1$s already has a weight</string>

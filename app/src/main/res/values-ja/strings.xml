@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- App Name -->
     <!-- Common -->
     <string name="ok">OK</string>
@@ -406,7 +406,8 @@
     <string name="csv_issue_body_weight_percent">%1$d行目: bodyWeightPercent「%2$s」が正しくありません</string>
     <string name="share_issue_body_weight_percent">%1$s: 体重の割合は1〜100にしてください（%2$d は不可）</string>
     <string name="body_weight_issue_columns">ファイルには日付の列と体重の列が必要です</string>
-    <string name="body_weight_issue_date">%1$d行目: 日付「%2$s」を読み取れません（2026-11-11 のような日付が必要です）</string>
+    <!-- 2026-11-11 is an example of an ISO date, not a range of numbers. -->
+    <string name="body_weight_issue_date" tools:ignore="TypographyDashes">%1$d行目: 日付「%2$s」を読み取れません（2026-11-11 のような日付が必要です）</string>
     <string name="body_weight_issue_weight">%1$d行目: 体重「%2$s」を読み取れません</string>
     <string name="body_weight_issue_range">%1$d行目: 体重「%2$s」が1〜500 kgの範囲外です</string>
     <string name="body_weight_import_exists">%1$s にはすでに体重があります</string>

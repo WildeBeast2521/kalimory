@@ -180,6 +180,9 @@ fun CsvDataManagementScreen(
         }
     }
 
+    // Read here, not in the launcher callback: a resource looked up later could be in the wrong language.
+    val notRecognisedText = stringResource(R.string.csv_not_recognised)
+
     // CSVインポート用ランチャー（自動判定機能付き）
     val csvImportLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
@@ -226,7 +229,7 @@ fun CsvDataManagementScreen(
                             } else {
                                 withContext(Dispatchers.Main) {
                                     android.util.Log.e("CsvDataManagementScreen", "CSV type detection failed")
-                                    viewModel.showSnackbar(UiMessage.ImportError(context.getString(R.string.csv_not_recognised)))
+                                    viewModel.showSnackbar(UiMessage.ImportError(notRecognisedText))
                                 }
                             }
                         }

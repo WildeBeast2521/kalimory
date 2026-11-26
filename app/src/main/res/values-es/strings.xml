@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- App Name -->
     <!-- Common -->
     <string name="ok">Aceptar</string>
@@ -360,7 +360,8 @@
     <string name="csv_issue_body_weight_percent">Línea %1$d: bodyWeightPercent «%2$s» no válido</string>
     <string name="share_issue_body_weight_percent">%1$s: la parte del peso corporal debe ser de 1 a 100, no %2$d</string>
     <string name="body_weight_issue_columns">El archivo necesita una columna de fecha y otra de peso</string>
-    <string name="body_weight_issue_date">Línea %1$d: fecha «%2$s» ilegible (hace falta una fecha como 2026-11-11)</string>
+    <!-- 2026-11-11 is an example of an ISO date, not a range of numbers. -->
+    <string name="body_weight_issue_date" tools:ignore="TypographyDashes">Línea %1$d: fecha «%2$s» ilegible (hace falta una fecha como 2026-11-11)</string>
     <string name="body_weight_issue_weight">Línea %1$d: peso «%2$s» ilegible</string>
     <string name="body_weight_issue_range">Línea %1$d: el peso «%2$s» no está entre 1 y 500 kg</string>
     <string name="body_weight_import_exists">%1$s ya tiene un peso</string>

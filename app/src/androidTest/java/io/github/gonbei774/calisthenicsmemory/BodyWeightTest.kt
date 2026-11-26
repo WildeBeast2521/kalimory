@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTextReplacement
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -55,7 +56,7 @@ class BodyWeightTest {
         // Change it: tapping the row opens the same dialog, and saving on the same date changes that entry.
         rule.onNodeWithText("62.5 kg").performClick()
         rule.onNodeWithText(text(R.string.body_weight_edit)).assertExists()
-        rule.onNodeWithText("62.5").performTextInput("1")
+        rule.onNodeWithText("62.5").performTextReplacement("62.51")
         rule.onNodeWithText(text(R.string.save)).performClick()
         rule.waitUntil(10_000) { rule.onAllNodes(hasText("62.51 kg")).fetchSemanticsNodes().isNotEmpty() }
         check(runBlocking { database.backupDao().bodyWeights() }.size == 1) { "editing must not add a second entry" }

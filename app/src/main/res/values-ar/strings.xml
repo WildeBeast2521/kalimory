@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="import_anomalies_notice">عناصر لا تطابق تنسيق التطبيق: %1$d. سيتم استيرادها دون تغيير.</string>
     <string name="db_unavailable_title">تعذّر فتح بيانات التمرين</string>
     <string name="db_unavailable_unsupported">أُنشئت قاعدة البيانات هذه (الإصدار %1$d) بإصدار من التطبيق لا يستطيع هذا الإصدار ترقيته. لم يُغيَّر أو يُحذف أي شيء.</string>
@@ -618,7 +618,8 @@
     <string name="csv_issue_body_weight_percent">السطر %1$d: bodyWeightPercent \"%2$s\" غير صالح</string>
     <string name="share_issue_body_weight_percent">%1$s: يجب أن تكون نسبة وزن الجسم من 1 إلى 100، وليس %2$d</string>
     <string name="body_weight_issue_columns">يحتاج الملف إلى عمود للتاريخ وعمود للوزن</string>
-    <string name="body_weight_issue_date">السطر %1$d: تاريخ غير مقروء \"%2$s\" (المطلوب تاريخ مثل 2026-11-11)</string>
+    <!-- 2026-11-11 is an example of an ISO date, not a range of numbers. -->
+    <string name="body_weight_issue_date" tools:ignore="TypographyDashes">السطر %1$d: تاريخ غير مقروء \"%2$s\" (المطلوب تاريخ مثل 2026-11-11)</string>
     <string name="body_weight_issue_weight">السطر %1$d: وزن غير مقروء \"%2$s\"</string>
     <string name="body_weight_issue_range">السطر %1$d: الوزن \"%2$s\" ليس بين 1 و500 كغ</string>
     <string name="body_weight_import_exists">%1$s لديه وزن مسجّل بالفعل</string>

@@ -298,7 +298,8 @@
     <string name="csv_issue_body_weight_percent">Рядок %1$d: недійсний bodyWeightPercent «%2$s»</string>
     <string name="share_issue_body_weight_percent">%1$s: частка ваги тіла має бути від 1 до 100, а не %2$d</string>
     <string name="body_weight_issue_columns">У файлі потрібні стовпець дати та стовпець ваги</string>
-    <string name="body_weight_issue_date">Рядок %1$d: не вдалося прочитати дату «%2$s» (потрібна дата на кшталт 2026-11-11)</string>
+    <!-- 2026-11-11 is an example of an ISO date, not a range of numbers. -->
+    <string name="body_weight_issue_date" tools:ignore="TypographyDashes">Рядок %1$d: не вдалося прочитати дату «%2$s» (потрібна дата на кшталт 2026-11-11)</string>
     <string name="body_weight_issue_weight">Рядок %1$d: не вдалося прочитати вагу «%2$s»</string>
     <string name="body_weight_issue_range">Рядок %1$d: вага «%2$s» не в межах від 1 до 500 кг</string>
     <string name="body_weight_import_exists">На %1$s вже є вага</string>
