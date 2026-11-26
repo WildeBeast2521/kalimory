@@ -40,4 +40,9 @@ data class Exercise(
      */
     @ColumnInfo(defaultValue = "") val primaryMuscles: Set<Muscle> = emptySet(),
     @ColumnInfo(defaultValue = "") val secondaryMuscles: Set<Muscle> = emptySet(),
+    /**
+     * The share of body weight one rep lifts, in whole percent (1 to 100), for a rep exercise such as
+     * push-ups (ADR 0016). Null by default: the app never suggests a number.
+     */
+    val bodyWeightPercent: Int? = null,
 )

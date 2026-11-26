@@ -357,4 +357,25 @@ class MigrationDataPreservationTest {
         )
         db.close()
     }
+
+    @Test
+    fun migrate27To28KeepsExercisesWithNoShareAndStartsAnEmptyBodyWeightList() {
+        val db = migrate(27, 28) {
+            it.execSQL(
+                "INSERT INTO exercises (id, name, type, sortOrder, displayOrder, laterality, isFavorite, distanceTrackingEnabled, weightTrackingEnabled, assistanceTrackingEnabled) " +
+                    "VALUES (900, 'Kept push-up', 'Dynamic', 0, 0, 'Bilateral', 0, 0, 0, 0)"
+            )
+        }
+        // The exercise is kept and no share is guessed for it.
+        assertEquals(listOf(listOf<Any?>("Kept push-up", null)), db.rows("SELECT name, bodyWeightPercent FROM exercises WHERE id = 900"))
+        // The list starts empty and takes one entry per date.
+        assertEquals(emptyList<List<Any?>>(), db.rows("SELECT * FROM body_weights"))
+        db.execSQL("INSERT INTO body_weights (date, weightG) VALUES ('2026-11-11', 62850)")
+        assertEquals(listOf(listOf<Any?>("2026-11-11", 62850L, null)), db.rows("SELECT date, weightG, importId FROM body_weights"))
+        val duplicate = runCatching { db.execSQL("INSERT INTO body_weights (date, weightG) VALUES ('2026-11-11', 70000)") }
+        assertTrue("a second entry for one date must be refused", duplicate.isFailure)
+        db.execSQL("UPDATE exercises SET bodyWeightPercent = 65 WHERE id = 900")
+        assertEquals(listOf(listOf<Any?>(65L)), db.rows("SELECT bodyWeightPercent FROM exercises WHERE id = 900"))
+        db.close()
+    }
 }
