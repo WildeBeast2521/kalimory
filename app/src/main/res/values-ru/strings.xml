@@ -590,6 +590,7 @@
     <string name="app_source_code">Исходный код</string>
     <string name="report_issue_github">Сообщить о проблеме на GitHub</string>
     <string name="todo_title">Список дел</string>
+    <string name="body_weight_title">Вес тела</string>
     <string name="todo_empty">Нажмите +, чтобы добавить</string>
     <string name="todo_all_added">Все упражнения уже в списке</string>
     <string name="todo_drag_to_reorder">Перетащите, чтобы изменить порядок</string>

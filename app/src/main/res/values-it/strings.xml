@@ -342,6 +342,7 @@
     <string name="countdown_vibration_description">Ognuno degli ultimi tre segnali e il via vibrano. Segue l\'impostazione di vibrazione al tocco del telefono.</string>
     <!-- To Do Screen -->
     <string name="todo_title">Da fare</string>
+    <string name="body_weight_title">Peso corporeo</string>
     <string name="todo_empty">Tocca + per aggiungere esercizi</string>
     <string name="todo_all_added">Tutti gli esercizi sono già nella lista</string>
     <string name="todo_drag_to_reorder">Trascina per riordinare</string>

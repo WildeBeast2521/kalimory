@@ -404,6 +404,7 @@
     <string name="report_issue_github">Report issue on GitHub</string>
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
+    <string name="body_weight_title">Body weight</string>
     <string name="todo_empty">Tap + to add exercises</string>
     <string name="todo_all_added">All exercises are already in the list</string>
     <string name="todo_drag_to_reorder">Drag to reorder</string>

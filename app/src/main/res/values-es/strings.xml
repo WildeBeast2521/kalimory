@@ -342,6 +342,7 @@
     <string name="countdown_vibration_description">Cada uno de los tres últimos pitidos y la señal de inicio también vibran. Sigue el ajuste de vibración táctil del teléfono.</string>
     <!-- To Do Screen -->
     <string name="todo_title">Pendientes</string>
+    <string name="body_weight_title">Peso corporal</string>
     <string name="todo_empty">Toca + para añadir ejercicios</string>
     <string name="todo_all_added">Todos los ejercicios ya están en la lista</string>
     <string name="todo_drag_to_reorder">Arrastra para reordenar</string>

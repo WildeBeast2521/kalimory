@@ -33,4 +33,10 @@ class BackupUserRowCountTest {
         database.exerciseDao().insertExercise(Exercise(name = "Push-up", type = "Dynamic"))
         assertTrue(database.backupDao().userRowCount() > 1)
     }
+
+    @Test
+    fun aListOfBodyWeightsAloneIsTheUsersDataToo() = runBlocking {
+        database.bodyWeightDao().insert(io.github.gonbei774.calisthenicsmemory.data.BodyWeight(date = "2026-11-11", weightG = 62_850))
+        assertEquals(1, database.backupDao().userRowCount())
+    }
 }

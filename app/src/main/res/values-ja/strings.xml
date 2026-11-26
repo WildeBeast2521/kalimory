@@ -388,6 +388,7 @@
     <string name="countdown_vibration_description">最後の3回の音とスタート音でも振動します。スマートフォンのタッチ操作時のバイブ設定に従います。</string>
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
+    <string name="body_weight_title">体重</string>
     <string name="todo_empty">右下の + で種目を追加</string>
     <string name="todo_all_added">すべての種目が追加済みです</string>
     <string name="todo_drag_to_reorder">ドラッグで並び替え</string>

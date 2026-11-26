@@ -39,7 +39,7 @@ class BackupMusclesTest {
         val dao = mock<BackupDao> { onBlocking { snapshot() } doReturn snapshot() }
         val service = BackupService(dao)
         val exported = (service.export() as BackupResult.Success).value
-        assertEquals(13, exported.data.version)
+        assertEquals(14, exported.data.version)
         val exportedCurl = exported.data.exercises.single { it.id == 1L }
         assertEquals(listOf("biceps"), exportedCurl.primaryMuscles)
         assertEquals(listOf("forearms", "lower back"), exportedCurl.secondaryMuscles)
@@ -69,7 +69,7 @@ class BackupMusclesTest {
 
     @Test fun `a backup naming an unknown muscle is refused rather than stored`() {
         val service = BackupService(mock<BackupDao>())
-        val bad = backup(13, ExportExercise(1, "Curl", "Dynamic", null, 0, laterality = "Bilateral", primaryMuscles = listOf("biceps", "wings")))
+        val bad = backup(14, ExportExercise(1, "Curl", "Dynamic", null, 0, laterality = "Bilateral", primaryMuscles = listOf("biceps", "wings")))
         val result = service.parse(json.encodeToString(bad))
         assertTrue(result is BackupResult.Failure)
         result as BackupResult.Failure
@@ -78,7 +78,7 @@ class BackupMusclesTest {
     }
 
     @Test fun `a backup newer than this version is still refused`() {
-        val result = BackupService(mock<BackupDao>()).parse(json.encodeToString(backup(14)))
+        val result = BackupService(mock<BackupDao>()).parse(json.encodeToString(backup(15)))
         assertTrue(result is BackupResult.Failure)
     }
 }

@@ -211,6 +211,35 @@ class BackupRoundTripTest {
         assertEquals(muscles, target.backupDao().snapshot())
     }
 
+    // Format 14 (ADR 0016): the body weight list and an exercise's share of body weight.
+    private val bodyWeights = BackupSnapshot(
+        groups = emptyList(),
+        exercises = listOf(Exercise(1, "Push-up", "Dynamic", bodyWeightPercent = 65), Exercise(2, "Plank", "Isometric")),
+        records = emptyList(), programs = emptyList(), programExercises = emptyList(), programLoops = emptyList(),
+        intervalPrograms = emptyList(), intervalProgramExercises = emptyList(), intervalRecords = emptyList(), todoTasks = emptyList(),
+        bodyWeights = listOf(
+            io.github.gonbei774.calisthenicsmemory.data.BodyWeight(1, "2026-10-12", 65_000),
+            // An entry added by an import comes back as a typed one: undoing an import never touches restored data.
+            io.github.gonbei774.calisthenicsmemory.data.BodyWeight(2, "2026-11-11", 62_850, importId = null),
+        ),
+    )
+
+    @Test
+    fun bodyWeightsAndSharesRestoreExactly() = runBlocking {
+        source.backupDao().replaceAll(bodyWeights)
+
+        val json = (BackupService(source.backupDao()).export() as BackupResult.Success).value.json
+        assertTrue(json.contains("\"bodyWeightPercent\":65"))
+        assertTrue(json.contains("\"weightG\":62850"))
+        assertTrue(json.contains("\"version\":14"))
+        val parsed = BackupService(target.backupDao()).parse(json)
+        assertTrue("parse: $parsed", parsed is BackupResult.Success)
+        val restored = BackupService(target.backupDao()).restore((parsed as BackupResult.Success).value.data)
+        assertTrue("restore: $restored", restored is BackupResult.Success)
+
+        assertEquals(bodyWeights, target.backupDao().snapshot())
+    }
+
     @Test
     fun restoringAnOlderBackupReplacesV2HistoryToo() = runBlocking {
         target.backupDao().replaceAll(v2History)

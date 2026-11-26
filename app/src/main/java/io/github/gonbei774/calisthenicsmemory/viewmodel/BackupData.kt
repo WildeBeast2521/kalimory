@@ -27,6 +27,8 @@ data class BackupData(
     val sessionExercises: List<ExportSessionExercise> = emptyList(),              // v9で追加
     val setEntries: List<ExportSetEntry> = emptyList(),                           // v9で追加; v12: warm-up mark and effort
     val chainPlacements: List<ExportChainPlacement> = emptyList(),                // v11: custom exercises in built-in chains
+    // Format 14: the body weight list (ADR 0016). Absent in older backups.
+    val bodyWeights: List<ExportBodyWeight> = emptyList(),
 )
 
 /** Format 11: a custom exercise placed in a built-in chain (ADR 0007). */
@@ -66,6 +68,8 @@ data class ExportExercise(
     // Format 13: the muscles chosen for an own exercise, as muscle codes (ADR 0014). Absent in older backups.
     val primaryMuscles: List<String> = emptyList(),
     val secondaryMuscles: List<String> = emptyList(),
+    // Format 14: the share of body weight of a rep exercise, in whole percent.
+    val bodyWeightPercent: Int? = null,
 )
 
 @Serializable
@@ -154,4 +158,11 @@ data class ExportTodoTask(
     val sortOrder: Int,
     val repeatDays: String = "",
     val lastCompletedDate: String? = null
+)
+
+@Serializable
+data class ExportBodyWeight(
+    val id: Long,
+    val date: String,
+    val weightG: Int,
 )

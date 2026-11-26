@@ -600,6 +600,7 @@
     <string name="app_source_code">الشيفرة المصدرية</string>
     <string name="report_issue_github">الإبلاغ عن مشكلة على GitHub</string>
     <string name="todo_title">المهام</string>
+    <string name="body_weight_title">وزن الجسم</string>
     <string name="todo_empty">اضغط + لإضافة تمارين</string>
     <string name="todo_all_added">كل التمارين في القائمة بالفعل</string>
     <string name="todo_drag_to_reorder">اسحب لإعادة الترتيب</string>

@@ -182,6 +182,7 @@ fun BackupScreen(
                             R.string.program_list_title to backupData.programs.size,
                             R.string.interval_list_title to backupData.intervalPrograms.size,
                             R.string.todo_title to backupData.todoTasks.size,
+                            R.string.body_weight_title to backupData.bodyWeights.size,
                         )
                         showDataPreview = true
                     }

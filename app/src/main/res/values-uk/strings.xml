@@ -280,6 +280,7 @@
     <string name="right_short">Права</string>
     <string name="left_short">Ліва</string>
     <string name="todo_title">Список завдань</string>
+    <string name="body_weight_title">Вага тіла</string>
     <string name="unit_seconds">с</string>
     <string name="minus_10sec">-10\u00A0с</string>
     <string name="plus_10sec">+10\u00A0с</string>
