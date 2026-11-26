@@ -17,8 +17,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class, WorkoutSessionEntity::class, SessionExerciseEntity::class, SetEntryEntity::class, ChainPlacement::class],
-    version = 27,
+    entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class, WorkoutSessionEntity::class, SessionExerciseEntity::class, SetEntryEntity::class, ChainPlacement::class, BodyWeight::class],
+    version = 28,
     exportSchema = true
 )
 @TypeConverters(WorkoutTypeConverters::class, MuscleSetConverters::class)
@@ -37,6 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun backupDao(): BackupDao
     abstract fun workoutSessionDao(): WorkoutSessionDao
     abstract fun chainPlacementDao(): ChainPlacementDao
+    abstract fun bodyWeightDao(): BodyWeightDao
 
     companion object {
         @Volatile
@@ -59,7 +60,7 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // Must equal the version in @Database; MigrationRegistrationTest checks it against the schemas.
-        const val CURRENT_VERSION = 27
+        const val CURRENT_VERSION = 28
 
         // The production configuration. Migration tests open their databases through it.
         // Unsupported installed versions are refused before Room can modify the file, and
@@ -478,6 +479,19 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Version 28: a list of body weights and, on an exercise, its share of body weight (ADR 0016).
+        // Additive only: every exercise is kept with no share and the list starts empty; nothing is guessed.
+        val MIGRATION_27_28 = object : Migration(27, 28) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE `exercises` ADD COLUMN `bodyWeightPercent` INTEGER")
+                database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `body_weights` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                        "`date` TEXT NOT NULL, `weightG` INTEGER NOT NULL, `importId` INTEGER)"
+                )
+                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_body_weights_date` ON `body_weights` (`date`)")
+            }
+        }
+
         // Oldest installed database version that can migrate to the current version.
         const val OLDEST_SUPPORTED_VERSION = 9
 
@@ -502,6 +516,7 @@ abstract class AppDatabase : RoomDatabase() {
             MIGRATION_24_25,
             MIGRATION_25_26,
             MIGRATION_26_27,
+            MIGRATION_27_28,
         )
     }
 }

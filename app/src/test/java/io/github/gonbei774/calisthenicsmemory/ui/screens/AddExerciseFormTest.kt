@@ -61,8 +61,8 @@ class AddExerciseFormTest {
     @Test fun `difficulty starts as not set, with a dash and no invented number`() {
         open()
         compose.onNodeWithText("Difficulty").assertExists()
-        // Difficulty, seconds per rep and rest all start blank.
-        compose.onAllNodesWithText("–").assertCountEquals(3)
+        // Difficulty, seconds per rep, rest and the share of body weight all start blank.
+        compose.onAllNodesWithText("–").assertCountEquals(4)
     }
 
     @Test fun `an exercise from the catalogue says so and names its muscles`() {
@@ -80,9 +80,10 @@ class AddExerciseFormTest {
         open()
         val more = "One more"
         val fewer = "One fewer"
-        // The rest stepper is the last "One more" on the form.
-        fun restMore() = compose.onAllNodesWithContentDescription(more).onLast()
-        fun restFewer() = compose.onAllNodesWithContentDescription(fewer).onLast()
+        // The rest stepper is the one before the last on the form: the share of body weight comes after it.
+        fun nextToLast(description: String) = compose.onAllNodesWithContentDescription(description).let { it[it.fetchSemanticsNodes().size - 2] }
+        fun restMore() = nextToLast(more)
+        fun restFewer() = nextToLast(fewer)
         restMore().performScrollTo().performClick()
         compose.onNodeWithText("0").assertExists()
         restMore().performClick()
@@ -155,5 +156,31 @@ class AddExerciseFormTest {
         compose.onNode(androidx.compose.ui.test.hasContentDescription("Group (optional)") and androidx.compose.ui.test.hasClickAction())
             .performScrollTo().assertExists()
         compose.onNode(androidx.compose.ui.test.hasStateDescription("No group")).assertExists()
+    }
+
+    // The share of body weight (ADR 0016).
+    @Test fun `a rep exercise offers a share of body weight that starts blank, a hold does not`() {
+        open(own)
+        compose.onNodeWithText("Share of body weight").performScrollTo().assertExists()
+        compose.onNodeWithText("Each rep counts this share of your body weight", substring = true).assertExists()
+    }
+
+    @Test fun `a hold has no share of body weight`() {
+        open(own.copy(id = 8, type = "Isometric"))
+        compose.onNodeWithText("Share of body weight").assertDoesNotExist()
+    }
+
+    @Test fun `the share is saved with a new exercise`() {
+        val app = ApplicationProvider.getApplicationContext<Application>()
+        val db = io.github.gonbei774.calisthenicsmemory.data.AppDatabase.getDatabase(app)
+        val vm = TrainingViewModel(app)
+        vm.addExercise("Shared push-up", "Dynamic", bodyWeightPercent = 65)
+        val deadline = System.currentTimeMillis() + 5_000
+        var saved = kotlinx.coroutines.runBlocking { db.exerciseDao().getExerciseByNameAndType("Shared push-up", "Dynamic") }
+        while (saved == null && System.currentTimeMillis() < deadline) {
+            Thread.sleep(100)
+            saved = kotlinx.coroutines.runBlocking { db.exerciseDao().getExerciseByNameAndType("Shared push-up", "Dynamic") }
+        }
+        assertEquals(65, saved?.bodyWeightPercent)
     }
 }

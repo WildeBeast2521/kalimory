@@ -32,6 +32,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.viewmodel.TrainingViewModel
 import io.github.gonbei774.calisthenicsmemory.viewmodel.BackupResult
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CsvImportReport
+import io.github.gonbei774.calisthenicsmemory.viewmodel.BodyWeightPreview
 import io.github.gonbei774.calisthenicsmemory.viewmodel.CsvType
 import io.github.gonbei774.calisthenicsmemory.viewmodel.parseCsvRecords
 import kotlinx.coroutines.CancellationException
@@ -53,6 +54,8 @@ fun CsvDataManagementScreen(
 
     var showCsvExportDialog by remember { mutableStateOf(false) }
     var showCsvImportPreview by remember { mutableStateOf(false) }
+    // What a body weight file would add, for its preview; null for the other kinds of file.
+    var bodyWeightPreview by remember { mutableStateOf<BodyWeightPreview?>(null) }
     var csvImportType by remember { mutableStateOf<CsvType?>(null) }
     var csvImportDataCount by remember { mutableIntStateOf(0) }
     var pendingCsvString by remember { mutableStateOf<String?>(null) }
@@ -131,6 +134,29 @@ fun CsvDataManagementScreen(
         }
     }
 
+    // CSV export: the body weight list
+    val csvExportBodyWeightsLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("text/csv")
+    ) { uri: Uri? ->
+        uri?.let {
+            scope.launch {
+                isLoading = true
+                try {
+                    withContext(Dispatchers.IO) {
+                        val csvData = viewModel.exportBodyWeights()
+                        context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                            outputStream.write(csvData.toByteArray())
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) { }
+                } finally {
+                    isLoading = false
+                }
+            }
+        }
+    }
+
     // CSVエクスポート用ランチャー（記録テンプレート）
     val csvExportRecordTemplateLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("text/csv")
@@ -153,6 +179,9 @@ fun CsvDataManagementScreen(
             }
         }
     }
+
+    // Read here, not in the launcher callback: a resource looked up later could be in the wrong language.
+    val notRecognisedText = stringResource(R.string.csv_not_recognised)
 
     // CSVインポート用ランチャー（自動判定機能付き）
     val csvImportLauncher = rememberLauncherForActivityResult(
@@ -187,8 +216,10 @@ fun CsvDataManagementScreen(
                             if (detectedType != null) {
                                 val records = parseCsvRecords(csvData)
                                 val dataCount = if (records.size > 1) records.size - 1 else 0
+                                val weightPreview = if (detectedType == CsvType.BODY_WEIGHTS) viewModel.previewBodyWeights(csvData) else null
 
                                 withContext(Dispatchers.Main) {
+                                    bodyWeightPreview = weightPreview
                                     csvImportType = detectedType
                                     csvFileName = fileName
                                     csvImportDataCount = dataCount
@@ -198,6 +229,7 @@ fun CsvDataManagementScreen(
                             } else {
                                 withContext(Dispatchers.Main) {
                                     android.util.Log.e("CsvDataManagementScreen", "CSV type detection failed")
+                                    viewModel.showSnackbar(UiMessage.ImportError(notRecognisedText))
                                 }
                             }
                         }
@@ -446,6 +478,43 @@ fun CsvDataManagementScreen(
                         }
                     }
 
+                    // Body weight
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                        ),
+                        onClick = {
+                            showCsvExportDialog = false
+                            val dateTime = LocalDateTime.now()
+                            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm")
+                            csvExportBodyWeightsLauncher.launch("body_weight_${dateTime.format(formatter)}.csv")
+                        }
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(AppIcons.BodyWeight, contentDescription = null, modifier = Modifier.size(24.dp))
+                            Column {
+                                Text(
+                                    text = stringResource(R.string.body_weight_title),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = stringResource(R.string.csv_export_body_weights_description),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+
                     // 記録テンプレート
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -500,6 +569,7 @@ fun CsvDataManagementScreen(
             onDismissRequest = {
                 showCsvImportPreview = false
                 pendingCsvString = null
+                bodyWeightPreview = null
             },
             title = {
                 Text(
@@ -578,6 +648,30 @@ fun CsvDataManagementScreen(
                                     fontWeight = FontWeight.Bold
                                 )
                             }
+
+                            // A body weight file: what would be added, and the unit it is read in.
+                            bodyWeightPreview?.let { preview ->
+                                listOf(
+                                    R.string.body_weight_import_to_add to preview.toAdd,
+                                    R.string.body_weight_import_existing to preview.alreadyThere,
+                                    R.string.body_weight_import_unreadable to preview.unreadable,
+                                ).forEach { (label, count) ->
+                                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                        Text(
+                                            text = stringResource(label),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                        Text("$count", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                                    }
+                                }
+                                Text(
+                                    text = stringResource(R.string.body_weight_import_kg_note),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
                         }
                     }
                 }
@@ -600,6 +694,7 @@ fun CsvDataManagementScreen(
                     onClick = {
                         showCsvImportPreview = false
                         pendingCsvString = null
+                        bodyWeightPreview = null
                     }
                 ) {
                     Text(stringResource(R.string.cancel))

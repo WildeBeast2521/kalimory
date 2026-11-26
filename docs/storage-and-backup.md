@@ -20,11 +20,13 @@ and every file moves through the Storage Access Framework or a share sheet that 
 | File | Written by | Read by | What it does on import |
 | --- | --- | --- | --- |
 | Full backup (JSON) | Settings › Your data › Full backup | Restore backup | Replaces **all** current data, after the person has saved a backup of what is there |
-| CSV (groups, exercises, records) | CSV files | CSV files | Adds to the data and skips what is already there; never replaces |
+| CSV (groups, exercises, records, body weight) | CSV files | CSV files | Adds to the data and skips what is already there; never replaces |
 | Shared file (groups, exercises, programs, interval programs) | Share | Share | Adds what it holds, after checking its format version; a file from a newer format is refused |
 | Recovery file (a zip of the database) | the recovery screen, or the Backup screen | the same | Restores the raw database, but only once the unpacked copy opens, passes SQLite's integrity check and has a supported version; the current files are moved aside to a `before-restore` folder, never deleted |
 
 The records CSV has one row per set (valueRight, valueLeft and one weight, assistance and distance). Its last five columns are optional on import: warmUp, effortLeft, and weightLeftG, assistanceLeftG, distanceLeftCm, the left side's own values for a one-sided set. An empty cell means the same as the right side, and a file without the columns reads as before.
+
+The body weight list is a date and a weight in grams, one entry per date, with an import marker so an import can be undone as a whole (never entries typed, edited or restored). The body weight CSV is `date,weightKg`; the importer also reads openScale's export by its `DATE`, `TIME` and `WEIGHT` columns, as kilograms, ISO dates only. An exercise's share of body weight (whole percent, 1 to 100) is the exercises CSV's last optional column and a shared exercise's optional field; the weights themselves are never shared.
 
 The JSON backup has a version number. The current version is `BackupService.CURRENT_VERSION`; the oldest the
 app still reads is `MIN_VERSION`. A backup that carries data an older app version cannot hold (for example

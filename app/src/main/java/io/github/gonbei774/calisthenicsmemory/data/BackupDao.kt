@@ -25,6 +25,7 @@ data class BackupSnapshot(
     val sessionExercises: List<SessionExerciseEntity> = emptyList(),
     val setEntries: List<SetEntryEntity> = emptyList(),
     val chainPlacements: List<ChainPlacement> = emptyList(),
+    val bodyWeights: List<BodyWeight> = emptyList(),
 )
 
 @Dao
@@ -79,9 +80,18 @@ interface BackupDao {
         "SELECT (SELECT COUNT(*) FROM exercise_groups) + (SELECT COUNT(*) FROM exercises) + " +
             "(SELECT COUNT(*) FROM training_records) + (SELECT COUNT(*) FROM programs) + " +
             "(SELECT COUNT(*) FROM interval_programs) + (SELECT COUNT(*) FROM interval_records) + " +
-            "(SELECT COUNT(*) FROM todo_tasks) + (SELECT COUNT(*) FROM workout_sessions)"
+            "(SELECT COUNT(*) FROM todo_tasks) + (SELECT COUNT(*) FROM workout_sessions) + (SELECT COUNT(*) FROM body_weights)"
     )
     suspend fun userRowCount(): Int
+
+    @Query("SELECT * FROM body_weights ORDER BY date")
+    suspend fun bodyWeights(): List<BodyWeight>
+
+    @Query("DELETE FROM body_weights")
+    suspend fun deleteBodyWeights()
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertBodyWeights(items: List<BodyWeight>)
 
     @Query("DELETE FROM chain_placements")
     suspend fun deleteChainPlacements()
@@ -94,7 +104,7 @@ interface BackupDao {
     suspend fun snapshot(): BackupSnapshot = BackupSnapshot(
         groups(), exercises(), records(), programs(), programExercises(), programLoops(),
         intervalPrograms(), intervalProgramExercises(), intervalRecords(), todoTasks(),
-        workoutSessions(), sessionExercises(), setEntries(), chainPlacements(),
+        workoutSessions(), sessionExercises(), setEntries(), chainPlacements(), bodyWeights(),
     )
 
     @Query("DELETE FROM set_entries")
@@ -178,6 +188,7 @@ interface BackupDao {
     @Transaction
     suspend fun replaceAll(snapshot: BackupSnapshot) {
         // Children first. Keep this explicit so any failed insert rolls the whole transaction back.
+        deleteBodyWeights()
         deleteSetEntries()
         deleteSessionExercises()
         deleteChainPlacements()
@@ -210,5 +221,6 @@ interface BackupDao {
         insertSetEntries(snapshot.setEntries)
         // Placements reference exercises.
         insertChainPlacements(snapshot.chainPlacements)
+        insertBodyWeights(snapshot.bodyWeights)
     }
 }

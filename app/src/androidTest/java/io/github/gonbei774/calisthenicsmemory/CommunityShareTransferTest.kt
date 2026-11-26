@@ -90,6 +90,24 @@ class CommunityShareTransferTest {
     }
 
     @Test
+    fun aSharedExerciseCarriesItsShareOfBodyWeightButNeverAnyBodyWeight() = runBlocking {
+        val pushUp = source.exerciseDao().insertExercise(Exercise(name = "Push-up", type = "Dynamic", bodyWeightPercent = 65))
+        source.bodyWeightDao().insert(io.github.gonbei774.calisthenicsmemory.data.BodyWeight(date = "2026-11-11", weightG = 62_850))
+        val program = source.programDao().insert(Program(name = "Upper body"))
+        source.programExerciseDao().insert(ProgramExercise(programId = program, exerciseId = pushUp, sortOrder = 0, sets = 3, targetValue = 10, intervalSeconds = 60))
+
+        val json = transfer(source).exportCommunityShare(setOf(program), emptySet(), emptySet())
+        assertTrue("the share travels", json.contains("\"bodyWeightPercent\":65"))
+        assertTrue("no weight travels", !json.contains("62850") && !json.contains("bodyWeights"))
+
+        val report = transfer(target).importCommunityShare(json)
+        assertTrue(report.errors.toString(), report.errors.isEmpty())
+        val after = target.backupDao().snapshot()
+        assertEquals(65, after.exercises.single { it.name == "Push-up" }.bodyWeightPercent)
+        assertTrue(after.bodyWeights.isEmpty())
+    }
+
+    @Test
     fun aBackupIsToldApartAndRefusedAsAShare() = runBlocking {
         val backup = """{"version":11,"exportDate":"2026-10-08T07:30:00","app":"CalisthenicsMemory","groups":[],"exercises":[],"records":[]}"""
         assertEquals("backup", transfer(target).detectJsonFileType(backup))

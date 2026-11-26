@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- App Name -->
     <!-- Common -->
     <string name="ok">OK</string>
@@ -342,6 +342,35 @@
     <string name="countdown_vibration_description">Ognuno degli ultimi tre segnali e il via vibrano. Segue l\'impostazione di vibrazione al tocco del telefono.</string>
     <!-- To Do Screen -->
     <string name="todo_title">Da fare</string>
+    <string name="body_weight_title">Peso corporeo</string>
+    <string name="body_weight_add">Aggiungi peso corporeo</string>
+    <string name="body_weight_edit">Modifica peso corporeo</string>
+    <string name="body_weight_empty">Aggiungi il tuo peso corporeo per contarlo nel volume degli esercizi con una quota del peso corporeo</string>
+    <string name="body_weight_kg_label">Peso (kg)</string>
+    <string name="body_weight_date_label">Data</string>
+    <string name="body_weight_date_exists">Questa data ha già un peso; salvando lo cambi</string>
+    <string name="body_weight_delete_title">Elimina peso corporeo</string>
+    <string name="body_weight_delete_message">Eliminare il peso del %1$s?</string>
+    <string name="body_weight_share">Quota del peso corporeo</string>
+    <string name="body_weight_share_description">Ogni ripetizione conta questa quota del tuo peso corporeo del giorno, più l\'eventuale peso aggiunto, nel volume. Lascia vuoto per contare solo il peso aggiunto.</string>
+    <string name="body_weight_not_counted">I giorni prima del tuo primo peso corporeo non sono contati: %1$d</string>
+    <string name="body_weight_none_yet">Non c\'è ancora un peso corporeo registrato, quindi la quota del peso corporeo non viene contata.</string>
+    <string name="heaviest_load_per_body_weight">Carico più pesante rispetto al peso corporeo</string>
+    <string name="csv_export_body_weights_description">Esporta l\'elenco del peso corporeo, data e kg</string>
+    <string name="csv_issue_body_weight_percent">Riga %1$d: bodyWeightPercent \"%2$s\" non valido</string>
+    <string name="share_issue_body_weight_percent">%1$s: la quota del peso corporeo deve essere da 1 a 100, non %2$d</string>
+    <string name="body_weight_issue_columns">Il file ha bisogno di una colonna per la data e una per il peso</string>
+    <!-- 2026-11-11 is an example of an ISO date, not a range of numbers. -->
+    <string name="body_weight_issue_date" tools:ignore="TypographyDashes">Riga %1$d: data \"%2$s\" illeggibile (serve una data come 2026-11-11)</string>
+    <string name="body_weight_issue_weight">Riga %1$d: peso \"%2$s\" illeggibile</string>
+    <string name="body_weight_issue_range">Riga %1$d: il peso \"%2$s\" non è tra 1 e 500 kg</string>
+    <string name="body_weight_import_exists">%1$s ha già un peso</string>
+    <string name="body_weight_import_to_add">Da aggiungere</string>
+    <string name="body_weight_import_existing">Date che hanno già un peso</string>
+    <string name="body_weight_import_unreadable">Righe non leggibili</string>
+    <string name="body_weight_import_kg_note">I pesi vengono letti come chilogrammi. Se openScale usa lb o st, impostalo su kg prima di esportare.</string>
+    <string name="body_weight_import_undo">Annulla l\'ultima importazione (%1$d)</string>
+    <string name="csv_not_recognised">Questo file non è un CSV di gruppi, esercizi, registrazioni o peso corporeo</string>
     <string name="todo_empty">Tocca + per aggiungere esercizi</string>
     <string name="todo_all_added">Tutti gli esercizi sono già nella lista</string>
     <string name="todo_drag_to_reorder">Trascina per riordinare</string>

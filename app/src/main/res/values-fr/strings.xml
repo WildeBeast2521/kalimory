@@ -342,6 +342,35 @@
     <string name="countdown_vibration_description">Chacun des trois derniers bips et le signal de départ vibrent aussi. Suit le réglage de vibration tactile du téléphone.</string>
     <!-- To Do Screen -->
     <string name="todo_title">À faire</string>
+    <string name="body_weight_title">Poids de corps</string>
+    <string name="body_weight_add">Ajouter le poids de corps</string>
+    <string name="body_weight_edit">Modifier le poids de corps</string>
+    <string name="body_weight_empty">Ajoutez votre poids de corps pour le compter dans le volume des exercices qui ont une part du poids de corps</string>
+    <string name="body_weight_kg_label">Poids (kg)</string>
+    <string name="body_weight_date_label">Date</string>
+    <string name="body_weight_date_exists">Cette date a déjà un poids ; l\'enregistrement le modifie</string>
+    <string name="body_weight_delete_title">Supprimer le poids de corps</string>
+    <string name="body_weight_delete_message">Supprimer le poids du %1$s ?</string>
+    <string name="body_weight_share">Part du poids de corps</string>
+    <string name="body_weight_share_description">Chaque répétition compte cette part de votre poids de corps du jour, plus la charge ajoutée, dans le volume. Laissez vide pour ne compter que la charge ajoutée.</string>
+    <string name="body_weight_not_counted">Les jours avant votre premier poids de corps ne sont pas comptés : %1$d</string>
+    <string name="body_weight_none_yet">Aucun poids de corps n\'est enregistré, la part du poids de corps n\'est donc pas comptée.</string>
+    <string name="heaviest_load_per_body_weight">Charge la plus lourde par rapport au poids de corps</string>
+    <string name="csv_export_body_weights_description">Exporter la liste du poids de corps, date et kg</string>
+    <string name="csv_issue_body_weight_percent">Ligne %1$d : bodyWeightPercent « %2$s » non valide</string>
+    <string name="share_issue_body_weight_percent">%1$s : la part du poids de corps doit être de 1 à 100, pas %2$d</string>
+    <string name="body_weight_issue_columns">Le fichier doit avoir une colonne de date et une colonne de poids</string>
+    <!-- 2026-11-11 is an example of an ISO date, not a range of numbers. -->
+    <string name="body_weight_issue_date" tools:ignore="TypographyDashes">Ligne %1$d : date « %2$s » illisible (une date comme 2026-11-11 est nécessaire)</string>
+    <string name="body_weight_issue_weight">Ligne %1$d : poids « %2$s » illisible</string>
+    <string name="body_weight_issue_range">Ligne %1$d : le poids « %2$s » n\'est pas compris entre 1 et 500 kg</string>
+    <string name="body_weight_import_exists">%1$s a déjà un poids</string>
+    <string name="body_weight_import_to_add">À ajouter</string>
+    <string name="body_weight_import_existing">Dates qui ont déjà un poids</string>
+    <string name="body_weight_import_unreadable">Lignes illisibles</string>
+    <string name="body_weight_import_kg_note">Les poids sont lus en kilogrammes. Si openScale utilise les lb ou les st, passez-le en kg avant d\'exporter.</string>
+    <string name="body_weight_import_undo">Annuler le dernier import (%1$d)</string>
+    <string name="csv_not_recognised">Ce fichier n\'est pas un CSV de groupes, d\'exercices, d\'enregistrements ou de poids de corps</string>
     <string name="todo_empty">Appuyez sur + pour ajouter des exercices</string>
     <string name="todo_all_added">Tous les exercices sont déjà dans la liste</string>
     <string name="todo_drag_to_reorder">Glisser pour réorganiser</string>

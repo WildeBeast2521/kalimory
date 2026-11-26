@@ -28,6 +28,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
+import androidx.compose.material3.OutlinedButton
+import io.github.gonbei774.calisthenicsmemory.data.BodyWeight
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.EmptyState
 import io.github.gonbei774.calisthenicsmemory.ui.components.common.ConnectedChoices
 import androidx.compose.ui.graphics.Color
@@ -121,7 +123,18 @@ data class Statistics(
     val maxDailyVolumeLeft: Float? = null,    // 最大日ボリューム左 (kg) - Unilateral用
     val avgDailyVolumeLeft: Float? = null,    // 平均日ボリューム左 (kg) - Unilateral用
     val maxWeight: Float? = null,         // 最大荷重 (kg)
-    val avgWeight: Float? = null          // 平均荷重 (kg)
+    val avgWeight: Float? = null,         // 平均荷重 (kg)
+    // The heaviest load as a share of that day's body weight, in percent: only for a share of body weight (ADR 0016).
+    val heaviestLoadPercent: Int? = null
+)
+
+private class WeightStats(
+    val maxDailyVolume: Float?,
+    val avgDailyVolume: Float?,
+    val maxDailyVolumeLeft: Float?,
+    val avgDailyVolumeLeft: Float?,
+    val maxWeight: Float?,
+    val avgWeight: Float?,
 )
 
 // グラフ表示コンポーネント
@@ -133,6 +146,9 @@ fun GraphView(
     selectedExerciseFilter: Exercise?,
     selectedPeriod: Period?,
     onOpenLibrary: () -> Unit = {},
+    /** The body weight list (ADR 0016): an exercise with a share of body weight counts it in its volume. */
+    bodyWeights: List<BodyWeight> = emptyList(),
+    onOpenBodyWeight: () -> Unit = {},
 ) {
     val firstDay = firstDayOfWeek()
     val cs = MaterialTheme.colorScheme
@@ -262,25 +278,27 @@ fun GraphView(
             )
         }
 
-        // ボリュームグラフ（荷重トラッキング有効時のみ）
-        if (selectedExerciseFilter.weightTrackingEnabled) {
+        // ボリュームグラフ（荷重トラッキング有効時のみ）. A share of body weight gives a rep exercise a load too.
+        if (selectedExerciseFilter.weightTrackingEnabled || selectedExerciseFilter.bodyWeightPercent != null) {
             // Volume (reps x kg) only means something for rep exercises; a hold has the max weight chart alone.
             if (selectedExerciseFilter.type == "Dynamic") item {
-                val volumeData = remember(selectedExerciseFilter, records, selectedPeriod) {
+                val volumeData = remember(selectedExerciseFilter, records, selectedPeriod, bodyWeights) {
                     prepareVolumeData(
                         exercise = selectedExerciseFilter,
                         records = records,
                         period = selectedPeriod,
-                        firstDay = firstDay
+                        firstDay = firstDay,
+                        bodyWeights = bodyWeights
                     )
                 }
 
-                val allTimeVolumeMax = remember(selectedExerciseFilter, records) {
+                val allTimeVolumeMax = remember(selectedExerciseFilter, records, bodyWeights) {
                     val allVolumeData = prepareVolumeData(
                         exercise = selectedExerciseFilter,
                         records = records,
                         period = null,
-                        firstDay = firstDay
+                        firstDay = firstDay,
+                        bodyWeights = bodyWeights
                     )
                     val maxRight = allVolumeData.maxOfOrNull { it.volumeRight } ?: 0f
                     val maxLeft = allVolumeData.mapNotNull { it.volumeLeft }.maxOrNull() ?: 0f
@@ -292,6 +310,31 @@ fun GraphView(
                     period = selectedPeriod,
                     allTimeVolumeMax = allTimeVolumeMax
                 )
+            }
+
+            // What the body weight leaves out, and the heaviest load per body weight (ADR 0016).
+            if (selectedExerciseFilter.bodyWeightPercent != null && selectedExerciseFilter.type == "Dynamic") {
+                item {
+                    val loadPercent = remember(selectedExerciseFilter, records, selectedPeriod, bodyWeights) {
+                        prepareLoadPercentData(selectedExerciseFilter, records, selectedPeriod, firstDay, bodyWeights)
+                    }
+                    val missing = remember(selectedExerciseFilter, records, selectedPeriod, bodyWeights) {
+                        daysWithoutBodyWeight(selectedExerciseFilter, records, selectedPeriod, firstDay, bodyWeights)
+                    }
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        BodyWeightNote(missing, hasEntries = bodyWeights.isNotEmpty(), onOpenBodyWeight)
+                        if (loadPercent.isNotEmpty()) {
+                            val range = Pair(0f, loadPercent.maxOf { it.maxWeightKg })
+                            WeightChart(
+                                data = loadPercent,
+                                period = selectedPeriod,
+                                allTimeWeightRange = range,
+                                legend = stringResource(R.string.heaviest_load_per_body_weight),
+                                valueFormat = { locale, value -> String.format(locale, "%.0f%%", value) },
+                            )
+                        }
+                    }
+                }
             }
 
             // 最大重量グラフ（荷重トラッキング有効時のみ）
@@ -397,12 +440,13 @@ fun GraphView(
 
         // 統計サマリー
         item {
-            val stats = remember(selectedExerciseFilter, records, selectedPeriod) {
+            val stats = remember(selectedExerciseFilter, records, selectedPeriod, bodyWeights) {
                 calculateStatistics(
                     exercise = selectedExerciseFilter!!,
                     records = records,
                     period = selectedPeriod,
-                    firstDay = firstDay
+                    firstDay = firstDay,
+                    bodyWeights = bodyWeights
                 )
             }
 
@@ -541,13 +585,19 @@ fun prepareVolumeData(
     exercise: Exercise,
     records: List<HistorySet>,
     period: Period?,
-    firstDay: DayOfWeek
+    firstDay: DayOfWeek,
+    bodyWeights: List<BodyWeight> = emptyList()
 ): List<VolumeDataPoint> {
     // 荷重トラッキングが無効な場合は空リスト
     // Volume is reps times kilograms. For a hold it would be seconds times kilograms, a number that
     // means nothing, so holds have none (their max weight is still charted).
-    if (!exercise.weightTrackingEnabled || exercise.type != "Dynamic") {
+    if ((!exercise.weightTrackingEnabled && exercise.bodyWeightPercent == null) || exercise.type != "Dynamic") {
         return emptyList()
+    }
+    // A share of body weight: every rep has a load, the share of that day's body weight plus what was added.
+    if (exercise.bodyWeightPercent != null) {
+        return shareVolumes(exercise, setsInPeriod(exercise, records, period, firstDay), bodyWeights).days
+            .map { VolumeDataPoint(it.date, it.volumeRight, it.volumeLeft) }
     }
 
     // 対象種目の記録を抽出
@@ -617,6 +667,48 @@ fun prepareVolumeData(
             volumeLeft = volumeLeft
         )
     }.sortedBy { it.date }
+}
+
+/** The sets of [exercise] that count as work in [period] (null for all time), as the graphs read them. */
+internal fun setsInPeriod(exercise: Exercise, records: List<HistorySet>, period: Period?, firstDay: DayOfWeek): List<HistorySet> {
+    val sets = records.filter { it.countsAsWork && it.exerciseId == exercise.id }
+    if (period == null) return sets
+    val cutoff = period.startDate(AppClock.today(), firstDay)
+    val today = AppClock.today()
+    return sets.filter { runCatching { LocalDate.parse(it.date) }.getOrNull()?.let { d -> d >= cutoff && d <= today } == true }
+}
+
+/** The heaviest load of each day as a share of that day's body weight, for the chart under the volume chart. */
+fun prepareLoadPercentData(
+    exercise: Exercise,
+    records: List<HistorySet>,
+    period: Period?,
+    firstDay: DayOfWeek,
+    bodyWeights: List<BodyWeight>
+): List<WeightDataPoint> =
+    shareVolumes(exercise, setsInPeriod(exercise, records, period, firstDay), bodyWeights).days
+        .map { WeightDataPoint(it.date, it.heaviestPercent.toFloat()) }
+
+/** How many training days in [period] have no body weight yet and so are not counted. */
+fun daysWithoutBodyWeight(
+    exercise: Exercise,
+    records: List<HistorySet>,
+    period: Period?,
+    firstDay: DayOfWeek,
+    bodyWeights: List<BodyWeight>
+): Int = shareVolumes(exercise, setsInPeriod(exercise, records, period, firstDay), bodyWeights).daysWithoutBodyWeight
+
+/** Under the volume chart: that days before the first body weight are not counted, or that there is no body weight yet. */
+@Composable
+private fun BodyWeightNote(missingDays: Int, hasEntries: Boolean, onOpenBodyWeight: () -> Unit) {
+    val cs = MaterialTheme.colorScheme
+    when {
+        !hasEntries -> Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(stringResource(R.string.body_weight_none_yet), style = MaterialTheme.typography.bodyMedium, color = cs.onSurfaceVariant)
+            OutlinedButton(onClick = onOpenBodyWeight) { Text(stringResource(R.string.body_weight_add)) }
+        }
+        missingDays > 0 -> Text(stringResource(R.string.body_weight_not_counted, missingDays), style = MaterialTheme.typography.bodyMedium, color = cs.onSurfaceVariant)
+    }
 }
 
 // アシストデータ準備関数
@@ -1777,10 +1869,14 @@ fun WeightChart(
     data: List<WeightDataPoint>,
     period: Period?,
     allTimeWeightRange: Pair<Float, Float>,
-    allRecordsDateRange: Pair<LocalDate, LocalDate>? = null
+    allRecordsDateRange: Pair<LocalDate, LocalDate>? = null,
+    /** The legend under the chart; the max weight by default. */
+    legend: String? = null,
+    /** How a value is written on the axis; kilograms by default. */
+    valueFormat: (java.util.Locale, Float) -> String = { locale, value -> String.format(locale, "%.1fkg", value) },
 ) {
     val cs = MaterialTheme.colorScheme
-    val weightLabel = stringResource(R.string.max_weight)
+    val weightLabel = legend ?: stringResource(R.string.max_weight)
 
     Card(
         modifier = Modifier
@@ -1819,7 +1915,8 @@ fun WeightChart(
                         data = data,
                         period = period,
                         allTimeWeightRange = allTimeWeightRange,
-                        allRecordsDateRange = allRecordsDateRange
+                        allRecordsDateRange = allRecordsDateRange,
+                        valueFormat = valueFormat
                     )
                 }
             }
@@ -1854,7 +1951,8 @@ fun SimpleWeightChart(
     data: List<WeightDataPoint>,
     period: Period?,
     allTimeWeightRange: Pair<Float, Float>,
-    allRecordsDateRange: Pair<LocalDate, LocalDate>? = null
+    allRecordsDateRange: Pair<LocalDate, LocalDate>? = null,
+    valueFormat: (java.util.Locale, Float) -> String = { locale, value -> String.format(locale, "%.1fkg", value) },
 ) {
     // The app's language: numbers use its decimal mark, and the text updates if it changes.
     val numberLocale = LocalConfiguration.current.locales[0]
@@ -1915,7 +2013,7 @@ fun SimpleWeightChart(
                 strokeWidth = 1.dp.toPx()
             )
 
-            val labelText = String.format(numberLocale, "%.1fkg", labelValue)
+            val labelText = valueFormat(numberLocale, labelValue)
 
             drawContext.canvas.nativeCanvas.drawText(
                 labelText,
@@ -2177,7 +2275,9 @@ fun StatisticsSummary(
                 }
 
                 // 荷重統計（weightTrackingEnabled時のみ）
-                if (exercise.weightTrackingEnabled && (statistics.maxDailyVolume != null || statistics.maxWeight != null)) {
+                if ((exercise.weightTrackingEnabled || exercise.bodyWeightPercent != null) &&
+                    (statistics.maxDailyVolume != null || statistics.maxWeight != null || statistics.heaviestLoadPercent != null)
+                ) {
                     Spacer(modifier = Modifier.height(8.dp))
                     HorizontalDivider(color = cs.outlineVariant)
                     Spacer(modifier = Modifier.height(8.dp))
@@ -2207,6 +2307,10 @@ fun StatisticsSummary(
                         statistics.avgDailyVolume?.let { avgVol ->
                             StatItem(stringResource(R.string.avg_daily_volume), String.format(numberLocale, "%.1f kg", avgVol))
                         }
+                    }
+
+                    statistics.heaviestLoadPercent?.let { percent ->
+                        StatItem(stringResource(R.string.heaviest_load_per_body_weight), String.format(numberLocale, "%d%%", percent))
                     }
 
                     // 荷重統計（左右共通）
@@ -2300,7 +2404,8 @@ fun calculateStatistics(
     exercise: Exercise,
     records: List<HistorySet>,
     period: Period?,
-    firstDay: DayOfWeek
+    firstDay: DayOfWeek,
+    bodyWeights: List<BodyWeight> = emptyList()
 ): Statistics {
     // Warm-ups are not part of any graph or statistic (ADR 0012).
     val exerciseRecords = records.filter { it.countsAsWork && it.exerciseId == exercise.id }
@@ -2355,7 +2460,20 @@ fun calculateStatistics(
     val weeklyChange = thisWeekRecords.size - lastWeekRecords.size
 
     // 荷重統計（weightTrackingEnabled時のみ）
-    val weightStats = if (exercise.weightTrackingEnabled) {
+    val shareDays = if (exercise.bodyWeightPercent != null && exercise.type == "Dynamic") shareVolumes(exercise, filteredRecords, bodyWeights).days else null
+    val weightStats = if (shareDays != null) {
+        // A share of body weight: volume is reps times the load of the day; weights are what was added.
+        val added = filteredRecords.flatMap { listOf(it.weightG ?: 0, it.leftWeightG ?: 0) }.filter { it > 0 }.map { it / 1000f }
+        val left = shareDays.mapNotNull { it.volumeLeft }
+        WeightStats(
+            maxDailyVolume = shareDays.maxOfOrNull { it.volumeRight },
+            avgDailyVolume = if (shareDays.isNotEmpty()) shareDays.map { it.volumeRight }.average().toFloat() else null,
+            maxDailyVolumeLeft = left.maxOrNull(),
+            avgDailyVolumeLeft = if (left.isNotEmpty()) left.average().toFloat() else null,
+            maxWeight = added.maxOrNull(),
+            avgWeight = if (added.isNotEmpty()) added.average().toFloat() else null,
+        )
+    } else if (exercise.weightTrackingEnabled) {
         val recordsWithWeight = filteredRecords.filter { (it.weightG ?: 0) > 0 || (it.leftWeightG ?: 0) > 0 }
         if (recordsWithWeight.isNotEmpty()) {
             // 日ごとにボリュームを集計（左右別々）
@@ -2385,14 +2503,14 @@ fun calculateStatistics(
 
             // Holds have no volume (seconds times kilograms means nothing), only their weights.
             val hasVolume = exercise.type == "Dynamic"
-            object {
-                val maxDailyVolume = if (hasVolume) volumeByDateRight.maxOrNull() else null
-                val avgDailyVolume = if (hasVolume && volumeByDateRight.isNotEmpty()) volumeByDateRight.average().toFloat() else null
-                val maxDailyVolumeLeft = if (hasVolume) volumeByDateLeft?.maxOrNull() else null
-                val avgDailyVolumeLeft = if (hasVolume && volumeByDateLeft != null && volumeByDateLeft.isNotEmpty()) volumeByDateLeft.average().toFloat() else null
-                val maxWeight = weights.maxOrNull()
-                val avgWeight = if (weights.isNotEmpty()) weights.average().toFloat() else null
-            }
+            WeightStats(
+                maxDailyVolume = if (hasVolume) volumeByDateRight.maxOrNull() else null,
+                avgDailyVolume = if (hasVolume && volumeByDateRight.isNotEmpty()) volumeByDateRight.average().toFloat() else null,
+                maxDailyVolumeLeft = if (hasVolume) volumeByDateLeft?.maxOrNull() else null,
+                avgDailyVolumeLeft = if (hasVolume && volumeByDateLeft != null && volumeByDateLeft.isNotEmpty()) volumeByDateLeft.average().toFloat() else null,
+                maxWeight = weights.maxOrNull(),
+                avgWeight = if (weights.isNotEmpty()) weights.average().toFloat() else null,
+            )
         } else null
     } else null
 
@@ -2414,7 +2532,8 @@ fun calculateStatistics(
             maxDailyVolumeLeft = weightStats?.maxDailyVolumeLeft,
             avgDailyVolumeLeft = weightStats?.avgDailyVolumeLeft,
             maxWeight = weightStats?.maxWeight,
-            avgWeight = weightStats?.avgWeight
+            avgWeight = weightStats?.avgWeight,
+            heaviestLoadPercent = shareDays?.maxOfOrNull { it.heaviestPercent }
         )
     } else {
         // Bilateral: 右側のみ
@@ -2432,7 +2551,8 @@ fun calculateStatistics(
             maxDailyVolumeLeft = null,
             avgDailyVolumeLeft = null,
             maxWeight = weightStats?.maxWeight,
-            avgWeight = weightStats?.avgWeight
+            avgWeight = weightStats?.avgWeight,
+            heaviestLoadPercent = shareDays?.maxOfOrNull { it.heaviestPercent }
         )
     }
 }

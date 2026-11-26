@@ -11,6 +11,7 @@ import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueAddResult
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueLibrary
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStep
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.CatalogueStepText
+import io.github.gonbei774.calisthenicsmemory.data.BodyWeight
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.Program
@@ -134,6 +135,42 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
             initialValue = emptyList()
         )
 
+    // Body weights (ADR 0016): one entry per date, each counting until the next.
+    val bodyWeights: StateFlow<List<BodyWeight>> = database.bodyWeightDao().observeAll()
+        .stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = emptyList())
+
+    /**
+     * Saves [weightG] on [date]. A date that already has an entry takes the new weight; when [replacing]
+     * is edited to another date, its old entry goes. A typed or edited entry is never one an import added.
+     */
+    fun saveBodyWeight(date: java.time.LocalDate, weightG: Int, replacing: BodyWeight? = null) {
+        viewModelScope.launch {
+            val dao = database.bodyWeightDao()
+            if (replacing != null && replacing.date != date.toString()) dao.delete(replacing.id)
+            val existing = dao.onDate(date.toString())
+            if (existing == null) dao.insert(BodyWeight(date = date.toString(), weightG = weightG))
+            else dao.update(existing.copy(weightG = weightG, importId = null))
+        }
+    }
+
+    /** How many entries the latest import added and an undo would remove; 0 when there is nothing to undo. */
+    val lastImportCount: StateFlow<Int> = bodyWeights.map { rows ->
+        val latest = rows.mapNotNull { it.importId }.maxOrNull()
+        if (latest == null) 0 else rows.count { it.importId == latest }
+    }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = 0)
+
+    /** Removes the entries the latest import added, and only those: typed, edited and restored entries have no import marker. */
+    fun undoBodyWeightImport() {
+        viewModelScope.launch {
+            val dao = database.bodyWeightDao()
+            dao.latestImportId()?.let { dao.deleteImport(it) }
+        }
+    }
+
+    fun deleteBodyWeight(id: Long) {
+        viewModelScope.launch { database.bodyWeightDao().delete(id) }
+    }
+
     // Exercise Groups
     val groups: StateFlow<List<ExerciseGroup>> = groupDao.getAllGroups()
         .stateIn(
@@ -234,7 +271,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         assistanceTrackingEnabled: Boolean = false, // アシストトラッキング有効
         description: String? = null,               // 種目の説明文
         primaryMuscles: Set<Muscle> = emptySet(),  // the muscles chosen for an own exercise (ADR 0014)
-        secondaryMuscles: Set<Muscle> = emptySet()
+        secondaryMuscles: Set<Muscle> = emptySet(),
+        bodyWeightPercent: Int? = null             // the share of body weight a rep lifts (ADR 0016)
     ) {
         viewModelScope.launch {
             try {
@@ -264,7 +302,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                     assistanceTrackingEnabled = assistanceTrackingEnabled,
                     description = description,
                     primaryMuscles = primaryMuscles,
-                    secondaryMuscles = secondaryMuscles
+                    secondaryMuscles = secondaryMuscles,
+                    bodyWeightPercent = bodyWeightPercent
                 )
                 exerciseDao.insertExercise(exercise)
                 _snackbarMessage.value = UiMessage.ExerciseAdded
@@ -585,6 +624,9 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
     suspend fun exportExercises(): String = csvTransfer.exportExercises()
     suspend fun exportRecordTemplate(): String = csvTransfer.exportRecordTemplate()
     suspend fun exportRecords(): String = csvTransfer.exportRecords()
+    suspend fun exportBodyWeights(): String = csvTransfer.exportBodyWeights()
+    suspend fun previewBodyWeights(csvString: String): BodyWeightPreview = csvTransfer.previewBodyWeights(csvString)
+    suspend fun importBodyWeights(csvString: String): CsvImportReport = csvTransfer.importBodyWeights(csvString)
     suspend fun importGroups(csvString: String): CsvImportReport = csvTransfer.importGroups(csvString)
     suspend fun importExercises(csvString: String): CsvImportReport = csvTransfer.importExercises(csvString)
     suspend fun importRecordsFromCsv(csvString: String): CsvImportReport = csvTransfer.importRecordsFromCsv(csvString)

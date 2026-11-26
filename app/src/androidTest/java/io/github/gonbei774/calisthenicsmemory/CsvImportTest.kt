@@ -306,6 +306,92 @@ class CsvImportTest {
     }
 
     @Test
+    fun importExercises_bodyWeightPercent_read() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles,bodyWeightPercent
+            Push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,,,,65
+        """.trimIndent()
+        assertEquals(1, importExercisesCsv(csv).successCount)
+        assertEquals(65, exerciseDao.getExerciseByNameAndType("Push-up", "Dynamic")?.bodyWeightPercent)
+    }
+
+    @Test
+    fun importExercises_bodyWeightPercent_outOfRangeOrNotANumber_error() = runBlocking {
+        listOf("0", "101", "abc", "-5").forEachIndexed { i, bad ->
+            val csv = """
+                name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles,bodyWeightPercent
+                Bad $i,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,,,,$bad
+            """.trimIndent()
+            val report = importExercisesCsv(csv)
+            assertEquals("share $bad", 0, report.successCount)
+            assertEquals("share $bad", 1, report.errorCount)
+            assertEquals(null, exerciseDao.getExerciseByNameAndType("Bad $i", "Dynamic"))
+        }
+    }
+
+    @Test
+    fun importExercises_oldFileWithoutTheShare_hasNone() = runBlocking {
+        val csv = """
+            name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId
+            Old push-up,Dynamic,,0,Bilateral,3,10,false,0,,,false,false,false,,
+        """.trimIndent()
+        assertEquals(1, importExercisesCsv(csv).successCount)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("Old push-up", "Dynamic")?.bodyWeightPercent)
+    }
+
+    @Test
+    fun exportedExercises_carryTheShare_andComeBackWithIt() = runBlocking {
+        exerciseDao.insertExercise(io.github.gonbei774.calisthenicsmemory.data.Exercise(name = "Shared push-up", type = "Dynamic", bodyWeightPercent = 65))
+        exerciseDao.insertExercise(io.github.gonbei774.calisthenicsmemory.data.Exercise(name = "Plain squat", type = "Dynamic"))
+        val csv = transfer().exportExercises()
+        assertTrue(csv.lines().first().endsWith("bodyWeightPercent"))
+        database.clearAllTables()
+        assertEquals(2, importExercisesCsv(csv).successCount)
+        assertEquals(65, exerciseDao.getExerciseByNameAndType("Shared push-up", "Dynamic")?.bodyWeightPercent)
+        assertEquals(null, exerciseDao.getExerciseByNameAndType("Plain squat", "Dynamic")?.bodyWeightPercent)
+    }
+
+    @Test
+    fun exportedBodyWeights_areDateAndExactKilograms() = runBlocking {
+        database.bodyWeightDao().insert(io.github.gonbei774.calisthenicsmemory.data.BodyWeight(date = "2026-11-11", weightG = 62_850))
+        database.bodyWeightDao().insert(io.github.gonbei774.calisthenicsmemory.data.BodyWeight(date = "2026-10-12", weightG = 65_000))
+        assertEquals("date,weightKg\n2026-10-12,65\n2026-11-11,62.85\n", transfer().exportBodyWeights().replace("\r\n", "\n"))
+    }
+
+    @Test
+    fun importBodyWeights_addsNewDatesOnly_andUndoRemovesOnlyThoseEntries() = runBlocking {
+        val dao = database.bodyWeightDao()
+        // One entry typed by hand, on a date the file also has: it must stay as it is, and survive an undo.
+        dao.insert(io.github.gonbei774.calisthenicsmemory.data.BodyWeight(date = "2026-11-11", weightG = 70_000))
+        val csv = "\uFEFFDATE,TIME,WEIGHT\r\n2026-11-11,08:31:43,62.85\r\n2026-08-08,16:27:21.835,64.9\r\n2026-09-09,,x\r\n"
+
+        val preview = transfer().previewBodyWeights(csv)
+        assertEquals(1, preview.toAdd); assertEquals(1, preview.alreadyThere); assertEquals(1, preview.unreadable)
+        assertEquals(1, dao.latestImportId().let { if (it == null) 1 else 0 }) // the preview wrote nothing
+
+        val report = transfer().importBodyWeights(csv)
+        assertEquals(1, report.successCount)
+        assertEquals(1, report.skippedItems.size)
+        assertEquals(1, report.errorCount)
+        val after = database.backupDao().bodyWeights()
+        assertEquals(listOf("2026-08-08" to 64_900, "2026-11-11" to 70_000), after.map { it.date to it.weightG })
+        val importId = dao.latestImportId()!!
+        assertEquals(1, dao.countImport(importId))
+
+        // An edited import is the user's now, and an undo leaves it alone.
+        assertEquals(1, dao.deleteImport(importId))
+        assertEquals(listOf("2026-11-11"), database.backupDao().bodyWeights().map { it.date })
+    }
+
+    @Test
+    fun importBodyWeights_aFileWithoutAWeightColumnWritesNothing() = runBlocking {
+        val report = transfer().importBodyWeights("date,bmi\n2026-11-11,22\n")
+        assertEquals(0, report.successCount)
+        assertEquals(1, report.errorCount)
+        assertEquals(0, database.backupDao().bodyWeights().size)
+    }
+
+    @Test
     fun importExercises_malformedCatalogId_error() = runBlocking {
         val csv = """
             name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId

@@ -48,7 +48,9 @@ data class ShareExercise(
     val catalogId: String? = null,
     /** The muscles chosen for an own exercise, as muscle codes (ADR 0014); older apps ignore them. */
     val primaryMuscles: List<String> = emptyList(),
-    val secondaryMuscles: List<String> = emptyList()
+    val secondaryMuscles: List<String> = emptyList(),
+    /** The share of body weight of a rep exercise, in whole percent (ADR 0016); the weights themselves are never shared. */
+    val bodyWeightPercent: Int? = null
 )
 
 @Serializable
@@ -189,6 +191,9 @@ fun validateCommunityShareContent(data: CommunityShareData): List<ImportIssue> {
             } else if (!catalogIds.add(it)) {
                 errors.add(ImportIssue(R.string.share_issue_dup_catalog, listOf("exercises[$index]", "$it")))
             }
+        }
+        exercise.bodyWeightPercent?.takeIf { it !in 1..100 }?.let {
+            errors.add(ImportIssue(R.string.share_issue_body_weight_percent, listOf("exercises[$index]", it)))
         }
         (exercise.primaryMuscles + exercise.secondaryMuscles).firstOrNull { code -> Muscle.entries.none { it.code == code } }?.let { code ->
             errors.add(ImportIssue(R.string.share_issue_unknown_muscle, listOf("exercises[$index]", code)))

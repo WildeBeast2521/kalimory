@@ -404,6 +404,35 @@
     <string name="report_issue_github">Report issue on GitHub</string>
     <!-- To Do Screen -->
     <string name="todo_title">To Do</string>
+    <string name="body_weight_title">Body weight</string>
+    <string name="body_weight_add">Add body weight</string>
+    <string name="body_weight_edit">Edit body weight</string>
+    <string name="body_weight_empty">Add your body weight to count it in the volume of exercises that have a share of body weight</string>
+    <string name="body_weight_kg_label">Weight (kg)</string>
+    <string name="body_weight_date_label">Date</string>
+    <string name="body_weight_date_exists">This date already has a weight; saving changes it</string>
+    <string name="body_weight_delete_title">Delete body weight</string>
+    <string name="body_weight_delete_message">Delete the weight from %1$s?</string>
+    <string name="body_weight_share">Share of body weight</string>
+    <string name="body_weight_share_description">Each rep counts this share of your body weight on the day, plus any added weight, in the volume. Leave it empty to count only added weight.</string>
+    <string name="body_weight_not_counted">Days before your first body weight are not counted: %1$d</string>
+    <string name="body_weight_none_yet">No body weight is recorded yet, so the share of body weight is not counted.</string>
+    <string name="heaviest_load_per_body_weight">Heaviest load per body weight</string>
+    <string name="csv_export_body_weights_description">Export the body weight list, date and kg</string>
+    <string name="csv_issue_body_weight_percent">Line %1$d: invalid bodyWeightPercent \"%2$s\"</string>
+    <string name="share_issue_body_weight_percent">%1$s: the share of body weight must be from 1 to 100, not %2$d</string>
+    <string name="body_weight_issue_columns">The file needs a date column and a weight column</string>
+    <!-- 2026-11-11 is an example of an ISO date, not a range of numbers. -->
+    <string name="body_weight_issue_date" tools:ignore="TypographyDashes">Line %1$d: unreadable date \"%2$s\" (a date such as 2026-11-11 is needed)</string>
+    <string name="body_weight_issue_weight">Line %1$d: unreadable weight \"%2$s\"</string>
+    <string name="body_weight_issue_range">Line %1$d: the weight \"%2$s\" is not between 1 and 500 kg</string>
+    <string name="body_weight_import_exists">%1$s already has a weight</string>
+    <string name="body_weight_import_to_add">To add</string>
+    <string name="body_weight_import_existing">Dates that already have a weight</string>
+    <string name="body_weight_import_unreadable">Lines that cannot be read</string>
+    <string name="body_weight_import_kg_note">Weights are read as kilograms. If openScale uses lb or st, switch it to kg before exporting.</string>
+    <string name="body_weight_import_undo">Undo the last import (%1$d)</string>
+    <string name="csv_not_recognised">This file is not a groups, exercises, records or body weight CSV file</string>
     <string name="todo_empty">Tap + to add exercises</string>
     <string name="todo_all_added">All exercises are already in the list</string>
     <string name="todo_drag_to_reorder">Drag to reorder</string>

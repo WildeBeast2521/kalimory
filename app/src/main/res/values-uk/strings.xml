@@ -280,6 +280,35 @@
     <string name="right_short">Права</string>
     <string name="left_short">Ліва</string>
     <string name="todo_title">Список завдань</string>
+    <string name="body_weight_title">Вага тіла</string>
+    <string name="body_weight_add">Додати вагу тіла</string>
+    <string name="body_weight_edit">Змінити вагу тіла</string>
+    <string name="body_weight_empty">Додайте вагу тіла, щоб вона враховувалась в обсязі вправ із часткою ваги тіла</string>
+    <string name="body_weight_kg_label">Вага (кг)</string>
+    <string name="body_weight_date_label">Дата</string>
+    <string name="body_weight_date_exists">На цю дату вже є вага; збереження змінить її</string>
+    <string name="body_weight_delete_title">Видалити вагу тіла</string>
+    <string name="body_weight_delete_message">Видалити вагу за %1$s?</string>
+    <string name="body_weight_share">Частка ваги тіла</string>
+    <string name="body_weight_share_description">Кожне повторення враховує цю частку ваги тіла в той день плюс додану вагу в обсязі. Залиште порожнім, щоб враховувалась лише додана вага.</string>
+    <string name="body_weight_not_counted">Дні до першого запису ваги тіла не враховуються: %1$d</string>
+    <string name="body_weight_none_yet">Вагу тіла ще не записано, тому частка ваги тіла не враховується.</string>
+    <string name="heaviest_load_per_body_weight">Найбільше навантаження відносно ваги тіла</string>
+    <string name="csv_export_body_weights_description">Експортувати список ваги тіла: дата і кг</string>
+    <string name="csv_issue_body_weight_percent">Рядок %1$d: недійсний bodyWeightPercent «%2$s»</string>
+    <string name="share_issue_body_weight_percent">%1$s: частка ваги тіла має бути від 1 до 100, а не %2$d</string>
+    <string name="body_weight_issue_columns">У файлі потрібні стовпець дати та стовпець ваги</string>
+    <!-- 2026-11-11 is an example of an ISO date, not a range of numbers. -->
+    <string name="body_weight_issue_date" tools:ignore="TypographyDashes">Рядок %1$d: не вдалося прочитати дату «%2$s» (потрібна дата на кшталт 2026-11-11)</string>
+    <string name="body_weight_issue_weight">Рядок %1$d: не вдалося прочитати вагу «%2$s»</string>
+    <string name="body_weight_issue_range">Рядок %1$d: вага «%2$s» не в межах від 1 до 500 кг</string>
+    <string name="body_weight_import_exists">На %1$s вже є вага</string>
+    <string name="body_weight_import_to_add">Буде додано</string>
+    <string name="body_weight_import_existing">Дати, на які вже є вага</string>
+    <string name="body_weight_import_unreadable">Рядки, які не вдалося прочитати</string>
+    <string name="body_weight_import_kg_note">Вага читається в кілограмах. Якщо в openScale використовуються фунти або стоуни, перемкніть на кг перед експортом.</string>
+    <string name="body_weight_import_undo">Скасувати останній імпорт (%1$d)</string>
+    <string name="csv_not_recognised">Цей файл не є CSV груп, вправ, записів або ваги тіла</string>
     <string name="unit_seconds">с</string>
     <string name="minus_10sec">-10\u00A0с</string>
     <string name="plus_10sec">+10\u00A0с</string>

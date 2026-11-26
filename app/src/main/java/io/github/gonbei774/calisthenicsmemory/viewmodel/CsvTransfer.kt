@@ -3,6 +3,7 @@ package io.github.gonbei774.calisthenicsmemory.viewmodel
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.catalogue.Muscle
 import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
+import io.github.gonbei774.calisthenicsmemory.data.BodyWeight
 import io.github.gonbei774.calisthenicsmemory.data.Exercise
 import io.github.gonbei774.calisthenicsmemory.data.ExerciseGroup
 import io.github.gonbei774.calisthenicsmemory.data.TrainingRecord
@@ -61,7 +62,7 @@ class CsvTransfer(
             val currentExercises = exerciseDao.getAllExercises().first()
 
             val csvBuilder = StringBuilder()
-            csvBuilder.appendLine("name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles")
+            csvBuilder.appendLine("name,type,group,sortOrder,laterality,targetSets,targetValue,isFavorite,displayOrder,restInterval,repDuration,distanceTrackingEnabled,weightTrackingEnabled,assistanceTrackingEnabled,description,catalogId,primaryMuscles,secondaryMuscles,bodyWeightPercent")
 
             currentExercises.forEach { exercise ->
                 csvBuilder.appendLine(
@@ -83,7 +84,8 @@ class CsvTransfer(
                         exercise.description ?: "",
                         exercise.catalogId ?: "",
                         exercise.primaryMuscles.toCsvCell(),
-                        exercise.secondaryMuscles.toCsvCell()
+                        exercise.secondaryMuscles.toCsvCell(),
+                        exercise.bodyWeightPercent?.toString() ?: ""
                     )
                 )
             }
@@ -101,6 +103,49 @@ class CsvTransfer(
      * 記録入力用テンプレートCSVをエクスポート
      * 種目リスト + コメント例
      */
+    /** The body weight list as "date,weightKg": the date as stored and the weight exactly, without trailing zeros. */
+    suspend fun exportBodyWeights(): String = withContext(Dispatchers.IO) {
+        val rows = database.bodyWeightDao().observeAll().first()
+        val builder = StringBuilder("date,weightKg\n")
+        rows.forEach { builder.appendLine(csvRow(it.date, java.math.BigDecimal(it.weightG).movePointLeft(3).stripTrailingZeros().toPlainString())) }
+        onMessage(UiMessage.CsvExportSuccess("Body weight", rows.size))
+        builder.toString()
+    }
+
+    /** What a body weight CSV would add, before anything is written: the preview of an import. */
+    suspend fun previewBodyWeights(csvString: String): BodyWeightPreview = withContext(Dispatchers.IO) {
+        val file = BodyWeightCsv.parse(csvString)
+        val existing = database.bodyWeightDao().observeAll().first().map { it.date }.toSet()
+        BodyWeightPreview(
+            toAdd = file.readings.count { it.date.toString() !in existing },
+            alreadyThere = file.readings.count { it.date.toString() in existing },
+            unreadable = file.errors.size,
+            unusable = file.unusable,
+        )
+    }
+
+    /**
+     * Adds the weights of a body weight CSV (this app's or openScale's). A date that already has a weight is
+     * left as it is. Every added entry carries the time of this import, so it can be undone as a whole.
+     */
+    suspend fun importBodyWeights(csvString: String): CsvImportReport = withContext(Dispatchers.IO) {
+        val file = BodyWeightCsv.parse(csvString)
+        file.unusable?.let { return@withContext CsvImportReport(CsvType.BODY_WEIGHTS, 0, 0, 1, emptyList(), listOf(it)) }
+        val dao = database.bodyWeightDao()
+        val existing = dao.observeAll().first().map { it.date }.toSet()
+        val (there, fresh) = file.readings.partition { it.date.toString() in existing }
+        val importId = System.currentTimeMillis()
+        dao.insertImported(fresh.map { BodyWeight(date = it.date.toString(), weightG = it.weightG, importId = importId) })
+        CsvImportReport(
+            CsvType.BODY_WEIGHTS,
+            successCount = fresh.size,
+            skippedCount = there.size + file.sameDateRows + file.emptyWeightRows,
+            errorCount = file.errors.size,
+            skippedItems = there.map { ImportIssue(R.string.body_weight_import_exists, listOf(it.date.toString())) },
+            errors = file.errors,
+        )
+    }
+
     suspend fun exportRecordTemplate(): String = withContext(Dispatchers.IO) {
         try {
             val currentExercises = exerciseDao.getAllExercises().first()
@@ -270,6 +315,7 @@ class CsvTransfer(
                     val catalogIdStr = columns.getOrNull(15)?.trim() ?: ""
                     val primaryMusclesStr = columns.getOrNull(16)?.trim() ?: ""
                     val secondaryMusclesStr = columns.getOrNull(17)?.trim() ?: ""
+                    val bodyWeightPercentStr = columns.getOrNull(18)?.trim() ?: ""
 
                     // 必須フィールドチェック
                     if (name.isEmpty() || type.isEmpty() || laterality.isEmpty()) {
@@ -347,6 +393,14 @@ class CsvTransfer(
                         errorCount++
                         return@forEachIndexed
                     }
+                    // The share of body weight, when the file has one: whole percent from 1 to 100, refused before anything is created.
+                    val bodyWeightPercent = bodyWeightPercentStr.takeIf { it.isNotEmpty() }?.let { text ->
+                        text.toIntOrNull()?.takeIf { it in 1..100 } ?: run {
+                            errors.add(ImportIssue(R.string.csv_issue_body_weight_percent, listOf(text)).atLine(index + 2))
+                            errorCount++
+                            return@forEachIndexed
+                        }
+                    }
                     // A catalogue step can be linked to one exercise only: one that is already linked here, or
                     // repeated in this file, comes in without its link and says so.
                     val catalogId = catalogIdStr.ifEmpty { null }?.takeIf { id ->
@@ -362,6 +416,7 @@ class CsvTransfer(
                         catalogId = catalogId,
                         primaryMuscles = primaryMuscles.muscles,
                         secondaryMuscles = secondaryMuscles.muscles,
+                        bodyWeightPercent = bodyWeightPercent,
                         sortOrder = sortOrder,
                         displayOrder = displayOrder,
                         laterality = laterality,
@@ -478,3 +533,6 @@ private fun musclesOfCsvCell(cell: String): CsvMuscles {
     val known = codes.mapNotNull { code -> Muscle.entries.firstOrNull { it.code == code } }
     return CsvMuscles(known.toCollection(linkedSetOf()), codes.filter { code -> Muscle.entries.none { it.code == code } })
 }
+
+/** What importing a body weight CSV would do: entries to add, dates that already have a weight, lines that cannot be read. */
+data class BodyWeightPreview(val toAdd: Int, val alreadyThere: Int, val unreadable: Int, internal val unusable: ImportIssue?)
