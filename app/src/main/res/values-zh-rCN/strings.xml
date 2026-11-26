@@ -351,6 +351,8 @@
     <string name="body_weight_date_exists">此日期已有体重，保存将覆盖</string>
     <string name="body_weight_delete_title">删除体重</string>
     <string name="body_weight_delete_message">删除 %1$s 的体重？</string>
+    <string name="body_weight_share">体重占比</string>
+    <string name="body_weight_share_description">每次重复按当天体重的这一比例，加上额外负重，计入训练量。留空则只计入额外负重。</string>
     <string name="todo_empty">点击 + 添加动作</string>
     <string name="todo_all_added">所有动作已添加到列表中</string>
     <string name="todo_drag_to_reorder">拖动以重新排序</string>

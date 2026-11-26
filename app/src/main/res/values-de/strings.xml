@@ -347,6 +347,8 @@
     <string name="body_weight_date_exists">Für dieses Datum gibt es schon ein Gewicht; Speichern ändert es</string>
     <string name="body_weight_delete_title">Körpergewicht löschen</string>
     <string name="body_weight_delete_message">Das Gewicht vom %1$s löschen?</string>
+    <string name="body_weight_share">Anteil am Körpergewicht</string>
+    <string name="body_weight_share_description">Jede Wiederholung zählt diesen Anteil deines Körpergewichts am jeweiligen Tag plus ein eventuelles Zusatzgewicht im Volumen. Leer lassen, um nur das Zusatzgewicht zu zählen.</string>
     <string name="todo_empty">Tippe + um Übungen hinzuzufügen</string>
     <string name="todo_all_added">Alle Übungen sind bereits in der Liste</string>
     <string name="todo_drag_to_reorder">Ziehen zum Sortieren</string>

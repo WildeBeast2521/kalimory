@@ -413,6 +413,8 @@
     <string name="body_weight_date_exists">This date already has a weight; saving changes it</string>
     <string name="body_weight_delete_title">Delete body weight</string>
     <string name="body_weight_delete_message">Delete the weight from %1$s?</string>
+    <string name="body_weight_share">Share of body weight</string>
+    <string name="body_weight_share_description">Each rep counts this share of your body weight on the day, plus any added weight, in the volume. Leave it empty to count only added weight.</string>
     <string name="todo_empty">Tap + to add exercises</string>
     <string name="todo_all_added">All exercises are already in the list</string>
     <string name="todo_drag_to_reorder">Drag to reorder</string>

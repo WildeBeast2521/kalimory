@@ -257,7 +257,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
         assistanceTrackingEnabled: Boolean = false, // アシストトラッキング有効
         description: String? = null,               // 種目の説明文
         primaryMuscles: Set<Muscle> = emptySet(),  // the muscles chosen for an own exercise (ADR 0014)
-        secondaryMuscles: Set<Muscle> = emptySet()
+        secondaryMuscles: Set<Muscle> = emptySet(),
+        bodyWeightPercent: Int? = null             // the share of body weight a rep lifts (ADR 0016)
     ) {
         viewModelScope.launch {
             try {
@@ -287,7 +288,8 @@ class TrainingViewModel(application: Application) : AndroidViewModel(application
                     assistanceTrackingEnabled = assistanceTrackingEnabled,
                     description = description,
                     primaryMuscles = primaryMuscles,
-                    secondaryMuscles = secondaryMuscles
+                    secondaryMuscles = secondaryMuscles,
+                    bodyWeightPercent = bodyWeightPercent
                 )
                 exerciseDao.insertExercise(exercise)
                 _snackbarMessage.value = UiMessage.ExerciseAdded

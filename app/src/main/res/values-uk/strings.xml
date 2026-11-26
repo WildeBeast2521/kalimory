@@ -289,6 +289,8 @@
     <string name="body_weight_date_exists">На цю дату вже є вага; збереження змінить її</string>
     <string name="body_weight_delete_title">Видалити вагу тіла</string>
     <string name="body_weight_delete_message">Видалити вагу за %1$s?</string>
+    <string name="body_weight_share">Частка ваги тіла</string>
+    <string name="body_weight_share_description">Кожне повторення враховує цю частку ваги тіла в той день плюс додану вагу в обсязі. Залиште порожнім, щоб враховувалась лише додана вага.</string>
     <string name="unit_seconds">с</string>
     <string name="minus_10sec">-10\u00A0с</string>
     <string name="plus_10sec">+10\u00A0с</string>

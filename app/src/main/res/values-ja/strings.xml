@@ -397,6 +397,8 @@
     <string name="body_weight_date_exists">この日付にはすでに体重があります。保存すると変更されます</string>
     <string name="body_weight_delete_title">体重を削除</string>
     <string name="body_weight_delete_message">%1$s の体重を削除しますか？</string>
+    <string name="body_weight_share">体重の割合</string>
+    <string name="body_weight_share_description">1回ごとに、その日の体重のこの割合に追加の重さを加えた値がボリュームに数えられます。空欄の場合は追加の重さだけを数えます。</string>
     <string name="todo_empty">右下の + で種目を追加</string>
     <string name="todo_all_added">すべての種目が追加済みです</string>
     <string name="todo_drag_to_reorder">ドラッグで並び替え</string>

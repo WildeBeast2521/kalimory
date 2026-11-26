@@ -351,6 +351,8 @@
     <string name="body_weight_date_exists">Cette date a déjà un poids ; l\'enregistrement le modifie</string>
     <string name="body_weight_delete_title">Supprimer le poids de corps</string>
     <string name="body_weight_delete_message">Supprimer le poids du %1$s ?</string>
+    <string name="body_weight_share">Part du poids de corps</string>
+    <string name="body_weight_share_description">Chaque répétition compte cette part de votre poids de corps du jour, plus la charge ajoutée, dans le volume. Laissez vide pour ne compter que la charge ajoutée.</string>
     <string name="todo_empty">Appuyez sur + pour ajouter des exercices</string>
     <string name="todo_all_added">Tous les exercices sont déjà dans la liste</string>
     <string name="todo_drag_to_reorder">Glisser pour réorganiser</string>

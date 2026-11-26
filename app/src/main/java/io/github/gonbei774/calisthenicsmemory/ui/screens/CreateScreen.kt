@@ -768,6 +768,8 @@ fun UnifiedAddDialog(
     var distanceTrackingEnabled by remember { mutableStateOf(exercise?.distanceTrackingEnabled ?: false) }
     var weightTrackingEnabled by remember { mutableStateOf(exercise?.weightTrackingEnabled ?: false) }
     var assistanceTrackingEnabled by remember { mutableStateOf(exercise?.assistanceTrackingEnabled ?: false) }
+    // The share of body weight a rep lifts (ADR 0016): blank until chosen, kept if the type changes, used for reps only.
+    var bodyWeightPercent by remember { mutableStateOf(exercise?.bodyWeightPercent?.toString() ?: "") }
 
     // グループ用の状態
     var groupName by remember { mutableStateOf("") }
@@ -847,7 +849,8 @@ fun UnifiedAddDialog(
                         assistanceTrackingEnabled = assistanceTrackingEnabled,
                         description = description.ifBlank { null },
                         primaryMuscles = if (choosesMuscles) primaryMuscles else exercise.primaryMuscles,
-                        secondaryMuscles = if (choosesMuscles) secondaryMuscles else exercise.secondaryMuscles
+                        secondaryMuscles = if (choosesMuscles) secondaryMuscles else exercise.secondaryMuscles,
+                        bodyWeightPercent = bodyWeightPercent.toIntOrNull()?.takeIf { it in 1..100 }
                     )
                 )
                 onDismiss()
@@ -883,7 +886,8 @@ fun UnifiedAddDialog(
                     assistanceTrackingEnabled,
                     description.ifBlank { null },
                     primaryMuscles,
-                    secondaryMuscles
+                    secondaryMuscles,
+                    bodyWeightPercent.toIntOrNull()?.takeIf { it in 1..100 }
                 )
                 onDismiss()
             }
@@ -1391,6 +1395,22 @@ fun UnifiedAddDialog(
                                     checked = assistanceTrackingEnabled,
                                     onCheckedChange = { assistanceTrackingEnabled = it },
                                 )
+
+                                // Share of body weight: for reps only, and never with a number suggested.
+                                if (selectedType == "Dynamic") {
+                                    LabelledNumberStepper(
+                                        label = stringResource(R.string.body_weight_share),
+                                        value = bodyWeightPercent,
+                                        onValueChange = { bodyWeightPercent = it },
+                                        range = 1..100,
+                                        unit = "%",
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.body_weight_share_description),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
                             }
                         }
                         // 説明文カード
