@@ -6,13 +6,13 @@ Your workouts live only on your phone. If the phone is lost or the app is remove
 
 Settings › Data Management › Complete Backup (JSON) exports everything: exercises, groups, programs, interval routines and history. Settings shows when you last made one.
 
-A complete backup also keeps warm-up marks and effort ratings. A backup that holds them can only be restored by version 1.2 or later; older versions refuse it rather than lose the marks.
+A complete backup also keeps warm-up marks and effort ratings, and the muscles you chose for your own exercises. A backup that holds them can only be restored by version 1.2 or later; older versions refuse it rather than lose them.
 
 Importing a complete backup replaces all your data, so the app first asks you to save a backup of your current data. Import becomes available once that backup is saved and checked. On a phone with no data yet, as when moving to a new phone, the import starts straight away.
 
 ## CSV
 
-CSV export and import cover groups, exercises and records, for use in a spreadsheet. CSV import adds to your data and skips what is already there; it never replaces anything. Dates are written as 2026-10-08 and times as 07:30. An input template helps you prepare records to import. CSV does not carry warm-up marks or effort ratings; a warm-up set is exported as an ordinary set.
+CSV export and import cover groups, exercises and records, for use in a spreadsheet. CSV import adds to your data and skips what is already there; it never replaces anything. Dates are written as 2026-10-08 and times as 07:30. An input template helps you prepare records to import. The records file also carries warm-up marks, effort ratings and, for a one-sided exercise, each side's own weight, assistance and distance, in optional last columns; the exercises file carries the muscles you chose for your own exercises. Older files import as before, and older app versions ignore the new columns.
 
 ## Recovery files
 
