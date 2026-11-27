@@ -10,6 +10,8 @@ from which Kalimory was forked; their version numbers are the original app's, no
 
 ## [Unreleased]
 
+## [1.1.2] - 2026-11-27
+
 ### Added
 - A body-weight list in Progress, and an optional share of body weight for each rep exercise, counted in its volume ([#306](https://github.com/WildeBeast2521/kalimory/pull/306))
 - Progress shows the heaviest load per body weight for those exercises ([#306](https://github.com/WildeBeast2521/kalimory/pull/306))
@@ -748,7 +750,8 @@ This release includes contributions from @unsealed211, @SomeTr, and @balaraz.
 - Multi-language support (Japanese, English)
 - Completely offline, privacy-focused design
 
-[Unreleased]: https://github.com/WildeBeast2521/kalimory/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/WildeBeast2521/kalimory/compare/v1.1.2...HEAD
+[1.1.2]: https://github.com/WildeBeast2521/kalimory/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/WildeBeast2521/kalimory/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/WildeBeast2521/kalimory/compare/v1.0.1...v1.0.2

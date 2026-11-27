@@ -1,0 +1,1 @@
+Choose the muscles for your own exercises, set a weight, assistance and distance for each side of a one-sided exercise, and keep a body weight list that counts in the volume of bodyweight exercises, with an openScale import. The body map has an Over time view, and a What's new sheet shows the changes after an update. Backups use a new format that earlier versions cannot restore.
